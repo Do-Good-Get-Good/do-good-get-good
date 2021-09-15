@@ -2,7 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React from 'react';
 import { Text, View, TextInput, StyleSheet, Pressable, ImageBackground, Image } from 'react-native';
 
-export default function Login() {
+export default function Login({ navigation }) {
 
   const [email, setEmail] = React.useState('');
   const [pass, setPass] = React.useState('');
@@ -66,12 +66,18 @@ export default function Login() {
           marginTop: 25,
           width: '100%',
         }}>
-          <Pressable style={{
-            backgroundColor: '#84BD00', 
-            height: 55,
-            justifyContent: 'center',
-            borderRadius: 5
-          }} onPress={() => {console.log("Tryckte på 'logga in'")}}>
+          <Pressable 
+            style={{
+              backgroundColor: '#84BD00', 
+              height: 55,
+              justifyContent: 'center',
+              borderRadius: 5
+            }} 
+            onPress={() => {
+              console.log("Tryckte på 'logga in'");
+              navigation.navigate('Home')
+            }}
+          >
             <Text style={{
               color: '#333333',
               alignSelf: 'center',
@@ -95,11 +101,16 @@ export default function Login() {
             }}>
               Glömt ditt lösenord? 
             </Text>
-          <Pressable style={{
+          <Pressable 
+          style={{
             backgroundColor: '', 
             justifyContent: 'center',
             marginLeft: 5,
-          }} onPress={() => {console.log("Tryckte på 'glömt lösenord'")}}>
+          }} 
+          onPress={() => {
+            console.log("Tryckte på 'glömt lösenord'")
+          }}
+          >
             <Text style={{
               color: '#84BD00',
               fontSize: 14,
