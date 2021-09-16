@@ -75,7 +75,7 @@ export default function Login({ navigation }) {
             }} 
             onPress={() => {
               console.log("Tryckte på 'logga in'");
-              navigation.navigate('Home')
+              navigation.navigate('LandingPage')
             }}
           >
             <Text style={{
