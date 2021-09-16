@@ -1,8 +1,8 @@
 import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LandingPage } from './views/LandingPage'
-import Login from './views/Login'
+import { LandingPage } from './components/LandingPage'
+import Login from './components/Login'
 
 const Stack = createNativeStackNavigator()
 export const Mystack = () => {
