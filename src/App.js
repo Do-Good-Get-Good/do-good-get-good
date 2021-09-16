@@ -1,11 +1,15 @@
-import React from 'react';
-import { StyleSheet, View } from 'react-native';
-import Login from "./views/Login"
+import React from 'react'
+import { StyleSheet, View } from 'react-native'
+import { Mystack } from './navigate'
+import { LandingPage } from './views/LandingPage'
+import Login from './views/Login'
 
 export default function App() {
   return (
-    <Login />
-  );
+    // <Mystack />
+    // <Login />
+    <LandingPage></LandingPage>
+  )
 }
 
 const styles = StyleSheet.create({
@@ -13,6 +17,6 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+    justifyContent: 'center'
+  }
+})
