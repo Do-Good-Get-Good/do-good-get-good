@@ -21,6 +21,7 @@ export default function Login({ navigation }) {
       style={{
         flex: 1
       }}
+      imageStyle={{opacity: 0.7}}
     >
       <View
         style={{
