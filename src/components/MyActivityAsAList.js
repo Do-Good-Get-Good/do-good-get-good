@@ -18,7 +18,7 @@ export const MyActivityAsAList = ({}) => {
   function checkActivityStatus() {
     for (let i = 0; i < activityArray.length; i++) {
       const styleToChangeButton = {
-        fontWeight: activityArray[i].activityStatus ? 'bold' : 'normal'
+        // fontWeight: activityArray[i].activityStatus ? 'bold' : 'normal'
       }
       console.log(activityArray[i].activityStatus)
       return styleToChangeButton
@@ -44,6 +44,7 @@ export const MyActivityAsAList = ({}) => {
           </View>
         )}
       />
+
       <Text>Visa allt</Text>
     </View>
   )

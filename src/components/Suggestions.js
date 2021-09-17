@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
   myActivitiesContainer: {
     //second in MyActivities
     flex: 1,
-    flexDirection: 'colum',
+    flexDirection: 'column',
     justifyContent: 'center',
     marginHorizontal: 20,
     marginVertical: 20

@@ -82,6 +82,7 @@ export const MyActivities = ({}) => {
           </View>
         )}
       />
+
       {/* <ScrollView style={styles.myActivitiesContainer}>
         <Image
           style={styles.tinyLogo}
@@ -110,7 +111,7 @@ const styles = StyleSheet.create({
   },
   myActivitiesContainer: {
     flex: 1,
-    flexDirection: 'colum',
+    flexDirection: 'column',
     justifyContent: 'flex-start',
     marginHorizontal: 20,
     marginVertical: 20
@@ -118,7 +119,7 @@ const styles = StyleSheet.create({
 
   textAndButtonInActivities: {
     flex: 1,
-    flexDirection: 'colum',
+    flexDirection: 'column',
     justifyContent: 'flex-start'
   }
 })
