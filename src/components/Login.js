@@ -16,12 +16,10 @@ export default function Login({ navigation }) {
 
   return (
     <ImageBackground
-      source={require('../img/blueprint - white.png')}
+      source={require('../img/blueprint-white.png')}
       resizeMode={'cover'}
       style={{
-        flex: 1,
-        height: 100,
-        weight: 100
+        flex: 1
       }}
     >
       <View

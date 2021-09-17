@@ -17,7 +17,7 @@ export const LandingPage = ({}) => {
     <SafeAreaView style={styles.view}>
       <ScrollView>
         <ImageBackground
-          source={require('../img/blueprint - white.png')}
+          source={require('../img/blueprint-white.png')}
           resizeMode={'cover'}
           style={{
             flex: 1
