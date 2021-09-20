@@ -1,5 +1,5 @@
 import { StatusBar } from 'expo-status-bar'
-import React from 'react'
+import React, { useEffect } from 'react'
 import {
   Text,
   View,
@@ -12,19 +12,44 @@ import {
 import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'tailwind-react-native-classnames';
 import inputStyles from '../styles/inputStyle';
+import auth from '@react-native-firebase/auth';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('')
   const [pass, setPass] = React.useState('')
+  const [randomText, setRandomText] = React.useState('')
 
-  let motivationTexts = [
+  const motivationTexts = [
     'Du är riktigt grym!',
     'Bra jobbat!',
     'Detta förtjänar du!',
     'Wohoo, du är tillbaka!'
   ]
 
-  var randomMotivationText = motivationTexts[Math.floor(Math.random()*motivationTexts.length)];
+  //Authorize user and sign in
+  const signIn = () => {
+    auth()
+    .signInWithEmailAndPassword(email, pass)
+    .then(() => {
+      console.log('User account created & signed in!');
+    })
+    .catch(error => {
+      if (error.code === 'auth/email-already-in-use') {
+        console.log('That email address is already in use!');
+      }
+  
+      if (error.code === 'auth/invalid-email') {
+        console.log('That email address is invalid!');
+      }
+  
+      console.error(error);
+    });
+  }
+
+  //Randomizes a motivational text once every app launch
+  useEffect(() => {
+    setRandomText(motivationTexts[Math.floor(Math.random()*motivationTexts.length)])
+  }, [])
 
   return (
     <ImageBackground
@@ -43,7 +68,7 @@ export default function Login({ navigation }) {
         </View>
         <View style={styles.inputsAndBtns}>
           <Text style={[tw`text-center text-xl mb-8 font-semibold`, {color: '#333333'}]}>
-            {randomMotivationText}
+            {randomText}
           </Text>
           <View style={tw`flex-row mb-3`}>
             <TextInput
@@ -74,8 +99,7 @@ export default function Login({ navigation }) {
             <Pressable
               style={styles.loginBtn}
               onPress={() => {
-                console.log("Tryckte på 'logga in'")
-                navigation.navigate('LandingPage')
+                signIn()
               }}
             >
               <Text style={[tw`text-center text-xl`, {color: '#333333'}]}>

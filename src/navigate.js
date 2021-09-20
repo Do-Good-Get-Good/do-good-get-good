@@ -2,7 +2,6 @@ import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { LandingPage } from './components/LandingPage'
-import Login from './components/Login'
 
 const Stack = createNativeStackNavigator()
 export const Mystack = () => {
@@ -12,7 +11,6 @@ export const Mystack = () => {
       screenOptions={{
         headerShown: false
       }}>
-        <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="LandingPage" component={LandingPage} />
       </Stack.Navigator>
     </NavigationContainer>

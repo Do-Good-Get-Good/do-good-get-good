@@ -5,12 +5,14 @@ import {
   SafeAreaView,
   View,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  Button
 } from 'react-native'
 import { MyActivities } from '../components/MyActivities'
 import { MyActivityAsAList } from '../components/MyActivityAsAList'
 import { MyTime } from '../components/MyTime'
 import { Suggestions } from '../components/Suggestions'
+import auth from '@react-native-firebase/auth';
 
 export const LandingPage = ({}) => {
   return (
@@ -23,6 +25,16 @@ export const LandingPage = ({}) => {
             flex: 1
           }}
         >
+          <Button 
+            color="green"
+            title="Logga ut" 
+            onPress={() => {
+              auth()
+              .signOut()
+              .then(() => console.log('User signed out!'));
+            }}
+          >
+          </Button>
           <MyTime></MyTime>
           <MyActivities></MyActivities>
           <MyActivityAsAList></MyActivityAsAList>
