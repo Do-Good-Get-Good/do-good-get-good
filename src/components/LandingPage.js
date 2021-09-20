@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import {
   Text,
   StyleSheet,
@@ -13,8 +13,13 @@ import { MyActivityAsAList } from '../components/MyActivityAsAList'
 import { MyTime } from '../components/MyTime'
 import { Suggestions } from '../components/Suggestions'
 import auth from '@react-native-firebase/auth';
+import UserContext from '../context/userContext';
+import tw from 'tailwind-react-native-classnames';
 
 export const LandingPage = ({}) => {
+
+  const loggedInUser = useContext(UserContext)
+
   return (
     <SafeAreaView style={styles.view}>
       <ScrollView>
@@ -25,6 +30,9 @@ export const LandingPage = ({}) => {
             flex: 1
           }}
         >
+          <View style={tw`bg-blue-500`}>
+            <Text style={tw`text-sm text-center text-white p-1`}>Inloggad mail: {loggedInUser.email}</Text>
+          </View>
           <Button 
             color="green"
             title="Logga ut" 

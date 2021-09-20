@@ -2,6 +2,7 @@ import React, { useState, useEffect} from 'react';
 import { Mystack } from './navigate';
 import auth from '@react-native-firebase/auth';
 import Login from './components/Login';
+import { UserProvider } from './context/userContext';
 
 export default function App() {
 
@@ -29,6 +30,8 @@ export default function App() {
   }
 
   return (
-    <Mystack />
+    <UserProvider value={user}>
+      <Mystack />
+    </UserProvider>
   );
 }

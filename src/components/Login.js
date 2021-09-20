@@ -14,7 +14,7 @@ import tw from 'tailwind-react-native-classnames';
 import inputStyles from '../styles/inputStyle';
 import auth from '@react-native-firebase/auth';
 
-export default function Login({ navigation }) {
+export default function Login() {
   const [email, setEmail] = React.useState('')
   const [pass, setPass] = React.useState('')
   const [randomText, setRandomText] = React.useState('')
