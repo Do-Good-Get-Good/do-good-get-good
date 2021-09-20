@@ -16,22 +16,26 @@ export default function Login({ navigation }) {
 
   return (
     <ImageBackground
-      source={require('../img/blueprint - white.png')}
+      source={require('../img/blueprint-white.png')}
       resizeMode={'cover'}
       style={{
-        flex: 1,
-        height: 100,
-        weight: 100
+        flex: 1
       }}
+      imageStyle={{opacity: 0.7}}
     >
       <View
         style={{
-          backgroundColor: '#00000010'
+          backgroundColor: '#00000010',
+          flex: 1
         }}
       >
+        <StatusBar style="auto" />
         <Image
           source={require('../img/Logo-DGGG-13.png')}
-          style={{ width: '100%', height: 250 }}
+          style={{ 
+            flex: 1,
+            width: '100%'
+          }}
         />
       </View>
       <View
@@ -156,8 +160,8 @@ export default function Login({ navigation }) {
       <View
         style={{
           backgroundColor: '#00000010',
-          width: '100%'
-          //  flex: 1
+          // width: '100%',
+          flex: 1
         }}
       >
         <Image
@@ -166,7 +170,9 @@ export default function Login({ navigation }) {
             width: 143,
             height: 23,
             alignSelf: 'center',
-            marginBottom: 10
+            marginBottom: 10,
+            position: "absolute",
+            bottom: 10
           }}
         />
       </View>
