@@ -9,186 +9,135 @@ import {
   ImageBackground,
   Image
 } from 'react-native'
+import { SafeAreaView } from 'react-native-safe-area-context';
+import tw from 'tailwind-react-native-classnames';
+import inputStyles from '../styles/inputStyle';
 
 export default function Login({ navigation }) {
   const [email, setEmail] = React.useState('')
   const [pass, setPass] = React.useState('')
+
+  let motivationTexts = [
+    'Du är riktigt grym!',
+    'Bra jobbat!',
+    'Detta förtjänar du!',
+    'Wohoo, du är tillbaka!'
+  ]
+
+  var randomMotivationText = motivationTexts[Math.floor(Math.random()*motivationTexts.length)];
 
   return (
     <ImageBackground
       source={require('../img/blueprint-white.png')}
       resizeMode={'cover'}
       style={{
-        flex: 1
+        flex: 1,
+        backgroundColor: '#00000009'
       }}
-      imageStyle={{opacity: 0.7}}
+      imageStyle={{opacity: 1}}
     >
-      <View
-        style={{
-          backgroundColor: '#00000010',
-          flex: 1
-        }}
-      >
+      <SafeAreaView style={tw`flex-1`}>
         <StatusBar style="auto" />
-        <Image
-          source={require('../img/Logo-DGGG-13.png')}
-          style={{ 
-            flex: 1,
-            width: '100%'
-          }}
-        />
-      </View>
-      <View
-        style={{
-          padding: 20,
-          flex: 1,
-          backgroundColor: '#00000010'
-        }}
-      >
-        <Text
-          style={{
-            alignSelf: 'center',
-            fontSize: 24,
-            marginBottom: 50,
-            color: '#333333',
-            fontWeight: '600'
-          }}
-        >
-          Du är riktigt grym!
-        </Text>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginBottom: 20
-          }}
-        >
-          <TextInput
-            textContentType={'emailAddress'}
-            onChangeText={(text) => setEmail(text)}
-            value={email}
-            keyboardType={'email-address'}
-            placeholder={'E-mail'}
-            style={styles.inputField}
-          />
+        <View style={styles.logo}>
+          <Image source={require('../img/Logo-DGGG-13.png')} style={styles.logoImg} />
         </View>
-        <View
-          style={{
-            flexDirection: 'row',
-            marginBottom: 20
-          }}
-        >
-          <TextInput
-            textContentType={'password'}
-            onChangeText={(text) => setPass(text)}
-            value={pass}
-            placeholder={'Lösenord'}
-            secureTextEntry={true}
-            style={styles.inputField}
-          />
-        </View>
-        <View
-          style={{
-            alignSelf: 'center',
-            marginTop: 25,
-            width: '100%'
-          }}
-        >
-          <Pressable
-            style={{
-              backgroundColor: '#84BD00',
-              height: 55,
-              justifyContent: 'center',
-              borderRadius: 5
-            }}
-            onPress={() => {
-              console.log("Tryckte på 'logga in'")
-              navigation.navigate('LandingPage')
-            }}
-          >
-            <Text
-              style={{
-                color: '#333333',
-                alignSelf: 'center',
-                fontSize: 20,
-                fontWeight: '400'
-              }}
-            >
-              Logga in
-            </Text>
-          </Pressable>
-        </View>
-        <View
-          style={{
-            marginTop: 20,
-            width: '100%',
-            flexDirection: 'row',
-            justifyContent: 'center'
-          }}
-        >
-          <Text
-            style={{
-              color: '#333333',
-              fontSize: 14,
-              fontWeight: '400'
-            }}
-          >
-            Glömt ditt lösenord?
+        <View style={styles.inputsAndBtns}>
+          <Text style={[tw`text-center text-xl mb-8 font-semibold`, {color: '#333333'}]}>
+            {randomMotivationText}
           </Text>
-          <Pressable
+          <View style={tw`flex-row mb-3`}>
+            <TextInput
+              textContentType={'emailAddress'}
+              onChangeText={(text) => setEmail(text)}
+              value={email}
+              keyboardType={'email-address'}
+              placeholder={'E-mail'}
+              style={inputStyles.textInput}
+            />
+          </View>
+          <View
             style={{
-              backgroundColor: '',
-              justifyContent: 'center',
-              marginLeft: 5
-            }}
-            onPress={() => {
-              console.log("Tryckte på 'glömt lösenord'")
+              flexDirection: 'row',
+              marginBottom: 20
             }}
           >
-            <Text
-              style={{
-                color: '#84BD00',
-                fontSize: 14,
-                fontWeight: '400',
-                textDecorationLine: 'underline'
+            <TextInput
+              textContentType={'password'}
+              onChangeText={(text) => setPass(text)}
+              value={pass}
+              placeholder={'Lösenord'}
+              secureTextEntry={true}
+              style={inputStyles.textInput}
+            />
+          </View>
+          <View style={tw `mt-2`}>
+            <Pressable
+              style={styles.loginBtn}
+              onPress={() => {
+                console.log("Tryckte på 'logga in'")
+                navigation.navigate('LandingPage')
               }}
             >
-              Tryck här
+              <Text style={[tw`text-center text-xl`, {color: '#333333'}]}>
+                Logga in
+              </Text>
+            </Pressable>
+          </View>
+          <View style={tw`mt-3 w-full flex-row justify-center`}>
+            <Text style={{ color: '#333333' }}>
+              Glömt ditt lösenord?
             </Text>
-          </Pressable>
+            <Pressable
+              style={tw`ml-1`}
+              onPress={() => {
+                console.log("Tryckte på 'glömt lösenord'")
+              }}
+            >
+              <Text
+                style={{
+                  color: '#84BD00',
+                  textDecorationLine: 'underline'
+                }}
+              >
+                Tryck här
+              </Text>
+            </Pressable>
+          </View>
         </View>
-      </View>
-      <View
-        style={{
-          backgroundColor: '#00000010',
-          // width: '100%',
-          flex: 1
-        }}
-      >
-        <Image
-          source={require('../img/Technogarden-logotyp-Large.png')}
-          style={{
-            width: 143,
-            height: 23,
-            alignSelf: 'center',
-            marginBottom: 10,
-            position: "absolute",
-            bottom: 10
-          }}
-        />
-      </View>
+        <View style={{ flex: 1 }}>
+          <Image
+            source={require('../img/Technogarden-logotyp-Large.png')}
+            style={styles.bottomLogoImg}
+          />
+        </View>
+      </SafeAreaView>
     </ImageBackground>
   )
 }
 
 const styles = StyleSheet.create({
-  inputField: {
+  logo: {
+    flex: 1
+  },
+  logoImg: {
     flex: 1,
-    height: 49,
-    backgroundColor: '#FFFFFF',
-    paddingLeft: 15,
-    fontWeight: '500',
-    borderRadius: 5,
-    fontSize: 18,
-    color: '#333333'
+    width: '100%'
+  },
+  inputsAndBtns: {
+    padding: 20,
+    flex: 1
+  },
+  loginBtn: {
+    backgroundColor: '#84BD00',
+    height: 55,
+    justifyContent: 'center',
+    borderRadius: 5
+  },
+  bottomLogoImg: {
+    width: 143,
+    height: 23,
+    alignSelf: 'center',
+    position: "absolute",
+    bottom: 10
   }
 })
