@@ -18,6 +18,7 @@ export default function Login() {
   const [email, setEmail] = React.useState('')
   const [pass, setPass] = React.useState('')
   const [randomText, setRandomText] = React.useState('')
+  const [error, setError] = React.useState(null)
 
   const motivationTexts = [
     'Du är riktigt grym!',
@@ -31,22 +32,34 @@ export default function Login() {
     auth()
     .signInWithEmailAndPassword(email, pass)
     .then(() => {
-      console.log('User account created & signed in!');
+      console.log('User account exists & signed in!');
     })
     .catch(error => {
       if (error.code === 'auth/email-already-in-use') {
-        console.log('That email address is already in use!');
+        console.log('Den e-post adressen används redan');
       }
   
       if (error.code === 'auth/invalid-email') {
-        console.log('That email address is invalid!');
+        setError('Fel e-post eller lösenord')
+      }
+
+      if (error.code === 'auth/user-not-found') {
+        setError('Fel e-post eller lösenord')
+      }
+
+      if (error.code === 'auth/wrong-password') {
+        setError('Fel e-post eller lösenord')
+      }
+
+      if (error.code === 'auth/invalid-email') {
+        setError('Ange en giltig e-post')
       }
   
       console.error(error);
     });
   }
 
-  //Randomizes a motivational text once every app launch
+  //Randomizes a motivational text once every app launch/login screen reload
   useEffect(() => {
     setRandomText(motivationTexts[Math.floor(Math.random()*motivationTexts.length)])
   }, [])
@@ -76,14 +89,14 @@ export default function Login() {
               onChangeText={(text) => setEmail(text)}
               value={email}
               keyboardType={'email-address'}
-              placeholder={'E-mail'}
+              placeholder={'E-post'}
               style={inputStyles.textInput}
             />
           </View>
           <View
             style={{
               flexDirection: 'row',
-              marginBottom: 20
+              marginBottom: 10
             }}
           >
             <TextInput
@@ -95,11 +108,27 @@ export default function Login() {
               style={inputStyles.textInput}
             />
           </View>
+          <View style={tw.style({
+            'hidden' : error === null,
+            'mb-1 pl-2' : error != null
+          })}>
+            <Text style={tw`text-red-500`}>
+              * {error}
+            </Text>
+          </View>
           <View style={tw `mt-2`}>
             <Pressable
               style={styles.loginBtn}
               onPress={() => {
-                signIn()
+                if (email === null && pass === null || email === '' && pass === '') {
+                  setError("Du måste fylla i e-post och lösenord")
+                } else if (email != null && pass === null || email != '' && pass === '') {
+                  setError("Du måste fylla i ett lösenord")
+                } else if (email === null && pass != null || email === '' && pass != '') {
+                  setError("Du måste fylla i en e-post")
+                } else {
+                  signIn()
+                }
               }}
             >
               <Text style={[tw`text-center text-xl`, {color: '#333333'}]}>

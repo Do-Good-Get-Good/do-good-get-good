@@ -13,7 +13,7 @@ import { MyActivityAsAList } from '../components/MyActivityAsAList'
 import { MyTime } from '../components/MyTime'
 import { Suggestions } from '../components/Suggestions'
 import auth from '@react-native-firebase/auth';
-import UserContext from '../context/userContext';
+import UserContext from '../context/UserContext';
 import tw from 'tailwind-react-native-classnames';
 
 export const LandingPage = ({}) => {
