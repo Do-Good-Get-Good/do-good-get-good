@@ -13,12 +13,16 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import tw from 'tailwind-react-native-classnames';
 import inputStyles from '../styles/inputStyle';
 import auth from '@react-native-firebase/auth';
+import ResetPassModal from './resetPassModal';
 
 export default function Login() {
   const [email, setEmail] = React.useState('')
   const [pass, setPass] = React.useState('')
   const [randomText, setRandomText] = React.useState('')
   const [error, setError] = React.useState(null)
+  const [showModal, setShowModal] = React.useState(false)
+  const [isEmailValid, setEmailValid] = React.useState(true)
+  const [isPassValid, setPassValid] = React.useState(true)
 
   const motivationTexts = [
     'Du är riktigt grym!',
@@ -38,23 +42,18 @@ export default function Login() {
       if (error.code === 'auth/email-already-in-use') {
         console.log('Den e-post adressen används redan');
       }
-  
-      if (error.code === 'auth/invalid-email') {
-        setError('Fel e-post eller lösenord')
-      }
-
       if (error.code === 'auth/user-not-found') {
         setError('Fel e-post eller lösenord')
+        checkValidity(false, false)
       }
-
       if (error.code === 'auth/wrong-password') {
         setError('Fel e-post eller lösenord')
+        checkValidity(false, false)
       }
-
       if (error.code === 'auth/invalid-email') {
         setError('Ange en giltig e-post')
+        checkValidity(false, true)
       }
-  
       console.error(error);
     });
   }
@@ -63,6 +62,15 @@ export default function Login() {
   useEffect(() => {
     setRandomText(motivationTexts[Math.floor(Math.random()*motivationTexts.length)])
   }, [])
+
+  const isOpen = (value) => {
+    setShowModal(value)
+  }
+
+  const checkValidity = (emailValid, passValid) => {
+    setEmailValid(emailValid)
+    setPassValid(passValid)
+  }
 
   return (
     <ImageBackground
@@ -76,11 +84,12 @@ export default function Login() {
     >
       <SafeAreaView style={tw`flex-1`}>
         <StatusBar style="auto" />
+        <ResetPassModal isModalOpen={showModal} openModal={isOpen}/>
         <View style={styles.logo}>
           <Image source={require('../img/Logo-DGGG-13.png')} style={styles.logoImg} />
         </View>
         <View style={styles.inputsAndBtns}>
-          <Text style={[tw`text-center text-xl mb-8 font-semibold`, {color: '#333333'}]}>
+          <Text style={[tw`text-center text-xl mb-8 font-bold`, {color: '#333333'}]}>
             {randomText}
           </Text>
           <View style={tw`flex-row mb-3`}>
@@ -90,7 +99,11 @@ export default function Login() {
               value={email}
               keyboardType={'email-address'}
               placeholder={'E-post'}
-              style={inputStyles.textInput}
+              style={[
+                inputStyles.textInput, 
+                error != null && !isEmailValid ? inputStyles.textInputInvalid : null,
+                !isEmailValid ? inputStyles.textInputInvalid : null
+              ]}
             />
           </View>
           <View
@@ -105,14 +118,17 @@ export default function Login() {
               value={pass}
               placeholder={'Lösenord'}
               secureTextEntry={true}
-              style={inputStyles.textInput}
+              style={[
+                inputStyles.textInput, 
+                !isPassValid ? inputStyles.textInputInvalid : null
+              ]}
             />
           </View>
           <View style={tw.style({
             'hidden' : error === null,
-            'mb-1 pl-2' : error != null
+            'mb-0 pl-2' : error != null,
           })}>
-            <Text style={tw`text-red-500`}>
+            <Text style={{color: '#C62F25'}}>
               * {error}
             </Text>
           </View>
@@ -122,16 +138,19 @@ export default function Login() {
               onPress={() => {
                 if (email === null && pass === null || email === '' && pass === '') {
                   setError("Du måste fylla i e-post och lösenord")
+                  checkValidity(false, false)
                 } else if (email != null && pass === null || email != '' && pass === '') {
                   setError("Du måste fylla i ett lösenord")
+                  checkValidity(true, false)
                 } else if (email === null && pass != null || email === '' && pass != '') {
                   setError("Du måste fylla i en e-post")
+                  checkValidity(false, true)
                 } else {
                   signIn()
                 }
               }}
             >
-              <Text style={[tw`text-center text-xl`, {color: '#333333'}]}>
+              <Text style={[tw`text-center text-xl font-bold`, {color: '#333333'}]}>
                 Logga in
               </Text>
             </Pressable>
@@ -144,6 +163,7 @@ export default function Login() {
               style={tw`ml-1`}
               onPress={() => {
                 console.log("Tryckte på 'glömt lösenord'")
+                isOpen(true)
               }}
             >
               <Text

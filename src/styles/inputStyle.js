@@ -2,7 +2,7 @@ import { StyleSheet } from 'react-native';
 
 const inputStyles = StyleSheet.create({
   textInput: {
-    flex: 1,
+    width: '100%',
     height: 49,
     backgroundColor: '#FFFFFF',
     paddingLeft: 15,
@@ -10,6 +10,14 @@ const inputStyles = StyleSheet.create({
     borderRadius: 5,
     fontSize: 18,
     color: '#333333'
+  },
+  textInputInvalid: {
+    borderWidth: 1,
+    borderColor: '#C62F25' //Red color
+  },
+  textInputValid: {
+    borderWidth: 1,
+    borderColor: '#84BD00' //Green color
   }
 });
 
