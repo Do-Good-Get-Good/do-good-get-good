@@ -177,12 +177,11 @@ export default function Login() {
             </Pressable>
           </View>
         </View>
-        <View style={{ flex: 1 }}>
-          <Image
+        <View style={{ flex: 1 }}></View>
+        <Image
             source={require('../img/Technogarden-logotyp-Large.png')}
             style={styles.bottomLogoImg}
           />
-        </View>
       </SafeAreaView>
     </ImageBackground>
   )
@@ -210,7 +209,6 @@ const styles = StyleSheet.create({
     width: 143,
     height: 23,
     alignSelf: 'center',
-    position: "absolute",
-    bottom: 10
+    marginBottom: 10
   }
 })
