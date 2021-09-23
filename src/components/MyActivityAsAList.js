@@ -1,11 +1,60 @@
 import React, { useState, useEffect } from 'react'
-import { Text, StyleSheet, FlatList, View, Image, Button } from 'react-native'
+import {
+  Text,
+  StyleSheet,
+  FlatList,
+  View,
+  Image,
+  Button,
+  ListItem,
+  TouchableOpacity,
+  Pressable
+} from 'react-native'
 
 export const MyActivityAsAList = ({}) => {
   const [activityArray, setActivityArray] = useState([
-    { title: 'Soppkök', date: '2021-08-10', time: 0.5, activityStatus: true },
-    { title: 'Cat house', date: '2021-08-20', time: 2.5, activityStatus: true },
-    { title: 'Soppkök', date: '2021-08-15', time: 4.5, activityStatus: false }
+    {
+      idActivityList: '1',
+      title: 'Soppkök',
+      date: '2021-08-10',
+      time: 0.5,
+      activityStatus: true
+    },
+    {
+      idActivityList: '2',
+      title: 'Cat house',
+      date: '2021-08-20',
+      time: 2.5,
+      activityStatus: true
+    },
+    {
+      idActivityList: '3',
+      title: 'Soppkök',
+      date: '2021-08-15',
+      time: 4.5,
+      activityStatus: false
+    },
+    {
+      idActivityList: '4',
+      title: 'Soppkök',
+      date: '2021-08-10',
+      time: 0.5,
+      activityStatus: true
+    },
+    {
+      idActivityList: '5',
+      title: 'Cat house',
+      date: '2021-08-20',
+      time: 2.5,
+      activityStatus: true
+    },
+    {
+      idActivityList: '6',
+      title: 'Soppkök',
+      date: '2021-08-15',
+      time: 4.5,
+      activityStatus: false
+    }
   ])
 
   //   const styleToChangeButton = {
@@ -15,54 +64,73 @@ export const MyActivityAsAList = ({}) => {
   //     }}
 
   //   }
-  function checkActivityStatus() {
-    for (let i = 0; i < activityArray.length; i++) {
-      const styleToChangeButton = {
-        // fontWeight: activityArray[i].activityStatus ? 'bold' : 'normal'
-      }
-      console.log(activityArray[i].activityStatus)
-      return styleToChangeButton
-    }
-  }
-  //         fontWeight: activityArray.activityStatus ? 'bold' : 'normal'
-  //     }}
 
-  useEffect(() => {})
+  useEffect(() => {}, [])
 
   return (
-    <View>
+    <View style={{ marginTop: 15 }}>
       <FlatList
         data={activityArray}
-        keyExtractor={(item) => item.date}
+        // stickyHeaderIndices={[0]}
+        keyExtractor={(item) => item.idActivityList}
         renderItem={({ item }) => (
           <View style={styles.container}>
-            <Text> {item.title}</Text>
-            <Text> {item.date}</Text>
-            <Text>{item.time} tim</Text>
-            {/* <Button onPress={console.log('hi')}></Button> */}
-            <Text style={checkActivityStatus()}>Ändra</Text>
+            <Text
+              style={{
+                fontWeight: item.activityStatus ? 'bold' : 'normal',
+                flex: 1
+              }}
+            >
+              {' '}
+              {item.title}
+            </Text>
+            <Text style={styles.text}> {item.date}</Text>
+            <Text style={styles.text}>{item.time} tim</Text>
+            <TouchableOpacity>
+              <Text
+                style={{
+                  fontWeight: item.activityStatus ? 'bold' : 'normal',
+                  textDecorationLine: item.activityStatus ? 'underline' : null,
+                  flex: 1
+                }}
+              >
+                Ändra
+              </Text>
+            </TouchableOpacity>
+            {/* <Text style={checkActivityStatus()}>Ändra</Text> */}
           </View>
         )}
       />
-
-      <Text>Visa allt</Text>
+      <TouchableOpacity>
+        <Text style={styles.textVissaAll}>Visa allt</Text>
+      </TouchableOpacity>
     </View>
   )
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: 'row',
-    justifyContent: 'space-evenly'
+    justifyContent: 'flex-start',
+    // alignItems: 'flex-start',
+    marginHorizontal: 20,
+    marginBottom: 8
   },
-  buttonToChange: {}
-
-  //   buttonToChange:
-  //     activityArray.status === true
-  //       ? {
-  //           fontWeight: 'bold'
-  //         }
-  //       : {
-  //           fontWeight: 'normal'
-  //         }
+  text: {
+    flex: 1
+  },
+  textVissaAll: {
+    flex: 1,
+    width: 100,
+    marginLeft: 20,
+    marginTop: 5,
+    marginBottom: 15,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'black',
+    paddingHorizontal: 17,
+    paddingVertical: 10,
+    fontWeight: 'bold'
+  }
 })

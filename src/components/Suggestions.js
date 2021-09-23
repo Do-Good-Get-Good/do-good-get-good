@@ -4,7 +4,7 @@ import { Text, StyleSheet, FlatList, View, Image } from 'react-native'
 export const Suggestions = ({}) => {
   const [suggestionsArray, setSuggestionsArray] = useState([
     {
-      id: '1',
+      idSuggestion: '1',
       photo:
         'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
       title: 'Katthem',
@@ -12,7 +12,7 @@ export const Suggestions = ({}) => {
       description: 'Städning, matning och en massa kel!'
     },
     {
-      id: '1',
+      idSuggestion: '2',
       photo:
         'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
       title: 'Studiehjälp',
@@ -30,7 +30,8 @@ export const Suggestions = ({}) => {
       <FlatList
         numColumns={2}
         data={suggestionsArray}
-        keyExtractor={(item) => item.title}
+        // stickyHeaderIndices={[0]}
+        keyExtractor={(item) => item.idSuggestion}
         renderItem={({ item }) => (
           <View style={styles.myActivitiesContainer}>
             <Image
