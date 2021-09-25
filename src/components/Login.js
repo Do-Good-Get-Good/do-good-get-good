@@ -1,5 +1,5 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   View,
@@ -8,6 +8,7 @@ import {
   Pressable,
   ImageBackground,
   Image,
+  Keyboard,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
@@ -17,14 +18,16 @@ import ResetPassModal from "./resetPassModal";
 import { Icon } from "react-native-elements";
 
 export default function Login() {
-  const [email, setEmail] = React.useState("");
-  const [pass, setPass] = React.useState("");
-  const [showPassword, setShowPassword] = React.useState(false);
-  const [randomText, setRandomText] = React.useState("");
-  const [error, setError] = React.useState(null);
-  const [showModal, setShowModal] = React.useState(false);
-  const [isEmailValid, setEmailValid] = React.useState(true);
-  const [isPassValid, setPassValid] = React.useState(true);
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [randomText, setRandomText] = useState("");
+  const [error, setError] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [isEmailValid, setEmailValid] = useState(true);
+  const [isPassValid, setPassValid] = useState(true);
+
+  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
 
   const motivationTexts = [
     "Du är riktigt grym!",
@@ -60,13 +63,6 @@ export default function Login() {
       });
   };
 
-  //Randomizes a motivational text once every app launch/login screen reload
-  useEffect(() => {
-    setRandomText(
-      motivationTexts[Math.floor(Math.random() * motivationTexts.length)]
-    );
-  }, []);
-
   const isOpen = (value) => {
     setShowModal(value);
   };
@@ -75,6 +71,27 @@ export default function Login() {
     setEmailValid(emailValid);
     setPassValid(passValid);
   };
+
+  //Randomizes a motivational text once every app launch/login screen reload
+  useEffect(() => {
+    setRandomText(
+      motivationTexts[Math.floor(Math.random() * motivationTexts.length)]
+    );
+  }, []);
+
+  useEffect(() => {
+    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
+      setKeyboardStatus("Keyboard Shown");
+    });
+    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
+      setKeyboardStatus("Keyboard Hidden");
+    });
+
+    return () => {
+      showSubscription.remove();
+      hideSubscription.remove();
+    };
+  }, []);
 
   return (
     <ImageBackground
@@ -206,6 +223,7 @@ export default function Login() {
                 style={{
                   color: "#84BD00",
                   textDecorationLine: "underline",
+                  fontWeight: "bold",
                 }}
               >
                 Tryck här
@@ -216,7 +234,11 @@ export default function Login() {
         <View style={{ flex: 1 }}></View>
         <Image
           source={require("../img/Technogarden-logotyp-Large.png")}
-          style={styles.bottomLogoImg}
+          style={
+            keyboardStatus === "Keyboard Shown"
+              ? tw`hidden`
+              : styles.bottomLogoImg
+          }
         />
       </SafeAreaView>
     </ImageBackground>

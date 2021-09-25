@@ -6,6 +6,7 @@ import {
   View,
   Pressable,
   TextInput,
+  Alert,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import inputStyles from "../styles/inputStyle";
@@ -23,6 +24,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
         setEmail(null);
         setError(null);
         openModal(false);
+        alertMessage();
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -36,6 +38,13 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
           openModal(false);
         }
       });
+  };
+
+  const alertMessage = () => {
+    Alert.alert(
+      "Återställ lösenord",
+      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!"
+    );
   };
 
   return (
@@ -56,19 +65,16 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
               style={[tw`bg-white rounded-full`, { padding: 2 }]}
             />
           </Pressable>
-          <View style={tw`mt-10`}>
+          <View style={tw`mt-0`}>
             <Text style={tw`text-lg font-bold`}>Glömt ditt lösenord?</Text>
             <Text>
               Inga problem! Skriv in din mail nedan, så skickar vi en länk för
               att återställa lösenordet.
             </Text>
-            {/* <View style={tw`mt-4`}>
-              <Text style={{color: '#84BD00'}}>Om din e-post existerar kommer du få ett mail med ett nytt lösenord!</Text>
-            </View> */}
             <TextInput
               style={[
                 inputStyles.textInput,
-                tw`mt-5 mb-2`,
+                tw`mt-5 mb-4`,
                 error != null ? inputStyles.textInputInvalid : null,
               ]}
               placeholder="E-post"
@@ -110,7 +116,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#00000040",
+    backgroundColor: "#00000075",
   },
   modal: {
     backgroundColor: "#F5F5F5",
@@ -118,11 +124,15 @@ const styles = StyleSheet.create({
     padding: 15,
     marginLeft: 15,
     marginRight: 15,
+    height: 200,
   },
   sendBtn: {
     backgroundColor: "#84BD00",
     height: 55,
     justifyContent: "center",
     borderRadius: 5,
+    marginLeft: -15,
+    marginRight: -15,
+    marginBottom: -15,
   },
 });
