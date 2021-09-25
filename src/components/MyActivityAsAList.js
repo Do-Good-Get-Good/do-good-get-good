@@ -10,6 +10,7 @@ import {
   TouchableOpacity,
   Pressable
 } from 'react-native'
+import { Icon } from 'react-native-elements'
 
 export const MyActivityAsAList = ({}) => {
   const [activityArray, setActivityArray] = useState([
@@ -68,39 +69,51 @@ export const MyActivityAsAList = ({}) => {
   useEffect(() => {}, [])
 
   return (
-    <View style={{ marginTop: 15 }}>
-      <FlatList
-        data={activityArray}
-        // stickyHeaderIndices={[0]}
-        keyExtractor={(item) => item.idActivityList}
-        renderItem={({ item }) => (
-          <View style={styles.container}>
-            <Text
-              style={{
-                fontWeight: item.activityStatus ? 'bold' : 'normal',
-                flex: 1
-              }}
-            >
-              {' '}
-              {item.title}
+    <View style={styles.container}>
+      <Text style={styles.title}>Mina aktiviteter</Text>
+      {activityArray.map((activity) => (
+        <View style={styles.activityIside}>
+          <Text
+            style={{
+              fontWeight: activity.activityStatus ? 'bold' : 'normal',
+              color: activity.activityStatus ? '#333333' : 'gray',
+              flex: 1,
+              fontSize: 16
+            }}
+          >
+            {activity.title}
+          </Text>
+          <Text
+            style={{
+              color: activity.activityStatus ? '#333333' : 'gray',
+              flex: 1,
+              fontSize: 16
+            }}
+          >
+            {activity.date}
+          </Text>
+          <Text
+            style={{
+              color: activity.activityStatus ? '#333333' : 'gray',
+              flex: 1,
+              fontSize: 16
+            }}
+          >
+            {activity.time} tim
+          </Text>
+
+          <TouchableOpacity>
+            <Text>
+              <Icon
+                color={activity.activityStatus ? '#333333' : 'gray'}
+                name={'create'}
+                size={25}
+              />
             </Text>
-            <Text style={styles.text}> {item.date}</Text>
-            <Text style={styles.text}>{item.time} tim</Text>
-            <TouchableOpacity>
-              <Text
-                style={{
-                  fontWeight: item.activityStatus ? 'bold' : 'normal',
-                  textDecorationLine: item.activityStatus ? 'underline' : null,
-                  flex: 1
-                }}
-              >
-                Ändra
-              </Text>
-            </TouchableOpacity>
-            {/* <Text style={checkActivityStatus()}>Ändra</Text> */}
-          </View>
-        )}
-      />
+          </TouchableOpacity>
+        </View>
+      ))}
+
       <TouchableOpacity>
         <Text style={styles.textVissaAll}>Visa allt</Text>
       </TouchableOpacity>
@@ -111,26 +124,48 @@ export const MyActivityAsAList = ({}) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    flexDirection: 'row',
     justifyContent: 'flex-start',
-    // alignItems: 'flex-start',
     marginHorizontal: 20,
     marginBottom: 8
   },
-  text: {
-    flex: 1
+  title: {
+    flex: 1,
+    fontSize: 24,
+    marginTop: 30,
+    marginBottom: 10
   },
+
   textVissaAll: {
     flex: 1,
-    width: 100,
-    marginLeft: 20,
-    marginTop: 5,
+    width: 158,
+
+    marginTop: 10,
     marginBottom: 15,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'black',
-    paddingHorizontal: 17,
+    borderColor: '#84BD00',
+    textAlign: 'center',
+    // paddingHorizontal: 10,
     paddingVertical: 10,
-    fontWeight: 'bold'
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    fontSize: 20
+  },
+  activityIside: {
+    flex: 1,
+    flexDirection: 'row',
+    backgroundColor: 'white',
+    paddingHorizontal: 5,
+    paddingVertical: 5
   }
 })
+
+// <Text
+//             style={{
+//               fontWeight: activity.activityStatus ? 'bold' : 'normal',
+//               textDecorationLine: activity.activityStatus
+//                 ? 'underline'
+//                 : null,
+//               flex: 1
+//             }}
+//           >

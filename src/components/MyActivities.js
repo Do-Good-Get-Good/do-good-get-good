@@ -11,15 +11,61 @@ import {
 } from 'react-native'
 import firestore, { firebase } from '@react-native-firebase/firestore'
 import UserContext from '../context/UserContext'
+import { Icon } from 'react-native-elements'
 //  import React, { useEffect } from 'react'
 //   import firestore from '@react-native-firebase/firestore'
 
 export const MyActivities = ({ userID }) => {
+  const ref = firestore().collection('test')
   const loggedInUser = useContext(UserContext)
   const [eventsArray, setEventsArray] = useState([])
   const [myEvent, setMyEvent] = useState([])
-  const [eventId, setEventId] = useState('wCEULSkEOBfxaTK9YkHIx9XHk3T2')
+  const [test1, setTest1] = useState([])
   console.log(loggedInUser.uid)
+
+  const [myActivitiesArray, setMyActivitiesArray] = useState([
+    {
+      idMyActivity: '1',
+      photo:
+        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+      title: 'Volunteer',
+      city: 'Götebrg',
+      time: '3.5'
+    },
+    {
+      idMyActivity: '2',
+      photo:
+        'https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+      title: 'Volunteer',
+      city: 'Götebrg',
+      time: '2.5'
+    },
+    {
+      idMyActivity: '3',
+      photo:
+        'https://images.pexels.com/photos/66639/pexels-photo-66639.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+      title: 'Soppkök',
+      city: 'Götebrg',
+      time: '1.5'
+    },
+    {
+      idMyActivity: '4',
+      photo:
+        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+      title: 'Volunteer',
+      city: 'Götebrg',
+      time: '3.5'
+    },
+    {
+      idMyActivity: '5',
+      photo:
+        'https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
+      title: 'Volunteer',
+      city: 'Götebrg',
+      time: '2.5'
+    }
+  ])
+
   ///////////WENT GOOD
   // const getDataEvents = async () => {
   //   try {
@@ -34,25 +80,48 @@ export const MyActivities = ({ userID }) => {
   //     console.error(error)
   //   }
   // }
+  //******************************************** */
+  // useEffect(() => {
+  //   const subscriber = firestore()
+  //     .collection('test')
+  //     // .doc('jaLkP8M4jzWV9rc8EFsHZHcym2k1')
+  //     .doc(loggedInUser.uid)
+  //     .collection('testCollection')
+  //     .doc('DNXT76Kxpfg3LllRTTN2').child('activity')
+  //     .onSnapshot((documentSnapshot) => {
+  //       console.log('FIRST: ', documentSnapshot.data().rel)
+  // setMyEvent({
+  //   eventID: documentSnapshot.data().id_my_activity,
+  //   time: documentSnapshot.data().time,
+  //   title: documentSnapshot.data().title,
+  //   photo: documentSnapshot.data().photo,
+  //   city: documentSnapshot.data().city
+  // })
+  //   setMyEvent(documentSnapshot.data())
+  // })
+  // Stop listening for updates when no longer required
+  //   return () => subscriber()
+  // }, [loggedInUser])
+  //******************************************** */
+  //******************************************** */
+  // useEffect(() => {
+  //   const su = firestore()
+  //     .collection('test')
+  //     .doc(loggedInUser.uid)
+  //     .collection('testCollection')
+  //     .get()
+  //     .then((querySnapshot) => {
+  //       console.log('Total users: ', querySnapshot.size)
 
-  useEffect(() => {
-    const subscriber = firestore()
-      .collection('test')
-      // .doc('jaLkP8M4jzWV9rc8EFsHZHcym2k1')
-      .doc(loggedInUser.uid)
-      .onSnapshot((documentSnapshot) => {
-        console.log('User data: ', documentSnapshot.data())
-        setMyEvent({
-          eventID: documentSnapshot.data().id_my_activity,
-          time: documentSnapshot.data().time,
-          title: documentSnapshot.data().title,
-          photo: documentSnapshot.data().photo,
-          city: documentSnapshot.data().city
-        })
-      })
-    // Stop listening for updates when no longer required
-    return () => subscriber()
-  }, [loggedInUser])
+  //       querySnapshot.forEach((documentSnapshot) => {
+  //         console.log('User ID: ', documentSnapshot.id, documentSnapshot.data())
+  //         setTest1(documentSnapshot.data())
+  //       })
+  //     })
+
+  // return () => su()
+  // }, [])
+  //******************************************** */
 
   // const getDataEvents = async () => {
   //   try {
@@ -67,56 +136,48 @@ export const MyActivities = ({ userID }) => {
     // getDataEvents()
   }, [loggedInUser])
 
-  console.log('MY EVENT', myEvent)
-  console.log('MY EVENT', myEvent.city)
+  // console.log('MY EVENT', myEvent)
+  // console.log('MY EVENT', myEvent.city)
+  console.log('TEST TEST TEST', test1)
+  console.log('REL REL REL', test1.length)
 
   return (
     <View>
       {/* <Text>{myEvent.title}</Text>
       <Text>{myEvent.city}</Text> */}
-      <Text style={styles.topH1}>Mina aktiviteter</Text>
+      {/* <Text style={styles.topH1}>Mina aktiviteter</Text>
       <Text style={styles.topH2}>
         Har du gjort något bra för någon annan på sistone? Glöm inte att lägg in
         tiden.
-      </Text>
-      {/* <FlatList
-        data={myEvent}
-        numColumns={2}
-        keyExtractor={(item) => item.eventID}
-        renderItem={({ item }) => (
-          <View style={styles.myActivitiesContainer}>
-            <Image
-              style={styles.tinyLogo}
-              source={{
-                uri: item.photo
-              }}
-            />
-            <View style={styles.textTitleCityTime}>
-              <Text> {item.title}</Text>
-              <Text> {item.city}</Text>
-              <Text> {item.time} tim</Text>
+      </Text> */}
+
+      <View style={styles.activityContainer}>
+        {myActivitiesArray.map((myActivity) => (
+          <View style={styles.insideActivityContainer}>
+            <View style={styles.photoAndText}>
+              <View style={styles.textTitleCityTime}>
+                <Text style={styles.textTitle}>{myActivity.title}</Text>
+                <Text style={styles.textCity}>
+                  <Icon name={'room'} size={25} />
+                  {myActivity.city}
+                </Text>
+                <Text style={styles.textTime}>
+                  <Icon name={'access-time'} size={25} /> {myActivity.time} tim
+                </Text>
+              </View>
+              <Image
+                style={styles.image}
+                source={{
+                  uri: myActivity.photo
+                }}
+              />
             </View>
 
-            <Button color="green" title="Lägg in tid"></Button>
+            <TouchableOpacity>
+              <Text style={styles.läggTid}>Logga tid</Text>
+            </TouchableOpacity>
           </View>
-        )}
-      /> */}
-      <View style={styles.myActivitiesContainer2}>
-        <Image
-          style={styles.tinyLogo}
-          source={{
-            uri: myEvent.photo
-          }}
-        />
-        <View style={styles.textTitleCityTime}>
-          <Text> {myEvent.title}</Text>
-          <Text> {myEvent.city}</Text>
-          <Text> {myEvent.time} tim</Text>
-        </View>
-        <TouchableOpacity>
-          <Text style={styles.läggTid}>Lägg in tid</Text>
-        </TouchableOpacity>
-        {/* <Button color="green" title="Lägg in tid"></Button> */}
+        ))}
       </View>
     </View>
   )
@@ -132,69 +193,68 @@ const styles = StyleSheet.create({
     flex: 1,
     marginHorizontal: 20
   },
-  tinyLogo: {
+  activityContainer: {
+    flex: 1,
+    marginTop: 20,
+    marginHorizontal: 20
+  },
+  insideActivityContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    marginVertical: 7,
+    backgroundColor: 'white',
+    flexWrap: 'wrap',
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: 'white'
+  },
+  image: {
     flex: 1,
     resizeMode: 'cover',
     alignItems: 'center',
-    width: 150,
-    height: 150
+    marginRight: 12,
+    marginTop: 10,
+    borderRadius: 5
+  },
+  photoAndText: {
+    flex: 1,
+    flexDirection: 'row'
   },
   textTitleCityTime: {
-    flex: 1,
-    alignItems: 'center',
-    fontSize: 50
-  },
-  // sectionsList: {
-  //   flexDirection: 'row'
-
-  // alignItems: 'flex-start',
-  // justifyContent: 'flex-start',
-  // flexWrap: 'wrap'
-  // },
-  myActivitiesContainer: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginVertical: 20,
-    backgroundColor: 'white',
-    flexWrap: 'wrap'
+    flex: 2,
+    alignItems: 'flex-start',
+    marginLeft: 10,
+    marginTop: 11,
+    color: '#333333'
   },
 
-  textAndButtonInActivities: {
-    flex: 1,
-    flexDirection: 'column'
-    // justifyContent: 'flex-start'
+  textTitle: {
+    fontSize: 20,
+    fontWeight: 'bold'
   },
-  myActivitiesContainer2: {
-    flex: 1,
-    flexDirection: 'column',
-    justifyContent: 'center',
-    marginHorizontal: 20,
-    marginVertical: 20,
-    marginRight: 242,
-    backgroundColor: 'white',
-    flexWrap: 'wrap'
+  textCity: {
+    marginTop: 27,
+    fontSize: 18
   },
+  textTime: {
+    fontSize: 18
+  },
+
   läggTid: {
     flex: 1,
-    width: 150,
-    // marginLeft: 5,
-    marginTop: 5,
-    marginBottom: 15,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'black',
-    paddingHorizontal: 17,
-    paddingVertical: 10,
-    fontWeight: 'bold',
+    marginVertical: 10,
+    marginHorizontal: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    fontSize: 20,
+    textAlign: 'center',
+    overflow: 'hidden',
     backgroundColor: '#84BD00',
-    textAlign: 'center'
+    borderColor: '#84BD00'
   }
 })
-
-{
-}
 
 // <SectionList
 //   data={myActivitiesArray}
@@ -263,3 +323,28 @@ const styles = StyleSheet.create({
 //     time: '2.5'
 //   }
 // ])
+
+{
+  /* <FlatList
+        data={myEvent}
+        numColumns={2}
+        keyExtractor={(item) => item.eventID}
+        renderItem={({ item }) => (
+          <View style={styles.myActivitiesContainer}>
+            <Image
+              style={styles.tinyLogo}
+              source={{
+                uri: item.photo
+              }}
+            />
+            <View style={styles.textTitleCityTime}>
+              <Text> {item.title}</Text>
+              <Text> {item.city}</Text>
+              <Text> {item.time} tim</Text>
+            </View>
+
+            <Button color="green" title="Lägg in tid"></Button>
+          </View>
+        )}
+      /> */
+}

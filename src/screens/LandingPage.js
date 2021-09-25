@@ -22,32 +22,24 @@ export const LandingPage = ({}) => {
   return (
     <SafeAreaView style={styles.view}>
       <ScrollView>
-        <ImageBackground
-          source={require('../img/blueprint-white.png')}
-          resizeMode={'cover'}
-          style={{
-            flex: 1
+        <View style={tw`bg-blue-500`}>
+          <Text style={tw`text-sm text-center text-white p-1`}>
+            Inloggad mail: {loggedInUser.email}
+          </Text>
+        </View>
+        <Button
+          color="green"
+          title="Logga ut"
+          onPress={() => {
+            auth()
+              .signOut()
+              .then(() => console.log('User signed out!'))
           }}
-        >
-          <View style={tw`bg-blue-500`}>
-            <Text style={tw`text-sm text-center text-white p-1`}>
-              Inloggad mail: {loggedInUser.email}
-            </Text>
-          </View>
-          <Button
-            color="green"
-            title="Logga ut"
-            onPress={() => {
-              auth()
-                .signOut()
-                .then(() => console.log('User signed out!'))
-            }}
-          ></Button>
-          <MyTime></MyTime>
-          <MyActivities></MyActivities>
-          <MyActivityAsAList></MyActivityAsAList>
-          <Suggestions></Suggestions>
-        </ImageBackground>
+        ></Button>
+        {/* <MyTime></MyTime> */}
+        <MyActivities></MyActivities>
+        <MyActivityAsAList></MyActivityAsAList>
+        <Suggestions></Suggestions>
       </ScrollView>
     </SafeAreaView>
   )
