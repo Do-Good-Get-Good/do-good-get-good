@@ -1,11 +1,11 @@
-import React, { useState, useEffect} from 'react';
-import { Mystack } from './navigate';
-import auth from '@react-native-firebase/auth';
-import Login from './components/Login';
-import { UserProvider } from './context/UserContext';
+import React, { useState, useEffect } from "react";
+import { Mystack } from "./navigate";
+import auth from "@react-native-firebase/auth";
+import Login from "./components/Login";
+import { UserProvider } from "./context/UserContext";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 export default function App() {
-
   // Set an initializing state whilst Firebase connects
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
@@ -24,14 +24,14 @@ export default function App() {
   if (initializing) return null;
 
   if (!user) {
-    return (
-      <Login />
-    );
+    return <Login />;
   }
 
   return (
-    <UserProvider value={user}>
-      <Mystack />
-    </UserProvider>
+    <SafeAreaProvider>
+      <UserProvider value={user}>
+        <Mystack />
+      </UserProvider>
+    </SafeAreaProvider>
   );
 }
