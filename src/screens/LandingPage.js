@@ -16,7 +16,7 @@ import auth from '@react-native-firebase/auth'
 import UserContext from '../context/UserContext'
 import tw from 'tailwind-react-native-classnames'
 
-export const LandingPage = ({}) => {
+export const LandingPage = ({ navigation }) => {
   const loggedInUser = useContext(UserContext)
 
   return (
@@ -38,7 +38,7 @@ export const LandingPage = ({}) => {
         ></Button>
         {/* <MyTime></MyTime> */}
         <MyActivities></MyActivities>
-        <MyActivityAsAList></MyActivityAsAList>
+        <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
         <Suggestions></Suggestions>
       </ScrollView>
     </SafeAreaView>

@@ -11,8 +11,11 @@ import {
   Pressable
 } from 'react-native'
 import { Icon } from 'react-native-elements'
+import { useRoute } from '@react-navigation/native'
 
-export const MyActivityAsAList = ({}) => {
+export const MyActivityAsAList = ({ navigation }) => {
+  const rout = useRoute()
+
   const [activityArray, setActivityArray] = useState([
     {
       idActivityList: '1',
@@ -70,7 +73,7 @@ export const MyActivityAsAList = ({}) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mina aktiviteter</Text>
+      <Text style={styles.title}>Min tid</Text>
       {activityArray.map((activity) => (
         <View style={styles.activityIside}>
           <Text
@@ -101,22 +104,30 @@ export const MyActivityAsAList = ({}) => {
           >
             {activity.time} tim
           </Text>
-
-          <TouchableOpacity>
-            <Text>
+          {activity.activityStatus ? (
+            <TouchableOpacity>
               <Icon
-                color={activity.activityStatus ? '#333333' : 'gray'}
+                color={activity.activityStatus ? '#333333' : 'black'}
                 name={'create'}
                 size={25}
               />
-            </Text>
-          </TouchableOpacity>
+            </TouchableOpacity>
+          ) : (
+            <Icon
+              color={activity.activityStatus ? '#333333' : 'gray'}
+              name={'done'}
+              size={25}
+            />
+          )}
+
+          <Text></Text>
         </View>
       ))}
-
-      <TouchableOpacity>
-        <Text style={styles.textVissaAll}>Visa allt</Text>
-      </TouchableOpacity>
+      {rout.name === 'LandingPage' ? (
+        <TouchableOpacity onPress={() => navigation.navigate('MyTimePage')}>
+          <Text style={styles.textVissaAll}>Visa allt</Text>
+        </TouchableOpacity>
+      ) : null}
     </View>
   )
 }
