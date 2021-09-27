@@ -32,6 +32,7 @@ const UserMenu = () => {
             </View>
           </Pressable>
         }
+        barStyle="dark-content"
       />
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
     </View>
@@ -43,7 +44,7 @@ export default UserMenu;
 const styles = StyleSheet.create({
   headerLogo: {
     width: 150,
-    height: 55,
+    height: 56,
     marginBottom: -12,
     marginLeft: -25,
   },
