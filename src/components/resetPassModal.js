@@ -62,7 +62,24 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
             <Icon
               name="close"
               type="material"
-              style={[tw`bg-white rounded-full`, { padding: 2 }]}
+              style={[
+                tw`bg-white rounded-full`,
+                {
+                  padding: 2,
+                  ...Platform.select({
+                    ios: {
+                      shadowOffset: {
+                        hight: 2,
+                      },
+                      shadowOpacity: 0.5,
+                      shadowRadius: 5,
+                    },
+                    android: {
+                      elevation: 2,
+                    },
+                  }),
+                },
+              ]}
             />
           </Pressable>
           <View style={tw`mt-0`}>

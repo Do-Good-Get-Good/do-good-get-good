@@ -2,10 +2,12 @@ import React from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
+import { StatusBar } from "expo-status-bar";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   return (
     <Overlay isVisible={isVisible} fullScreen>
+      <StatusBar style="auto" />
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayHeader}>
           <Pressable

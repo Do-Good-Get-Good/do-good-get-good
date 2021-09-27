@@ -267,6 +267,18 @@ const styles = StyleSheet.create({
     height: 55,
     justifyContent: "center",
     borderRadius: 5,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          hight: 2,
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+      },
+      android: {
+        elevation: 1.5,
+      },
+    }),
   },
   bottomLogoImg: {
     width: 143,
