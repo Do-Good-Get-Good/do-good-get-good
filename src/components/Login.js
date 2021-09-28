@@ -1,14 +1,14 @@
 import { StatusBar } from "expo-status-bar";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import {
   Text,
   View,
   TextInput,
   StyleSheet,
-  Pressable,
   ImageBackground,
   Image,
   Keyboard,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
@@ -26,8 +26,8 @@ export default function Login() {
   const [showModal, setShowModal] = useState(false);
   const [isEmailValid, setEmailValid] = useState(true);
   const [isPassValid, setPassValid] = useState(true);
-
   const [keyboardStatus, setKeyboardStatus] = useState(undefined);
+  const ref_input2 = useRef();
 
   const motivationTexts = [
     "Du är riktigt grym!",
@@ -70,6 +70,27 @@ export default function Login() {
   const checkValidity = (emailValid, passValid) => {
     setEmailValid(emailValid);
     setPassValid(passValid);
+  };
+
+  const checkInputsAndSignIn = () => {
+    if ((email === null && pass === null) || (email === "" && pass === "")) {
+      setError("Du måste fylla i e-post och lösenord");
+      checkValidity(false, false);
+    } else if (
+      (email != null && pass === null) ||
+      (email != "" && pass === "")
+    ) {
+      setError("Du måste fylla i ett lösenord");
+      checkValidity(true, false);
+    } else if (
+      (email === null && pass != null) ||
+      (email === "" && pass != "")
+    ) {
+      setError("Du måste fylla i en e-post");
+      checkValidity(false, true);
+    } else {
+      signIn();
+    }
   };
 
   //Randomizes a motivational text once every app launch/login screen reload
@@ -128,6 +149,9 @@ export default function Login() {
               value={email}
               keyboardType={"email-address"}
               placeholder={"E-post"}
+              returnKeyType="next"
+              onSubmitEditing={() => ref_input2.current.focus()}
+              blurOnSubmit={false}
               style={[
                 inputStyles.textInput,
                 error != null && !isEmailValid
@@ -149,6 +173,9 @@ export default function Login() {
               value={pass}
               placeholder={"Lösenord"}
               secureTextEntry={showPassword ? false : true}
+              returnKeyType="send"
+              onSubmitEditing={() => checkInputsAndSignIn()}
+              ref={ref_input2}
               style={[
                 inputStyles.textInput,
                 !isPassValid ? inputStyles.textInputInvalid : null,
@@ -174,30 +201,10 @@ export default function Login() {
             <Text style={{ color: "#C62F25" }}>* {error}</Text>
           </View>
           <View style={tw`mt-2`}>
-            <Pressable
+            <TouchableOpacity
               style={styles.loginBtn}
               onPress={() => {
-                if (
-                  (email === null && pass === null) ||
-                  (email === "" && pass === "")
-                ) {
-                  setError("Du måste fylla i e-post och lösenord");
-                  checkValidity(false, false);
-                } else if (
-                  (email != null && pass === null) ||
-                  (email != "" && pass === "")
-                ) {
-                  setError("Du måste fylla i ett lösenord");
-                  checkValidity(true, false);
-                } else if (
-                  (email === null && pass != null) ||
-                  (email === "" && pass != "")
-                ) {
-                  setError("Du måste fylla i en e-post");
-                  checkValidity(false, true);
-                } else {
-                  signIn();
-                }
+                checkInputsAndSignIn();
               }}
             >
               <Text
@@ -208,11 +215,11 @@ export default function Login() {
               >
                 Logga in
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
           <View style={tw`mt-3 w-full flex-row justify-center`}>
             <Text style={{ color: "#333333" }}>Glömt ditt lösenord?</Text>
-            <Pressable
+            <TouchableOpacity
               style={tw`ml-1`}
               onPress={() => {
                 console.log("Tryckte på 'glömt lösenord'");
@@ -228,7 +235,7 @@ export default function Login() {
               >
                 Tryck här
               </Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
         <View style={{ flex: 1 }}></View>

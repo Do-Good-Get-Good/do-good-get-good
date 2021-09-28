@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from 'react'
+import React, { useState, useEffect, useContext } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,64 +7,71 @@ import {
   Image,
   Button,
   SectionList,
-  TouchableOpacity
-} from 'react-native'
-import firestore, { firebase } from '@react-native-firebase/firestore'
-import UserContext from '../context/UserContext'
-import { Icon } from 'react-native-elements'
+  TouchableOpacity,
+} from "react-native";
+import firestore, { firebase } from "@react-native-firebase/firestore";
+import UserContext from "../context/UserContext";
+import { Icon } from "react-native-elements";
+import CalendarView from "./CalendarView";
 //  import React, { useEffect } from 'react'
 //   import firestore from '@react-native-firebase/firestore'
 
 export const MyActivities = ({ userID }) => {
-  const ref = firestore().collection('test')
-  const loggedInUser = useContext(UserContext)
-  const [eventsArray, setEventsArray] = useState([])
-  const [myEvent, setMyEvent] = useState([])
-  const [test1, setTest1] = useState([])
-  console.log(loggedInUser.uid)
+  const ref = firestore().collection("test");
+  const loggedInUser = useContext(UserContext);
+  const [eventsArray, setEventsArray] = useState([]);
+  const [myEvent, setMyEvent] = useState([]);
+  // const [test1, setTest1] = useState([]);
+  // console.log(loggedInUser.uid);
+
+  const [visible, setVisible] = useState(false);
+  const [activity, setActivity] = useState({});
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const [myActivitiesArray, setMyActivitiesArray] = useState([
     {
-      idMyActivity: '1',
+      idMyActivity: "1",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Volunteer',
-      city: 'Götebrg',
-      time: '3.5'
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Volunteer",
+      city: "Götebrg",
+      time: "3.5",
     },
     {
-      idMyActivity: '2',
+      idMyActivity: "2",
       photo:
-        'https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Volunteer',
-      city: 'Götebrg',
-      time: '2.5'
+        "https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Volunteer",
+      city: "Götebrg",
+      time: "2.5",
     },
     {
-      idMyActivity: '3',
+      idMyActivity: "3",
       photo:
-        'https://images.pexels.com/photos/66639/pexels-photo-66639.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Soppkök',
-      city: 'Götebrg',
-      time: '1.5'
+        "https://images.pexels.com/photos/66639/pexels-photo-66639.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Soppkök",
+      city: "Götebrg",
+      time: "1.5",
     },
     {
-      idMyActivity: '4',
+      idMyActivity: "4",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Volunteer',
-      city: 'Götebrg',
-      time: '3.5'
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Volunteer",
+      city: "Götebrg",
+      time: "3.5",
     },
     {
-      idMyActivity: '5',
+      idMyActivity: "5",
       photo:
-        'https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Volunteer',
-      city: 'Götebrg',
-      time: '2.5'
-    }
-  ])
+        "https://images.pexels.com/photos/7475421/pexels-photo-7475421.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Volunteer",
+      city: "Götebrg",
+      time: "2.5",
+    },
+  ]);
 
   ///////////WENT GOOD
   // const getDataEvents = async () => {
@@ -134,12 +141,12 @@ export const MyActivities = ({ userID }) => {
 
   useEffect(() => {
     // getDataEvents()
-  }, [loggedInUser])
+  }, [loggedInUser]);
 
   // console.log('MY EVENT', myEvent)
   // console.log('MY EVENT', myEvent.city)
-  console.log('TEST TEST TEST', test1)
-  console.log('REL REL REL', test1.length)
+  // console.log("TEST TEST TEST", test1);
+  // console.log("REL REL REL", test1.length);
 
   return (
     <View>
@@ -158,86 +165,97 @@ export const MyActivities = ({ userID }) => {
               <View style={styles.textTitleCityTime}>
                 <Text style={styles.textTitle}>{myActivity.title}</Text>
                 <Text style={styles.textCity}>
-                  <Icon name={'room'} size={25} />
+                  <Icon name={"room"} size={25} />
                   {myActivity.city}
                 </Text>
                 <Text style={styles.textTime}>
-                  <Icon name={'access-time'} size={25} /> {myActivity.time} tim
+                  <Icon name={"access-time"} size={25} /> {myActivity.time} tim
                 </Text>
               </View>
               <Image
                 style={styles.image}
                 source={{
-                  uri: myActivity.photo
+                  uri: myActivity.photo,
                 }}
               />
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setActivity(myActivity);
+                toggleOverlay();
+              }}
+            >
               <Text style={styles.läggTid}>Logga tid</Text>
             </TouchableOpacity>
           </View>
         ))}
       </View>
+      <CalendarView
+        visible={visible}
+        toggleVisibility={toggleOverlay}
+        activity={activity}
+        isEditing={false}
+      />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   topH2: {
     flex: 1,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   activityContainer: {
     flex: 1,
     marginTop: 20,
-    marginHorizontal: 20
+    marginHorizontal: 20,
   },
   insideActivityContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
-    backgroundColor: 'white',
-    flexWrap: 'wrap',
+    backgroundColor: "white",
+    flexWrap: "wrap",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'white'
+    borderColor: "white",
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
     marginRight: 12,
     marginTop: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   textTitleCityTime: {
     flex: 2,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: '#333333'
+    color: "#333333",
   },
 
   textTitle: {
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   textCity: {
     marginTop: 27,
-    fontSize: 18
+    fontSize: 18,
   },
   textTime: {
-    fontSize: 18
+    fontSize: 18,
   },
 
   läggTid: {
@@ -249,9 +267,9 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     fontSize: 20,
-    textAlign: 'center',
-    overflow: 'hidden',
-    backgroundColor: '#84BD00',
-    borderColor: '#84BD00'
-  }
-})
+    textAlign: "center",
+    overflow: "hidden",
+    backgroundColor: "#84BD00",
+    borderColor: "#84BD00",
+  },
+});

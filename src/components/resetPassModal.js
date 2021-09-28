@@ -7,10 +7,11 @@ import {
   Pressable,
   TextInput,
   Alert,
+  TouchableOpacity,
 } from "react-native";
 import tw from "tailwind-react-native-classnames";
 import inputStyles from "../styles/inputStyle";
-import { Icon } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
 
 const resetPassModal = ({ isModalOpen, openModal }) => {
@@ -48,11 +49,21 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
   };
 
   return (
-    <Modal visible={isModalOpen} transparent={true}>
+    <Overlay
+      isVisible={isModalOpen}
+      onBackdropPress={openModal}
+      overlayStyle={{
+        backgroundColor: "#F5F5F5",
+        marginLeft: 16,
+        marginRight: 16,
+        borderRadius: 5,
+      }}
+      animationType="fade"
+    >
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
-          <Pressable
-            style={[tw`absolute`, { right: -8, top: -8 }]}
+          <TouchableOpacity
+            style={{ position: "absolute", right: -18, top: -18 }}
             onPress={() => {
               setEmail(null);
               setError(null);
@@ -62,26 +73,10 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
             <Icon
               name="close"
               type="material"
-              style={[
-                tw`bg-white rounded-full`,
-                {
-                  padding: 2,
-                  ...Platform.select({
-                    ios: {
-                      shadowOffset: {
-                        hight: 2,
-                      },
-                      shadowOpacity: 0.5,
-                      shadowRadius: 5,
-                    },
-                    android: {
-                      elevation: 2,
-                    },
-                  }),
-                },
-              ]}
+              size={30}
+              style={tw`bg-white rounded-full`}
             />
-          </Pressable>
+          </TouchableOpacity>
           <View style={tw`mt-0`}>
             <Text style={tw`text-lg font-bold`}>Glömt ditt lösenord?</Text>
             <Text>
@@ -107,7 +102,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
             >
               <Text style={{ color: "#C62F25" }}>* {error}</Text>
             </View>
-            <Pressable
+            <TouchableOpacity
               style={styles.sendBtn}
               onPress={() => {
                 if (email === null || email === "") {
@@ -118,38 +113,28 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
               }}
             >
               <Text style={tw`text-center text-lg`}>Skicka</Text>
-            </Pressable>
+            </TouchableOpacity>
           </View>
         </View>
       </View>
-    </Modal>
+    </Overlay>
   );
 };
 
 export default resetPassModal;
 
 const styles = StyleSheet.create({
-  modalContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "#00000075",
-  },
-  modal: {
-    backgroundColor: "#F5F5F5",
-    borderRadius: 5,
-    padding: 15,
-    marginLeft: 15,
-    marginRight: 15,
-    height: 200,
-  },
+  // modalContainer: {
+  //   marginVertical: 10,
+  // },
   sendBtn: {
     backgroundColor: "#84BD00",
     height: 55,
     justifyContent: "center",
-    borderRadius: 5,
-    marginLeft: -15,
-    marginRight: -15,
-    marginBottom: -15,
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    marginLeft: -10,
+    marginRight: -10,
+    marginBottom: -10,
   },
 });

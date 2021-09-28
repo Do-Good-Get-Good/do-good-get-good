@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -8,58 +8,65 @@ import {
   Button,
   ListItem,
   TouchableOpacity,
-  Pressable
-} from 'react-native'
-import { Icon } from 'react-native-elements'
-import { useRoute } from '@react-navigation/native'
+  Pressable,
+} from "react-native";
+import { Icon } from "react-native-elements";
+import { useRoute } from "@react-navigation/native";
+import CalendarView from "./CalendarView";
 
 export const MyActivityAsAList = ({ navigation }) => {
-  const rout = useRoute()
+  const rout = useRoute();
+
+  const [visible, setVisible] = useState(false);
+  const [activity, setActivity] = useState({});
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   const [activityArray, setActivityArray] = useState([
     {
-      idActivityList: '1',
-      title: 'Soppkök',
-      date: '2021-08-10',
+      idActivityList: "1",
+      title: "Soppkök",
+      date: "2021-08-10",
       time: 0.5,
-      activityStatus: true
+      activityStatus: true,
     },
     {
-      idActivityList: '2',
-      title: 'Cat house',
-      date: '2021-08-20',
+      idActivityList: "2",
+      title: "Cat house",
+      date: "2021-08-20",
       time: 2.5,
-      activityStatus: true
+      activityStatus: true,
     },
     {
-      idActivityList: '3',
-      title: 'Soppkök',
-      date: '2021-08-15',
+      idActivityList: "3",
+      title: "Soppkök",
+      date: "2021-08-15",
       time: 4.5,
-      activityStatus: false
+      activityStatus: false,
     },
     {
-      idActivityList: '4',
-      title: 'Soppkök',
-      date: '2021-08-10',
+      idActivityList: "4",
+      title: "Soppkök",
+      date: "2021-08-10",
       time: 0.5,
-      activityStatus: true
+      activityStatus: true,
     },
     {
-      idActivityList: '5',
-      title: 'Cat house',
-      date: '2021-08-20',
+      idActivityList: "5",
+      title: "Cat house",
+      date: "2021-08-20",
       time: 2.5,
-      activityStatus: true
+      activityStatus: true,
     },
     {
-      idActivityList: '6',
-      title: 'Soppkök',
-      date: '2021-08-15',
+      idActivityList: "6",
+      title: "Soppkök",
+      date: "2021-08-15",
       time: 4.5,
-      activityStatus: false
-    }
-  ])
+      activityStatus: false,
+    },
+  ]);
 
   //   const styleToChangeButton = {
   // color: activityArray.activityStatus ? 'pink' : 'black'
@@ -69,7 +76,7 @@ export const MyActivityAsAList = ({ navigation }) => {
 
   //   }
 
-  useEffect(() => {}, [])
+  useEffect(() => {}, []);
 
   return (
     <View style={styles.container}>
@@ -78,44 +85,49 @@ export const MyActivityAsAList = ({ navigation }) => {
         <View style={styles.activityIside}>
           <Text
             style={{
-              fontWeight: activity.activityStatus ? 'bold' : 'normal',
-              color: activity.activityStatus ? '#333333' : 'gray',
+              fontWeight: activity.activityStatus ? "bold" : "normal",
+              color: activity.activityStatus ? "#333333" : "gray",
               flex: 1,
-              fontSize: 16
+              fontSize: 16,
             }}
           >
             {activity.title}
           </Text>
           <Text
             style={{
-              color: activity.activityStatus ? '#333333' : 'gray',
+              color: activity.activityStatus ? "#333333" : "gray",
               flex: 1,
-              fontSize: 16
+              fontSize: 16,
             }}
           >
             {activity.date}
           </Text>
           <Text
             style={{
-              color: activity.activityStatus ? '#333333' : 'gray',
+              color: activity.activityStatus ? "#333333" : "gray",
               flex: 1,
-              fontSize: 16
+              fontSize: 16,
             }}
           >
             {activity.time} tim
           </Text>
           {activity.activityStatus ? (
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setActivity(activity);
+                toggleOverlay();
+              }}
+            >
               <Icon
-                color={activity.activityStatus ? '#333333' : 'black'}
-                name={'create'}
+                color={activity.activityStatus ? "#333333" : "black"}
+                name={"create"}
                 size={25}
               />
             </TouchableOpacity>
           ) : (
             <Icon
-              color={activity.activityStatus ? '#333333' : 'gray'}
-              name={'done'}
+              color={activity.activityStatus ? "#333333" : "gray"}
+              name={"done"}
               size={25}
             />
           )}
@@ -123,27 +135,33 @@ export const MyActivityAsAList = ({ navigation }) => {
           <Text></Text>
         </View>
       ))}
-      {rout.name === 'LandingPage' ? (
-        <TouchableOpacity onPress={() => navigation.navigate('MyTimePage')}>
+      {rout.name === "LandingPage" ? (
+        <TouchableOpacity onPress={() => navigation.navigate("MyTimePage")}>
           <Text style={styles.textVissaAll}>Visa allt</Text>
         </TouchableOpacity>
       ) : null}
+      <CalendarView
+        visible={visible}
+        toggleVisibility={toggleOverlay}
+        activity={activity}
+        isEditing={true}
+      />
     </View>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: 'flex-start',
+    justifyContent: "flex-start",
     marginHorizontal: 20,
-    marginBottom: 8
+    marginBottom: 8,
   },
   title: {
     flex: 1,
     fontSize: 24,
     marginTop: 30,
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   textVissaAll: {
@@ -154,22 +172,22 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: '#84BD00',
-    textAlign: 'center',
+    borderColor: "#84BD00",
+    textAlign: "center",
     // paddingHorizontal: 10,
     paddingVertical: 10,
-    fontWeight: 'bold',
-    overflow: 'hidden',
-    fontSize: 20
+    fontWeight: "bold",
+    overflow: "hidden",
+    fontSize: 20,
   },
   activityIside: {
     flex: 1,
-    flexDirection: 'row',
-    backgroundColor: 'white',
+    flexDirection: "row",
+    backgroundColor: "white",
     paddingHorizontal: 5,
-    paddingVertical: 5
-  }
-})
+    paddingVertical: 5,
+  },
+});
 
 // <Text
 //             style={{

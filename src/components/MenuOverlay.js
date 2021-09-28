@@ -4,10 +4,18 @@ import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import tw from "tailwind-react-native-classnames";
+import { useNavigation } from "@react-navigation/native";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
+  const navigation = useNavigation();
+
   return (
-    <Overlay isVisible={isVisible} fullScreen animationType="fade">
+    <Overlay
+      isVisible={isVisible}
+      fullScreen
+      animationType="fade"
+      overlayStyle={{ backgroundColor: "#84BD00" }}
+    >
       <StatusBar style="auto" />
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayHeader}>
@@ -29,33 +37,18 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
-              navigation.navigate("");
+              navigation.navigate("LandingPage");
             }}
           >
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
           </Pressable>
-          <Pressable
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              navigation.navigate("");
-            }}
-          >
+          <Pressable style={styles.menuOverlayLinkStyling}>
             <Text style={styles.menuOverlayLinkText}>Min tid</Text>
           </Pressable>
-          <Pressable
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              navigation.navigate("");
-            }}
-          >
+          <Pressable style={styles.menuOverlayLinkStyling}>
             <Text style={styles.menuOverlayLinkText}>Om</Text>
           </Pressable>
-          <Pressable
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              navigation.navigate("");
-            }}
-          >
+          <Pressable style={styles.menuOverlayLinkStyling}>
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </Pressable>
         </View>
@@ -84,7 +77,6 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
-    backgroundColor: "#84BD00",
     margin: -10,
   },
   menuOverlayHeader: {
