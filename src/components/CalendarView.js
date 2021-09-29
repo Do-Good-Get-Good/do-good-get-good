@@ -6,6 +6,8 @@ import { LocaleConfig } from "react-native-calendars";
 import { Icon } from "react-native-elements";
 import tw from "tailwind-react-native-classnames";
 import { format } from "date-fns";
+import { ScrollView } from "react-native";
+import { Platform } from "react-native";
 
 const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
   LocaleConfig.locales["sv"] = {
@@ -102,12 +104,11 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       overlayStyle={{
         backgroundColor: "#F5F5F5",
         borderRadius: 5,
-        paddingLeft: 16,
-        paddingTop: 16,
-        paddingRight: 16,
+        width: "90%",
         marginTop: 64,
         marginBottom: 55,
-        width: "90%",
+        flexDirection: 'column',
+        justifyContent: 'space-between'
       }}
       animationType="fade"
     >
@@ -122,7 +123,11 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           style={tw`bg-white rounded-full`}
         />
       </TouchableOpacity>
-      <View>
+      <ScrollView 
+        style={{
+          padding: 16
+        }}
+      >
         <Text style={styles.activityTitle}>
           {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
@@ -201,7 +206,8 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         <Text style={styles.dateAndHourSummary}>
           {format(new Date(selectedDate), "eee d LLLL")}, {hours}h
         </Text>
-      </View>
+      </ScrollView>
+
       {!isEditing ? (
         <TouchableOpacity style={styles.sendBtn}>
           <Text style={styles.sendBtnText}>Logga tid</Text>
@@ -238,27 +244,28 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    marginBottom: 12,
+    marginBottom: 4
   },
   chooseDateText: {
     fontSize: 20,
+    marginBottom: 12
   },
   calendarAndHourView: {
-    marginTop: 12,
     marginLeft: 8,
     marginRight: 8,
   },
   questionText: {
     fontSize: 18,
     marginTop: 20,
+    marginLeft: -8
   },
   hourAmountView: {
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
     height: 46,
-    marginTop: 30,
-    marginBottom: 50,
+    marginTop: 16,
+    marginBottom: 16
   },
   hourAmount: {
     backgroundColor: "#FFFFFF",
@@ -290,10 +297,14 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "#84BD00",
-    marginTop: 12,
-    marginLeft: -16,
-    marginRight: -16,
+    marginLeft: -10,
+    marginRight: -10,
     marginBottom: -10,
+    ...Platform.select({
+      ios: {
+        marginBottom: -11
+      }
+    }),
     borderBottomRightRadius: 5,
     borderBottomLeftRadius: 5,
   },
@@ -302,10 +313,12 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   changeBtn: {
+    marginBottom: 10,
     borderBottomRightRadius: 0,
     borderBottomLeftRadius: 0,
   },
   deleteBtn: {
+    marginTop: -10,
     backgroundColor: "#F5F5F5",
   },
 });

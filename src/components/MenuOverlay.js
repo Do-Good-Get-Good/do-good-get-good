@@ -5,6 +5,7 @@ import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation } from "@react-navigation/native";
+import { Platform } from "react-native";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
@@ -78,6 +79,12 @@ const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
     margin: -10,
+    ...Platform.select({
+      ios: {
+        marginTop: 35,
+        marginBottom: 10
+      }
+    })
   },
   menuOverlayHeader: {
     alignSelf: "flex-end",

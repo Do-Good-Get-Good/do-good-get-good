@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Header } from "react-native-elements/dist/header/Header";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
+import { Platform } from "react-native";
 
 const UserMenu = () => {
   const [visible, setVisible] = useState(false);
@@ -12,7 +13,18 @@ const UserMenu = () => {
   };
 
   return (
-    <View>
+    <View 
+      style={{
+        ...Platform.select({
+          ios: {
+            marginTop: -50
+          },
+          android: {
+            marginTop: 0
+          }
+        })
+      }}
+    >
       <Header
         leftComponent={
           <Image
