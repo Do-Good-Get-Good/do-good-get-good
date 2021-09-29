@@ -13,13 +13,13 @@ const inputStyles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowOffset: {
-          hight: 2,
+          height: 2,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
       },
       android: {
-        elevation: 1.5,
+        elevation: 2,
       },
     }),
   },

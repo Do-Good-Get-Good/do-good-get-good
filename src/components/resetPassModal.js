@@ -2,9 +2,7 @@ import React from "react";
 import {
   StyleSheet,
   Text,
-  Modal,
   View,
-  Pressable,
   TextInput,
   Alert,
   TouchableOpacity,
@@ -54,8 +52,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
       onBackdropPress={openModal}
       overlayStyle={{
         backgroundColor: "#F5F5F5",
-        marginLeft: 16,
-        marginRight: 16,
+        width: '90%',
         borderRadius: 5,
       }}
       animationType="fade"
