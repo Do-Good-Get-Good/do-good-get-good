@@ -107,8 +107,8 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         width: "90%",
         marginTop: 64,
         marginBottom: 55,
-        flexDirection: 'column',
-        justifyContent: 'space-between'
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
       animationType="fade"
     >
@@ -123,9 +123,9 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           style={tw`bg-white rounded-full`}
         />
       </TouchableOpacity>
-      <ScrollView 
+      <ScrollView
         style={{
-          padding: 16
+          padding: 16,
         }}
       >
         <Text style={styles.activityTitle}>
@@ -242,13 +242,13 @@ export default CalendarView;
 
 const styles = StyleSheet.create({
   activityTitle: {
-    fontSize: 24,
+    fontSize: 20,
     fontWeight: "bold",
-    marginBottom: 4
+    marginBottom: 4,
   },
   chooseDateText: {
-    fontSize: 20,
-    marginBottom: 12
+    fontSize: 18,
+    marginBottom: 12,
   },
   calendarAndHourView: {
     marginLeft: 8,
@@ -257,7 +257,7 @@ const styles = StyleSheet.create({
   questionText: {
     fontSize: 18,
     marginTop: 20,
-    marginLeft: -8
+    marginLeft: -8,
   },
   hourAmountView: {
     flexDirection: "row",
@@ -265,7 +265,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     height: 46,
     marginTop: 16,
-    marginBottom: 16
+    marginBottom: 16,
   },
   hourAmount: {
     backgroundColor: "#FFFFFF",
@@ -302,8 +302,8 @@ const styles = StyleSheet.create({
     marginBottom: -10,
     ...Platform.select({
       ios: {
-        marginBottom: -11
-      }
+        marginBottom: -11,
+      },
     }),
     borderBottomRightRadius: 5,
     borderBottomLeftRadius: 5,

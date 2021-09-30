@@ -35,6 +35,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
           setEmail(null);
           setError(null);
           openModal(false);
+          alertMessage();
         }
       });
   };
@@ -52,7 +53,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
       onBackdropPress={openModal}
       overlayStyle={{
         backgroundColor: "#F5F5F5",
-        width: '90%',
+        width: "90%",
         borderRadius: 5,
       }}
       animationType="fade"
@@ -83,7 +84,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
             <TextInput
               style={[
                 inputStyles.textInput,
-                tw`mt-5 mb-4`,
+                tw`mt-5 mb-2`,
                 error != null ? inputStyles.textInputInvalid : null,
               ]}
               placeholder="E-post"
