@@ -23,10 +23,12 @@ export const LandingPage = ({ navigation }) => {
       <StatusBar style="auto" />
       <UserMenu />
       <ScrollView>
-        {/* <MyTime></MyTime> */}
-        <MyActivities></MyActivities>
-        <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-        <Suggestions></Suggestions>
+        <View style={{ marginHorizontal: 16 }}>
+          {/* <MyTime></MyTime> */}
+          <MyActivities></MyActivities>
+          <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+          <Suggestions></Suggestions>
+        </View>
       </ScrollView>
     </SafeAreaView>
   );

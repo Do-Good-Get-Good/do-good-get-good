@@ -13,16 +13,17 @@ const UserMenu = () => {
   };
 
   return (
-    <View 
+    <View
       style={{
         ...Platform.select({
           ios: {
-            marginTop: -50
+            marginTop: -50,
           },
           android: {
-            marginTop: 0
-          }
-        })
+            marginTop: 0,
+            height: 80,
+          },
+        }),
       }}
     >
       <Header
@@ -39,7 +40,12 @@ const UserMenu = () => {
             }}
           >
             <View style={styles.headerMenu}>
-              <Icon name="menu" type="material" size={25} />
+              <Icon
+                name="menu"
+                type="material"
+                size={30}
+                style={{ marginLeft: -7 }}
+              />
               <Text style={styles.headerMenuText}>Meny</Text>
             </View>
           </Pressable>
@@ -55,17 +61,20 @@ export default UserMenu;
 
 const styles = StyleSheet.create({
   headerLogo: {
-    width: 150,
+    width: 130,
     height: 56,
-    marginBottom: -12,
-    marginLeft: -25,
+    marginTop: -5,
+    marginBottom: 0,
+    marginLeft: -20,
   },
   headerMenu: {
-    justifyContent: "center",
     alignItems: "flex-start",
+    marginRight: 8,
+    marginTop: -4,
   },
   headerMenuText: {
     textTransform: "uppercase",
     fontSize: 13,
+    marginTop: -7,
   },
 });

@@ -154,7 +154,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    marginHorizontal: 20,
     marginBottom: 8,
   },
   title: {

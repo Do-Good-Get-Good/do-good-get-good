@@ -214,7 +214,6 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 20,
-    marginHorizontal: 20,
   },
   insideActivityContainer: {
     flex: 1,

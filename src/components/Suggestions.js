@@ -1,33 +1,33 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
   FlatList,
   View,
   Image,
-  TouchableOpacity
-} from 'react-native'
-import { Icon } from 'react-native-elements'
+  TouchableOpacity,
+} from "react-native";
+import { Icon } from "react-native-elements";
 
 export const Suggestions = ({}) => {
   const [suggestionsArray, setSuggestionsArray] = useState([
     {
-      idSuggestion: '1',
+      idSuggestion: "1",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Katthem',
-      city: 'Götebrg',
-      description: 'Städning, matning och en massa kel!'
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Katthem",
+      city: "Götebrg",
+      description: "Städning, matning och en massa kel!",
     },
     {
-      idSuggestion: '2',
+      idSuggestion: "2",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Studiehjälp kgfhgui987uygjhkoiiyug',
-      city: 'Malmö',
-      description: 'Hjälper elever med läxorna'
-    }
-  ])
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Studiehjälp kgfhgui987uygjhkoiiyug",
+      city: "Malmö",
+      description: "Hjälper elever med läxorna",
+    },
+  ]);
   return (
     <View>
       <Text style={styles.topH1}>Förslag & inspiration</Text>
@@ -42,18 +42,18 @@ export const Suggestions = ({}) => {
               <View style={styles.textTitleCityDescriptipn}>
                 <Text style={styles.textTitle}>{suggestion.title}</Text>
                 <Text style={styles.textCity}>
-                  <Icon name={'room'} size={25} />
+                  <Icon name={"room"} size={25} />
                   {suggestion.city}
                 </Text>
                 <Text style={styles.textDescription}>
-                  <Icon name={'info'} size={25} />
+                  <Icon name={"info"} size={25} />
                   {suggestion.description}
                 </Text>
               </View>
               <Image
                 style={styles.image}
                 source={{
-                  uri: suggestion.photo
+                  uri: suggestion.photo,
                 }}
               />
             </View>
@@ -65,14 +65,13 @@ export const Suggestions = ({}) => {
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
-    marginHorizontal: 20,
-    marginTop: 10
+    marginTop: 10,
   },
   // topH2: {
   //   flex: 1,
@@ -80,87 +79,86 @@ const styles = StyleSheet.create({
   // },
   activityContainer: {
     flex: 1,
-    marginTop: 5
+    marginTop: 5,
 
     // marginHorizontal: 20
   },
   insideActivityContainer: {
     //********************* */
-    marginHorizontal: 20,
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
-    backgroundColor: 'white',
-    flexWrap: 'wrap',
+    backgroundColor: "white",
+    flexWrap: "wrap",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: "white",
     ...Platform.select({
       ios: {
         shadowOffset: {
-          hight: 2
+          hight: 2,
         },
         shadowOpacity: 0.5,
-        shadowRadius: 5
+        shadowRadius: 5,
       },
       android: {
-        elevation: 3
-      }
-    })
+        elevation: 3,
+      },
+    }),
   },
   image: {
     flex: 1,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
     marginRight: 12,
     marginTop: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   textTitleCityDescriptipn: {
     //*************** */
     flex: 2,
     marginRight: 7,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: '#333333'
+    color: "#333333",
   },
 
   textTitle: {
     //*************** */
     flex: 2,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   textCity: {
     //*************** */
     flex: 1,
     marginTop: 20,
-    fontSize: 18
+    fontSize: 18,
   },
   textDescription: {
     //*************** */
     flex: 1,
-    fontSize: 18
+    fontSize: 18,
   },
 
   textLäsMer: {
     //*************** */
     flex: 1,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
     // paddingVertical: 15,
     // paddingHorizontal: 10,
     fontSize: 16,
-    textAlign: 'right'
-  }
-})
+    textAlign: "right",
+  },
+});
 {
   /* <FlatList
         numColumns={2}
