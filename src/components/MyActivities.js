@@ -12,6 +12,7 @@ import {
 import firestore, { firebase } from '@react-native-firebase/firestore'
 import UserContext from '../context/UserContext'
 import { Icon } from 'react-native-elements'
+import CalendarView from './CalendarView'
 //  import React, { useEffect } from 'react'
 //   import firestore from '@react-native-firebase/firestore'
 
@@ -20,8 +21,14 @@ export const MyActivities = ({ userID }) => {
   const loggedInUser = useContext(UserContext)
   const [eventsArray, setEventsArray] = useState([])
   const [myEvent, setMyEvent] = useState([])
-  const [test1, setTest1] = useState([])
-  console.log(loggedInUser.uid)
+  // const [test1, setTest1] = useState([]);
+  // console.log(loggedInUser.uid);
+
+  const [visible, setVisible] = useState(false)
+  const [activity, setActivity] = useState({})
+  const toggleOverlay = () => {
+    setVisible(!visible)
+  }
 
   const [myActivitiesArray, setMyActivitiesArray] = useState([
     {
@@ -138,8 +145,8 @@ export const MyActivities = ({ userID }) => {
 
   // console.log('MY EVENT', myEvent)
   // console.log('MY EVENT', myEvent.city)
-  console.log('TEST TEST TEST', test1)
-  console.log('REL REL REL', test1.length)
+  // console.log("TEST TEST TEST", test1);
+  // console.log("REL REL REL", test1.length);
 
   return (
     <View>
@@ -159,6 +166,7 @@ export const MyActivities = ({ userID }) => {
                 <Text style={styles.textTitle}>{myActivity.title}</Text>
                 <Text style={styles.textCity}>
                   <Icon name="place" size={25} />
+
                   {myActivity.city}
                 </Text>
                 <Text style={styles.textTime}>
@@ -173,12 +181,23 @@ export const MyActivities = ({ userID }) => {
               />
             </View>
 
-            <TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => {
+                setActivity(myActivity)
+                toggleOverlay()
+              }}
+            >
               <Text style={styles.läggTid}>Logga tid</Text>
             </TouchableOpacity>
           </View>
         ))}
       </View>
+      <CalendarView
+        visible={visible}
+        toggleVisibility={toggleOverlay}
+        activity={activity}
+        isEditing={false}
+      />
     </View>
   )
 }
