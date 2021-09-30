@@ -33,7 +33,7 @@ export const LandingPage = ({ navigation }) => {
         {/* <MyTime></MyTime> */}
         <MyActivities></MyActivities>
         <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-        <Suggestions></Suggestions>
+        <Suggestions navigation={navigation}></Suggestions>
       </ScrollView>
     </SafeAreaView>
   )

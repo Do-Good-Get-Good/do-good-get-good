@@ -158,7 +158,7 @@ export const MyActivities = ({ userID }) => {
               <View style={styles.textTitleCityTime}>
                 <Text style={styles.textTitle}>{myActivity.title}</Text>
                 <Text style={styles.textCity}>
-                  <Icon name={'room'} size={25} />
+                  <Icon name="place" size={25} />
                   {myActivity.city}
                 </Text>
                 <Text style={styles.textTime}>
