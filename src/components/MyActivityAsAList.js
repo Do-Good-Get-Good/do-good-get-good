@@ -153,6 +153,7 @@ export const MyActivityAsAList = ({ navigation }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+
     justifyContent: 'flex-start',
     marginHorizontal: 16,
     marginBottom: 8

@@ -148,6 +148,7 @@ const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
+
     marginHorizontal: 16,
     marginTop: 10
   },
@@ -155,11 +156,13 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 5,
+
     marginBottom: 15
   },
   insideActivityContainer: {
     //********************* */
     marginHorizontal: 16,
+
     flex: 1,
     justifyContent: 'center',
     marginVertical: 7,
@@ -167,6 +170,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     flexWrap: 'wrap',
     borderRadius: 2,
+
     borderWidth: 1,
     borderColor: 'white',
     ...Platform.select({
@@ -184,9 +188,11 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+
     height: 100,
     resizeMode: 'cover',
     alignItems: 'center',
+
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5
@@ -214,6 +220,7 @@ const styles = StyleSheet.create({
   textCity: {
     //*************** */
     flex: 1,
+
     // marginTop: 20,
     fontSize: 18,
     paddingTop: 5,
@@ -224,6 +231,7 @@ const styles = StyleSheet.create({
     //*************** */
     flex: 1,
     fontSize: 18,
+
     paddingTop: 3,
     marginLeft: 12
   },
@@ -237,6 +245,7 @@ const styles = StyleSheet.create({
     marginLeft: 200,
 
     fontSize: 16,
+
     textAlign: 'right'
   },
 
@@ -251,6 +260,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row'
   }
 })
+
 {
   /* <FlatList
         numColumns={2}
