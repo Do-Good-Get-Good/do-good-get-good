@@ -159,21 +159,29 @@ export const MyActivities = ({ userID }) => {
       </Text> */}
 
       <View style={styles.activityContainer}>
-        {myActivitiesArray.map((myActivity) => (
+        {myActivitiesArray.map((myActivity, i) => (
           <View style={styles.insideActivityContainer}>
             <View style={styles.photoAndText}>
               <View style={styles.textTitleCityTime}>
-                <Text style={styles.textTitle}>{myActivity.title}</Text>
-                <Text style={styles.textCity}>
-                  <Icon name="place" size={25} />
+                <Text key={myActivity.title} style={styles.textTitle}>
+                  {myActivity.title}
+                </Text>
+                <View style={styles.iconsAndTextCityContainer}>
+                  <Icon style={styles.iconCity} name="place" size={25} />
+                  <Text key={myActivity.city} style={styles.textCity}>
+                    {myActivity.city}
+                  </Text>
+                </View>
 
-                  {myActivity.city}
-                </Text>
-                <Text style={styles.textTime}>
-                  <Icon name={'access-time'} size={25} /> {myActivity.time} tim
-                </Text>
+                <View style={styles.iconsAndTextTimeContainer}>
+                  <Icon name={'access-time'} size={25} />
+                  <Text key={myActivity.time} style={styles.textTime}>
+                    {myActivity.time} tim
+                  </Text>
+                </View>
               </View>
               <Image
+                key={myActivity.idMyActivity}
                 style={styles.image}
                 source={{
                   uri: myActivity.photo
@@ -187,7 +195,9 @@ export const MyActivities = ({ userID }) => {
                 toggleOverlay()
               }}
             >
-              <Text style={styles.läggTid}>Logga tid</Text>
+              <View style={styles.shedowForButton}>
+                <Text style={styles.läggTid}>Logga tid</Text>
+              </View>
             </TouchableOpacity>
           </View>
         ))}
@@ -215,7 +225,7 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 20,
-    marginHorizontal: 20
+    marginHorizontal: 16
   },
   insideActivityContainer: {
     flex: 1,
@@ -223,7 +233,7 @@ const styles = StyleSheet.create({
     marginVertical: 7,
     backgroundColor: 'white',
     flexWrap: 'wrap',
-    borderRadius: 5,
+    borderRadius: 2,
     borderWidth: 1,
     borderColor: 'white'
   },
@@ -252,12 +262,17 @@ const styles = StyleSheet.create({
     fontWeight: 'bold'
   },
   textCity: {
-    marginTop: 27,
-    fontSize: 18
+    fontSize: 18,
+    paddingTop: 5,
+    marginLeft: 12
   },
   textTime: {
-    fontSize: 18
+    fontSize: 18,
+    paddingTop: 3,
+    marginLeft: 12
   },
+
+  iconCity: {},
 
   läggTid: {
     flex: 1,
@@ -272,5 +287,29 @@ const styles = StyleSheet.create({
     overflow: 'hidden',
     backgroundColor: '#84BD00',
     borderColor: '#84BD00'
+  },
+  iconsAndTextTimeContainer: {
+    flex: 1,
+    flexDirection: 'row',
+    marginTop: 6
+  },
+  iconsAndTextCityContainer: {
+    marginTop: 25,
+    flex: 1,
+    flexDirection: 'row'
+  },
+  shedowForButton: {
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 3
+        },
+        shadowOpacity: 0.5,
+        shadowRadius: 3
+      },
+      android: {
+        elevation: 2
+      }
+    })
   }
 })
