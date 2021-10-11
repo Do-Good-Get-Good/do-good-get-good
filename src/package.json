@@ -6,6 +6,7 @@
     "web": "expo start --web",
     "start": "react-native start",
     "test": "jest"
+
   },
   "transform": {
     "\\.js$": "src/node_modules/babel-jest"
