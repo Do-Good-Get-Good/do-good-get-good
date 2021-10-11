@@ -1,43 +1,43 @@
-import React, { useState, useEffect } from 'react'
-import { Text, StyleSheet, View, Image, TouchableOpacity } from 'react-native'
-import { Icon } from 'react-native-elements'
-import { useRoute } from '@react-navigation/native'
-import { RadioButton } from '../components/RadioButton'
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import { Icon } from "react-native-elements";
+import { useRoute } from "@react-navigation/native";
+// import { RadioButton } from '../components/RadioButton'
 // import { useSuggestionFunction } from '../context/SuggestionContext'
 // import { Button } from 'react-native-elements/dist/buttons/Button'
 
 export const Suggestions = ({ navigation, search }) => {
-  const rout = useRoute()
-  const [searchingWord, setSearchingWord] = useState('')
-  const [searchArray, setSearchArray] = useState([])
-  const [showArray, setShowArray] = useState([])
+  const rout = useRoute();
+  const [searchingWord, setSearchingWord] = useState("");
+  const [searchArray, setSearchArray] = useState([]);
+  const [showArray, setShowArray] = useState([]);
   // const { suggestionsFromFirebaseActive } = useSuggestionFunction()
   // const [suggestionArray, setSuggestionArray] = useState([])
   const [suggestionsFromFirebase, setSuggestionsFromFirebase] = useState([
     {
-      idSuggestion: '1',
+      idSuggestion: "1",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Katthem',
-      city: 'Götebrg',
-      description: 'Städning, matning och en massa kel!'
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Katthem",
+      city: "Götebrg",
+      description: "Städning, matning och en massa kel!",
     },
     {
-      idSuggestion: '2',
+      idSuggestion: "2",
       photo:
-        'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-      title: 'Studiehjälp kjkkjjkljljoijinlojokojinbhbjhbjbojiuj ',
-      city: 'Malmö',
-      description: 'Hjälper elever med läxorna'
-    }
-  ])
+        "https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260",
+      title: "Studiehjälp kjkkjjkljljoijinlojokojinbhbjhbjbojiuj ",
+      city: "Malmö",
+      description: "Hjälper elever med läxorna",
+    },
+  ]);
 
   useEffect(() => {
     // setSuggestionArray(suggestionsFromFirebase)
-    setSearchingWord(search)
-    serchForRightObject()
-    r()
-  }, [search, searchArray, showArray])
+    setSearchingWord(search);
+    serchForRightObject();
+    r();
+  }, [search, searchArray, showArray]);
 
   // console.log(
   //   'suggestionContextArray.activeArray',
@@ -50,51 +50,51 @@ export const Suggestions = ({ navigation, search }) => {
   //   r()
   // }, [])
 
-  console.log('searchingWord FIRST', searchingWord)
+  // console.log("searchingWord FIRST", searchingWord);
 
   function serchForRightObject() {
-    if (rout.name === 'AdminActivityGallery' && searchingWord != 0) {
+    if (rout.name === "AdminActivityGallery" && searchingWord != 0) {
       const searchingThrough = suggestionsFromFirebase.filter(
         (object) =>
           object.title === searchingWord || object.city === searchingWord
-      )
+      );
 
-      console.log('searchingThrough INSIDE USE EFFECT', searchingThrough)
-      return setSearchArray(searchingThrough)
+      // console.log("searchingThrough INSIDE USE EFFECT", searchingThrough);
+      return setSearchArray(searchingThrough);
     }
   }
 
   // useEffect(() => {
   function r() {
-    serchForRightObject()
+    serchForRightObject();
     //Here will be information from user
-    if (rout.name === 'LandingPage') {
-      setShowArray(suggestionsFromFirebase)
+    if (rout.name === "LandingPage") {
+      setShowArray(suggestionsFromFirebase);
     } else if (
-      rout.name === 'AdminActivityGallery' &&
+      rout.name === "AdminActivityGallery" &&
       searchArray.length === 0
     ) {
-      setShowArray(suggestionsFromFirebase)
+      setShowArray(suggestionsFromFirebase);
     } else {
-      setShowArray(searchArray)
+      setShowArray(searchArray);
     }
-    return showArray
+    return showArray;
   }
   // }, [])
 
-  // console.log('searchingWord', searchingWord)
-  console.log('searchArray', searchArray)
-  console.log('showArray', showArray)
+  // // console.log('searchingWord', searchingWord)
+  // console.log("searchArray", searchArray);
+  // console.log("showArray", showArray);
 
   return (
     <View>
       {}
       <TouchableOpacity
-        onPress={() => navigation.navigate('AdminActivityGallery')}
+        onPress={() => navigation.navigate("AdminActivityGallery")}
       >
         <Text>click just ti try admin AdminActivityGallery</Text>
       </TouchableOpacity>
-      {rout.name === 'AdminActivityGallery' ? (
+      {rout.name === "AdminActivityGallery" ? (
         <RadioButton />
       ) : (
         <Text style={styles.topH1}>Förslag & inspiration</Text>
@@ -119,7 +119,7 @@ export const Suggestions = ({ navigation, search }) => {
                   </View>
 
                   <View style={styles.iconsAndTextTimeContainer}>
-                    <Icon name={'info'} size={25} />
+                    <Icon name={"info"} size={25} />
                     <Text style={styles.textDescription}>
                       {suggestion.description}
                     </Text>
@@ -128,7 +128,7 @@ export const Suggestions = ({ navigation, search }) => {
                 <Image
                   style={styles.image}
                   source={{
-                    uri: suggestion.photo
+                    uri: suggestion.photo,
                   }}
                 />
               </View>
@@ -142,80 +142,80 @@ export const Suggestions = ({ navigation, search }) => {
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
 
     marginHorizontal: 16,
-    marginTop: 10
+    marginTop: 10,
   },
 
   activityContainer: {
     flex: 1,
     marginTop: 5,
 
-    marginBottom: 15
+    marginBottom: 15,
   },
   insideActivityContainer: {
     //********************* */
     marginHorizontal: 16,
 
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
 
-    backgroundColor: 'white',
-    flexWrap: 'wrap',
+    backgroundColor: "white",
+    flexWrap: "wrap",
     borderRadius: 2,
 
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: "white",
     ...Platform.select({
       ios: {
         shadowOffset: {
-          hight: 2
+          hight: 2,
         },
         shadowOpacity: 0.5,
-        shadowRadius: 5
+        shadowRadius: 5,
       },
       android: {
-        elevation: 3
-      }
-    })
+        elevation: 3,
+      },
+    }),
   },
   image: {
     flex: 1,
 
     height: 100,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
 
     marginRight: 12,
     marginTop: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   textTitleCityDescriptipn: {
     //*************** */
     flex: 2,
     marginRight: 7,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: '#333333'
+    color: "#333333",
   },
 
   textTitle: {
     //*************** */
     flex: 2,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   textCity: {
     //*************** */
@@ -224,7 +224,7 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     fontSize: 18,
     paddingTop: 5,
-    marginLeft: 12
+    marginLeft: 12,
   },
 
   textDescription: {
@@ -233,33 +233,33 @@ const styles = StyleSheet.create({
     fontSize: 18,
 
     paddingTop: 3,
-    marginLeft: 12
+    marginLeft: 12,
   },
 
   textLäsMer: {
     //*************** */
     flex: 1,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
 
     fontSize: 16,
 
-    textAlign: 'right'
+    textAlign: "right",
   },
 
   iconsAndTextTimeContainer: {
     flex: 1,
-    flexDirection: 'row',
-    marginTop: 6
+    flexDirection: "row",
+    marginTop: 6,
   },
   iconsAndTextCityContainer: {
     marginTop: 25,
     flex: 1,
-    flexDirection: 'row'
-  }
-})
+    flexDirection: "row",
+  },
+});
 
 {
   /* <FlatList

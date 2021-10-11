@@ -1,24 +1,24 @@
-import React, { useState, useEffect } from 'react'
-import { Text, StyleSheet, FlatList, SafeAreaView, View } from 'react-native'
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, FlatList, SafeAreaView, View } from "react-native";
 
 export const MyTime = ({}) => {
-  const today = new Date()
+  const today = new Date();
 
-  const [timeForYear, setTimeForYear] = useState(13.5)
-  const [timeForCurrentMonth, setTimeForCurrentMonth] = useState(6.0)
-  const [paidTime, setPaidTime] = useState(3.0)
+  const [timeForYear, setTimeForYear] = useState(13.5);
+  const [timeForCurrentMonth, setTimeForCurrentMonth] = useState(6.0);
+  const [paidTime, setPaidTime] = useState(3.0);
 
-  const [currentYear, setCurrentYear] = useState(today.getFullYear())
+  const [currentYear, setCurrentYear] = useState(today.getFullYear());
   const [currentMonth, setCurrentMonth] = useState(
-    today.toLocaleString('default', { month: 'long' })
-  )
+    today.toLocaleString("default", { month: "long" })
+  );
   //   useState(today.toDateString())
 
   //   useState(
   //     String(today.getMonth() + 1).padStart(2, '0')
   //   )
-  console.log(currentYear)
-  console.log(currentMonth)
+  // console.log(currentYear)
+  // console.log(currentMonth)
   return (
     <SafeAreaView>
       <View style={styles.containerForAll}>
@@ -45,61 +45,61 @@ export const MyTime = ({}) => {
         </View>
       </View>
     </SafeAreaView>
-  )
-}
+  );
+};
 
 const styles = StyleSheet.create({
   containerForAll: {
-    justifyContent: 'space-evenly'
+    justifyContent: "space-evenly",
   },
 
   topTime: {
     // flex: 1,
-    backgroundColor: '#FFFFFF',
-    textAlign: 'center',
-    color: 'black',
-    marginHorizontal: 80
+    backgroundColor: "#FFFFFF",
+    textAlign: "center",
+    color: "black",
+    marginHorizontal: 80,
   },
 
   containerYearAndMonth: {
     // flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-evenly',
-    backgroundColor: '#FFFFFF',
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    backgroundColor: "#FFFFFF",
     marginBottom: 20,
-    marginHorizontal: 50
+    marginHorizontal: 50,
   },
 
   yearContainer: {
-    flexDirection: 'column',
-    marginVertical: 10
+    flexDirection: "column",
+    marginVertical: 10,
     // backgroundColor: '#FFFFFF'
   },
   textYear: {
     fontSize: 30,
-    textAlign: 'center'
+    textAlign: "center",
     // backgroundColor: '#FFFFFF'
   },
   monthContainer: {
-    flexDirection: 'column',
-    marginVertical: 10
+    flexDirection: "column",
+    marginVertical: 10,
     // backgroundColor: '#FFFFFF'
     // textAlign: 'center'
   },
   textMonth: {
     fontSize: 30,
-    textAlign: 'center'
+    textAlign: "center",
   },
   paidContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
 
-    textAlign: 'center'
+    textAlign: "center",
     // backgroundColor: '#FFFFFF'
   },
 
   textPaid: {
     fontSize: 30,
-    textAlign: 'center'
+    textAlign: "center",
     // backgroundColor: '#FFFFFF'
-  }
-})
+  },
+});

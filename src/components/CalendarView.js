@@ -8,6 +8,8 @@ import tw from "tailwind-react-native-classnames";
 import { format } from "date-fns";
 import { ScrollView } from "react-native";
 import { Platform } from "react-native";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
   LocaleConfig.locales["sv"] = {
@@ -90,10 +92,55 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
     }
   }, [selectedDate]);
 
-  //Change activity date and time (hours)
-  const changeActivityTime = () => {
-    activity.date = selectedDate;
-    activity.time = hours;
+  //Registers a users activity (saving to Firebase Firestore)
+  const registerTimeEntry = () => {
+    firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .collection("time_entries")
+      .add({
+        activity_id: activity.id,
+        date: selectedDate,
+        status_confirmed: false,
+        time: hours,
+      })
+      .then(() => {
+        console.log("New time entry added!");
+      });
+    toggleVisibility();
+  };
+
+  //Change activity date and time (hours) - (Saving to Firebase Firestore)
+  const changeTimeEntry = () => {
+    firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .collection("time_entries")
+      .doc(activity.timeEntryID)
+      .set(
+        {
+          date: selectedDate,
+          time: hours,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        console.log("Updated time entry!");
+      });
+    toggleVisibility();
+  };
+
+  //Removes a users time entry from the database (Firebase Firestore)
+  const deleteTimeEntry = () => {
+    firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .collection("time_entries")
+      .doc(activity.timeEntryID)
+      .delete()
+      .then(() => {
+        console.log("Removed time entry!");
+      });
     toggleVisibility();
   };
 
@@ -209,7 +256,12 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       </ScrollView>
 
       {!isEditing ? (
-        <TouchableOpacity style={styles.sendBtn}>
+        <TouchableOpacity
+          style={styles.sendBtn}
+          onPress={() => {
+            registerTimeEntry();
+          }}
+        >
           <Text style={styles.sendBtnText}>Logga tid</Text>
         </TouchableOpacity>
       ) : null}
@@ -219,16 +271,16 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           <TouchableOpacity
             style={[styles.sendBtn, styles.changeBtn]}
             onPress={() => {
-              changeActivityTime();
+              changeTimeEntry();
             }}
           >
             <Text style={styles.sendBtnText}>Ändra tid</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.sendBtn, styles.deleteBtn]}
-            // onPress={() => {
-            //   removeActivityTime();
-            // }}
+            onPress={() => {
+              deleteTimeEntry();
+            }}
           >
             <Text style={styles.sendBtnText}>Ta bort tid</Text>
           </TouchableOpacity>

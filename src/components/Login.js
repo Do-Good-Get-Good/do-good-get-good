@@ -14,7 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import tw from "tailwind-react-native-classnames";
 import inputStyles from "../styles/inputStyle";
 import auth from "@react-native-firebase/auth";
-import ResetPassModal from "./resetPassModal";
+import ResetPassModal from "./ResetPassModal";
 import { Icon } from "react-native-elements";
 
 export default function Login() {
