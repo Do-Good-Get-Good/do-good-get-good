@@ -13,80 +13,73 @@ import {
 import { Icon } from 'react-native-elements'
 import { useRoute } from '@react-navigation/native'
 import CalendarView from './CalendarView'
+import { useActivityFunction } from '../context/ActivityContext'
 
 export const MyActivityAsAList = ({ navigation }) => {
+  // const activityList = useActivityFunction()
+  const entryTime = useActivityFunction()
   const rout = useRoute()
 
   const [visible, setVisible] = useState(false)
-  const [activity, setActivity] = useState({})
+  const [activity, setActivity] = useState([])
   const toggleOverlay = () => {
     setVisible(!visible)
   }
+  const [myActivity, setMyActivity] = useState([])
+  const [timeAndStatus, setTimeAndStatus] = useState([])
+  const [timeEntryList, setTimeEntryList] = useState([])
+  const [amountToShowInTheList, setAmountToShowInTheList] = useState(5)
 
-  const [activityArray, setActivityArray] = useState([
-    {
-      idActivityList: '1',
-      title: 'Soppkök',
-      date: '2021-08-10',
-      time: 0.5,
-      activityStatus: true
-    },
-    {
-      idActivityList: '2',
-      title: 'Cat house',
-      date: '2021-08-20',
-      time: 2.5,
-      activityStatus: true
-    },
-    {
-      idActivityList: '3',
-      title: 'Soppkök',
-      date: '2021-08-15',
-      time: 4.5,
-      activityStatus: true
-    },
-    {
-      idActivityList: '4',
-      title: 'Soppkök',
-      date: '2021-08-10',
-      time: 0.5,
-      activityStatus: true
-    },
-    {
-      idActivityList: '5',
-      title: 'Cat house',
-      date: '2021-08-20',
-      time: 2.5,
-      activityStatus: false
-    },
-    {
-      idActivityList: '6',
-      title: 'Soppkök',
-      date: '2021-08-15',
-      time: 4.5,
-      activityStatus: false
+  useEffect(() => {
+    setMyActivity(entryTime.myActivities)
+    setTimeAndStatus(entryTime.timeAndStatus)
+  }, [entryTime])
+
+  useEffect(() => {
+    if (timeAndStatus.length > timeEntryList.length) {
+      const connectActivityNameAndTimeEntry = () => {
+        for (let i = 0; i < timeAndStatus.length; i++) {
+          for (let j = 0; j < myActivity.length; j++) {
+            if (myActivity[j].id === timeAndStatus[i].activitiId) {
+              const myTimeAndTitle = {
+                title: myActivity[j].title,
+                date: timeAndStatus[i].date,
+                statusConfirmed: timeAndStatus[i].statusConfirmed,
+                time: timeAndStatus[i].time
+              }
+
+              setTimeEntryList((prev) => [...prev, myTimeAndTitle])
+            }
+          }
+        }
+      }
+      connectActivityNameAndTimeEntry()
     }
-  ])
+  }, [myActivity])
 
-  //   const styleToChangeButton = {
-  // color: activityArray.activityStatus ? 'pink' : 'black'
-  //     function n() { for(i = 0; i < activityArray.length; i++){
-  //         fontWeight: activityArray.activityStatus ? 'bold' : 'normal'
-  //     }}
-
+  // const pressShowAllList = () => {
+  //   if (rout.name === 'HomePage') {
+  //     setAmountToShowInTheList(5)
+  //   } else {
+  //     setAmountToShowInTheList(timeAndStatus.length)
   //   }
+  //   navigation.navigate('MyTimePage')
+  // }
 
-  useEffect(() => {}, [])
+  console.log('entryTime.timeAndStatus', entryTime.timeAndStatus)
+
+  console.log('entryTime.myActivities', entryTime.myActivities)
+  console.log('myActivity', myActivity)
 
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Min tid</Text>
-      {activityArray.map((activity) => (
-        <View style={styles.activityIside}>
+      {timeEntryList.map((activity, index) => (
+        <View index={index} key={index} style={styles.activityIside}>
           <Text
             style={{
-              fontWeight: activity.activityStatus ? 'bold' : 'normal',
-              color: activity.activityStatus ? '#333333' : 'gray',
+              fontWeight: activity.statusConfirmed ? 'bold' : 'normal',
+              color: activity.statusConfirmed ? '#333333' : 'gray',
               flex: 1,
               fontSize: 16
             }}
@@ -95,7 +88,7 @@ export const MyActivityAsAList = ({ navigation }) => {
           </Text>
           <Text
             style={{
-              color: activity.activityStatus ? '#333333' : 'gray',
+              color: activity.statusConfirmed ? '#333333' : 'gray',
               flex: 1,
               fontSize: 16
             }}
@@ -104,14 +97,14 @@ export const MyActivityAsAList = ({ navigation }) => {
           </Text>
           <Text
             style={{
-              color: activity.activityStatus ? '#333333' : 'gray',
+              color: activity.statusConfirmed ? '#333333' : 'gray',
               flex: 1,
               fontSize: 16
             }}
           >
             {activity.time} tim
           </Text>
-          {activity.activityStatus ? (
+          {activity.statusConfirmed ? (
             <TouchableOpacity
               onPress={() => {
                 setActivity(activity)
@@ -119,14 +112,15 @@ export const MyActivityAsAList = ({ navigation }) => {
               }}
             >
               <Icon
-                color={activity.activityStatus ? '#333333' : 'black'}
-                name={'create'}
+                color={activity.statusConfirmed ? '#333333' : 'black'}
+                name="pencil-outline"
+                type="material-community"
                 size={25}
               />
             </TouchableOpacity>
           ) : (
             <Icon
-              color={activity.activityStatus ? '#333333' : 'gray'}
+              color={activity.statusConfirmed ? '#333333' : 'gray'}
               name={'done'}
               size={25}
             />
@@ -135,7 +129,7 @@ export const MyActivityAsAList = ({ navigation }) => {
           <Text></Text>
         </View>
       ))}
-      {rout.name === 'LandingPage' ? (
+      {rout.name === 'HomePage' ? (
         <TouchableOpacity onPress={() => navigation.navigate('MyTimePage')}>
           <Text style={styles.textVissaAll}>Visa allt</Text>
         </TouchableOpacity>
@@ -155,7 +149,7 @@ const styles = StyleSheet.create({
     flex: 1,
 
     justifyContent: 'flex-start',
-    marginHorizontal: 16,
+    // marginHorizontal: 16,
     marginBottom: 8
   },
   title: {

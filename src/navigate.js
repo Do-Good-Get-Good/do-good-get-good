@@ -1,7 +1,7 @@
 import * as React from 'react'
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { LandingPage } from './screens/LandingPage'
+import { HomePage } from './screens/HomePage'
 import { MyTimePage } from './screens/MyTimePage'
 import { AdminActivityGallery } from './screens/AdminActivityGallery'
 
@@ -14,7 +14,7 @@ export const Mystack = () => {
           headerShown: false
         }}
       >
-        <Stack.Screen name="LandingPage" component={LandingPage} />
+        <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="MyTimePage" component={MyTimePage} />
         <Stack.Screen
           name="AdminActivityGallery"
