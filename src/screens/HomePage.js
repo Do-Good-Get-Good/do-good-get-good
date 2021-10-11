@@ -14,7 +14,7 @@ import { Suggestions } from '../components/Suggestions'
 import UserContext from '../context/UserContext'
 // import { StatusBar } from 'expo-status-bar'
 import UserMenu from '../components/UserMenu'
-import { SuggestionProvider } from '../context/SuggestionContext'
+// import { SuggestionProvider } from '../context/SuggestionContext'
 
 import { useActivityFunction } from '../context/ActivityContext'
 
@@ -45,15 +45,15 @@ export const HomePage = ({ navigation }) => {
               myActivities={activity.myActivities}
             ></MyActivities>
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-            <SuggestionProvider>
+            {/* <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider>
+            </SuggestionProvider> */}
           </View>
         ) : (
           <View style={styles.container}>
-            <SuggestionProvider>
+            {/* <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider>
+            </SuggestionProvider> */}
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
           </View>
         )}

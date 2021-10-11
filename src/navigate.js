@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
 import { HomePage } from './screens/HomePage'
 import { MyTimePage } from './screens/MyTimePage'
-import { AdminActivityGallery } from './screens/AdminActivityGallery'
+// import { AdminActivityGallery } from './screens/AdminActivityGallery'
 
 const Stack = createNativeStackNavigator()
 export const Mystack = () => {
@@ -16,10 +16,10 @@ export const Mystack = () => {
       >
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="MyTimePage" component={MyTimePage} />
-        <Stack.Screen
+        {/* <Stack.Screen
           name="AdminActivityGallery"
           component={AdminActivityGallery}
-        />
+        /> */}
       </Stack.Navigator>
     </NavigationContainer>
   )
