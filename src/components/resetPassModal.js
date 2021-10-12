@@ -12,7 +12,7 @@ import inputStyles from "../styles/inputStyle";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
 
-const resetPassModal = ({ isModalOpen, openModal }) => {
+const ResetPassModal = ({ isModalOpen, openModal }) => {
   const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState(null);
 
@@ -119,7 +119,7 @@ const resetPassModal = ({ isModalOpen, openModal }) => {
   );
 };
 
-export default resetPassModal;
+export default ResetPassModal;
 
 const styles = StyleSheet.create({
   // modalContainer: {

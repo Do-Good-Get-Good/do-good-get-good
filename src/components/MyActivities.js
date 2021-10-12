@@ -8,6 +8,7 @@ import {
   Button,
   SectionList,
   TouchableOpacity,
+  Platform,
 } from "react-native";
 
 import { Icon } from "react-native-elements";

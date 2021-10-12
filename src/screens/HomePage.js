@@ -6,6 +6,7 @@ import {
   View,
   ScrollView,
   Button,
+  Platform,
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";

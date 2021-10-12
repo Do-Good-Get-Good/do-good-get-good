@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, Image, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  Image,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 // import { RadioButton } from '../components/RadioButton'
