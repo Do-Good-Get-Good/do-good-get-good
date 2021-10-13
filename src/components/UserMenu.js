@@ -29,7 +29,7 @@ const UserMenu = () => {
       <Header
         leftComponent={
           <Image
-            source={require("../img/Logo-DGGG-13.png")}
+            source={require("../img/Logotyp_DGGG.png")}
             style={styles.headerLogo}
           />
         }
@@ -61,11 +61,9 @@ export default UserMenu;
 
 const styles = StyleSheet.create({
   headerLogo: {
-    width: 130,
-    height: 56,
-    marginTop: -5,
-    marginBottom: 0,
-    marginLeft: -20,
+    width: 75,
+    height: 37,
+    marginLeft: 6,
   },
   headerMenu: {
     alignItems: "flex-start",
