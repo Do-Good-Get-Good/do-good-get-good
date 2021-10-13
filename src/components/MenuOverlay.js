@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
@@ -7,24 +7,20 @@ import tw from "tailwind-react-native-classnames";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
+import { useAdminCheckFunction } from "../context/AdminContext";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
+  const response = useAdminCheckFunction();
 
-  const checkIfUserIsAdmin = async () => {
-    const response = await firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .get();
-    if (response.data().role === "admin") {
-      setIsAdmin(true);
-    }
-  };
-
-  if (isVisible) {
+  useEffect(() => {
+    const checkIfUserIsAdmin = () => {
+      if (response) setIsAdmin(true);
+      else setIsAdmin(false);
+    };
     checkIfUserIsAdmin();
-  }
+  }, [isVisible]);
 
   return (
     <Overlay
