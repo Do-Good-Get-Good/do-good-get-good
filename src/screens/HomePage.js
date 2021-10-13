@@ -14,7 +14,7 @@ import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
 import UserContext from "../context/UserContext";
 // import { StatusBar } from 'expo-status-bar'
-import UserMenu from "../components/UserMenu";
+import Menu from "../components/Menu";
 // import { SuggestionProvider } from '../context/SuggestionContext'
 
 import { useActivityFunction } from "../context/ActivityContext";
@@ -37,7 +37,7 @@ export const HomePage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.view}>
       {/* <StatusBar style="auto" /> */}
-      <UserMenu />
+      <Menu />
       <ScrollView>
         {activity.myActivities.length != 0 ? (
           <View style={styles.container}>
