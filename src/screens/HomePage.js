@@ -12,15 +12,17 @@ import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
 import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
-import UserContext from "../context/UserContext";
 // import { StatusBar } from 'expo-status-bar'
 import Menu from "../components/Menu";
 // import { SuggestionProvider } from '../context/SuggestionContext'
 
 import { useActivityFunction } from "../context/ActivityContext";
+import { useAdminCheckFunction } from "../context/AdminContext";
+import FloatingActionButton from "../components/FloatingActionButton";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
+  const isAdmin = useAdminCheckFunction();
 
   // const [activity, setA] = useState([1, 3])
   // console.log('USER HOME PAGE myActivities', activity.myActivities)
@@ -60,6 +62,7 @@ export const HomePage = ({ navigation }) => {
         )}
         {/* <MyTime></MyTime> */}
       </ScrollView>
+      {isAdmin ? <FloatingActionButton /> : null}
     </SafeAreaView>
   );
 };
@@ -69,8 +72,8 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   view: {
+    flex: 1,
     backgroundColor: "#F5F5F5",
-    marginBottom: 30,
   },
   myActivities: {
     flex: 1,
