@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useState } from 'react'
 import {
   Text,
   StyleSheet,
@@ -6,33 +6,21 @@ import {
   View,
   ScrollView,
   Button,
-  Platform,
-} from "react-native";
-import { MyActivities } from "../components/MyActivities";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { MyTime } from "../components/MyTime";
-import { Suggestions } from "../components/Suggestions";
-import UserContext from "../context/UserContext";
+  Platform
+} from 'react-native'
+import { MyActivities } from '../components/MyActivities'
+import { MyActivityAsAList } from '../components/MyActivityAsAList'
+import { MyTime } from '../components/MyTime'
+import { Suggestions } from '../components/Suggestions'
+import UserContext from '../context/UserContext'
 // import { StatusBar } from 'expo-status-bar'
-import UserMenu from "../components/UserMenu";
-// import { SuggestionProvider } from '../context/SuggestionContext'
+import UserMenu from '../components/UserMenu'
+import { SuggestionProvider } from '../context/SuggestionContext'
 
-import { useActivityFunction } from "../context/ActivityContext";
+import { useActivityFunction } from '../context/ActivityContext'
 
 export const HomePage = ({ navigation }) => {
-  const activity = useActivityFunction();
-
-  // const [activity, setA] = useState([1, 3])
-  // console.log('USER HOME PAGE myActivities', activity.myActivities)
-  // console.log(
-  //   'USER HOME PAGE activitiesIDandAccumTime',
-  //   activity.activitiesIDandAccumTime
-  // )
-
-  // const [activityIsFull, setActivityIsFull] = useState(true)
-  // console.log('suggestionsFromFirebaseActive  activeArray ', r.activeArray)
-  // console.log('suggestionsFromFirebaseActive  InactiveArray', r.InactiveArray)
-  // console.log('r.InactiveArray.length  InactiveArray', r.InactiveArray.length)
+  const activity = useActivityFunction()
 
   return (
     <SafeAreaView style={styles.view}>
@@ -46,34 +34,33 @@ export const HomePage = ({ navigation }) => {
               myActivities={activity.myActivities}
             ></MyActivities>
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-            {/* <SuggestionProvider>
+            <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider> */}
+            </SuggestionProvider>
           </View>
         ) : (
           <View style={styles.container}>
-            {/* <SuggestionProvider>
+            <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider> */}
+            </SuggestionProvider>
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
           </View>
         )}
-        {/* <MyTime></MyTime> */}
       </ScrollView>
     </SafeAreaView>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 16,
+    marginHorizontal: 16
   },
   view: {
-    backgroundColor: "#F5F5F5",
-    marginBottom: 30,
+    backgroundColor: '#F5F5F5',
+    marginBottom: 30
   },
   myActivities: {
     flex: 1,
-    marginTop: 20,
-  },
-});
+    marginTop: 20
+  }
+})

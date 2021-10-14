@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect } from 'react'
 import {
   Text,
   StyleSheet,
@@ -8,32 +8,32 @@ import {
   Button,
   ListItem,
   TouchableOpacity,
-  Pressable,
-} from "react-native";
-import { Icon } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
-import CalendarView from "./CalendarView";
-import { useActivityFunction } from "../context/ActivityContext";
+  Pressable
+} from 'react-native'
+import { Icon } from 'react-native-elements'
+import { useRoute } from '@react-navigation/native'
+import CalendarView from './CalendarView'
+import { useActivityFunction } from '../context/ActivityContext'
 
 export const MyActivityAsAList = ({ navigation }) => {
   // const activityList = useActivityFunction()
-  const entryTime = useActivityFunction();
-  const rout = useRoute();
+  const entryTime = useActivityFunction()
+  const rout = useRoute()
 
-  const [visible, setVisible] = useState(false);
-  const [activity, setActivity] = useState([]);
+  const [visible, setVisible] = useState(false)
+  const [activity, setActivity] = useState([])
   const toggleOverlay = () => {
-    setVisible(!visible);
-  };
-  const [myActivity, setMyActivity] = useState([]);
-  const [timeAndStatus, setTimeAndStatus] = useState([]);
-  const [timeEntryList, setTimeEntryList] = useState([]);
-  const [amountToShowInTheList, setAmountToShowInTheList] = useState(5);
+    setVisible(!visible)
+  }
+  const [myActivity, setMyActivity] = useState([])
+  const [timeAndStatus, setTimeAndStatus] = useState([])
+  const [timeEntryList, setTimeEntryList] = useState([])
+  const [amountToShowInTheList, setAmountToShowInTheList] = useState(5)
 
   useEffect(() => {
-    setMyActivity(entryTime.myActivities);
-    setTimeAndStatus(entryTime.timeAndStatus);
-  }, [entryTime]);
+    setMyActivity(entryTime.myActivities)
+    setTimeAndStatus(entryTime.timeAndStatus)
+  }, [entryTime])
 
   useEffect(() => {
     if (timeAndStatus.length > timeEntryList.length) {
@@ -46,17 +46,17 @@ export const MyActivityAsAList = ({ navigation }) => {
                 date: timeAndStatus[i].date,
                 statusConfirmed: timeAndStatus[i].statusConfirmed,
                 time: timeAndStatus[i].time,
-                timeEntryID: timeAndStatus[i].fbDocumentID,
-              };
+                timeEntryID: timeAndStatus[i].fbDocumentID
+              }
 
-              setTimeEntryList((prev) => [...prev, myTimeAndTitle]);
+              setTimeEntryList((prev) => [...prev, myTimeAndTitle])
             }
           }
         }
-      };
-      connectActivityNameAndTimeEntry();
+      }
+      connectActivityNameAndTimeEntry()
     }
-  }, [myActivity]);
+  }, [myActivity])
 
   // const pressShowAllList = () => {
   //   if (rout.name === 'HomePage') {
@@ -79,28 +79,33 @@ export const MyActivityAsAList = ({ navigation }) => {
         <View index={index} key={index} style={styles.activityIside}>
           <Text
             style={{
-              fontWeight: !activity.statusConfirmed ? "bold" : "normal",
-              color: !activity.statusConfirmed ? "#333333" : "gray",
-              flex: 1,
+              fontWeight: !activity.statusConfirmed ? 'bold' : 'normal',
+              color: !activity.statusConfirmed ? '#333333' : 'gray',
+              flex: 1.5,
               fontSize: 16,
+              paddingTop: 10
             }}
           >
             {activity.title}
           </Text>
+
           <Text
             style={{
-              color: !activity.statusConfirmed ? "#333333" : "gray",
+              color: !activity.statusConfirmed ? '#333333' : 'gray',
               flex: 1,
               fontSize: 16,
+              marginLeft: 13,
+              paddingTop: 10
             }}
           >
             {activity.date}
           </Text>
           <Text
             style={{
-              color: !activity.statusConfirmed ? "#333333" : "gray",
-              flex: 1,
+              color: !activity.statusConfirmed ? '#333333' : 'gray',
+              flex: 0.6,
               fontSize: 16,
+              paddingTop: 10
             }}
           >
             {activity.time} tim
@@ -108,12 +113,13 @@ export const MyActivityAsAList = ({ navigation }) => {
           {!activity.statusConfirmed ? (
             <TouchableOpacity
               onPress={() => {
-                setActivity(activity);
-                toggleOverlay();
+                setActivity(activity)
+                toggleOverlay()
               }}
             >
               <Icon
-                color={activity.statusConfirmed ? "#333333" : "black"}
+                style={{ paddingTop: 5 }}
+                color={activity.statusConfirmed ? '#333333' : 'black'}
                 name="pencil-outline"
                 type="material-community"
                 size={25}
@@ -121,17 +127,16 @@ export const MyActivityAsAList = ({ navigation }) => {
             </TouchableOpacity>
           ) : (
             <Icon
-              color={activity.statusConfirmed ? "#333333" : "gray"}
-              name={"done"}
+              style={{ paddingTop: 5 }}
+              color={activity.statusConfirmed ? '#333333' : 'gray'}
+              name={'done'}
               size={25}
             />
           )}
-
-          <Text></Text>
         </View>
       ))}
-      {rout.name === "HomePage" ? (
-        <TouchableOpacity onPress={() => navigation.navigate("MyTimePage")}>
+      {rout.name === 'HomePage' ? (
+        <TouchableOpacity onPress={() => navigation.navigate('MyTimePage')}>
           <Text style={styles.textVissaAll}>Visa allt</Text>
         </TouchableOpacity>
       ) : null}
@@ -142,22 +147,22 @@ export const MyActivityAsAList = ({ navigation }) => {
         isEditing={true}
       />
     </View>
-  );
-};
+  )
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
 
-    justifyContent: "flex-start",
-    // marginHorizontal: 16,
-    marginBottom: 8,
+    justifyContent: 'flex-start',
+
+    marginBottom: 8
   },
   title: {
     flex: 1,
     fontSize: 24,
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 10
   },
 
   textVissaAll: {
@@ -168,22 +173,23 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    textAlign: "center",
+    borderColor: '#84BD00',
+    textAlign: 'center',
     // paddingHorizontal: 10,
     paddingVertical: 10,
-    fontWeight: "bold",
-    overflow: "hidden",
-    fontSize: 20,
+    fontWeight: 'bold',
+    overflow: 'hidden',
+    fontSize: 20
   },
   activityIside: {
     flex: 1,
-    flexDirection: "row",
-    backgroundColor: "white",
+    flexDirection: 'row',
+    backgroundColor: 'white',
     paddingHorizontal: 5,
-    paddingVertical: 5,
-  },
-});
+
+    paddingVertical: 5
+  }
+})
 
 // <Text
 //             style={{
