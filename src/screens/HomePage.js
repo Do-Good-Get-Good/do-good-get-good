@@ -14,7 +14,7 @@ import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
 // import { StatusBar } from 'expo-status-bar'
 import Menu from "../components/Menu";
-// import { SuggestionProvider } from '../context/SuggestionContext'
+import { SuggestionProvider } from "../context/SuggestionContext";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
@@ -23,18 +23,6 @@ import FloatingActionButton from "../components/FloatingActionButton";
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
   const isAdmin = useAdminCheckFunction();
-
-  // const [activity, setA] = useState([1, 3])
-  // console.log('USER HOME PAGE myActivities', activity.myActivities)
-  // console.log(
-  //   'USER HOME PAGE activitiesIDandAccumTime',
-  //   activity.activitiesIDandAccumTime
-  // )
-
-  // const [activityIsFull, setActivityIsFull] = useState(true)
-  // console.log('suggestionsFromFirebaseActive  activeArray ', r.activeArray)
-  // console.log('suggestionsFromFirebaseActive  InactiveArray', r.InactiveArray)
-  // console.log('r.InactiveArray.length  InactiveArray', r.InactiveArray.length)
 
   return (
     <SafeAreaView style={styles.view}>
@@ -48,15 +36,15 @@ export const HomePage = ({ navigation }) => {
               myActivities={activity.myActivities}
             ></MyActivities>
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-            {/* <SuggestionProvider>
+            <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider> */}
+            </SuggestionProvider>
           </View>
         ) : (
           <View style={styles.container}>
-            {/* <SuggestionProvider>
+            <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider> */}
+            </SuggestionProvider>
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
           </View>
         )}

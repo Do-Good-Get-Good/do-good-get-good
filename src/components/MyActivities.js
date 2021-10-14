@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext } from "react";
+import React, { useState, useEffect, useContext, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -20,6 +20,17 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
   const [isFinished, setIsFinished] = useState(false);
+  // const [titlePadding, setTitlePadding] = useState(true)
+
+  const [amountOfLines, setAmountOfLines] = useState(0);
+
+  const onTextLayout = useCallback((e) => {
+    setAmountOfLines(e.nativeEvent.lines.length);
+  }, []);
+  // const onTextLayout = useCallback((e) => {
+  //   setAmountOfLines(e.nativeEvent.lines.length)
+  // })
+
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -32,14 +43,17 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
     if (myActivities.length === activityObject.length) {
       setIsFinished(true);
     }
-  });
+  }, []);
 
   useEffect(() => {
-    if (
-      isFinished === true &&
-      activityObject.length > myActivitiesArray.length
-    ) {
-      const connectActivityAndTime = () => {
+    // setActivityObject(myActivities)
+    // getMyActivities()
+
+    const connectActivityAndTime = () => {
+      if (
+        isFinished === true &&
+        activityObject.length > myActivitiesArray.length
+      ) {
         for (let i = 0; i < activityObject.length; i++) {
           for (let j = 0; j < myAccumulatedTime.length; j++) {
             if (activityObject[i].id === myAccumulatedTime[j].activityID) {
@@ -53,10 +67,19 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
             }
           }
         }
-      };
-      connectActivityAndTime();
-    }
-  }, [isFinished, activityObject]);
+      }
+    };
+    connectActivityAndTime();
+  }, [isFinished]);
+
+  // function getMyActivities() {
+  //   setActivityObject(myActivities)
+  //   if (myActivities.length === activityObject.length) {
+  //     setIsFinished(true)
+  //   } else {
+  //     setActivityObject(myActivities)
+  //   }
+  // }
 
   // console.log('MyActivitiesArray', myActivitiesArray)
   // console.log('activityObject', activityObject, isFinished)
@@ -71,8 +94,22 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
           >
             <View style={styles.photoAndText}>
               <View style={styles.textTitleCityTime}>
-                <Text style={styles.textTitle}>{myActivity.title}</Text>
-                <View style={styles.iconsAndTextCityContainer}>
+                <Text
+                  numberOfLines={2}
+                  onTextLayout={onTextLayout}
+                  style={styles.textTitle}
+                >
+                  {myActivity.title}
+                </Text>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    paddingTop: myActivity.title.length > 16 ? 0 : 25,
+                    // backgroundColor: > 1 ? 'pink' : 'yellow'
+                    // paddingTop: myActivity.title.length > 16 ? 0 : 25
+                  }}
+                >
                   <Icon
                     type="material-community"
                     name="map-marker-outline"
@@ -202,11 +239,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 6,
   },
-  iconsAndTextCityContainer: {
-    marginTop: 25,
-    flex: 1,
-    flexDirection: "row",
-  },
+  // iconsAndTextCityContainer: {
+  // marginTop: 25,
+  //   flex: 1,
+  //   flexDirection: 'row'
+  // },
   shedowForButton: {
     ...Platform.select({
       ios: {

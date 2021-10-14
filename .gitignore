@@ -53,3 +53,5 @@ buck-out/
 .expo/
 web-build/
 src/android/.project
+
+src/.jest/

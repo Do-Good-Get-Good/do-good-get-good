@@ -5,6 +5,7 @@ import Login from "./components/Login";
 import { AdminProvider } from "./context/AdminContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActivityProvider } from "./context/ActivityContext";
+import { ActivityProvider } from "./context/ActivityContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects

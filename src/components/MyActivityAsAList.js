@@ -81,8 +81,9 @@ export const MyActivityAsAList = ({ navigation }) => {
             style={{
               fontWeight: !activity.statusConfirmed ? "bold" : "normal",
               color: !activity.statusConfirmed ? "#333333" : "gray",
-              flex: 1,
+              flex: 1.5,
               fontSize: 16,
+              paddingTop: 10,
             }}
           >
             {activity.title}
@@ -92,6 +93,8 @@ export const MyActivityAsAList = ({ navigation }) => {
               color: !activity.statusConfirmed ? "#333333" : "gray",
               flex: 1,
               fontSize: 16,
+              marginLeft: 13,
+              paddingTop: 10,
             }}
           >
             {activity.date}
@@ -99,8 +102,9 @@ export const MyActivityAsAList = ({ navigation }) => {
           <Text
             style={{
               color: !activity.statusConfirmed ? "#333333" : "gray",
-              flex: 1,
+              flex: 0.6,
               fontSize: 16,
+              paddingTop: 10,
             }}
           >
             {activity.time} tim
@@ -113,6 +117,7 @@ export const MyActivityAsAList = ({ navigation }) => {
               }}
             >
               <Icon
+                style={{ paddingTop: 5 }}
                 color={activity.statusConfirmed ? "#333333" : "black"}
                 name="pencil-outline"
                 type="material-community"
@@ -121,13 +126,12 @@ export const MyActivityAsAList = ({ navigation }) => {
             </TouchableOpacity>
           ) : (
             <Icon
+              style={{ paddingTop: 5 }}
               color={activity.statusConfirmed ? "#333333" : "gray"}
               name={"done"}
               size={25}
             />
           )}
-
-          <Text></Text>
         </View>
       ))}
       {rout.name === "HomePage" ? (
@@ -150,7 +154,6 @@ const styles = StyleSheet.create({
     flex: 1,
 
     justifyContent: "flex-start",
-    // marginHorizontal: 16,
     marginBottom: 8,
   },
   title: {
