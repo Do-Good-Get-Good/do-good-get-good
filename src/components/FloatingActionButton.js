@@ -26,11 +26,7 @@ const FloatingActionButton = ({ navigation }) => {
       ) : null}
       <FAB
         icon={
-          <Icon
-            type="material-community"
-            name={isOpen ? "close" : "plus"}
-            style={styles.iconStyle}
-          />
+          <Icon type="material-community" name={isOpen ? "close" : "plus"} />
         }
         visible
         style={styles.fab}
@@ -74,8 +70,5 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
-  },
-  iconStyle: {
-    // alignSelf: "center",
   },
 });
