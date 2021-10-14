@@ -12,7 +12,6 @@ import {
 } from "react-native";
 
 import { Icon } from "react-native-elements";
-import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 import CalendarView from "./CalendarView";
 
 export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
