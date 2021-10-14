@@ -32,7 +32,8 @@ cd ..
 npx react-native run-android
 ```
 
-
+We who have worked with the project
+===================================
 ## Authors ##
 - Mattias Ahlström (_Mobile application developer_)
 - Alona Kirichenko (_Mobile application developer_)
