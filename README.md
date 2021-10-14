@@ -1,3 +1,4 @@
+[![CI](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml/badge.svg?branch=main)](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml)
 # Do Good Get Good #
 ## A time reporting app from Technogarden ##
 

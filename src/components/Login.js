@@ -130,7 +130,7 @@ export default function Login() {
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <View style={styles.logo}>
           <Image
-            source={require("../img/Logo-DGGG-13.png")}
+            source={require("../img/Logotyp_DGGG.png")}
             style={styles.logoImg}
           />
         </View>
@@ -256,10 +256,12 @@ export default function Login() {
 const styles = StyleSheet.create({
   logo: {
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   logoImg: {
-    flex: 1,
-    width: "100%",
+    width: 200,
+    height: 100,
   },
   inputsAndBtns: {
     padding: 20,

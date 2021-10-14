@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
@@ -6,9 +6,25 @@ import { StatusBar } from "expo-status-bar";
 import tw from "tailwind-react-native-classnames";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
+import firestore from "@react-native-firebase/firestore";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
+  const [isAdmin, setIsAdmin] = useState(false);
+
+  const checkIfUserIsAdmin = async () => {
+    const response = await firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .get();
+    if (response.data().role === "admin") {
+      setIsAdmin(true);
+    }
+  };
+
+  if (isVisible) {
+    checkIfUserIsAdmin();
+  }
 
   return (
     <Overlay
@@ -21,7 +37,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayHeader}>
           <Pressable
-            title="Stäng"
             style={styles.menuOverlayCloseButton}
             onPress={openOverlay}
           >
@@ -43,15 +58,40 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
           </Pressable>
-          <Pressable style={styles.menuOverlayLinkStyling}>
+          <Pressable
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              navigation.navigate("MyTimePage");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>Min tid</Text>
           </Pressable>
-          <Pressable style={styles.menuOverlayLinkStyling}>
+          <Pressable
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              // navigation.navigate("");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>Om</Text>
           </Pressable>
-          <Pressable style={styles.menuOverlayLinkStyling}>
+          <Pressable
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              // navigation.navigate("");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </Pressable>
+          {isAdmin ? (
+            <Pressable
+              style={styles.menuOverlayLinkStyling}
+              onPress={() => {
+                // navigation.navigate("");
+              }}
+            >
+              <Text style={styles.menuOverlayLinkText}>Lägga in tid?</Text>
+            </Pressable>
+          ) : null}
         </View>
         <View style={tw`bg-blue-500 absolute bottom-14 self-center`}>
           <Text style={tw`text-sm text-center text-white p-1`}>
@@ -82,14 +122,14 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         marginTop: 35,
-        marginBottom: 10
-      }
-    })
+        marginBottom: 10,
+      },
+    }),
   },
   menuOverlayHeader: {
     alignSelf: "flex-end",
-    marginTop: 12,
-    marginRight: 6,
+    marginTop: 10,
+    marginRight: 16,
   },
   menuOverlayCloseButton: {
     alignItems: "flex-start",
@@ -97,6 +137,7 @@ const styles = StyleSheet.create({
   menuOverlayCloseButtonText: {
     textTransform: "uppercase",
     fontSize: 13,
+    marginTop: -3,
   },
   menuOverlayItemStyling: {
     paddingLeft: 75,

@@ -9,7 +9,7 @@ import Login from "../components/Login";
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 it("renders correctly", () => {
-  const { getAllByText, getByPlaceholderText } = renderer.create(<Login />);
+  const { getAllByText, getByPlaceholderText } = renderer.create(<App />);
 
   expect(getAllByText("Logga in").length).toBe(1);
   getByPlaceholderText("E-post");
@@ -22,11 +22,11 @@ it("Shows invalid input message", () => {
   fireEvent.changeText(getByPlaceholder("Lösenord"), "Blomma123");
 
   fireEvent.press(getByText("Logga in"));
-  getByText("Ogiltigt användarnamn");
+  getByText("Ange en giltig e-post");
   expect(queryAllByText("Fel e-post eller lösenord").length).toBe(0);
 
   fireEvent.changeText(getByPlaceholder("E-post"), "test@test.com");
-  getByText("Ogiltigt lösenord");
+  getByText("Fel e-post eller lösenord");
   expect(queryAllByText("Ange en giltig e-post").length).toBe(0);
 });
 
@@ -38,8 +38,8 @@ it("Handle valid input", async () => {
     <App navigation={{ push: pushMock }} />
   );
 
-  fireEvent.changeText(getByPlaceholder("E-post"), "minEmail@gmail.com");
-  fireEvent.changeText(getByPlaceholder("Lösenord"), "Blomma123");
+  fireEvent.changeText(getByPlaceholder("E-post"), "test@test.com");
+  fireEvent.changeText(getByPlaceholder("Lösenord"), "test123");
   fireEvent.press(getByText("Logga in"));
 
   await act(() => new Promise((resolve) => setImmediate(resolve))); //Väntar på att login ska genomföras.
