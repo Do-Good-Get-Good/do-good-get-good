@@ -1,34 +1,34 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
-  Platform
-} from 'react-native'
-import { Icon } from 'react-native-elements'
-import { useRoute } from '@react-navigation/native'
+  Platform,
+} from "react-native";
+import { Icon } from "react-native-elements";
+import { useRoute } from "@react-navigation/native";
 
-import { useSuggestionFunction } from '../context/SuggestionContext'
+import { useSuggestionFunction } from "../context/SuggestionContext";
 // import { useAdminGalleryFunction } from '../context/AdminGalleryContext'
 // import { RadioButton } from '../components/RadioButton'
 
 export const Suggestions = ({ navigation, search }) => {
-  const rout = useRoute()
+  const rout = useRoute();
   // const adminGalleryContext = useAdminGalleryFunction()
-  const userSuggestionsContext = useSuggestionFunction()
-  const [searchingWord, setSearchingWord] = useState('')
-  const [searchArray, setSearchArray] = useState([])
-  const [showArray, setShowArray] = useState([])
+  const userSuggestionsContext = useSuggestionFunction();
+  const [searchingWord, setSearchingWord] = useState("");
+  const [searchArray, setSearchArray] = useState([]);
+  const [showArray, setShowArray] = useState([]);
 
-  const [userSaggestions, setUserSaggestions] = useState([])
-  const [adminActivities, setAdminActivities] = useState([])
+  const [userSaggestions, setUserSaggestions] = useState([]);
+  const [adminActivities, setAdminActivities] = useState([]);
 
   useEffect(() => {
-    if (rout.name === 'HomePage') {
-      setUserSaggestions(userSuggestionsContext.popularActivities)
-      setSuggestionsOrAdminGallery()
+    if (rout.name === "HomePage") {
+      setUserSaggestions(userSuggestionsContext.popularActivities);
+      setSuggestionsOrAdminGallery();
     }
     // else if (rout.name === 'AdminActivityGallery ') {
     //   setAdminActivities(adminGalleryContext.active)
@@ -37,27 +37,27 @@ export const Suggestions = ({ navigation, search }) => {
     // } else {
     //   console.log('No rout')
     // }
-    setSuggestionsOrAdminGallery()
-  }, [search, searchArray, showArray, rout.name])
+    setSuggestionsOrAdminGallery();
+  }, [search, searchArray, showArray, rout.name]);
 
-  console.log(' userSaggestions', userSaggestions)
+  console.log(" userSaggestions", userSaggestions);
 
   function serchForRightObject() {
-    if (rout.name === 'AdminActivityGallery' && searchingWord != 0) {
+    if (rout.name === "AdminActivityGallery" && searchingWord != 0) {
       const searchingThrough = adminActivities.filter(
         (object) =>
           object.title === searchingWord || object.city === searchingWord
-      )
-      console.log('searchingThrough', searchingThrough)
-      return setSearchArray(searchingThrough)
+      );
+      console.log("searchingThrough", searchingThrough);
+      return setSearchArray(searchingThrough);
     }
   }
 
   function setSuggestionsOrAdminGallery() {
-    serchForRightObject()
+    serchForRightObject();
 
-    if (rout.name === 'HomePage') {
-      setShowArray(userSaggestions)
+    if (rout.name === "HomePage") {
+      setShowArray(userSaggestions);
     }
     // else if (
     //   rout.name === 'AdminActivityGallery' &&
@@ -68,7 +68,7 @@ export const Suggestions = ({ navigation, search }) => {
     // } else {
     //   setShowArray(searchArray)
     // }
-    return showArray
+    return showArray;
   }
 
   return (
@@ -115,7 +115,7 @@ export const Suggestions = ({ navigation, search }) => {
                 <Image
                   style={styles.image}
                   source={{
-                    uri: suggestion.photo
+                    uri: suggestion.photo,
                   }}
                 />
               </View>
@@ -129,80 +129,80 @@ export const Suggestions = ({ navigation, search }) => {
         ))}
       </View>
     </View>
-  )
-}
+  );
+};
 const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
 
     marginHorizontal: 16,
-    marginTop: 10
+    marginTop: 10,
   },
 
   activityContainer: {
     flex: 1,
     marginTop: 5,
 
-    marginBottom: 15
+    marginBottom: 15,
   },
   insideActivityContainer: {
     //********************* */
     marginHorizontal: 16,
 
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
 
-    backgroundColor: 'white',
-    flexWrap: 'wrap',
+    backgroundColor: "white",
+    flexWrap: "wrap",
     borderRadius: 2,
 
     borderWidth: 1,
-    borderColor: 'white',
+    borderColor: "white",
     ...Platform.select({
       ios: {
         shadowOffset: {
-          hight: 2
+          hight: 2,
         },
         shadowOpacity: 0.5,
-        shadowRadius: 5
+        shadowRadius: 5,
       },
       android: {
-        elevation: 3
-      }
-    })
+        elevation: 3,
+      },
+    }),
   },
   image: {
     flex: 1,
 
     height: 100,
-    resizeMode: 'cover',
-    alignItems: 'center',
+    resizeMode: "cover",
+    alignItems: "center",
 
     marginRight: 12,
     marginTop: 10,
-    borderRadius: 5
+    borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row'
+    flexDirection: "row",
   },
   textTitleCityDescriptipn: {
     //*************** */
     flex: 2,
     marginRight: 7,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: '#333333'
+    color: "#333333",
   },
 
   textTitle: {
     //*************** */
     flex: 2,
     fontSize: 20,
-    fontWeight: 'bold'
+    fontWeight: "bold",
   },
   textCity: {
     //*************** */
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
     // marginTop: 20,
     fontSize: 18,
     paddingTop: 5,
-    marginLeft: 12
+    marginLeft: 12,
   },
 
   textDescription: {
@@ -220,30 +220,30 @@ const styles = StyleSheet.create({
     fontSize: 18,
 
     paddingTop: 3,
-    marginLeft: 12
+    marginLeft: 12,
   },
 
   textLäsMer: {
     //*************** */
     flex: 1,
-    textDecorationLine: 'underline',
+    textDecorationLine: "underline",
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
 
     fontSize: 16,
 
-    textAlign: 'right'
+    textAlign: "right",
   },
 
   iconsAndTextTimeContainer: {
     flex: 1,
-    flexDirection: 'row',
-    marginTop: 6
+    flexDirection: "row",
+    marginTop: 6,
   },
   iconsAndTextCityContainer: {
     marginTop: 25,
     flex: 1,
-    flexDirection: 'row'
-  }
-})
+    flexDirection: "row",
+  },
+});
