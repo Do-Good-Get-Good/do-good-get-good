@@ -1,21 +1,41 @@
-import { StatusBar } from 'expo-status-bar';
-import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
+import React, { useState, useEffect } from 'react'
+import { Mystack } from './navigate'
+import auth from '@react-native-firebase/auth'
+import Login from './components/Login'
+import { UserProvider } from './context/UserContext'
+import { SafeAreaProvider } from 'react-native-safe-area-context'
 
+import { ActivityProvider } from './context/ActivityContext'
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+  // Set an initializing state whilst Firebase connects
+  const [initializing, setInitializing] = useState(true)
+  const [user, setUser] = useState()
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+  // Handle user state changes
+  function onAuthStateChanged(user) {
+    setUser(user)
+    if (initializing) setInitializing(false)
+  }
+
+  useEffect(() => {
+    const subscriber = auth().onAuthStateChanged(onAuthStateChanged)
+    return subscriber // unsubscribe on unmount
+  }, [])
+
+  if (initializing) return null
+
+  if (!user) {
+    return <Login />
+  }
+
+  return (
+    <SafeAreaProvider>
+      {/* <UserProvider value={user}> */}
+      <ActivityProvider>
+        <Mystack />
+      </ActivityProvider>
+
+      {/* </UserProvider> */}
+    </SafeAreaProvider>
+  )
+}
