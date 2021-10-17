@@ -1,17 +1,17 @@
-import * as React from 'react'
-import { NavigationContainer } from '@react-navigation/native'
-import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { HomePage } from './screens/HomePage'
-import { MyTimePage } from './screens/MyTimePage'
+import * as React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { HomePage } from "./screens/HomePage";
+import { MyTimePage } from "./screens/MyTimePage";
 // import { AdminActivityGallery } from './screens/AdminActivityGallery'
 
-const Stack = createNativeStackNavigator()
-export const Mystack = () => {
+const Stack = createNativeStackNavigator();
+export const NavigationStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
         screenOptions={{
-          headerShown: false
+          headerShown: false,
         }}
       >
         <Stack.Screen name="HomePage" component={HomePage} />
@@ -22,5 +22,5 @@ export const Mystack = () => {
         /> */}
       </Stack.Navigator>
     </NavigationContainer>
-  )
-}
+  );
+};

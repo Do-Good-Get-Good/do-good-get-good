@@ -16,7 +16,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
 
   useEffect(() => {
     const checkIfUserIsAdmin = () => {
-      if (response) setIsAdmin(true);
+      if (response === "admin") setIsAdmin(true);
       else setIsAdmin(false);
     };
     checkIfUserIsAdmin();

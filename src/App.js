@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Mystack } from "./navigate";
+import { NavigationStack } from "./navigate";
 import auth from "@react-native-firebase/auth";
 import Login from "./components/Login";
 import { AdminProvider } from "./context/AdminContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActivityProvider } from "./context/ActivityContext";
+import { SuggestionProvider } from "./context/SuggestionContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -32,7 +33,9 @@ export default function App() {
     <SafeAreaProvider>
       <AdminProvider>
         <ActivityProvider>
-          <Mystack />
+          <SuggestionProvider>
+            <NavigationStack />
+          </SuggestionProvider>
         </ActivityProvider>
       </AdminProvider>
     </SafeAreaProvider>

@@ -1,20 +1,11 @@
-import React, { useContext, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  SafeAreaView,
-  View,
-  ScrollView,
-  Button,
-  Platform,
-} from "react-native";
+import React, { useEffect } from "react";
+import { Text, StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { MyTime } from "../components/MyTime";
+// import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
 // import { StatusBar } from 'expo-status-bar'
 import Menu from "../components/Menu";
-import { SuggestionProvider } from "../context/SuggestionContext";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
@@ -22,35 +13,46 @@ import FloatingActionButton from "../components/FloatingActionButton";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
-  const isAdmin = useAdminCheckFunction();
+  const userLevel = useAdminCheckFunction();
 
   return (
     <SafeAreaView style={styles.view}>
       {/* <StatusBar style="auto" /> */}
       <Menu />
       <ScrollView>
-        {activity.myActivities.length != 0 ? (
-          <View style={styles.container}>
-            <MyActivities
-              myAccumulatedTime={activity.activitiesIDandAccumTime}
-              myActivities={activity.myActivities}
-            ></MyActivities>
-            <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-            <SuggestionProvider>
-              <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider>
+        {userLevel === "admin" ? (
+          <View
+            style={{
+              flex: 1,
+              justifyContent: "center",
+              alignItems: "center",
+            }}
+          >
+            <Text>I am logged in as an Admin!</Text>
           </View>
-        ) : (
-          <View style={styles.container}>
-            <SuggestionProvider>
-              <Suggestions navigation={navigation}></Suggestions>
-            </SuggestionProvider>
-            <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-          </View>
-        )}
+        ) : null}
+        {userLevel === "user" ? (
+          <>
+            {activity.myActivities.length != 0 ? (
+              <View style={styles.container}>
+                <MyActivities
+                  myAccumulatedTime={activity.activitiesIDandAccumTime}
+                  myActivities={activity.myActivities}
+                ></MyActivities>
+                <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+                <Suggestions navigation={navigation}></Suggestions>
+              </View>
+            ) : (
+              <View style={styles.container}>
+                <Suggestions navigation={navigation}></Suggestions>
+                <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+              </View>
+            )}
+          </>
+        ) : null}
         {/* <MyTime></MyTime> */}
       </ScrollView>
-      {isAdmin ? <FloatingActionButton /> : null}
+      {userLevel === "admin" ? <FloatingActionButton /> : null}
     </SafeAreaView>
   );
 };
