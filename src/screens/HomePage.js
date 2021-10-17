@@ -10,6 +10,7 @@ import Menu from "../components/Menu";
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import FloatingActionButton from "../components/FloatingActionButton";
+import ConfirmActivities from "../components/ConfirmActivities";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -21,14 +22,8 @@ export const HomePage = ({ navigation }) => {
       <Menu />
       <ScrollView>
         {userLevel === "admin" ? (
-          <View
-            style={{
-              flex: 1,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          >
-            <Text>I am logged in as an Admin!</Text>
+          <View style={styles.container}>
+            <ConfirmActivities></ConfirmActivities>
           </View>
         ) : null}
         {userLevel === "user" ? (
