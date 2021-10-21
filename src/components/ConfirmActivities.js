@@ -10,11 +10,10 @@ const ConfirmActivities = () => {
   const [myUsers, setMyUsers] = useState([]);
   const [userIDs, setUserIDs] = useState([]);
   const [usersFullName, setUsersFullName] = useState([]);
+  const [usersTimeEntries, setUsersTimeEntries] = useState([]);
+  const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
-    setMyUsers([]);
-    setUsersFullName([]);
-
     const fetchUserData = async () => {
       try {
         const response = await firestore()
@@ -32,79 +31,125 @@ const ConfirmActivities = () => {
       }
       if (userIDs.length != 0) {
         let nameArr = [];
+        let timeEntryArr = [];
         for (let i = 0; i < userIDs.length; i++) {
           try {
-            const response = await firestore()
+            const nameResponse = await firestore()
               .collection("Users")
               .doc(userIDs[i])
               .collection("personal_information")
               .get();
 
-            let data = response.docs.map((doc) => doc.data());
-            let fullName = data[0].first_name + " " + data[0].last_name;
+            let nameData = nameResponse.docs.map((doc) => doc.data());
+            let fullName = nameData[0].first_name + " " + nameData[0].last_name;
             nameArr.push(fullName);
-            if (nameArr.length === userIDs.length) {
-              setUsersFullName(nameArr);
-            }
+          } catch (error) {
+            console.log(error);
+          }
+          try {
+            const timeEntryResponse = await firestore()
+              .collection("Users")
+              .doc(userIDs[i])
+              .collection("time_entries")
+              .where("status_confirmed", "==", false)
+              .get();
+
+            let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
+            timeEntryArr.push(timeEntryData);
           } catch (error) {
             console.log(error);
           }
         }
+        if (
+          nameArr.length === userIDs.length &&
+          timeEntryArr.length === userIDs.length
+        ) {
+          setUsersFullName(nameArr);
+          setUsersTimeEntries(timeEntryArr);
+          setIsFinished(true);
+        }
       }
-      // try {
-      //   firestore()
-      //     .collection("Users")
-      //     .doc(userIDs[i])
-      //     .collection("time_entries")
-      //     .orderBy("date", "asc")
-      //     .get()
-      // } catch (error) {
-      //   console.log(error)
-      // }
     };
     fetchUserData();
+
+    return () => {
+      setMyUsers([]);
+      setUsersFullName([]);
+      setUsersTimeEntries([]);
+      setIsFinished(false);
+    };
   }, []);
 
   useEffect(() => {
-    if (usersFullName.length != 0) {
-      console.log(usersFullName);
+    if (isFinished) {
+      fetchActivityNames();
+      fillUsersWithInfo();
     }
-  }, [usersFullName]);
 
-  // if (!getUserPersonalInfo.empty) {
-  //   let userNameData = getUserPersonalInfo.docs.map((doc) => doc.data());
-  //   let fullName =
-  //     userNameData[0].first_name + " " + userNameData[0].last_name;
-  //   setUserFullName((prev) => [...prev, fullName]);
-  // }
-  // if (!userTimeEntriesFb.empty) {
-  //   let userTimeEntryData = userTimeEntriesFb.docs.map((doc) => doc.data());
-  //   setUserTimeEntriesfromFB((prev) => [...prev, userTimeEntryData]);
-  // }
+    return () => {
+      setIsFinished(false);
+    };
+  }, [isFinished]);
 
-  // useEffect(() => {
-  //   const getActivityName = async (i, j) => {
-  //     const response = await firestore()
-  //       .collection("Activities")
-  //       .doc(userTimeEntriesFromFB[i][j].activity_id)
-  //       .get();
-  //     console.log("AAAAAAAAAAAAAAAAAAA", response.data().activity_title);
-  //   };
-  // }, []);
+  const fetchActivityNames = () => {
+    console.log(usersFullName);
+    const getActivityName = async (i, j) => {
+      try {
+        const response = await firestore()
+          .collection("Activities")
+          .doc(usersTimeEntries[i][j].activity_id)
+          .get();
 
-  // useEffect(() => {
-  //   if (checkAll) {
-  //     myUsers.map((user) => {
-  //       user.checked = true;
-  //       // console.log(user.checked);
-  //     });
-  //   } else {
-  //     myUsers.map((user) => {
-  //       user.checked = false;
-  //       // console.log(user.checked);
-  //     });
-  //   }
-  // }, [checkAll]);
+        linkToUsersTimeEntry(response.data().activity_title, i, j);
+      } catch (error) {
+        console.log(error);
+      }
+    };
+
+    for (let i = 0; i < userIDs.length; i++) {
+      for (let j = 0; j < usersTimeEntries[i].length; j++) {
+        getActivityName(i, j);
+      }
+    }
+  };
+
+  const linkToUsersTimeEntry = (activity, i, j) => {
+    let timeEntry = {
+      activityName: activity,
+      date: usersTimeEntries[i][j].date,
+      time: usersTimeEntries[i][j].time,
+    };
+    usersTimeEntries[i][j] = timeEntry;
+  };
+
+  const fillUsersWithInfo = () => {
+    let tempArr = [];
+    for (let i = 0; i < userIDs.length; i++) {
+      let userInfo = {
+        fullName: usersFullName[i],
+        latestTimeEntryDate:
+          usersTimeEntries[i][usersTimeEntries[i].length - 1].date,
+        totalRegisteredHours:
+          usersTimeEntries[i][usersTimeEntries[i].length - 1].time,
+        timeEntries: usersTimeEntries[i],
+      };
+      tempArr.push(userInfo);
+    }
+    setMyUsers(tempArr);
+    console.log(tempArr);
+  };
+
+  useEffect(() => {
+    if (checkAll) {
+      myUsers.map((user) => {
+        user.checked = true;
+      });
+    } else {
+      myUsers.map((user) => {
+        user.checked = false;
+      });
+    }
+  }, [checkAll]);
 
   return (
     <View style={styles.container}>
@@ -143,7 +188,7 @@ const ConfirmActivities = () => {
                     checked={user.checked}
                     checkedColor="#84BD00"
                     onPress={() => {
-                      // set the clicked checkbox status to true
+                      user.checked = true;
                     }}
                   />
                 </View>
@@ -239,11 +284,26 @@ const styles = StyleSheet.create({
     margin: 0,
     justifyContent: "space-between",
     alignItems: "center",
+    paddingVertical: 10,
   },
-  listItemNameStyle: { fontWeight: "bold" },
-  listItemDateStyle: {},
-  listItemHourStyle: {},
-  listItemCheckBoxStyle: { padding: 0 },
+  listItemNameStyle: {
+    fontWeight: "bold",
+    flex: 3,
+  },
+  listItemDateStyle: {
+    flex: 2,
+    textAlign: "center",
+  },
+  listItemHourStyle: {
+    flex: 1.75,
+    textAlign: "center",
+    paddingRight: 15,
+  },
+  listItemCheckBoxStyle: {
+    padding: 0,
+    right: -20,
+    position: "absolute",
+  },
   listItemContentStyle: {
     backgroundColor: "#F5F5F5",
     paddingVertical: 12,
