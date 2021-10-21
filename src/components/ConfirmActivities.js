@@ -29,46 +29,6 @@ const ConfirmActivities = () => {
       } catch (error) {
         console.log(error);
       }
-      if (userIDs.length != 0) {
-        let nameArr = [];
-        let timeEntryArr = [];
-        for (let i = 0; i < userIDs.length; i++) {
-          try {
-            const nameResponse = await firestore()
-              .collection("Users")
-              .doc(userIDs[i])
-              .collection("personal_information")
-              .get();
-
-            let nameData = nameResponse.docs.map((doc) => doc.data());
-            let fullName = nameData[0].first_name + " " + nameData[0].last_name;
-            nameArr.push(fullName);
-          } catch (error) {
-            console.log(error);
-          }
-          try {
-            const timeEntryResponse = await firestore()
-              .collection("Users")
-              .doc(userIDs[i])
-              .collection("time_entries")
-              .where("status_confirmed", "==", false)
-              .get();
-
-            let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-            timeEntryArr.push(timeEntryData);
-          } catch (error) {
-            console.log(error);
-          }
-        }
-        if (
-          nameArr.length === userIDs.length &&
-          timeEntryArr.length === userIDs.length
-        ) {
-          setUsersFullName(nameArr);
-          setUsersTimeEntries(timeEntryArr);
-          setIsFinished(true);
-        }
-      }
     };
     fetchUserData();
 
@@ -81,6 +41,10 @@ const ConfirmActivities = () => {
   }, []);
 
   useEffect(() => {
+    fetchNamesAndTimeEntries();
+  }, [userIDs]);
+
+  useEffect(() => {
     if (isFinished) {
       fetchActivityNames();
       fillUsersWithInfo();
@@ -90,6 +54,49 @@ const ConfirmActivities = () => {
       setIsFinished(false);
     };
   }, [isFinished]);
+
+  const fetchNamesAndTimeEntries = async () => {
+    if (userIDs.length != 0) {
+      let nameArr = [];
+      let timeEntryArr = [];
+      for (let i = 0; i < userIDs.length; i++) {
+        try {
+          const nameResponse = await firestore()
+            .collection("Users")
+            .doc(userIDs[i])
+            .collection("personal_information")
+            .get();
+
+          let nameData = nameResponse.docs.map((doc) => doc.data());
+          let fullName = nameData[0].first_name + " " + nameData[0].last_name;
+          nameArr.push(fullName);
+        } catch (error) {
+          console.log(error);
+        }
+        try {
+          const timeEntryResponse = await firestore()
+            .collection("Users")
+            .doc(userIDs[i])
+            .collection("time_entries")
+            .where("status_confirmed", "==", false)
+            .get();
+
+          let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
+          timeEntryArr.push(timeEntryData);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+      if (
+        nameArr.length === userIDs.length &&
+        timeEntryArr.length === userIDs.length
+      ) {
+        setUsersFullName(nameArr);
+        setUsersTimeEntries(timeEntryArr);
+        setIsFinished(true);
+      }
+    }
+  };
 
   const fetchActivityNames = () => {
     console.log(usersFullName);
