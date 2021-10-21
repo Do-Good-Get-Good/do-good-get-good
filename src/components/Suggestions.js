@@ -11,78 +11,46 @@ import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
-// import { useAdminGalleryFunction } from '../context/AdminGalleryContext'
-// import { RadioButton } from '../components/RadioButton'
 
-export const Suggestions = ({ navigation, search }) => {
+export const Suggestions = ({
+  navigation,
+  search,
+  adminGallery,
+  chooseActive,
+  inactiveActivities,
+}) => {
   const rout = useRoute();
-  // const adminGalleryContext = useAdminGalleryFunction()
   const userSuggestionsContext = useSuggestionFunction();
-  const [searchingWord, setSearchingWord] = useState("");
-  const [searchArray, setSearchArray] = useState([]);
   const [showArray, setShowArray] = useState([]);
-
-  const [userSaggestions, setUserSaggestions] = useState([]);
-  const [adminActivities, setAdminActivities] = useState([]);
-
   useEffect(() => {
     if (rout.name === "HomePage") {
-      setUserSaggestions(userSuggestionsContext.popularActivities);
-      setSuggestionsOrAdminGallery();
+      setShowArray(userSuggestionsContext.popularActivities);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      search.length === 0 &&
+      chooseActive === false
+    ) {
+      setShowArray(adminGallery);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      search.length === 0 &&
+      chooseActive === true
+    ) {
+      setShowArray(inactiveActivities);
+    } else {
+      console.log("Nothing to show in AdminGallery");
     }
-    // else if (rout.name === 'AdminActivityGallery ') {
-    //   setAdminActivities(adminGalleryContext.active)
-    //   setSearchingWord(search)
-    //   serchForRightObject()
-    // } else {
-    //   console.log('No rout')
-    // }
-    setSuggestionsOrAdminGallery();
-  }, [search, searchArray, showArray, rout.name]);
-
-  console.log(" userSaggestions", userSaggestions);
-
-  function serchForRightObject() {
-    if (rout.name === "AdminActivityGallery" && searchingWord != 0) {
-      const searchingThrough = adminActivities.filter(
-        (object) =>
-          object.title === searchingWord || object.city === searchingWord
-      );
-      console.log("searchingThrough", searchingThrough);
-      return setSearchArray(searchingThrough);
-    }
-  }
-
-  function setSuggestionsOrAdminGallery() {
-    serchForRightObject();
-
-    if (rout.name === "HomePage") {
-      setShowArray(userSaggestions);
-    }
-    // else if (
-    //   rout.name === 'AdminActivityGallery' &&
-    //   searchArray.length === 0
-    // ) {
-    //   setAdminActivities(adminGalleryContext.active)
-    //   setShowArray(adminActivities)
-    // } else {
-    //   setShowArray(searchArray)
-    // }
-    return showArray;
-  }
+  }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
 
   return (
     <View>
-      {/* <TouchableOpacity
-        onPress={() => navigation.navigate('AdminActivityGallery')}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AdminActivityGallery")}
       >
         <Text>click just ti try admin AdminActivityGallery</Text>
       </TouchableOpacity>
-      {rout.name === 'AdminActivityGallery' ? (
-        <RadioButton />
-      ) : ( */}
+
       <Text style={styles.topH1}>Förslag & inspiration</Text>
-      {/* )} */}
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
