@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
 import { CheckBox, ListItem } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import { format } from "date-fns";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
@@ -78,6 +79,7 @@ const ConfirmActivities = () => {
             .collection("Users")
             .doc(userIDs[i])
             .collection("time_entries")
+            .orderBy("date", "desc")
             .where("status_confirmed", "==", false)
             .get();
 
@@ -134,29 +136,33 @@ const ConfirmActivities = () => {
     for (let i = 0; i < userIDs.length; i++) {
       let userInfo = {
         fullName: usersFullName[i],
-        latestTimeEntryDate:
-          usersTimeEntries[i][usersTimeEntries[i].length - 1].date,
+        latestTimeEntryDate: format(
+          usersTimeEntries[i][0].date.toDate(),
+          "yyyy-MM-dd"
+        ),
         totalRegisteredHours:
           usersTimeEntries[i][usersTimeEntries[i].length - 1].time,
         timeEntries: usersTimeEntries[i],
+        checked: false,
       };
       tempArr.push(userInfo);
     }
     setMyUsers(tempArr);
-    console.log(tempArr);
   };
 
-  useEffect(() => {
-    if (checkAll) {
-      myUsers.map((user) => {
-        user.checked = true;
-      });
-    } else {
-      myUsers.map((user) => {
-        user.checked = false;
-      });
-    }
-  }, [checkAll]);
+  const markSelected = (selectedFullName) => {};
+
+  // useEffect(() => {
+  //   if (checkAll) {
+  //     myUsers.map((user) => {
+  //       user.checked = true;
+  //     });
+  //   } else {
+  //     myUsers.map((user) => {
+  //       user.checked = false;
+  //     });
+  //   }
+  // }, [checkAll]);
 
   return (
     <View style={styles.container}>
@@ -195,7 +201,7 @@ const ConfirmActivities = () => {
                     checked={user.checked}
                     checkedColor="#84BD00"
                     onPress={() => {
-                      user.checked = true;
+                      markSelected(user.fullName);
                     }}
                   />
                 </View>
@@ -215,7 +221,7 @@ const ConfirmActivities = () => {
                 </View>
                 <View style={styles.listItemContentDateView}>
                   <Text style={styles.listItemContentDateStyle}>
-                    {timeEntry.date}
+                    {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
                   </Text>
                 </View>
                 <View style={styles.listItemContentHourView}>
