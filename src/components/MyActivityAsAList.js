@@ -14,6 +14,7 @@ import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
+import { format } from "date-fns";
 
 export const MyActivityAsAList = ({ navigation }) => {
   // const activityList = useActivityFunction()
@@ -43,7 +44,7 @@ export const MyActivityAsAList = ({ navigation }) => {
             if (myActivity[j].id === timeAndStatus[i].activityId) {
               const myTimeAndTitle = {
                 title: myActivity[j].title,
-                date: timeAndStatus[i].date,
+                date: timeAndStatus[i].date.toDate(),
                 statusConfirmed: timeAndStatus[i].statusConfirmed,
                 time: timeAndStatus[i].time,
                 timeEntryID: timeAndStatus[i].fbDocumentID,
@@ -97,7 +98,7 @@ export const MyActivityAsAList = ({ navigation }) => {
               paddingTop: 10,
             }}
           >
-            {activity.date}
+            {format(activity.date, "yyyy-MM-dd")}
           </Text>
           <Text
             style={{

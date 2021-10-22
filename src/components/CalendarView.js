@@ -6,6 +6,7 @@ import { LocaleConfig } from "react-native-calendars";
 import { Icon } from "react-native-elements";
 import tw from "tailwind-react-native-classnames";
 import { format } from "date-fns";
+import toDate from "date-fns/toDate";
 import { ScrollView } from "react-native";
 import { Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
@@ -94,13 +95,14 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
 
   //Registers a users activity (saving to Firebase Firestore)
   const registerTimeEntry = () => {
+    let date = toDate(new Date(selectedDate));
     firestore()
       .collection("Users")
       .doc(auth().currentUser.uid)
       .collection("time_entries")
       .add({
         activity_id: activity.id,
-        date: selectedDate,
+        date: date,
         status_confirmed: false,
         time: hours,
       })
@@ -112,6 +114,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
 
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
+    let date = toDate(new Date(selectedDate));
     firestore()
       .collection("Users")
       .doc(auth().currentUser.uid)
@@ -119,7 +122,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       .doc(activity.timeEntryID)
       .set(
         {
-          date: selectedDate,
+          date: date,
           time: hours,
         },
         { merge: true }
