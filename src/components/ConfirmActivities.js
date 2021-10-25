@@ -6,7 +6,6 @@ import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 
 const ConfirmActivities = () => {
-  const [expanded, setExpanded] = useState(false);
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
@@ -148,6 +147,7 @@ const ConfirmActivities = () => {
         totalRegisteredHours: registeredHoursSum,
         timeEntries: usersTimeEntries[i],
         checked: false,
+        isOpen: false,
       };
       tempArr.push(userInfo);
     }
@@ -199,6 +199,17 @@ const ConfirmActivities = () => {
     }
   };
 
+  const openSelectedUser = (pressedUser) => {
+    const newUsersArr = myUsers.map((user) => {
+      return {
+        ...user,
+        isOpen:
+          user.fullName === pressedUser.fullName ? !user.isOpen : user.isOpen,
+      };
+    });
+    setMyUsers(newUsersArr);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -242,9 +253,9 @@ const ConfirmActivities = () => {
                 </View>
               </>
             }
-            isExpanded={expanded}
+            isExpanded={user.isOpen}
             onPress={() => {
-              setExpanded(!expanded);
+              openSelectedUser(user);
             }}
           >
             {user.timeEntries.map((timeEntry, index) => (
