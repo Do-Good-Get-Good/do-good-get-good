@@ -28,34 +28,15 @@ export const SuggestionProvider = ({ children }) => {
             title: activities[i].activity_title,
             city: activities[i].activity_city,
             description: activities[i].activity_description,
+            photo: activities[i].activity_photo,
           };
           setSuggestionsFB((prev) => [...prev, dataInfo]);
         }
       }
     };
+    console.log("suggestionsFB", suggestionsFB);
     popularActivities();
   }, []);
-  console.log("suggestionsFB", suggestionsFB);
-
-  //   {
-  //     idSuggestion: '1',
-  //     photo:
-  //       'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-  //     title: 'Katthem',
-  //     city: 'Götebrg',
-  //     description: 'Städning, matning och en massa kel!',
-  //     active: true
-  //   },
-  //   {
-  //     idSuggestion: '2',
-  //     photo:
-  //       'https://images.pexels.com/photos/7469220/pexels-photo-7469220.jpeg?auto=compress&cs=tinysrgb&h=750&w=1260',
-  //     title: 'Studiehjälp kjkkjjkljljoijinlojokojinbhbjhbjbojiuj ',
-  //     city: 'Malmö',
-  //     description: 'Hjälper elever med läxorna',
-  //     active: true
-  //   }
-  // ])
 
   return (
     <SuggestionContext.Provider

@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { StyleSheet, View, TextInput } from "react-native";
 import { Icon } from "react-native-elements";
 
 import { useRoute } from "@react-navigation/native";
@@ -59,13 +52,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-    // borderColor: 'black',
-    // borderWidth: 1,
+
     paddingVertical: 10,
     marginHorizontal: 16,
     marginVertical: 16,
     backgroundColor: "white",
-    // overflow: 'hidden',
+
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "white",
@@ -95,9 +87,9 @@ const styles = StyleSheet.create({
   textAktiva: {
     fontSize: 20,
   },
-  textRadioButtonFilter: {
-    flex: 1,
-    flexDirection: "row",
-    marginHorizontal: 16,
-  },
+  // textRadioButtonFilter: {
+  //   flex: 1,
+  //   flexDirection: "row",
+  //   marginHorizontal: 16,
+  // },
 });

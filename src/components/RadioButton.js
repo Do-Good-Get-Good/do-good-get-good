@@ -9,8 +9,6 @@ import {
   TextInput,
 } from "react-native";
 
-// import { DropDownSmall } from "./DropDownSmall";
-
 export const RadioButton = ({}) => {
   const [jaButton, setJaButton] = useState(true);
   const [nejButton, setNejButton] = useState(false);
@@ -77,9 +75,6 @@ export const RadioButton = ({}) => {
               ) : null}
             </View>
           </TouchableOpacity>
-          {/* <View style={styles.dropDown}>
-            <DropDownSmall></DropDownSmall>
-          </View> */}
         </View>
       </View>
     </View>
@@ -90,11 +85,13 @@ const styles = StyleSheet.create({
   textAktiva: {
     fontSize: 20,
     paddingTop: 8,
+    color: "#333333",
   },
   textJaNej: {
     fontSize: 16,
     paddingTop: 2,
     marginLeft: 5,
+    color: "#333333",
   },
   textRadioButtonFilter: {
     flex: 1,
@@ -114,19 +111,4 @@ const styles = StyleSheet.create({
     margin: 4,
     backgroundColor: "#333333",
   },
-  // dropDown: {
-  //   flex: 4,
-  //   ...Platform.select({
-  //     ios: {
-  //       shadowOffset: {
-  //         height: 2,
-  //       },
-  //       shadowOpacity: 0.3,
-  //       shadowRadius: 1,
-  //     },
-  //     android: {
-  //       elevation: 2,
-  //     },
-  //   }),
-  // },
 });

@@ -1,19 +1,16 @@
 import React, { useContext, useState } from "react";
 import {
-  Text,
   StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
-  Button,
-  Platform,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
 import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
-import UserContext from "../context/UserContext";
-// import { StatusBar } from 'expo-status-bar'
 
 import Menu from "../components/Menu";
 import { SuggestionProvider } from "../context/SuggestionContext";
@@ -25,7 +22,6 @@ export const HomePage = ({ navigation }) => {
 
   return (
     <SafeAreaView style={styles.view}>
-      {/* <StatusBar style="auto" /> */}
       <Menu />
       <ScrollView>
         {activity.myActivities.length != 0 ? (
@@ -38,6 +34,12 @@ export const HomePage = ({ navigation }) => {
             <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
             </SuggestionProvider>
+
+            <TouchableOpacity
+              onPress={() => navigation.navigate("CreateActivity")}
+            >
+              <Text>"go to create activity"</Text>
+            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.container}>

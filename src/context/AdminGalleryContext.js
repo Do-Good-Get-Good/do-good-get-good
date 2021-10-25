@@ -16,40 +16,8 @@ export const AdminGalleryProvider = ({ children }) => {
   const [searchingWord, setSearchingWord] = useState("");
 
   useEffect(() => {
-    if (chooseInactive === false) {
-      let activeArray = [];
-      const allActiveActivities = async () => {
-        const allActiveActivities = await firestore()
-          .collection("Activities")
-          .where("active_status", "==", true)
-          .get();
-
-        let activities = allActiveActivities.docs.map((doc) => doc.data());
-
-        if (
-          activities != null &&
-          activities.length > activitiesGallery.length
-        ) {
-          for (let i = 0; i < activities.length; i++) {
-            const dataInfo = {
-              id: activities[i].activityID,
-              title: activities[i].activity_title,
-              city: activities[i].activity_city,
-              description: activities[i].activity_description,
-              popular: activities[i].activity_tg_favorite,
-            };
-            activeArray.push(dataInfo);
-            setActivitiesGallery(activeArray);
-          }
-        }
-      };
-      allActiveActivities();
-    }
-  }, []);
-
-  useEffect(() => {
     let inactiveArray = [];
-
+    // if (chooseInactive === true) {
     const setInactive = async () => {
       const allActiveActivities = await firestore()
         .collection("Activities")
@@ -66,6 +34,7 @@ export const AdminGalleryProvider = ({ children }) => {
             city: activities[i].activity_city,
             description: activities[i].activity_description,
             popular: activities[i].activity_tg_favorite,
+            photo: activities[i].activity_photo,
           };
           inactiveArray.push(dataInfo);
 
@@ -74,27 +43,28 @@ export const AdminGalleryProvider = ({ children }) => {
       }
     };
     setInactive();
+    // }
   }, []);
 
-  useEffect(() => {
-    let array = [];
-    const serchForRightObject = () => {
-      if (searchingWord != "") {
-        const searchingThrough = activitiesGallery.filter(
-          (object) =>
-            object.title === searchingWord || object.city === searchingWord
-        );
-        array.push(searchingThrough);
-        setSearchArray(array);
-      }
-    };
-    serchForRightObject();
-  }, [searchingWord]);
+  // useEffect(() => {
+  //   let array = [];
+  //   const serchForRightObject = () => {
+  //     if (searchingWord != "") {
+  //       const searchingThrough = activitiesGallery.filter(
+  //         (object) =>
+  //           object.title === searchingWord || object.city === searchingWord
+  //       );
+  //       array.push(searchingThrough);
+  //       setSearchArray(array);
+  //     }
+  //   };
+  //   serchForRightObject();
+  // }, [searchingWord]);
 
   return (
     <AdminGalleryContext.Provider
       value={{
-        gallery: activitiesGallery,
+        // gallery: activitiesGallery,
         showSearchObject: searchArray,
         chooseActiveOrNot: setchooseInactive,
         word: setSearchingWord,

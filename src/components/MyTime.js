@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, FlatList, SafeAreaView, View } from "react-native";
+import { Text, StyleSheet, SafeAreaView, View } from "react-native";
 
 export const MyTime = ({}) => {
   const today = new Date();

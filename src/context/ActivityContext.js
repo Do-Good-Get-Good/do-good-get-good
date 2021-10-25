@@ -4,17 +4,36 @@ import auth from "@react-native-firebase/auth";
 
 const ActivitynContext = React.createContext();
 
+// const ActivitynContext = React.createContext({
+//   showAllListInActivitiesList: true,
+//   setShowAllListInActivitiesList: () => {},
+// });
+
+// const ActivitiesListConsumer = () => {
+//   const {showAllListInActivitiesList, setShowAllListInActivitiesList} = useContext()
+// }
+
+// type ActivitiesInformationType = {
+//   id: String,
+//   title: String,
+//   city: String,
+//   photo: String,
+// };
+
 export const useActivityFunction = () => {
   return useContext(ActivitynContext);
 };
 
 export const ActivityProvider = ({ children }) => {
+  const [trueOrFalse, setTrueOrFalse] = useState(false);
   const [activitiesInformation, setActivitiesInformation] = useState([]);
   const [timeEntry, setTimeEntry] = useState([]);
   const [myActivitiesIDandAccumTime, setMyActivitiesIDandAccumTime] = useState(
     []
   );
   const [isFinished, setIsFinished] = useState(false);
+  const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
+    useState([]);
 
   useEffect(() => {
     const getActivitiesID = async () => {
@@ -31,28 +50,33 @@ export const ActivityProvider = ({ children }) => {
               activityID: data[i].activity_id,
             };
             setMyActivitiesIDandAccumTime((prev) => [...prev, idAndTime]);
-            setIsFinished(true);
           }
+        console.log(
+          "UUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUUSER useEffect",
+          myActivitiesIDandAccumTime
+        );
       }
+      setIsFinished(true);
     };
     getActivitiesID();
   }, []);
 
   useEffect(() => {
+    let timeArray = [];
     if (isFinished === true) {
-      const fetchActivityTimeEntryAndStatus = async () => {
+      const onlyFiveActivityTimeEntryAndStatus = async () => {
         const timeAndStatus = await firestore()
           .collection("Users")
           .doc(auth().currentUser.uid)
           .collection("time_entries")
+          .orderBy("date", "desc")
+          .limit(5)
           .get();
         let data = timeAndStatus.docs.map((doc) => doc.data());
         let docId = timeAndStatus.docs.map((doc) => doc.id);
 
         if (data != null) {
           for (let i = 0; i < data.length; i++) {
-            // data[i]
-
             let entryTime = {
               activityId: data[i].activity_id,
               date: data[i].date,
@@ -60,16 +84,52 @@ export const ActivityProvider = ({ children }) => {
               statusConfirmed: data[i].status_confirmed,
               fbDocumentID: docId[i],
             };
-            setTimeEntry((prev) => [...prev, entryTime]);
+            timeArray.push(entryTime);
+            setTimeEntry(timeArray);
           }
-
-          // setTimeEntry(timeAndStatus.docs.map((doc) => doc.data()))
         }
       };
-      // console.log('HELLO FRON INFO PLACE')
-      fetchActivityTimeEntryAndStatus();
+
+      onlyFiveActivityTimeEntryAndStatus();
     }
-  }, [myActivitiesIDandAccumTime]);
+  }, [isFinished]);
+
+  useEffect(() => {
+    let timeArray = [];
+    if (isFinished === true && trueOrFalse === true) {
+      const allActivityTimeEntryAndStatus = async () => {
+        const timeAndStatus = await firestore()
+          .collection("Users")
+          .doc(auth().currentUser.uid)
+          .collection("time_entries")
+          .orderBy("date", "desc")
+          .get();
+        let data = timeAndStatus.docs.map((doc) => doc.data());
+        let docId = timeAndStatus.docs.map((doc) => doc.id);
+
+        if (data != null) {
+          for (let i = 0; i < data.length; i++) {
+            let entryTime = {
+              activityId: data[i].activity_id,
+              date: data[i].date,
+              time: data[i].time,
+              statusConfirmed: data[i].status_confirmed,
+              fbDocumentID: docId[i],
+            };
+
+            timeArray.push(entryTime);
+            setTimeEntryArrayForMyTimePage(timeArray);
+          }
+          console.log(
+            "TTTTTTTTTIIIIMEE ENTRY USE EFFECT",
+            timeEntryArrayForMyTimePage
+          );
+        }
+      };
+
+      allActivityTimeEntryAndStatus();
+    }
+  }, [trueOrFalse, isFinished]);
 
   useEffect(() => {
     if (
@@ -89,49 +149,29 @@ export const ActivityProvider = ({ children }) => {
               id: id.activityID,
               title: info.activity_title,
               city: info.activity_city,
+              photo: info.activity_photo,
             };
             setActivitiesInformation((prev) => [...prev, dataInfo]);
-            setIsFinished(false);
           }
-          // console.log('information.data()', information.data())
-
-          // const preventReplay = activitiesInformation.filter(
-          //   (object) => object.id === id.activityID
-          // )
-          // console.log('preventReplay.id', preventReplay)
-          // if (preventReplay.id != id.activityID) {
-
-          // }
-          // setActivitiesInformation(dataInfo)r
-          // if ( (activitiesInformation.length) < || != (myActivitiesIDandAccumTime.length) ) {}
         }
-
-        // return activitiesInformation
+        console.log("INFORMATION", activitiesInformation);
       };
       getActivitiesInformation();
     }
-  }, [myActivitiesIDandAccumTime]);
-  // getActivitiesID()
-  // getActivitiesInformation()
-  // getActivitiesInformation()
+  }, [isFinished]);
 
-  // console.log(
-  //   'myActivitiesIDandAccumTime !!!!!!!!!!',
-  //   myActivitiesIDandAccumTime
-  //   // 'myActivitiesIDandAccumTime.length',
-  //   // myActivitiesIDandAccumTime.length
-  // )
-  // console.log('INFORMATION', activitiesInformation)
-  // console.log('INFORMATION.length', activitiesInformation.length)
-  // console.log('TIME ENTRY USE EFFECT timeEntry', timeEntry)
-  // console.log('TIME ENTRY USE EFFECT timeEntry timeEntry.length', timeEntry)
+  const buttonShowAllPressed = () => {
+    setTrueOrFalse(true);
+  };
 
   return (
     <ActivitynContext.Provider
       value={{
+        getIfoFromActivitiesList: buttonShowAllPressed,
         timeAndStatus: timeEntry,
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
+        allListOfTimeEntry: timeEntryArrayForMyTimePage,
       }}
     >
       {children}

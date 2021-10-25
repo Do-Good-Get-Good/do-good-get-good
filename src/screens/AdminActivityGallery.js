@@ -16,6 +16,8 @@ import { DropDownSmall } from "../components/DropDownSmall";
 import { RadioButton } from "../components/RadioButton";
 import { Suggestions } from "../components/Suggestions";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+
 // import { useRoute } from "@react-navigation/native";
 
 // import UserContext from '../context/UserContext'
@@ -23,6 +25,7 @@ import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 export const AdminActivityGallery = ({ navigation }) => {
   const adminGalleryContext = useAdminGalleryFunction();
+  const createActivityContext = useCreateActivityFunction();
   console.log("gallery");
   // const loggedInUser = useContext(UserContext)
   console.log(
@@ -56,12 +59,15 @@ export const AdminActivityGallery = ({ navigation }) => {
           </View>
         </View>
         {/* <AdminGalleryProvider> */}
-        <Suggestions
-          inactiveActivities={adminGalleryContext.inactiveActivities}
-          chooseActive={adminGalleryContext.activeOrInactiveActivity}
-          search={adminGalleryContext.showSearchObject}
-          adminGallery={adminGalleryContext.gallery}
-        ></Suggestions>
+        <View style={styles.suggestionContainer}>
+          <Suggestions
+            inactiveActivities={adminGalleryContext.inactiveActivities}
+            chooseActive={adminGalleryContext.activeOrInactiveActivity}
+            search={adminGalleryContext.showSearchObject}
+            adminGallery={createActivityContext.activeActivities}
+          ></Suggestions>
+        </View>
+
         {/* </AdminGalleryProvider> */}
       </ScrollView>
     </SafeAreaView>
@@ -74,7 +80,6 @@ const styles = StyleSheet.create({
   },
   container: {
     flex: 1,
-    marginHorizontal: 16,
   },
   containerRadioButtonAndDropDown: {
     flex: 1,
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
   dropDown: {
     flex: 1,
     margin: 5,
+    marginRight: 15,
 
     ...Platform.select({
       ios: {
@@ -100,5 +106,10 @@ const styles = StyleSheet.create({
         elevation: 2,
       },
     }),
+  },
+
+  suggestionContainer: {
+    flex: 1,
+    marginHorizontal: 16,
   },
 });

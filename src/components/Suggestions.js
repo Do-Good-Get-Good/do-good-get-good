@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
+import Images from "../Images";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
 
@@ -42,6 +43,16 @@ export const Suggestions = ({
     }
   }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
 
+  function setTheRightPhoto(activityObjectPhoto) {
+    for (let index = 0; index < Images.length; index++) {
+      if (activityObjectPhoto === Images[index].name) {
+        console.log("Images[index].image", Images[index].image);
+        return Images[index].image;
+      }
+    }
+  }
+  console.log("SUGESTION ADMIN GALLERY ARRAY adminGallery", adminGallery);
+
   return (
     <View>
       <TouchableOpacity
@@ -58,14 +69,39 @@ export const Suggestions = ({
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
-                  <Text style={styles.textTitle}>{suggestion.title}</Text>
+                  <Text numberOfLines={2} style={styles.textTitle}>
+                    {suggestion.title}
+                  </Text>
 
                   <View style={styles.iconsAndTextCityContainer}>
+                    {/* <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      marginTop: 6,
+                      paddingTop: suggestion.title.length > 16 ? 0 : 25,
+                    }}
+                  > */}
                     <Icon
                       type="material-community"
                       name="map-marker-outline"
+                      color="#333333"
                       size={25}
                     />
+
+                    {/* <Text
+                      style={{
+                        flex: 1,
+
+                        // marginTop: 20,
+                        fontSize: 18,
+                        paddingTop: 5,
+                        marginLeft: 12,
+                        paddingTop: suggestion.title.length > 16 ? 0 : 25,
+                      }}
+                    >
+                      {suggestion.city}
+                    </Text> */}
                     <Text style={styles.textCity}>{suggestion.city}</Text>
                   </View>
 
@@ -73,6 +109,7 @@ export const Suggestions = ({
                     <Icon
                       type="material-community"
                       name="information-outline"
+                      color="#333333"
                       size={25}
                     />
                     <Text numberOfLines={2} style={styles.textDescription}>
@@ -82,9 +119,7 @@ export const Suggestions = ({
                 </View>
                 <Image
                   style={styles.image}
-                  source={{
-                    uri: suggestion.photo,
-                  }}
+                  source={setTheRightPhoto(suggestion.photo)}
                 />
               </View>
 
@@ -103,8 +138,7 @@ const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
-
-    marginHorizontal: 16,
+    color: "#333333",
     marginTop: 10,
   },
 
@@ -116,7 +150,6 @@ const styles = StyleSheet.create({
   },
   insideActivityContainer: {
     //********************* */
-    marginHorizontal: 16,
 
     flex: 1,
     justifyContent: "center",
@@ -145,7 +178,8 @@ const styles = StyleSheet.create({
     flex: 1,
 
     height: 100,
-    resizeMode: "cover",
+    resizeMode: "contain",
+    // resizeMode: "cover",
     alignItems: "center",
 
     marginRight: 12,
@@ -171,6 +205,7 @@ const styles = StyleSheet.create({
     flex: 2,
     fontSize: 20,
     fontWeight: "bold",
+    color: "#333333",
   },
   textCity: {
     //*************** */
@@ -198,6 +233,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
+    color: "#333333",
 
     fontSize: 16,
 
