@@ -135,14 +135,17 @@ const ConfirmActivities = () => {
   const fillUsersWithInfo = () => {
     let tempArr = [];
     for (let i = 0; i < userIDs.length; i++) {
+      var registeredHoursSum = 0;
+      for (let j = 0; j < usersTimeEntries[i].length; j++) {
+        registeredHoursSum += usersTimeEntries[i][j].time;
+      }
       let userInfo = {
         fullName: usersFullName[i],
         latestTimeEntryDate: format(
           usersTimeEntries[i][0].date.toDate(),
           "yyyy-MM-dd"
         ),
-        totalRegisteredHours:
-          usersTimeEntries[i][usersTimeEntries[i].length - 1].time,
+        totalRegisteredHours: registeredHoursSum,
         timeEntries: usersTimeEntries[i],
         checked: false,
       };
