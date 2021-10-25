@@ -6,8 +6,9 @@ import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 
 const ConfirmActivities = () => {
-  const [checkAll, setCheckAll] = useState(false);
   const [expanded, setExpanded] = useState(false);
+  const [checkAll, setCheckAll] = useState(false);
+  const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [userIDs, setUserIDs] = useState([]);
   const [usersFullName, setUsersFullName] = useState([]);
@@ -150,19 +151,50 @@ const ConfirmActivities = () => {
     setMyUsers(tempArr);
   };
 
-  const markSelected = (selectedFullName) => {};
+  // Check/uncheck the selected users checkbox
+  const markSelected = (selectedUser) => {
+    const newUsersArr = myUsers.map((user) => {
+      return {
+        ...user,
+        checked:
+          user.fullName === selectedUser.fullName
+            ? !user.checked
+            : user.checked,
+      };
+    });
+    setMyUsers(newUsersArr);
+    if (
+      newUsersArr.filter((user) => user.checked === true).length ===
+      myUsers.length
+    ) {
+      setCheckAll(true);
+      setChecked(true);
+    } else {
+      setCheckAll(false);
+      setChecked(false);
+    }
+  };
 
-  // useEffect(() => {
-  //   if (checkAll) {
-  //     myUsers.map((user) => {
-  //       user.checked = true;
-  //     });
-  //   } else {
-  //     myUsers.map((user) => {
-  //       user.checked = false;
-  //     });
-  //   }
-  // }, [checkAll]);
+  // Check/uncheck all users checkbox
+  const selectAll = (checked) => {
+    if (checked) {
+      setCheckAll(true);
+      setChecked(true);
+      let newUsersArr = myUsers.map((user) => ({
+        ...user,
+        checked: true,
+      }));
+      setMyUsers(newUsersArr);
+    } else {
+      setCheckAll(false);
+      setChecked(false);
+      let newUsersArr = myUsers.map((user) => ({
+        ...user,
+        checked: false,
+      }));
+      setMyUsers(newUsersArr);
+    }
+  };
 
   return (
     <View style={styles.container}>
@@ -172,10 +204,10 @@ const ConfirmActivities = () => {
           title="Markera alla"
           iconRight
           containerStyle={styles.checkBoxStyle}
-          checked={checkAll}
+          checked={checked}
           checkedColor="#84BD00"
           onPress={() => {
-            setCheckAll(!checkAll);
+            selectAll(!checkAll);
           }}
           textStyle={styles.headerTextSmall}
         />
@@ -201,7 +233,7 @@ const ConfirmActivities = () => {
                     checked={user.checked}
                     checkedColor="#84BD00"
                     onPress={() => {
-                      markSelected(user.fullName);
+                      markSelected(user);
                     }}
                   />
                 </View>
@@ -236,20 +268,32 @@ const ConfirmActivities = () => {
       </View>
       <TouchableNativeFeedback
         onPress={() => {
-          // Code to run when pressed
+          // Logs the selected users full name to console
+          let selectedUsers = myUsers.filter((user) => {
+            if (user.checked) {
+              return user;
+            }
+          });
+          for (let i = 0; i < selectedUsers.length; i++) {
+            console.log(selectedUsers[i].fullName);
+          }
         }}
-        disabled={checkAll ? false : true}
+        disabled={
+          myUsers.filter((user) => user.checked === true).length > 0
+            ? false
+            : true
+        }
       >
         <View
           style={
-            checkAll
+            myUsers.filter((user) => user.checked === true).length > 0
               ? styles.confirmButton
               : [styles.confirmButton, { backgroundColor: "#B7B7B7" }]
           }
         >
           <Text
             style={
-              checkAll
+              myUsers.filter((user) => user.checked === true).length > 0
                 ? styles.confirmButtonText
                 : [styles.confirmButtonText, { opacity: 0.4 }]
             }
