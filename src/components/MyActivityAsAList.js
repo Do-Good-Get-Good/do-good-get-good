@@ -31,12 +31,11 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
               entryTime.timeAndStatus[i].activityId
             ) {
               const myTimeAndTitle = {
-
-                title: myActivity[j].title,
-                date: timeAndStatus[i].date.toDate(),
-                statusConfirmed: timeAndStatus[i].statusConfirmed,
-                time: timeAndStatus[i].time,
-                timeEntryID: timeAndStatus[i].fbDocumentID,
+                title: entryTime.myActivities[j].title,
+                date: entryTime.timeAndStatus[i].date.toDate(),
+                statusConfirmed: entryTime.timeAndStatus[i].statusConfirmed,
+                time: entryTime.timeAndStatus[i].time,
+                timeEntryID: entryTime.timeAndStatus[i].fbDocumentID,
               };
               activityAndTimeEntryArray.push(myTimeAndTitle);
               setTimeEntryList(activityAndTimeEntryArray);
@@ -51,7 +50,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
             if (entryTime.myActivities[j].id === showAllList[i].activityId) {
               const myTimeAndTitle = {
                 title: entryTime.myActivities[j].title,
-                date: showAllList[i].date,
+                date: showAllList[i].date.toDate(),
                 statusConfirmed: showAllList[i].statusConfirmed,
                 time: showAllList[i].time,
                 timeEntryID: showAllList[i].fbDocumentID,
