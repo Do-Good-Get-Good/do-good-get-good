@@ -1,13 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  TextInput,
-} from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
 export const RadioButton = ({}) => {
   const [jaButton, setJaButton] = useState(true);

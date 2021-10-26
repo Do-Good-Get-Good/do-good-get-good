@@ -14,12 +14,8 @@ export const DropDownSmall = ({}) => {
   const [mainWordCreateActivity, setMainWordCreateActivity] =
     useState("Aktivitet");
   const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
-
   const [openDropDown, setOpenDropDown] = useState(false);
-  console.log(
-    "creactActivityContext.activeActivities DROP DOWN",
-    creactActivityContext.activeActivities[0]
-  );
+
   useEffect(() => {
     if (rout.name === "CreateActivity") {
       let newArray = [];
@@ -41,14 +37,11 @@ export const DropDownSmall = ({}) => {
     }
   }, [rout.name]);
 
-  console.log("sortArray DROP DOWN", sortArray);
-
   const pressDropDawn = () => {
     setOpenDropDown(true);
     if (openDropDown === true) {
       setOpenDropDown(false);
     }
-    // openDropDown === true ? setOpenDropDown(false) : setOpenDropDown(true);
   };
 
   function pressSelectionInsideDropDown(selection, index) {

@@ -26,20 +26,14 @@ export const CreateActivity = ({}) => {
   const titleForNewActivityWithCreateNewUser = "Skapa aktivitet";
   const titleForExistingActivityWithCreateNewUser =
     "Lägg till aktivitet för användare";
-  const [newActivity, setNewActivity] = useState({
-    active_status: "true",
-    activity_city: "",
-    activity_description: "",
-    activity_photo: "",
-    activity_place: "",
-    activity_title: "",
-    tg_favorite: "false",
-  });
+  const [title, setTitle] = useState("");
+  const [place, setPlace] = useState("");
+  const [city, setCity] = useState("");
+  const [description, setDescription] = useState("");
+  const [photo, setPhoto] = useState("");
+  const [newActivity, setNewActivity] = useState({});
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
-  const placeholderAktivitet = ["Aktivitet", " [required]"];
-  // const placeholderRequired = " ";
-  console.log("createActivityContext inCREAC", createActivityContext);
 
   useEffect(() => {
     if (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet") {
@@ -95,19 +89,57 @@ export const CreateActivity = ({}) => {
     }
   }
 
+  function sendNewActivityToCreateActivityContext() {
+    if (
+      title != " " &&
+      city != " " &&
+      place != " " &&
+      title.trim() &&
+      city.trim() &&
+      place.trim()
+    ) {
+      setNewActivity({
+        active_status: true,
+        activity_city: city,
+        activity_description: description,
+        activity_photo: "symbol_hands_heart-DEFAULT",
+        activity_place: place,
+        activity_title: title,
+        tg_favorite: checkBoxPressed,
+      });
+
+      setTitle("");
+      setPlace("");
+      setCity("");
+      setDescription("");
+      setCheckBoxPressed(false);
+      // setPhoto("");
+    } else {
+      console.log("One of fild is empty");
+    }
+  }
+
+  useEffect(() => {
+    createActivityContext.setNewActivity(newActivity);
+  }, [newActivity]);
+
   function twoBottomButtonsForAllViews() {
     if (whileCreatingNewUser === true) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <Text style={styles.buttonSave}>Spara</Text>
-          <LinearGradient
-            colors={["#84BD00", "#5B6770"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.buttonBorderStyleButtonBackAndCancel}
+          <TouchableOpacity
+            onPress={() => sendNewActivityToCreateActivityContext()}
           >
-            <Text style={styles.buttonBack}>Tillbaka</Text>
-          </LinearGradient>
+            <Text style={styles.buttonSave}>Spara</Text>
+            <LinearGradient
+              colors={["#84BD00", "#5B6770"]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonBorderStyleButtonBackAndCancel}
+            >
+              <Text style={styles.buttonBack}>Tillbaka</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       );
     } else if (whileCreatingNewUser === false) {
@@ -132,60 +164,45 @@ export const CreateActivity = ({}) => {
       <View style={styles.containerForAllInput}>
         <TextInput
           style={styles.textInputTitleCityPlace}
-          numberOfLines={2}
-          // onChangeText={setNewActivity.activity_title}
-          value={newActivity.activity_title}
-          // placeholder={placeholderAktivotet[0] + placeholderAktivotet[1]}
-          placeholderTextColor="#333333"
-          // placeholderTextColor={placeholderAktivotet[0] ? "black" : "gray"}
-          // placeholderTextColor={placeholderAktivotet[1] ? "black" : "gray"}
-          // placeHolderStyle={{
-
-          // }}
+          // numberOfLines={1}
+          maxLength={30}
+          onChangeText={setTitle}
+          value={title}
+          placeholder="Aktivitet [required]"
+          placeholderTextColor="#B7B7B7"
         />
         <TextInput
           style={styles.textInputTitleCityPlace}
-          numberOfLines={2}
-          onChangeText={setNewActivity.activity_title}
-          value={newActivity.activity_title}
+          maxLength={30}
+          onChangeText={setPlace}
+          value={place}
           placeholder="Var [required]"
-          placeholderTextColor="#333333"
-          // placeholderTextColor={placeholderAktivotet[0] ? "black" : "gray"}
-          // placeholderTextColor={placeholderAktivotet[1] ? "black" : "gray"}
-          // placeHolderStyle={{
-
-          // }}
+          placeholderTextColor="#B7B7B7"
         />
         <TextInput
           style={styles.textInputTitleCityPlace}
-          numberOfLines={2}
-          onChangeText={setNewActivity.activity_title}
-          value={newActivity.activity_title}
-          placeholderTextColor="#333333"
-          // placeholder={placeholderAktivotet[0] + placeholderAktivotet[1]}
-
-          // }}
+          maxLength={30}
+          onChangeText={setCity}
+          value={city}
+          placeholder="Aktör [required]"
+          placeholderTextColor="#B7B7B7"
         />
         <TextInput
           style={styles.textInputDescription}
-          numberOfLines={2}
-          onChangeText={setNewActivity.activity_title}
-          value={newActivity.activity_title}
-          // placeholder={placeholderAktivotet[0] + placeholderAktivotet[1]}
-          placeholderTextColor="#333333"
+          // maxLength={400}
+          numberOfLines={5}
+          multiline={true}
+          onChangeText={setDescription}
+          value={description}
+          placeholder="Vad [optional]"
+          placeholderTextColor="#B7B7B7"
         />
         <View style={styles.containerImageAndInsertButton}>
-          <LinearGradient
-            colors={["#84BD00", "#5B6770"]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.imageBorderStyle}
-          >
-            <Image
-              style={styles.image}
-              source={require("../img/activities_images/symbol_hands_heart-DEFAULT.png")}
-            ></Image>
-          </LinearGradient>
+          <Image
+            style={styles.image}
+            source={require("../img/activities_images/symbol_hands_heart-DEFAULT.png")}
+          ></Image>
+
           <TouchableOpacity>
             <LinearGradient
               colors={["#84BD00", "#5B6770"]}
@@ -361,17 +378,14 @@ const styles = StyleSheet.create({
   },
   textInputDescription: {
     flex: 1,
+    flexShrink: 1,
     paddingVertical: 13,
     paddingLeft: 11,
     marginTop: 13,
     fontSize: 18,
-
     marginBottom: 20,
     paddingBottom: 89,
-
-    // marginVertical: 16,
     backgroundColor: "white",
-
     borderRadius: 5,
     borderWidth: 1,
     borderColor: "white",
@@ -411,9 +425,18 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "contain",
-    margin: 2,
+    marginRight: 65,
+    marginTop: 10,
     height: 98,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: "#84BD00",
     backgroundColor: "white",
+    // flex: 1,
+    // resizeMode: "contain",
+    // margin: 2,
+    // height: 98,
+    // backgroundColor: "white",
   },
   buttonBorderStyle: {
     borderRadius: 5,

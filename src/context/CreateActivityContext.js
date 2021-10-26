@@ -15,6 +15,15 @@ export const CreateActivityProvider = ({ children }) => {
   const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
+  const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
+    active_status: "",
+    activity_city: "",
+    activity_description: "",
+    activity_photo: "",
+    activity_place: "",
+    activity_title: "",
+    tg_favorite: false,
+  });
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
@@ -43,16 +52,41 @@ export const CreateActivityProvider = ({ children }) => {
           }
         }
       };
-      console.log("AllActiveActvivitiesFB", allActiveActvivitiesFB);
+      console.log("CreateActivityContext all active actvivitiesFB useEffect");
       getAllActiveActivities();
     }
   }, []);
-  //   }, [adminNeedToSeeActivities]);
 
-  console.log(
-    "Create Activity context answerFromDropDownInCreateActivity",
-    answerFromDropDownInCreateActivity
-  );
+  useEffect(() => {
+    if (
+      createNewActivityInFB.activity_title &&
+      createNewActivityInFB.activity_place &&
+      createNewActivityInFB.activity_city
+    ) {
+      const setNewActivityToFireBase = async () => {
+        firestore()
+          .collection("Activities")
+          .add({
+            active_status: createNewActivityInFB.active_status,
+            activity_city: createNewActivityInFB.activity_city,
+            activity_description: createNewActivityInFB.activity_description,
+            activity_photo: createNewActivityInFB.activity_photo,
+            activity_place: createNewActivityInFB.activity_place,
+            activity_title: createNewActivityInFB.activity_title,
+            tg_favorite: createNewActivityInFB.tg_favorite,
+          })
+          .then(() => {
+            console.log("New Activity added to FireBase!");
+          });
+      };
+      setNewActivityToFireBase();
+    }
+  }, [createNewActivityInFB]);
+
+  // console.log(
+  //   "CreactActivityContext createNewActivityInFB",
+  //   createNewActivityInFB.activity_title
+  // );
 
   return (
     <CreateActivityContext.Provider
@@ -61,6 +95,7 @@ export const CreateActivityProvider = ({ children }) => {
         sendChoiceFromDropDown: answerFromDropDownInCreateActivity,
         sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
+        setNewActivity: setCreateNewActivityInFB,
       }}
     >
       {children}

@@ -194,20 +194,6 @@ const styles = StyleSheet.create({
 
     overflow: "hidden",
     fontSize: 20,
-    // flex: 1,
-    // width: 158,
-
-    // marginTop: 10,
-    // marginBottom: 15,
-    // borderRadius: 5,
-    // borderWidth: 1,
-    // borderColor: "#84BD00",
-    // textAlign: "center",
-
-    // paddingVertical: 10,
-    // fontWeight: "bold",
-    // overflow: "hidden",
-    // fontSize: 20,
   },
   activityIside: {
     flex: 1,
@@ -222,7 +208,7 @@ const styles = StyleSheet.create({
     height: 55,
     width: 200,
     alignItems: "center",
-    // justifyContent: "center",
+
     marginTop: 12,
   },
 });

@@ -46,12 +46,10 @@ export const Suggestions = ({
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
       if (activityObjectPhoto === Images[index].name) {
-        console.log("Images[index].image", Images[index].image);
         return Images[index].image;
       }
     }
   }
-  console.log("SUGESTION ADMIN GALLERY ARRAY adminGallery", adminGallery);
 
   return (
     <View>
@@ -145,20 +143,15 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 5,
-
     marginBottom: 15,
   },
   insideActivityContainer: {
-    //********************* */
-
     flex: 1,
     justifyContent: "center",
     marginVertical: 7,
-
     backgroundColor: "white",
     flexWrap: "wrap",
     borderRadius: 2,
-
     borderWidth: 1,
     borderColor: "white",
     ...Platform.select({
@@ -176,12 +169,9 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-
     height: 100,
     resizeMode: "contain",
-    // resizeMode: "cover",
     alignItems: "center",
-
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5,
@@ -191,7 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   textTitleCityDescriptipn: {
-    //*************** */
     flex: 2,
     marginRight: 7,
     alignItems: "flex-start",
@@ -201,42 +190,33 @@ const styles = StyleSheet.create({
   },
 
   textTitle: {
-    //*************** */
     flex: 2,
     fontSize: 20,
     fontWeight: "bold",
     color: "#333333",
   },
   textCity: {
-    //*************** */
     flex: 1,
-
-    // marginTop: 20,
     fontSize: 18,
     paddingTop: 5,
     marginLeft: 12,
   },
 
   textDescription: {
-    //*************** */
     flex: 1,
     fontSize: 18,
-
     paddingTop: 3,
     marginLeft: 12,
   },
 
   textLäsMer: {
-    //*************** */
     flex: 1,
     textDecorationLine: "underline",
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
     color: "#333333",
-
     fontSize: 16,
-
     textAlign: "right",
   },
 

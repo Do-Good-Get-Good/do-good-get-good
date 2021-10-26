@@ -26,18 +26,6 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 export const AdminActivityGallery = ({ navigation }) => {
   const adminGalleryContext = useAdminGalleryFunction();
   const createActivityContext = useCreateActivityFunction();
-  console.log("gallery");
-  // const loggedInUser = useContext(UserContext)
-  console.log(
-    "adminGalleryContext.inactiveActivities",
-    adminGalleryContext.inactiveActivities
-  );
-
-  console.log(
-    "adminGalleryContext.activeOrInactiveActivity",
-    adminGalleryContext.activeOrInactiveActivity
-  );
-  console.log("adminGalleryContext.gallery", adminGalleryContext.gallery);
 
   return (
     <SafeAreaView>

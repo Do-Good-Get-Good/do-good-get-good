@@ -21,9 +21,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [activity, setActivity] = useState({});
   const [isFinished, setIsFinished] = useState(false);
   const [myActivitiesArray, setMyActivitiesArray] = useState([]);
-  // const [oneMoreRender, setOneMoreRender] = useState(false);
-  // const [titlePadding, setTitlePadding] = useState(true)
-
   const [amountOfLines, setAmountOfLines] = useState(0);
 
   const onTextLayout = useCallback((e) => {
@@ -62,8 +59,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
       }
     }
   }, [isFinished, activityObject.length]);
-  // console.log("Images", Images[0].name);
-  // console.log("MyActivitiesArray", myActivitiesArray);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {

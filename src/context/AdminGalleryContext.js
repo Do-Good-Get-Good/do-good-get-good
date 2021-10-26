@@ -40,6 +40,7 @@ export const AdminGalleryProvider = ({ children }) => {
 
           setInactiveActivitiesGallery(inactiveArray);
         }
+        console.log("ActivityGaleryContext inactive activity in useEffect");
       }
     };
     setInactive();
