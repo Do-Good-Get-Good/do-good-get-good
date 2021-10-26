@@ -8,8 +8,8 @@ import { useActivityFunction } from "../context/ActivityContext";
 import Menu from "../components/Menu";
 
 export const MyTimePage = ({ navigation }) => {
-  const listOfAllTimeEntry = useActivityFunction();
 
+  const listOfAllTimeEntry = useActivityFunction();
   return (
     <SafeAreaView>
       <Menu />

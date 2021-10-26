@@ -126,12 +126,12 @@ export const Suggestions = ({
               </TouchableOpacity>
             </View>
           </TouchableOpacity>
-          // </View>
         ))}
       </View>
     </View>
   );
 };
+
 const styles = StyleSheet.create({
   topH1: {
     flex: 1,

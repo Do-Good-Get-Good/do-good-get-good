@@ -93,7 +93,6 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           >
             {activity.title}
           </Text>
-
           <Text
             style={{
               color: !activity.statusConfirmed ? "#333333" : "gray",
@@ -167,7 +166,6 @@ const styles = StyleSheet.create({
     flex: 1,
 
     justifyContent: "flex-start",
-
     marginBottom: 8,
   },
   title: {
@@ -200,7 +198,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     backgroundColor: "white",
     paddingHorizontal: 5,
-
     paddingVertical: 5,
   },
   buttonBorderStyle: {

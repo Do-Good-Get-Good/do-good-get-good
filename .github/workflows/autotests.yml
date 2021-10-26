@@ -37,9 +37,9 @@ jobs:
       # uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@6e23f271b4fb10248a260e72fe6d1bcddeea9f4a
     - uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
       if: always()
-      #with:
+      with:
         # The GitHub Token. This is only used, if none is provided via Env.
-        # GITHUB_TOKEN: # optional
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         # Glob for matching the Jest Output files
         #json-glob: "**/jest-output.json"
         # Specify a custom workdirectory if needed. By default env.GITHUB_WORKSPACE is used.

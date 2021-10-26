@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 import { Icon } from "react-native-elements";
-import LinearProgress from "react-native-elements/dist/linearProgress/LinearProgress";
 import CalendarView from "./CalendarView";
 import Images from "../Images";
 

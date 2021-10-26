@@ -33,6 +33,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
+
       <AdminGalleryProvider>
         <CreateActivityProvider>
           {/* <AdminProvider> */}
@@ -42,6 +43,7 @@ export default function App() {
           {/* </AdminProvider> */}
         </CreateActivityProvider>
       </AdminGalleryProvider>
+
     </SafeAreaProvider>
   );
 }
