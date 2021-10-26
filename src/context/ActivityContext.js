@@ -45,6 +45,7 @@ export const ActivityProvider = ({ children }) => {
           .collection("Users")
           .doc(auth().currentUser.uid)
           .collection("time_entries")
+          .orderBy("date", "desc")
           .get();
         let data = timeAndStatus.docs.map((doc) => doc.data());
         let docId = timeAndStatus.docs.map((doc) => doc.id);
