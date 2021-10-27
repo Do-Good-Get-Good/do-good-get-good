@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Text,
+  Image,
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
@@ -16,8 +17,10 @@ import Menu from "../components/Menu";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
+import { SuggestionProvider } from "../context/SuggestionContext";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
+import MyUsers from "../components/MyUsers";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -26,22 +29,26 @@ export const HomePage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
-      <ScrollView>
-        {userLevel === "admin" ? (
-          <View style={styles.container}>
+      {userLevel === "admin" ? (
+        <>
+          <ScrollView style={styles.container}>
             <ConfirmActivities></ConfirmActivities>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate("CreateActivity")}
-            >
-              <Text>"go to create activity"</Text>
-            </TouchableOpacity>
-          </View>
-        ) : null}
-        {userLevel === "user" ? (
-          <>
-            {activity.myActivities.length != 0 ? (
-              <View style={styles.container}>
+            <MyUsers></MyUsers>
+            <View style={styles.logo}>
+              <Image
+                source={require("../img/Technogarden-logotyp-Large.png")}
+                style={{ width: 140, height: "55%" }}
+              />
+            </View>
+          </ScrollView>
+          <FloatingActionButton />
+        </>
+      ) : null}
+      {userLevel === "user" ? (
+        <>
+          {activity.myActivities.length != 0 ? (
+            <View style={styles.view}>
+              <ScrollView style={styles.container}>
                 <MyActivities
                   myAccumulatedTime={activity.activitiesIDandAccumTime}
                   myActivities={activity.myActivities}
@@ -50,34 +57,33 @@ export const HomePage = ({ navigation }) => {
                 <SuggestionProvider>
                   <Suggestions navigation={navigation}></Suggestions>
                 </SuggestionProvider>
-
-                {/* <MyActivities
-                  myAccumulatedTime={activity.activitiesIDandAccumTime}
-                  myActivities={activity.myActivities}
-                ></MyActivities>
-                <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-                <Suggestions navigation={navigation}></Suggestions> */}
-              </View>
-            ) : (
-              <View style={styles.container}>
-                <SuggestionProvider>
-                  <Suggestions navigation={navigation}></Suggestions>
-                </SuggestionProvider>
-                <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
-              </View>
-            )}
-          </>
-        ) : null}
-        {/* <MyTime></MyTime> */}
-      </ScrollView>
-      {userLevel === "admin" ? <FloatingActionButton /> : null}
+                <View style={styles.logo}>
+                  <Image
+                    source={require("../img/Technogarden-logotyp-Large.png")}
+                    style={{ width: 140, height: "55%" }}
+                  />
+                </View>
+              </ScrollView>
+            </View>
+          ) : (
+            <ScrollView style={styles.container}>
+              <SuggestionProvider>
+                <Suggestions navigation={navigation}></Suggestions>
+              </SuggestionProvider>
+              <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+            </ScrollView>
+          )}
+        </>
+      ) : null}
+      {/* <MyTime></MyTime> */}
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    marginHorizontal: 16,
+    paddingHorizontal: 16,
+    flex: 1,
   },
   view: {
     flex: 1,
@@ -86,5 +92,13 @@ const styles = StyleSheet.create({
   myActivities: {
     flex: 1,
     marginTop: 20,
+  },
+  logo: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    // position: "absolute",
+    bottom: 0,
   },
 });

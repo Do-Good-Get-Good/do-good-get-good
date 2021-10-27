@@ -2,9 +2,11 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, Platform } from "react-native";
 import { FAB, Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useNavigation } from "@react-navigation/native";
 
-const FloatingActionButton = ({ navigation }) => {
+const FloatingActionButton = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
+  const navigation = useNavigation();
 
   return (
     <>
@@ -12,7 +14,10 @@ const FloatingActionButton = ({ navigation }) => {
         <View style={styles.menuItems}>
           <TouchableOpacity
             style={styles.buttonStyle}
-            // onPress={() => navigation.navigate("")}
+            onPress={() => {
+              navigation.navigate("CreateActivity");
+              setIsOpen(false);
+            }}
           >
             <Text>Lägg till aktivitet</Text>
           </TouchableOpacity>
@@ -45,6 +50,7 @@ export default FloatingActionButton;
 const styles = StyleSheet.create({
   fab: {
     bottom: 0,
+    zIndex: 1,
   },
   menuItems: {
     position: "absolute",

@@ -1,18 +1,20 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
-import { CheckBox, ListItem } from "react-native-elements";
+import { ListItem } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
+import { Icon } from "react-native-elements";
 
-const ConfirmActivities = () => {
-  const [checkAll, setCheckAll] = useState(false);
-  const [checked, setChecked] = useState(false);
+const MyUsers = () => {
+  const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [userIDs, setUserIDs] = useState([]);
   const [usersFullName, setUsersFullName] = useState([]);
   const [usersTimeEntries, setUsersTimeEntries] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
+  const sortOptions = ["A - Ö", "Inaktiva"];
+  const [sortBy, setSortBy] = useState("A - Ö");
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -154,51 +156,6 @@ const ConfirmActivities = () => {
     setMyUsers(tempArr);
   };
 
-  // Check/uncheck the selected users checkbox
-  const markSelected = (selectedUser) => {
-    const newUsersArr = myUsers.map((user) => {
-      return {
-        ...user,
-        checked:
-          user.fullName === selectedUser.fullName
-            ? !user.checked
-            : user.checked,
-      };
-    });
-    setMyUsers(newUsersArr);
-    if (
-      newUsersArr.filter((user) => user.checked === true).length ===
-      myUsers.length
-    ) {
-      setCheckAll(true);
-      setChecked(true);
-    } else {
-      setCheckAll(false);
-      setChecked(false);
-    }
-  };
-
-  // Check/uncheck all users checkbox
-  const selectAll = (checked) => {
-    if (checked) {
-      setCheckAll(true);
-      setChecked(true);
-      let newUsersArr = myUsers.map((user) => ({
-        ...user,
-        checked: true,
-      }));
-      setMyUsers(newUsersArr);
-    } else {
-      setCheckAll(false);
-      setChecked(false);
-      let newUsersArr = myUsers.map((user) => ({
-        ...user,
-        checked: false,
-      }));
-      setMyUsers(newUsersArr);
-    }
-  };
-
   const openSelectedUser = (pressedUser) => {
     const newUsersArr = myUsers.map((user) => {
       return {
@@ -213,43 +170,52 @@ const ConfirmActivities = () => {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.headerText}>Att godkänna</Text>
-        <CheckBox
-          title="Markera alla"
-          iconRight
-          containerStyle={styles.checkBoxStyle}
-          checked={checked}
-          checkedColor="#84BD00"
-          onPress={() => {
-            selectAll(!checkAll);
-          }}
-          textStyle={styles.headerTextSmall}
-        />
+        <Text style={styles.headerText}>Mina användare</Text>
+        <ListItem.Accordion
+          containerStyle={styles.sortDropdownContainerStyle}
+          style={styles.sortDropdownStyle}
+          underlayColor="#F5F5F5"
+          activeOpacity={0.65}
+          content={
+            <>
+              <ListItem.Content>
+                <ListItem.Title>{sortBy}</ListItem.Title>
+              </ListItem.Content>
+            </>
+          }
+          isExpanded={expanded}
+          onPress={() => setExpanded(!expanded)}
+        ></ListItem.Accordion>
+        {expanded ? (
+          <View style={styles.dropdown}>
+            {sortOptions.map((option, index) => (
+              <TouchableNativeFeedback
+                key={index}
+                onPress={() => {
+                  setSortBy(option);
+                  setExpanded(false);
+                }}
+              >
+                <View style={styles.dropdownItem}>
+                  <Text>{option}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            ))}
+          </View>
+        ) : null}
       </View>
+
       <View style={styles.content}>
         {myUsers.map((user, index) => (
           <ListItem.Accordion
             key={index}
             containerStyle={styles.listItemContainerStyle}
+            underlayColor="#F5F5F5"
+            activeOpacity={0.65}
             content={
               <>
                 <View style={styles.listItemStyle}>
                   <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
-                  <Text style={styles.listItemDateStyle}>
-                    {user.latestTimeEntryDate}
-                  </Text>
-                  <Text style={styles.listItemHourStyle}>
-                    {user.totalRegisteredHours} tim
-                  </Text>
-                  <CheckBox
-                    iconRight
-                    containerStyle={styles.listItemCheckBoxStyle}
-                    checked={user.checked}
-                    checkedColor="#84BD00"
-                    onPress={() => {
-                      markSelected(user);
-                    }}
-                  />
                 </View>
               </>
             }
@@ -277,129 +243,112 @@ const ConfirmActivities = () => {
                 </View>
               </View>
             ))}
+            <View style={styles.editUserIconView}>
+              <Icon
+                name="edit"
+                type="material"
+                size={25}
+                containerStyle={styles.editUserIcon}
+                onPress={() => {
+                  // navigation.navigate("EditUser")
+                }}
+              />
+            </View>
           </ListItem.Accordion>
         ))}
       </View>
-      <TouchableNativeFeedback
-        onPress={() => {
-          // Logs the selected users full name to console
-          let selectedUsers = myUsers.filter((user) => {
-            if (user.checked) {
-              return user;
-            }
-          });
-          for (let i = 0; i < selectedUsers.length; i++) {
-            console.log(selectedUsers[i].fullName);
-          }
-        }}
-        disabled={
-          myUsers.filter((user) => user.checked === true).length > 0
-            ? false
-            : true
-        }
-      >
-        <View
-          style={
-            myUsers.filter((user) => user.checked === true).length > 0
-              ? styles.confirmButton
-              : [styles.confirmButton, { backgroundColor: "#B7B7B7" }]
-          }
-        >
-          <Text
-            style={
-              myUsers.filter((user) => user.checked === true).length > 0
-                ? styles.confirmButtonText
-                : [styles.confirmButtonText, { opacity: 0.4 }]
-            }
-          >
-            Godkänn
-          </Text>
-        </View>
-      </TouchableNativeFeedback>
     </View>
   );
 };
 
-export default ConfirmActivities;
+export default MyUsers;
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    marginBottom: 50,
+  },
   header: {
     flexDirection: "row",
-    justifyContent: "space-between",
+    justifyContent: "center",
     alignItems: "center",
-    marginTop: 10,
-    paddingVertical: 6,
+    marginTop: 40,
+    marginBottom: 10,
   },
-  headerText: { fontSize: 22 },
-  headerTextSmall: { fontWeight: "400" },
-  checkBoxStyle: {
-    borderWidth: 0,
-    paddingHorizontal: 0,
+  headerText: {
+    width: "55%",
+    fontSize: 22,
+  },
+  sortDropdownContainerStyle: {
+    paddingHorizontal: 16,
     paddingVertical: 10,
-    marginTop: 10,
-    right: -15,
+    borderRadius: 5,
+    zIndex: 2,
+  },
+  sortDropdownStyle: {
+    width: "45%",
     backgroundColor: "#F5F5F5",
   },
-  content: {
-    paddingHorizontal: 10,
+  dropdown: {
+    width: "45%",
+    position: "absolute",
+    right: 0,
+    top: 45,
+    zIndex: 1,
+    backgroundColor: "#FFFFFF",
+    elevation: 5,
+  },
+  dropdownItem: {
+    paddingHorizontal: 16,
     paddingVertical: 10,
+  },
+  content: {
+    marginBottom: 10,
+  },
+  listItemContainerStyle: {
+    padding: 10,
     marginBottom: 10,
     backgroundColor: "#FFFFFF",
-    borderRadius: 5,
   },
-  listItemContainerStyle: { padding: 0 },
   listItemStyle: {
     flex: 1,
     flexDirection: "row",
-    marginVertical: 16,
     justifyContent: "space-between",
     alignItems: "center",
-    // paddingVertical: 6,
+    paddingVertical: 8,
   },
   listItemNameStyle: {
-    fontWeight: "bold",
-    // paddingVertical: 10,
-    fontSize: 15,
-    flex: 3,
-  },
-  listItemDateStyle: {
-    flex: 2,
-    textAlign: "center",
-    fontSize: 15,
-  },
-  listItemHourStyle: {
-    flex: 1.75,
-    textAlign: "center",
-    paddingRight: 15,
-    fontSize: 15,
-  },
-  listItemCheckBoxStyle: {
-    padding: 0,
-    right: -20,
-    position: "absolute",
+    fontSize: 18,
   },
   listItemContentStyle: {
-    backgroundColor: "#F5F5F5",
-    paddingVertical: 16,
+    marginTop: -10,
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 12,
     paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "center",
     borderRadius: 5,
   },
+  lastItemStyle: {
+    paddingBottom: 100,
+  },
   listItemContentNameView: { flex: 1 },
   listItemContentDateView: { flex: 1 },
   listItemContentHourView: { flex: 1 },
-  listItemContentNameStyle: { fontWeight: "bold", fontSize: 15 },
-  listItemContentDateStyle: { textAlign: "center", fontSize: 15 },
-  listItemContentHourStyle: { textAlign: "center", fontSize: 15 },
-  confirmButton: {
-    paddingVertical: 12,
-    backgroundColor: "#84BD00",
-    borderRadius: 5,
+  listItemContentNameStyle: { fontWeight: "bold" },
+  listItemContentDateStyle: { textAlign: "center" },
+  listItemContentHourStyle: { textAlign: "center" },
+  editUserIconView: {
+    alignItems: "flex-end",
+    backgroundColor: "white",
+    position: "relative",
+    bottom: 10,
+    width: "100%",
+    paddingTop: 75,
   },
-  confirmButtonText: {
-    alignSelf: "center",
-    fontSize: 20,
+  editUserIcon: {
+    position: "absolute",
+    right: 10,
+    bottom: 10,
   },
 });

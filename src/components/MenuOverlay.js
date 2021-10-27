@@ -89,11 +89,11 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             </Pressable>
           ) : null}
         </View>
-        <View style={tw`bg-blue-500 absolute bottom-14 self-center`}>
+        {/* <View style={tw`bg-blue-500 absolute bottom-14 self-center`}>
           <Text style={tw`text-sm text-center text-white p-1`}>
             Inloggad mail: {auth().currentUser.email}
           </Text>
-        </View>
+        </View> */}
         <Pressable
           style={styles.menuOverlayLogOutButton}
           onPress={() => {
@@ -155,8 +155,8 @@ const styles = StyleSheet.create({
   },
   menuOverlayLogOutButton: {
     position: "absolute",
-    bottom: 16,
-    alignSelf: "center",
+    bottom: 50,
+    paddingLeft: 75,
   },
   menuOverlayLogOutButtonText: {
     fontSize: 16,
