@@ -1,77 +1,82 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  FlatList,
-  View,
-  Image,
-  Button,
-  ListItem,
-  TouchableOpacity,
-  Pressable,
-} from "react-native";
+import React, { useContext, useState, useEffect } from "react";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
 import { format } from "date-fns";
 
-export const MyActivityAsAList = ({ navigation }) => {
-  // const activityList = useActivityFunction()
+export const MyActivityAsAList = ({ navigation, showAllList }) => {
+  const [oneMoreRender, setOneMoreRender] = useState(false);
+
   const entryTime = useActivityFunction();
   const rout = useRoute();
 
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
+  const [timeEntryList, setTimeEntryList] = useState([]);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-  const [myActivity, setMyActivity] = useState([]);
-  const [timeAndStatus, setTimeAndStatus] = useState([]);
-  const [timeEntryList, setTimeEntryList] = useState([]);
-  const [amountToShowInTheList, setAmountToShowInTheList] = useState(5);
 
   useEffect(() => {
-    setMyActivity(entryTime.myActivities);
-    setTimeAndStatus(entryTime.timeAndStatus);
-  }, [entryTime]);
-
-  useEffect(() => {
-    if (timeAndStatus.length > timeEntryList.length) {
-      const connectActivityNameAndTimeEntry = () => {
-        for (let i = 0; i < timeAndStatus.length; i++) {
-          for (let j = 0; j < myActivity.length; j++) {
-            if (myActivity[j].id === timeAndStatus[i].activityId) {
+    let activityAndTimeEntryArray = [];
+    if (rout.name === "HomePage") {
+      if (entryTime.timeAndStatus.length > timeEntryList.length) {
+        for (let i = 0; i < entryTime.timeAndStatus.length; i++) {
+          for (let j = 0; j < entryTime.myActivities.length; j++) {
+            if (
+              entryTime.myActivities[j].id ===
+              entryTime.timeAndStatus[i].activityId
+            ) {
               const myTimeAndTitle = {
-                title: myActivity[j].title,
-                date: timeAndStatus[i].date.toDate(),
-                statusConfirmed: timeAndStatus[i].statusConfirmed,
-                time: timeAndStatus[i].time,
-                timeEntryID: timeAndStatus[i].fbDocumentID,
+                title: entryTime.myActivities[j].title,
+                date: entryTime.timeAndStatus[i].date.toDate(),
+                statusConfirmed: entryTime.timeAndStatus[i].statusConfirmed,
+                time: entryTime.timeAndStatus[i].time,
+                timeEntryID: entryTime.timeAndStatus[i].fbDocumentID,
               };
-
-              setTimeEntryList((prev) => [...prev, myTimeAndTitle]);
+              activityAndTimeEntryArray.push(myTimeAndTitle);
+              setTimeEntryList(activityAndTimeEntryArray);
             }
           }
         }
-      };
-      connectActivityNameAndTimeEntry();
+      }
+    } else if (rout.name === "MyTimePage") {
+      if (showAllList.length > timeEntryList.length) {
+        for (let i = 0; i < showAllList.length; i++) {
+          for (let j = 0; j < entryTime.myActivities.length; j++) {
+            if (entryTime.myActivities[j].id === showAllList[i].activityId) {
+              const myTimeAndTitle = {
+                title: entryTime.myActivities[j].title,
+                date: showAllList[i].date.toDate(),
+                statusConfirmed: showAllList[i].statusConfirmed,
+                time: showAllList[i].time,
+                timeEntryID: showAllList[i].fbDocumentID,
+              };
+              activityAndTimeEntryArray.push(myTimeAndTitle);
+              setTimeEntryList(activityAndTimeEntryArray);
+              setOneMoreRender(true);
+            }
+          }
+        }
+      }
+    } else {
+      console.log("No rout");
     }
-  }, [myActivity]);
+  }, [
+    entryTime.timeAndStatus,
+    entryTime.myActivities,
+    showAllList,
+    rout,
+    oneMoreRender,
+  ]);
 
-  // const pressShowAllList = () => {
-  //   if (rout.name === 'HomePage') {
-  //     setAmountToShowInTheList(5)
-  //   } else {
-  //     setAmountToShowInTheList(timeAndStatus.length)
-  //   }
-  //   navigation.navigate('MyTimePage')
-  // }
-
-  // console.log('entryTime.timeAndStatus', entryTime.timeAndStatus)
-
-  // console.log('entryTime.myActivities', entryTime.myActivities)
-  // console.log('myActivity', myActivity)
+  const pressedButtonShowAll = () => {
+    entryTime.getIfoFromActivitiesList(true);
+    navigation.navigate("MyTimePage");
+  };
 
   return (
     <View style={styles.container}>
@@ -119,7 +124,7 @@ export const MyActivityAsAList = ({ navigation }) => {
             >
               <Icon
                 style={{ paddingTop: 5 }}
-                color={activity.statusConfirmed ? "#333333" : "black"}
+                color={activity.statusConfirmed ? "#333333" : "#333333"}
                 name="pencil-outline"
                 type="material-community"
                 size={25}
@@ -136,8 +141,15 @@ export const MyActivityAsAList = ({ navigation }) => {
         </View>
       ))}
       {rout.name === "HomePage" ? (
-        <TouchableOpacity onPress={() => navigation.navigate("MyTimePage")}>
-          <Text style={styles.textVissaAll}>Visa allt</Text>
+        <TouchableOpacity onPress={pressedButtonShowAll}>
+          <LinearGradient
+            colors={["#84BD00", "#5B6770"]}
+            start={{ x: 0, y: 0 }}
+            end={{ x: 1, y: 1 }}
+            style={styles.buttonBorderStyle}
+          >
+            <Text style={styles.textVissaAll}>Visa allt</Text>
+          </LinearGradient>
         </TouchableOpacity>
       ) : null}
       <CalendarView
@@ -162,21 +174,23 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginTop: 30,
     marginBottom: 10,
+    color: "#333333",
   },
 
   textVissaAll: {
     flex: 1,
-    width: 158,
+    letterSpacing: 1,
+    backgroundColor: "#F5F5F5",
 
-    marginTop: 10,
-    marginBottom: 15,
+    marginVertical: 1,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
+    borderColor: "#F5F5F5",
     textAlign: "center",
-    // paddingHorizontal: 10,
-    paddingVertical: 10,
-    fontWeight: "bold",
+
+    paddingTop: 12,
+    paddingHorizontal: 58,
+
     overflow: "hidden",
     fontSize: 20,
   },
@@ -187,14 +201,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
-});
+  buttonBorderStyle: {
+    borderRadius: 5,
+    height: 55,
+    width: 200,
+    alignItems: "center",
 
-// <Text
-//             style={{
-//               fontWeight: activity.activityStatus ? 'bold' : 'normal',
-//               textDecorationLine: activity.activityStatus
-//                 ? 'underline'
-//                 : null,
-//               flex: 1
-//             }}
-//           >
+    marginTop: 12,
+  },
+});

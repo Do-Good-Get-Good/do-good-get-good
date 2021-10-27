@@ -1,88 +1,72 @@
 import React, { useState, useEffect, useContext, useCallback } from "react";
+
 import {
   Text,
   StyleSheet,
-  FlatList,
   View,
   Image,
-  Button,
-  SectionList,
   TouchableOpacity,
   Platform,
 } from "react-native";
 
 import { Icon } from "react-native-elements";
 import CalendarView from "./CalendarView";
+import Images from "../Images";
 
-export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
+export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [activityObject, setActivityObject] = useState([]);
   const [timeObject, setTimeObject] = useState([]);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
   const [isFinished, setIsFinished] = useState(false);
-  // const [titlePadding, setTitlePadding] = useState(true)
-
+  const [myActivitiesArray, setMyActivitiesArray] = useState([]);
   const [amountOfLines, setAmountOfLines] = useState(0);
 
   const onTextLayout = useCallback((e) => {
     setAmountOfLines(e.nativeEvent.lines.length);
   }, []);
-  // const onTextLayout = useCallback((e) => {
-  //   setAmountOfLines(e.nativeEvent.lines.length)
-  // })
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
-  // console.log(" myActivities just came from context ", myActivities);
-  const [myActivitiesArray, setMyActivitiesArray] = useState([]);
-
   useEffect(() => {
     setActivityObject(myActivities);
-    if (myActivities.length === activityObject.length) {
+    setTimeObject(myAccumulatedTime);
+    if (activityObject.length === myActivities.length) {
       setIsFinished(true);
     }
-  }, []);
+  }, [myActivities, myAccumulatedTime]);
 
   useEffect(() => {
-    // setActivityObject(myActivities)
-    // getMyActivities()
+    let activitiAndTimeArray = [];
 
-    const connectActivityAndTime = () => {
-      if (
-        isFinished === true &&
-        activityObject.length > myActivitiesArray.length
-      ) {
-        for (let i = 0; i < activityObject.length; i++) {
-          for (let j = 0; j < myAccumulatedTime.length; j++) {
-            if (activityObject[i].id === myAccumulatedTime[j].activityID) {
-              const setAllInformation = {
-                title: activityObject[i].title,
-                city: activityObject[i].city,
-                time: myAccumulatedTime[j].accumulatedTime,
-                id: activityObject[i].id,
-              };
-              setMyActivitiesArray((prev) => [...prev, setAllInformation]);
-            }
+    if (activityObject.length > myActivitiesArray.length) {
+      for (let i = 0; i < activityObject.length; i++) {
+        for (let j = 0; j < timeObject.length; j++) {
+          if (activityObject[i].id === timeObject[j].activityID) {
+            const setAllInformation = {
+              title: activityObject[i].title,
+              city: activityObject[i].city,
+              time: timeObject[j].accumulatedTime,
+              id: activityObject[i].id,
+              photo: activityObject[i].photo,
+            };
+            activitiAndTimeArray.push(setAllInformation);
+            setMyActivitiesArray(activitiAndTimeArray);
           }
         }
       }
-    };
-    connectActivityAndTime();
-  }, [isFinished]);
+    }
+  }, [isFinished, activityObject.length]);
 
-  // function getMyActivities() {
-  //   setActivityObject(myActivities)
-  //   if (myActivities.length === activityObject.length) {
-  //     setIsFinished(true)
-  //   } else {
-  //     setActivityObject(myActivities)
-  //   }
-  // }
+  function setTheRightPhoto(activityObjectPhoto) {
+    for (let index = 0; index < Images.length; index++) {
+      if (activityObjectPhoto === Images[index].name) {
+        return Images[index].image;
+      }
+    }
+  }
 
-  // console.log('MyActivitiesArray', myActivitiesArray)
-  // console.log('activityObject', activityObject, isFinished)
   return (
     <View>
       <View style={styles.activityContainer}>
@@ -106,13 +90,12 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
                     flex: 1,
                     flexDirection: "row",
                     paddingTop: myActivity.title.length > 16 ? 0 : 25,
-                    // backgroundColor: > 1 ? 'pink' : 'yellow'
-                    // paddingTop: myActivity.title.length > 16 ? 0 : 25
                   }}
                 >
                   <Icon
                     type="material-community"
                     name="map-marker-outline"
+                    color="#333333"
                     size={25}
                   />
                   <Text style={styles.textCity}>{myActivity.city}</Text>
@@ -122,6 +105,7 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
                   <Icon
                     type="material-community"
                     name="clock-time-four-outline"
+                    color="#333333"
                     size={25}
                   />
                   <Text style={styles.textTime}>{myActivity.time} tim</Text>
@@ -129,9 +113,7 @@ export const MyActivities = ({ userID, myActivities, myAccumulatedTime }) => {
               </View>
               <Image
                 style={styles.image}
-                source={{
-                  uri: myActivity.photo,
-                }}
+                source={setTheRightPhoto(myActivity.photo)}
               />
             </View>
 
@@ -185,11 +167,13 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: "cover",
+    resizeMode: "contain",
+    // resizeMode: "cover",
     alignItems: "center",
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5,
+    height: 98,
   },
   photoAndText: {
     flex: 1,
@@ -206,16 +190,19 @@ const styles = StyleSheet.create({
   textTitle: {
     fontSize: 20,
     fontWeight: "bold",
+    color: "#333333",
   },
   textCity: {
     fontSize: 18,
     paddingTop: 5,
     marginLeft: 12,
+    color: "#333333",
   },
   textTime: {
     fontSize: 18,
     paddingTop: 3,
     marginLeft: 12,
+    color: "#333333",
   },
 
   iconCity: {},
@@ -233,6 +220,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: "#84BD00",
     borderColor: "#84BD00",
+    color: "#333333",
   },
   iconsAndTextTimeContainer: {
     flex: 1,

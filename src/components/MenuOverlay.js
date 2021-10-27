@@ -49,7 +49,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
-              navigation.navigate("LandingPage");
+              navigation.navigate("HomePage");
             }}
           >
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
