@@ -9,80 +9,57 @@ import {
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
+import Images from "../Images";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
-// import { useAdminGalleryFunction } from '../context/AdminGalleryContext'
-// import { RadioButton } from '../components/RadioButton'
 
-export const Suggestions = ({ navigation, search }) => {
+export const Suggestions = ({
+  navigation,
+  search,
+  adminGallery,
+  chooseActive,
+  inactiveActivities,
+}) => {
   const rout = useRoute();
-  // const adminGalleryContext = useAdminGalleryFunction()
   const userSuggestionsContext = useSuggestionFunction();
-  const [searchingWord, setSearchingWord] = useState("");
-  const [searchArray, setSearchArray] = useState([]);
   const [showArray, setShowArray] = useState([]);
-
-  const [userSaggestions, setUserSaggestions] = useState([]);
-  const [adminActivities, setAdminActivities] = useState([]);
-
   useEffect(() => {
     if (rout.name === "HomePage") {
-      setUserSaggestions(userSuggestionsContext.popularActivities);
-      setSuggestionsOrAdminGallery();
+      setShowArray(userSuggestionsContext.popularActivities);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      search.length === 0 &&
+      chooseActive === false
+    ) {
+      setShowArray(adminGallery);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      search.length === 0 &&
+      chooseActive === true
+    ) {
+      setShowArray(inactiveActivities);
+    } else {
+      console.log("Nothing to show in AdminGallery");
     }
-    // else if (rout.name === 'AdminActivityGallery ') {
-    //   setAdminActivities(adminGalleryContext.active)
-    //   setSearchingWord(search)
-    //   serchForRightObject()
-    // } else {
-    //   console.log('No rout')
-    // }
-    setSuggestionsOrAdminGallery();
-  }, [search, searchArray, showArray, rout.name]);
+  }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
 
-  console.log(" userSaggestions", userSaggestions);
-
-  function serchForRightObject() {
-    if (rout.name === "AdminActivityGallery" && searchingWord != 0) {
-      const searchingThrough = adminActivities.filter(
-        (object) =>
-          object.title === searchingWord || object.city === searchingWord
-      );
-      console.log("searchingThrough", searchingThrough);
-      return setSearchArray(searchingThrough);
+  function setTheRightPhoto(activityObjectPhoto) {
+    for (let index = 0; index < Images.length; index++) {
+      if (activityObjectPhoto === Images[index].name) {
+        return Images[index].image;
+      }
     }
-  }
-
-  function setSuggestionsOrAdminGallery() {
-    serchForRightObject();
-
-    if (rout.name === "HomePage") {
-      setShowArray(userSaggestions);
-    }
-    // else if (
-    //   rout.name === 'AdminActivityGallery' &&
-    //   searchArray.length === 0
-    // ) {
-    //   setAdminActivities(adminGalleryContext.active)
-    //   setShowArray(adminActivities)
-    // } else {
-    //   setShowArray(searchArray)
-    // }
-    return showArray;
   }
 
   return (
     <View>
-      {/* <TouchableOpacity
-        onPress={() => navigation.navigate('AdminActivityGallery')}
+      <TouchableOpacity
+        onPress={() => navigation.navigate("AdminActivityGallery")}
       >
         <Text>click just ti try admin AdminActivityGallery</Text>
       </TouchableOpacity>
-      {rout.name === 'AdminActivityGallery' ? (
-        <RadioButton />
-      ) : ( */}
+
       <Text style={styles.topH1}>Förslag & inspiration</Text>
-      {/* )} */}
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
@@ -90,14 +67,39 @@ export const Suggestions = ({ navigation, search }) => {
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
-                  <Text style={styles.textTitle}>{suggestion.title}</Text>
+                  <Text numberOfLines={2} style={styles.textTitle}>
+                    {suggestion.title}
+                  </Text>
 
                   <View style={styles.iconsAndTextCityContainer}>
+                    {/* <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      marginTop: 6,
+                      paddingTop: suggestion.title.length > 16 ? 0 : 25,
+                    }}
+                  > */}
                     <Icon
                       type="material-community"
                       name="map-marker-outline"
+                      color="#333333"
                       size={25}
                     />
+
+                    {/* <Text
+                      style={{
+                        flex: 1,
+
+                        // marginTop: 20,
+                        fontSize: 18,
+                        paddingTop: 5,
+                        marginLeft: 12,
+                        paddingTop: suggestion.title.length > 16 ? 0 : 25,
+                      }}
+                    >
+                      {suggestion.city}
+                    </Text> */}
                     <Text style={styles.textCity}>{suggestion.city}</Text>
                   </View>
 
@@ -105,6 +107,7 @@ export const Suggestions = ({ navigation, search }) => {
                     <Icon
                       type="material-community"
                       name="information-outline"
+                      color="#333333"
                       size={25}
                     />
                     <Text numberOfLines={2} style={styles.textDescription}>
@@ -114,9 +117,7 @@ export const Suggestions = ({ navigation, search }) => {
                 </View>
                 <Image
                   style={styles.image}
-                  source={{
-                    uri: suggestion.photo,
-                  }}
+                  source={setTheRightPhoto(suggestion.photo)}
                 />
               </View>
 
@@ -135,29 +136,22 @@ const styles = StyleSheet.create({
   topH1: {
     flex: 1,
     fontSize: 25,
-
-    marginHorizontal: 16,
+    color: "#333333",
     marginTop: 10,
   },
 
   activityContainer: {
     flex: 1,
     marginTop: 5,
-
     marginBottom: 15,
   },
   insideActivityContainer: {
-    //********************* */
-    marginHorizontal: 16,
-
     flex: 1,
     justifyContent: "center",
     marginVertical: 7,
-
     backgroundColor: "white",
     flexWrap: "wrap",
     borderRadius: 2,
-
     borderWidth: 1,
     borderColor: "white",
     ...Platform.select({
@@ -175,11 +169,9 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-
     height: 100,
-    resizeMode: "cover",
+    resizeMode: "contain",
     alignItems: "center",
-
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5,
@@ -189,7 +181,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   textTitleCityDescriptipn: {
-    //*************** */
     flex: 2,
     marginRight: 7,
     alignItems: "flex-start",
@@ -199,40 +190,33 @@ const styles = StyleSheet.create({
   },
 
   textTitle: {
-    //*************** */
     flex: 2,
     fontSize: 20,
     fontWeight: "bold",
+    color: "#333333",
   },
   textCity: {
-    //*************** */
     flex: 1,
-
-    // marginTop: 20,
     fontSize: 18,
     paddingTop: 5,
     marginLeft: 12,
   },
 
   textDescription: {
-    //*************** */
     flex: 1,
     fontSize: 18,
-
     paddingTop: 3,
     marginLeft: 12,
   },
 
   textLäsMer: {
-    //*************** */
     flex: 1,
     textDecorationLine: "underline",
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
-
+    color: "#333333",
     fontSize: 16,
-
     textAlign: "right",
   },
 

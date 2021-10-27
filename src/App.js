@@ -2,12 +2,15 @@ import React, { useState, useEffect } from "react";
 import { Mystack } from "./navigate";
 import auth from "@react-native-firebase/auth";
 import Login from "./components/Login";
-import { AdminProvider } from "./context/AdminContext";
+// import { AdminProvider } from "./context/AdminContext";
+import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActivityProvider } from "./context/ActivityContext";
+import { CreateActivityProvider } from "./context/CreateActivityContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
+
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
 
@@ -30,11 +33,17 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <AdminProvider>
-        <ActivityProvider>
-          <Mystack />
-        </ActivityProvider>
-      </AdminProvider>
+
+      <AdminGalleryProvider>
+        <CreateActivityProvider>
+          {/* <AdminProvider> */}
+          <ActivityProvider>
+            <Mystack />
+          </ActivityProvider>
+          {/* </AdminProvider> */}
+        </CreateActivityProvider>
+      </AdminGalleryProvider>
+
     </SafeAreaProvider>
   );
 }
