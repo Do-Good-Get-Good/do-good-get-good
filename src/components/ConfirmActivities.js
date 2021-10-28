@@ -26,7 +26,6 @@ const ConfirmActivities = () => {
         var docIDs = response.docs.map((doc) => doc.id);
 
         setUserIDs(docIDs);
-        console.log(docIDs);
       } catch (error) {
         console.log(error);
       }
@@ -84,7 +83,11 @@ const ConfirmActivities = () => {
             .get();
 
           let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          timeEntryArr.push(timeEntryData);
+          if (timeEntryData.length === 0) {
+            timeEntryArr.push(["NO DATA"]);
+          } else {
+            timeEntryArr.push(timeEntryData);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -101,7 +104,6 @@ const ConfirmActivities = () => {
   };
 
   const fetchActivityNames = () => {
-    console.log(usersFullName);
     const getActivityName = async (i, j) => {
       try {
         const response = await firestore()
@@ -114,21 +116,28 @@ const ConfirmActivities = () => {
         console.log(error);
       }
     };
-
-    for (let i = 0; i < userIDs.length; i++) {
+    for (let i = 0; i < usersTimeEntries.length; i++) {
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        getActivityName(i, j);
+        if (usersTimeEntries[i][0] === "NO DATA") {
+        } else {
+          getActivityName(i, j);
+        }
       }
     }
   };
 
   const linkToUsersTimeEntry = (activity, i, j) => {
-    let timeEntry = {
-      activityName: activity,
-      date: usersTimeEntries[i][j].date,
-      time: usersTimeEntries[i][j].time,
-    };
-    usersTimeEntries[i][j] = timeEntry;
+    if (usersTimeEntries[i][0] === "NO DATA") {
+      console.log("Ingen data");
+    } else {
+      console.log("Lägger till aktivitetsnamn.......");
+      let timeEntry = {
+        activityName: activity,
+        date: usersTimeEntries[i][j].date,
+        time: usersTimeEntries[i][j].time,
+      };
+      usersTimeEntries[i][j] = timeEntry;
+    }
   };
 
   const fillUsersWithInfo = () => {
@@ -136,20 +145,31 @@ const ConfirmActivities = () => {
     for (let i = 0; i < userIDs.length; i++) {
       var registeredHoursSum = 0;
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        registeredHoursSum += usersTimeEntries[i][j].time;
+        if (usersTimeEntries[i][0] === "NO DATA") {
+          console.log("BAJS");
+        } else {
+          registeredHoursSum += usersTimeEntries[i][j].time;
+        }
       }
-      let userInfo = {
-        fullName: usersFullName[i],
-        latestTimeEntryDate: format(
-          usersTimeEntries[i][0].date.toDate(),
-          "yyyy-MM-dd"
-        ),
-        totalRegisteredHours: registeredHoursSum,
-        timeEntries: usersTimeEntries[i],
-        checked: false,
-        isOpen: false,
-      };
-      tempArr.push(userInfo);
+      if (usersTimeEntries[i][0] === "NO DATA") {
+        console.log("Finns ingen info!!!!!");
+      } else {
+        console.log("Lägger till användarinfo...");
+        let userInfo = {
+          fullName: usersFullName[i],
+          latestTimeEntryDate: format(
+            usersTimeEntries[i][0].date.toDate(),
+            "yyyy-MM-dd"
+          ),
+          totalRegisteredHours: registeredHoursSum,
+          timeEntries: usersTimeEntries[i],
+          checked: false,
+          isOpen: false,
+        };
+
+        tempArr.push(userInfo);
+        console.log("TempArr: ", tempArr);
+      }
     }
     setMyUsers(tempArr);
   };
@@ -289,7 +309,7 @@ const ConfirmActivities = () => {
             }
           });
           for (let i = 0; i < selectedUsers.length; i++) {
-            console.log(selectedUsers[i].fullName);
+            // console.log(selectedUsers[i].fullName);
           }
         }}
         disabled={

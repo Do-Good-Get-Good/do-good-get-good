@@ -28,7 +28,6 @@ const MyUsers = () => {
         var docIDs = response.docs.map((doc) => doc.id);
 
         setUserIDs(docIDs);
-        console.log(docIDs);
       } catch (error) {
         console.log(error);
       }
@@ -82,11 +81,14 @@ const MyUsers = () => {
             .doc(userIDs[i])
             .collection("time_entries")
             .orderBy("date", "desc")
-            .where("status_confirmed", "==", false)
             .get();
 
           let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          timeEntryArr.push(timeEntryData);
+          if (timeEntryData.length === 0) {
+            timeEntryArr.push(["NO DATA"]);
+          } else {
+            timeEntryArr.push(timeEntryData);
+          }
         } catch (error) {
           console.log(error);
         }
@@ -103,7 +105,7 @@ const MyUsers = () => {
   };
 
   const fetchActivityNames = () => {
-    console.log(usersFullName);
+    // console.log(usersFullName);
     const getActivityName = async (i, j) => {
       try {
         const response = await firestore()
@@ -117,9 +119,11 @@ const MyUsers = () => {
       }
     };
 
-    for (let i = 0; i < userIDs.length; i++) {
+    for (let i = 0; i < usersTimeEntries.length; i++) {
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        getActivityName(i, j);
+        if (usersTimeEntries[i][0] !== "NO DATA") {
+          getActivityName(i, j);
+        }
       }
     }
   };
@@ -138,17 +142,13 @@ const MyUsers = () => {
     for (let i = 0; i < userIDs.length; i++) {
       var registeredHoursSum = 0;
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        registeredHoursSum += usersTimeEntries[i][j].time;
+        if (usersTimeEntries[i][0] !== "NO DATA") {
+          registeredHoursSum += usersTimeEntries[i][j].time;
+        }
       }
       let userInfo = {
         fullName: usersFullName[i],
-        latestTimeEntryDate: format(
-          usersTimeEntries[i][0].date.toDate(),
-          "yyyy-MM-dd"
-        ),
-        totalRegisteredHours: registeredHoursSum,
         timeEntries: usersTimeEntries[i],
-        checked: false,
         isOpen: false,
       };
       tempArr.push(userInfo);
@@ -165,6 +165,14 @@ const MyUsers = () => {
       };
     });
     setMyUsers(newUsersArr);
+  };
+
+  const sortUsers = (sortOption) => {
+    if (sortOption === "A - Ö") {
+      setMyUsers(myUsers.sort((a, b) => a.fullName.localeCompare(b.fullName)));
+    }
+    if (sortOption === "Inaktiva") {
+    }
   };
 
   return (
@@ -193,6 +201,7 @@ const MyUsers = () => {
                 key={index}
                 onPress={() => {
                   setSortBy(option);
+                  sortUsers(option);
                   setExpanded(false);
                 }}
               >
@@ -225,22 +234,26 @@ const MyUsers = () => {
             }}
           >
             {user.timeEntries.map((timeEntry, index) => (
-              <View key={index} style={styles.listItemContentStyle}>
-                <View style={styles.listItemContentNameView}>
-                  <Text style={styles.listItemContentNameStyle}>
-                    {timeEntry.activityName}
-                  </Text>
-                </View>
-                <View style={styles.listItemContentDateView}>
-                  <Text style={styles.listItemContentDateStyle}>
-                    {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                  </Text>
-                </View>
-                <View style={styles.listItemContentHourView}>
-                  <Text style={styles.listItemContentHourStyle}>
-                    {timeEntry.time} tim
-                  </Text>
-                </View>
+              <View key={index}>
+                {timeEntry !== "NO DATA" ? (
+                  <View key={index} style={styles.listItemContentStyle}>
+                    <View style={styles.listItemContentNameView}>
+                      <Text style={styles.listItemContentNameStyle}>
+                        {timeEntry.activityName}
+                      </Text>
+                    </View>
+                    <View style={styles.listItemContentDateView}>
+                      <Text style={styles.listItemContentDateStyle}>
+                        {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                      </Text>
+                    </View>
+                    <View style={styles.listItemContentHourView}>
+                      <Text style={styles.listItemContentHourStyle}>
+                        {timeEntry.time} tim
+                      </Text>
+                    </View>
+                  </View>
+                ) : null}
               </View>
             ))}
             <View style={styles.editUserIconView}>
@@ -265,7 +278,7 @@ export default MyUsers;
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 50,
+    marginBottom: 10,
   },
   header: {
     flexDirection: "row",
