@@ -8,30 +8,170 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  FlatList,
   SafeAreaView,
-  TextInput,
 } from "react-native";
 import Menu from "../components/Menu";
-import { Icon } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 
 import Images from "../Images";
+import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const ActivityCard = ({ navigation }) => {
+export const ActivityCard = ({ route, navigation }) => {
+  const activityCardContext = useActivityCardContext();
+  const createActivityContext = useCreateActivityFunction();
+  //   information comes from Suggestion.js with navigation when user or admin press on activity
+  const { admin, activityInfo, active, tgPopular } = route.params;
+
+  //   console.log("admin ", admin);
+  //   console.log("activityInfo", activityInfo);
+  //   console.log("active", active);
+  //   console.log("tgPopular ", tgPopular);
   const [activity, setActivity] = useState({
-    active: "true",
-    title: "Katthem",
-    photo: "symbol_earth",
-    city: "Göteborg",
-    description: "Städning, matning och en massa kel!",
-    popular: "true",
+    active: "",
+    title: "",
+    photo: "",
+    city: "",
+    description: "",
+    popular: "",
   });
-  const [image, setImage] = useState("symbol_earth");
-  const [adminOpenActyvity, setAdminOpenActyvity] = useState(true);
-  //   navigation.getParam("admin");
-  const [activeActivities, setActiveActivities] = useState(true);
-  const [popular, setPopular] = useState(true);
-  //   const [city, setCity] = useState;
+
+  const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
+
+  const [activeActivities, setActiveActivities] = useState(active);
+  const [popular, setPopular] = useState(tgPopular);
+  const [visible, setVisible] = useState(false);
+
+  const alertQuestionToTakeAwayFromArchive = "WILL BE SOME QUESTION";
+  const alertClarificationToTakeAwayFromArchive = " Clarification...";
+  const alertArchiveQuestion = "Vill du arkivera denna aktivitet?";
+  const alertArchiveClarification =
+    "[Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet]";
+  const alertDeleteQuestion = "Vill du slänga denna aktivitet?";
+  const alertDeleteClarification =
+    "[Aktiviteten kommer att försvinna för alltid]";
+  const [alertQuestion, setAlertQuestion] = useState("");
+  const [alertClarification, setAlertClarification] = useState("");
+  const [pressedToArchive, setPressedToArchive] = useState(false);
+  const [pressedToTakeAwayFromArchive, setPressedToTakeAwayFromArchive] =
+    useState(false);
+  const [pressedToDelete, setPressedToDelete] = useState(false);
+  const alertToArchiveActivity = () => {
+    setVisible(!visible);
+    setPressedToArchive(true);
+    setPressedToTakeAwayFromArchive(false);
+    setPressedToDelete(false);
+    setAlertQuestion(alertArchiveQuestion);
+    setAlertClarification(alertArchiveClarification);
+  };
+
+  const alertToTakeAwayFromArchiveActivity = () => {
+    setVisible(!visible);
+    setPressedToTakeAwayFromArchive(true);
+    setPressedToArchive(false);
+    setPressedToDelete(false);
+    setAlertQuestion(alertQuestionToTakeAwayFromArchive);
+    setAlertClarification(alertClarificationToTakeAwayFromArchive);
+  };
+
+  const alertToDeleteActivity = () => {
+    setVisible(!visible);
+    setPressedToDelete(true);
+    setPressedToTakeAwayFromArchive(false);
+    setPressedToArchive(false);
+    setAlertQuestion(alertDeleteQuestion);
+    setAlertClarification(alertDeleteClarification);
+  };
+
+  function buttonYesPressed() {
+    setVisible(!visible);
+
+    if (pressedToArchive === true) {
+      if (activeActivities === true) {
+        activityCardContext.changeActive(false);
+        activityCardContext.changePopular(false);
+        setActiveActivities(false);
+      } else {
+        console.log(
+          "Something went wrong with YES button while trying to archive"
+        );
+      }
+      activityCardContext.idActivity(activityInfo.id);
+      createActivityContext.activityHasChanged(true);
+      createActivityContext.activityHasChangedID(activityInfo.id);
+      setPressedToArchive(false);
+    } else if (pressedToTakeAwayFromArchive === true) {
+      if (activeActivities === false) {
+        activityCardContext.changeActive(true);
+        setActiveActivities(true);
+      } else {
+        console.log(
+          "Something went wrong with YES button while trying to take activity away from archive"
+        );
+      }
+      activityCardContext.idActivity(activityInfo.id);
+      createActivityContext.activityHasChanged(true);
+      createActivityContext.activityHasChangedID(activityInfo.id);
+      setPressedToTakeAwayFromArchive(false);
+    } else if (pressedToDelete === true) {
+      activityCardContext.idActivity(activityInfo.id);
+      activityCardContext.confirmToDeleteActivity(true);
+      setPressedToDelete(false);
+      navigation.goBack();
+    } else {
+      console.log("Something went wrong with pressing Yes button");
+    }
+  }
+
+  function alertForArchivingAndDelete() {
+    return (
+      <Overlay overlayStyle={styles.overlay} isVisible={visible}>
+        <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
+        <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
+        <View style={styles.containerButtonsAlert}>
+          <TouchableOpacity onPress={() => setVisible(!visible)}>
+            <Text style={styles.buttonAlertNo}>Nej</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => buttonYesPressed()}>
+            <Text style={styles.buttonAlertYes}>Ja</Text>
+          </TouchableOpacity>
+        </View>
+      </Overlay>
+    );
+  }
+
+  useEffect(() => {
+    setAdminOpenedActyvity(admin);
+    setActivity({
+      title: activityInfo.title,
+      photo: activityInfo.photo,
+      city: activityInfo.city,
+      description: activityInfo.description,
+    });
+  }, [admin, activityInfo]);
+
+  useEffect(() => {
+    setActiveActivities(active);
+  }, [active]);
+
+  useEffect(() => {
+    setPopular(tgPopular);
+  }, [tgPopular]);
+
+  // useEffect(() => {
+  //   toArchiveOrToTakeAwayFromArchive();
+  // }, [activeActivities]);
+
+  //   console.log(
+  //     "activity",
+  //     activity,
+  //     "adminOpenedActyvity",
+  //     adminOpenedActyvity,
+  //     "activeActivities",
+  //     activeActivities,
+  //     "popular",
+  //     popular
+  //   );
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let i = 0; i < Images.length; i++) {
@@ -41,24 +181,89 @@ export const ActivityCard = ({ navigation }) => {
     }
   }
 
+  function changePopularStatus() {
+    if (popular === true) {
+      setPopular(false);
+      activityCardContext.changePopular(false);
+      activityCardContext.idActivity(activityInfo.id);
+      createActivityContext.activityHasChanged(true);
+      createActivityContext.activityHasChangedID(activityInfo.id);
+    } else if (popular === false) {
+      setPopular(true);
+      activityCardContext.changePopular(true);
+      activityCardContext.idActivity(activityInfo.id);
+      createActivityContext.activityHasChanged(true);
+      createActivityContext.activityHasChangedID(activityInfo.id);
+    } else {
+      console.log("Something went wrong with status popular", popular);
+    }
+  }
+
   function deleteActivity() {
     return (
       <View style={styles.containerDeleteAndText}>
-        <TouchableOpacity>
-          <Icon
-            style={styles.iconDelete}
-            color="#333333"
-            name="delete-outline"
-            type="material-community"
-            size={25}
-          />
-        </TouchableOpacity>
-        <TouchableOpacity>
+        <Icon
+          style={styles.iconDelete}
+          color="#333333"
+          name="delete-outline"
+          type="material-community"
+          size={25}
+        />
+
+        <TouchableOpacity onPress={() => alertToDeleteActivity()}>
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
     );
   }
+
+  function toArchiveOrToTakeAwayFromArchive() {
+    if (activeActivities === false) {
+      return (
+        <View style={styles.containerIconArchiveArrowAndText}>
+          <TouchableOpacity>
+            <Icon
+              style={styles.iconArchiveArrow}
+              color="#333333"
+              name="archive-arrow-up-outline"
+              type="material-community"
+              size={25}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => alertToTakeAwayFromArchiveActivity()}
+          >
+            <Text style={styles.textNearIconArchiveArrow}>
+              Flytta från arkiv
+            </Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else if (activeActivities === true) {
+      return (
+        <View style={styles.containerIconArchiveArrowAndText}>
+          <TouchableOpacity>
+            <Icon
+              style={styles.iconArchiveArrow}
+              color="#333333"
+              name="archive-arrow-down-outline"
+              type="material-community"
+              size={25}
+            />
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => alertToArchiveActivity()}>
+            <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
+          </TouchableOpacity>
+        </View>
+      );
+    } else {
+      console.log("Something went wrong with toArchiveOrToTakeAwayFromArchive");
+    }
+  }
+
+  useEffect(() => {
+    toArchiveOrToTakeAwayFromArchive();
+  }, [activeActivities]);
 
   function tgFavourite() {
     if (popular) {
@@ -73,7 +278,7 @@ export const ActivityCard = ({ navigation }) => {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setPopular(false)}>
+          <TouchableOpacity onPress={() => changePopularStatus()}>
             <Text style={styles.textNearIconStar}>
               Ta bort från TG-favoriter
             </Text>
@@ -92,7 +297,7 @@ export const ActivityCard = ({ navigation }) => {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => setPopular(true)}>
+          <TouchableOpacity onPress={() => changePopularStatus()}>
             <Text style={styles.textNearIconStar}>
               Lägg till som TG-favorit
             </Text>
@@ -119,20 +324,8 @@ export const ActivityCard = ({ navigation }) => {
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.containerIconArchiveArrowAndText}>
-          <TouchableOpacity>
-            <Icon
-              style={styles.iconArchiveArrow}
-              color="#333333"
-              name="archive-arrow-down-outline"
-              type="material-community"
-              size={25}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
-          </TouchableOpacity>
-        </View>
+
+        {toArchiveOrToTakeAwayFromArchive()}
         {deleteActivity()}
         {tgFavourite()}
         <TouchableOpacity>
@@ -145,22 +338,7 @@ export const ActivityCard = ({ navigation }) => {
   function adminActionsForInactiveActivities() {
     return (
       <View style={{ marginTop: 15 }}>
-        <View style={styles.containerIconArchiveArrowAndText}>
-          <TouchableOpacity>
-            <Icon
-              style={styles.iconArchiveArrow}
-              color="#333333"
-              name="archive-arrow-up-outline"
-              type="material-community"
-              size={25}
-            />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <Text style={styles.textNearIconArchiveArrow}>
-              Flytta från akkiv
-            </Text>
-          </TouchableOpacity>
-        </View>
+        {toArchiveOrToTakeAwayFromArchive()}
         {deleteActivity()}
       </View>
     );
@@ -182,7 +360,7 @@ export const ActivityCard = ({ navigation }) => {
               <Text style={styles.textNearArrow}> Gå tillbaka</Text>
             </TouchableOpacity>
           </View>
-          <Text style={styles.textTitle}>Katthem</Text>
+          <Text style={styles.textTitle}>{activity.title}</Text>
           <Image
             style={styles.image}
             source={setTheRightPhoto(activity.photo)}
@@ -207,13 +385,14 @@ export const ActivityCard = ({ navigation }) => {
               {activity.description}
             </Text>
           </View>
-          {adminOpenActyvity === true && activeActivities === true
+          {adminOpenedActyvity === true && activeActivities === true
             ? adminActionsForActiveActivities()
             : null}
-          {adminOpenActyvity === true && activeActivities === false
+          {adminOpenedActyvity === true && activeActivities === false
             ? adminActionsForInactiveActivities()
             : null}
         </View>
+        {alertForArchivingAndDelete()}
       </ScrollView>
     </SafeAreaView>
   );
@@ -282,6 +461,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 6,
     color: "#333333",
+    marginLeft: -3,
   },
   containerPancilAndText: {
     flex: 1,
@@ -358,5 +538,41 @@ const styles = StyleSheet.create({
     borderColor: "#84BD00",
     backgroundColor: "#84BD00",
     overflow: "hidden",
+  },
+  overlay: {
+    backgroundColor: "#F5F5F5",
+    borderRadius: 5,
+    width: "90%",
+    marginBottom: 100,
+    paddingBottom: 15,
+  },
+
+  textQuestionAlert: { color: "#333333", fontSize: 24, marginTop: 23 },
+  textUnderQuestionAlert: { color: "#333333", fontSize: 16 },
+  containerButtonsAlert: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    marginTop: 20,
+  },
+  buttonAlertNo: {
+    fontSize: 20,
+    backgroundColor: "yellow",
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#F5F5F5",
+    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 70,
+    paddingVertical: 13,
+    overflow: "hidden",
+  },
+  buttonAlertYes: {
+    fontSize: 20,
+    paddingHorizontal: 70,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: "#84BD00",
+    backgroundColor: "#84BD00",
+    overflow: "hidden",
+    paddingVertical: 13,
   },
 });

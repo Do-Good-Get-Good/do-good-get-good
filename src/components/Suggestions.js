@@ -12,6 +12,8 @@ import { useRoute } from "@react-navigation/native";
 import Images from "../Images";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useActivityCardContext } from "../context/ActivityCardContext";
 
 export const Suggestions = ({
   navigation,
@@ -22,7 +24,12 @@ export const Suggestions = ({
 }) => {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
+  const useCreateActivityContext = useCreateActivityFunction();
+  const activityCardContext = useActivityCardContext();
   const [showArray, setShowArray] = useState([]);
+  const [existNewChanges, setExistNewChanges] = useState(false);
+  const [activetyDeleted, setActivetyDeleted] = useState(false);
+
   useEffect(() => {
     if (rout.name === "HomePage") {
       setShowArray(userSuggestionsContext.popularActivities);
@@ -51,6 +58,90 @@ export const Suggestions = ({
     }
   }
 
+  function lookDetails(activety, statusActive, statusPopular) {
+    rout.name === "HomePage"
+      ? navigation.navigate("ActivityCard", {
+          admin: false,
+          activityInfo: activety,
+          active: statusActive,
+          tgPopular: statusPopular,
+        })
+      : navigation.navigate("ActivityCard", {
+          admin: true,
+          activityInfo: activety,
+          active: statusActive,
+          tgPopular: statusPopular,
+        });
+  }
+
+  useEffect(() => {
+    setExistNewChanges(true);
+  }, [useCreateActivityContext.changedActivity.active]);
+
+  // useEffect(() => {
+  //   if (
+  //     activityCardContext.oneActivityHasBeenDeleted === true &&
+  //     activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
+  //   ) {
+  //     setActivetyDeleted(true);
+  //   }
+  // }, [activityCardContext.oneActivityHasBeenDeleted]);
+
+  useEffect(() => {
+    if (
+      activityCardContext.oneActivityHasBeenDeleted === true &&
+      activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
+    ) {
+      var index = showArray.findIndex(
+        (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
+      );
+      showArray.splice(index, 1);
+      activityCardContext.confirmToDeleteActivity(false);
+    }
+  }, [activityCardContext.oneActivityHasBeenDeleted]);
+
+  useEffect(() => {
+    var index = showArray.findIndex(
+      (x) => x.id === useCreateActivityContext.changedActivity.id
+    );
+    showArray.splice(index, 1, useCreateActivityContext.changedActivity);
+  }, [useCreateActivityContext.changedActivity]);
+
+  useEffect(() => {
+    // if (existNewChanges) {
+    // ifStatusPopularChanged();
+    if (chooseActive === useCreateActivityContext.changedActivity.active) {
+      const searchingThrough = showArray.filter(
+        (object) => object.id === useCreateActivityContext.changedActivity.id
+      );
+      console.log("I WANT TO LOOK searchingThrough", searchingThrough);
+      if (searchingThrough.length === 0) {
+        setShowArray((prev) => [
+          ...prev,
+          useCreateActivityContext.changedActivity,
+        ]);
+      } else {
+        console.log("searchingThrough", searchingThrough.length);
+      }
+    } else if (
+      chooseActive != useCreateActivityContext.changedActivity.active
+    ) {
+      // let newArray = showArray;
+      var index = showArray.findIndex(
+        (x) => x.id === useCreateActivityContext.changedActivity.id
+      );
+
+      // if (index != -1) {
+      //   showArray.splice(index, 1);
+      // }
+    } else {
+      console.log(
+        "Something went wrong while attempt to replace an object in Suggestion.js"
+      );
+    }
+    setExistNewChanges(false);
+  }, [existNewChanges, chooseActive]);
+
   return (
     <View>
       <TouchableOpacity
@@ -63,7 +154,13 @@ export const Suggestions = ({
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
-          <TouchableOpacity index={index} key={index}>
+          <TouchableOpacity
+            onPress={() =>
+              lookDetails(suggestion, suggestion.active, suggestion.popular)
+            }
+            index={index}
+            key={index}
+          >
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
@@ -121,7 +218,11 @@ export const Suggestions = ({
                 />
               </View>
 
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  lookDetails(suggestion, suggestion.active, suggestion.popular)
+                }
+              >
                 <Text style={styles.textLäsMer}>Läs mer</Text>
               </TouchableOpacity>
             </View>
