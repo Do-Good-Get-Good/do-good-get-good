@@ -145,15 +145,11 @@ const ConfirmActivities = () => {
     for (let i = 0; i < userIDs.length; i++) {
       var registeredHoursSum = 0;
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] === "NO DATA") {
-          console.log("BAJS");
-        } else {
+        if (usersTimeEntries[i][0] !== "NO DATA") {
           registeredHoursSum += usersTimeEntries[i][j].time;
         }
       }
-      if (usersTimeEntries[i][0] === "NO DATA") {
-        console.log("Finns ingen info!!!!!");
-      } else {
+      if (usersTimeEntries[i][0] !== "NO DATA") {
         console.log("Lägger till användarinfo...");
         let userInfo = {
           fullName: usersFullName[i],

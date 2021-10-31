@@ -153,7 +153,8 @@ const MyUsers = () => {
       };
       tempArr.push(userInfo);
     }
-    setMyUsers(tempArr);
+
+    setMyUsers(tempArr.sort((a, b) => a.fullName.localeCompare(b.fullName)));
   };
 
   const openSelectedUser = (pressedUser) => {
