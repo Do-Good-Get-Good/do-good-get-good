@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
-import { CheckBox, ListItem } from "react-native-elements";
+import { CheckBox, Dialog, ListItem } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
@@ -14,6 +14,8 @@ const ConfirmActivities = () => {
   const [usersTimeEntries, setUsersTimeEntries] = useState([]);
   const [usersTimeEntryIDs, setUsersTimeEntryIDs] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
+  const [reload, setReload] = useState(false);
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -31,6 +33,7 @@ const ConfirmActivities = () => {
         console.log(error);
       }
     };
+    setLoadingData(true);
     fetchUserData();
 
     return () => {
@@ -38,8 +41,9 @@ const ConfirmActivities = () => {
       setUsersFullName([]);
       setUsersTimeEntries([]);
       setIsFinished(false);
+      setReload(false);
     };
-  }, []);
+  }, [reload]);
 
   useEffect(() => {
     fetchNamesAndTimeEntries();
@@ -168,8 +172,8 @@ const ConfirmActivities = () => {
         }
       }
     }
-    // console.log(tempArr);
     setMyUsers(tempArr);
+    setLoadingData(false);
   };
 
   // Check/uncheck the selected users checkbox
@@ -235,6 +239,10 @@ const ConfirmActivities = () => {
     // For every user in 'selectedUsers' call 'confirmActivity'
     for (let i = 0; i < selectedUsers.length; i++) {
       confirmActivity(selectedUsers[i].activityId, selectedUsers[i].userID);
+      if (i === selectedUsers.length - 1) {
+        setReload(true);
+        setLoadingData(true);
+      }
     }
   };
 
@@ -273,56 +281,63 @@ const ConfirmActivities = () => {
         />
       </View>
       <View style={styles.content}>
-        {myUsers.map((user, index) => (
-          <ListItem.Accordion
-            key={index}
-            containerStyle={styles.listItemContainerStyle}
-            content={
-              <>
-                <View style={styles.listItemStyle}>
-                  <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
-                  <Text style={styles.listItemDateStyle}>
-                    {user.timeEntryDate}
-                  </Text>
-                  <Text style={styles.listItemHourStyle}>
-                    {user.timeEntryHours} tim
-                  </Text>
-                  <CheckBox
-                    iconRight
-                    containerStyle={styles.listItemCheckBoxStyle}
-                    checked={user.checked}
-                    checkedColor="#84BD00"
-                    onPress={() => {
-                      markSelected(user);
-                    }}
-                  />
+        {loadingData ? (
+          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
+        ) : null}
+        {!loadingData
+          ? myUsers.map((user, index) => (
+              <ListItem.Accordion
+                key={index}
+                containerStyle={styles.listItemContainerStyle}
+                content={
+                  <>
+                    <View style={styles.listItemStyle}>
+                      <Text style={styles.listItemNameStyle}>
+                        {user.fullName}
+                      </Text>
+                      <Text style={styles.listItemDateStyle}>
+                        {user.timeEntryDate}
+                      </Text>
+                      <Text style={styles.listItemHourStyle}>
+                        {user.timeEntryHours} tim
+                      </Text>
+                      <CheckBox
+                        iconRight
+                        containerStyle={styles.listItemCheckBoxStyle}
+                        checked={user.checked}
+                        checkedColor="#84BD00"
+                        onPress={() => {
+                          markSelected(user);
+                        }}
+                      />
+                    </View>
+                  </>
+                }
+                isExpanded={user.isOpen}
+                onPress={() => {
+                  openSelectedUser(user);
+                }}
+              >
+                <View style={styles.listItemContentStyle}>
+                  <View style={styles.listItemContentNameView}>
+                    <Text style={styles.listItemContentNameStyle}>
+                      {user.timeEntryActivityName}
+                    </Text>
+                  </View>
+                  <View style={styles.listItemContentDateView}>
+                    <Text style={styles.listItemContentDateStyle}>
+                      {user.timeEntryDate}
+                    </Text>
+                  </View>
+                  <View style={styles.listItemContentHourView}>
+                    <Text style={styles.listItemContentHourStyle}>
+                      {user.timeEntryHours} tim
+                    </Text>
+                  </View>
                 </View>
-              </>
-            }
-            isExpanded={user.isOpen}
-            onPress={() => {
-              openSelectedUser(user);
-            }}
-          >
-            <View style={styles.listItemContentStyle}>
-              <View style={styles.listItemContentNameView}>
-                <Text style={styles.listItemContentNameStyle}>
-                  {user.timeEntryActivityName}
-                </Text>
-              </View>
-              <View style={styles.listItemContentDateView}>
-                <Text style={styles.listItemContentDateStyle}>
-                  {user.timeEntryDate}
-                </Text>
-              </View>
-              <View style={styles.listItemContentHourView}>
-                <Text style={styles.listItemContentHourStyle}>
-                  {user.timeEntryHours} tim
-                </Text>
-              </View>
-            </View>
-          </ListItem.Accordion>
-        ))}
+              </ListItem.Accordion>
+            ))
+          : null}
       </View>
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
