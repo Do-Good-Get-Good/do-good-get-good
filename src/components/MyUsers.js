@@ -9,9 +9,11 @@ import { Icon } from "react-native-elements";
 const MyUsers = () => {
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
+  const [allUsers, setAllUsers] = useState([]);
   const [userIDs, setUserIDs] = useState([]);
   const [usersFullName, setUsersFullName] = useState([]);
   const [usersTimeEntries, setUsersTimeEntries] = useState([]);
+  const [usersActiveStatus, setUsersActiveStatus] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
@@ -61,6 +63,7 @@ const MyUsers = () => {
     if (userIDs.length != 0) {
       let nameArr = [];
       let timeEntryArr = [];
+      let userStatusArr = [];
       for (let i = 0; i < userIDs.length; i++) {
         try {
           const nameResponse = await firestore()
@@ -92,13 +95,26 @@ const MyUsers = () => {
         } catch (error) {
           console.log(error);
         }
+        try {
+          const userStatusResponse = await firestore()
+            .collection("Users")
+            .doc(userIDs[i])
+            .get();
+
+          let userStatusData = userStatusResponse.data().status_active;
+          userStatusArr.push(userStatusData);
+        } catch (error) {
+          console.log(error);
+        }
       }
       if (
         nameArr.length === userIDs.length &&
-        timeEntryArr.length === userIDs.length
+        timeEntryArr.length === userIDs.length &&
+        userStatusArr.length === userIDs.length
       ) {
         setUsersFullName(nameArr);
         setUsersTimeEntries(timeEntryArr);
+        setUsersActiveStatus(userStatusArr);
         setIsFinished(true);
       }
     }
@@ -150,11 +166,22 @@ const MyUsers = () => {
         fullName: usersFullName[i],
         timeEntries: usersTimeEntries[i],
         isOpen: false,
+        statusActive: usersActiveStatus[i],
       };
       tempArr.push(userInfo);
     }
 
-    setMyUsers(tempArr.sort((a, b) => a.fullName.localeCompare(b.fullName)));
+    setAllUsers(tempArr);
+
+    // Creates a new filtered array with all active users and sorts them alphabetically
+    let activeUsers = tempArr.filter((user) => {
+      if (user.statusActive) {
+        return user;
+      }
+    });
+    setMyUsers(
+      activeUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+    );
   };
 
   const openSelectedUser = (pressedUser) => {
@@ -169,10 +196,27 @@ const MyUsers = () => {
   };
 
   const sortUsers = (sortOption) => {
+    // Sorts myUsers array alphabetically
     if (sortOption === "A - Ö") {
-      setMyUsers(myUsers.sort((a, b) => a.fullName.localeCompare(b.fullName)));
+      let activeUsers = allUsers.filter((user) => {
+        if (user.statusActive) {
+          return user;
+        }
+      });
+      setMyUsers(
+        activeUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+      );
     }
+    // filter myUsers array to only show inactive users
     if (sortOption === "Inaktiva") {
+      let inactiveUsers = allUsers.filter((user) => {
+        if (!user.statusActive) {
+          return user;
+        }
+      });
+      setMyUsers(
+        inactiveUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+      );
     }
   };
 
