@@ -289,6 +289,8 @@ const ConfirmActivities = () => {
               <ListItem.Accordion
                 key={index}
                 containerStyle={styles.listItemContainerStyle}
+                underlayColor="#F5F5F5"
+                activeOpacity={0.65}
                 content={
                   <>
                     <View style={styles.listItemStyle}>
