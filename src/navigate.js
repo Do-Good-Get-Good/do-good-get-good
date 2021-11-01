@@ -5,6 +5,7 @@ import { HomePage } from "./screens/HomePage";
 import { MyTimePage } from "./screens/MyTimePage";
 import { AdminActivityGallery } from "./screens/AdminActivityGallery";
 import { CreateActivity } from "./screens/CreateActivity";
+import { ImagesGallery } from "./screens/ImagesGallery";
 
 const Stack = createNativeStackNavigator();
 export const Mystack = () => {
@@ -22,6 +23,7 @@ export const Mystack = () => {
           component={AdminActivityGallery}
         />
         <Stack.Screen name="CreateActivity" component={CreateActivity} />
+        <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
       </Stack.Navigator>
     </NavigationContainer>
   );

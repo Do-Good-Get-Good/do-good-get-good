@@ -17,7 +17,9 @@ import { DropDownSmall } from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const CreateActivity = ({}) => {
+export const CreateActivity = ({ route, navigation }) => {
+  // const { imageForActivity } = route.params;
+  // console.log("imageForActivity", imageForActivity);
   const createActivityContext = useCreateActivityFunction();
   const [whileCreatingNewUser, setWhileCreatingNewUser] = useState(true);
   const [existingActivity, setExistingActivity] = useState(true);
@@ -30,10 +32,36 @@ export const CreateActivity = ({}) => {
   const [place, setPlace] = useState("");
   const [city, setCity] = useState("");
   const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState("");
+  const [newActivityImage, setNewActivityImage] = useState();
+  //  "../img/activities_images/symbol_hands_heart-DEFAULT.png";
   const [newActivity, setNewActivity] = useState({});
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
+
+  useEffect(() => {
+    // if (route.params?.imageForActivity != "symbol_hands_heart-DEFAULT") {
+    if (route.params?.imageForActivity === undefined) {
+      setNewActivityImage("symbol_hands_heart-DEFAULT");
+    } else {
+      setNewActivityImage(route.params?.imageForActivity);
+    }
+
+    console.log(
+      "IIIIIIMMMMAAAAGGEEE route.params?.imageForActivity)",
+      newActivityImage
+    );
+    // }
+  }, [route.params?.imageForActivity]);
+
+  console.log("  HERE newActivityImage", newActivityImage);
+
+  function setImageForNewActivity() {
+    for (let index = 0; index < Images.length; index++) {
+      if (newActivityImage === Images[index].name) {
+        return Images[index].image;
+      }
+    }
+  }
 
   useEffect(() => {
     if (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet") {
@@ -102,7 +130,7 @@ export const CreateActivity = ({}) => {
         active_status: true,
         activity_city: city,
         activity_description: description,
-        activity_photo: "symbol_hands_heart-DEFAULT",
+        activity_photo: newActivityImage,
         activity_place: place,
         activity_title: title,
         tg_favorite: checkBoxPressed,
@@ -198,12 +226,11 @@ export const CreateActivity = ({}) => {
           placeholderTextColor="#B7B7B7"
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image
-            style={styles.image}
-            source={require("../img/activities_images/symbol_hands_heart-DEFAULT.png")}
-          ></Image>
+          <Image style={styles.image} source={setImageForNewActivity()}></Image>
 
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ImagesGallery")}
+          >
             <LinearGradient
               colors={["#84BD00", "#5B6770"]}
               start={{ x: 0, y: 0 }}
