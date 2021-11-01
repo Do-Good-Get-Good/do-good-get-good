@@ -140,9 +140,7 @@ const ConfirmActivities = () => {
       };
       usersTimeEntries[i][j] = timeEntry;
     }
-    if (i === usersTimeEntries.length - 1) {
-      fillUsersWithInfo();
-    }
+    fillUsersWithInfo();
   };
 
   const fillUsersWithInfo = () => {
