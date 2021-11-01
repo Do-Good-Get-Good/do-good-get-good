@@ -47,7 +47,6 @@ const ConfirmActivities = () => {
   useEffect(() => {
     if (isFinished) {
       fetchActivityNames();
-      fillUsersWithInfo();
     }
 
     return () => {
@@ -118,8 +117,7 @@ const ConfirmActivities = () => {
     };
     for (let i = 0; i < usersTimeEntries.length; i++) {
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] === "NO DATA") {
-        } else {
+        if (usersTimeEntries[i][0] !== "NO DATA") {
           getActivityName(i, j);
         }
       }
@@ -127,10 +125,7 @@ const ConfirmActivities = () => {
   };
 
   const linkToUsersTimeEntry = (activity, i, j) => {
-    if (usersTimeEntries[i][0] === "NO DATA") {
-      console.log("Ingen data");
-    } else {
-      console.log("Lägger till aktivitetsnamn.......");
+    if (usersTimeEntries[i][0] !== "NO DATA") {
       let timeEntry = {
         activityName: activity,
         date: usersTimeEntries[i][j].date,
@@ -138,33 +133,32 @@ const ConfirmActivities = () => {
       };
       usersTimeEntries[i][j] = timeEntry;
     }
+    if (i === usersTimeEntries.length - 1) {
+      fillUsersWithInfo();
+    }
   };
 
   const fillUsersWithInfo = () => {
     let tempArr = [];
+    let id = 0;
     for (let i = 0; i < userIDs.length; i++) {
-      var registeredHoursSum = 0;
       for (let j = 0; j < usersTimeEntries[i].length; j++) {
         if (usersTimeEntries[i][0] !== "NO DATA") {
-          registeredHoursSum += usersTimeEntries[i][j].time;
+          let userInfo = {
+            id: id,
+            fullName: usersFullName[i],
+            timeEntryDate: format(
+              usersTimeEntries[i][j].date.toDate(),
+              "yyyy-MM-dd"
+            ),
+            timeEntryHours: usersTimeEntries[i][j].time,
+            timeEntryActivityName: usersTimeEntries[i][j].activityName,
+            checked: false,
+            isOpen: false,
+          };
+          tempArr.push(userInfo);
+          id++;
         }
-      }
-      if (usersTimeEntries[i][0] !== "NO DATA") {
-        console.log("Lägger till användarinfo...");
-        let userInfo = {
-          fullName: usersFullName[i],
-          latestTimeEntryDate: format(
-            usersTimeEntries[i][0].date.toDate(),
-            "yyyy-MM-dd"
-          ),
-          totalRegisteredHours: registeredHoursSum,
-          timeEntries: usersTimeEntries[i],
-          checked: false,
-          isOpen: false,
-        };
-
-        tempArr.push(userInfo);
-        console.log("TempArr: ", tempArr);
       }
     }
     setMyUsers(tempArr);
@@ -175,10 +169,7 @@ const ConfirmActivities = () => {
     const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
-        checked:
-          user.fullName === selectedUser.fullName
-            ? !user.checked
-            : user.checked,
+        checked: user.id === selectedUser.id ? !user.checked : user.checked,
       };
     });
     setMyUsers(newUsersArr);
@@ -219,8 +210,7 @@ const ConfirmActivities = () => {
     const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
-        isOpen:
-          user.fullName === pressedUser.fullName ? !user.isOpen : user.isOpen,
+        isOpen: user.id === pressedUser.id ? !user.isOpen : user.isOpen,
       };
     });
     setMyUsers(newUsersArr);
@@ -252,10 +242,10 @@ const ConfirmActivities = () => {
                 <View style={styles.listItemStyle}>
                   <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
                   <Text style={styles.listItemDateStyle}>
-                    {user.latestTimeEntryDate}
+                    {user.timeEntryDate}
                   </Text>
                   <Text style={styles.listItemHourStyle}>
-                    {user.totalRegisteredHours} tim
+                    {user.timeEntryHours} tim
                   </Text>
                   <CheckBox
                     iconRight
@@ -274,25 +264,23 @@ const ConfirmActivities = () => {
               openSelectedUser(user);
             }}
           >
-            {user.timeEntries.map((timeEntry, index) => (
-              <View key={index} style={styles.listItemContentStyle}>
-                <View style={styles.listItemContentNameView}>
-                  <Text style={styles.listItemContentNameStyle}>
-                    {timeEntry.activityName}
-                  </Text>
-                </View>
-                <View style={styles.listItemContentDateView}>
-                  <Text style={styles.listItemContentDateStyle}>
-                    {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                  </Text>
-                </View>
-                <View style={styles.listItemContentHourView}>
-                  <Text style={styles.listItemContentHourStyle}>
-                    {timeEntry.time} tim
-                  </Text>
-                </View>
+            <View style={styles.listItemContentStyle}>
+              <View style={styles.listItemContentNameView}>
+                <Text style={styles.listItemContentNameStyle}>
+                  {user.timeEntryActivityName}
+                </Text>
               </View>
-            ))}
+              <View style={styles.listItemContentDateView}>
+                <Text style={styles.listItemContentDateStyle}>
+                  {user.timeEntryDate}
+                </Text>
+              </View>
+              <View style={styles.listItemContentHourView}>
+                <Text style={styles.listItemContentHourStyle}>
+                  {user.timeEntryHours} tim
+                </Text>
+              </View>
+            </View>
           </ListItem.Accordion>
         ))}
       </View>
