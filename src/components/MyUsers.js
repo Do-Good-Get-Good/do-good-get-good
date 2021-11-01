@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
-import { ListItem } from "react-native-elements";
+import { ListItem, Dialog } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
@@ -17,6 +17,7 @@ const MyUsers = () => {
   const [isFinished, setIsFinished] = useState(false);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
+  const [loadingData, setLoadingData] = useState(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -34,6 +35,7 @@ const MyUsers = () => {
         console.log(error);
       }
     };
+    setLoadingData(true);
     fetchUserData();
 
     return () => {
@@ -51,7 +53,6 @@ const MyUsers = () => {
   useEffect(() => {
     if (isFinished) {
       fetchActivityNames();
-      fillUsersWithInfo();
     }
 
     return () => {
@@ -146,12 +147,15 @@ const MyUsers = () => {
   };
 
   const linkToUsersTimeEntry = (activity, i, j) => {
-    let timeEntry = {
-      activityName: activity,
-      date: usersTimeEntries[i][j].date,
-      time: usersTimeEntries[i][j].time,
-    };
-    usersTimeEntries[i][j] = timeEntry;
+    if (usersTimeEntries[i][0] !== "NO DATA") {
+      let timeEntry = {
+        activityName: activity,
+        date: usersTimeEntries[i][j].date,
+        time: usersTimeEntries[i][j].time,
+      };
+      usersTimeEntries[i][j] = timeEntry;
+    }
+    fillUsersWithInfo();
   };
 
   const fillUsersWithInfo = () => {
@@ -183,6 +187,7 @@ const MyUsers = () => {
     setMyUsers(
       activeUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
     );
+    setLoadingData(false);
   };
 
   const openSelectedUser = (pressedUser) => {
@@ -261,60 +266,69 @@ const MyUsers = () => {
       </View>
 
       <View style={styles.content}>
-        {myUsers.map((user, index) => (
-          <ListItem.Accordion
-            key={index}
-            containerStyle={styles.listItemContainerStyle}
-            underlayColor="#F5F5F5"
-            activeOpacity={0.65}
-            content={
-              <>
-                <View style={styles.listItemStyle}>
-                  <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
-                </View>
-              </>
-            }
-            isExpanded={user.isOpen}
-            onPress={() => {
-              openSelectedUser(user);
-            }}
-          >
-            {user.timeEntries.map((timeEntry, index) => (
-              <View key={index}>
-                {timeEntry !== "NO DATA" ? (
-                  <View key={index} style={styles.listItemContentStyle}>
-                    <View style={styles.listItemContentNameView}>
-                      <Text style={styles.listItemContentNameStyle}>
-                        {timeEntry.activityName}
+        {loadingData ? (
+          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
+        ) : null}
+        {!loadingData ? (
+          <>
+            {myUsers.map((user, index) => (
+              <ListItem.Accordion
+                key={index}
+                containerStyle={styles.listItemContainerStyle}
+                underlayColor="#F5F5F5"
+                activeOpacity={0.65}
+                content={
+                  <>
+                    <View style={styles.listItemStyle}>
+                      <Text style={styles.listItemNameStyle}>
+                        {user.fullName}
                       </Text>
                     </View>
-                    <View style={styles.listItemContentDateView}>
-                      <Text style={styles.listItemContentDateStyle}>
-                        {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                      </Text>
-                    </View>
-                    <View style={styles.listItemContentHourView}>
-                      <Text style={styles.listItemContentHourStyle}>
-                        {timeEntry.time} tim
-                      </Text>
-                    </View>
-                  </View>
-                ) : null}
-              </View>
-            ))}
-            <View style={styles.editUserIconView}>
-              <Icon
-                name="edit"
-                type="material"
-                size={25}
-                containerStyle={styles.editUserIcon}
+                  </>
+                }
+                isExpanded={user.isOpen}
                 onPress={() => {
-                  // navigation.navigate("EditUser")
+                  openSelectedUser(user);
                 }}
-              />
-            </View>
-          </ListItem.Accordion>
-        ))}
+              >
+                {user.timeEntries.map((timeEntry, index) => (
+                  <View key={index}>
+                    {timeEntry !== "NO DATA" ? (
+                      <View key={index} style={styles.listItemContentStyle}>
+                        <View style={styles.listItemContentNameView}>
+                          <Text style={styles.listItemContentNameStyle}>
+                            {timeEntry.activityName}
+                          </Text>
+                        </View>
+                        <View style={styles.listItemContentDateView}>
+                          <Text style={styles.listItemContentDateStyle}>
+                            {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                          </Text>
+                        </View>
+                        <View style={styles.listItemContentHourView}>
+                          <Text style={styles.listItemContentHourStyle}>
+                            {timeEntry.time} tim
+                          </Text>
+                        </View>
+                      </View>
+                    ) : null}
+                  </View>
+                ))}
+                <View style={styles.editUserIconView}>
+                  <Icon
+                    name="edit"
+                    type="material"
+                    size={25}
+                    containerStyle={styles.editUserIcon}
+                    onPress={() => {
+                      // navigation.navigate("EditUser")
+                    }}
+                  />
+                </View>
+              </ListItem.Accordion>
+            ))}
+          </>
+        ) : null}
       </View>
     </View>
   );
