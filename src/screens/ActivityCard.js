@@ -22,11 +22,6 @@ export const ActivityCard = ({ route, navigation }) => {
   const createActivityContext = useCreateActivityFunction();
   //   information comes from Suggestion.js with navigation when user or admin press on activity
   const { admin, activityInfo, active, tgPopular } = route.params;
-
-  //   console.log("admin ", admin);
-  //   console.log("activityInfo", activityInfo);
-  //   console.log("active", active);
-  //   console.log("tgPopular ", tgPopular);
   const [activity, setActivity] = useState({
     active: "",
     title: "",
@@ -103,6 +98,7 @@ export const ActivityCard = ({ route, navigation }) => {
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
         activityCardContext.changeActive(true);
+
         setActiveActivities(true);
       } else {
         console.log(
@@ -116,6 +112,7 @@ export const ActivityCard = ({ route, navigation }) => {
     } else if (pressedToDelete === true) {
       activityCardContext.idActivity(activityInfo.id);
       activityCardContext.confirmToDeleteActivity(true);
+
       setPressedToDelete(false);
       navigation.goBack();
     } else {

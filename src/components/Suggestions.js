@@ -78,69 +78,34 @@ export const Suggestions = ({
     setExistNewChanges(true);
   }, [useCreateActivityContext.changedActivity.active]);
 
-  // useEffect(() => {
-  //   if (
-  //     activityCardContext.oneActivityHasBeenDeleted === true &&
-  //     activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
-  //   ) {
-  //     setActivetyDeleted(true);
-  //   }
-  // }, [activityCardContext.oneActivityHasBeenDeleted]);
-
   useEffect(() => {
-    if (
-      activityCardContext.oneActivityHasBeenDeleted === true &&
-      activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
-    ) {
-      var index = showArray.findIndex(
-        (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
-      );
-      showArray.splice(index, 1);
-      activityCardContext.confirmToDeleteActivity(false);
-    }
+    const deleteObjectFromArray = () => {
+      if (
+        activityCardContext.oneActivityHasBeenDeleted === true &&
+        activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
+      ) {
+        var index = showArray.findIndex(
+          (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
+        );
+        showArray.splice(index, 1);
+        activityCardContext.confirmToDeleteActivity(false);
+      }
+    };
+    deleteObjectFromArray();
   }, [activityCardContext.oneActivityHasBeenDeleted]);
 
   useEffect(() => {
-    var index = showArray.findIndex(
-      (x) => x.id === useCreateActivityContext.changedActivity.id
-    );
-    showArray.splice(index, 1, useCreateActivityContext.changedActivity);
-  }, [useCreateActivityContext.changedActivity]);
-
-  useEffect(() => {
-    // if (existNewChanges) {
-    // ifStatusPopularChanged();
-    if (chooseActive === useCreateActivityContext.changedActivity.active) {
-      const searchingThrough = showArray.filter(
-        (object) => object.id === useCreateActivityContext.changedActivity.id
-      );
-      console.log("I WANT TO LOOK searchingThrough", searchingThrough);
-      if (searchingThrough.length === 0) {
-        setShowArray((prev) => [
-          ...prev,
-          useCreateActivityContext.changedActivity,
-        ]);
-      } else {
-        console.log("searchingThrough", searchingThrough.length);
-      }
-    } else if (
-      chooseActive != useCreateActivityContext.changedActivity.active
-    ) {
-      // let newArray = showArray;
-      var index = showArray.findIndex(
-        (x) => x.id === useCreateActivityContext.changedActivity.id
-      );
-
-      // if (index != -1) {
-      //   showArray.splice(index, 1);
-      // }
-    } else {
-      console.log(
-        "Something went wrong while attempt to replace an object in Suggestion.js"
-      );
+    if (activityCardContext.popular != null) {
+      const replaceObjectIfpopularStatusChanged = () => {
+        var index = showArray.findIndex(
+          (x) => x.id === useCreateActivityContext.changedActivity.id
+        );
+        showArray.splice(index, 1, useCreateActivityContext.changedActivity);
+        activityCardContext.changePopularStatusInAdminGallery(false);
+      };
+      replaceObjectIfpopularStatusChanged();
     }
-    setExistNewChanges(false);
-  }, [existNewChanges, chooseActive]);
+  }, [activityCardContext.popular]);
 
   return (
     <View>

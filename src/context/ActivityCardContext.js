@@ -12,6 +12,10 @@ export const ActivityCardProvider = ({ children }) => {
   const [activityID, setActivityID] = useState("");
   const [confirmToDelete, setConfirmToDelete] = useState(false);
   const [changeActivityInfo, setChangeActivityInfo] = useState(false);
+  const [statusActiveHasBeenChanged, setStatusActiveHasBeenChanged] =
+    useState(false);
+  const [statusPopularHasBeenChanged, setStatusPopularHasBeenChanged] =
+    useState(false);
   // const [activityInfo, setActivityInfo] = useState({
   //   city: "",
   //   description: "",
@@ -33,6 +37,7 @@ export const ActivityCardProvider = ({ children }) => {
           .then(() => {
             console.log("Actyvity tg_favorite changed");
             setChangeStatusPopular(null);
+            setStatusPopularHasBeenChanged(true);
           });
       };
       updateStatusPopular();
@@ -51,6 +56,7 @@ export const ActivityCardProvider = ({ children }) => {
           .then(() => {
             console.log("Actyvity active_status changed");
             setChangeStatusActive(null);
+            setStatusActiveHasBeenChanged(true);
           });
       };
       updateStatusActive();
@@ -102,6 +108,10 @@ export const ActivityCardProvider = ({ children }) => {
         confirmToDeleteActivity: setConfirmToDelete,
         changeActivityCard: setChangeActivityInfo,
         // activityInformation: setActivityInfo,
+        popular: statusPopularHasBeenChanged,
+        active: statusActiveHasBeenChanged,
+        changePopularStatusInAdminGallery: setStatusPopularHasBeenChanged,
+        changeActiveStatusInAdminGallery: setStatusActiveHasBeenChanged,
         oneActivityHasBeenDeleted: confirmToDelete,
         idOfTheActivityWhichHasBeenDeleted: activityID,
       }}
