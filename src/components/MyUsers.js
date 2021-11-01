@@ -83,6 +83,7 @@ const MyUsers = () => {
             .collection("Users")
             .doc(userIDs[i])
             .collection("time_entries")
+            .where("status_confirmed", "==", true)
             .orderBy("date", "desc")
             .get();
 
