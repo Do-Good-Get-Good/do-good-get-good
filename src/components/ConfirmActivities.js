@@ -12,6 +12,7 @@ const ConfirmActivities = () => {
   const [userIDs, setUserIDs] = useState([]);
   const [usersFullName, setUsersFullName] = useState([]);
   const [usersTimeEntries, setUsersTimeEntries] = useState([]);
+  const [usersTimeEntryIDs, setUsersTimeEntryIDs] = useState([]);
   const [isFinished, setIsFinished] = useState(false);
 
   useEffect(() => {
@@ -58,6 +59,7 @@ const ConfirmActivities = () => {
     if (userIDs.length != 0) {
       let nameArr = [];
       let timeEntryArr = [];
+      let timeEntryIDsArr = [];
       for (let i = 0; i < userIDs.length; i++) {
         try {
           const nameResponse = await firestore()
@@ -82,10 +84,13 @@ const ConfirmActivities = () => {
             .get();
 
           let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          if (timeEntryData.length === 0) {
+          let timeEntryID = timeEntryResponse.docs.map((doc) => doc.id);
+          if (timeEntryData.length === 0 && timeEntryID.length === 0) {
             timeEntryArr.push(["NO DATA"]);
+            timeEntryIDsArr.push(["NO DATA"]);
           } else {
             timeEntryArr.push(timeEntryData);
+            timeEntryIDsArr.push(timeEntryID);
           }
         } catch (error) {
           console.log(error);
@@ -93,10 +98,12 @@ const ConfirmActivities = () => {
       }
       if (
         nameArr.length === userIDs.length &&
-        timeEntryArr.length === userIDs.length
+        timeEntryArr.length === userIDs.length &&
+        timeEntryIDsArr.length === userIDs.length
       ) {
         setUsersFullName(nameArr);
         setUsersTimeEntries(timeEntryArr);
+        setUsersTimeEntryIDs(timeEntryIDsArr);
         setIsFinished(true);
       }
     }
@@ -153,6 +160,8 @@ const ConfirmActivities = () => {
             ),
             timeEntryHours: usersTimeEntries[i][j].time,
             timeEntryActivityName: usersTimeEntries[i][j].activityName,
+            activityId: usersTimeEntryIDs[i][j],
+            userID: userIDs[i],
             checked: false,
             isOpen: false,
           };
@@ -161,6 +170,7 @@ const ConfirmActivities = () => {
         }
       }
     }
+    // console.log(tempArr);
     setMyUsers(tempArr);
   };
 
@@ -214,6 +224,38 @@ const ConfirmActivities = () => {
       };
     });
     setMyUsers(newUsersArr);
+  };
+
+  const confirmSelectedActivities = () => {
+    // Filters out all selected users and saves them to a new array
+    let selectedUsers = myUsers.filter((user) => {
+      if (user.checked) {
+        return user;
+      }
+    });
+
+    // For every user in 'selectedUsers' call 'confirmActivity'
+    for (let i = 0; i < selectedUsers.length; i++) {
+      confirmActivity(selectedUsers[i].activityId, selectedUsers[i].userID);
+    }
+  };
+
+  // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
+  const confirmActivity = (documentID, userID) => {
+    firestore()
+      .collection("Users")
+      .doc(userID)
+      .collection("time_entries")
+      .doc(documentID)
+      .set(
+        {
+          status_confirmed: true,
+        },
+        { merge: true }
+      )
+      .then(() => {
+        console.log("Confirmed users time entry!");
+      });
   };
 
   return (
@@ -285,17 +327,7 @@ const ConfirmActivities = () => {
         ))}
       </View>
       <TouchableNativeFeedback
-        onPress={() => {
-          // Logs the selected users full name to console
-          let selectedUsers = myUsers.filter((user) => {
-            if (user.checked) {
-              return user;
-            }
-          });
-          for (let i = 0; i < selectedUsers.length; i++) {
-            // console.log(selectedUsers[i].fullName);
-          }
-        }}
+        onPress={() => confirmSelectedActivities()}
         disabled={
           myUsers.filter((user) => user.checked === true).length > 0
             ? false
