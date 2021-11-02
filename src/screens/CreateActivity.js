@@ -254,7 +254,7 @@ export const CreateActivity = ({ route, navigation }) => {
   const viewCreateNewActivity = () => {
     return (
       <View style={styles.containerForAllInput}>
-        <TextInput
+        <TextInput 
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}

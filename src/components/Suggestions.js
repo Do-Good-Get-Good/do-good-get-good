@@ -12,6 +12,8 @@ import { useRoute } from "@react-navigation/native";
 import Images from "../Images";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useActivityCardContext } from "../context/ActivityCardContext";
 
 export const Suggestions = ({
   navigation,
@@ -22,7 +24,12 @@ export const Suggestions = ({
 }) => {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
+  const useCreateActivityContext = useCreateActivityFunction();
+  const activityCardContext = useActivityCardContext();
   const [showArray, setShowArray] = useState([]);
+  const [existNewChanges, setExistNewChanges] = useState(false);
+  const [activetyDeleted, setActivetyDeleted] = useState(false);
+
   useEffect(() => {
     if (rout.name === "HomePage") {
       setShowArray(userSuggestionsContext.popularActivities);
@@ -51,19 +58,68 @@ export const Suggestions = ({
     }
   }
 
+  function lookDetails(activety, statusActive, statusPopular) {
+    rout.name === "HomePage"
+      ? navigation.navigate("ActivityCard", {
+          admin: false,
+          activityInfo: activety,
+          active: statusActive,
+          tgPopular: statusPopular,
+        })
+      : navigation.navigate("ActivityCard", {
+          admin: true,
+          activityInfo: activety,
+          active: statusActive,
+          tgPopular: statusPopular,
+        });
+  }
+
+  useEffect(() => {
+    setExistNewChanges(true);
+  }, [useCreateActivityContext.changedActivity.active]);
+
+  useEffect(() => {
+    const deleteObjectFromArray = () => {
+      if (
+        activityCardContext.oneActivityHasBeenDeleted === true &&
+        activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
+      ) {
+        var index = showArray.findIndex(
+          (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
+        );
+        showArray.splice(index, 1);
+        activityCardContext.confirmToDeleteActivity(false);
+      }
+    };
+    deleteObjectFromArray();
+  }, [activityCardContext.oneActivityHasBeenDeleted]);
+
+  useEffect(() => {
+    if (activityCardContext.popular != null) {
+      const replaceObjectIfpopularStatusChanged = () => {
+        var index = showArray.findIndex(
+          (x) => x.id === useCreateActivityContext.changedActivity.id
+        );
+        showArray.splice(index, 1, useCreateActivityContext.changedActivity);
+        activityCardContext.changePopularStatusInAdminGallery(false);
+      };
+      replaceObjectIfpopularStatusChanged();
+    }
+  }, [activityCardContext.popular]);
+
   return (
     <View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("AdminActivityGallery")}
-      >
-        <Text>click just ti try admin AdminActivityGallery</Text>
-      </TouchableOpacity>
-
       <Text style={styles.topH1}>Förslag & inspiration</Text>
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
-          <TouchableOpacity index={index} key={index}>
+          <TouchableOpacity
+            onPress={() =>
+              lookDetails(suggestion, suggestion.active, suggestion.popular)
+            }
+            index={index}
+            key={index}
+          >
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
@@ -72,14 +128,6 @@ export const Suggestions = ({
                   </Text>
 
                   <View style={styles.iconsAndTextCityContainer}>
-                    {/* <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      marginTop: 6,
-                      paddingTop: suggestion.title.length > 16 ? 0 : 25,
-                    }}
-                  > */}
                     <Icon
                       type="material-community"
                       name="map-marker-outline"
@@ -87,19 +135,6 @@ export const Suggestions = ({
                       size={25}
                     />
 
-                    {/* <Text
-                      style={{
-                        flex: 1,
-
-                        // marginTop: 20,
-                        fontSize: 18,
-                        paddingTop: 5,
-                        marginLeft: 12,
-                        paddingTop: suggestion.title.length > 16 ? 0 : 25,
-                      }}
-                    >
-                      {suggestion.city}
-                    </Text> */}
                     <Text style={styles.textCity}>{suggestion.city}</Text>
                   </View>
 
@@ -121,7 +156,11 @@ export const Suggestions = ({
                 />
               </View>
 
-              <TouchableOpacity>
+              <TouchableOpacity
+                onPress={() =>
+                  lookDetails(suggestion, suggestion.active, suggestion.popular)
+                }
+              >
                 <Text style={styles.textLäsMer}>Läs mer</Text>
               </TouchableOpacity>
             </View>

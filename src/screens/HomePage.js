@@ -72,7 +72,6 @@ export const HomePage = ({ navigation }) => {
           )}
         </>
       ) : null}
-      {/* <MyTime></MyTime> */}
     </SafeAreaView>
   );
 };
@@ -95,7 +94,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     height: 40,
-    // position: "absolute",
     bottom: 0,
   },
 });

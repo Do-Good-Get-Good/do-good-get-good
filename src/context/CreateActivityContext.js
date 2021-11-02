@@ -24,6 +24,17 @@ export const CreateActivityProvider = ({ children }) => {
     activity_title: "",
     tg_favorite: false,
   });
+  const [newChangeActivity, setNewChangeActivity] = useState({
+    id: "",
+    active: "",
+    title: "",
+    city: "",
+    photo: "",
+    description: "",
+    popular: "",
+  });
+  const [changedOneActivity, setChangedOneActivity] = useState(false);
+  const [activityID, setActivityID] = useState(null);
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
@@ -34,6 +45,7 @@ export const CreateActivityProvider = ({ children }) => {
           .get();
 
         let activities = allActiveActivities.docs.map((doc) => doc.data());
+        let docId = allActiveActivities.docs.map((doc) => doc.id);
 
         if (
           activities != null &&
@@ -41,12 +53,14 @@ export const CreateActivityProvider = ({ children }) => {
         ) {
           for (let i = 0; i < activities.length; i++) {
             const dataInfo = {
-              id: activities[i].activityID,
+              id: docId[i],
               title: activities[i].activity_title,
+              active: activities[i].active_status,
               city: activities[i].activity_city,
               place: activities[i].activity_place,
               description: activities[i].activity_description,
               photo: activities[i].activity_photo,
+              popular: activities[i].tg_favorite,
             };
             setAllActiveActvivitiesFB((prev) => [...prev, dataInfo]);
           }
@@ -83,10 +97,35 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, [createNewActivityInFB]);
 
-  // console.log(
-  //   "CreactActivityContext createNewActivityInFB",
-  //   createNewActivityInFB.activity_title
-  // );
+  useEffect(() => {
+    if (changedOneActivity === true && activityID != null) {
+      const getChangedActivity = async () => {
+        const getActivity = await firestore()
+          .collection("Activities")
+          .doc(activityID)
+          .get();
+
+        let info = getActivity.data();
+        if (info != null) {
+          const dataInfo = {
+            id: activityID,
+            active: info.active_status,
+            title: info.activity_title,
+            city: info.activity_city,
+            photo: info.activity_photo,
+            description: info.activity_description,
+            popular: info.tg_favorite,
+          };
+          setNewChangeActivity(dataInfo);
+
+          console.log("newChangeActivity in useEffect dataInfo", dataInfo);
+        }
+        setChangedOneActivity(false);
+        setActivityID(null);
+      };
+      getChangedActivity();
+    }
+  }, [changedOneActivity]);
 
   return (
     <CreateActivityContext.Provider
@@ -96,6 +135,10 @@ export const CreateActivityProvider = ({ children }) => {
         sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
         setNewActivity: setCreateNewActivityInFB,
+
+        changedActivity: newChangeActivity,
+        activityHasChanged: setChangedOneActivity,
+        activityHasChangedID: setActivityID,
       }}
     >
       {children}

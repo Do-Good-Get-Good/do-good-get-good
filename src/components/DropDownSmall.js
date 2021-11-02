@@ -59,24 +59,6 @@ export const DropDownSmall = ({}) => {
       setOpenDropDown(false);
       creactActivityContext.chooseInDropDown(selection);
       setSortBy(selection);
-    } else if (rout.name === "AdminActivityGallery") {
-      // let newArray = sortArray;
-      // newArray.splice(index, 0, sortBy);
-      // setSortArray(newArray);
-
-      // newArray = [];
-
-      // sortArray((prev) => {
-      //   const components = prev.components.slice(index);
-      //   components.splice(index, 0, sortBy);
-      //   setSortArray(components);
-      // });
-
-      setSortBy(selection);
-
-      // if (sortArray.length < 4) {
-      //   setSortArray((prev) => [...prev, "Datum"]);
-      // }
     } else {
       console.log("No rout");
     }
