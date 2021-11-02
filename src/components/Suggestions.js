@@ -109,12 +109,6 @@ export const Suggestions = ({
 
   return (
     <View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("AdminActivityGallery")}
-      >
-        <Text>click just ti try admin AdminActivityGallery</Text>
-      </TouchableOpacity>
-
       <Text style={styles.topH1}>Förslag & inspiration</Text>
 
       <View style={styles.activityContainer}>
@@ -134,14 +128,6 @@ export const Suggestions = ({
                   </Text>
 
                   <View style={styles.iconsAndTextCityContainer}>
-                    {/* <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      marginTop: 6,
-                      paddingTop: suggestion.title.length > 16 ? 0 : 25,
-                    }}
-                  > */}
                     <Icon
                       type="material-community"
                       name="map-marker-outline"
@@ -149,19 +135,6 @@ export const Suggestions = ({
                       size={25}
                     />
 
-                    {/* <Text
-                      style={{
-                        flex: 1,
-
-                        // marginTop: 20,
-                        fontSize: 18,
-                        paddingTop: 5,
-                        marginLeft: 12,
-                        paddingTop: suggestion.title.length > 16 ? 0 : 25,
-                      }}
-                    >
-                      {suggestion.city}
-                    </Text> */}
                     <Text style={styles.textCity}>{suggestion.city}</Text>
                   </View>
 

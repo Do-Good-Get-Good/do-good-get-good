@@ -48,21 +48,6 @@ export const AdminGalleryProvider = ({ children }) => {
     setInactive();
   }, []);
 
-  // useEffect(() => {
-  //   let array = [];
-  //   const serchForRightObject = () => {
-  //     if (searchingWord != "") {
-  //       const searchingThrough = activitiesGallery.filter(
-  //         (object) =>
-  //           object.title === searchingWord || object.city === searchingWord
-  //       );
-  //       array.push(searchingThrough);
-  //       setSearchArray(array);
-  //     }
-  //   };
-  //   serchForRightObject();
-  // }, [searchingWord]);
-
   return (
     <AdminGalleryContext.Provider
       value={{

@@ -37,12 +37,6 @@ export const HomePage = ({ navigation }) => {
             <SuggestionProvider>
               <Suggestions navigation={navigation}></Suggestions>
             </SuggestionProvider>
-
-            <TouchableOpacity
-              onPress={() => navigation.navigate("CreateActivity")}
-            >
-              <Text>"go to create activity"</Text>
-            </TouchableOpacity>
           </View>
         ) : (
           <View style={styles.container}>
@@ -52,7 +46,6 @@ export const HomePage = ({ navigation }) => {
             <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
           </View>
         )}
-        {/* <MyTime></MyTime> */}
       </ScrollView>
       {isAdmin ? <FloatingActionButton /> : null}
     </SafeAreaView>

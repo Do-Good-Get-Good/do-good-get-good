@@ -164,7 +164,6 @@ export const CreateActivity = ({}) => {
       <View style={styles.containerForAllInput}>
         <TextInput
           style={styles.textInputTitleCityPlace}
-          // numberOfLines={1}
           maxLength={30}
           onChangeText={setTitle}
           value={title}
@@ -432,18 +431,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#84BD00",
     backgroundColor: "white",
-    // flex: 1,
-    // resizeMode: "contain",
-    // margin: 2,
-    // height: 98,
-    // backgroundColor: "white",
   },
   buttonBorderStyle: {
     borderRadius: 5,
     height: 55,
     width: 200,
     alignItems: "center",
-    // justifyContent: "center",
+
     marginTop: 25,
   },
   imageBorderStyle: {
@@ -581,10 +575,6 @@ const styles = StyleSheet.create({
     paddingVertical: 1,
     paddingHorizontal: 1,
 
-    // height: 101,
-    // width: 120,
-    // paddingHorizontal: 4,
     alignItems: "center",
-    // justifyContent: "center",
   },
 });

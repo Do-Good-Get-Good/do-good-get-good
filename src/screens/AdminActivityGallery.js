@@ -9,9 +9,6 @@ import {
   Button,
 } from "react-native";
 
-// import { SearchBarComponent } from "../components/SearchBarComponent";
-
-// import { DropDownSmall } from "../components/DropDownSmall";
 import { RadioButton } from "../components/RadioButton";
 import { Suggestions } from "../components/Suggestions";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -107,17 +104,12 @@ export const AdminActivityGallery = ({ navigation }) => {
     <SafeAreaView>
       <ScrollView>
         <View style={styles.container}>
-          <Button title="back" onPress={() => navigation.goBack()}></Button>
-          {/* <SearchBarComponent style={styles.searchBar}></SearchBarComponent> */}
-
           <View style={styles.containerRadioButtonAndDropDown}>
             <View style={styles.radioButton}>
               <RadioButton></RadioButton>
             </View>
 
-            <View style={styles.dropDown}>
-              {/* <DropDownSmall></DropDownSmall> */}
-            </View>
+            <View style={styles.dropDown}></View>
           </View>
         </View>
 
