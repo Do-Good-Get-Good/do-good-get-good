@@ -52,21 +52,34 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
           </Pressable>
-          <Pressable
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              navigation.navigate("MyTimePage");
-            }}
-          >
-            <Text style={styles.menuOverlayLinkText}>Min tid</Text>
-          </Pressable>
+
+          {isAdmin ? (
+            <Pressable
+              style={styles.menuOverlayLinkStyling}
+              onPress={() => {
+                navigation.navigate("AdminActivityGallery");
+              }}
+            >
+              <Text style={styles.menuOverlayLinkText}>Aktiviteter</Text>
+            </Pressable>
+          ) : (
+            <Pressable
+              style={styles.menuOverlayLinkStyling}
+              onPress={() => {
+                navigation.navigate("MyTimePage");
+              }}
+            >
+              <Text style={styles.menuOverlayLinkText}>Min tid</Text>
+            </Pressable>
+          )}
+
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               // navigation.navigate("");
             }}
           >
-            <Text style={styles.menuOverlayLinkText}>Om</Text>
+            <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
           </Pressable>
           <Pressable
             style={styles.menuOverlayLinkStyling}
@@ -76,16 +89,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </Pressable>
-          {isAdmin ? (
-            <Pressable
-              style={styles.menuOverlayLinkStyling}
-              onPress={() => {
-                // navigation.navigate("");
-              }}
-            >
-              <Text style={styles.menuOverlayLinkText}>Lägga in tid?</Text>
-            </Pressable>
-          ) : null}
         </View>
         <Pressable
           style={styles.menuOverlayLogOutButton}
