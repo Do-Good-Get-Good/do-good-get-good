@@ -44,6 +44,16 @@ export const DropDownSmall = ({}) => {
     }
   };
 
+  toStileTitle = function (title, index) {
+    return {
+      marginVertical: 5,
+      fontSize: 18,
+      color: "#333333",
+      fontStyle:
+        title === "Skapa ny aktivitet" && index === 0 ? "italic" : "normal",
+    };
+  };
+
   function pressSelectionInsideDropDown(selection, index) {
     if (rout.name === "CreateActivity") {
       setOpenDropDown(false);
@@ -112,7 +122,9 @@ export const DropDownSmall = ({}) => {
                     pressSelectionInsideDropDown(sort.title, index);
                   }}
                 >
-                  <Text style={styles.textInsideSortBox}>{sort.title}</Text>
+                  <Text style={toStileTitle(sort.title, index)}>
+                    {sort.title}
+                  </Text>
                 </TouchableOpacity>
               </View>
             ))
@@ -150,10 +162,5 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     overflow: "hidden",
     borderColor: "white",
-  },
-  textInsideSortBox: {
-    marginVertical: 5,
-    fontSize: 18,
-    color: "#333333",
   },
 });
