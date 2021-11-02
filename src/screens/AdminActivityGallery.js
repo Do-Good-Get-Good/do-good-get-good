@@ -62,13 +62,7 @@ export const AdminActivityGallery = ({ navigation }) => {
           if (indexInactive != -1) {
             inactiveActivities.splice(indexInactive, 1);
           }
-          console.log(
-            "IN IF ACTIVITY === TRUE",
-            "indexInActive ",
-            indexInActive,
-            "indexInactive ",
-            indexInactive
-          );
+
           activityCardContext.changeActiveStatusInAdminGallery(false);
         } else if (
           createActivityContext.changedActivity.active === false &&
@@ -136,8 +130,6 @@ export const AdminActivityGallery = ({ navigation }) => {
             adminGallery={arrayOfActiveActivities}
           ></Suggestions>
         </View>
-
-        {/* </AdminGalleryProvider> */}
       </ScrollView>
     </SafeAreaView>
   );

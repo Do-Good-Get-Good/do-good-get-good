@@ -30,8 +30,6 @@ export const Suggestions = ({
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [activetyDeleted, setActivetyDeleted] = useState(false);
 
-  console.log("chooseActive", chooseActive);
-
   useEffect(() => {
     if (rout.name === "HomePage") {
       setShowArray(userSuggestionsContext.popularActivities);

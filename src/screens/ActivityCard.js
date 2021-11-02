@@ -157,21 +157,6 @@ export const ActivityCard = ({ route, navigation }) => {
     setPopular(tgPopular);
   }, [tgPopular]);
 
-  // useEffect(() => {
-  //   toArchiveOrToTakeAwayFromArchive();
-  // }, [activeActivities]);
-
-  //   console.log(
-  //     "activity",
-  //     activity,
-  //     "adminOpenedActyvity",
-  //     adminOpenedActyvity,
-  //     "activeActivities",
-  //     activeActivities,
-  //     "popular",
-  //     popular
-  //   );
-
   function setTheRightPhoto(activityObjectPhoto) {
     for (let i = 0; i < Images.length; i++) {
       if (activityObjectPhoto === Images[i].name) {

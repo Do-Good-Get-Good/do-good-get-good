@@ -71,65 +71,6 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, []);
 
-  //1 NOVEMBER
-
-  // useEffect(() => {
-  //   setChangedOneActivity(true);
-  // }, []);
-
-  // useEffect(() => {
-
-  //   if (changedOneActivity === true) {
-  //     let activities = [];
-  //     let docId = [];
-
-  //     const getAllActiveActivities = firestore()
-  //       .collection("Activities")
-  //       .where("active_status", "==", true)
-  //       .get()
-  //       .then((querySnapshot) => {
-  //         querySnapshot.forEach((documentSnapshot) => {
-  //           console.log(
-  //             "User ID: ",
-  //             documentSnapshot.id,
-  //             documentSnapshot.data()
-  //           );
-  //           activities.push(documentSnapshot.data());
-  //           docId.push(documentSnapshot.id);
-  //           if (
-  //             activities != null &&
-  //             activities.length > allActiveActvivitiesFB.length
-  //           ) {
-  //             let newArray = [];
-
-  //             for (let i = 0; i < activities.length; i++) {
-  //               const dataInfo = {
-  //                 id: docId[i],
-  //                 title: activities[i].activity_title,
-  //                 active: activities[i].active_status,
-  //                 city: activities[i].activity_city,
-  //                 place: activities[i].activity_place,
-  //                 description: activities[i].activity_description,
-  //                 photo: activities[i].activity_photo,
-  //                 popular: activities[i].tg_favorite,
-  //               };
-  //               newArray.push(dataInfo);
-  //               setAllActiveActvivitiesFB(newArray);
-
-  //             }
-  //           }
-  //           //remember to unsubscribe from your realtime listener on unmount or you will create a memory leak
-  //         });
-  //         return () => getAllActiveActivities();
-  //       });
-  //     setChangedOneActivity(false);
-
-  //   }
-  //   console.log("CreateActivityContext all active actvivitiesFB useEffect");
-
-  // }, [changedOneActivity]);
-  //1 NOVEMBER
-
   useEffect(() => {
     if (
       createNewActivityInFB.activity_title &&

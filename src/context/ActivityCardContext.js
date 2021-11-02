@@ -16,13 +16,6 @@ export const ActivityCardProvider = ({ children }) => {
     useState(false);
   const [statusPopularHasBeenChanged, setStatusPopularHasBeenChanged] =
     useState(false);
-  // const [activityInfo, setActivityInfo] = useState({
-  //   city: "",
-  //   description: "",
-  //   photo: "",
-  //   place: "",
-  //   title: "",
-  // });
 
   useEffect(() => {
     if (activityID != "" && changeStatusPopular != null) {
