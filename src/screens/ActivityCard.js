@@ -37,8 +37,10 @@ export const ActivityCard = ({ route, navigation }) => {
   const [popular, setPopular] = useState(tgPopular);
   const [visible, setVisible] = useState(false);
 
-  const alertQuestionToTakeAwayFromArchive = "WILL BE SOME QUESTION";
-  const alertClarificationToTakeAwayFromArchive = " Clarification...";
+  const alertQuestionToTakeAwayFromArchive =
+    "Vill du flytta denna aktivitet från arkiv";
+  const alertClarificationToTakeAwayFromArchive =
+    "[Aktiviteten kommer att flyttas från icke-aktiv till aktiv, i biblioteket]";
   const alertArchiveQuestion = "Vill du arkivera denna aktivitet?";
   const alertArchiveClarification =
     "[Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet]";

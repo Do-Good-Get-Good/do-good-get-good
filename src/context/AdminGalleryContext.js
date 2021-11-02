@@ -17,7 +17,7 @@ export const AdminGalleryProvider = ({ children }) => {
 
   useEffect(() => {
     let inactiveArray = [];
-    // if (chooseInactive === true) {
+
     const setInactive = async () => {
       const allActiveActivities = await firestore()
         .collection("Activities")
@@ -25,16 +25,18 @@ export const AdminGalleryProvider = ({ children }) => {
         .get();
 
       let activities = allActiveActivities.docs.map((doc) => doc.data());
+      let docId = allActiveActivities.docs.map((doc) => doc.id);
 
       if (activities != null && activities.length > activitiesGallery.length) {
         for (let i = 0; i < activities.length; i++) {
           const dataInfo = {
-            id: activities[i].activityID,
+            id: docId[i],
             title: activities[i].activity_title,
+            active: activities[i].active_status,
             city: activities[i].activity_city,
             description: activities[i].activity_description,
-            popular: activities[i].activity_tg_favorite,
             photo: activities[i].activity_photo,
+            popular: activities[i].tg_favorite,
           };
           inactiveArray.push(dataInfo);
 
@@ -44,7 +46,6 @@ export const AdminGalleryProvider = ({ children }) => {
       }
     };
     setInactive();
-    // }
   }, []);
 
   // useEffect(() => {
@@ -65,7 +66,6 @@ export const AdminGalleryProvider = ({ children }) => {
   return (
     <AdminGalleryContext.Provider
       value={{
-        // gallery: activitiesGallery,
         showSearchObject: searchArray,
         chooseActiveOrNot: setchooseInactive,
         word: setSearchingWord,

@@ -7,6 +7,7 @@ import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { ActivityProvider } from "./context/ActivityContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
+import { ActivityCardProvider } from "./context/ActivityCardContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -33,17 +34,17 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-
-      <AdminGalleryProvider>
-        <CreateActivityProvider>
-          {/* <AdminProvider> */}
-          <ActivityProvider>
-            <Mystack />
-          </ActivityProvider>
-          {/* </AdminProvider> */}
-        </CreateActivityProvider>
-      </AdminGalleryProvider>
-
+      <ActivityCardProvider>
+        <AdminGalleryProvider>
+          <CreateActivityProvider>
+            {/* <AdminProvider> */}
+            <ActivityProvider>
+              <Mystack />
+            </ActivityProvider>
+            {/* </AdminProvider> */}
+          </CreateActivityProvider>
+        </AdminGalleryProvider>
+      </ActivityCardProvider>
     </SafeAreaProvider>
   );
 }

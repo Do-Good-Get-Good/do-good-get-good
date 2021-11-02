@@ -9,10 +9,9 @@ import {
   Button,
 } from "react-native";
 
-import { SearchBarComponent } from "../components/SearchBarComponent";
-import { Overlay } from "react-native-elements";
-// import { AdminGalleryProvider } from "../context/AdminGalleryContext";
-import { DropDownSmall } from "../components/DropDownSmall";
+// import { SearchBarComponent } from "../components/SearchBarComponent";
+
+// import { DropDownSmall } from "../components/DropDownSmall";
 import { RadioButton } from "../components/RadioButton";
 import { Suggestions } from "../components/Suggestions";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -33,7 +32,6 @@ export const AdminActivityGallery = ({ navigation }) => {
   }, [
     adminGalleryContext.inactiveActivities,
     createActivityContext.activeActivities,
-    // activityCardContext.active,
   ]);
 
   useEffect(() => {
@@ -116,7 +114,7 @@ export const AdminActivityGallery = ({ navigation }) => {
       <ScrollView>
         <View style={styles.container}>
           <Button title="back" onPress={() => navigation.goBack()}></Button>
-          <SearchBarComponent style={styles.searchBar}></SearchBarComponent>
+          {/* <SearchBarComponent style={styles.searchBar}></SearchBarComponent> */}
 
           <View style={styles.containerRadioButtonAndDropDown}>
             <View style={styles.radioButton}>
@@ -124,22 +122,18 @@ export const AdminActivityGallery = ({ navigation }) => {
             </View>
 
             <View style={styles.dropDown}>
-              {/* <Overlay> */}
-              <DropDownSmall></DropDownSmall>
-              {/* </Overlay> */}
+              {/* <DropDownSmall></DropDownSmall> */}
             </View>
           </View>
         </View>
-        {/* <AdminGalleryProvider> */}
+
         <View style={styles.suggestionContainer}>
           <Suggestions
             navigation={navigation}
-            // inactiveActivities={adminGalleryContext.inactiveActivities}
             inactiveActivities={inactiveActivities}
             chooseActive={adminGalleryContext.activeOrInactiveActivity}
             search={adminGalleryContext.showSearchObject}
             adminGallery={arrayOfActiveActivities}
-            // adminGallery={createActivityContext.activeActivities}
           ></Suggestions>
         </View>
 
