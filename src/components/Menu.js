@@ -21,7 +21,6 @@ const UserMenu = () => {
           },
           android: {
             marginTop: 0,
-            // Ingen height eftersom vi har ny logga utan white borders.
           },
         }),
       }}

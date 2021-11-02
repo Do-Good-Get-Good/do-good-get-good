@@ -161,12 +161,6 @@ const MyUsers = () => {
   const fillUsersWithInfo = () => {
     let tempArr = [];
     for (let i = 0; i < userIDs.length; i++) {
-      var registeredHoursSum = 0;
-      for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] !== "NO DATA") {
-          registeredHoursSum += usersTimeEntries[i][j].time;
-        }
-      }
       let userInfo = {
         fullName: usersFullName[i],
         timeEntries: usersTimeEntries[i],

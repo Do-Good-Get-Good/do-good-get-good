@@ -3,10 +3,8 @@ import { StyleSheet, Text, View, Pressable } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
 import { StatusBar } from "expo-status-bar";
-import tw from "tailwind-react-native-classnames";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
-import firestore from "@react-native-firebase/firestore";
 import { useAdminCheckFunction } from "../context/AdminContext";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
@@ -89,11 +87,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             </Pressable>
           ) : null}
         </View>
-        {/* <View style={tw`bg-blue-500 absolute bottom-14 self-center`}>
-          <Text style={tw`text-sm text-center text-white p-1`}>
-            Inloggad mail: {auth().currentUser.email}
-          </Text>
-        </View> */}
         <Pressable
           style={styles.menuOverlayLogOutButton}
           onPress={() => {

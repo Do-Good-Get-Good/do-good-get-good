@@ -1,16 +1,13 @@
-import React, { useContext, useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   SafeAreaView,
   View,
   ScrollView,
-  TouchableOpacity,
-  Text,
   Image,
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
-// import { MyTime } from "../components/MyTime";
 import { Suggestions } from "../components/Suggestions";
 
 import Menu from "../components/Menu";
