@@ -21,6 +21,10 @@ The app is a cross platform application built in react native. Development focus
 9. You might need to install firestore manually with `npm add @react-native-firebase/firestore`
 10. standing in the root for the source code run `expo start`, or `npx react-native run-android` or `npx react-native run-ios`
 
+Firebase emulator
+=====
+
+
 #### Trouble shooting ####
 * Skapa en 'local.properties' fil i roten av Android mappen och skriv
 `sdk.dir = /Users/<name>/Library/Android/sdk`
