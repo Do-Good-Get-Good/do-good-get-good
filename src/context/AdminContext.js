@@ -9,7 +9,7 @@ export const useAdminCheckFunction = () => {
 };
 
 export const AdminProvider = ({ children }) => {
-  const [isAdmin, setIsAdmin] = useState(false);
+  const [userLevel, setUserLevel] = useState(null);
 
   useEffect(() => {
     const checkIfUserIsAdmin = async () => {
@@ -17,16 +17,17 @@ export const AdminProvider = ({ children }) => {
         .collection("Users")
         .doc(auth().currentUser.uid)
         .get();
+
       if (response.data().role === "admin") {
-        setIsAdmin(true);
+        setUserLevel("admin");
       } else {
-        setIsAdmin(false);
+        setUserLevel("user");
       }
     };
     checkIfUserIsAdmin();
   }, []);
 
   return (
-    <AdminContext.Provider value={isAdmin}>{children}</AdminContext.Provider>
+    <AdminContext.Provider value={userLevel}>{children}</AdminContext.Provider>
   );
 };

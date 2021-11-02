@@ -21,7 +21,6 @@ const UserMenu = () => {
           },
           android: {
             marginTop: 0,
-            height: 80,
           },
         }),
       }}
@@ -68,7 +67,7 @@ const styles = StyleSheet.create({
   headerMenu: {
     alignItems: "flex-start",
     marginRight: 8,
-    marginTop: -4,
+    marginTop: -3,
   },
   headerMenuText: {
     textTransform: "uppercase",
