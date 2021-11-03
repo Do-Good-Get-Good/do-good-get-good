@@ -158,9 +158,9 @@ android {
         }
         release {
             storeFile file('dggg_key.keystore')
-            storePassword System.console().readLine("\nKeystore password: ")
+            storePassword ''
             keyAlias 'do_good_get_good_key'
-            keyPassword System.console().readLine("\Alias password: ")
+            keyPassword ''
         }
     }
     buildTypes {
