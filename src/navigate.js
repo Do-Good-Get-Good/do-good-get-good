@@ -7,6 +7,7 @@ import { AdminActivityGallery } from "./screens/AdminActivityGallery";
 import { CreateActivity } from "./screens/CreateActivity";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
+import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
 
 const Stack = createNativeStackNavigator();
 export const Mystack = () => {
@@ -26,6 +27,10 @@ export const Mystack = () => {
         <Stack.Screen name="CreateActivity" component={CreateActivity} />
         <Stack.Screen name="ActivityCard" component={ActivityCard} />
         <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
+        <Stack.Screen
+          name="CreateOrChangeUser"
+          component={CreateOrChangeUser}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );

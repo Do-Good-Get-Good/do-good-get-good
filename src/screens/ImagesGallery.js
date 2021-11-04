@@ -14,28 +14,22 @@ import Images from "../Images";
 
 export const ImagesGallery = ({ navigation }) => {
   const [imagesArray, setImagesArray] = useState(Images);
-  const [imageIndex, setImageIndex] = useState(0);
-  const [chooseImage, setChooseImage] = useState("");
 
-  useEffect(() => {
+  function changeBorderStyle(index, name) {
     let arrayForSelection = imagesArray;
 
     for (let i = 0; i < arrayForSelection.length; i++) {
-      if (i === imageIndex) {
+      if (i === index) {
         arrayForSelection[i].selected = true;
       }
-      if (i != imageIndex) {
+      if (i != index) {
         arrayForSelection[i].selected = false;
       }
     }
     setImagesArray(arrayForSelection);
-
-    console.log("arrayForSelection[i].selected", imagesArray);
-  }, [imageIndex]);
-
-  function getPressedImageIndexAndName(index, name, selected) {
-    setImageIndex(index);
-    setChooseImage(name);
+    navigation.navigate("CreateActivity", {
+      imageForActivity: name,
+    });
   }
 
   imageStyle = function (selected) {
@@ -67,9 +61,7 @@ export const ImagesGallery = ({ navigation }) => {
           numColumns={2}
           renderItem={({ item, index }) => (
             <TouchableOpacity
-              onPress={() =>
-                getPressedImageIndexAndName(index, item.name, item.selected)
-              }
+              onPress={() => changeBorderStyle(index, item.name)}
               style={{ flex: 0.5, flexDirection: "row" }}
             >
               <Image style={imageStyle(item.selected)} source={item.image} />
@@ -77,7 +69,7 @@ export const ImagesGallery = ({ navigation }) => {
           )}
         />
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity
+          {/* <TouchableOpacity
             onPress={() =>
               navigation.navigate("CreateActivity", {
                 imageForActivity: chooseImage,
@@ -85,7 +77,7 @@ export const ImagesGallery = ({ navigation }) => {
             }
           >
             <Text style={styles.buttonSave}>Spara</Text>
-          </TouchableOpacity>
+          </TouchableOpacity> */}
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <LinearGradient

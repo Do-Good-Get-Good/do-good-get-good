@@ -15,6 +15,7 @@ export const CreateActivityProvider = ({ children }) => {
   const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
+
   const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
     active_status: "",
     activity_city: "",
@@ -73,9 +74,9 @@ export const CreateActivityProvider = ({ children }) => {
 
   useEffect(() => {
     if (
-      createNewActivityInFB.activity_title &&
-      createNewActivityInFB.activity_place &&
-      createNewActivityInFB.activity_city
+      createNewActivityInFB.activity_title != "" &&
+      createNewActivityInFB.activity_place != "" &&
+      createNewActivityInFB.activity_city != ""
     ) {
       const setNewActivityToFireBase = async () => {
         firestore()

@@ -14,6 +14,7 @@ import { Suggestions } from "../components/Suggestions";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import Menu from "../components/Menu";
 
 export const AdminActivityGallery = ({ navigation }) => {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -52,12 +53,15 @@ export const AdminActivityGallery = ({ navigation }) => {
             ]);
           }
 
-          var indexInactive = inactiveActivities.findIndex(
+          let arrayInactive = inactiveActivities;
+
+          var indexInactive = arrayInactive.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (indexInactive != -1) {
-            inactiveActivities.splice(indexInactive, 1);
+            arrayInactive.splice(indexInactive, 1);
+            setInactiveActivities(arrayInactive);
           }
 
           activityCardContext.changeActiveStatusInAdminGallery(false);
@@ -79,22 +83,19 @@ export const AdminActivityGallery = ({ navigation }) => {
             ]);
           }
 
-          var indexActive = arrayOfActiveActivities.findIndex(
+          let arrayActive = arrayOfActiveActivities;
+
+          var indexActive = arrayActive.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (indexActive != -1) {
-            arrayOfActiveActivities.splice(indexActive, 1);
+            arrayActive.splice(indexActive, 1);
+            setArrayOfActiveActivities(arrayActive);
           }
         }
         activityCardContext.changeActiveStatusInAdminGallery(false);
       };
-      console.log(
-        "activityCardContext.changeActive ADMIN GALLERY",
-        activityCardContext.active,
-        "createActivityContext.changedActivity",
-        createActivityContext.changedActivity
-      );
 
       addAndDeleteObjectInArrayAfterStatusActiveChanged();
     }
@@ -102,6 +103,7 @@ export const AdminActivityGallery = ({ navigation }) => {
 
   return (
     <SafeAreaView>
+      <Menu />
       <ScrollView>
         <View style={styles.container}>
           <View style={styles.containerRadioButtonAndDropDown}>

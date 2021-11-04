@@ -19,8 +19,11 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
 export const CreateActivity = ({ route, navigation }) => {
   const createActivityContext = useCreateActivityFunction();
-  const [whileCreatingNewUser, setWhileCreatingNewUser] = useState(true);
-  const [existingActivity, setExistingActivity] = useState(true);
+  const { creatingNewUser, activityExist, newUserInfo } = route.params;
+
+  const [whileCreatingNewUser, setWhileCreatingNewUser] =
+    useState(creatingNewUser);
+  const [existingActivity, setExistingActivity] = useState(activityExist);
   const [checkBoxPressed, setCheckBoxPressed] = useState(false);
   const titleForNewActivity = "Lägg till aktivitet";
   const titleForNewActivityWithCreateNewUser = "Skapa aktivitet";
@@ -34,10 +37,32 @@ export const CreateActivity = ({ route, navigation }) => {
   const [cityFilledUp, setCityFilledUp] = useState(null);
   const [description, setDescription] = useState("");
   const [newActivityImage, setNewActivityImage] = useState();
-  const [newActivity, setNewActivity] = useState({});
+  const [createNewUser, setCreatNewUser] = useState(null);
+
+  const [newActivity, setNewActivity] = useState({
+    active_status: true,
+    activity_city: "",
+    activity_description: "",
+    activity_photo: "",
+    activity_place: "",
+    activity_title: "",
+    tg_favorite: false,
+  });
+
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
 
+  useEffect(() => {
+    if (newUserInfo != null) {
+      setCreatNewUser({
+        first_name: newUserInfo.first_name,
+        last_name: newUserInfo.last_name,
+        email: newUserInfo.email,
+        password: newUserInfo.password,
+      });
+    }
+  }, [newUserInfo]);
+  console.log("createNewUser", createNewUser);
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
       setNewActivityImage("symbol_hands_heart-DEFAULT");
@@ -186,7 +211,12 @@ export const CreateActivity = ({ route, navigation }) => {
     } else if (whileCreatingNewUser === false) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <Text style={styles.buttonSave}>Spara</Text>
+          <TouchableOpacity
+            onPress={() => sendNewActivityToCreateActivityContext()}
+          >
+            <Text style={styles.buttonSave}>Spara</Text>
+          </TouchableOpacity>
+
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
@@ -254,7 +284,7 @@ export const CreateActivity = ({ route, navigation }) => {
   const viewCreateNewActivity = () => {
     return (
       <View style={styles.containerForAllInput}>
-        <TextInput 
+        <TextInput
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
@@ -676,7 +706,7 @@ const styles = StyleSheet.create({
   },
   warningAboutRequired: {
     color: "#C62F25",
-    marginLeft: 15,
+    // marginLeft: 15,
     marginTop: 1,
   },
 });
