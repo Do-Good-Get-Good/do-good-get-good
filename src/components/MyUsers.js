@@ -5,8 +5,10 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import { Icon } from "react-native-elements";
+import { useCreateUserFunction } from "../context/CreateUserContext";
 
-const MyUsers = () => {
+const MyUsers = ({ navigation }) => {
+  const createUserContext = useCreateUserFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
@@ -18,6 +20,7 @@ const MyUsers = () => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
+  const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -48,7 +51,17 @@ const MyUsers = () => {
 
   useEffect(() => {
     fetchNamesAndTimeEntries();
-  }, [userIDs]);
+    if (reloadAfterChanges === true) {
+      setReloadAfterChanges(false);
+    }
+  }, [userIDs, reloadAfterChanges]);
+
+  useEffect(() => {
+    if (createUserContext.getChangedUserInfoTo === true) {
+      setReloadAfterChanges(true);
+      createUserContext.setChangedUserInfoTo(false);
+    }
+  }, [createUserContext.getChangedUserInfoTo]);
 
   useEffect(() => {
     if (isFinished) {
@@ -72,13 +85,20 @@ const MyUsers = () => {
             .doc(userIDs[i])
             .collection("personal_information")
             .get();
-
+          let userPersonalInfoID = nameResponse.docs.map((doc) => doc.id);
           let nameData = nameResponse.docs.map((doc) => doc.data());
-          let fullName = nameData[0].first_name + " " + nameData[0].last_name;
-          nameArr.push(fullName);
+          let firstName = nameData[0].first_name;
+          let lastName = nameData[0].last_name;
+
+          nameArr.push({
+            firstName: firstName,
+            lastName: lastName,
+            personalInfoID: userPersonalInfoID,
+          });
         } catch (error) {
           console.log(error);
         }
+
         try {
           const timeEntryResponse = await firestore()
             .collection("Users")
@@ -162,10 +182,13 @@ const MyUsers = () => {
     let tempArr = [];
     for (let i = 0; i < userIDs.length; i++) {
       let userInfo = {
-        fullName: usersFullName[i],
+        firstName: usersFullName[i].firstName,
+        lastName: usersFullName[i].lastName,
         timeEntries: usersTimeEntries[i],
         isOpen: false,
         statusActive: usersActiveStatus[i],
+        userID: userIDs[i],
+        idPersonalInfo: usersFullName[i].personalInfoID,
       };
       tempArr.push(userInfo);
     }
@@ -178,18 +201,21 @@ const MyUsers = () => {
         return user;
       }
     });
+
     setMyUsers(
-      activeUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+      activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
     );
     setLoadingData(false);
   };
 
   const openSelectedUser = (pressedUser) => {
+    let pressedUserFullName =
+      pressedUser.firstName + " " + pressedUser.lastName;
     const newUsersArr = myUsers.map((user) => {
+      let fullName = user.firstName + " " + user.lastName;
       return {
         ...user,
-        isOpen:
-          user.fullName === pressedUser.fullName ? !user.isOpen : user.isOpen,
+        isOpen: fullName === pressedUserFullName ? !user.isOpen : user.isOpen,
       };
     });
     setMyUsers(newUsersArr);
@@ -203,8 +229,9 @@ const MyUsers = () => {
           return user;
         }
       });
+
       setMyUsers(
-        activeUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
     // filter myUsers array to only show inactive users
@@ -215,7 +242,7 @@ const MyUsers = () => {
         }
       });
       setMyUsers(
-        inactiveUsers.sort((a, b) => a.fullName.localeCompare(b.fullName))
+        inactiveUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
   };
@@ -275,7 +302,7 @@ const MyUsers = () => {
                   <>
                     <View style={styles.listItemStyle}>
                       <Text style={styles.listItemNameStyle}>
-                        {user.fullName}
+                        {user.firstName + " " + user.lastName}
                       </Text>
                     </View>
                   </>
@@ -310,13 +337,21 @@ const MyUsers = () => {
                 ))}
                 <View style={styles.editUserIconView}>
                   <Icon
-                    name="edit"
-                    type="material"
+                    name="pencil-outline"
+                    type="material-community"
                     size={25}
                     containerStyle={styles.editUserIcon}
-                    onPress={() => {
-                      // navigation.navigate("EditUser")
-                    }}
+                    onPress={() =>
+                      navigation.navigate("CreateOrChangeUser", {
+                        createNewUser: false,
+                        userName: user.firstName,
+                        userSurname: user.lastName,
+                        statusActive: user.statusActive,
+                        userID: user.userID,
+                        personalInfoID: user.idPersonalInfo[0],
+                        useEmail: "",
+                      })
+                    }
                   />
                 </View>
               </ListItem.Accordion>

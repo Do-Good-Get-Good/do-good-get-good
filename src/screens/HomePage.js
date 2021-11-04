@@ -30,7 +30,7 @@ export const HomePage = ({ navigation }) => {
         <>
           <ScrollView style={styles.container}>
             <ConfirmActivities></ConfirmActivities>
-            <MyUsers></MyUsers>
+            <MyUsers navigation={navigation}></MyUsers>
             <View style={styles.logo}>
               <Image
                 source={require("../img/Technogarden-logotyp-Large.png")}

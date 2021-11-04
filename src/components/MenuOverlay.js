@@ -6,11 +6,14 @@ import { StatusBar } from "expo-status-bar";
 import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
 import { useAdminCheckFunction } from "../context/AdminContext";
+import { useActivityFunction } from "../context/ActivityContext";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
+
+  const entryTime = useActivityFunction();
 
   useEffect(() => {
     const checkIfUserIsAdmin = () => {
@@ -47,6 +50,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
+              openOverlay();
               navigation.navigate("HomePage");
             }}
           >
@@ -57,6 +61,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Pressable
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
+                openOverlay();
                 navigation.navigate("AdminActivityGallery");
               }}
             >
@@ -66,6 +71,8 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Pressable
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
+                openOverlay();
+                entryTime.getIfoFromActivitiesList(true);
                 navigation.navigate("MyTimePage");
               }}
             >
@@ -76,6 +83,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
+              // openOverlay();
               // navigation.navigate("");
             }}
           >
@@ -84,6 +92,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           <Pressable
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
+              // openOverlay();
               // navigation.navigate("");
             }}
           >

@@ -84,10 +84,12 @@ export const Suggestions = ({
         activityCardContext.oneActivityHasBeenDeleted === true &&
         activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
       ) {
-        var index = showArray.findIndex(
+        let newArray = showArray;
+        var index = newArray.findIndex(
           (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
         );
-        showArray.splice(index, 1);
+        newArray.splice(index, 1);
+        setShowArray(newArray);
         activityCardContext.confirmToDeleteActivity(false);
       }
     };
@@ -97,10 +99,12 @@ export const Suggestions = ({
   useEffect(() => {
     if (activityCardContext.popular != null) {
       const replaceObjectIfpopularStatusChanged = () => {
-        var index = showArray.findIndex(
+        let newArray = showArray;
+        var index = newArray.findIndex(
           (x) => x.id === useCreateActivityContext.changedActivity.id
         );
-        showArray.splice(index, 1, useCreateActivityContext.changedActivity);
+        newArray.splice(index, 1, useCreateActivityContext.changedActivity);
+        setShowArray(newArray);
         activityCardContext.changePopularStatusInAdminGallery(false);
       };
       replaceObjectIfpopularStatusChanged();

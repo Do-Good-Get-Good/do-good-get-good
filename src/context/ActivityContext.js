@@ -4,22 +4,6 @@ import auth from "@react-native-firebase/auth";
 
 const ActivitynContext = React.createContext();
 
-// const ActivitynContext = React.createContext({
-//   showAllListInActivitiesList: true,
-//   setShowAllListInActivitiesList: () => {},
-// });
-
-// const ActivitiesListConsumer = () => {
-//   const {showAllListInActivitiesList, setShowAllListInActivitiesList} = useContext()
-// }
-
-// type ActivitiesInformationType = {
-//   id: String,
-//   title: String,
-//   city: String,
-//   photo: String,
-// };
-
 export const useActivityFunction = () => {
   return useContext(ActivitynContext);
 };

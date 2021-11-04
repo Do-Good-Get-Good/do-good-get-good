@@ -376,6 +376,12 @@ export const ActivityCard = ({ route, navigation }) => {
             ? adminActionsForInactiveActivities()
             : null}
         </View>
+        <View style={styles.logo}>
+          <Image
+            source={require("../img/Technogarden-logotyp-Large.png")}
+            style={{ width: 140, height: "55%" }}
+          />
+        </View>
         {alertForArchivingAndDelete()}
       </ScrollView>
     </SafeAreaView>
@@ -558,5 +564,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#84BD00",
     overflow: "hidden",
     paddingVertical: 13,
+  },
+  logo: {
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    height: 40,
+    bottom: 0,
   },
 });
