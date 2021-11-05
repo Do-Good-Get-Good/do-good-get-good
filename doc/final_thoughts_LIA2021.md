@@ -27,8 +27,12 @@ From the information we've gathered the Cloud Functions can be great for many th
 It is also needed for getting access to the Firebase Admin SDK. This gives you access to everything in the database/authentication and so on. You can create new users this way.
 We are currently setting a users privilege level in each users document. Instead of doing this there is something called Custom Claims in the Admin SDK which is where you are supposed to set a users privilege level. 
 
-Note that we never had time to use or look more into this so we may have understood this wrong. 
+_Note that we never had time to use or look more into this so we may have understood this wrong._
 
+
+Link to React Native Cloud Functions documentation:
+
+https://rnfirebase.io/functions/usage
 
 ----------
 By Alona and Mattias - 2021-11-05
