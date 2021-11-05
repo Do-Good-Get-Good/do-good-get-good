@@ -12,22 +12,30 @@ The app is a cross platform application built in react native. Development focus
 5. For **Windows** you need to add two environment variables 
    1. You need to add `ANDROID_HOME` with the value for Android SDK Location. You find it in Android Studio Settings, `Appearance & Behavior -> System SEttings -> Android SDK`
    ![Android sdk](doc/images/android_sdk.png)
-   1. You also need to add `JAVA_HOME` with the value for Android studio JRE, default is `C:\Program Files\Android\Android Studio\jre`
+   2. You also need to add `JAVA_HOME` with the value for Android studio JRE, default is `C:\Program Files\Android\Android Studio\jre`
+   3. Lastly you need to create a `local.properties` file and write the file-path to Android Studio SDKs i.e. `sdk.dir = C:\\Users\\<username>\\AppData\\Local\\Android\\Sdk`
 6. For **MacOS** and **Linux** you need to add two environment variables
    1. First is `ANDROID_SDK` that is the same as `ANDROID_HOME` under **Windows**
    2. Second one is to Update `PATH` with Android Studio SDK Platform tools. Usually found in `/Users/<username>/Library/Android/sdk/platform-tools`
+   3. Third, create a `local.properties` file in the root of the Android folder and write Android Studio SDKs file-path i.e. `sdk.dir = /Users/<name>/Library/Android/sdk`
 7. After that go to the source code in a command line tool like powershell or bash and do `npm install`.
 8. If you are running MacOS you need to go to the `ios` folder and runt `pod install`
 9. You might need to install firestore manually with `npm add @react-native-firebase/firestore`
-10. standing in the root for the source code run `expo start`, or `npx react-native run-android` or `npx react-native run-ios`
+10. Standing in the root for the source code run:
+    
+    **Android:** `npx react-native run-android`
+    
+    **iOS:** `npx react-native run-ios`
+
+#### **Note that you need to have an Android emulator running before you run the _Android_ start command** ####
+
+
 
 Firebase emulator
 =====
 
 
 #### Trouble shooting ####
-* Skapa en 'local.properties' fil i roten av Android mappen och skriv
-`sdk.dir = /Users/<name>/Library/Android/sdk`
 * **Android** trouble, try
 ```
 cd android
