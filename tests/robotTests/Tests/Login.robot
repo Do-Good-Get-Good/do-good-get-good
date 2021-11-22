@@ -3,12 +3,12 @@ Documentation                      Testsuite Login funktioner
 Resource                           ../Resources/keywords_general.robot
 Resource                           ../Resources/keywords_login.robot
 Library                            AppiumLibrary
-Test Setup                         Open Application
+Test Setup                         Open_App
 Test Teardown                      End Web Test
 
 *** Test Cases ***
 Starta App
-        Open Application
+        Open_App
 
 
 Logga in som användare
