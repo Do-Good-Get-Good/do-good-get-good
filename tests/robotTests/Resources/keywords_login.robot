@@ -12,36 +12,41 @@ ${URL_TITLE}				 src
 *** Keywords ***
 Fill in username
     [Arguments]         ${Username}
-    Input text          00000000-0000-0009-ffff-ffff0000009c        ${Username}
+    Wait Until Element is Visible   //android.widget.EditText[@text="E-post"]
+    Input Text          //android.widget.EditText[@text="E-post"]       ${Username}
+
+#00000000-0000-0054-ffff-ffff00000010
+#00000000-0000-00f3-ffff-ffff00000010
 
     #xpath://*[@id="root"]/div/div/div/div[3]/div[2]/input
 
 
 Fill in password
     [Arguments]         ${Password}
-    Input password      00000000-0000-0009-ffff-ffff0000009d     ${Password}
+    Input password      //android.widget.EditText[@text="Lösenord"]     ${Password}
 
 Click login button
-    Click Element       00000000-0000-0009-ffff-ffff000000a3
+    Click Element       //android.widget.TextView[@text="Logga in"]
 
-Varify login page
-    Contains Element    00000000-0000-0009-ffff-ffff000000a4
+Varify login page error
+    Wait Until Page Contains Element     //android.widget.TextView[@text="* Fel e-post eller lösenord"]
+    Page Should Contain Element    //android.widget.TextView[@text="* Fel e-post eller lösenord"]
 
 Varify user homepage
-    Contains            Mina aktiviteter
+    Wait Until Page Contains Element            //android.widget.TextView[@text="Förslag & inspiration"]
+    Page Should Contain Element            //android.widget.TextView[@text="Förslag & inspiration"]
 
 #Joined expression
 Login a user
     [Arguments]         ${Username}     ${Password}
-    Open_Application
     Fill in username        ${Username}
     Fill in password        ${Password}
     Click login button
-    Varify user homepage
+
 
 Failed login attempt
     Login a user            false@mail.se           aFalsePassword
-    Varify login page
+    Varify login page error
 
 Login user after a failed attempt
     [Arguments]         ${Username}     ${Password}

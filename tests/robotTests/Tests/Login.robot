@@ -4,23 +4,25 @@ Resource                           ../Resources/keywords_general.robot
 Resource                           ../Resources/keywords_login.robot
 Library                            AppiumLibrary
 Test Setup                         Open_App
-Test Teardown                      End Web Test
+Test Teardown                      Close_App
 
 *** Test Cases ***
-Starta App
-        Open_App
+#Start App
+#        Open_App
+
+User can fail a login atempt
+    Failed login attempt
 
 
 Logga in som användare
         [Documentation]                 Verifiera att en användare kan logga in
         [Tags]                          LIA1
-        Login a user            kristoffer.johnsson@gmail.com   Blomma
+        Login a user            test@test.com   test123
+        varify user homepage
 
-User can fail a login atempt
-    Failed login attempt
 
-Login as a user after first failing
-    Login user after a failed attempt       kristoffer.johnsson@gmail.com   Blomma
+#Login as a user after first failing
+#    Login user after a failed attempt       kristoffer.johnsson@gmail.com   Blomma
 
 
 #Following are initially intended for the browser version
