@@ -15,11 +15,6 @@ Fill in username
     Wait Until Element is Visible   //android.widget.EditText[@text="E-post"]
     Input Text          //android.widget.EditText[@text="E-post"]       ${Username}
 
-#00000000-0000-0054-ffff-ffff00000010
-#00000000-0000-00f3-ffff-ffff00000010
-
-    #xpath://*[@id="root"]/div/div/div/div[3]/div[2]/input
-
 
 Fill in password
     [Arguments]         ${Password}
@@ -36,6 +31,28 @@ Varify user homepage
     Wait Until Page Contains Element            //android.widget.TextView[@text="Förslag & inspiration"]
     Page Should Contain Element            //android.widget.TextView[@text="Förslag & inspiration"]
 
+Öppna logga tid
+    Wait until page contains element    //android.widget.TextView[@text="Logga tid"]
+    click element       //android.widget.TextView[@text="Logga tid"]
+
+Ange datum
+    Wait until page contains element    //android.widget.TextView[@text="Välj datum"]
+    click element       //android.widget.TextView[@text="15"]
+
+Addera tid
+    click element       //android.widget.TextView[@text="+"]
+
+Subtrahera tid
+    click element       //android.widget.TextView[@text="-"]
+
+Spara aktivitetstid
+    click element       //android.widget.TextView[@text="Logga tid"]
+
+Bekräfta 1 timme
+    wait until page contains element        //android.widget.TextView[@text="1 tim"]
+    page should contain element     //android.widget.TextView[@text="1 tim"]
+
+
 #Joined expression
 Login a user
     [Arguments]         ${Username}     ${Password}
@@ -47,6 +64,18 @@ Login a user
 Failed login attempt
     Login a user            false@mail.se           aFalsePassword
     Varify login page error
+
+Lägg in nytt tidsvärde
+    öppna logga tid
+    ange datum
+    addera tid
+    addera tid
+    addera tid
+    subtrahera tid
+    spara aktivitetstid
+
+bekräfta nytt tidsvärde
+    bekräfta 1 timme
 
 Login user after a failed attempt
     [Arguments]         ${Username}     ${Password}

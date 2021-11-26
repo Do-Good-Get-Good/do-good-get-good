@@ -55,3 +55,4 @@ web-build/
 src/android/.project
 
 src/.jest/
+*.png
