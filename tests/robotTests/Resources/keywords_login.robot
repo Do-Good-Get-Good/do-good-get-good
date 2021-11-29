@@ -28,8 +28,8 @@ Varify login page error
     Page Should Contain Element    //android.widget.TextView[@text="* Fel e-post eller lösenord"]
 
 Varify user homepage
-    Wait Until Page Contains Element            //android.widget.TextView[@text="Förslag & inspiration"]
-    Page Should Contain Element            //android.widget.TextView[@text="Förslag & inspiration"]
+    Wait Until Page Contains Element            //android.widget.TextView[@text="Min tid"]
+    Page Should Contain Element            //android.widget.TextView[@text="Min tid"]
 
 Öppna logga tid
     Wait until page contains element    //android.widget.TextView[@text="Logga tid"]
@@ -52,6 +52,10 @@ Bekräfta 1 timme
     wait until page contains element        //android.widget.TextView[@text="1 tim"]
     page should contain element     //android.widget.TextView[@text="1 tim"]
 
+Varify and confirm user
+    [Arguments]         ${Full name}     ${Date}     ${Duration}
+    wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
+    click element       //android.widget.viewgroup[contains(@text=${Full name} and @text=${Date})]/android.widget.checkbox/android.widget.TextView
 
 #Joined expression
 Login a user
@@ -82,3 +86,8 @@ Login user after a failed attempt
     Login a user            false@mail.se           aFalsePassword
     Login a user            ${Username}     ${Password}
     Varify user homepage
+
+
+accept a users time
+    [Arguments]         ${Full name}     ${Date}     ${Duration}
+    varify and confirm user     ${Full name}     ${Date}     ${Duration}
