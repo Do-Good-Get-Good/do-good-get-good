@@ -55,7 +55,10 @@ Bekräfta 1 timme
 Varify and confirm user
     [Arguments]         ${Full name}     ${Date}     ${Duration}
     wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
-    click element       //android.widget.viewgroup[contains(@text=${Full name} and @text=${Date})]/android.widget.checkbox/android.widget.TextView
+    wait until page contains element        //*[@text="${Full name}"]
+    @{elements}     Get Webelements     //ViewGroup[@text="Test Test2"]
+    click element           //android.view.ViewGroup[@text="${Full name}"]
+    #//android.widget.viewgroup[contains(@text=${Full name} and @text=${Date})]/android.widget.checkbox/android.widget.TextView
 
 #Joined expression
 Login a user
