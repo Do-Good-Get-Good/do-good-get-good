@@ -7,20 +7,17 @@ Test Setup                         Open_App
 Test Teardown                      Close_App
 
 *** Test Cases ***
-#Start App
-#        Open_App
-
-User can fail a login atempt
+#User can fail a login atempt
     Failed login attempt
 
 
-Logga in som användare
+#Logga in som användare
         [Documentation]                 Verifiera att en användare kan logga in
-        [Tags]                          LIA1
+        [Tags]                          TC2
         Login a user            test@test.com   test123
         varify user homepage
 
-Logga tid
+#Logga tid
         login a user            test@test.com   test123
         lägg in nytt tidsvärde
         close_app
@@ -31,7 +28,7 @@ Logga tid
 
 logga in admin
         login a user        admin@admin.com     admin123
-        accept a users time     test test2      2021-11-15      1 tim
+        accept a users time     Test Test2      2021-11-15      1 tim
 
 
 #Login as a user after first failing
