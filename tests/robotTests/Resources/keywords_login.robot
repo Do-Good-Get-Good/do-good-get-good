@@ -1,4 +1,5 @@
 *** Settings ***
+Library                            DateTime
 
 *** Variables ***
 
@@ -22,6 +23,19 @@ Fill in password
 
 Click login button
     Click Element       //android.widget.TextView[@text="Logga in"]
+
+Click logout
+    wait until page contains element        //android.widget.TextView[@text="Logga ut"]
+    Click element       //android.widget.TextView[@text="Logga ut"]
+
+Click meny
+    wait until page contains element        //android.widget.TextView[@text="MENY"]
+    click element at coordinates        970     228
+    #click element       //android.widget.TextView[@text="MENY"]
+
+Varify login page
+    Wait Until Page Contains Element     //android.widget.TextView[@text="Glömt ditt lösenord?"]
+    Page Should Contain Element    //android.widget.TextView[@text="Glömt ditt lösenord?"]
 
 Varify login page error
     Wait Until Page Contains Element     //android.widget.TextView[@text="* Fel e-post eller lösenord"]
@@ -60,12 +74,21 @@ Varify and confirm user
     click element           //android.view.ViewGroup[@text="${Full name}"]
     #//android.widget.viewgroup[contains(@text=${Full name} and @text=${Date})]/android.widget.checkbox/android.widget.TextView
 
+öppna skapa aktivitet
+    wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
+    click element at coordinates            950     2000    #clicks floating action button, not working yet
+    click element                           //android.widget.TextView[@text="Lägg till aktivitet"]
+
 #Joined expression
 Login a user
     [Arguments]         ${Username}     ${Password}
     Fill in username        ${Username}
     Fill in password        ${Password}
     Click login button
+
+Logout a user
+    Click meny
+    Click logout
 
 
 Failed login attempt
@@ -94,3 +117,8 @@ Login user after a failed attempt
 accept a users time
     [Arguments]         ${Full name}     ${Date}     ${Duration}
     varify and confirm user     ${Full name}     ${Date}     ${Duration}
+
+
+skapa aktivitet
+    [Arguments]     ${Activity Name}
+    öppna skapa aktivitet
