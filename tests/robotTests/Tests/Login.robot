@@ -7,11 +7,11 @@ Test Setup                         Open_App
 Test Teardown                      Close_App
 
 *** Test Cases ***
-#User can fail a login atempt
+User can fail a login atempt
     Failed login attempt
 
 
-#Logga in som användare
+Logga in som användare
         [Documentation]                 Verifiera att en användare kan logga in
         [Tags]                          TC2
         Login a user            test@test.com   test123
@@ -21,7 +21,7 @@ Logga ut som användare
         Login a user            test@test.com   test123
         logout a user
 
-#Logga tid
+Logga tid
         login a user            test@test.com   test123
         lägg in nytt tidsvärde
         close_app
@@ -39,16 +39,42 @@ Lägg till ny aktivitet
         login a user        admin@admin.com     admin123
         skapa aktivitet     testaktivitet
 
+Användare meny till hem
+        login a user        test@test.com       test123
+        click meny
+        click hem användare
 
-#Following are initially intended for the browser version
-#User can login after a failed attempt
-#User can show inputted password
-#User can hide inputted password
-#User can click on reset password
-#User can input an incorrect e-mail
-#//User can input a password containing 100 characters
-#//User can input an email containing 100 characters
-#//User can input a password containing 1 character
-#//User can input an email containing 1 charater
+Användare meny till min tid
+        login a user        test@test.com       test123
+        click meny
+        click min tid
 
-#Admin cases for the above mentioned tests.
+Användare meny till om konceptet  #Page not yet created, will need update after it is created
+        login a user        test@test.com       test123
+        click meny
+        click om konceptet
+
+Användare meny till FAQ #Page not yet created, will need update after it is created
+        login a user        test@test.com       test123
+        click meny
+        click FAQ
+
+Admin meny till hem
+        login a user        admin@admin.com     admin123
+        click meny
+        click hem admin
+
+Admin meny till aktiviter
+        login a user        admin@admin.com     admin123
+        click meny
+        click aktiviteter
+
+Admin meny till om konceptet    #Page not yet created, will need update after it is created
+        login a user        admin@admin.com     admin123
+        click meny
+        click om konceptet
+
+Admin meny till FAQ #Page not yet created, will need update after it is created
+        login a user        admin@admin.com     admin123
+        click meny
+        click FAQ

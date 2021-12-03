@@ -30,8 +30,8 @@ Click logout
 
 Click meny
     wait until page contains element        //android.widget.TextView[@text="MENY"]
-    click element at coordinates        970     228
-    #click element       //android.widget.TextView[@text="MENY"]
+    #click element at coordinates        970     228
+    click element       //android.widget.TextView[@text="MENY"]
 
 Varify login page
     Wait Until Page Contains Element     //android.widget.TextView[@text="Glömt ditt lösenord?"]
@@ -66,6 +66,54 @@ Bekräfta 1 timme
     wait until page contains element        //android.widget.TextView[@text="1 tim"]
     page should contain element     //android.widget.TextView[@text="1 tim"]
 
+#meny användare och admin
+öppna hem
+    wait until page contains element        //android.widget.TextView[@text="Hem"]
+    click element                   //android.widget.TextView[@text="Hem"]
+
+varify hem admin
+    wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
+    page should contain     //android.widget.TextView[@text="Att godkänna"]
+
+varify hem user
+    wait until page contains element        //android.widget.TextView[@text="Visa allt"]
+    page should contain element         //android.widget.TextView[@text="Att godkänna"]
+
+öppna min tid
+    wait until page contains element        //android.widget.TextView[@text="Min tid"]
+    click element               //android.widget.TextView[@text="Min tid"]
+
+varify min tid
+    wait until page contains element        //android.widget.TextView[@text="Min tid"]
+    page should contain element         //android.widget.TextView[@text="Min tid"]
+
+öppna aktiviteter
+    wait until page contains element    //android.widget.TextView[@text="Aktiviteter"]
+    click element       //android.widget.TextView[@text="Aktiviteter"]
+
+varify aktiviteter
+    wait until page contains element        //android.widget.TextView[@text="Aktiva:"]
+    page should contain element         //android.widget.TextView[@text="Aktiva:"]
+
+öppna om konceptet
+    wait until page contains element    //android.widget.TextView[@text="Om konceptet"]
+    click element       //android.widget.TextView[@text="Om konceptet"]
+
+varify om konceptet
+    #Need to be edited with information after page is created
+    wait until page contains element    //android.widget.TextView[@text="Om konceptet"]
+    page should contain element     //android.widget.TextView[@text="Om konceptet"]
+
+öppna FAQ
+    wait until page contains element        //android.widget.TextView[@text="FAQ"]
+    click element               //android.widget.TextView[@text="FAQ"]
+
+varify FAQ
+    #Need to be edited with information after page is created
+    wait until page contains element        //android.widget.TextView[@text="FAQ"]
+    page should contain element             //android.widget.TextView[@text="FAQ"]
+
+#-----------------------------------------------------------------
 Varify and confirm user
     [Arguments]         ${Full name}     ${Date}     ${Duration}
     wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
@@ -89,6 +137,7 @@ Login a user
 Logout a user
     Click meny
     Click logout
+    varify login page
 
 
 Failed login attempt
@@ -122,3 +171,27 @@ accept a users time
 skapa aktivitet
     [Arguments]     ${Activity Name}
     öppna skapa aktivitet
+
+click hem admin
+    öppna hem
+    varify hem admin
+
+click hem användare
+    öppna hem
+    varify hem user
+
+click min tid
+    öppna min tid
+    varify min tid
+
+click aktiviteter
+    öppna aktiviteter
+    varify aktiviteter
+
+click om konceptet
+    öppna om konceptet
+    varify om konceptet
+
+click FAQ
+    öppna FAQ
+    varify FAQ
