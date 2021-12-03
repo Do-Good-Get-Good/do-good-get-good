@@ -10,7 +10,7 @@ Open the terminal and run the following two commands:
 `pip install --upgrade robotframework-appiumlibrary`
 
 Run by using `robot filename.robot`, in this example `robot login.robot`. 
-The results of the tests can be viewed by opening the log.html file in a browser. 
+The results of the tests can be viewed by opening `tests/robotTests/log.html`. 
 
 ## Edit the tests ##
 
@@ -21,16 +21,13 @@ to edit these keywords, open “keywords_login.robot” and search for the keywo
 
 ###  The incomplete tests are the following  ###
   #### Pages not yet created  ####
-Admin meny till om konceptet
-  
-Admin meny till FAQ
-  
-Användare meny till om konceptet
-  
-Användare meny till FAQ
+* Admin meny till om konceptet
+* Admin meny till FAQ
+* Användare meny till om konceptet
+* Användare meny till FAQ
   
   #### Incomplete test ####
-Lägg till ny aktivitet
+* Lägg till ny aktivitet
 ## Inspecting the app ##
 
 In order to inspect the app, install appium inspector, with this tool you can click on elements on the screen and see all attributes and values that each element has, aswell as their xpaths. 
