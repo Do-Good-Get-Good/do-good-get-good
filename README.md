@@ -32,6 +32,10 @@ cd ..
 npx react-native run-android
 ```
 
+### More information regarding robot tests ###
+Follow this link for more information on how to run and manage the tests:
+[Test readme](tests/robotTests/README.md)
+
 We who have worked with the project
 ===================================
 ## Authors ##
