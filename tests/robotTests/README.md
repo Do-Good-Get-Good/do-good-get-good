@@ -5,11 +5,11 @@ In order to start the test open up the emulator of choice by starting android st
 Install Appium and start it, default values should work out just fine, but there is a video below with more details regarding appium.
 Open the terminal and run the following two commands:
 
-*pip install robotframework*  
+`pip install robotframework`  
 
-*pip install --upgrade robotframework-appiumlibrary*
+`pip install --upgrade robotframework-appiumlibrary`
 
-Run by using "robot filename.robot", in this example “robot login.robot”. 
+Run by using `robot filename.robot`, in this example `robot login.robot`. 
 The results of the tests can be viewed by opening the log.html file in a browser. 
 
 ## Edit the tests ##
