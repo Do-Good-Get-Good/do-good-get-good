@@ -49,12 +49,12 @@ Användare meny till min tid
         click meny
         click min tid
 
-Användare meny till om konceptet  #Page not yet created, will need update after it is created
+Användare meny till om konceptet     #Page not yet created, will need update after it is created
         login a user        test@test.com       test123
         click meny
         click om konceptet
 
-Användare meny till FAQ #Page not yet created, will need update after it is created
+Användare meny till FAQ     #Page not yet created, will need update after it is created
         login a user        test@test.com       test123
         click meny
         click FAQ
@@ -74,7 +74,7 @@ Admin meny till om konceptet    #Page not yet created, will need update after it
         click meny
         click om konceptet
 
-Admin meny till FAQ #Page not yet created, will need update after it is created
+Admin meny till FAQ      #Page not yet created, will need update after it is created
         login a user        admin@admin.com     admin123
         click meny
         click FAQ

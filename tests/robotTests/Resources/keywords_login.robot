@@ -73,11 +73,11 @@ Bekräfta 1 timme
 
 varify hem admin
     wait until page contains element        //android.widget.TextView[@text="Att godkänna"]
-    page should contain     //android.widget.TextView[@text="Att godkänna"]
+    page should contain element     //android.widget.TextView[@text="Att godkänna"]
 
 varify hem user
-    wait until page contains element        //android.widget.TextView[@text="Visa allt"]
-    page should contain element         //android.widget.TextView[@text="Att godkänna"]
+    wait until page contains element        //android.widget.TextView[@text="Logga tid"]
+    page should contain element         //android.widget.TextView[@text="Logga tid"]
 
 öppna min tid
     wait until page contains element        //android.widget.TextView[@text="Min tid"]
@@ -112,6 +112,10 @@ varify FAQ
     #Need to be edited with information after page is created
     wait until page contains element        //android.widget.TextView[@text="FAQ"]
     page should contain element             //android.widget.TextView[@text="FAQ"]
+
+stäng meny
+    wait until page contains element        //android.widget.TextView[@text="STÄNG"]
+    click element                           //android.widget.TextView[@text="STÄNG"]
 
 #-----------------------------------------------------------------
 Varify and confirm user
@@ -174,10 +178,12 @@ skapa aktivitet
 
 click hem admin
     öppna hem
+    stäng meny
     varify hem admin
 
 click hem användare
     öppna hem
+    stäng meny
     varify hem user
 
 click min tid
