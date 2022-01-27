@@ -7,6 +7,7 @@ import {
   View,
   ScrollView,
   Button,
+  Platform,
 } from "react-native";
 
 import { RadioButton } from "../components/RadioButton";
