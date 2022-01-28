@@ -6,16 +6,21 @@ import { render, fireEvent, act } from "@testing-library/react-native";
 import renderer from "react-test-renderer";
 import UserMenu from "../components/Menu";
 
+
 jest.mock(
     '../components/MenuOverlay', () => () => {
-        const mockMenuOverlay = "";
+        // const mockMenuOverlay = "";
         return <mockMenuOverlay />;
     }
 );
+jest.mock('react-native-elements/dist/icons/Icon', () => () => {
+    // const fakeIcon = "";
+    return <fakeIcon />;
+});
 describe('Testing Menu for User and Admin', () => {
     it("Renders a menu", () => {
-        const { getAllByText, getByTestId } = render(<UserMenu />);
+        const { getAllByText } = render(<UserMenu />);
         expect(getAllByText("Meny").length).toBe(1)
-        const button = getByTestId("menuButton")
     })
 })
+
