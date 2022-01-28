@@ -9,18 +9,29 @@ import UserMenu from "../components/Menu";
 
 jest.mock(
     '../components/MenuOverlay', () => () => {
-        // const mockMenuOverlay = "";
         return <mockMenuOverlay />;
     }
 );
+
 jest.mock('react-native-elements/dist/icons/Icon', () => () => {
-    // const fakeIcon = "";
     return <fakeIcon />;
 });
+
 describe('Testing Menu for User and Admin', () => {
-    it("Renders a menu", () => {
+    it("can find the text Meny in menu", () => {
         const { getAllByText } = render(<UserMenu />);
-        expect(getAllByText("Meny").length).toBe(1)
+        expect(getAllByText("Meny").length).toBe(1);
+    })
+
+    it("can find a Do Good Get Good Icon", () => {
+        const { getByTestId, getByA11yStates } = render(<UserMenu />);
+        const logo = getByTestId("dgggLogo");
+        expect(logo.props["source"].testUri).toBe("../../../img/Logotyp_DGGG.png");
+    })
+    it("can press the button", () => {
+        const { getByTestId } = render(<UserMenu />);
+        const button = getByTestId("showOverlayButton")
+        fireEvent.press(button)
     })
 })
 
