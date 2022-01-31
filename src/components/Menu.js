@@ -28,12 +28,14 @@ const UserMenu = () => {
       <Header
         leftComponent={
           <Image
+            testID="dgggLogo"
             source={require("../img/Logotyp_DGGG.png")}
             style={styles.headerLogo}
           />
         }
         rightComponent={
           <Pressable
+            testID="showOverlayButton"
             onPress={() => {
               toggleOverlay();
             }}
