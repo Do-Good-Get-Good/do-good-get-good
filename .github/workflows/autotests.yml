@@ -34,8 +34,11 @@ jobs:
       run: |
         cd src
         npm test
-    - name: Publish Test Report
-      uses: mikepenz/action-junit-report@v2
-      if: always() # always run even if the previous step fails
+    - uses: ArtiomTr/jest-coverage-report-action@v2
       with:
-        report_paths: '**/**/junit.xml'
+        github-token: ${{ secrets.SECRET_TOKEN }}
+    - uses: IgnusG/jest-report-action@v2
+        if: always() # Or use "continue-on-error: true" in previous test step
+        with:
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+          working-directory: src/
