@@ -30,18 +30,12 @@ jobs:
     - run: |
         cd src
         npm install
-    # - name: Running unit tests
-    #  run: |
-    #    cd src
-    #    npm test
-      # You may pin to the exact commit or the version.
-      # uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@6e23f271b4fb10248a260e72fe6d1bcddeea9f4a
-    - uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
-      if: always()
+    - name: Running unit tests
+      run: |
+        cd src
+        npm test
+    - name: Publish Test Report
+      uses: mikepenz/action-junit-report@v2
+      if: always() # always run even if the previous step fails
       with:
-        # The GitHub Token. This is only used, if none is provided via Env.
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Glob for matching the Jest Output files
-        #json-glob: "**/jest-output.json"
-        # Specify a custom workdirectory if needed. By default env.GITHUB_WORKSPACE is used.
-        #workdir: ${env.GITHUB_WORKSPACE}/src
+        report_paths: 'src/**/junit.xml'
