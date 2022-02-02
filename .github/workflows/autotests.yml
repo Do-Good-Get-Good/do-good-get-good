@@ -27,18 +27,19 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
-      - run: |
+      - name: Installing dependencies
+        run: |
           cd src
-          npm install
+          npm install --include=dev
       - name: Running unit tests
         run: |
           cd src
-          npm test --include=dev
+          npm test
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always() # run this step even if previous step failed
         with:
           name: JEST Tests # Name of the check run which will be created
-          path: src/junit.xml # Path to test results
+          path: */junit.xml # Path to test results
           reporter: jest-junit # Format of test results
 
