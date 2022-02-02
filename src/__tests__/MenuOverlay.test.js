@@ -3,7 +3,11 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import MenuOverlay from "../components/MenuOverlay";
+
 import { useAdminCheckFunction } from "../context/AdminContext";
+
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -11,12 +15,14 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
+const mockedNavigate = jest.fn()
+
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
     useNavigation: () => ({
-      navigate: jest.fn(),
+      navigate: mockedNavigate,
     }),
   };
 });
@@ -30,6 +36,10 @@ jest.mock("../context/ActivityContext", () => ({
     getIfoFromActivitiesList: jest.fn(),
   }),
 }));
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
 
 describe("Testing MenuOverlay", () => {
   it("Are the user-menu buttons visible", () => {
@@ -48,7 +58,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the admin-menu buttons visible", () => {
-    useAdminCheckFunction.mockReturnValue("admin");
+    useAdminCheckFunction.mockReturnValueOnce("admin");
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />
     );
@@ -63,7 +73,7 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
-  describe("Can you click on links", () => {
+  describe("Can you click on the menu buttons?", () => {
     it("Close button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -73,6 +83,7 @@ describe("Testing MenuOverlay", () => {
       const closeButton = getByTestId("menuOverlay.closeButton");
       fireEvent.press(closeButton);
     });
+    
     it("Change language button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -82,6 +93,7 @@ describe("Testing MenuOverlay", () => {
       const languageButton = getByTestId("menuOverlay.languageButton");
       fireEvent.press(languageButton);
     });
+    
     it("Home button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -90,8 +102,11 @@ describe("Testing MenuOverlay", () => {
 
       const homeButton = getByTestId("menuOverlay.homeButton");
       fireEvent.press(homeButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('HomePage')
     });
+    
     it("Activities button", () => {
+      useAdminCheckFunction.mockReturnValueOnce("admin");
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
@@ -99,9 +114,10 @@ describe("Testing MenuOverlay", () => {
 
       const activitiesButton = getByTestId("menuOverlay.activitiesButton");
       fireEvent.press(activitiesButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('AdminActivityGallery')
     });
+    
     it("My time button", () => {
-      useAdminCheckFunction.mockReturnValue("user");
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
@@ -109,7 +125,9 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuOverlay.myTimeButton");
       fireEvent.press(myTimeButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('MyTimePage')
     });
+
     it("About button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -118,7 +136,9 @@ describe("Testing MenuOverlay", () => {
 
       const aboutButton = getByTestId("menuOverlay.aboutButton");
       fireEvent.press(aboutButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
     });
+    
     it("FAQ button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -127,6 +147,18 @@ describe("Testing MenuOverlay", () => {
 
       const faqButton = getByTestId("menuOverlay.faqButton");
       fireEvent.press(faqButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
+
+    it("Log out button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const logoutButton = getByTestId("menuOverlay.logoutButton");
+      fireEvent.press(logoutButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
     });
   });
 });
