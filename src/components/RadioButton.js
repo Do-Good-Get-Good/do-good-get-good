@@ -79,11 +79,7 @@ const RadioButton = ({}) => {
 
 export default RadioButton; 
 
-// export default (props) => { 
-  
-//    const { chooseInactive, setchooseInactive } = useAdminGalleryFunction();
-//    return <RadioButton chooseInactive={chooseInactive} setchooseInactive={setchooseInactive} {...props}/>; 
-//   };
+
 
 const styles = StyleSheet.create({
   textAktiva: {
