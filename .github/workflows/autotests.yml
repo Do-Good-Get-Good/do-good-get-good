@@ -35,6 +35,10 @@ jobs:
         run: |
           cd src
           npm test
+      - name: looking for test report
+        run: |
+          cd src
+          ls
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always() # run this step even if previous step failed
