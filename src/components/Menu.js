@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import { Platform } from "react-native";
 
-const UserMenu = () => {
+const Menu = () => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -28,12 +28,14 @@ const UserMenu = () => {
       <Header
         leftComponent={
           <Image
+            testID="dgggLogo"
             source={require("../img/Logotyp_DGGG.png")}
             style={styles.headerLogo}
           />
         }
         rightComponent={
           <Pressable
+            testID="showOverlayButton"
             onPress={() => {
               toggleOverlay();
             }}
@@ -56,7 +58,7 @@ const UserMenu = () => {
   );
 };
 
-export default UserMenu;
+export default Menu;
 
 const styles = StyleSheet.create({
   headerLogo: {

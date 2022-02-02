@@ -1,0 +1,164 @@
+import "react-native";
+import React from "react";
+import { render, fireEvent } from "@testing-library/react-native";
+
+import MenuOverlay from "../components/MenuOverlay";
+
+import { useAdminCheckFunction } from "../context/AdminContext";
+
+import firebase from '@react-native-firebase/app';
+import '@react-native-firebase/auth';
+
+jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+
+jest.mock("react-native-elements/dist/icons/Icon", () => () => {
+  return <fakeIcon />;
+});
+
+const mockedNavigate = jest.fn()
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+  };
+});
+
+jest.mock("../context/AdminContext", () => ({
+  useAdminCheckFunction: jest.fn(),
+}));
+
+jest.mock("../context/ActivityContext", () => ({
+  useActivityFunction: () => ({
+    getIfoFromActivitiesList: jest.fn(),
+  }),
+}));
+
+afterEach(() => {
+  jest.clearAllMocks();
+});
+
+describe("Testing MenuOverlay", () => {
+  it("Are the user-menu buttons visible", () => {
+    const { getAllByText, queryByText } = render(
+      <MenuOverlay isVisible={true} />
+    );
+    expect(getAllByText("Stäng").length).toBe(1);
+    expect(getAllByText("Byt språk knapp").length).toBe(1);
+    expect(getAllByText("Hem").length).toBe(1);
+    const adminLink = queryByText("Aktiviteter");
+    expect(adminLink).toBeNull();
+    expect(getAllByText("Min tid").length).toBe(1);
+    expect(getAllByText("Om konceptet").length).toBe(1);
+    expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Logga ut").length).toBe(1);
+  });
+
+  it("Are the admin-menu buttons visible", () => {
+    useAdminCheckFunction.mockReturnValueOnce("admin");
+    const { getAllByText, queryByText } = render(
+      <MenuOverlay isVisible={true} />
+    );
+    expect(getAllByText("Stäng").length).toBe(1);
+    expect(getAllByText("Byt språk knapp").length).toBe(1);
+    expect(getAllByText("Hem").length).toBe(1);
+    expect(getAllByText("Aktiviteter").length).toBe(1);
+    const userLink = queryByText("Min tid");
+    expect(userLink).toBeNull();
+    expect(getAllByText("Om konceptet").length).toBe(1);
+    expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Logga ut").length).toBe(1);
+  });
+
+  describe("Can you click on the menu buttons?", () => {
+    it("Close button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const closeButton = getByTestId("menuOverlay.closeButton");
+      fireEvent.press(closeButton);
+    });
+    
+    it("Change language button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const languageButton = getByTestId("menuOverlay.languageButton");
+      fireEvent.press(languageButton);
+    });
+    
+    it("Home button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const homeButton = getByTestId("menuOverlay.homeButton");
+      fireEvent.press(homeButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('HomePage')
+    });
+    
+    it("Activities button", () => {
+      useAdminCheckFunction.mockReturnValueOnce("admin");
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const activitiesButton = getByTestId("menuOverlay.activitiesButton");
+      fireEvent.press(activitiesButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('AdminActivityGallery')
+    });
+    
+    it("My time button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const myTimeButton = getByTestId("menuOverlay.myTimeButton");
+      fireEvent.press(myTimeButton);
+      expect(mockedNavigate).toHaveBeenCalledWith('MyTimePage')
+    });
+
+    it("About button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const aboutButton = getByTestId("menuOverlay.aboutButton");
+      fireEvent.press(aboutButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
+    
+    it("FAQ button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const faqButton = getByTestId("menuOverlay.faqButton");
+      fireEvent.press(faqButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
+
+    it("Log out button", () => {
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const logoutButton = getByTestId("menuOverlay.logoutButton");
+      fireEvent.press(logoutButton);
+      expect(mockedNavigate).not.toHaveBeenCalled();
+    });
+  });
+});

@@ -41,3 +41,4 @@ jobs:
           name: JEST Tests # Name of the check run which will be created
           path: src/junit.xml # Path to test results
           reporter: jest-junit # Format of test results
+

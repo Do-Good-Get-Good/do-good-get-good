@@ -34,6 +34,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayHeader}>
           <Pressable
+            testID="menuOverlay.closeButton"
             style={styles.menuOverlayCloseButton}
             onPress={openOverlay}
           >
@@ -42,12 +43,20 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           </Pressable>
         </View>
         <View style={styles.menuOverlayItemStyling}>
-          <Pressable style={styles.menuOverlayChangeLangButton}>
+          <Pressable
+            testID="menuOverlay.languageButton"
+            style={styles.menuOverlayChangeLangButton}
+            onPress={() => {
+              // openOverlay();
+              // changeLanguage();
+            }}
+          >
             <Text style={styles.menuOverlayChangeLangText}>
               Byt språk knapp
             </Text>
           </Pressable>
           <Pressable
+            testID="menuOverlay.homeButton"
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
@@ -59,6 +68,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
 
           {isAdmin ? (
             <Pressable
+              testID="menuOverlay.activitiesButton"
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
                 openOverlay();
@@ -69,6 +79,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             </Pressable>
           ) : (
             <Pressable
+              testID="menuOverlay.myTimeButton"
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
                 openOverlay();
@@ -81,6 +92,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           )}
 
           <Pressable
+            testID="menuOverlay.aboutButton"
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               // openOverlay();
@@ -90,6 +102,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
           </Pressable>
           <Pressable
+            testID="menuOverlay.faqButton"
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               // openOverlay();
@@ -100,6 +113,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           </Pressable>
         </View>
         <Pressable
+          testID="menuOverlay.logoutButton"
           style={styles.menuOverlayLogOutButton}
           onPress={() => {
             auth()
