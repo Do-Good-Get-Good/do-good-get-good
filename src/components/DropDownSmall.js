@@ -84,7 +84,7 @@ export const DropDownSmall = ({}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pressDropDawn}>
+      <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
         <View style={styleForDropDownInsideConrainer}>
           <Text style={styles.sortText}>{sortBy}</Text>
           <Icon
@@ -100,6 +100,7 @@ export const DropDownSmall = ({}) => {
           ? sortArray.map((sort, index) => (
               <View index={index} key={index} style={styles.insideSortBox}>
                 <TouchableOpacity
+                testID="insideDropDownPressed"
                   onPress={() => {
                     pressSelectionInsideDropDown(sort.title, index);
                   }}
