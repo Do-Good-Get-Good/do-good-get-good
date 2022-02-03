@@ -6,16 +6,13 @@ import MenuOverlay from "../components/MenuOverlay";
 
 import { useAdminCheckFunction } from "../context/AdminContext";
 
-import firebase from '@react-native-firebase/app';
-import '@react-native-firebase/auth';
-
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-const mockedNavigate = jest.fn()
+const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
@@ -26,6 +23,11 @@ jest.mock("@react-navigation/native", () => {
     }),
   };
 });
+
+jest.mock("@react-native-firebase/auth", () => () => ({
+  auth: jest.fn(),
+  signOut: jest.fn(),
+}));
 
 jest.mock("../context/AdminContext", () => ({
   useAdminCheckFunction: jest.fn(),
@@ -83,7 +85,7 @@ describe("Testing MenuOverlay", () => {
       const closeButton = getByTestId("menuOverlay.closeButton");
       fireEvent.press(closeButton);
     });
-    
+
     it("Change language button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -93,7 +95,7 @@ describe("Testing MenuOverlay", () => {
       const languageButton = getByTestId("menuOverlay.languageButton");
       fireEvent.press(languageButton);
     });
-    
+
     it("Home button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -102,9 +104,9 @@ describe("Testing MenuOverlay", () => {
 
       const homeButton = getByTestId("menuOverlay.homeButton");
       fireEvent.press(homeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith('HomePage')
+      expect(mockedNavigate).toHaveBeenCalledWith("HomePage");
     });
-    
+
     it("Activities button", () => {
       useAdminCheckFunction.mockReturnValueOnce("admin");
       const onClickMock = jest.fn();
@@ -114,9 +116,9 @@ describe("Testing MenuOverlay", () => {
 
       const activitiesButton = getByTestId("menuOverlay.activitiesButton");
       fireEvent.press(activitiesButton);
-      expect(mockedNavigate).toHaveBeenCalledWith('AdminActivityGallery')
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
     });
-    
+
     it("My time button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
@@ -125,7 +127,7 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuOverlay.myTimeButton");
       fireEvent.press(myTimeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith('MyTimePage')
+      expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
     });
 
     it("About button", () => {
@@ -138,7 +140,7 @@ describe("Testing MenuOverlay", () => {
       fireEvent.press(aboutButton);
       expect(mockedNavigate).not.toHaveBeenCalled();
     });
-    
+
     it("FAQ button", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
