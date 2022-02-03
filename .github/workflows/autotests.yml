@@ -36,6 +36,7 @@ jobs:
           cd src
           npm test
       - name: looking for test report
+        if: always()
         run: |
           cd src
           ls
