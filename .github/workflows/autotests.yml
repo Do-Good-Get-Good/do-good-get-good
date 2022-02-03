@@ -34,17 +34,9 @@ jobs:
       - name: Running unit tests
         run: |
           cd src
-          npm test
-          find . -name junit.xml
-      - name: looking for test report
+          jest --json --outputFile=result.json --testLocationInResults
+          find . -name result.json
+      - uses: tanmen/jest-reporter@v1
         if: always()
-        run: |
-          find . -name junit.xml
-      - name: Test Report
-        uses: dorny/test-reporter@v1
-        if: always() # run this step even if previous step failed
         with:
-          name: JEST Tests # Name of the check run which will be created
-          path: src/junit.xml # Path to test results
-          reporter: jest-junit # Format of test results
-
+          github-token: ${{ secrets.GITHUB_TOKEN }}
