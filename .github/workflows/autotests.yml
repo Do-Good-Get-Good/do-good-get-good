@@ -35,11 +35,11 @@ jobs:
         run: |
           cd src
           npm test
+          find . -name junit.xml
       - name: looking for test report
         if: always()
         run: |
-          cd src
-          ls
+          find . -name junit.xml
       - name: Test Report
         uses: dorny/test-reporter@v1
         if: always() # run this step even if previous step failed
