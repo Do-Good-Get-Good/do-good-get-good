@@ -27,15 +27,15 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "16"
-      - name: Installing dependencies
+      - name: Run tests
         run: |
+          npm install -g expo
           cd src
           npm install --include=dev
-      - name: Running unit tests
-        run: |
-          cd src
           jest --json --outputFile=result.json --testLocationInResults
           find . -name result.json
+      - run: npm test
+      - run: find . -name junit.xml
       - uses: tanmen/jest-reporter@v1
         if: always()
         with:
