@@ -86,7 +86,7 @@ export const ActivityCard = ({ route, navigation }) => {
     if (pressedToArchive === true) {
       if (activeActivities === true) {
         activityCardContext.changeActive(false);
-        activityCardContext.changePopular(false);
+        // activityCardContext.changePopular(false);
         setActiveActivities(false);
       } else {
         console.log(
@@ -94,7 +94,7 @@ export const ActivityCard = ({ route, navigation }) => {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChanged(true);
+      // createActivityContext.activityHasChanged(true);
       createActivityContext.activityHasChangedID(activityInfo.id);
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
@@ -108,7 +108,7 @@ export const ActivityCard = ({ route, navigation }) => {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChanged(true);
+      // createActivityContext.activityHasChanged(true);
       createActivityContext.activityHasChangedID(activityInfo.id);
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {

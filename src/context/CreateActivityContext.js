@@ -15,6 +15,7 @@ export const CreateActivityProvider = ({ children }) => {
   const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
+  const [updateActivityGallery, setUpdateActivityGallery] = useState(false)
 
   const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
     active_status: "",
@@ -27,7 +28,7 @@ export const CreateActivityProvider = ({ children }) => {
   });
   const [newChangeActivity, setNewChangeActivity] = useState({
     id: "",
-    active: "",
+    active: null,
     title: "",
     city: "",
     photo: "",
@@ -117,17 +118,23 @@ export const CreateActivityProvider = ({ children }) => {
             description: info.activity_description,
             popular: info.tg_favorite,
           };
-          setNewChangeActivity(dataInfo);
+      
+         
+           setNewChangeActivity(dataInfo);
 
-          console.log("newChangeActivity in useEffect dataInfo", dataInfo);
+          
         }
         setChangedOneActivity(false);
         setActivityID(null);
+        setUpdateActivityGallery(true)
+        console.log("CreateActivityContext newChangeActivity in useEffect dataInfo ");
+       
       };
       getChangedActivity();
     }
   }, [changedOneActivity]);
 
+  
   return (
     <CreateActivityContext.Provider
       value={{
@@ -139,7 +146,12 @@ export const CreateActivityProvider = ({ children }) => {
 
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,
+        
         activityHasChangedID: setActivityID,
+        updateGallery: updateActivityGallery,
+        setUpdateGallery :setUpdateActivityGallery
+
+
       }}
     >
       {children}

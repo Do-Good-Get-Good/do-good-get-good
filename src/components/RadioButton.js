@@ -3,9 +3,10 @@ import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
-const RadioButton = ({}) => {
-  const [jaButton, setJaButton] = useState(false);
-  const [nejButton, setNejButton] = useState(true);
+ export  function RadioButton() {
+  
+  const [jaButton, setJaButton] = useState(true);
+  const [nejButton, setNejButton] = useState(false);
   const adminGalleryContext = useAdminGalleryFunction();
 
   const jaRadioButtonsPress = () => {
@@ -77,9 +78,9 @@ const RadioButton = ({}) => {
   );
 };
 
-export default RadioButton; 
 
 
+ export default RadioButton;
 
 const styles = StyleSheet.create({
   textAktiva: {

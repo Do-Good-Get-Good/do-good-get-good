@@ -17,7 +17,9 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
 
-export const AdminActivityGallery = ({ navigation }) => {
+
+  export function AdminActivityGallery({ navigation }) {
+  // const AdminActivityGallery = ({ navigation }) => {
   const adminGalleryContext = useAdminGalleryFunction();
   const createActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
@@ -25,27 +27,48 @@ export const AdminActivityGallery = ({ navigation }) => {
   const [arrayOfActiveActivities, setArrayOfActiveActivities] = useState([]);
   const [inactiveActivities, setInactiveActivities] = useState([]);
 
+  
+
+
+
   useEffect(() => {
+    
     setArrayOfActiveActivities(createActivityContext.activeActivities);
     setInactiveActivities(adminGalleryContext.inactiveActivities);
+
   }, [
     adminGalleryContext.inactiveActivities,
     createActivityContext.activeActivities,
   ]);
 
+
+
   useEffect(() => {
-    if (activityCardContext.active === true) {
+    if(activityCardContext.active === true || activityCardContext.popular === true){
+      createActivityContext.activityHasChanged(true)
+
+      activityCardContext.changePopularStatusInAdminGallery(false)
+      activityCardContext.changeActiveStatusInAdminGallery(false)
+
+    }
+
+  },[activityCardContext.active, activityCardContext.popular])
+
+  useEffect(() => {
+   
+      if(createActivityContext.updateGallery === true){
+       
       const addAndDeleteObjectInArrayAfterStatusActiveChanged = () => {
         if (
           createActivityContext.changedActivity.active === true &&
           createActivityContext.changedActivity.id != ""
         ) {
-          var indexInActive = arrayOfActiveActivities.findIndex(
+          var indexActive = arrayOfActiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (
-            indexInActive === -1 &&
+            indexActive === -1 &&
             createActivityContext.changedActivity.id != ""
           ) {
             setArrayOfActiveActivities((prev) => [
@@ -54,7 +77,7 @@ export const AdminActivityGallery = ({ navigation }) => {
             ]);
           }
 
-          let arrayInactive = inactiveActivities;
+          var arrayInactive = inactiveActivities;
 
           var indexInactive = arrayInactive.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
@@ -62,20 +85,22 @@ export const AdminActivityGallery = ({ navigation }) => {
 
           if (indexInactive != -1) {
             arrayInactive.splice(indexInactive, 1);
-            setInactiveActivities(arrayInactive);
+            setInactiveActivities(arrayInactive);    
           }
 
-          activityCardContext.changeActiveStatusInAdminGallery(false);
+          createActivityContext.activityHasChanged(false)
+          createActivityContext.setUpdateGallery(false)
+        
         } else if (
           createActivityContext.changedActivity.active === false &&
           createActivityContext.changedActivity.id != ""
         ) {
-          var indexInActive = inactiveActivities.findIndex(
+          var indexInactive2  = inactiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (
-            indexInActive === -1 &&
+            indexInactive2  === -1 &&
             createActivityContext.changedActivity.id != ""
           ) {
             setInactiveActivities((prev) => [
@@ -84,24 +109,28 @@ export const AdminActivityGallery = ({ navigation }) => {
             ]);
           }
 
-          let arrayActive = arrayOfActiveActivities;
+         var arrayStatusActive = arrayOfActiveActivities;
+         var indexOfActiveActivities = arrayStatusActive.findIndex(
+           (x) => x.id === createActivityContext.changedActivity.id
+         );
+       
 
-          var indexActive = arrayActive.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id
-          );
-
-          if (indexActive != -1) {
-            arrayActive.splice(indexActive, 1);
-            setArrayOfActiveActivities(arrayActive);
-          }
+         if (indexOfActiveActivities != -1) {
+          arrayStatusActive.splice(indexOfActiveActivities, 1);
+          setArrayOfActiveActivities(arrayStatusActive);
+           
+         } 
+          createActivityContext.activityHasChanged(false)
+          createActivityContext.setUpdateGallery(false)
+         
         }
-        activityCardContext.changeActiveStatusInAdminGallery(false);
+        
       };
 
       addAndDeleteObjectInArrayAfterStatusActiveChanged();
     }
-  }, [activityCardContext.active]);
-
+  },[createActivityContext.updateGallery]);
+  
   return (
     <SafeAreaView>
       <Menu />
@@ -129,6 +158,8 @@ export const AdminActivityGallery = ({ navigation }) => {
     </SafeAreaView>
   );
 };
+
+export default AdminActivityGallery;
 
 const styles = StyleSheet.create({
   searchBar: {
