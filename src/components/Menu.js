@@ -5,7 +5,7 @@ import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import { Platform } from "react-native";
 
-const UserMenu = () => {
+const Menu = () => {
   const [visible, setVisible] = useState(false);
 
   const toggleOverlay = () => {
@@ -58,7 +58,7 @@ const UserMenu = () => {
   );
 };
 
-export default UserMenu;
+export default Menu;
 
 const styles = StyleSheet.create({
   headerLogo: {

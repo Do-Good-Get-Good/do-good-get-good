@@ -115,11 +115,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         <Pressable
           testID="menuOverlay.logoutButton"
           style={styles.menuOverlayLogOutButton}
-          onPress={() => {
-            auth()
-              .signOut()
-              .then(() => console.log("User signed out!"));
-          }}
+          onPress={() => auth().signOut()}
         >
           <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
         </Pressable>

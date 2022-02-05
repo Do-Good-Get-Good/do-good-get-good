@@ -60,5 +60,21 @@ describe('Testing FloatingActionButton', () => {
     expect(mockedNavigate).toHaveBeenCalledWith("CreateOrChangeUser", {"createNewUser": true,})
 
   })
+
+  it('can press to close the action button', () => {
+    const { getByTestId, getAllByText, queryByText} = render(<FloatingActionButton />);
+    const fabButton = getByTestId('open.button')
+    fireEvent.press(fabButton)
+
+    expect(getAllByText('Lägg till aktivitet').length).toBe(1)
+    expect(getAllByText('Lägg till användare').length).toBe(1)
+
+    fireEvent.press(fabButton)
+    const ActivityText = queryByText('Lägg till aktivitet');
+    expect(ActivityText).toBeNull();
+   
+    const AddUserText = queryByText('Lägg till användare');
+    expect(AddUserText).toBeNull();
+  })
     
 })

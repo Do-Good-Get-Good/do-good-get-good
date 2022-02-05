@@ -5,10 +5,10 @@ name: Do Good Get Good unit tests
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: 
-    - "*"
+    branches:
+      - "*"
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -22,23 +22,21 @@ jobs:
 
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - run: |
-        cd src
-        npm install
-    - name: Running unit tests
-      run: |
-        cd src
-        npm test
-    - uses: ArtiomTr/jest-coverage-report-action@v2
-      with:
-        github-token: ${{ secrets.SECRET_TOKEN }}
-    - uses: IgnusG/jest-report-action@v2
-        if: always() # Or use "continue-on-error: true" in previous test step
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-node@v2
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          working-directory: src/
+          node-version: "16"
+      - name: Run tests
+        run: |
+          npm install -g expo
+          cd src
+          npm install --include=dev
+          jest --json --outputFile=result.json --testLocationInResults
+          find . -name result.json
+      - run: npm test
+      - run: find . -name junit.xml
+      - uses: tanmen/jest-reporter@v1
+        if: always()
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
