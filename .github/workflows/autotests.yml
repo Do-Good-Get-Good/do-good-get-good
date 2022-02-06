@@ -34,14 +34,15 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
       - name: Run tests
         run: |
-          npm install -g expo
-          cd src
-          npm install --include=dev
-          jest --json --outputFile=result.json --testLocationInResults
-          find . -name result.json
+          npm install
+        working-directory: src/
       - run: npm test
+        working-directory: src/
       - run: find . -name junit.xml
-      - uses: tanmen/jest-reporter@v1
         if: always()
+        working-directory: src/
+      - uses: IgnusG/jest-report-action@v2.3.3
+        if: always() # Or use "continue-on-error: true" in previous test step
         with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
+          access-token: ${{ secrets.GITHUB_TOKEN }}
+          junit-file: src/junit.xml
