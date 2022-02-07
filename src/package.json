@@ -55,14 +55,33 @@
       "./node_modules/react-native-gesture-handler/jestSetup.js"
     ],
     "collectCoverage": true,
+    "coverageDirectory": "./reports/coverage",
     "coverageReporters": [
       "json",
       "html"
     ],
+    "coverageThreshold": {
+      "global": {
+        "lines": 75
+      }
+    },
     "reporters": [
       "default",
-      "jest-junit",
-      "jest-html-reporters"
+      [
+        "jest-junit",
+        {
+          "suiteName": "jest tests",
+          "outputDirectory": "./reports",
+          "outputName": "JEST-tests.xml"
+        }
+      ],
+      [
+        "jest-html-reporters",
+        {
+          "publicPath": "./reports/html-test-report",
+          "filename": "test-report.html"
+        }
+      ]
     ]
   },
   "private": true
