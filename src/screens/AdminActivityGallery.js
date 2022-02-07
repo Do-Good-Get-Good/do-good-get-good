@@ -54,6 +54,9 @@ import Menu from "../components/Menu";
 
   },[activityCardContext.active, activityCardContext.popular])
 
+  // console.log("_________________createActivityContext.changedActivity        ", createActivityContext.changedActivity)
+  
+
   useEffect(() => {
    
       if(createActivityContext.updateGallery === true){
@@ -63,6 +66,8 @@ import Menu from "../components/Menu";
           createActivityContext.changedActivity.active === true &&
           createActivityContext.changedActivity.id != ""
         ) {
+          console.log("_________________createActivityContext.changedActivity        ", createActivityContext.changedActivity)
+          
           var indexActive = arrayOfActiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );

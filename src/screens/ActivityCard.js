@@ -86,6 +86,7 @@ export const ActivityCard = ({ route, navigation }) => {
     if (pressedToArchive === true) {
       if (activeActivities === true) {
         activityCardContext.changeActive(false);
+        
         // activityCardContext.changePopular(false);
         setActiveActivities(false);
       } else {
@@ -170,13 +171,13 @@ export const ActivityCard = ({ route, navigation }) => {
       setPopular(false);
       activityCardContext.changePopular(false);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChanged(true);
+      // createActivityContext.activityHasChanged(true);
       createActivityContext.activityHasChangedID(activityInfo.id);
     } else if (popular === false) {
       setPopular(true);
       activityCardContext.changePopular(true);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChanged(true);
+      // createActivityContext.activityHasChanged(true);
       createActivityContext.activityHasChangedID(activityInfo.id);
     } else {
       console.log("Something went wrong with status popular", popular);

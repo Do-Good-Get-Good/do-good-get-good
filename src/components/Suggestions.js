@@ -97,7 +97,8 @@ export const Suggestions = ({
   }, [activityCardContext.oneActivityHasBeenDeleted]);
 
   useEffect(() => {
-    if (activityCardContext.popular != null) {
+    
+       if (useCreateActivityContext.updateGallery === true) {
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
@@ -106,10 +107,12 @@ export const Suggestions = ({
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(newArray);
         activityCardContext.changePopularStatusInAdminGallery(false);
+        useCreateActivityContext.setUpdateGallery(false)
       };
       replaceObjectIfpopularStatusChanged();
     }
-  }, [activityCardContext.popular]);
+  },[useCreateActivityContext.updateGallery ]);
+  
 
   return (
     <View>
