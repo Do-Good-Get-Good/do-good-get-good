@@ -41,9 +41,6 @@ export default function Login() {
   const signIn = () => {
     auth()
       .signInWithEmailAndPassword(email, pass)
-      .then(() => {
-        console.log("User account exists & signed in!");
-      })
       .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
           console.log("Den e-post adressen används redan");
@@ -130,12 +127,14 @@ export default function Login() {
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <View style={styles.logo}>
           <Image
+            testID="login.dgggLogo"
             source={require("../img/Logotyp_DGGG.png")}
             style={styles.logoImg}
           />
         </View>
         <View style={styles.inputsAndBtns}>
           <Text
+            testID="login.motivationalText"
             style={[
               tw`text-center text-xl mb-8 font-bold`,
               { color: "#333333" },

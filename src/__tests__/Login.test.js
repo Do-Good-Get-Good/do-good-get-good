@@ -2,32 +2,51 @@ import "react-native";
 import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
 
-// Note: test renderer must be required after react-native.
-import renderer from "react-test-renderer";
 import Login from "../components/Login";
+
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-it("renders correctly", () => {
-  const { getAllByText, getByPlaceholderText } = renderer.create(<Login />);
-
-  expect(getAllByText("Logga in").length).toBe(1);
-  getByPlaceholderText("E-post");
-  getByPlaceholderText("Lösenord");
+jest.mock("react-native-elements/dist/icons/Icon", () => () => {
+  return <fakeIcon />;
 });
 
-// it("Shows invalid input message", () => {
-//   const { getByText, queryAllByText, getByPlaceholder } = render(<Login />);
+jest.mock("react-native-elements/dist/overlay/Overlay", () => () => {
+  return <fakeOverlay />;
+});
 
-//   fireEvent.changeText(getByPlaceholder("Lösenord"), "Blomma123");
+jest.mock("@react-native-firebase/auth", () => () => ({
+  auth: jest.fn(),
+  signInWithEmailAndPassword: jest.fn(),
+  catch: jest.fn()
+}));
 
-//   fireEvent.press(getByText("Logga in"));
-//   getByText("Ange en giltig e-post");
-//   expect(queryAllByText("Fel e-post eller lösenord").length).toBe(0);
+it("renders correctly", () => {
+  const { getAllByText, getByPlaceholderText, getByTestId } = render(<Login />);
 
-//   fireEvent.changeText(getByPlaceholder("E-post"), "test@test.com");
-//   getByText("Fel e-post eller lösenord");
-//   expect(queryAllByText("Ange en giltig e-post").length).toBe(0);
-// });
+  expect(getByTestId("login.dgggLogo").props.source.testUri).toBe("../../../img/Logotyp_DGGG.png");
+  getByTestId("login.motivationalText");
+  getByPlaceholderText("E-post");
+  getByPlaceholderText("Lösenord");
+  expect(getAllByText("Logga in").length).toBe(1);
+  expect(getAllByText("Glömt ditt lösenord?").length).toBe(1);
+  expect(getAllByText("Tryck här").length).toBe(1);
+});
+
+it("Shows invalid input message", () => {
+  const { getByText, queryByText, getByPlaceholderText, debug } = render(<Login />);
+
+  fireEvent.changeText(getByPlaceholderText("Lösenord"), "Blomma123");
+  const loginButton = getByText("Logga in");
+  fireEvent.press(loginButton);
+  
+  getByText("* Du måste fylla i en e-post");
+  expect(queryByText("Fel e-post eller lösenord")).toBeNull();
+
+  fireEvent.changeText(getByPlaceholderText("E-post"), "test@test");
+  fireEvent.press(loginButton);
+  getByText("* Fel e-post eller lösenord");
+  expect(queryAllByText("Ange en giltig e-post").length).toBe(0);
+});
 
 // it("Handle valid input", async () => {
 //   fetch.mockResponseOnce(JSON.stringify({ passes: true }));
