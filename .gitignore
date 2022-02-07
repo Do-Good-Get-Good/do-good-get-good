@@ -54,3 +54,4 @@ src/.jest/
 
 junit.xml
 coverage/
+reports/
