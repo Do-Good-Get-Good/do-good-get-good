@@ -10,8 +10,8 @@ import {
   Platform,
 } from "react-native";
 
-import { RadioButton } from "../components/RadioButton";
-import { Suggestions } from "../components/Suggestions";
+import  RadioButton  from "../components/RadioButton";
+import  Suggestions  from "../components/Suggestions";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -54,7 +54,7 @@ import Menu from "../components/Menu";
 
   },[activityCardContext.active, activityCardContext.popular])
 
-  // console.log("_________________createActivityContext.changedActivity        ", createActivityContext.changedActivity)
+  
   
 
   useEffect(() => {
@@ -66,7 +66,6 @@ import Menu from "../components/Menu";
           createActivityContext.changedActivity.active === true &&
           createActivityContext.changedActivity.id != ""
         ) {
-          console.log("_________________createActivityContext.changedActivity        ", createActivityContext.changedActivity)
           
           var indexActive = arrayOfActiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
@@ -143,7 +142,7 @@ import Menu from "../components/Menu";
         <View style={styles.container}>
           <View style={styles.containerRadioButtonAndDropDown}>
             <View style={styles.radioButton}>
-              <RadioButton></RadioButton>
+              <RadioButton />
             </View>
 
             <View style={styles.dropDown}></View>
