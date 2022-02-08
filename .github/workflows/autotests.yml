@@ -44,12 +44,11 @@ jobs:
         if: always() # Or use "continue-on-error: true" in previous test step
         with:
           name: JEST Tests # Name of the check run which will be created
-          path: ./src/reports/JEST-tests.xml # Path to test results
+          path: ./src/reports/JEST-*.xml # Path to test results
           reporter: jest-junit
-          token: ${{ github.GITHUB_TOKEN }}
 
       - uses: ArtiomTr/jest-coverage-report-action@v2
+        if: always()
         with:
-          github-token: ${{ github.GITHUB_TOKEN }}
           working-directory: ./src/
           test-script: npm test
