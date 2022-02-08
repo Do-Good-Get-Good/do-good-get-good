@@ -112,12 +112,14 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
                 </View>
               </View>
               <Image
+              testID="imageId"
                 style={styles.image}
                 source={setTheRightPhoto(myActivity.photo)}
               />
             </View>
 
             <TouchableOpacity
+            testID="logTimeButton"
               onPress={() => {
                 setActivity(myActivity);
                 toggleOverlay();
