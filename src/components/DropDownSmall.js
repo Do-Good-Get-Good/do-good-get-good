@@ -13,7 +13,8 @@ export const DropDownSmall = ({}) => {
   const [mainWordAdminGallery, setMainWordAdminGallery] = useState("Datum");
   const [mainWordCreateActivity, setMainWordCreateActivity] =
     useState("Aktivitet");
-  const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
+  // const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
+  const sortingAdminGallery = [{title: "Favoriter"}, {title: "Namn"}, {title: "Plats"}];
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
