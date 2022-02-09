@@ -114,6 +114,7 @@ export default function Login() {
 
   return (
     <ImageBackground
+      testID="login.backgroundImage"
       source={require("../img/blueprint-white.png")}
       resizeMode={"cover"}
       style={{
@@ -192,14 +193,13 @@ export default function Login() {
               />
             </View>
           </View>
-          <View
-            style={tw.style({
-              hidden: error === null,
-              "mb-0 pl-2": error != null,
-            })}
+          {error != null ? (
+            <View
+            style={tw.style("mb-0 pl-2")}
           >
             <Text style={{ color: "#C62F25" }}>* {error}</Text>
           </View>
+          ) : null}
           <View style={tw`mt-2`}>
             <TouchableOpacity
               style={styles.loginBtn}
@@ -240,6 +240,7 @@ export default function Login() {
         </View>
         <View style={{ flex: 1 }}></View>
         <Image
+          testID="login.bottomLogo"
           source={require("../img/Technogarden-logotyp-Large.png")}
           style={
             keyboardStatus === "Keyboard Shown"
