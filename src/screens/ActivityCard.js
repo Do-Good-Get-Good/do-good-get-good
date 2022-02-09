@@ -189,7 +189,7 @@ export function ActivityCard ({ route, navigation }) {
           size={25}
         />
 
-        <TouchableOpacity onPress={() => alertToDeleteActivity()}>
+        <TouchableOpacity testID="alertToDeleteActivity" onPress={() => alertToDeleteActivity()}>
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -231,7 +231,7 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity  onPress={() => alertToArchiveActivity()}>
+          <TouchableOpacity testID="alertToArchiveActivity"  onPress={() => alertToArchiveActivity()}>
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -258,10 +258,8 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => changePopularStatus()}>
-            <Text style={styles.textNearIconStar}>
-              Ta bort från TG-favoriter
-            </Text>
+          <TouchableOpacity testID="toNotFavorite" onPress={() => changePopularStatus()}>
+            <Text style={styles.textNearIconStar}>Ta bort från TG-favoriter</Text>
           </TouchableOpacity>
         </View>
       );
@@ -277,10 +275,8 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => changePopularStatus()}>
-            <Text style={styles.textNearIconStar}>
-              Lägg till som TG-favorit
-            </Text>
+          <TouchableOpacity testID="toFavorite" onPress={() => changePopularStatus()}>
+         <Text style={styles.textNearIconStar}>Lägg till som TG-favorit</Text>
           </TouchableOpacity>
         </View>
       );
@@ -342,6 +338,7 @@ export function ActivityCard ({ route, navigation }) {
           </View>
           <Text style={styles.textTitle}>{activity.title}</Text>
           <Image
+          testID="photo"
             style={styles.image}
             source={setTheRightPhoto(activity.photo)}
           ></Image>
