@@ -30,19 +30,19 @@ describe('Testing MyActivities', () => {
         expect(getAllByText('Missing people').length).toBe(1)
     })
 
-    it('can find the city for my activity', () => {
+    it('can find the city for the activity', () => {
         const { getAllByText } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
         expect(getAllByText('Gbg').length).toBe(1)
     })
     
-    it('can find the image for my activity', () => {
+    it('can find the image for the activity', () => {
         const { getByTestId } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
         expect(getByTestId('imageId'))
         const image = getByTestId('imageId')
-        // expect(image).toHaveAttribute('source','symbol_earth')
+        expect(image.props.source).toEqual({testUri: "../../../img/activities_images/symbol_earth.png"})
     })
 
-    it('can you click on the Logga tid button', () => {
+    it('can click on the Logga tid button', () => {
         const { getAllByText, getByTestId } = render(
         <MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
         expect(getAllByText('Logga tid').length).toBe(1)

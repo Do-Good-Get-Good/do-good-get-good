@@ -22,14 +22,16 @@ jest.mock('@react-navigation/native')
 describe('Testing DropDownSmall', () => {
     it('can see that you are in CreateActivity screen', () => {
         require('@react-navigation/native').useRoute.mockReturnValue({name: 'CreateActivity'})
-        const { getAllByText } = render(<DropDownSmall />);
+        const { getAllByText, queryAllByText } = render(<DropDownSmall />);
         expect(getAllByText('Aktivitet').length).toBe(1)
+        expect(queryAllByText('Datum').length).toBe(0)
     })
 
     it('can see that you are in AdminActivityGallery screen', () => {
         require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
-        const { getAllByText } = render(<DropDownSmall />);
+        const { getAllByText, queryAllByText } = render(<DropDownSmall />);
         expect(getAllByText('Datum').length).toBe(1)
+        expect(queryAllByText('Aktivitet').length).toBe(0)
     })
 
     it('can press the dropDown to open in CreateActivity screen', () => {
