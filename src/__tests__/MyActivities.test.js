@@ -1,7 +1,7 @@
 import 'react-native'
 import React from 'react'
 import { render, fireEvent } from '@testing-library/react-native'
-import {MyActivities} from '../components/MyActivities'
+import { MyActivities } from '../components/MyActivities'
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter")
 
@@ -34,6 +34,11 @@ describe('Testing MyActivities', () => {
         const { getAllByText } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
         expect(getAllByText('Gbg').length).toBe(1)
     })
+
+    it('can find the time for the activity', () => {
+        const { getAllByText } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
+        expect(getAllByText('0 tim').length).toBe(1)
+    })
     
     it('can find the image for the activity', () => {
         const { getByTestId } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
@@ -43,8 +48,7 @@ describe('Testing MyActivities', () => {
     })
 
     it('can click on the Logga tid button', () => {
-        const { getAllByText, getByTestId } = render(
-        <MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
+        const { getAllByText, getByTestId } = render(<MyActivities myActivities={myActivities} myAccumulatedTime={myAccumulatedTime} />)
         expect(getAllByText('Logga tid').length).toBe(1)
         const button = getByTestId('logTimeButton')
         fireEvent.press(button)
