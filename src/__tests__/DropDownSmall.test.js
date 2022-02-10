@@ -19,6 +19,12 @@ jest.mock('../context/CreateActivityContext', () => ({
 
 jest.mock('@react-navigation/native')
 
+console.log = jest.fn()
+
+afterEach(() => {
+    jest.clearAllMocks();
+  });
+
 describe('Testing DropDownSmall', () => {
     it('can see that you are in CreateActivity screen', () => {
         require('@react-navigation/native').useRoute.mockReturnValue({name: 'CreateActivity'})
@@ -34,7 +40,18 @@ describe('Testing DropDownSmall', () => {
         expect(queryAllByText('Aktivitet').length).toBe(0)
     })
 
-    it('can press the dropDown to open in CreateActivity screen', () => {
+    it('can press the dropDown to open', () => {
+        require('@react-navigation/native').useRoute.mockReturnValue({name: 'CreateActivity'})
+        const { getByTestId, getAllByTestId, getAllByText } = render(<DropDownSmall />);
+
+        expect(getAllByTestId('dropDownPressed').length).toBe(1)
+        const dropDownButton = getByTestId('dropDownPressed')
+        fireEvent.press(dropDownButton)
+        
+        expect(getAllByText('Skapa ny aktivitet').length).toBe(1)
+    })
+
+    it('can press on Skapa ny aktivitet inside the dropDown in CreateActivity screen', () => {
         require('@react-navigation/native').useRoute.mockReturnValue({name: 'CreateActivity'})
         const { getByTestId, getAllByTestId, queryAllByTestId, getAllByText } = render(<DropDownSmall />);
 
@@ -50,7 +67,7 @@ describe('Testing DropDownSmall', () => {
         expect(closingDropDown).toEqual([])
     })
 
-    it('can press the dropDown to open in AdminActivityGallery screen', () => {
+    it('can press on Favoriter inside the dropDown in AdminActivityGallery screen', () => {
         require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
         const { getByTestId, getAllByTestId, queryAllByTestId, getAllByText } = render(<DropDownSmall />);
 
@@ -63,16 +80,40 @@ describe('Testing DropDownSmall', () => {
         expect(getAllByText('Namn').length).toBe(1)
         expect(getAllByText('Plats').length).toBe(1)
 
-        if 
-        (
-        fireEvent.press(activitysInsideDropDown[0]) || 
-        fireEvent.press(activitysInsideDropDown[1]) || 
+        fireEvent.press(activitysInsideDropDown[1])
+        expect(console.log).toHaveBeenCalledTimes(1)
+    })
+
+    it('can press on Namn inside the dropDown in AdminActivityGallery screen', () => {
+        require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
+        const { getByTestId, getAllByTestId, getAllByText } = render(<DropDownSmall />);
+
+        const dropDownButton = getByTestId('dropDownPressed')
+        fireEvent.press(dropDownButton)
+
+        const activitysInsideDropDown = getAllByTestId('insideDropDownPressed')
+        expect(getAllByText('Favoriter').length).toBe(1)
+        expect(getAllByText('Namn').length).toBe(1)
+        expect(getAllByText('Plats').length).toBe(1)
+
+        fireEvent.press(activitysInsideDropDown[1])
+        expect(console.log).toHaveBeenCalledTimes(1)
+    })
+
+    it('can press on Plats inside the dropDown in AdminActivityGallery screen', () => {
+        require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
+        const { getByTestId, getAllByTestId, getAllByText } = render(<DropDownSmall />);
+
+        const dropDownButton = getByTestId('dropDownPressed')
+        fireEvent.press(dropDownButton)
+
+        const activitysInsideDropDown = getAllByTestId('insideDropDownPressed')
+        expect(getAllByText('Favoriter').length).toBe(1)
+        expect(getAllByText('Namn').length).toBe(1)
+        expect(getAllByText('Plats').length).toBe(1)
+        
         fireEvent.press(activitysInsideDropDown[2])
-        ) 
-        {
-            const closingDropDown = queryAllByTestId('insideDropDownPressed')
-            expect(closingDropDown).toEqual([])
-        }
+        expect(console.log).toHaveBeenCalledTimes(1)
     })
 
     it('can press the dropDown to close', () => {
