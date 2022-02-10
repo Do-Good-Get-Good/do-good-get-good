@@ -10,6 +10,7 @@ import ActivityCard from "../screens/ActivityCard";
 
 
 
+
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
     return <fakeIcon />;
   });
@@ -51,7 +52,7 @@ jest.mock("../components/Menu", () => () => {
             title:"title",
             city: "city",
             description: " description",
-            photo: "symbol_earth.png"
+            photo: "symbol_earth"
         }, 
         active: true, 
         tgPopular: true
@@ -66,13 +67,13 @@ jest.mock("../components/Menu", () => () => {
         component.getByText("Gå tillbaka")
     })
 
-    //    it( "Photo exists in ActivityCard",() => {
-    // const { getByTestId }  = render(<ActivityCard route={route } />);
-    // expect(getByTestId('photo'))
-    // const image = getByTestId('photo')
-    // expect(image.props.source).toEqual({testUri: "../../../img/activities_images/symbol_earth.png"})
+       it( "Photo exists in ActivityCard",() => {
+    const { getByTestId }  = render(<ActivityCard route={route } />);
+    expect(getByTestId('photo'))
+    const image = getByTestId('photo')
+     expect(image.props.source).toEqual({testUri: "../../../img/activities_images/symbol_earth.png"})
      
-    //   })
+      })
 
    it("Activity title exists in ActivityCard", () => {
        const { getAllByText }  = render(<ActivityCard route={route } />);
@@ -135,12 +136,22 @@ jest.mock("../components/Menu", () => () => {
          expect(getAllByText("Ta bort från TG-favoriter").length).toBe(1) 
         useActivityCardContext().changePopular.mockReturnValue(true)  
         useActivityCardContext().idActivity(route.params.activityInfo.id);
-        useCreateActivityFunction().activityHasChangedID(route.params.activityInfo.id)
-        
-        
-       
+        useCreateActivityFunction().activityHasChangedID(route.params.activityInfo.id)    
 
     })
+    it("ActivityCard for admin for active activities. TG_status button turn to NOT favotite ", () => {
+      route.params.tgPopular = true
+      route.params.active = true   
+      const { getAllByText, getByTestId }  = render(<ActivityCard route={route} />);  
+      expect(getAllByText("Ta bort från TG-favoriter").length).toBe(1)    
+      const toNotFavorite = getByTestId("toNotFavorite")
+      fireEvent.press(toNotFavorite) 
+      expect(getAllByText("Lägg till som TG-favorit").length).toBe(1) 
+      useActivityCardContext().changePopular.mockReturnValue(false)  
+      useActivityCardContext().idActivity(route.params.activityInfo.id);
+      useCreateActivityFunction().activityHasChangedID(route.params.activityInfo.id)    
+
+  })
 
 
      

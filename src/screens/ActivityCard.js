@@ -30,7 +30,6 @@ export function ActivityCard ({ route, navigation }) {
     description: "",
     popular: "",
   });
-
   const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
 
   const [activeActivities, setActiveActivities] = useState(active);
