@@ -15,13 +15,13 @@ import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 
-export const Suggestions = ({
+export function Suggestions ({
   navigation,
   search,
   adminGallery,
   chooseActive,
   inactiveActivities,
-}) => {
+}) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
@@ -29,6 +29,8 @@ export const Suggestions = ({
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [activetyDeleted, setActivetyDeleted] = useState(false);
+
+ 
 
   useEffect(() => {
     if (rout.name === "HomePage") {
@@ -72,6 +74,9 @@ export const Suggestions = ({
           active: statusActive,
           tgPopular: statusPopular,
         });
+        
+        console.log("navigation-----------",navigation)
+        console.log("________activety, statusActive, statusPopular", activety, statusActive, statusPopular)
   }
 
   useEffect(() => {
@@ -116,11 +121,17 @@ export const Suggestions = ({
 
   return (
     <View>
-      <Text style={styles.topH1}>Förslag & inspiration</Text>
+      
+      {rout.name === "HomePage" ? <Text style={styles.topH1}>Förslag & inspiration</Text> : 
+        <Text style={styles.topH1}>Aktivitetsgalleri</Text>
+
+      }
+    
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
           <TouchableOpacity
+            testID="lookDetails"
             onPress={() =>
               lookDetails(suggestion, suggestion.active, suggestion.popular)
             }
@@ -177,6 +188,7 @@ export const Suggestions = ({
     </View>
   );
 };
+export default Suggestions;
 
 const styles = StyleSheet.create({
   topH1: {
