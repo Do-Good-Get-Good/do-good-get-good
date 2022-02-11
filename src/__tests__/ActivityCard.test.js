@@ -46,7 +46,7 @@ jest.mock("../components/Menu", () => () => {
 
   const route = { 
     params: { 
-        admin: true, 
+        admin: false, 
         activityInfo: {
             id: "5",
             title:"title",
@@ -91,6 +91,7 @@ jest.mock("../components/Menu", () => () => {
        })
 
        it("For admin in ActivityCard. Delet button exist for both active and inactive activities", ()=> {  
+        route.params.admin = true
         const { getAllByText, getByTestId }  = render(<ActivityCard route={route} />);  
         const alertToDeleteActivity = getByTestId("alertToDeleteActivity")
         fireEvent.press(alertToDeleteActivity)  
@@ -99,6 +100,7 @@ jest.mock("../components/Menu", () => () => {
 
 
     it("ActivityCard for admin for active activities. Arkivera button", () => {
+      route.params.admin = true
     
         const { getAllByText, getByTestId }  = render(<ActivityCard route={route} />);  
         const alertToArchiveActivity= getByTestId("alertToArchiveActivity")
@@ -111,6 +113,7 @@ jest.mock("../components/Menu", () => () => {
     })
 
     it("ActivityCard for admin for inactive activities. To take away from archive", () => {
+      route.params.admin = true
         route.params.tgPopular = false
         route.params.active = false      
 
@@ -126,6 +129,7 @@ jest.mock("../components/Menu", () => () => {
        })
 
     it("ActivityCard for admin for active activities. TG_status button turn to favotite ", () => {
+      route.params.admin = true
         route.params.tgPopular = false
         route.params.active = true
         
@@ -140,6 +144,7 @@ jest.mock("../components/Menu", () => () => {
 
     })
     it("ActivityCard for admin for active activities. TG_status button turn to NOT favotite ", () => {
+      route.params.admin = true
       route.params.tgPopular = true
       route.params.active = true   
       const { getAllByText, getByTestId }  = render(<ActivityCard route={route} />);  
@@ -152,11 +157,6 @@ jest.mock("../components/Menu", () => () => {
       useCreateActivityFunction().activityHasChangedID(route.params.activityInfo.id)    
 
   })
-
-
-     
-
-       
-
+    
     
   })
