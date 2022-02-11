@@ -61,6 +61,7 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
           <TouchableOpacity
+            testID="resetPassModal.closeBtn"
             style={{ position: "absolute", right: -18, top: -18 }}
             onPress={() => {
               setEmail(null);
@@ -76,12 +77,13 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
             />
           </TouchableOpacity>
           <View style={tw`mt-0`}>
-            <Text style={tw`text-lg font-bold`}>Glömt ditt lösenord?</Text>
-            <Text>
+            <Text testID="resetPassModal.forgotPass" style={tw`text-lg font-bold`}>Glömt ditt lösenord?</Text>
+            <Text testID="resetPassModal.forgotPassDesc">
               Inga problem! Skriv in din mail nedan, så skickar vi en länk för
               att återställa lösenordet.
             </Text>
             <TextInput
+              testID="resetPassModal.emailInput"
               style={[
                 inputStyles.textInput,
                 tw`mt-5 mb-2`,
@@ -92,14 +94,11 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
               keyboardType={"email-address"}
               onChangeText={(text) => setEmail(text)}
             />
-            <View
-              style={tw.style({
-                hidden: error === null,
-                "mb-2 pl-2": error != null,
-              })}
-            >
-              <Text style={{ color: "#C62F25" }}>* {error}</Text>
-            </View>
+            {error != null ? (
+              <View style={tw.style("mb-2 pl-2")}>
+                <Text testID="resetPassModal.errorText" style={{ color: "#C62F25" }}>{`* ${error}`}</Text>
+              </View>
+            ) : null}
             <TouchableOpacity
               style={styles.sendBtn}
               onPress={() => {
