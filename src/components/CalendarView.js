@@ -105,9 +105,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         date: date,
         status_confirmed: false,
         time: hours,
-      })
-      .then(() => {
-        console.log("New time entry added!");
       });
     toggleVisibility();
   };
@@ -127,9 +124,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         },
         { merge: true }
       )
-      .then(() => {
-        console.log("Updated time entry!");
-      });
     toggleVisibility();
   };
 
@@ -141,9 +135,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       .collection("time_entries")
       .doc(activity.timeEntryID)
       .delete()
-      .then(() => {
-        console.log("Removed time entry!");
-      });
     toggleVisibility();
   };
 

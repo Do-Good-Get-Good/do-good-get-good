@@ -11,24 +11,26 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock('@react-native-firebase/firestore', () => () => {
-    return {
-        collection: jest.fn(() => ({ 
-            doc: jest.fn(),
-            where: jest.fn(),
-            orderBy: jest.fn(),
-            add: jest.fn(),
-            set: jest.fn()
-        })),
-    };
+jest.mock("@react-native-firebase/firestore", () => {
+    return () => ({
+        collection: jest.fn(() => ({
+            doc: jest.fn(() => ({
+                collection: jest.fn(() => ({
+                    add: jest.fn(),
+                    doc: jest.fn(() => ({
+                        set: jest.fn(),
+                        delete: jest.fn()
+                    }))
+                }))
+            }))
+        }))
+    });
 });
 
 jest.mock("@react-native-firebase/auth", () => () => ({
-    auth: jest.fn(() => ({
-        currentUser: {
-            uid: "jest.fn()"
-        },
-    })),
+    currentUser: { 
+        uid: 'uid' 
+    } 
 }));
 
 
@@ -42,6 +44,8 @@ describe("Testing CalendarView", () => {
         date: "2022-01-19T12:30:00.000Z",
         id: "abc"
     };
+
+    const mockToggleVisibility = jest.fn();
 
     describe("Tests for both new/editing time input modes", () => {
         it("Increasing time input (increments of 0.5) when pressing '+'", () => {
@@ -130,17 +134,18 @@ describe("Testing CalendarView", () => {
             expect(deleteTimeButton).toBeNull();
         });
 
-        // it("Pressing 'Logga tid' works", () => {
-        //     const componentToRender = <CalendarView 
-        //                                 visible={true} 
-        //                                 activity={fakeActivity} 
-        //                                 isEditing={false} 
-        //                             />;
-        //     const { getByText } = render(componentToRender);
+        it("Pressing 'Logga tid' works", () => {
+            const componentToRender = <CalendarView 
+                                        visible={true} 
+                                        activity={fakeActivity} 
+                                        isEditing={false} 
+                                        toggleVisibility={mockToggleVisibility}
+                                    />;
+            const { getByText } = render(componentToRender);
     
-        //     const logTimeButton = getByText("Logga tid");
-        //     fireEvent.press(logTimeButton);
-        // });
+            const logTimeButton = getByText("Logga tid");
+            fireEvent.press(logTimeButton);
+        });
     });
     
     describe("Tests for editing time input", () => {
@@ -167,6 +172,32 @@ describe("Testing CalendarView", () => {
             // Should only exist if adding new time
             const logTimeButton = queryByText("Logga tid");
             expect(logTimeButton).toBeNull();
+        });
+
+        it("Pressing 'Ändra tid' works", () => {
+            const componentToRender = <CalendarView 
+                                        visible={true} 
+                                        activity={fakeActivity} 
+                                        isEditing={true} 
+                                        toggleVisibility={mockToggleVisibility}
+                                    />;
+            const { getByText } = render(componentToRender);
+    
+            const changeTimeButton = getByText("Ändra tid");
+            fireEvent.press(changeTimeButton);
+        });
+
+        it("Pressing 'Ta bort tid' works", () => {
+            const componentToRender = <CalendarView 
+                                        visible={true} 
+                                        activity={fakeActivity} 
+                                        isEditing={true} 
+                                        toggleVisibility={mockToggleVisibility}
+                                    />;
+            const { getByText } = render(componentToRender);
+    
+            const changeTimeButton = getByText("Ta bort tid");
+            fireEvent.press(changeTimeButton);
         });
     });
 });
