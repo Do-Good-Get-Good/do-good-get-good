@@ -30,7 +30,7 @@ export function Suggestions ({
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [activetyDeleted, setActivetyDeleted] = useState(false);
 
- 
+
 
   useEffect(() => {
     if (rout.name === "HomePage") {
@@ -51,6 +51,8 @@ export function Suggestions ({
       console.log("Nothing to show in AdminGallery");
     }
   }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
+
+
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -75,8 +77,7 @@ export function Suggestions ({
           tgPopular: statusPopular,
         });
         
-        console.log("navigation-----------",navigation)
-        console.log("________activety, statusActive, statusPopular", activety, statusActive, statusPopular)
+        
   }
 
   useEffect(() => {
@@ -141,7 +142,7 @@ export function Suggestions ({
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
-                  <Text numberOfLines={2} style={styles.textTitle}>
+                  <Text  numberOfLines={2} style={styles.textTitle}>
                     {suggestion.title}
                   </Text>
 
@@ -169,12 +170,14 @@ export function Suggestions ({
                   </View>
                 </View>
                 <Image
+                testID="photo"
                   style={styles.image}
                   source={setTheRightPhoto(suggestion.photo)}
                 />
               </View>
 
               <TouchableOpacity
+                testID="lookDetails2"
                 onPress={() =>
                   lookDetails(suggestion, suggestion.active, suggestion.popular)
                 }

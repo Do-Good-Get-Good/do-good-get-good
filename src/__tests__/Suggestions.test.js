@@ -1,5 +1,5 @@
 import "react-native";
-import React from "react";
+import React, { useState  as useStateMock  }  from "react";
 import { render, fireEvent, act, } from "@testing-library/react-native";
  
 import Suggestions from "../components/Suggestions"
@@ -12,7 +12,7 @@ jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
-jest.mock('@react-navigation/native')
+
 
   jest.mock('../context/SuggestionContext', () => ({
     
@@ -25,7 +25,9 @@ jest.mock('@react-navigation/native')
   jest.mock('../context/CreateActivityContext', () => ({
     
     useCreateActivityFunction: () => ({
-        changedActivity: jest.fn()
+        changedActivity: jest.fn(),
+        setUpdateGallery:jest.fn(),
+        updateGallery: false,
     })
   
   }));
@@ -33,15 +35,20 @@ jest.mock('@react-navigation/native')
   jest.mock('../context/ActivityCardContext', () => ({
     
     useActivityCardContext: () => ({
-      inactiveActivities: jest.fn()
+      inactiveActivities: jest.fn(),
+      oneActivityHasBeenDeleted : false,
+      idOfTheActivityWhichHasBeenDeleted: "id",
+      confirmToDeleteActivity:jest.fn(),
+      changePopularStatusInAdminGallery: jest.fn()
     })
   
   }));
+  
 
 
 const search = []
 
-const adminGallery = [{
+const adminGallery = {
 active: true, 
 city: "city ",
 description: "description", 
@@ -49,7 +56,7 @@ id: "id",
 photo: "symbol_earth", 
 place: "place", 
 popular: true, 
-title: "title"}]
+title: "title"}
 
 const chooseActive = true;
 
@@ -58,7 +65,7 @@ active: false,
 city: "city", 
 description: "description", 
 id: "id", 
-photo: "symbol_hands_heart-DEFAULT", 
+photo: "symbol_earth", 
 popular: false, 
 title: "title"}]
 
@@ -66,15 +73,98 @@ const navigation = {
   navigate: jest.fn()
 }
 
+jest.mock('@react-navigation/native')
 
+// jest.mock('react', () => ({
+//   ...jest.requireActual('react'),
+//   useState: jest.fn(),
+// }))
+
+// const setShowArray = jest.fn()
 
   describe('Testing Suggestions', () => {
+  //   beforeEach(() => {
+  //     useStateMock.mockImplementation(showArray => [showArray, setShowArray ])
+      
+  //   })
+  
     
       it("Suggestions exist in AdminActivityGallery", () =>{
          require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
         const { getAllByText } = render(<Suggestions  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
         expect(getAllByText('Aktivitetsgalleri').length).toBe(1)
       })
+
+    //     it("Suggestions exist in HomePage", () =>{
+    //     require('@react-navigation/native').useRoute.mockReturnValue({name: 'HomePage'})
+    //    const { getAllByText, queryByTestId } = render(<Suggestions  search={search} adminGallery={adminGallery} 
+    //   chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+    //   expect(getAllByText('Förslag & inspiration').length).toBe(1)
+    //   //  const buttonLookDetails = queryByTestId("lookDetails")
+    //   // // fireEvent.press(buttonLookDetails)
+    //   //  expect(buttonLookDetails).toEqual([])
+    //  })
+
+
+    it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () =>{
+      require('@react-navigation/native').useRoute.mockReturnValue({name: 'AdminActivityGallery'})
+     const {  getAllByText, getByTestId } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+     expect(getAllByText('Aktivitetsgalleri').length).toBe(1)
+   
+      const buttonLookDetails = getByTestId("lookDetails")
+       fireEvent.press(buttonLookDetails)
+
+       const buttonLookDetails2 = getByTestId("lookDetails2")
+       fireEvent.press(buttonLookDetails2)
+          
+    })
+      
+    
+    it("Suggestions text title exist", () =>{     
+      const {  getAllByText } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+      expect(getAllByText("title").length).toBe(1)
+    })
+    it("Suggestions text city exist", () =>{
+      const {  getAllByText } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+      expect(getAllByText("city").length).toBe(1)
+
+    })
+
+    it("Suggestions text description exist", () =>{
+      const {  getAllByText } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+      expect(getAllByText("description").length).toBe(1)
+
+    })
+
+    it("Suggestions text photo exist", () =>{
+      const { getByTestId } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+      expect(getByTestId('photo'))
+      const image = getByTestId('photo')
+      expect(image.props.source).toEqual({testUri: "../../../img/activities_images/symbol_earth.png"})
+
+    })
+
+    it("Suggestions text Läs mer exist", () =>{
+      const {  getAllByText } = render(<Suggestions navigation={navigation}  search={search} adminGallery={adminGallery} chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
+      expect(getAllByText("Läs mer").length).toBe(1)
+
+    })
+
+    it("Possible for admin to delete activity ", () =>{
+      useActivityCardContext().oneActivityHasBeenDeleted = true
+      useActivityCardContext().confirmToDeleteActivity(false);
+
+    })
+
+    it("Possible for admin to change status popular activity ", () =>{
+      useCreateActivityFunction().updateGallery = true
+      useActivityCardContext().changePopularStatusInAdminGallery(false);
+      useCreateActivityFunction().setUpdateGallery(false)
+
+
+    })
+
+    
     
 
    
