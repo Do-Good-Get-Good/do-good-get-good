@@ -17,7 +17,7 @@ import { DropDownSmall } from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const CreateActivity = ({ route, navigation }) => {
+export function CreateActivity({ route, navigation }){
   const createActivityContext = useCreateActivityFunction();
   const { creatingNewUser, activityExist, newUserInfo } = route.params;
 
@@ -62,7 +62,13 @@ export const CreateActivity = ({ route, navigation }) => {
       });
     }
   }, [newUserInfo]);
-  console.log("createNewUser", createNewUser);
+
+  console.log("existingActivity  ", existingActivity);
+  console.log("checkBoxPressed   ", checkBoxPressed)
+  console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
+  
+  
+
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
       setNewActivityImage("symbol_hands_heart-DEFAULT");
@@ -80,6 +86,7 @@ export const CreateActivity = ({ route, navigation }) => {
   }
 
   useEffect(() => {
+    if(creatingNewUser === true){ 
     if (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet") {
       setExistingActivity(false);
     } else if (
@@ -89,7 +96,11 @@ export const CreateActivity = ({ route, navigation }) => {
     } else {
       console.log("Nothing selected in DropDown Menu");
     }
+  }
   }, [createActivityContext.sendChoiceFromDropDown]);
+
+
+  console.log("createActivityContext.sendChoiceFromDropDown________________", createActivityContext.sendChoiceFromDropDown)
 
   function chooseTitle() {
     if (existingActivity === false && whileCreatingNewUser === false) {
@@ -435,6 +446,7 @@ export const CreateActivity = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
+export default CreateActivity;
 
 const styles = StyleSheet.create({
   container: {

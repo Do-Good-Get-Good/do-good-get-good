@@ -6,6 +6,7 @@ import Suggestions from "../components/Suggestions"
 import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useAdminCheckFunction } from "../context/AdminContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -14,13 +15,21 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 });
 
 
-  jest.mock('../context/SuggestionContext', () => ({
-    
+   jest.mock('../context/SuggestionContext', () => ({
     useSuggestionFunction: () => ({
-        popularActivities: jest.fn()
-    })
+      popularActivities: jest.fn()
+      })
+   
+ 
   
+   }));
+  //  useSuggestionFunction().popularActivities =  [{ id: "id",  title: "title", city: "city ", description: "description",  photo: "symbol_earth" }]
+  
+
+  jest.mock("../context/AdminContext", () => ({
+    useAdminCheckFunction: jest.fn(),
   }));
+  
 
   jest.mock('../context/CreateActivityContext', () => ({
     
@@ -43,7 +52,9 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
     })
   
   }));
-  
+  afterEach(() => {
+    jest.clearAllMocks();
+  });
 
 
 const search = []
@@ -73,20 +84,13 @@ const navigation = {
   navigate: jest.fn()
 }
 
-jest.mock('@react-navigation/native')
+ jest.mock('@react-navigation/native')
+const showArray = []
 
-// jest.mock('react', () => ({
-//   ...jest.requireActual('react'),
-//   useState: jest.fn(),
-// }))
 
-// const setShowArray = jest.fn()
+
 
   describe('Testing Suggestions', () => {
-  //   beforeEach(() => {
-  //     useStateMock.mockImplementation(showArray => [showArray, setShowArray ])
-      
-  //   })
   
     
       it("Suggestions exist in AdminActivityGallery", () =>{
@@ -95,15 +99,10 @@ jest.mock('@react-navigation/native')
         expect(getAllByText('Aktivitetsgalleri').length).toBe(1)
       })
 
-    //     it("Suggestions exist in HomePage", () =>{
-    //     require('@react-navigation/native').useRoute.mockReturnValue({name: 'HomePage'})
-    //    const { getAllByText, queryByTestId } = render(<Suggestions  search={search} adminGallery={adminGallery} 
-    //   chooseActive={chooseActive} inactiveActivities={inactiveActivities} />)
-    //   expect(getAllByText('Förslag & inspiration').length).toBe(1)
-    //   //  const buttonLookDetails = queryByTestId("lookDetails")
-    //   // // fireEvent.press(buttonLookDetails)
-    //   //  expect(buttonLookDetails).toEqual([])
-    //  })
+        it("Suggestions exist in HomePage", () =>{
+        
+
+     })
 
 
     it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () =>{
@@ -113,9 +112,11 @@ jest.mock('@react-navigation/native')
    
       const buttonLookDetails = getByTestId("lookDetails")
        fireEvent.press(buttonLookDetails)
+      // expect(mockedNavigate).toHaveBeenCalledWith("ActivityCard");
 
        const buttonLookDetails2 = getByTestId("lookDetails2")
        fireEvent.press(buttonLookDetails2)
+      //  expect(mockedNavigate).toHaveBeenCalledWith("ActivityCard");
           
     })
       
