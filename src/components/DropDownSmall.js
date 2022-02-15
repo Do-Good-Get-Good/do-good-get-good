@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const DropDownSmall = ({}) => {
+export function DropDownSmall ({}){
   const creactActivityContext = useCreateActivityFunction();
   const rout = useRoute();
 
@@ -45,7 +45,7 @@ export const DropDownSmall = ({}) => {
     }
   };
 
-  toStileTitle = function (title, index) {
+ const toStileTitle = function (title, index) {
     return {
       marginVertical: 5,
       fontSize: 18,
@@ -117,6 +117,8 @@ export const DropDownSmall = ({}) => {
     </View>
   );
 };
+
+export default DropDownSmall;
 
 const styles = StyleSheet.create({
   container: {

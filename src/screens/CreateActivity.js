@@ -13,7 +13,7 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import { Icon } from "react-native-elements";
-import { DropDownSmall } from "../components/DropDownSmall";
+import  DropDownSmall  from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
@@ -63,9 +63,9 @@ export function CreateActivity({ route, navigation }){
     }
   }, [newUserInfo]);
 
-  console.log("existingActivity  ", existingActivity);
-  console.log("checkBoxPressed   ", checkBoxPressed)
-  console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
+  // console.log("existingActivity  ", existingActivity);
+  // console.log("checkBoxPressed   ", checkBoxPressed)
+  // console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
   
   
 
@@ -99,9 +99,6 @@ export function CreateActivity({ route, navigation }){
   }
   }, [createActivityContext.sendChoiceFromDropDown]);
 
-
-  console.log("createActivityContext.sendChoiceFromDropDown________________", createActivityContext.sendChoiceFromDropDown)
-
   function chooseTitle() {
     if (existingActivity === false && whileCreatingNewUser === false) {
       return titleForNewActivity;
@@ -117,7 +114,7 @@ export function CreateActivity({ route, navigation }){
       return (
         <View>
           <View style={styles.dropDown}>
-            <DropDownSmall></DropDownSmall>
+            <  DropDownSmall/>
           </View>
         </View>
       );
@@ -200,11 +197,13 @@ export function CreateActivity({ route, navigation }){
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
+           testID="sendNewActivityToCreateActivityContext"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
           <TouchableOpacity
+          testID="goBackButton"
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
           >
@@ -223,6 +222,7 @@ export function CreateActivity({ route, navigation }){
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
+          testID="Save button"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
@@ -296,6 +296,7 @@ export function CreateActivity({ route, navigation }){
     return (
       <View style={styles.containerForAllInput}>
         <TextInput
+    
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
@@ -338,9 +339,10 @@ export function CreateActivity({ route, navigation }){
           placeholderTextColor="#333333"
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image style={styles.image} source={setImageForNewActivity()}></Image>
+          <Image testID="photo" style={styles.image} source={setImageForNewActivity()}></Image>
 
           <TouchableOpacity
+          testID="navigateToImagesGallery"
             style={{ flex: 1 }}
             onPress={() => navigation.navigate("ImagesGallery")}
           >
@@ -357,6 +359,7 @@ export function CreateActivity({ route, navigation }){
         <View style={styles.containerTextAndCheckbox}>
           <Text style={styles.textNearCheckBox}>Lägg till somTG-favorit</Text>
           <TouchableOpacity
+           testID="buttonSomTGFavorit"
             onPress={() => {
               checkBoxPressed === false
                 ? setCheckBoxPressed(true)
