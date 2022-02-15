@@ -1,10 +1,8 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
 
 import ResetPassModal from "../components/ResetPassModal";
-
-import auth from "@react-native-firebase/auth"
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -12,14 +10,15 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock("@react-native-firebase/auth", () => () => ({
-    __esModule: true,
-    sendPasswordResetEmail: jest.fn(() => ({
-        then: jest.fn(() => ({
-            catch: jest.fn(() => Promise.reject("auth/invalid-email"))
-        })),
-    }))
-}))
+var mockedSendPasswordResetEmail = jest.fn();
+
+jest.mock("@react-native-firebase/auth", () => {
+    const actualAuth = jest.requireActual("@react-native-firebase/auth");
+    return () => ({
+        ...actualAuth,
+        sendPasswordResetEmail: mockedSendPasswordResetEmail
+    });
+});
 
 describe("Testing ResetPassModal", () => {
     const mockOpenModal = jest.fn();
@@ -78,6 +77,8 @@ describe("Testing ResetPassModal", () => {
     });
 
     it("Requesting a new password works", () => {
+        mockedSendPasswordResetEmail = () => Promise.resolve(true);
+
         const componentToRender = <ResetPassModal 
                                     isModalOpen={true} 
                                     openModal={mockOpenModal} 
@@ -85,30 +86,39 @@ describe("Testing ResetPassModal", () => {
         const { getByText, getByTestId } = render(componentToRender);
 
         const email = getByTestId("resetPassModal.emailInput");
-        fireEvent.changeText(email, "test@test.com");
-
         const sendButton = getByText("Skicka");
-        fireEvent.press(sendButton);
+        
+        act(() => {
+            fireEvent.changeText(email, "test@test.com");
+            fireEvent.press(sendButton);
+        })
     });
 
     it("Requesting a new password with an invalid e-mail gives an error", async () => {
-        auth().sendPasswordResetEmail.mockImplementationOnce(() => {
-            Promise.reject(new Error("auth/invalid-email")) 
-        });
+        const error = {
+            code: "auth/invalid-email"
+        }
+        mockedSendPasswordResetEmail = () => Promise.reject(error);
 
         const componentToRender = <ResetPassModal 
                                     isModalOpen={true} 
                                     openModal={mockOpenModal} 
                                 />;
-        const { getByText, getByTestId, debug} = render(componentToRender);
+        const { getByText, getByTestId } = render(componentToRender);
 
-        const email = getByTestId("resetPassModal.emailInput");
-        fireEvent.changeText(email, "test");
+        await act(async () => {
+            const email = getByTestId("resetPassModal.emailInput");
+            const sendButton = getByText("Skicka");
+                
+            await fireEvent.changeText(email, "test");
+            await fireEvent.press(sendButton);
+        });
 
-        const sendButton = getByText("Skicka");
-        fireEvent.press(sendButton)
+        let errorMessage;
 
-        const errorMessage = getByTestId("resetPassModal.errorText");
+        await waitFor(() => {
+            errorMessage = getByTestId("resetPassModal.errorText");
+        })
         expect(errorMessage.children[0]).toEqual("* Ange en giltig e-post");
     });
 });
