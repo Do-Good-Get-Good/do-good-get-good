@@ -77,7 +77,7 @@ describe("Testing ResetPassModal", () => {
     });
 
     it("Requesting a new password works", () => {
-        mockedSendPasswordResetEmail = () => Promise.resolve(true);
+        mockedSendPasswordResetEmail = () => Promise.resolve();
 
         const componentToRender = <ResetPassModal 
                                     isModalOpen={true} 
@@ -91,6 +91,7 @@ describe("Testing ResetPassModal", () => {
         act(() => {
             fireEvent.changeText(email, "test@test.com");
             fireEvent.press(sendButton);
+            expect(email.props.value).toBe("")
         })
     });
 
