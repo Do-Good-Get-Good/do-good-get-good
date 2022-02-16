@@ -4,7 +4,7 @@ import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const DropDownSmall = ({}) => {
+export function DropDownSmall ({}){
   const creactActivityContext = useCreateActivityFunction();
   const rout = useRoute();
 
@@ -13,7 +13,8 @@ export const DropDownSmall = ({}) => {
   const [mainWordAdminGallery, setMainWordAdminGallery] = useState("Datum");
   const [mainWordCreateActivity, setMainWordCreateActivity] =
     useState("Aktivitet");
-  const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
+  // const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
+  const sortingAdminGallery = [{title: "Favoriter"}, {title: "Namn"}, {title: "Plats"}];
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
@@ -44,7 +45,7 @@ export const DropDownSmall = ({}) => {
     }
   };
 
-  toStileTitle = function (title, index) {
+ const toStileTitle = function (title, index) {
     return {
       marginVertical: 5,
       fontSize: 18,
@@ -84,7 +85,7 @@ export const DropDownSmall = ({}) => {
 
   return (
     <View style={styles.container}>
-      <TouchableOpacity onPress={pressDropDawn}>
+      <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
         <View style={styleForDropDownInsideConrainer}>
           <Text style={styles.sortText}>{sortBy}</Text>
           <Icon
@@ -100,6 +101,7 @@ export const DropDownSmall = ({}) => {
           ? sortArray.map((sort, index) => (
               <View index={index} key={index} style={styles.insideSortBox}>
                 <TouchableOpacity
+                testID="insideDropDownPressed"
                   onPress={() => {
                     pressSelectionInsideDropDown(sort.title, index);
                   }}
@@ -115,6 +117,8 @@ export const DropDownSmall = ({}) => {
     </View>
   );
 };
+
+export default DropDownSmall;
 
 const styles = StyleSheet.create({
   container: {

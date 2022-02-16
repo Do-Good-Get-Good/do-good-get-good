@@ -1,50 +1,81 @@
 import "react-native";
 import React from "react";
-import App from "../App";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 
-// Note: test renderer must be required after react-native.
-import renderer from "react-test-renderer";
 import Login from "../components/Login";
+
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-it("renders correctly", () => {
-  const { getAllByText, getByPlaceholderText } = renderer.create(<App />);
-
-  expect(getAllByText("Logga in").length).toBe(1);
-  getByPlaceholderText("E-post");
-  getByPlaceholderText("Lösenord");
+jest.mock("react-native-elements/dist/icons/Icon", () => () => {
+  return <fakeIcon />;
 });
 
-it("Shows invalid input message", () => {
-  const { getByText, queryAllByText, getByPlaceholder } = render(<App />);
-
-  fireEvent.changeText(getByPlaceholder("Lösenord"), "Blomma123");
-
-  fireEvent.press(getByText("Logga in"));
-  getByText("Ange en giltig e-post");
-  expect(queryAllByText("Fel e-post eller lösenord").length).toBe(0);
-
-  fireEvent.changeText(getByPlaceholder("E-post"), "test@test.com");
-  getByText("Fel e-post eller lösenord");
-  expect(queryAllByText("Ange en giltig e-post").length).toBe(0);
+jest.mock("react-native-elements/dist/overlay/Overlay", () => () => {
+  return <fakeOverlay />;
 });
 
-it("Handle valid input", async () => {
-  fetch.mockResponseOnce(JSON.stringify({ passes: true }));
+jest.mock("@react-native-firebase/auth", () => () => ({
+    auth: jest.fn(),
+    signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true))
+}));
 
-  const pushMock = jest.fn();
-  const { getByPlaceholder, getByText } = render(
-    <App navigation={{ push: pushMock }} />
-  );
+describe("Testing Login", () => {
+  it("Renders the login page correctly", () => {
+    const { getAllByText, getByPlaceholderText, getByTestId } = render(<Login />);
 
-  fireEvent.changeText(getByPlaceholder("E-post"), "test@test.com");
-  fireEvent.changeText(getByPlaceholder("Lösenord"), "test123");
-  fireEvent.press(getByText("Logga in"));
+    expect(getByTestId("login.backgroundImage").props.source.testUri).toBe("../../../img/blueprint-white.png");
+    expect(getByTestId("login.dgggLogo").props.source.testUri).toBe("../../../img/Logotyp_DGGG.png");
+    getByTestId("login.motivationalText");
+    getByPlaceholderText("E-post");
+    getByPlaceholderText("Lösenord");
+    expect(getAllByText("Logga in").length).toBe(1);
+    expect(getAllByText("Glömt ditt lösenord?").length).toBe(1);
+    expect(getAllByText("Tryck här").length).toBe(1);
+    expect(getByTestId("login.bottomLogo").props.source.testUri).toBe("../../../img/Technogarden-logotyp-Large.png");
+  });
 
-  await act(() => new Promise((resolve) => setImmediate(resolve))); //Väntar på att login ska genomföras.
+  it("Error messages are hidden when the app is rendered", () => {
+    const { queryByText } = render(<Login />);
 
-  expect(pushMock).toBeCalledWith("App"); //Namn på sidan man pushas till
-});
+    const errorText = queryByText("* ");
+    expect(errorText).toBeNull();
+  })
+  
+  it("Trying to login without entering an e-mail gives an error", () => {
+    const { getByText, getByPlaceholderText } = render(<Login />);
 
-//Handle to many log in attempt, blocked user?
+    fireEvent.changeText(getByPlaceholderText("Lösenord"), "Blomma123");
+
+    const loginButton = getByText("Logga in");
+    fireEvent.press(loginButton);
+    
+    getByText("* Du måste fylla i en e-post");
+  });
+  
+  it("Trying to login without entering a password gives an error", () => {
+    const { getByText, getByPlaceholderText } = render(<Login />);
+
+    fireEvent.changeText(getByPlaceholderText("E-post"), "test@test.com");
+    
+    const loginButton = getByText("Logga in");
+    fireEvent.press(loginButton);
+    
+    getByText("* Du måste fylla i ett lösenord");
+  });
+
+  it("Trying to login without entering an e-mail or password gives an error", () => {
+    const { getByText } = render(<Login />);
+
+    const loginButton = getByText("Logga in");
+    fireEvent.press(loginButton);
+    
+    getByText("* Du måste fylla i e-post och lösenord");
+  });
+
+  it("Pressing the forgot password button works", () => {
+    const { getByText } = render(<Login />);
+
+    const forgotPasswordButton = getByText("Tryck här");
+    fireEvent.press(forgotPasswordButton);
+  });
+})

@@ -1,5 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
+
 const ActivityCardContext = React.createContext();
 
 export const useActivityCardContext = () => {
@@ -7,6 +8,8 @@ export const useActivityCardContext = () => {
 };
 
 export const ActivityCardProvider = ({ children }) => {
+  
+
   const [changeStatusPopular, setChangeStatusPopular] = useState(null);
   const [changeStatusActive, setChangeStatusActive] = useState(null);
   const [activityID, setActivityID] = useState("");
@@ -39,23 +42,45 @@ export const ActivityCardProvider = ({ children }) => {
 
   useEffect(() => {
     if (activityID != "" && changeStatusActive != null) {
-      const updateStatusActive = async () => {
-        firestore()
-          .collection("Activities")
-          .doc(activityID)
-          .update({
-            active_status: changeStatusActive,
-          })
-          .then(() => {
-            console.log("Actyvity active_status changed");
-            setChangeStatusActive(null);
-            setStatusActiveHasBeenChanged(true);
-          });
-      };
-      updateStatusActive();
+      if(changeStatusActive === false){
+        const updateStatusActive = async () => {
+          firestore()
+            .collection("Activities")
+            .doc(activityID)
+            .update({               
+                active_status: false,
+                tg_favorite: false,             
+            })
+            .then(() => {
+              console.log("Actyvity active_status changed");
+              setChangeStatusActive(null);
+              setStatusActiveHasBeenChanged(true)                  
+            });
+        };
+        updateStatusActive();
+      } else if(changeStatusActive === true) {
+        const updateStatusActive = async () => {
+          firestore()
+            .collection("Activities")
+            .doc(activityID)
+            .update({      
+                active_status: true,   
+            })
+            .then(() => {
+              console.log("Actyvity active_status changed");
+              setChangeStatusActive(null);
+              setStatusActiveHasBeenChanged(true);  
+            });
+        };
+        updateStatusActive();
+
+      }
+     
+      
     }
   }, [changeStatusActive, activityID]);
 
+ 
   useEffect(() => {
     if (confirmToDelete === true && activityID != "") {
       const deleteActivityFromFB = async () => {

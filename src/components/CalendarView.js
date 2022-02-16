@@ -105,9 +105,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         date: date,
         status_confirmed: false,
         time: hours,
-      })
-      .then(() => {
-        console.log("New time entry added!");
       });
     toggleVisibility();
   };
@@ -127,9 +124,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
         },
         { merge: true }
       )
-      .then(() => {
-        console.log("Updated time entry!");
-      });
     toggleVisibility();
   };
 
@@ -141,9 +135,6 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       .collection("time_entries")
       .doc(activity.timeEntryID)
       .delete()
-      .then(() => {
-        console.log("Removed time entry!");
-      });
     toggleVisibility();
   };
 
@@ -178,7 +169,10 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           padding: 16,
         }}
       >
-        <Text style={styles.activityTitle}>
+        <Text 
+          testID="calendarView.headerText" 
+          style={styles.activityTitle}
+        >
           {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
         <Text style={styles.chooseDateText}>Välj datum</Text>
@@ -243,7 +237,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
               <Text style={styles.hourAmountText}>-</Text>
             </TouchableOpacity>
             <View style={styles.hourAmount}>
-              <Text style={styles.hourAmountText}>{hours}</Text>
+              <Text testID="calendarView.hourInput" style={styles.hourAmountText}>{hours}</Text>
             </View>
             <TouchableOpacity
               style={styles.hourButton}
@@ -253,8 +247,8 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Text style={styles.dateAndHourSummary}>
-          {format(new Date(selectedDate), "eee d LLLL")}, {hours}h
+        <Text testID="calendarView.dateAndHourInput" style={styles.dateAndHourSummary}>
+          {format(new Date(selectedDate), "eee d LLLL") + `, ${hours}h`}
         </Text>
       </ScrollView>
 

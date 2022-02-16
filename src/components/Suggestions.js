@@ -15,13 +15,13 @@ import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 
-export const Suggestions = ({
+export function Suggestions ({
   navigation,
   search,
   adminGallery,
   chooseActive,
   inactiveActivities,
-}) => {
+}) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
@@ -29,6 +29,8 @@ export const Suggestions = ({
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [activetyDeleted, setActivetyDeleted] = useState(false);
+
+
 
   useEffect(() => {
     if (rout.name === "HomePage") {
@@ -49,6 +51,8 @@ export const Suggestions = ({
       console.log("Nothing to show in AdminGallery");
     }
   }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
+
+
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -72,6 +76,8 @@ export const Suggestions = ({
           active: statusActive,
           tgPopular: statusPopular,
         });
+        
+        
   }
 
   useEffect(() => {
@@ -97,7 +103,8 @@ export const Suggestions = ({
   }, [activityCardContext.oneActivityHasBeenDeleted]);
 
   useEffect(() => {
-    if (activityCardContext.popular != null) {
+    
+       if (useCreateActivityContext.updateGallery === true) {
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
@@ -106,18 +113,26 @@ export const Suggestions = ({
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(newArray);
         activityCardContext.changePopularStatusInAdminGallery(false);
+        useCreateActivityContext.setUpdateGallery(false)
       };
       replaceObjectIfpopularStatusChanged();
     }
-  }, [activityCardContext.popular]);
+  },[useCreateActivityContext.updateGallery ]);
+  
 
   return (
     <View>
-      <Text style={styles.topH1}>Förslag & inspiration</Text>
+      
+      {rout.name === "HomePage" ? <Text style={styles.topH1}>Förslag & inspiration</Text> : 
+        <Text style={styles.topH1}>Aktivitetsgalleri</Text>
+
+      }
+    
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
           <TouchableOpacity
+            testID="lookDetails"
             onPress={() =>
               lookDetails(suggestion, suggestion.active, suggestion.popular)
             }
@@ -127,7 +142,7 @@ export const Suggestions = ({
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
-                  <Text numberOfLines={2} style={styles.textTitle}>
+                  <Text  numberOfLines={2} style={styles.textTitle}>
                     {suggestion.title}
                   </Text>
 
@@ -155,12 +170,14 @@ export const Suggestions = ({
                   </View>
                 </View>
                 <Image
+                testID="photo"
                   style={styles.image}
                   source={setTheRightPhoto(suggestion.photo)}
                 />
               </View>
 
               <TouchableOpacity
+                testID="lookDetails2"
                 onPress={() =>
                   lookDetails(suggestion, suggestion.active, suggestion.popular)
                 }
@@ -174,6 +191,7 @@ export const Suggestions = ({
     </View>
   );
 };
+export default Suggestions;
 
 const styles = StyleSheet.create({
   topH1: {

@@ -6,6 +6,7 @@ import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
 import { format } from "date-fns";
+import toDate from 'date-fns/toDate'
 
 export const MyActivityAsAList = ({ navigation, showAllList }) => {
   const [oneMoreRender, setOneMoreRender] = useState(false);
@@ -15,7 +16,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
 
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
-  const [timeEntryList, setTimeEntryList] = useState([]);
+  const [timeEntryList, setTimeEntryList] = React.useState([]);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -117,6 +118,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           </Text>
           {!activity.statusConfirmed ? (
             <TouchableOpacity
+            testID="editButton"
               onPress={() => {
                 setActivity(activity);
                 toggleOverlay();
@@ -141,7 +143,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
         </View>
       ))}
       {rout.name === "HomePage" ? (
-        <TouchableOpacity onPress={pressedButtonShowAll}>
+        <TouchableOpacity testID="showAllButton" onPress={pressedButtonShowAll}>
           <LinearGradient
             colors={["#84BD00", "#5B6770"]}
             start={{ x: 0, y: 0 }}

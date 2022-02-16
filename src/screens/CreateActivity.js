@@ -13,11 +13,11 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import { Icon } from "react-native-elements";
-import { DropDownSmall } from "../components/DropDownSmall";
+import  DropDownSmall  from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const CreateActivity = ({ route, navigation }) => {
+export function CreateActivity({ route, navigation }){
   const createActivityContext = useCreateActivityFunction();
   const { creatingNewUser, activityExist, newUserInfo } = route.params;
 
@@ -62,7 +62,13 @@ export const CreateActivity = ({ route, navigation }) => {
       });
     }
   }, [newUserInfo]);
-  console.log("createNewUser", createNewUser);
+
+  // console.log("existingActivity  ", existingActivity);
+  // console.log("checkBoxPressed   ", checkBoxPressed)
+  // console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
+  
+  
+
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
       setNewActivityImage("symbol_hands_heart-DEFAULT");
@@ -80,6 +86,7 @@ export const CreateActivity = ({ route, navigation }) => {
   }
 
   useEffect(() => {
+    if(creatingNewUser === true){ 
     if (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet") {
       setExistingActivity(false);
     } else if (
@@ -89,6 +96,7 @@ export const CreateActivity = ({ route, navigation }) => {
     } else {
       console.log("Nothing selected in DropDown Menu");
     }
+  }
   }, [createActivityContext.sendChoiceFromDropDown]);
 
   function chooseTitle() {
@@ -106,7 +114,7 @@ export const CreateActivity = ({ route, navigation }) => {
       return (
         <View>
           <View style={styles.dropDown}>
-            <DropDownSmall></DropDownSmall>
+            <  DropDownSmall/>
           </View>
         </View>
       );
@@ -189,11 +197,13 @@ export const CreateActivity = ({ route, navigation }) => {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
+           testID="sendNewActivityToCreateActivityContext"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
           <TouchableOpacity
+          testID="goBackButton"
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
           >
@@ -212,6 +222,7 @@ export const CreateActivity = ({ route, navigation }) => {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
+          testID="Save button"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
@@ -285,6 +296,7 @@ export const CreateActivity = ({ route, navigation }) => {
     return (
       <View style={styles.containerForAllInput}>
         <TextInput
+    
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
@@ -327,9 +339,10 @@ export const CreateActivity = ({ route, navigation }) => {
           placeholderTextColor="#333333"
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image style={styles.image} source={setImageForNewActivity()}></Image>
+          <Image testID="photo" style={styles.image} source={setImageForNewActivity()}></Image>
 
           <TouchableOpacity
+          testID="navigateToImagesGallery"
             style={{ flex: 1 }}
             onPress={() => navigation.navigate("ImagesGallery")}
           >
@@ -346,6 +359,7 @@ export const CreateActivity = ({ route, navigation }) => {
         <View style={styles.containerTextAndCheckbox}>
           <Text style={styles.textNearCheckBox}>Lägg till somTG-favorit</Text>
           <TouchableOpacity
+           testID="buttonSomTGFavorit"
             onPress={() => {
               checkBoxPressed === false
                 ? setCheckBoxPressed(true)
@@ -435,6 +449,7 @@ export const CreateActivity = ({ route, navigation }) => {
     </SafeAreaView>
   );
 };
+export default CreateActivity;
 
 const styles = StyleSheet.create({
   container: {

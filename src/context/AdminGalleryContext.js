@@ -15,6 +15,8 @@ export const AdminGalleryProvider = ({ children }) => {
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
 
+ 
+
   useEffect(() => {
     let inactiveArray = [];
 

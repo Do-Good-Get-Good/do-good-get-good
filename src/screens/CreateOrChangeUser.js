@@ -71,6 +71,8 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     ) {
       navigation.navigate("CreateActivity", {
         creatingNewUser: true,
+        // activityExist: null,
+       
         newUserInfo: {
           first_name: name,
           last_name: surname,

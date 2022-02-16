@@ -5,10 +5,10 @@ name: Do Good Get Good unit tests
 on:
   # Triggers the workflow on push or pull request events but only for the main branch
   push:
-    branches: 
-    - "*"
+    branches:
+      - "*"
   pull_request:
-    branches: [ main ]
+    branches: [main]
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
@@ -16,32 +16,39 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
   # This workflow contains a single job called "build"
-  test:
+  cicd:
     # The type of runner that the job will run on
     runs-on: ubuntu-latest
-
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
-    # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-    - uses: actions/checkout@v2
-    - uses: actions/setup-node@v2
-      with:
-        node-version: '16'
-    - run: |
-        cd src
-        npm install
-    # - name: Running unit tests
-    #  run: |
-    #    cd src
-    #    npm test
-      # You may pin to the exact commit or the version.
-      # uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@6e23f271b4fb10248a260e72fe6d1bcddeea9f4a
-    - uses: RedaktionsNetzwerk-Deutschland/action-jest-reporter@v1.0.0
-      if: always()
-      with:
-        # The GitHub Token. This is only used, if none is provided via Env.
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Glob for matching the Jest Output files
-        #json-glob: "**/jest-output.json"
-        # Specify a custom workdirectory if needed. By default env.GITHUB_WORKSPACE is used.
-        #workdir: ${env.GITHUB_WORKSPACE}/src
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+      - uses: actions/setup-java@v1.4.3
+        with:
+          java-version: "9.0.4" # The JDK version to make available on the path.
+          java-package: jdk # (jre, jdk, or jdk+fx) - defaults to jdk
+          architecture: x64 # (x64 or x86) - defaults to x64
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "16"
+
+      - name: Install dependencies
+        run: npm install
+        working-directory: src/
+
+      # - name: Run tests
+      #   run: npm test --ci --updateSnapshot
+      #   working-directory: src/
+
+      # - uses: dorny/test-reporter@v1
+      #   if: always() # Or use "continue-on-error: true" in previous test step
+      #   with:
+      #     name: JEST Tests # Name of the check run which will be created
+      #     path: ./src/reports/JEST-*.xml # Path to test results
+          # reporter: jest-junit
+
+      - uses: ArtiomTr/jest-coverage-report-action@v2
+        if: always()
+        with:
+          working-directory: ./src/
+          test-script: npm test
