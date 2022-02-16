@@ -149,7 +149,7 @@ describe("Testing MenuOverlay", () => {
 
       const faqButton = getByTestId("menuOverlay.faqButton");
       fireEvent.press(faqButton);
-      expect(mockedNavigate).not.toHaveBeenCalled();
+      expect(mockedNavigate).toHaveBeenCalledWith("Faq");
     });
 
     it("Log out button", () => {
