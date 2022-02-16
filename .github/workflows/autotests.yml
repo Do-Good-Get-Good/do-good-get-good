@@ -36,16 +36,16 @@ jobs:
         run: npm install
         working-directory: src/
 
-      - name: Run tests
-        run: npm test --ci --updateSnapshot
-        working-directory: src/
+      # - name: Run tests
+      #   run: npm test --ci --updateSnapshot
+      #   working-directory: src/
 
-      - uses: dorny/test-reporter@v1
-        if: always() # Or use "continue-on-error: true" in previous test step
-        with:
-          name: JEST Tests # Name of the check run which will be created
-          path: ./src/reports/JEST-*.xml # Path to test results
-          reporter: jest-junit
+      # - uses: dorny/test-reporter@v1
+      #   if: always() # Or use "continue-on-error: true" in previous test step
+      #   with:
+      #     name: JEST Tests # Name of the check run which will be created
+      #     path: ./src/reports/JEST-*.xml # Path to test results
+          # reporter: jest-junit
 
       - uses: ArtiomTr/jest-coverage-report-action@v2
         if: always()
