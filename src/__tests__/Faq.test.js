@@ -24,9 +24,10 @@ jest.mock("@react-navigation/native", () => {
 
 describe("Testing Faq page", () => {
   it("Renders page correctly", () => {
-    const { getByTestId } = render(<Faq />);
+    const { getByTestId, getAllByTestId } = render(<Faq />);
     getByTestId("faq.headerText");
     getByTestId("faq.descText");
     getByTestId("faq.questionsArray");
+    expect(getAllByTestId("faq.faqArrayItems").length).toBe(1);
   });
 });
