@@ -22,12 +22,23 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
+const testDataArray = [
+  { question: "QUESTION", answer: "ANSWER 1", opened: false },
+];
+
 describe("Testing Faq page", () => {
   it("Renders page correctly", () => {
-    const { getByTestId, getAllByTestId } = render(<Faq />);
+    const { getByTestId, getAllByTestId, getAllByText } = render(
+      <Faq qnaData={testDataArray} />
+    );
+
     getByTestId("faq.headerText");
     getByTestId("faq.descText");
     getByTestId("faq.questionsArray");
     expect(getAllByTestId("faq.faqArrayItems").length).toBe(1);
+    getByTestId("textID");
+    const question = getByTestId("faq.faqArrayItems");
+    // console.log(getByTestId("textID").props.children);
+    expect(getByTestId("textID")).toEqual("QUESTION");
   });
 });
