@@ -56,13 +56,14 @@
     ],
     "collectCoverage": true,
     "coverageDirectory": "./reports/coverage",
+    "collectCoverageFrom": ["./screens/**","./components/**", "index.js", "App.js", "./context/**"],
     "coverageReporters": [
       "json",
       "html"
     ],
     "coverageThreshold": {
       "global": {
-        "lines": 75
+        "lines": 1
       }
     },
     "reporters": [
