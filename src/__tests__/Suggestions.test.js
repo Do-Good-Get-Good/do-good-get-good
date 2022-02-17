@@ -86,6 +86,17 @@ const navigation = {
 
  jest.mock('@react-navigation/native')
 const showArray = []
+//const mockedNavigate = jest.fn();
+
+// jest.mock("@react-navigation/native", () => {
+//   const actualNav = jest.requireActual("@react-navigation/native");
+//   return {
+//     ...actualNav,
+//     useNavigation: () => ({
+//       navigate: mockedNavigate,
+//     }),
+//   };
+// });
 
 
 
@@ -100,6 +111,18 @@ const showArray = []
       })
 
         it("Suggestions exist in HomePage", () =>{
+          //  useAdminCheckFunction.mockReturnValueOnce("admin");
+      //   require('@react-navigation/native').useRoute.mockReturnValue({name: 'HomePage'})
+      //  const { getAllByText, queryByTestId } = render(<Suggestions  navigation={navigation} />)
+      // useSuggestionFunction().popularActivities.mock
+      // useSuggestionFunction().popularActivities =  [{ id: "id",  title: "title", city: "city ", description: "description",  photo: "symbol_earth" }]
+     
+      // expect(getAllByText('Förslag & inspiration').length).toBe(1)
+      //  const buttonLookDetails = queryByTestId("lookDetails")
+      // // fireEvent.press(buttonLookDetails)
+      //  expect(buttonLookDetails).toEqual([])
+
+
         
 
      })

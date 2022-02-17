@@ -17,11 +17,11 @@ import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export function ActivityCard ({ route, navigation }) {
+export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   //   information comes from Suggestion.js with navigation when user or admin press on activity
-    const { admin, activityInfo, active, tgPopular } = route.params;
+  const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
     active: "",
     title: "",
@@ -188,7 +188,10 @@ export function ActivityCard ({ route, navigation }) {
           size={25}
         />
 
-        <TouchableOpacity testID="alertToDeleteActivity" onPress={() => alertToDeleteActivity()}>
+        <TouchableOpacity
+          testID="alertToDeleteActivity"
+          onPress={() => alertToDeleteActivity()}
+        >
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -230,7 +233,10 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity testID="alertToArchiveActivity"  onPress={() => alertToArchiveActivity()}>
+          <TouchableOpacity
+            testID="alertToArchiveActivity"
+            onPress={() => alertToArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -257,8 +263,13 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity testID="toNotFavorite" onPress={() => changePopularStatus()}>
-            <Text style={styles.textNearIconStar}>Ta bort från TG-favoriter</Text>
+          <TouchableOpacity
+            testID="toNotFavorite"
+            onPress={() => changePopularStatus()}
+          >
+            <Text style={styles.textNearIconStar}>
+              Ta bort från TG-favoriter
+            </Text>
           </TouchableOpacity>
         </View>
       );
@@ -274,8 +285,13 @@ export function ActivityCard ({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity testID="toFavorite" onPress={() => changePopularStatus()}>
-         <Text style={styles.textNearIconStar}>Lägg till som TG-favorit</Text>
+          <TouchableOpacity
+            testID="toFavorite"
+            onPress={() => changePopularStatus()}
+          >
+            <Text style={styles.textNearIconStar}>
+              Lägg till som TG-favorit
+            </Text>
           </TouchableOpacity>
         </View>
       );
@@ -331,13 +347,16 @@ export function ActivityCard ({ route, navigation }) {
               color="#333333"
               size={25}
             />
-            <TouchableOpacity testID="buttonGoBack" onPress={() => navigation.goBack()}>
+            <TouchableOpacity
+              testID="buttonGoBack"
+              onPress={() => navigation.goBack()}
+            >
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.textTitle}>{activity.title}</Text>
           <Image
-          testID="photo"
+            testID="photo"
             style={styles.image}
             source={setTheRightPhoto(activity.photo)}
           ></Image>
@@ -378,7 +397,7 @@ export function ActivityCard ({ route, navigation }) {
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 export default ActivityCard;
 
