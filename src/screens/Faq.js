@@ -25,10 +25,6 @@ const Faq = () => {
     getFaqData();
   }, []);
 
-  useEffect(() => {
-    if (faqArray.length != 0) console.log("faqArray", faqArray);
-  }, [faqArray]);
-
   return (
     <View style={styles.container}>
       <Menu />

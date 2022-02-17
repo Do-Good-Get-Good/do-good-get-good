@@ -24,10 +24,24 @@ jest.mock("@react-navigation/native", () => {
 
 const testDataArray = [
   {
-    id: "id",
+    id: "id1",
     data: () => ({
-      question: "skdjfhkjshdfkjshdfkj",
+      question: "Fråga 1",
       answer: "ANSWER 1",
+    }),
+  },
+  {
+    id: "id2",
+    data: () => ({
+      question: "Fråga 2",
+      answer: "ANSWER 2",
+    }),
+  },
+  {
+    id: "i3",
+    data: () => ({
+      question: "Fråga 3",
+      answer: "ANSWER 3",
     }),
   },
 ];
@@ -48,16 +62,21 @@ jest.mock("@react-native-firebase/firestore", () => {
 describe("Testing Faq page", () => {
   it("Renders page correctly", async () => {
     // mockGet.mockReturnValueOnce(testDataArray);
-    const { getByTestId, getAllByTestId, getAllByText } = render(<Faq />);
+    const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
+      <Faq />
+    );
 
     getByTestId("faq.headerText");
     getByTestId("faq.descText");
     getByTestId("faq.questionsArray");
     expect(getAllByTestId("faq.questionsArray").length).toBe(1);
 
-    console.log(getAllByTestId("faq.questionsArray")[0].props);
-    // getByTestId("faq.faqArrayItems");
-    // expect(getAllByText("ANSWER 1").length).toBe(1);
+    await waitFor(() => {
+      expect(getAllByTestId("faq.faqArrayItems").length).toBe(3);
+      getByText("Fråga 1");
+      getByText("Fråga 2");
+      getByText("Fråga 3");
+    });
   });
 
   //it("", () => {});
