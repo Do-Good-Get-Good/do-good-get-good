@@ -20,11 +20,14 @@ const Faq = () => {
       const data = qna.docs.map((doc) => {
         return { id: doc.id, opened: false, ...doc.data() };
       });
-      console.log("!!!!!!!!!!!!!", data);
       setFaqArray(data);
     };
     getFaqData();
   }, []);
+
+  useEffect(() => {
+    if (faqArray.length != 0) console.log("faqArray", faqArray);
+  }, [faqArray]);
 
   return (
     <View style={styles.container}>
