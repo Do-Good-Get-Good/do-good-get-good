@@ -1,12 +1,36 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import Menu from "../components/Menu";
+import firestore from "@react-native-firebase/firestore";
 
 const Faq = ({ qnaArray }) => {
-  const [faqArray, setFaqArray] = useState([]);
+  const [faqArray, setFaqArray] = useState([
+    // { question: "QUESTION", answer: "ANSWER 1", opened: true },
+  ]);
 
   useEffect(() => {
-    setFaqArray(qnaArray);
+    // setFaqArray(qnaArray);
+    const getFaqData = async () => {
+      const qna = await firestore().collection("faq").get();
+      // let info = qna.docs.map((doc) => doc.data());
+      const data = qna.docs.map((doc) => {
+        return { id: doc.id, ...doc.data() };
+      });
+      console.log("!!!!!!!!!!!!!", data);
+      setFaqArray(data);
+      // if (info != null) {
+
+      //   const dataInfo = {
+      //     id: info.id,
+      //     question: info.question,
+      //     answer: info.answer,
+      //   };
+      //   setFaqArray((prev) => [...prev, dataInfo]);
+      // }
+
+      console.log("ActivityContext activity info");
+    };
+    getFaqData();
   }, []);
 
   return (
