@@ -73,9 +73,16 @@ describe("Testing Faq page", () => {
 
     await waitFor(() => {
       expect(getAllByTestId("faq.faqArrayItems").length).toBe(3);
+      const button1 = getByTestId("question 0");
+      const button2 = getByTestId("question 1");
+      const button3 = getByTestId("question 2");
+
       getByText("Fråga 1");
       getByText("Fråga 2");
       getByText("Fråga 3");
+      fireEvent.press(button1);
+      fireEvent.press(button2);
+      fireEvent.press(button3);
     });
   });
 

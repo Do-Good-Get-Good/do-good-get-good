@@ -5,6 +5,7 @@ import {
   View,
   Pressable,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import Menu from "../components/Menu";
@@ -26,7 +27,7 @@ const Faq = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Menu />
       <Text testID="faq.headerText">FAQ</Text>
       <Text testID="faq.descText">
@@ -42,7 +43,11 @@ const Faq = () => {
             index={index}
             key={index}
           >
-            <TouchableOpacity style={styles.dropDown}>
+            <TouchableOpacity
+              onPress={() => (item.opened = true)}
+              testID={`question ${index}`}
+              style={styles.dropDown}
+            >
               <Text style={styles.textQuestion} testID="textID">
                 {item.question}
               </Text>
@@ -61,7 +66,7 @@ const Faq = () => {
           </View>
         ))}
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
