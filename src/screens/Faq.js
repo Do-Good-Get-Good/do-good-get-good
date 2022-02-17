@@ -2,11 +2,11 @@ import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
 import Menu from "../components/Menu";
 
-const Faq = (props) => {
+const Faq = ({ qnaArray }) => {
   const [faqArray, setFaqArray] = useState([]);
 
   useEffect(() => {
-    setFaqArray(props.qnaData);
+    setFaqArray(qnaArray);
   }, []);
 
   return (
