@@ -22,6 +22,14 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  return {
+    AsyncStorage: () => ({
+      setItem: jest.fn(),
+    }),
+  };
+});
+
 const testDataArray = [
   {
     id: "id1",
@@ -38,7 +46,7 @@ const testDataArray = [
     }),
   },
   {
-    id: "i3",
+    id: "id3",
     data: () => ({
       question: "Fråga 3",
       answer: "ANSWER 3",
