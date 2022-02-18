@@ -27,13 +27,7 @@ const Faq = () => {
   }, []);
 
   const openAnswer = (selectedQuestion) => {
-    const closeAllAnswers = faqArray.map((question) => {
-      return {
-        ...question,
-        opened: false,
-      };
-    });
-    const newFaqArray = closeAllAnswers.map((question) => {
+    const newFaqArray = faqArray.map((question) => {
       return {
         ...question,
         opened:
@@ -42,7 +36,13 @@ const Faq = () => {
             : question.opened,
       };
     });
-    setFaqArray(newFaqArray);
+    const secondNewFaqArray = newFaqArray.map((question) => {
+      return {
+        ...question,
+        opened: question.id != selectedQuestion.id ? false : question.opened,
+      };
+    });
+    setFaqArray(secondNewFaqArray);
   };
 
   return (
