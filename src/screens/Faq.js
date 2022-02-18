@@ -27,7 +27,13 @@ const Faq = () => {
   }, []);
 
   const openAnswer = (selectedQuestion) => {
-    const newFaqArray = faqArray.map((question) => {
+    const closeAllAnswers = faqArray.map((question) => {
+      return {
+        ...question,
+        opened: false,
+      };
+    });
+    const newFaqArray = closeAllAnswers.map((question) => {
       return {
         ...question,
         opened:
