@@ -10,6 +10,8 @@ import {
 import { Icon } from "react-native-elements";
 import Menu from "../components/Menu";
 
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 import firestore from "@react-native-firebase/firestore";
 
 const Faq = () => {
@@ -22,8 +24,15 @@ const Faq = () => {
         return { id: doc.id, opened: false, ...doc.data() };
       });
       setFaqArray(data);
+      storeData(data);
     };
-    getFaqData();
+    getData().then((res) => {
+      if (res != null) {
+        setFaqArray(res);
+      } else {
+        getFaqData();
+      }
+    });
   }, []);
 
   const openAnswer = (selectedQuestion) => {
@@ -43,6 +52,26 @@ const Faq = () => {
       };
     });
     setFaqArray(secondNewFaqArray);
+  };
+
+  const storeData = async (faqs) => {
+    try {
+      const jsonValue = JSON.stringify(faqs);
+      await AsyncStorage.setItem("@Faq_Key", jsonValue);
+    } catch (e) {
+      // saving error
+      console.log(e);
+    }
+  };
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("@Faq_Key");
+      return jsonValue != null ? JSON.parse(jsonValue) : null;
+    } catch (e) {
+      // error reading value
+      console.log(e);
+    }
   };
 
   return (
