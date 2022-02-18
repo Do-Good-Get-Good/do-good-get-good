@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 
 import Faq from "../screens/Faq";
 
@@ -86,5 +86,21 @@ describe("Testing Faq page", () => {
     });
   });
 
-  //it("", () => {});
+  it("Can open the answers", async () => {
+    const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
+      <Faq />
+    );
+
+    await waitFor(() => {
+      const button1 = getByTestId("question 0");
+      const button2 = getByTestId("question 1");
+      const button3 = getByTestId("question 2");
+      fireEvent.press(button1);
+      getByText("ANSWER 1");
+      fireEvent.press(button2);
+      getByText("ANSWER 2");
+      fireEvent.press(button3);
+      getByText("ANSWER 3");
+    });
+  });
 });
