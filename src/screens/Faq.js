@@ -21,13 +21,17 @@ const Faq = () => {
     const getFaqData = async () => {
       const qna = await firestore().collection("faq").get();
       const data = qna.docs.map((doc) => {
-        return { id: doc.id, opened: false, ...doc.data() };
+        if (doc.data() != null && doc.data() != undefined) {
+          return { id: doc.id, opened: false, ...doc.data() };
+        } else {
+          console.log("Something went wrong with getiing Faq from Firebase");
+        }
       });
       setFaqArray(data);
       storeData(data);
     };
     getData().then((res) => {
-      if (res != null) {
+      if (res === null) {
         setFaqArray(res);
       } else {
         getFaqData();
