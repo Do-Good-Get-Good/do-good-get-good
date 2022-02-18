@@ -94,39 +94,46 @@ const Faq = () => {
           suspendisse dictum cras id nulla.
         </Text>
         <View style={{ paddingBottom: 24 }}>
-          {faqArray.map((item, index) => (
-            <View
-              style={styles.faqContainer}
-              testID="faq.faqArrayItems"
-              index={index}
-              key={index}
-            >
-              <TouchableOpacity
-                onPress={() => {
-                  openAnswer(item);
-                }}
-                style={[styles.dropDown, item.opened && styles.dropDownOpened]}
-                testID={`question ${index}`}
+          {faqArray.length > 0 ? (
+            faqArray.map((item, index) => (
+              <View
+                style={styles.faqContainer}
+                testID="faq.faqArrayItems"
+                index={index}
+                key={index}
               >
-                <Text style={styles.textQuestion} testID="textID">
-                  {item.question}
-                </Text>
-                <Icon
-                  style={styles.icon}
-                  color="#5B6770"
-                  name={
-                    item.opened === true ? "arrow-drop-up" : "arrow-drop-down"
-                  }
-                  size={30}
-                />
-              </TouchableOpacity>
-              {item.opened ? (
-                <View style={styles.textAnswerView}>
-                  <Text style={styles.textAnswer}>{item.answer}</Text>
-                </View>
-              ) : null}
-            </View>
-          ))}
+                <TouchableOpacity
+                  onPress={() => {
+                    openAnswer(item);
+                  }}
+                  style={[
+                    styles.dropDown,
+                    item.opened && styles.dropDownOpened,
+                  ]}
+                  testID={`question ${index}`}
+                >
+                  <Text style={styles.textQuestion} testID="textID">
+                    {item.question}
+                  </Text>
+                  <Icon
+                    style={styles.icon}
+                    color="#5B6770"
+                    name={
+                      item.opened === true ? "arrow-drop-up" : "arrow-drop-down"
+                    }
+                    size={30}
+                  />
+                </TouchableOpacity>
+                {item.opened ? (
+                  <View style={styles.textAnswerView}>
+                    <Text style={styles.textAnswer}>{item.answer}</Text>
+                  </View>
+                ) : null}
+              </View>
+            ))
+          ) : (
+            <Text style={styles.errorText}>Sorry, something went wrong</Text>
+          )}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -143,6 +150,10 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     fontSize: 34,
     marginTop: 30,
+  },
+  errorText: {
+    fontSize: 20,
+    color: "red",
   },
   headerDesc: {
     fontWeight: "400",
