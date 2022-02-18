@@ -16,9 +16,13 @@ import firestore from "@react-native-firebase/firestore";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
+  const curentTime = new Date().getTime();
+  const minutesToCompare = 15 * 60000;
 
   useEffect(() => {
     const getFaqData = async () => {
+      const timeWhenDataSavedLastTime = curentTime;
+      const arrayWithDataAndCurentTime = [];
       const qna = await firestore().collection("faq").get();
       const data = qna.docs.map((doc) => {
         if (doc.data() != null && doc.data() != undefined) {
@@ -27,13 +31,20 @@ const Faq = () => {
           console.log("Something went wrong with getiing Faq from Firebase");
         }
       });
+
       setFaqArray(data);
-      storeData(data);
+      arrayWithDataAndCurentTime.push(data);
+      arrayWithDataAndCurentTime.push(timeWhenDataSavedLastTime);
+      storeData(arrayWithDataAndCurentTime);
     };
+
     getData().then((res) => {
-      if (res != null) {
-        setFaqArray(res);
+      if (res != null && res[1] + minutesToCompare > curentTime) {
+        console.log("res come from local storege___________   ");
+
+        setFaqArray(res[0]);
       } else {
+        console.log("res come from Firebase______________  ");
         getFaqData();
       }
     });
