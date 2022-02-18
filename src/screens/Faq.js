@@ -86,7 +86,7 @@ const Faq = () => {
       <View style={styles.containterForDropDown} testID="faq.questionsArray">
         {faqArray.map((item, index) => (
           <View
-            style={{ flex: 0.5 }}
+            style={styles.faqContainer}
             testID="faq.faqArrayItems"
             index={index}
             key={index}
@@ -95,7 +95,7 @@ const Faq = () => {
               onPress={() => {
                 openAnswer(item);
               }}
-              style={styles.dropDown}
+              style={[styles.dropDown, item.opened && styles.dropDownOpened]}
               testID={`question ${index}`}
             >
               <Text style={styles.textQuestion} testID="textID">
@@ -125,35 +125,36 @@ export default Faq;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal: 19,
+    paddingHorizontal: 18,
   },
-  containterForDropDown: { flex: 0.5 },
+  faqContainer: {
+    flexDirection: "column",
+  },
   dropDown: {
-    flex: 0.4,
+    backgroundColor: "blue",
     flexDirection: "row",
+    height: 50,
+    borderRadius: 10,
+    alignItems: "center",
     justifyContent: "space-between",
-    overflow: "hidden",
-    borderRadius: 2,
-    borderWidth: 1,
     backgroundColor: "white",
     overflow: "hidden",
     borderColor: "white",
     marginTop: 10,
   },
-
+  dropDownOpened: {
+    borderBottomLeftRadius: 0,
+    borderBottomRightRadius: 0,
+  },
   textQuestion: {
-    marginLeft: 19,
-    flex: 1,
-    paddingTop: 10,
+    marginLeft: 18,
   },
-  icon: { flex: 0.5, paddingTop: 5 },
   textAnswer: {
-    flex: 1,
-    paddingTop: 10,
+    backgroundColor: "#333333",
     backgroundColor: "white",
-    paddingHorizontal: 19,
-  },
-  insideSortBox: {
-    flex: 1,
+    paddingHorizontal: 18,
+    paddingBottom: 18,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
   },
 });
