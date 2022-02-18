@@ -26,6 +26,19 @@ const Faq = () => {
     getFaqData();
   }, []);
 
+  const openAnswer = (selectedQuestion) => {
+    const newFaqArray = faqArray.map((question) => {
+      return {
+        ...question,
+        opened:
+          question.id === selectedQuestion.id
+            ? !question.opened
+            : question.opened,
+      };
+    });
+    setFaqArray(newFaqArray);
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
@@ -44,9 +57,11 @@ const Faq = () => {
             key={index}
           >
             <TouchableOpacity
-              onPress={() => (item.opened = true)}
-              testID={`question ${index}`}
+              onPress={() => {
+                openAnswer(item);
+              }}
               style={styles.dropDown}
+              testID={`question ${index}`}
             >
               <Text style={styles.textQuestion} testID="textID">
                 {item.question}
