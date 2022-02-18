@@ -103,4 +103,27 @@ describe("Testing Faq page", () => {
       getByText("ANSWER 3");
     });
   });
+
+  it("Can close the answers", async () => {
+    const { getByTestId, queryByText, getByText } = render(<Faq />);
+
+    await waitFor(() => {
+      const button1 = getByTestId("question 0");
+      const button2 = getByTestId("question 1");
+      const button3 = getByTestId("question 2");
+      fireEvent.press(button1);
+      getByText("ANSWER 1");
+      fireEvent.press(button2);
+      getByText("ANSWER 2");
+      fireEvent.press(button3);
+      getByText("ANSWER 3");
+      fireEvent.press(button1);
+
+      expect(queryByText("ANSWER 1")).toBeNull();
+      fireEvent.press(button2);
+      expect(queryByText("ANSWER 2")).toBeNull();
+      fireEvent.press(button3);
+      expect(queryByText("ANSWER 3")).toBeNull();
+    });
+  });
 });
