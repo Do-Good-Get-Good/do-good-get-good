@@ -31,7 +31,7 @@ const Faq = () => {
       storeData(data);
     };
     getData().then((res) => {
-      if (res === null) {
+      if (res != null) {
         setFaqArray(res);
       } else {
         getFaqData();
