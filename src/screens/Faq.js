@@ -131,7 +131,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
   },
   dropDown: {
-    backgroundColor: "blue",
     flexDirection: "row",
     height: 50,
     borderRadius: 10,
@@ -150,7 +149,6 @@ const styles = StyleSheet.create({
     marginLeft: 18,
   },
   textAnswer: {
-    backgroundColor: "#333333",
     backgroundColor: "white",
     paddingHorizontal: 18,
     paddingBottom: 18,
