@@ -16,24 +16,31 @@ import firestore from "@react-native-firebase/firestore";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
+  const [error, setError] = useState(null);
   const curentTime = new Date().getTime();
-  const minutesToCompare = 15 * 60000;
+  const minutesToCompare = 1 * 60000;
 
   useEffect(() => {
     const getFaqData = async () => {
       const timeWhenDataSavedLastTime = curentTime;
       const arrayWithDataAndCurentTime = [];
-      const qna = await firestore().collection("faq").get();
-      const data = qna.docs.map((doc) => {
-        if (doc.data() != null && doc.data() != undefined) {
-          return { id: doc.id, opened: false, ...doc.data() };
-        } else {
-          console.log("Something went wrong with getiing Faq from Firebase");
-        }
-      });
+      const tempArray = [];
+      await firestore()
+        .collection("faq")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            tempArray.push({ id: doc.id, opened: false, ...doc.data() });
+          });
+        })
+        .catch((error) => {
+          if (error === "no-data") {
+            setError("Sorry, something went wrong");
+          }
+        });
 
-      setFaqArray(data);
-      arrayWithDataAndCurentTime.push(data);
+      setFaqArray(tempArray);
+      arrayWithDataAndCurentTime.push(tempArray);
       arrayWithDataAndCurentTime.push(timeWhenDataSavedLastTime);
       storeData(arrayWithDataAndCurentTime);
     };
@@ -41,7 +48,6 @@ const Faq = () => {
     getData().then((res) => {
       if (res != null && res[1] + minutesToCompare > curentTime) {
         console.log("res come from local storege___________   ");
-
         setFaqArray(res[0]);
       } else {
         console.log("res come from Firebase______________  ");
@@ -105,7 +111,7 @@ const Faq = () => {
           suspendisse dictum cras id nulla.
         </Text>
         <View style={{ paddingBottom: 24 }}>
-          {faqArray.length > 0 ? (
+          {faqArray.length > 0 &&
             faqArray.map((item, index) => (
               <View
                 style={styles.faqContainer}
@@ -141,9 +147,11 @@ const Faq = () => {
                   </View>
                 ) : null}
               </View>
-            ))
-          ) : (
-            <Text style={styles.errorText}>Sorry, something went wrong</Text>
+            ))}
+          {error != null && (
+            <Text testID="errorTextId" style={styles.errorText}>
+              {error}
+            </Text>
           )}
         </View>
       </ScrollView>

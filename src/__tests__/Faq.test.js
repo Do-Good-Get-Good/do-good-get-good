@@ -54,6 +54,8 @@ const testDataArray = [
   },
 ];
 
+var mockGet = jest.fn();
+
 jest.mock("@react-native-firebase/firestore", () => {
   const firebaseActualFireStore = jest.requireActual(
     "@react-native-firebase/firestore"
@@ -61,15 +63,15 @@ jest.mock("@react-native-firebase/firestore", () => {
   return () => ({
     ...firebaseActualFireStore,
     collection: jest.fn(() => ({
-      get: jest.fn().mockResolvedValue({ docs: testDataArray }),
+      get: mockGet,
     })),
-    data: jest.fn(),
   });
 });
 
 describe("Testing Faq page", () => {
   it("Renders page correctly", async () => {
     // mockGet.mockReturnValueOnce(testDataArray);
+    mockGet.mockResolvedValueOnce(testDataArray);
     const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
       <Faq />
     );
@@ -95,6 +97,7 @@ describe("Testing Faq page", () => {
   });
 
   it("Can open the answers", async () => {
+    mockGet.mockResolvedValueOnce(testDataArray);
     const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
       <Faq />
     );
@@ -113,6 +116,7 @@ describe("Testing Faq page", () => {
   });
 
   it("Can close the answers", async () => {
+    mockGet.mockResolvedValueOnce(testDataArray);
     const { getByTestId, queryByText, getByText } = render(<Faq />);
 
     await waitFor(() => {
@@ -126,6 +130,7 @@ describe("Testing Faq page", () => {
   });
 
   it("Can open one answer and close all other", async () => {
+    mockGet.mockResolvedValueOnce(testDataArray);
     const { getByTestId, queryByText, getByText } = render(<Faq />);
     await waitFor(() => {
       const button1 = getByTestId("question 0");
@@ -140,6 +145,16 @@ describe("Testing Faq page", () => {
       getByText("ANSWER 2");
       expect(queryByText("ANSWER 1")).toBeNull();
       expect(queryByText("ANSWER 3")).toBeNull();
+    });
+  });
+
+  it("Testing error message", async () => {
+    mockGet.mockRejectedValueOnce("no-data");
+    const { queryByTestId } = render(<Faq />);
+    await waitFor(() => {
+      expect(queryByTestId("errorTextId").props.children).toEqual(
+        "Sorry, something went wrong"
+      );
     });
   });
 });
