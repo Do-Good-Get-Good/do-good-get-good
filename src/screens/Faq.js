@@ -18,7 +18,7 @@ const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
   const [error, setError] = useState(null);
   const curentTime = new Date().getTime();
-  const minutesToCompare = 1 * 60000;
+  const minutesToCompare = 15 * 60000;
 
   useEffect(() => {
     const getFaqData = async () => {
