@@ -37,9 +37,7 @@ jobs:
         working-directory: src/
 
       - name: Run tests
-        run: |
-          npm test
-          ls -al
+        run: npm test --ci
         working-directory: src/
 
       - uses: IgnusG/jest-report-action@v2.3.3
