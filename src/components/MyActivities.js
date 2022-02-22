@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 
 import {
   Text,
@@ -20,26 +20,27 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [activity, setActivity] = useState({});
   const [isFinished, setIsFinished] = useState(false);
   const [myActivitiesArray, setMyActivitiesArray] = useState([]);
-  const [amountOfLines, setAmountOfLines] = useState(0);
+  // const [amountOfLines, setAmountOfLines] = useState(0);
 
-  const onTextLayout = useCallback((e) => {
-    setAmountOfLines(e.nativeEvent.lines.length);
-  }, []);
+  // const onTextLayout = useCallback((e) => {
+  //   setAmountOfLines(e.nativeEvent.lines.length);
+  // }, []);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+
   useEffect(() => {
     setActivityObject(myActivities);
     setTimeObject(myAccumulatedTime);
-    if (activityObject.length === myActivities.length) {
-      setIsFinished(true);
-    }
+    // if (activityObject.length === myActivities.length) {
+    //   setIsFinished(true);
+    //   console.log("!?!?!??!!??!");
+    // }
   }, [myActivities, myAccumulatedTime]);
 
   useEffect(() => {
     let activitiAndTimeArray = [];
-
     if (activityObject.length > myActivitiesArray.length) {
       for (let i = 0; i < activityObject.length; i++) {
         for (let j = 0; j < timeObject.length; j++) {
@@ -57,7 +58,8 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
         }
       }
     }
-  }, [isFinished, activityObject.length]);
+    // }, [isFinished, activityObject.length]);
+  }, [activityObject]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -80,12 +82,14 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
               <View style={styles.textTitleCityTime}>
                 <Text
                   numberOfLines={2}
-                  onTextLayout={onTextLayout}
+                  // onTextLayout={(e) => e.nativeEvent.lines.length}
                   style={styles.textTitle}
                 >
                   {myActivity.title}
                 </Text>
+
                 <View
+                  testID="viewId"
                   style={{
                     flex: 1,
                     flexDirection: "row",
@@ -112,14 +116,14 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
                 </View>
               </View>
               <Image
-              testID="imageId"
+                testID="imageId"
                 style={styles.image}
                 source={setTheRightPhoto(myActivity.photo)}
               />
             </View>
 
             <TouchableOpacity
-            testID="logTimeButton"
+              testID="logTimeButton"
               onPress={() => {
                 setActivity(myActivity);
                 toggleOverlay();
@@ -155,7 +159,6 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 20,
-    // marginHorizontal: 16
   },
   insideActivityContainer: {
     flex: 1,
@@ -170,7 +173,6 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     resizeMode: "contain",
-    // resizeMode: "cover",
     alignItems: "center",
     marginRight: 12,
     marginTop: 10,
@@ -229,11 +231,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 6,
   },
-  // iconsAndTextCityContainer: {
-  // marginTop: 25,
-  //   flex: 1,
-  //   flexDirection: 'row'
-  // },
   shedowForButton: {
     ...Platform.select({
       ios: {
@@ -249,5 +246,3 @@ const styles = StyleSheet.create({
     }),
   },
 });
-// 6OF5kOKKDo8ZJGAomEHI
-// NDXYHkn3hsqZrNVLCx2j
