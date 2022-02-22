@@ -106,9 +106,8 @@ const Faq = () => {
           FAQ
         </Text>
         <Text style={styles.headerDesc} testID="faq.descText">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Blandit
-          libero dis ultricies vel vitae aliquam. Vehicula vulputate interdum
-          suspendisse dictum cras id nulla.
+          Här kan du hitta svar på de vanligaste frågorna. Hittar du inte svar
+          på din fråga kan du också kontakta din konsultchef.
         </Text>
         <View style={{ paddingBottom: 24 }}>
           {faqArray.length > 0 &&
