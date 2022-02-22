@@ -48,7 +48,7 @@ const search = [];
 
 const adminGallery = {
   active: true,
-  city: "city ",
+  city: "city",
   description: "description",
   id: "id",
   photo: "symbol_earth",
