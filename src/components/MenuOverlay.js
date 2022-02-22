@@ -105,8 +105,8 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             testID="menuOverlay.faqButton"
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
-              // openOverlay();
-              // navigation.navigate("");
+              openOverlay();
+              navigation.navigate("Faq");
             }}
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
