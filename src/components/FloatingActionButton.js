@@ -13,7 +13,7 @@ const FloatingActionButton = ({}) => {
       {isOpen ? (
         <View style={styles.menuItems}>
           <TouchableOpacity
-          testID="createActivity.button"
+            testID="createActivity.button"
             style={styles.buttonStyle}
             onPress={() => {
               navigation.navigate("CreateActivity", {
@@ -26,12 +26,11 @@ const FloatingActionButton = ({}) => {
             <Text>Lägg till aktivitet</Text>
           </TouchableOpacity>
           <TouchableOpacity
-          testID="CreateOrChangeUser.button"
+            testID="CreateOrChangeUser.button"
             style={styles.buttonStyle}
             onPress={() => {
               navigation.navigate("CreateOrChangeUser", {
                 createNewUser: true,
-                
               });
             }}
           >

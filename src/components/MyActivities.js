@@ -18,13 +18,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [timeObject, setTimeObject] = useState([]);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
-  const [isFinished, setIsFinished] = useState(false);
   const [myActivitiesArray, setMyActivitiesArray] = useState([]);
-  // const [amountOfLines, setAmountOfLines] = useState(0);
-
-  // const onTextLayout = useCallback((e) => {
-  //   setAmountOfLines(e.nativeEvent.lines.length);
-  // }, []);
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -33,10 +27,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   useEffect(() => {
     setActivityObject(myActivities);
     setTimeObject(myAccumulatedTime);
-    // if (activityObject.length === myActivities.length) {
-    //   setIsFinished(true);
-    //   console.log("!?!?!??!!??!");
-    // }
   }, [myActivities, myAccumulatedTime]);
 
   useEffect(() => {
@@ -58,7 +48,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
         }
       }
     }
-    // }, [isFinished, activityObject.length]);
   }, [activityObject]);
 
   function setTheRightPhoto(activityObjectPhoto) {
@@ -80,11 +69,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
           >
             <View style={styles.photoAndText}>
               <View style={styles.textTitleCityTime}>
-                <Text
-                  numberOfLines={2}
-                  // onTextLayout={(e) => e.nativeEvent.lines.length}
-                  style={styles.textTitle}
-                >
+                <Text numberOfLines={2} style={styles.textTitle}>
                   {myActivity.title}
                 </Text>
 
@@ -190,7 +175,6 @@ const styles = StyleSheet.create({
     marginTop: 11,
     color: "#333333",
   },
-
   textTitle: {
     fontSize: 20,
     fontWeight: "bold",
@@ -208,9 +192,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     color: "#333333",
   },
-
-  iconCity: {},
-
   läggTid: {
     flex: 1,
     borderRadius: 5,
