@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -12,8 +12,9 @@ import {
 import Menu from "../components/Menu";
 import Images from "../Images";
 
-export const ImagesGallery = ({ navigation }) => {
+export function ImagesGallery({ navigation }) {
   const [imagesArray, setImagesArray] = useState(Images);
+  const [imageName, setImageName] = useState("symbol_hands_heart-DEFAULT");
 
   function changeBorderStyle(index, name) {
     let arrayForSelection = imagesArray;
@@ -26,28 +27,36 @@ export const ImagesGallery = ({ navigation }) => {
         arrayForSelection[i].selected = false;
       }
     }
+    console.log("setImagesArray", arrayForSelection);
     setImagesArray(arrayForSelection);
-    navigation.navigate("CreateActivity", {
-      imageForActivity: name,
-    });
+    setImageName(name);
   }
+  const imageStyle = useCallback(
+    (selected) => {
+      console.log("selected ", selected);
+      return {
+        flex: 1,
+        flexDirection: "row",
+        resizeMode: "contain",
+        backgroundColor: "white",
+        alignItems: "center",
+        marginRight: 14,
+        marginTop: 10,
+        borderRadius: 5,
+        height: 156,
+        width: 143,
+        borderRadius: 3,
+        borderWidth: selected === true ? 7 : 1,
+        borderColor: "#84BD00",
+      };
+    },
+    [imageName]
+  );
 
-  imageStyle = function (selected) {
-    return {
-      flex: 1,
-      flexDirection: "row",
-      resizeMode: "contain",
-      backgroundColor: "white",
-      alignItems: "center",
-      marginRight: 14,
-      marginTop: 10,
-      borderRadius: 5,
-      height: 156,
-      width: 143,
-      borderRadius: 3,
-      borderWidth: selected === true ? 7 : 1,
-      borderColor: "#84BD00",
-    };
+  const buttonSavePressed = () => {
+    navigation.navigate("CreateActivity", {
+      imageForActivity: imageName,
+    });
   };
 
   return (
@@ -61,23 +70,22 @@ export const ImagesGallery = ({ navigation }) => {
           numColumns={2}
           renderItem={({ item, index }) => (
             <TouchableOpacity
+              // testID={`index ${index}, name ${item.name}`}
               onPress={() => changeBorderStyle(index, item.name)}
               style={{ flex: 0.5, flexDirection: "row" }}
             >
-              <Image style={imageStyle(item.selected)} source={item.image} />
+              <Image
+                testID="imageInImageGallery"
+                style={imageStyle(item.selected)}
+                source={item.image}
+              />
             </TouchableOpacity>
           )}
         />
         <View style={styles.containerForTwoBottomButtons}>
-          {/* <TouchableOpacity
-            onPress={() =>
-              navigation.navigate("CreateActivity", {
-                imageForActivity: chooseImage,
-              })
-            }
-          >
+          <TouchableOpacity onPress={() => buttonSavePressed()}>
             <Text style={styles.buttonSave}>Spara</Text>
-          </TouchableOpacity> */}
+          </TouchableOpacity>
 
           <TouchableOpacity onPress={() => navigation.goBack()}>
             <LinearGradient
@@ -93,7 +101,9 @@ export const ImagesGallery = ({ navigation }) => {
       </View>
     </SafeAreaView>
   );
-};
+}
+
+export default ImagesGallery;
 const styles = StyleSheet.create({
   mainText: {
     fontSize: 34,
