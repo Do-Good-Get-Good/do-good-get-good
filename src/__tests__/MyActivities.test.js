@@ -16,7 +16,6 @@ jest.mock("../components/CalendarView", () => () => {
 const myActivities = [
   {
     id: "asd",
-    // title: "Missing people",
     title: "Studiehjälp för lågstadiebarn",
     city: "Gbg",
     photo: "symbol_earth",
