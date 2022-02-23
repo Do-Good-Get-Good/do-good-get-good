@@ -18,16 +18,10 @@ export function ImagesGallery({ navigation }) {
 
   function changeBorderStyle(index, name) {
     let arrayForSelection = imagesArray;
-
     for (let i = 0; i < arrayForSelection.length; i++) {
-      if (i === index) {
-        arrayForSelection[i].selected = true;
-      }
-      if (i != index) {
-        arrayForSelection[i].selected = false;
-      }
+      arrayForSelection[i].selected = false;
     }
-    console.log("setImagesArray", arrayForSelection);
+    arrayForSelection[index].selected = true;
     setImagesArray(arrayForSelection);
     setImageName(name);
   }
