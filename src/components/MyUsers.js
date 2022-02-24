@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native";
 import { ListItem, Dialog } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
@@ -249,9 +255,51 @@ const MyUsers = ({ navigation }) => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.header}>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "center",
+          alignItems: "center",
+          marginTop: 40,
+          marginBottom: expanded ? 83 : 10,
+        }}
+      >
         <Text style={styles.headerText}>Mina användare</Text>
-        <ListItem.Accordion
+
+        <TouchableOpacity
+          style={styles.sortDropdownStyle}
+          onPress={() => setExpanded(!expanded)}
+        >
+          <View style={styles.styleForDropdown}>
+            <Text style={styles.listItemNameStyle}>{sortBy}</Text>
+            <Icon
+              color="#5B6770"
+              style={styles.sortIcon}
+              name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
+              size={30}
+            />
+          </View>
+        </TouchableOpacity>
+        {expanded === true ? (
+          <View style={styles.dropdown}>
+            {sortOptions.map((option, index) => (
+              <TouchableNativeFeedback
+                key={index}
+                onPress={() => {
+                  setSortBy(option);
+                  sortUsers(option);
+                  setExpanded(false);
+                }}
+              >
+                <View style={styles.dropdownItem}>
+                  <Text>{option}</Text>
+                </View>
+              </TouchableNativeFeedback>
+            ))}
+          </View>
+        ) : null}
+
+        {/* <ListItem.Accordion
           containerStyle={styles.sortDropdownContainerStyle}
           style={styles.sortDropdownStyle}
           underlayColor="#F5F5F5"
@@ -283,7 +331,7 @@ const MyUsers = ({ navigation }) => {
               </TouchableNativeFeedback>
             ))}
           </View>
-        ) : null}
+        ) : null} */}
       </View>
 
       <View style={styles.content}>
@@ -293,68 +341,139 @@ const MyUsers = ({ navigation }) => {
         {!loadingData ? (
           <>
             {myUsers.map((user, index) => (
-              <ListItem.Accordion
-                key={index}
-                containerStyle={styles.listItemContainerStyle}
-                underlayColor="#F5F5F5"
-                activeOpacity={0.65}
-                content={
-                  <>
-                    <View style={styles.listItemStyle}>
-                      <Text style={styles.listItemNameStyle}>
-                        {user.firstName + " " + user.lastName}
-                      </Text>
-                    </View>
-                  </>
-                }
-                isExpanded={user.isOpen}
-                onPress={() => {
-                  openSelectedUser(user);
-                }}
-              >
-                {user.timeEntries.map((timeEntry, index) => (
-                  <View key={index}>
-                    {timeEntry !== "NO DATA" ? (
-                      <View key={index} style={styles.listItemContentStyle}>
-                        <View style={styles.listItemContentNameView}>
-                          <Text style={styles.listItemContentNameStyle}>
-                            {timeEntry.activityName}
-                          </Text>
-                        </View>
-                        <View style={styles.listItemContentDateView}>
-                          <Text style={styles.listItemContentDateStyle}>
-                            {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                          </Text>
-                        </View>
-                        <View style={styles.listItemContentHourView}>
-                          <Text style={styles.listItemContentHourStyle}>
-                            {timeEntry.time} tim
-                          </Text>
-                        </View>
-                      </View>
-                    ) : null}
+              <View key={index}>
+                <TouchableOpacity
+                  style={styles.listItemContainerStyle}
+                  onPress={() => {
+                    openSelectedUser(user);
+                  }}
+                >
+                  <View style={styles.listItemStyle}>
+                    <Text style={styles.listItemNameStyle}>
+                      {user.firstName + " " + user.lastName}
+                    </Text>
+                    <Icon
+                      color="#5B6770"
+                      style={styles.sortIcon}
+                      name={
+                        user.isOpen === true
+                          ? "arrow-drop-up"
+                          : "arrow-drop-down"
+                      }
+                      size={30}
+                    />
                   </View>
-                ))}
-                <View style={styles.editUserIconView}>
-                  <Icon
-                    name="pencil-outline"
-                    type="material-community"
-                    size={25}
-                    containerStyle={styles.editUserIcon}
-                    onPress={() =>
-                      navigation.navigate("CreateOrChangeUser", {
-                        createNewUser: false,
-                        userName: user.firstName,
-                        userSurname: user.lastName,
-                        statusActive: user.statusActive,
-                        userID: user.userID,
-                        personalInfoID: user.idPersonalInfo[0],
-                        useEmail: "",
-                      })
-                    }
-                  />
-                </View>
-              </ListItem.Accordion>
+                </TouchableOpacity>
+                {user.isOpen ? (
+                  <View>
+                    {user.timeEntries.map((timeEntry, index) => (
+                      <View key={index}>
+                        {timeEntry !== "NO DATA" ? (
+                          <View key={index} style={styles.listItemContentStyle}>
+                            <View style={styles.listItemContentNameView}>
+                              <Text style={styles.listItemContentNameStyle}>
+                                {timeEntry.activityName}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentDateView}>
+                              <Text style={styles.listItemContentDateStyle}>
+                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentHourView}>
+                              <Text style={styles.listItemContentHourStyle}>
+                                {timeEntry.time} tim
+                              </Text>
+                            </View>
+                          </View>
+                        ) : null}
+                      </View>
+                    ))}
+                    <View style={styles.editUserIconView}>
+                      <Icon
+                        name="pencil-outline"
+                        type="material-community"
+                        size={25}
+                        containerStyle={styles.editUserIcon}
+                        onPress={() =>
+                          navigation.navigate("CreateOrChangeUser", {
+                            createNewUser: false,
+                            userName: user.firstName,
+                            userSurname: user.lastName,
+                            statusActive: user.statusActive,
+                            userID: user.userID,
+                            personalInfoID: user.idPersonalInfo[0],
+                            useEmail: "",
+                          })
+                        }
+                      />
+                    </View>
+                  </View>
+                ) : null}
+              </View>
+
+              // <ListItem.Accordion
+              //   key={index}
+              //   containerStyle={styles.listItemContainerStyle}
+              //   underlayColor="#F5F5F5"
+              //   activeOpacity={0.65}
+              //   content={
+              //     <>
+              //       <View style={styles.listItemStyle}>
+              //         <Text style={styles.listItemNameStyle}>
+              //           {user.firstName + " " + user.lastName}
+              //         </Text>
+              //       </View>
+              //     </>
+              //   }
+              //   isExpanded={user.isOpen}
+              //   onPress={() => {
+              //     openSelectedUser(user);
+              //   }}
+              // >
+              //   {user.timeEntries.map((timeEntry, index) => (
+              //     <View key={index}>
+              //       {timeEntry !== "NO DATA" ? (
+              //         <View key={index} style={styles.listItemContentStyle}>
+              //           <View style={styles.listItemContentNameView}>
+              //             <Text style={styles.listItemContentNameStyle}>
+              //               {timeEntry.activityName}
+              //             </Text>
+              //           </View>
+              //           <View style={styles.listItemContentDateView}>
+              //             <Text style={styles.listItemContentDateStyle}>
+              //               {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+              //             </Text>
+              //           </View>
+              //           <View style={styles.listItemContentHourView}>
+              //             <Text style={styles.listItemContentHourStyle}>
+              //               {timeEntry.time} tim
+              //             </Text>
+              //           </View>
+              //         </View>
+              //       ) : null}
+              //     </View>
+              //   ))}
+              //   <View style={styles.editUserIconView}>
+              //     <Icon
+              //       name="pencil-outline"
+              //       type="material-community"
+              //       size={25}
+              //       containerStyle={styles.editUserIcon}
+              //       onPress={() =>
+              //         navigation.navigate("CreateOrChangeUser", {
+              //           createNewUser: false,
+              //           userName: user.firstName,
+              //           userSurname: user.lastName,
+              //           statusActive: user.statusActive,
+              //           userID: user.userID,
+              //           personalInfoID: user.idPersonalInfo[0],
+              //           useEmail: "",
+              //         })
+              //       }
+              //     />
+              //   </View>
+              // </ListItem.Accordion>
             ))}
           </>
         ) : null}
@@ -368,24 +487,35 @@ export default MyUsers;
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
+    position: "relative",
   },
-  header: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 40,
-    marginBottom: 10,
-  },
+  // header: {
+  //   flexDirection: "row",
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   marginTop: 40,
+  //   marginBottom: 10,
+  // },
   headerText: {
     width: "55%",
     fontSize: 22,
   },
-  sortDropdownContainerStyle: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-    borderRadius: 5,
-    zIndex: 2,
+
+  styleForDropdown: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
+    backgroundColor: "white",
   },
+
+  // sortDropdownContainerStyle: {
+  //   paddingHorizontal: 16,
+  //   paddingVertical: 10,
+  //   borderRadius: 5,
+  //   zIndex: 2,
+  // },
   sortDropdownStyle: {
     width: "45%",
     backgroundColor: "#F5F5F5",
@@ -431,9 +561,9 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 5,
   },
-  lastItemStyle: {
-    paddingBottom: 100,
-  },
+  // lastItemStyle: {
+  //   paddingBottom: 100,
+  // },
   listItemContentNameView: { flex: 1 },
   listItemContentDateView: { flex: 1 },
   listItemContentHourView: { flex: 1 },
