@@ -11,6 +11,8 @@ import { ScrollView } from "react-native";
 import { Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
   LocaleConfig.locales["sv"] = {
@@ -123,7 +125,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           time: hours,
         },
         { merge: true }
-      )
+      );
     toggleVisibility();
   };
 
@@ -134,7 +136,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       .doc(auth().currentUser.uid)
       .collection("time_entries")
       .doc(activity.timeEntryID)
-      .delete()
+      .delete();
     toggleVisibility();
   };
 
@@ -169,10 +171,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           padding: 16,
         }}
       >
-        <Text 
-          testID="calendarView.headerText" 
-          style={styles.activityTitle}
-        >
+        <Text testID="calendarView.headerText" style={styles.activityTitle}>
           {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
         <Text style={styles.chooseDateText}>Välj datum</Text>
@@ -190,7 +189,13 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
             disableAllTouchEventsForDisabledDays={true}
             // Specify theme properties to override specific styles for calendar parts. Default = {}
             theme={{
-              todayTextColor: "#000000",
+              todayTextColor: colors.dark,
+              textMonthFontSize: typography.b2.fontSize,
+              textMonthFontFamily: typography.b2.fontFamily,
+              monthTextColor: colors.dark,
+              textMonthFontWeight: "400",
+              dayTextColor: colors.dark,
+              textDayFontFamily: typography.b2.fontFamily,
             }}
             markingType={"custom"}
             markedDates={{
@@ -237,7 +242,12 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
               <Text style={styles.hourAmountText}>-</Text>
             </TouchableOpacity>
             <View style={styles.hourAmount}>
-              <Text testID="calendarView.hourInput" style={styles.hourAmountText}>{hours}</Text>
+              <Text
+                testID="calendarView.hourInput"
+                style={styles.hourAmountText}
+              >
+                {hours}
+              </Text>
             </View>
             <TouchableOpacity
               style={styles.hourButton}
@@ -247,7 +257,10 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
             </TouchableOpacity>
           </View>
         </View>
-        <Text testID="calendarView.dateAndHourInput" style={styles.dateAndHourSummary}>
+        <Text
+          testID="calendarView.dateAndHourInput"
+          style={styles.dateAndHourSummary}
+        >
           {format(new Date(selectedDate), "eee d LLLL") + `, ${hours}h`}
         </Text>
       </ScrollView>
@@ -291,61 +304,55 @@ export default CalendarView;
 
 const styles = StyleSheet.create({
   activityTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 4,
+    ...typography.b1,
+    fontWeight: "700",
   },
   chooseDateText: {
-    fontSize: 18,
-    marginBottom: 12,
+    ...typography.b1,
+    fontWeight: "500",
+    marginBottom: 9,
   },
   calendarAndHourView: {
     marginLeft: 8,
     marginRight: 8,
   },
   questionText: {
-    fontSize: 18,
+    ...typography.b1,
     marginTop: 20,
     marginLeft: -8,
   },
   hourAmountView: {
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    height: 46,
     marginTop: 16,
     marginBottom: 16,
+    alignContent: "center",
+    height: 50,
   },
   hourAmount: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     flex: 1,
-    height: 46,
-    justifyContent: "center",
-    alignItems: "center",
     marginRight: 10,
     marginLeft: 10,
-  },
-  hourAmountText: {
-    fontSize: 24,
-    fontWeight: "bold",
-  },
-  hourButton: {
-    width: 46,
-    height: 46,
-    padding: 0,
-    margin: 0,
-    backgroundColor: "#84BD00",
     justifyContent: "center",
     alignItems: "center",
   },
+  hourAmountText: {
+    ...typography.h2,
+  },
+  hourButton: {
+    width: 50,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+  },
   dateAndHourSummary: {
-    fontSize: 18,
+    ...typography.b1,
   },
   sendBtn: {
     height: 55,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#84BD00",
+    backgroundColor: colors.primary,
     marginLeft: -10,
     marginRight: -10,
     marginBottom: -10,
@@ -358,8 +365,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 5,
   },
   sendBtnText: {
-    fontWeight: "bold",
-    fontSize: 16,
+    ...typography.button.lg,
   },
   changeBtn: {
     marginBottom: 10,
@@ -368,6 +374,6 @@ const styles = StyleSheet.create({
   },
   deleteBtn: {
     marginTop: -10,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light,
   },
 });
