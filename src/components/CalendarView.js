@@ -366,6 +366,7 @@ const styles = StyleSheet.create({
   },
   sendBtnText: {
     ...typography.button.lg,
+    fontWeight: "500",
   },
   changeBtn: {
     marginBottom: 10,
