@@ -464,7 +464,7 @@ const styles = StyleSheet.create({
   containerPancilAndText: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 0,
+    marginTop: 30,
   },
   textNearPencil: {
     color: colors.dark,
