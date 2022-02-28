@@ -15,39 +15,6 @@ jest.mock("../context/CreateUserContext", () => ({
   }),
 }));
 
-// var mockGet = jest.fn();
-
-// jest.mock("@react-native-firebase/firestore", () => {
-//   const firebaseActualFireStore = jest.requireActual(
-//     "@react-native-firebase/firestore"
-//   );
-//   return () => ({
-//     ...firebaseActualFireStore,
-//     collection: jest.fn(() => ({
-//       get: mockGet,
-//     })),
-//   });
-// });
-
-// jest.mock("@react-native-firebase/auth", () => () => ({
-//     auth: jest.fn(),
-//     currentUser: jest.fn(),
-//     uid: jest.fn()
-// }));
-
-// const useStateMock = [
-//   {
-//     firstName: "Jimmy",
-//     lastName: "M",
-//     isOpen: false,
-//     timeEntries: 0,
-//     statusActive: true,
-//     userID: "123",
-//     idPersonalInfo: "asd",
-//   },
-// ];
-// React.useState = jest.fn().mockReturnValue([useStateMock, {}]);
-
 describe("Testing MyUsers component", () => {
   describe("Header view", () => {
     it("can find the my users text", () => {
@@ -97,9 +64,5 @@ describe("Testing MyUsers component", () => {
       const { getByTestId } = render(<MyUsers />);
       getByTestId("contentViewId");
     });
-    //   it("can find users", () => {
-    //     const { getByTestId, getAllByText } = render(<MyUsers />);
-    //     getByTestId("userDropdown 0");
-    //   });
   });
 });
