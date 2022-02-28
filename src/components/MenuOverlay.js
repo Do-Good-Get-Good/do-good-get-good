@@ -7,12 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useActivityFunction } from "../context/ActivityContext";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
-
   const entryTime = useActivityFunction();
 
   useEffect(() => {
@@ -28,7 +29,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       isVisible={isVisible}
       fullScreen
       animationType="fade"
-      overlayStyle={{ backgroundColor: "#84BD00" }}
+      overlayStyle={{ backgroundColor: colors.primary }}
     >
       <StatusBar style="auto" />
       <View style={styles.menuOverlay}>
@@ -51,9 +52,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               // changeLanguage();
             }}
           >
-            <Text style={styles.menuOverlayChangeLangText}>
-              Byt språk knapp
-            </Text>
+            <Text style={styles.menuOverlayChangeLangText}>Byt språk</Text>
           </Pressable>
           <Pressable
             testID="menuOverlay.homeButton"
@@ -147,7 +146,8 @@ const styles = StyleSheet.create({
   },
   menuOverlayCloseButtonText: {
     textTransform: "uppercase",
-    fontSize: 13,
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
     marginTop: -3,
   },
   menuOverlayItemStyling: {
@@ -158,22 +158,20 @@ const styles = StyleSheet.create({
     marginTop: 16,
   },
   menuOverlayChangeLangText: {
-    fontSize: 14,
-    fontWeight: "normal",
+    ...typography.b1,
   },
   menuOverlayLinkStyling: {
-    marginBottom: 24,
+    marginBottom: 12,
   },
   menuOverlayLinkText: {
-    fontSize: 18,
-    fontWeight: "bold",
+    ...typography.title,
   },
   menuOverlayLogOutButton: {
     position: "absolute",
-    bottom: 50,
+    bottom: 40,
     paddingLeft: 75,
   },
   menuOverlayLogOutButtonText: {
-    fontSize: 16,
+    ...typography.b1,
   },
 });
