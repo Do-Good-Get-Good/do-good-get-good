@@ -12,11 +12,12 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import tw from "tailwind-react-native-classnames";
 import inputStyles from "../styles/inputStyle";
 import auth from "@react-native-firebase/auth";
 import ResetPassModal from "./ResetPassModal";
 import { Icon } from "react-native-elements";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -121,9 +122,8 @@ export default function Login() {
         flex: 1,
         backgroundColor: "#00000009",
       }}
-      imageStyle={{ opacity: 1 }}
     >
-      <SafeAreaView style={tw`flex-1`}>
+      <SafeAreaView style={styles.wrapper}>
         <StatusBar style="auto" />
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <View style={styles.logo}>
@@ -133,32 +133,26 @@ export default function Login() {
             style={styles.logoImg}
           />
         </View>
-        <View style={styles.inputsAndBtns}>
-          <Text
-            testID="login.motivationalText"
-            style={[
-              tw`text-center text-xl mb-8 font-bold`,
-              { color: "#333333" },
-            ]}
-          >
+        <View style={styles.loginFormView}>
+          <Text testID="login.motivationalText" style={styles.motivationTexts}>
             {randomText}
           </Text>
-          <View style={tw`flex-row mb-3`}>
+          <View style={styles.inputView}>
             <TextInput
               textContentType={"emailAddress"}
               onChangeText={(text) => setEmail(text)}
               value={email}
               keyboardType={"email-address"}
               placeholder={"E-post"}
+              secureTextEntry={showPassword ? false : true}
               returnKeyType="next"
               onSubmitEditing={() => ref_input2.current.focus()}
               blurOnSubmit={false}
               style={[
                 inputStyles.textInput,
-                error != null && !isEmailValid
-                  ? inputStyles.textInputInvalid
-                  : null,
-                !isEmailValid ? inputStyles.textInputInvalid : null,
+                error != null && inputStyles.textInputInvalid,
+                !isEmailValid && inputStyles.textInputInvalid,
+                { fontFamily: typography.b1.fontFamily },
               ]}
             />
           </View>
@@ -176,10 +170,17 @@ export default function Login() {
               secureTextEntry={showPassword ? false : true}
               returnKeyType="send"
               onSubmitEditing={() => checkInputsAndSignIn()}
-              ref={ref_input2}
+              ref={(ref) =>
+                ref &&
+                ref.setNativeProps({
+                  style: { fontFamily: typography.b1.fontFamily },
+                })
+              }
               style={[
                 inputStyles.textInput,
-                !isPassValid ? inputStyles.textInputInvalid : null,
+                error != null && inputStyles.textInputInvalid,
+                !isPassValid && inputStyles.textInputInvalid,
+                { paddingRight: 44, fontFamily: typography.b1.fontFamily },
               ]}
             />
             <View style={styles.showPasswordIcon}>
@@ -194,33 +195,37 @@ export default function Login() {
             </View>
           </View>
           {error != null ? (
-            <View
-            style={tw.style("mb-0 pl-2")}
-          >
-            <Text style={{ color: "#C62F25" }}>* {error}</Text>
-          </View>
+            <View>
+              <Text
+                style={{
+                  color: colors.error,
+                  ...typography.b2,
+                  marginBottom: 10,
+                }}
+              >
+                * {error}
+              </Text>
+            </View>
           ) : null}
-          <View style={tw`mt-2`}>
+          <View>
             <TouchableOpacity
               style={styles.loginBtn}
               onPress={() => {
                 checkInputsAndSignIn();
               }}
             >
-              <Text
-                style={[
-                  tw`text-center text-xl font-bold`,
-                  { color: "#333333" },
-                ]}
-              >
+              <Text style={{ ...typography.button.lg, color: colors.dark }}>
                 Logga in
               </Text>
             </TouchableOpacity>
           </View>
-          <View style={tw`mt-3 w-full flex-row justify-center`}>
-            <Text style={{ color: "#333333" }}>Glömt ditt lösenord?</Text>
+          <View style={styles.passReset}>
+            <Text
+              style={{ color: "#333333", marginRight: 4, ...typography.b2 }}
+            >
+              Glömt ditt lösenord?
+            </Text>
             <TouchableOpacity
-              style={tw`ml-1`}
               onPress={() => {
                 console.log("Tryckte på 'glömt lösenord'");
                 isOpen(true);
@@ -228,9 +233,10 @@ export default function Login() {
             >
               <Text
                 style={{
-                  color: "#84BD00",
+                  color: colors.primary,
                   textDecorationLine: "underline",
-                  fontWeight: "bold",
+                  ...typography.b2,
+                  fontWeight: "700",
                 }}
               >
                 Tryck här
@@ -238,24 +244,26 @@ export default function Login() {
             </TouchableOpacity>
           </View>
         </View>
-        <View style={{ flex: 1 }}></View>
-        <Image
-          testID="login.bottomLogo"
-          source={require("../img/Technogarden-logotyp-Large.png")}
-          style={
-            keyboardStatus === "Keyboard Shown"
-              ? tw`hidden`
-              : styles.bottomLogoImg
-          }
-        />
+        {keyboardStatus != "Keyboard Shown" && (
+          <View style={styles.bottomLogoView}>
+            <Image
+              testID="login.bottomLogo"
+              source={require("../img/Technogarden-logotyp-Large.png")}
+              style={styles.bottomLogoImg}
+            />
+          </View>
+        )}
       </SafeAreaView>
     </ImageBackground>
   );
 }
 
 const styles = StyleSheet.create({
-  logo: {
+  wrapper: {
     flex: 1,
+  },
+  logo: {
+    paddingVertical: 50,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -263,18 +271,30 @@ const styles = StyleSheet.create({
     width: 200,
     height: 100,
   },
-  inputsAndBtns: {
-    padding: 20,
+  motivationTexts: {
+    ...typography.title,
+    color: colors.dark,
+    alignSelf: "center",
+    fontWeight: "500",
+    marginBottom: 20,
+  },
+  loginFormView: {
+    paddingHorizontal: 18,
     flex: 1,
   },
+  inputView: {
+    marginBottom: 10,
+    alignItems: "center",
+  },
   showPasswordIcon: {
-    position: "absolute",
-    right: 10,
-    top: 12,
+    justifyContent: "center",
+    right: 36,
+    elevation: 2,
   },
   loginBtn: {
     backgroundColor: "#84BD00",
     height: 55,
+    alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
     ...Platform.select({
@@ -290,10 +310,18 @@ const styles = StyleSheet.create({
       },
     }),
   },
+  passReset: {
+    flexDirection: "row",
+    justifyContent: "center",
+    marginTop: 10,
+  },
+  bottomLogoView: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 10,
+  },
   bottomLogoImg: {
     width: 143,
     height: 23,
-    alignSelf: "center",
-    marginBottom: 10,
   },
 });
