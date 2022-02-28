@@ -3,8 +3,10 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-export function DropDownSmall ({}){
+export function DropDownSmall({}) {
   const creactActivityContext = useCreateActivityFunction();
   const rout = useRoute();
 
@@ -14,7 +16,11 @@ export function DropDownSmall ({}){
   const [mainWordCreateActivity, setMainWordCreateActivity] =
     useState("Aktivitet");
   // const sortingAdminGallery = ["Favoriter", "Namn", "Plats"];
-  const sortingAdminGallery = [{title: "Favoriter"}, {title: "Namn"}, {title: "Plats"}];
+  const sortingAdminGallery = [
+    { title: "Favoriter" },
+    { title: "Namn" },
+    { title: "Plats" },
+  ];
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
@@ -45,11 +51,11 @@ export function DropDownSmall ({}){
     }
   };
 
- const toStileTitle = function (title, index) {
+  const toStileTitle = function (title, index) {
     return {
       marginVertical: 5,
-      fontSize: 18,
-      color: "#333333",
+      ...typography.b1,
+      color: colors.dark,
       fontStyle:
         title === "Skapa ny aktivitet" && index === 0 ? "italic" : "normal",
     };
@@ -66,7 +72,7 @@ export function DropDownSmall ({}){
   }
 
   const styleForDropDownInsideConrainer = {
-    borderColor: openDropDown === true ? "#333333" : "white",
+    borderColor: openDropDown === true ? colors.dark : colors.background,
 
     flex: 1,
     flexDirection: "row",
@@ -79,7 +85,7 @@ export function DropDownSmall ({}){
     paddingLeft: 14,
     borderRadius: 3,
     borderWidth: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     overflow: "hidden",
   };
 
@@ -89,7 +95,7 @@ export function DropDownSmall ({}){
         <View style={styleForDropDownInsideConrainer}>
           <Text style={styles.sortText}>{sortBy}</Text>
           <Icon
-            color="#5B6770"
+            color={colors.secondary}
             style={styles.sortIcon}
             name={openDropDown === true ? "arrow-drop-up" : "arrow-drop-down"}
             size={30}
@@ -101,7 +107,7 @@ export function DropDownSmall ({}){
           ? sortArray.map((sort, index) => (
               <View index={index} key={index} style={styles.insideSortBox}>
                 <TouchableOpacity
-                testID="insideDropDownPressed"
+                  testID="insideDropDownPressed"
                   onPress={() => {
                     pressSelectionInsideDropDown(sort.title, index);
                   }}
@@ -116,7 +122,7 @@ export function DropDownSmall ({}){
       </View>
     </View>
   );
-};
+}
 
 export default DropDownSmall;
 
@@ -128,8 +134,8 @@ const styles = StyleSheet.create({
 
   sortText: {
     flex: 3,
-    fontSize: 18,
-    color: "#333333",
+    ...typography.b1,
+    color: colors.dark,
     paddingVertical: 7,
   },
   sortIcon: {
@@ -145,8 +151,8 @@ const styles = StyleSheet.create({
     paddingLeft: 14,
     borderRadius: 2,
     borderWidth: 1,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     overflow: "hidden",
-    borderColor: "white",
+    borderColor: colors.background,
   },
 });
