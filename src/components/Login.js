@@ -18,6 +18,7 @@ import ResetPassModal from "./ResetPassModal";
 import { Icon } from "react-native-elements";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import BottonLogo from "./BottomLogo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -244,15 +245,7 @@ export default function Login() {
             </TouchableOpacity>
           </View>
         </View>
-        {keyboardStatus != "Keyboard Shown" && (
-          <View style={styles.bottomLogoView}>
-            <Image
-              testID="login.bottomLogo"
-              source={require("../img/Technogarden-logotyp-Large.png")}
-              style={styles.bottomLogoImg}
-            />
-          </View>
-        )}
+        {keyboardStatus != "Keyboard Shown" && <BottomLogo />}
       </SafeAreaView>
     </ImageBackground>
   );
@@ -314,14 +307,5 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     marginTop: 10,
-  },
-  bottomLogoView: {
-    width: "100%",
-    alignItems: "center",
-    paddingVertical: 10,
-  },
-  bottomLogoImg: {
-    width: 143,
-    height: 23,
   },
 });
