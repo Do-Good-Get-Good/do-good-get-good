@@ -11,6 +11,7 @@ import tw from "tailwind-react-native-classnames";
 import inputStyles from "../styles/inputStyle";
 import { Icon, Overlay } from "react-native-elements";
 import auth from "@react-native-firebase/auth";
+import colors from "../assets/theme/colors";
 
 const ResetPassModal = ({ isModalOpen, openModal }) => {
   const [email, setEmail] = React.useState("");
@@ -52,7 +53,7 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
       isVisible={isModalOpen}
       onBackdropPress={openModal}
       overlayStyle={{
-        backgroundColor: "#F5F5F5",
+        backgroundColor: colors.light,
         width: "90%",
         borderRadius: 5,
       }}
@@ -77,7 +78,12 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
             />
           </TouchableOpacity>
           <View style={tw`mt-0`}>
-            <Text testID="resetPassModal.forgotPass" style={tw`text-lg font-bold`}>Glömt ditt lösenord?</Text>
+            <Text
+              testID="resetPassModal.forgotPass"
+              style={tw`text-lg font-bold`}
+            >
+              Glömt ditt lösenord?
+            </Text>
             <Text testID="resetPassModal.forgotPassDesc">
               Inga problem! Skriv in din mail nedan, så skickar vi en länk för
               att återställa lösenordet.
@@ -96,7 +102,10 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
             />
             {error != null ? (
               <View style={tw.style("mb-2 pl-2")}>
-                <Text testID="resetPassModal.errorText" style={{ color: "#C62F25" }}>{`* ${error}`}</Text>
+                <Text
+                  testID="resetPassModal.errorText"
+                  style={{ color: "#C62F25" }}
+                >{`* ${error}`}</Text>
               </View>
             ) : null}
             <TouchableOpacity
@@ -121,11 +130,8 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
 export default ResetPassModal;
 
 const styles = StyleSheet.create({
-  // modalContainer: {
-  //   marginVertical: 10,
-  // },
   sendBtn: {
-    backgroundColor: "#84BD00",
+    backgroundColor: colors.primary,
     height: 55,
     justifyContent: "center",
     borderBottomLeftRadius: 5,

@@ -12,6 +12,8 @@ import {
 import { Icon } from "react-native-elements";
 import CalendarView from "./CalendarView";
 import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [activityObject, setActivityObject] = useState([]);
@@ -84,7 +86,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
                   <Icon
                     type="material-community"
                     name="map-marker-outline"
-                    color="#333333"
+                    color={colors.dark}
                     size={25}
                   />
                   <Text style={styles.textCity}>{myActivity.city}</Text>
@@ -94,7 +96,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
                   <Icon
                     type="material-community"
                     name="clock-time-four-outline"
-                    color="#333333"
+                    color={colors.dark}
                     size={25}
                   />
                   <Text style={styles.textTime}>{myActivity.time} tim</Text>
@@ -132,15 +134,15 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
 };
 
 const styles = StyleSheet.create({
-  topH1: {
-    flex: 1,
-    fontSize: 25,
-    marginHorizontal: 20,
-  },
-  topH2: {
-    flex: 1,
-    marginHorizontal: 20,
-  },
+  // topH1: {
+  //   flex: 1,
+  //   fontSize: 25,
+  //   marginHorizontal: 20,
+  // },
+  // topH2: {
+  //   flex: 1,
+  //   marginHorizontal: 20,
+  // },
   activityContainer: {
     flex: 1,
     marginTop: 20,
@@ -149,11 +151,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginVertical: 7,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     flexWrap: "wrap",
     borderRadius: 2,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: colors.background,
   },
   image: {
     flex: 1,
@@ -173,24 +175,24 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: "#333333",
+    color: colors.dark,
   },
   textTitle: {
     fontSize: 20,
     fontWeight: "bold",
-    color: "#333333",
+    color: colors.dark,
   },
   textCity: {
-    fontSize: 18,
+    ...typography.b1,
     paddingTop: 5,
     marginLeft: 12,
-    color: "#333333",
+    color: colors.dark,
   },
   textTime: {
-    fontSize: 18,
+    ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
-    color: "#333333",
+    color: colors.dark,
   },
   läggTid: {
     flex: 1,
@@ -200,12 +202,12 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     paddingVertical: 15,
     paddingHorizontal: 10,
-    fontSize: 20,
+    fontSize: typography.button.lg.fontSize,
     textAlign: "center",
     overflow: "hidden",
-    backgroundColor: "#84BD00",
-    borderColor: "#84BD00",
-    color: "#333333",
+    backgroundColor: colors.primary,
+    borderColor: colors.primary,
+    color: colors.dark,
   },
   iconsAndTextTimeContainer: {
     flex: 1,

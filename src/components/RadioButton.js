@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
- export  function RadioButton() {
-  
+export function RadioButton() {
   const [jaButton, setJaButton] = useState(true);
   const [nejButton, setNejButton] = useState(false);
   const adminGalleryContext = useAdminGalleryFunction();
@@ -31,7 +32,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
         <View style={styles.radioButtons}>
           <Text style={styles.textAktiva}>Aktiva:</Text>
           <TouchableOpacity
-          testID="pressOnButtonJa" 
+            testID="pressOnButtonJa"
             onPress={jaRadioButtonsPress}
             style={styles.radioButtons}
           >
@@ -41,8 +42,9 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
                 width: 20,
                 height: 20,
                 borderRadius: 20 / 2,
-                backgroundColor: jaButton === true ? "#84BD00" : "white",
-                borderColor: "#333333",
+                backgroundColor:
+                  jaButton === true ? colors.primary : colors.background,
+                borderColor: colors.dark,
                 borderWidth: 1,
               }}
             >
@@ -52,7 +54,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-           testID="pressOnButtonNej"
+            testID="pressOnButtonNej"
             onPress={nejRadioButtonsPress}
             style={styles.radioButtons}
           >
@@ -62,8 +64,9 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
                 width: 20,
                 height: 20,
                 borderRadius: 20 / 2,
-                backgroundColor: nejButton === true ? "#84BD00" : "white",
-                borderColor: "#333333",
+                backgroundColor:
+                  nejButton === true ? colors.primary : colors.background,
+                borderColor: colors.dark,
                 borderWidth: 1,
               }}
             >
@@ -76,23 +79,21 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
       </View>
     </View>
   );
-};
+}
 
-
-
- export default RadioButton;
+export default RadioButton;
 
 const styles = StyleSheet.create({
   textAktiva: {
     fontSize: 20,
     paddingTop: 8,
-    color: "#333333",
+    color: colors.dark,
   },
   textJaNej: {
-    fontSize: 16,
+    ...typography.b2,
     paddingTop: 2,
     marginLeft: 5,
-    color: "#333333",
+    color: colors.dark,
   },
   textRadioButtonFilter: {
     flex: 1,
@@ -110,6 +111,6 @@ const styles = StyleSheet.create({
     height: 10,
     borderRadius: 10 / 2,
     margin: 4,
-    backgroundColor: "#333333",
+    backgroundColor: colors.dark,
   },
 });
