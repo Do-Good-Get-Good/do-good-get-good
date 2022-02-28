@@ -13,6 +13,8 @@ import Menu from "../components/Menu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import firestore from "@react-native-firebase/firestore";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
@@ -133,7 +135,7 @@ const Faq = () => {
                   </Text>
                   <Icon
                     style={styles.icon}
-                    color="#5B6770"
+                    color={colors.secondary}
                     name={
                       item.opened === true ? "arrow-drop-up" : "arrow-drop-down"
                     }
@@ -165,8 +167,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerText: {
+    ...typography.h2,
     fontWeight: "500",
-    fontSize: 34,
     marginTop: 30,
   },
   errorText: {
@@ -174,8 +176,7 @@ const styles = StyleSheet.create({
     color: "red",
   },
   headerDesc: {
-    fontWeight: "400",
-    fontSize: 16,
+    ...typography.b2,
     marginBottom: 10,
   },
   containterForDropDown: {
@@ -204,7 +205,7 @@ const styles = StyleSheet.create({
   },
   textQuestion: {
     marginLeft: 18,
-    fontSize: 18,
+    ...typography.b1,
   },
   textAnswerView: {
     backgroundColor: "#FFFFFF",
@@ -215,6 +216,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 2,
   },
   textAnswer: {
-    fontSize: 16,
+    ...typography.b2,
   },
 });
