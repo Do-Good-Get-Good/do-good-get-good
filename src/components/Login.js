@@ -10,6 +10,8 @@ import {
   Keyboard,
   TouchableOpacity,
   Platform,
+  KeyboardAvoidingView,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import inputStyles from "../styles/inputStyle";
@@ -120,132 +122,141 @@ export default function Login() {
       source={require("../img/blueprint-white.png")}
       resizeMode={"cover"}
       style={{
-        flex: 1,
         backgroundColor: "#00000009",
+        width: Dimensions.get("window").width,
+        height: Dimensions.get("window").height,
       }}
     >
       <SafeAreaView style={styles.wrapper}>
         <StatusBar style="auto" />
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
-        <View style={styles.logo}>
-          <Image
-            testID="login.dgggLogo"
-            source={require("../img/Logotyp_DGGG.png")}
-            style={styles.logoImg}
-          />
-        </View>
-        <View style={styles.loginFormView}>
-          <Text testID="login.motivationalText" style={styles.motivationTexts}>
-            {randomText}
-          </Text>
-          <View style={styles.inputView}>
-            <TextInput
-              textContentType={"emailAddress"}
-              onChangeText={(text) => setEmail(text)}
-              value={email}
-              keyboardType={"email-address"}
-              placeholder={"E-post"}
-              secureTextEntry={showPassword ? false : true}
-              returnKeyType="next"
-              onSubmitEditing={() => ref_input2.current.focus()}
-              blurOnSubmit={false}
-              style={[
-                inputStyles.textInput,
-                error != null && inputStyles.textInputInvalid,
-                !isEmailValid && inputStyles.textInputInvalid,
-                { fontFamily: typography.b1.fontFamily },
-              ]}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <View style={styles.logo}>
+            <Image
+              testID="login.dgggLogo"
+              source={require("../img/Logotyp_DGGG.png")}
+              style={styles.logoImg}
             />
+            <Text
+              testID="login.motivationalText"
+              style={styles.motivationTexts}
+            >
+              {randomText}
+            </Text>
           </View>
-          <View
-            style={{
-              flexDirection: "row",
-              marginBottom: 10,
-            }}
-          >
-            <TextInput
-              textContentType={"password"}
-              onChangeText={(text) => setPass(text)}
-              value={pass}
-              placeholder={"Lösenord"}
-              secureTextEntry={showPassword ? false : true}
-              returnKeyType="send"
-              onSubmitEditing={() => checkInputsAndSignIn()}
-              ref={(ref) =>
-                ref &&
-                ref.setNativeProps({
-                  style: { fontFamily: typography.b1.fontFamily },
-                })
-              }
-              style={[
-                inputStyles.textInput,
-                error != null && inputStyles.textInputInvalid,
-                !isPassValid && inputStyles.textInputInvalid,
-                { paddingRight: 44, fontFamily: typography.b1.fontFamily },
-              ]}
-            />
-            <View style={styles.showPasswordIcon}>
-              <Icon
-                name={showPassword ? "visibility" : "visibility-off"}
-                type="material"
-                size={25}
-                onPress={() => {
-                  setShowPassword(!showPassword);
-                }}
+          <View style={styles.loginFormView}>
+            <View style={styles.inputView}>
+              <TextInput
+                textContentType={"emailAddress"}
+                onChangeText={(text) => setEmail(text)}
+                value={email}
+                keyboardType={"email-address"}
+                placeholder={"E-post"}
+                secureTextEntry={showPassword ? false : true}
+                returnKeyType="next"
+                onSubmitEditing={() => ref_input2.current.focus()}
+                blurOnSubmit={false}
+                style={[
+                  inputStyles.textInput,
+                  error != null && inputStyles.textInputInvalid,
+                  !isEmailValid && inputStyles.textInputInvalid,
+                  { fontFamily: typography.b1.fontFamily },
+                ]}
               />
             </View>
-          </View>
-          {error != null ? (
-            <View>
-              <Text
-                style={{
-                  color: colors.error,
-                  ...typography.b2,
-                  marginBottom: 10,
-                }}
-              >
-                * {error}
-              </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                marginBottom: 10,
+              }}
+            >
+              <TextInput
+                textContentType={"password"}
+                onChangeText={(text) => setPass(text)}
+                value={pass}
+                placeholder={"Lösenord"}
+                secureTextEntry={showPassword ? false : true}
+                returnKeyType="send"
+                onSubmitEditing={() => checkInputsAndSignIn()}
+                ref={(ref) =>
+                  ref &&
+                  ref.setNativeProps({
+                    style: { fontFamily: typography.b1.fontFamily },
+                  })
+                }
+                style={[
+                  inputStyles.textInput,
+                  error != null && inputStyles.textInputInvalid,
+                  !isPassValid && inputStyles.textInputInvalid,
+                  { paddingRight: 44, fontFamily: typography.b1.fontFamily },
+                ]}
+              />
+              <View style={styles.showPasswordIcon}>
+                <Icon
+                  name={showPassword ? "visibility" : "visibility-off"}
+                  type="material"
+                  size={25}
+                  onPress={() => {
+                    setShowPassword(!showPassword);
+                  }}
+                />
+              </View>
             </View>
-          ) : null}
-          <View>
-            <TouchableOpacity
-              style={styles.loginBtn}
-              onPress={() => {
-                checkInputsAndSignIn();
-              }}
-            >
-              <Text style={{ ...typography.button.lg, color: colors.dark }}>
-                Logga in
-              </Text>
-            </TouchableOpacity>
-          </View>
-          <View style={styles.passReset}>
-            <Text
-              style={{ color: "#333333", marginRight: 4, ...typography.b2 }}
-            >
-              Glömt ditt lösenord?
-            </Text>
-            <TouchableOpacity
-              onPress={() => {
-                console.log("Tryckte på 'glömt lösenord'");
-                isOpen(true);
-              }}
-            >
-              <Text
-                style={{
-                  color: colors.primary,
-                  textDecorationLine: "underline",
-                  ...typography.b2,
-                  fontWeight: "700",
+            {error != null ? (
+              <View>
+                <Text
+                  style={{
+                    color: colors.error,
+                    ...typography.b2,
+                    marginBottom: 10,
+                  }}
+                >
+                  * {error}
+                </Text>
+              </View>
+            ) : null}
+            <View>
+              <TouchableOpacity
+                style={styles.loginBtn}
+                onPress={() => {
+                  checkInputsAndSignIn();
                 }}
               >
-                Tryck här
+                <Text style={{ ...typography.button.lg, color: colors.dark }}>
+                  Logga in
+                </Text>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.passReset}>
+              <Text
+                style={{ color: "#333333", marginRight: 4, ...typography.b2 }}
+              >
+                Glömt ditt lösenord?
               </Text>
-            </TouchableOpacity>
+              <TouchableOpacity
+                onPress={() => {
+                  console.log("Tryckte på 'glömt lösenord'");
+                  isOpen(true);
+                }}
+              >
+                <Text
+                  style={{
+                    color: colors.primary,
+                    textDecorationLine: "underline",
+                    ...typography.b2,
+                    fontWeight: "700",
+                  }}
+                >
+                  Tryck här
+                </Text>
+              </TouchableOpacity>
+            </View>
           </View>
-        </View>
-        {keyboardStatus != "Keyboard Shown" && <BottomLogo />}
+        </KeyboardAvoidingView>
+        <BottomLogo />
       </SafeAreaView>
     </ImageBackground>
   );
@@ -256,20 +267,20 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   logo: {
-    paddingVertical: 50,
+    flex: 0.8,
     alignItems: "center",
     justifyContent: "center",
   },
   logoImg: {
-    width: 200,
-    height: 100,
+    height: Dimensions.get("window").height * 0.15,
+    aspectRatio: 18 / 9,
   },
   motivationTexts: {
     ...typography.title,
     color: colors.dark,
     alignSelf: "center",
     fontWeight: "500",
-    marginBottom: 20,
+    marginTop: 30,
   },
   loginFormView: {
     paddingHorizontal: 18,
