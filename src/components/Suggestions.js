@@ -116,12 +116,6 @@ export function Suggestions({
 
   return (
     <View>
-      {rout.name === "HomePage" ? (
-        <Text style={styles.topH1}>Förslag & inspiration</Text>
-      ) : (
-        <Text style={styles.topH1}>Aktivitetsgalleri</Text>
-      )}
-
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
           <TouchableOpacity

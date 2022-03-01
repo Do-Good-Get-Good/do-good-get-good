@@ -31,7 +31,6 @@ export default function Login() {
   const [showModal, setShowModal] = useState(false);
   const [isEmailValid, setEmailValid] = useState(true);
   const [isPassValid, setPassValid] = useState(true);
-  const [keyboardStatus, setKeyboardStatus] = useState(undefined);
   const ref_input2 = useRef();
 
   const motivationTexts = [
@@ -100,20 +99,6 @@ export default function Login() {
     setRandomText(
       motivationTexts[Math.floor(Math.random() * motivationTexts.length)]
     );
-  }, []);
-
-  useEffect(() => {
-    const showSubscription = Keyboard.addListener("keyboardDidShow", () => {
-      setKeyboardStatus("Keyboard Shown");
-    });
-    const hideSubscription = Keyboard.addListener("keyboardDidHide", () => {
-      setKeyboardStatus("Keyboard Hidden");
-    });
-
-    return () => {
-      showSubscription.remove();
-      hideSubscription.remove();
-    };
   }, []);
 
   return (
