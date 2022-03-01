@@ -4,7 +4,7 @@ const typography = {
     fontFamily: "DIN Bold",
   },
   h2: {
-    fontSize: 32,
+    fontSize: 34,
     fontFamily: "DIN Medium Regular",
   },
   title: {
