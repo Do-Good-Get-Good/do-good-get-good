@@ -18,7 +18,7 @@ import ResetPassModal from "./ResetPassModal";
 import { Icon } from "react-native-elements";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import BottonLogo from "./BottomLogo";
+import BottomLogo from "./BottomLogo";
 
 export default function Login() {
   const [email, setEmail] = useState("");
