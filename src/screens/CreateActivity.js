@@ -13,11 +13,13 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import { Icon } from "react-native-elements";
-import  DropDownSmall  from "../components/DropDownSmall";
+import DropDownSmall from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-export function CreateActivity({ route, navigation }){
+export function CreateActivity({ route, navigation }) {
   const createActivityContext = useCreateActivityFunction();
   const { creatingNewUser, activityExist, newUserInfo } = route.params;
 
@@ -66,8 +68,6 @@ export function CreateActivity({ route, navigation }){
   // console.log("existingActivity  ", existingActivity);
   // console.log("checkBoxPressed   ", checkBoxPressed)
   // console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
-  
-  
 
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
@@ -86,17 +86,19 @@ export function CreateActivity({ route, navigation }){
   }
 
   useEffect(() => {
-    if(creatingNewUser === true){ 
-    if (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet") {
-      setExistingActivity(false);
-    } else if (
-      createActivityContext.sendChoiceFromDropDown != "Skapa ny aktivitet"
-    ) {
-      setExistingActivity(true);
-    } else {
-      console.log("Nothing selected in DropDown Menu");
+    if (creatingNewUser === true) {
+      if (
+        createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet"
+      ) {
+        setExistingActivity(false);
+      } else if (
+        createActivityContext.sendChoiceFromDropDown != "Skapa ny aktivitet"
+      ) {
+        setExistingActivity(true);
+      } else {
+        console.log("Nothing selected in DropDown Menu");
+      }
     }
-  }
   }, [createActivityContext.sendChoiceFromDropDown]);
 
   function chooseTitle() {
@@ -114,7 +116,7 @@ export function CreateActivity({ route, navigation }){
       return (
         <View>
           <View style={styles.dropDown}>
-            <  DropDownSmall/>
+            <DropDownSmall />
           </View>
         </View>
       );
@@ -197,18 +199,18 @@ export function CreateActivity({ route, navigation }){
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
-           testID="sendNewActivityToCreateActivityContext"
+            testID="sendNewActivityToCreateActivityContext"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
           <TouchableOpacity
-          testID="goBackButton"
+            testID="goBackButton"
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyleButtonBackAndCancel}
@@ -222,7 +224,7 @@ export function CreateActivity({ route, navigation }){
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
-          testID="Save button"
+            testID="Save button"
             onPress={() => sendNewActivityToCreateActivityContext()}
           >
             <Text style={styles.buttonSave}>Spara</Text>
@@ -233,7 +235,7 @@ export function CreateActivity({ route, navigation }){
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyleButtonBackAndCancel}
@@ -252,9 +254,11 @@ export function CreateActivity({ route, navigation }){
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
-      fontSize: 18,
-      color: "#333333",
-      backgroundColor: "white",
+      // fontSize: 18,
+      fontFamily: typography.b1.fontFamily,
+      fontSize: typography.b1.fontSize,
+      color: colors.dark,
+      backgroundColor: colors.background,
       ...Platform.select({
         ios: {
           shadowOffset: {
@@ -274,21 +278,21 @@ export function CreateActivity({ route, navigation }){
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: titleFilledUp === false ? "#C62F25" : "white",
+      borderColor: titleFilledUp === false ? colors.error : colors.background,
     };
   };
   cityBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: cityFilledUp === false ? "#C62F25" : "white",
+      borderColor: cityFilledUp === false ? colors.error : colors.background,
     };
   };
   placeBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: placeFilledUp === false ? "#C62F25" : "white",
+      borderColor: placeFilledUp === false ? colors.error : colors.background,
     };
   };
 
@@ -296,13 +300,12 @@ export function CreateActivity({ route, navigation }){
     return (
       <View style={styles.containerForAllInput}>
         <TextInput
-    
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
           value={title}
           placeholder="Aktivitet [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         {titleFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -313,7 +316,7 @@ export function CreateActivity({ route, navigation }){
           onChangeText={setPlace}
           value={place}
           placeholder="Var [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         {placeFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -324,7 +327,7 @@ export function CreateActivity({ route, navigation }){
           onChangeText={setCity}
           value={city}
           placeholder="Aktör [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         {cityFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -336,18 +339,22 @@ export function CreateActivity({ route, navigation }){
           onChangeText={setDescription}
           value={description}
           placeholder="Vad [valfritt]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image testID="photo" style={styles.image} source={setImageForNewActivity()}></Image>
+          <Image
+            testID="photo"
+            style={styles.image}
+            source={setImageForNewActivity()}
+          ></Image>
 
           <TouchableOpacity
-          testID="navigateToImagesGallery"
+            testID="navigateToImagesGallery"
             style={{ flex: 1 }}
             onPress={() => navigation.navigate("ImagesGallery")}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyle}
@@ -359,7 +366,7 @@ export function CreateActivity({ route, navigation }){
         <View style={styles.containerTextAndCheckbox}>
           <Text style={styles.textNearCheckBox}>Lägg till somTG-favorit</Text>
           <TouchableOpacity
-           testID="buttonSomTGFavorit"
+            testID="buttonSomTGFavorit"
             onPress={() => {
               checkBoxPressed === false
                 ? setCheckBoxPressed(true)
@@ -375,7 +382,9 @@ export function CreateActivity({ route, navigation }){
             )}
           </TouchableOpacity>
         </View>
-        <Text>[TG-favoriter vissas för alla användare]</Text>
+        <Text style={styles.textUnderCheckBox}>
+          [TG-favoriter vissas för alla användare]
+        </Text>
         {twoBottomButtonsForAllViews()}
       </View>
     );
@@ -428,7 +437,7 @@ export function CreateActivity({ route, navigation }){
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <ScrollView>
         <View style={styles.container}>
@@ -448,7 +457,7 @@ export function CreateActivity({ route, navigation }){
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 export default CreateActivity;
 
 const styles = StyleSheet.create({
@@ -458,9 +467,10 @@ const styles = StyleSheet.create({
   },
   textMainTitle: {
     flex: 3,
-    fontSize: 34,
+    ...typography.h2,
+    fontWeight: "500",
     marginBottom: 10,
-    color: "#333333",
+    color: colors.dark,
   },
   titleContainer: {
     flex: 1,
@@ -468,7 +478,7 @@ const styles = StyleSheet.create({
   },
   numbersNearTitle: {
     flex: 1,
-    fontSize: 18,
+    ...typography.b1,
     marginTop: 15,
   },
   dropDown: {
@@ -493,45 +503,20 @@ const styles = StyleSheet.create({
   containerForAllInput: {
     marginHorizontal: 16,
   },
-  textInputTitleCityPlace: {
-    flex: 1,
-    paddingVertical: 13,
-    paddingLeft: 11,
-    marginTop: 9,
-    fontSize: 18,
-    color: "#333333",
-    backgroundColor: "white",
-
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
   textInputDescription: {
     flex: 1,
     flexShrink: 1,
     paddingVertical: 13,
     paddingLeft: 11,
     marginTop: 20,
-    fontSize: 18,
-    color: "#333333",
+    ...typography.b1,
+    color: colors.dark,
     marginBottom: 7,
     paddingBottom: 89,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: colors.background,
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -553,17 +538,18 @@ const styles = StyleSheet.create({
   textButtonInsert: {
     flex: 1,
     letterSpacing: 2,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light,
     marginVertical: 1,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#F5F5F5",
+    borderColor: colors.light,
     textAlign: "center",
     paddingTop: 12,
     paddingHorizontal: 64,
     overflow: "hidden",
-    fontSize: 20,
-    color: "#333333",
+    ...typography.button.lg,
+    fontWeight: "500",
+    color: colors.dark,
   },
   image: {
     flex: 0.5,
@@ -573,8 +559,8 @@ const styles = StyleSheet.create({
     height: 98,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "white",
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
   },
   buttonBorderStyle: {
     borderRadius: 5,
@@ -583,12 +569,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 25,
   },
-  imageBorderStyle: {
-    borderRadius: 5,
-    height: 101,
-    width: 120,
-    alignItems: "center",
-  },
   containerTextAndCheckbox: {
     flex: 1,
     marginTop: 10,
@@ -596,24 +576,28 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   checkBoxTrue: {
-    backgroundColor: "#84BD00",
+    backgroundColor: colors.primary,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#333333",
+    borderColor: colors.dark,
   },
   checkBoxFalse: {
     borderRadius: 5,
     padding: 10,
     borderWidth: 1,
-    borderColor: "#5B6770",
-    backgroundColor: "white",
+    borderColor: colors.secondary,
+    backgroundColor: colors.background,
   },
   textNearCheckBox: {
     marginRight: 5,
-    fontSize: 18,
+    fontSize: typography.b1.fontSize,
     fontWeight: "bold",
-    color: "#333333",
+    color: colors.dark,
     marginRight: 17,
+  },
+  textUnderCheckBox: {
+    fontSize: typography.b2.fontSize,
+    fontFamily: typography.b2.fontFamily,
   },
   containerCityPlaceDescription: {
     flex: 1,
@@ -622,24 +606,27 @@ const styles = StyleSheet.create({
   },
   textCityPlace: {
     flex: 1,
-    fontSize: 18,
-    color: "#333333",
-    backgroundColor: "#B7B7B7",
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
+    color: colors.dark,
+    backgroundColor: colors.disabled,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#B7B7B7",
+    borderColor: colors.disabled,
     marginBottom: 13,
     padding: 13,
     overflow: "hidden",
   },
   textDescription: {
     flex: 1,
-    fontSize: 18,
-    color: "#333333",
-    backgroundColor: "#B7B7B7",
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
+    fontWeight: "500",
+    color: colors.dark,
+    backgroundColor: colors.disabled,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#B7B7B7",
+    borderColor: colors.disabled,
     marginBottom: 13,
     padding: 13,
     paddingBottom: 90,
@@ -648,13 +635,14 @@ const styles = StyleSheet.create({
   },
   textButtonChangeImage: {
     flex: 1.5,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#B7B7B7",
+    borderColor: colors.disabled,
     textAlign: "center",
-    backgroundColor: "#B7B7B7",
-    color: "#7C7C7C",
+    backgroundColor: colors.disabled,
+    color: colors.dark,
     marginVertical: 30,
     paddingTop: 12,
     overflow: "hidden",
@@ -668,8 +656,8 @@ const styles = StyleSheet.create({
     height: 98,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "white",
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
   },
   containerForTwoBottomButtons: {
     flex: 1,
@@ -678,36 +666,39 @@ const styles = StyleSheet.create({
   },
   buttonSave: {
     flex: 1,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     overflow: "hidden",
     paddingVertical: 13,
   },
 
   buttonBack: {
     flex: 1,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     paddingVertical: 12,
-    paddingHorizontal: 148,
-    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 142,
+    backgroundColor: colors.light,
     borderRadius: 5,
     overflow: "hidden",
   },
   buttonCancel: {
     flex: 1,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     paddingVertical: 12,
-    paddingHorizontal: 155,
-    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 150,
+    backgroundColor: colors.light,
     borderRadius: 5,
     overflow: "hidden",
   },
@@ -720,8 +711,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   warningAboutRequired: {
-    color: "#C62F25",
-    // marginLeft: 15,
+    color: colors.error,
     marginTop: 1,
   },
 });
