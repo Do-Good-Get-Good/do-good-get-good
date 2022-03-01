@@ -27,7 +27,6 @@ export function ImagesGallery({ navigation }) {
   }
   const imageStyle = useCallback(
     (selected) => {
-      console.log("selected ", selected);
       return {
         flex: 1,
         flexDirection: "row",
@@ -64,7 +63,7 @@ export function ImagesGallery({ navigation }) {
           numColumns={2}
           renderItem={({ item, index }) => (
             <TouchableOpacity
-              // testID={`index ${index}, name ${item.name}`}
+              testID="pressOnImage"
               onPress={() => changeBorderStyle(index, item.name)}
               style={{ flex: 0.5, flexDirection: "row" }}
             >
@@ -77,11 +76,17 @@ export function ImagesGallery({ navigation }) {
           )}
         />
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity onPress={() => buttonSavePressed()}>
+          <TouchableOpacity
+            testID="saveButton"
+            onPress={() => buttonSavePressed()}
+          >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
 
-          <TouchableOpacity onPress={() => navigation.goBack()}>
+          <TouchableOpacity
+            testID="backButton"
+            onPress={() => navigation.goBack()}
+          >
             <LinearGradient
               colors={["#84BD00", "#5B6770"]}
               start={{ x: 0, y: 0 }}
