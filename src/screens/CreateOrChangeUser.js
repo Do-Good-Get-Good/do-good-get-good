@@ -13,6 +13,8 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import { useCreateUserFunction } from "../context/CreateUserContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
   const createUserOrChangeContext = useCreateUserFunction();
@@ -72,7 +74,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       navigation.navigate("CreateActivity", {
         creatingNewUser: true,
         // activityExist: null,
-       
+
         newUserInfo: {
           first_name: name,
           last_name: surname,
@@ -122,14 +124,14 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity onPress={() => sendNewUserToCreateActivityScreen()}>
-            <Text style={styles.buttonSave}>Näst</Text>
+            <Text style={styles.buttonSave}>Nästa</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyleButtonBackAndCancel}
@@ -150,7 +152,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyleButtonBackAndCancel}
@@ -171,9 +173,10 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
-      fontSize: 18,
-      color: "#333333",
-      backgroundColor: "white",
+      fontSize: typography.b1.fontSize,
+      fontFamily: typography.b1.fontFamily,
+      color: colors.dark,
+      backgroundColor: colors.background,
       ...Platform.select({
         ios: {
           shadowOffset: {
@@ -193,28 +196,29 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: nameFilledUp === false ? "#C62F25" : "white",
+      borderColor: nameFilledUp === false ? colors.error : colors.background,
     };
   };
   surnameBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: surnameFilledUp === false ? "#C62F25" : "white",
+      borderColor: surnameFilledUp === false ? colors.error : colors.background,
     };
   };
   emaiBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: emailFilledUp === false ? "#C62F25" : "white",
+      borderColor: emailFilledUp === false ? colors.error : colors.background,
     };
   };
   passwordBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: passwordFilledUp === false ? "#C62F25" : "white",
+      borderColor:
+        passwordFilledUp === false ? colors.error : colors.background,
     };
   };
 
@@ -227,7 +231,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           onChangeText={setEmail}
           value={email}
           placeholder="E-mail [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         {emailFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -238,7 +242,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           onChangeText={setPassword}
           value={password}
           placeholder="Lösenord [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholderTextColor={colors.dark}
         />
         {passwordFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -292,7 +296,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <ScrollView>
         <View style={styles.container}>
@@ -302,36 +306,35 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
               {newUser === true ? "   1/2" : null}
             </Text>
           </View>
-          <View style={styles.containerInputButton}>
-            <View style={styles.containerForAllInput}>
-              <TextInput
-                style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
-                maxLength={30}
-                onChangeText={setName}
-                value={name}
-                placeholder="Förnamn [obligatorisk]"
-                placeholderTextColor="#333333"
-              />
-              {nameFilledUp === false ? (
-                <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-              ) : null}
-              <TextInput
-                style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
-                maxLength={30}
-                onChangeText={setSurname}
-                value={surname}
-                placeholder="Efternamn [obligatorisk]"
-                placeholderTextColor="#333333"
-              />
-              {surnameFilledUp === false ? (
-                <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-              ) : null}
 
-              {newUser === true ? viewForNewUser() : null}
-              {newUser === false ? pressedUserStatusActive() : null}
-            </View>
-            <View style={{ flex: 1 }}>{twoBottomButtonsForAllViews()}</View>
+          <View style={styles.containerForAllInput}>
+            <TextInput
+              style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
+              maxLength={30}
+              onChangeText={setName}
+              value={name}
+              placeholder="Förnamn [obligatorisk]"
+              placeholderTextColor={colors.dark}
+            />
+            {nameFilledUp === false ? (
+              <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+            ) : null}
+            <TextInput
+              style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
+              maxLength={30}
+              onChangeText={setSurname}
+              value={surname}
+              placeholder="Efternamn [obligatorisk]"
+              placeholderTextColor={colors.dark}
+            />
+            {surnameFilledUp === false ? (
+              <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+            ) : null}
+
+            {newUser === true ? viewForNewUser() : null}
+            {newUser === false ? pressedUserStatusActive() : null}
           </View>
+          {twoBottomButtonsForAllViews()}
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -344,100 +347,41 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
     marginTop: 15,
   },
-  containerInputButton: {
-    flex: 1,
-  },
   textMainTitle: {
-    flex: 1.2,
-    fontSize: 34,
+    ...typography.h2,
+    fontWeight: "500",
     marginBottom: 10,
-    color: "#333333",
+    color: colors.dark,
   },
   titleContainer: {
-    flex: 1,
     flexDirection: "row",
   },
   numbersNearTitle: {
-    flex: 1,
-    fontSize: 18,
+    ...typography.b1,
     marginTop: 13,
-    color: "#333333",
+    color: colors.dark,
   },
   containerForAllInput: {
     flex: 1,
   },
-  textInputTitleCityPlace: {
-    flex: 1,
-    paddingVertical: 13,
-    paddingLeft: 11,
-    marginTop: 9,
-    fontSize: 18,
-    color: "#333333",
-    backgroundColor: "white",
-
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
-  textInputDescription: {
-    flex: 1,
-    flexShrink: 1,
-    paddingVertical: 13,
-    paddingLeft: 11,
-    marginTop: 20,
-    fontSize: 18,
-    color: "#333333",
-    marginBottom: 7,
-    paddingBottom: 89,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
   containerForTwoBottomButtons: {
-    flex: 1,
     marginTop: 250,
     marginBottom: 40,
   },
   buttonSave: {
-    flex: 1,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     overflow: "hidden",
     paddingVertical: 13,
   },
 
   buttonBorderStyleButtonBackAndCancel: {
-    flex: 1,
     marginTop: 10,
     borderRadius: 5,
     paddingVertical: 1,
@@ -445,26 +389,25 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   buttonCancel: {
-    flex: 1,
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     paddingVertical: 12,
-    paddingHorizontal: 155,
-    backgroundColor: "#F5F5F5",
+    paddingHorizontal: 151,
+    backgroundColor: colors.light,
     borderRadius: 5,
     overflow: "hidden",
   },
   warningAboutRequired: {
-    color: "#C62F25",
-
+    color: colors.error,
     marginTop: 1,
   },
   textChangeStatusActive: {
     flex: 1,
     marginTop: 30,
-    color: "#333333",
-    fontSize: 16,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
     fontWeight: "bold",
     marginLeft: 2,
