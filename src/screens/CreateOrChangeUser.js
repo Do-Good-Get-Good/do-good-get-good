@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Platform,
   ScrollView,
   SafeAreaView,
   TextInput,
+  Dimensions,
 } from "react-native";
 import Menu from "../components/Menu";
 import { useCreateUserFunction } from "../context/CreateUserContext";
@@ -123,20 +123,23 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     if (newUser === true) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity onPress={() => sendNewUserToCreateActivityScreen()}>
-            <Text style={styles.buttonSave}>Nästa</Text>
+          <TouchableOpacity
+            onPress={() => sendNewUserToCreateActivityScreen()}
+            style={styles.buttonSave}
+          >
+            <Text style={styles.buttonSaveText}>Nästa</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
+            style={styles.buttonCancel}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.backAndCancelBorderGradient}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.buttonCancelText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -144,20 +147,23 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     } else if (newUser === false) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity onPress={() => buttonSavePressed()}>
-            <Text style={styles.buttonSave}>Spara</Text>
+          <TouchableOpacity
+            onPress={() => buttonSavePressed()}
+            style={styles.buttonSave}
+          >
+            <Text style={styles.buttonSaveText}>Spara</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1 }}
+            style={styles.buttonCancel}
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.backAndCancelBorderGradient}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.buttonCancelText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -169,7 +175,6 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
   nameSurnameEmailPasswordStyle = function () {
     return {
-      flex: 1,
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
@@ -230,7 +235,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           maxLength={30}
           onChangeText={setEmail}
           value={email}
-          placeholder="E-mail [obligatorisk]"
+          placeholder="E-mail"
           placeholderTextColor={colors.dark}
         />
         {emailFilledUp === false ? (
@@ -241,7 +246,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           maxLength={30}
           onChangeText={setPassword}
           value={password}
-          placeholder="Lösenord [obligatorisk]"
+          placeholder="Lösenord"
           placeholderTextColor={colors.dark}
         />
         {passwordFilledUp === false ? (
@@ -298,44 +303,42 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>
             <Text style={styles.numbersNearTitle}>
-              {newUser === true ? "   1/2" : null}
+              {newUser === true ? "1/2" : null}
             </Text>
           </View>
 
-          <View style={styles.containerForAllInput}>
-            <TextInput
-              style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
-              maxLength={30}
-              onChangeText={setName}
-              value={name}
-              placeholder="Förnamn [obligatorisk]"
-              placeholderTextColor={colors.dark}
-            />
-            {nameFilledUp === false ? (
-              <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-            ) : null}
-            <TextInput
-              style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
-              maxLength={30}
-              onChangeText={setSurname}
-              value={surname}
-              placeholder="Efternamn [obligatorisk]"
-              placeholderTextColor={colors.dark}
-            />
-            {surnameFilledUp === false ? (
-              <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-            ) : null}
+          <TextInput
+            style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
+            maxLength={30}
+            onChangeText={setName}
+            value={name}
+            placeholder="Förnamn"
+            placeholderTextColor={colors.dark}
+          />
+          {nameFilledUp === false ? (
+            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+          ) : null}
+          <TextInput
+            style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
+            maxLength={30}
+            onChangeText={setSurname}
+            value={surname}
+            placeholder="Efternamn"
+            placeholderTextColor={colors.dark}
+          />
+          {surnameFilledUp === false ? (
+            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+          ) : null}
 
-            {newUser === true ? viewForNewUser() : null}
-            {newUser === false ? pressedUserStatusActive() : null}
-          </View>
-          {twoBottomButtonsForAllViews()}
+          {newUser === true ? viewForNewUser() : null}
+          {newUser === false ? pressedUserStatusActive() : null}
         </View>
+        {twoBottomButtonsForAllViews()}
       </ScrollView>
     </SafeAreaView>
   );
@@ -343,9 +346,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal: 16,
-    marginTop: 15,
+    minHeight: Dimensions.get("window").height - 232,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   textMainTitle: {
     ...typography.h2,
@@ -360,52 +363,53 @@ const styles = StyleSheet.create({
     ...typography.b1,
     marginTop: 13,
     color: colors.dark,
+    paddingLeft: 10,
   },
   containerForAllInput: {
-    flex: 1,
+    height: 500,
   },
   containerForTwoBottomButtons: {
-    marginTop: 250,
-    marginBottom: 40,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
   buttonSave: {
+    borderRadius: 5,
+    backgroundColor: colors.primary,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  buttonSaveText: {
     ...typography.button.lg,
     fontWeight: "500",
-    textAlign: "center",
     letterSpacing: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.primary,
-    overflow: "hidden",
-    paddingVertical: 13,
   },
-
-  buttonBorderStyleButtonBackAndCancel: {
-    marginTop: 10,
+  backAndCancelBorderGradient: {
     borderRadius: 5,
     paddingVertical: 1,
     paddingHorizontal: 1,
-    alignItems: "center",
   },
   buttonCancel: {
+    height: 50,
+    marginTop: 10,
+    borderRadius: 5,
+  },
+  buttonCancelText: {
     ...typography.button.lg,
     fontWeight: "500",
-    textAlign: "center",
     letterSpacing: 2,
-    paddingVertical: 12,
-    paddingHorizontal: 151,
     backgroundColor: colors.light,
     borderRadius: 5,
-    overflow: "hidden",
+    height: "100%",
+    textAlignVertical: "center",
+    textAlign: "center",
   },
   warningAboutRequired: {
     color: colors.error,
     marginTop: 1,
   },
   textChangeStatusActive: {
-    flex: 1,
-    marginTop: 30,
+    marginTop: 20,
     color: colors.dark,
     ...typography.button.sm,
     textDecorationLine: "underline",

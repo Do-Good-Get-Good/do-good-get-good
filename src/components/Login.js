@@ -166,12 +166,7 @@ export default function Login() {
                 secureTextEntry={showPassword ? false : true}
                 returnKeyType="send"
                 onSubmitEditing={() => checkInputsAndSignIn()}
-                ref={(ref) =>
-                  ref &&
-                  ref.setNativeProps({
-                    style: { fontFamily: typography.b1.fontFamily },
-                  })
-                }
+                ref={ref_input2}
                 style={[
                   inputStyles.textInput,
                   error != null && inputStyles.textInputInvalid,
