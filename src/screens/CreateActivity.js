@@ -337,7 +337,7 @@ export function CreateActivity({ route, navigation }) {
           multiline={true}
           onChangeText={setDescription}
           value={description}
-          placeholder="Vad [valfritt]"
+          placeholder="Vad"
           placeholderTextColor={colors.dark}
         />
         <View style={styles.containerImageAndInsertButton}>
