@@ -349,16 +349,12 @@ export function ActivityCard({ route, navigation }) {
       <ScrollView style={styles.container}>
         <View style={{ flex: 1, marginBottom: 20 }}>
           <View style={styles.containerArrowAndText}>
-            <Icon
-              style={styles.arrowIcon}
-              name="arrow-back"
-              color={colors.dark}
-              size={25}
-            />
             <TouchableOpacity
               testID="buttonGoBack"
               onPress={() => navigation.goBack()}
+              style={{ flexDirection: "row", alignItems: "center" }}
             >
+              <Icon name="arrow-back" color={colors.dark} size={25} />
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
           </View>

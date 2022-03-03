@@ -206,7 +206,6 @@ export function CreateActivity({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="goBackButton"
-            style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
@@ -304,7 +303,7 @@ export function CreateActivity({ route, navigation }) {
           maxLength={30}
           onChangeText={setTitle}
           value={title}
-          placeholder="Aktivitet [obligatorisk]"
+          placeholder="Aktivitet"
           placeholderTextColor={colors.dark}
         />
         {titleFilledUp === false ? (
@@ -315,7 +314,7 @@ export function CreateActivity({ route, navigation }) {
           maxLength={30}
           onChangeText={setPlace}
           value={place}
-          placeholder="Var [obligatorisk]"
+          placeholder="Var"
           placeholderTextColor={colors.dark}
         />
         {placeFilledUp === false ? (
@@ -326,7 +325,7 @@ export function CreateActivity({ route, navigation }) {
           maxLength={30}
           onChangeText={setCity}
           value={city}
-          placeholder="Aktör [obligatorisk]"
+          placeholder="Aktör"
           placeholderTextColor={colors.dark}
         />
         {cityFilledUp === false ? (
@@ -346,11 +345,10 @@ export function CreateActivity({ route, navigation }) {
             testID="photo"
             style={styles.image}
             source={setImageForNewActivity()}
-          ></Image>
+          />
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
-            style={{ flex: 1 }}
             onPress={() => navigation.navigate("ImagesGallery")}
           >
             <LinearGradient
@@ -383,7 +381,7 @@ export function CreateActivity({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <Text style={styles.textUnderCheckBox}>
-          [TG-favoriter vissas för alla användare]
+          TG-favoriter vissas för alla användare
         </Text>
         {twoBottomButtonsForAllViews()}
       </View>
@@ -504,15 +502,15 @@ const styles = StyleSheet.create({
     marginHorizontal: 16,
   },
   textInputDescription: {
-    flex: 1,
-    flexShrink: 1,
-    paddingVertical: 13,
     paddingLeft: 11,
+    paddingTop: 11,
+    paddingBottom: 11,
+    textAlignVertical: "top",
+    height: 130,
     marginTop: 20,
     ...typography.b1,
     color: colors.dark,
-    marginBottom: 7,
-    paddingBottom: 89,
+    marginBottom: 30,
     backgroundColor: colors.background,
     borderRadius: 5,
     borderWidth: 1,
@@ -531,9 +529,10 @@ const styles = StyleSheet.create({
     }),
   },
   containerImageAndInsertButton: {
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
   },
   textButtonInsert: {
     flex: 1,
@@ -546,17 +545,14 @@ const styles = StyleSheet.create({
     textAlign: "center",
     paddingTop: 12,
     paddingHorizontal: 64,
-    overflow: "hidden",
     ...typography.button.lg,
     fontWeight: "500",
     color: colors.dark,
   },
   image: {
-    flex: 0.5,
     resizeMode: "contain",
-    marginRight: 81,
-    marginTop: 10,
-    height: 98,
+    height: 100,
+    width: 100,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: colors.primary,
@@ -567,7 +563,6 @@ const styles = StyleSheet.create({
     height: 55,
     width: 200,
     alignItems: "center",
-    marginTop: 25,
   },
   containerTextAndCheckbox: {
     flex: 1,
@@ -660,47 +655,44 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   containerForTwoBottomButtons: {
-    flex: 1,
-    marginTop: 15,
-    marginBottom: 40,
+    marginTop: 30,
+    marginBottom: 16,
   },
   buttonSave: {
-    flex: 1,
     ...typography.button.lg,
     fontWeight: "500",
     textAlign: "center",
+    textAlignVertical: "center",
     letterSpacing: 2,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.primary,
     backgroundColor: colors.primary,
     overflow: "hidden",
-    paddingVertical: 13,
+    height: 55,
   },
 
   buttonBack: {
-    flex: 1,
     ...typography.button.lg,
     fontWeight: "500",
     textAlign: "center",
+    textAlignVertical: "center",
     letterSpacing: 2,
-    paddingVertical: 12,
-    paddingHorizontal: 142,
+    height: 55,
+    width: "100%",
     backgroundColor: colors.light,
     borderRadius: 5,
-    overflow: "hidden",
   },
   buttonCancel: {
-    flex: 1,
     ...typography.button.lg,
     fontWeight: "500",
     textAlign: "center",
+    textAlignVertical: "center",
     letterSpacing: 2,
-    paddingVertical: 12,
-    paddingHorizontal: 150,
+    height: 55,
+    width: "100%",
     backgroundColor: colors.light,
     borderRadius: 5,
-    overflow: "hidden",
   },
   buttonBorderStyleButtonBackAndCancel: {
     flex: 1,

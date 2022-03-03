@@ -49,7 +49,7 @@ describe("Testing MenuOverlay", () => {
       <MenuOverlay isVisible={true} />
     );
     expect(getAllByText("Stäng").length).toBe(1);
-    expect(getAllByText("Byt språk knapp").length).toBe(1);
+    expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     const adminLink = queryByText("Aktiviteter");
     expect(adminLink).toBeNull();
@@ -65,7 +65,7 @@ describe("Testing MenuOverlay", () => {
       <MenuOverlay isVisible={true} />
     );
     expect(getAllByText("Stäng").length).toBe(1);
-    expect(getAllByText("Byt språk knapp").length).toBe(1);
+    expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
     const userLink = queryByText("Min tid");

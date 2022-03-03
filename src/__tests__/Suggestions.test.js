@@ -78,26 +78,11 @@ const navigation = {
 jest.mock("@react-navigation/native");
 
 describe("Testing Suggestions", () => {
-  it("Suggestions exist in AdminActivityGallery", () => {
-    require("@react-navigation/native").useRoute.mockReturnValue({
-      name: "AdminActivityGallery",
-    });
-    const { getAllByText } = render(
-      <Suggestions
-        search={search}
-        adminGallery={adminGallery}
-        chooseActive={chooseActive}
-        inactiveActivities={inactiveActivities}
-      />
-    );
-    expect(getAllByText("Aktivitetsgalleri").length).toBe(1);
-  });
-
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "AdminActivityGallery",
     });
-    const { getAllByText, getByTestId } = render(
+    const { getByTestId } = render(
       <Suggestions
         navigation={navigation}
         search={search}
@@ -106,7 +91,6 @@ describe("Testing Suggestions", () => {
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("Aktivitetsgalleri").length).toBe(1);
 
     const buttonLookDetails = getByTestId("lookDetails");
     fireEvent.press(buttonLookDetails);
