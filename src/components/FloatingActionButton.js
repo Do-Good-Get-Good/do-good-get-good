@@ -3,6 +3,8 @@ import { StyleSheet, View, Text, Platform } from "react-native";
 import { FAB, Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const FloatingActionButton = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -23,7 +25,7 @@ const FloatingActionButton = ({}) => {
               setIsOpen(false);
             }}
           >
-            <Text>Lägg till aktivitet</Text>
+            <Text style={styles.buttonText}>Lägg till aktivitet</Text>
           </TouchableOpacity>
           <TouchableOpacity
             testID="CreateOrChangeUser.button"
@@ -34,7 +36,7 @@ const FloatingActionButton = ({}) => {
               });
             }}
           >
-            <Text>Lägg till användare</Text>
+            <Text style={styles.buttonText}>Lägg till användare</Text>
           </TouchableOpacity>
         </View>
       ) : null}
@@ -46,7 +48,7 @@ const FloatingActionButton = ({}) => {
         visible
         style={styles.fab}
         placement="right"
-        color="#84BD00"
+        color={colors.primary}
         onPress={() => {
           setIsOpen(!isOpen);
         }}
@@ -68,7 +70,7 @@ const styles = StyleSheet.create({
     right: 16,
   },
   buttonStyle: {
-    backgroundColor: "#84BD00",
+    backgroundColor: colors.primary,
     paddingHorizontal: 15,
     paddingVertical: 15,
     marginTop: 10,
@@ -86,5 +88,9 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
+  },
+  buttonText: {
+    fontFamily: typography.button.sm.fontFamily,
+    fontSize: typography.button.sm.fontSize,
   },
 });

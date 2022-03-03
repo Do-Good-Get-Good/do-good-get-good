@@ -13,6 +13,8 @@ import Menu from "../components/Menu";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import firestore from "@react-native-firebase/firestore";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
@@ -47,10 +49,8 @@ const Faq = () => {
 
     getData().then((res) => {
       if (res != null && res[1] + minutesToCompare > curentTime) {
-        console.log("res come from local storege___________   ");
         setFaqArray(res[0]);
       } else {
-        console.log("res come from Firebase______________  ");
         getFaqData();
       }
     });
@@ -133,7 +133,7 @@ const Faq = () => {
                   </Text>
                   <Icon
                     style={styles.icon}
-                    color="#5B6770"
+                    color={colors.secondary}
                     name={
                       item.opened === true ? "arrow-drop-up" : "arrow-drop-down"
                     }
@@ -165,17 +165,16 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   headerText: {
+    ...typography.h2,
     fontWeight: "500",
-    fontSize: 34,
     marginTop: 30,
   },
   errorText: {
     fontSize: 20,
-    color: "red",
+    color: colors.error,
   },
   headerDesc: {
-    fontWeight: "400",
-    fontSize: 16,
+    ...typography.b2,
     marginBottom: 10,
   },
   containterForDropDown: {
@@ -190,9 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "white",
-    overflow: "hidden",
-    borderColor: "white",
+    backgroundColor: colors.background,
     marginTop: 10,
   },
   dropDownOpened: {
@@ -204,10 +201,10 @@ const styles = StyleSheet.create({
   },
   textQuestion: {
     marginLeft: 18,
-    fontSize: 18,
+    ...typography.b1,
   },
   textAnswerView: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     paddingHorizontal: 18,
     paddingTop: 4,
     paddingBottom: 18,
@@ -215,6 +212,6 @@ const styles = StyleSheet.create({
     borderBottomRightRadius: 2,
   },
   textAnswer: {
-    fontSize: 16,
+    ...typography.b2,
   },
 });

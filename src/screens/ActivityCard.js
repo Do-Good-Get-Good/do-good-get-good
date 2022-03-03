@@ -17,6 +17,10 @@ import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import BottomLogo from "../components/BottomLogo";
+
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
@@ -120,7 +124,11 @@ export function ActivityCard({ route, navigation }) {
 
   function alertForArchivingAndDelete() {
     return (
-      <Overlay overlayStyle={styles.overlay} isVisible={visible}>
+      <Overlay
+        overlayStyle={styles.overlay}
+        isVisible={visible}
+        onBackdropPress={() => setVisible(!visible)}
+      >
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
@@ -182,7 +190,7 @@ export function ActivityCard({ route, navigation }) {
       <View style={styles.containerDeleteAndText}>
         <Icon
           style={styles.iconDelete}
-          color="#333333"
+          color={colors.dark}
           name="delete-outline"
           type="material-community"
           size={25}
@@ -205,7 +213,7 @@ export function ActivityCard({ route, navigation }) {
           <TouchableOpacity>
             <Icon
               style={styles.iconArchiveArrow}
-              color="#333333"
+              color={colors.dark}
               name="archive-arrow-up-outline"
               type="material-community"
               size={25}
@@ -227,7 +235,7 @@ export function ActivityCard({ route, navigation }) {
           <TouchableOpacity>
             <Icon
               style={styles.iconArchiveArrow}
-              color="#333333"
+              color={colors.dark}
               name="archive-arrow-down-outline"
               type="material-community"
               size={25}
@@ -257,7 +265,7 @@ export function ActivityCard({ route, navigation }) {
           <TouchableOpacity>
             <Icon
               style={styles.iconStar}
-              color="#333333"
+              color={colors.dark}
               name="star"
               type="material-community"
               size={25}
@@ -279,7 +287,7 @@ export function ActivityCard({ route, navigation }) {
           <TouchableOpacity>
             <Icon
               style={styles.iconStar}
-              color="#333333"
+              color={colors.dark}
               name="star-outline"
               type="material-community"
               size={25}
@@ -305,7 +313,7 @@ export function ActivityCard({ route, navigation }) {
           <TouchableOpacity>
             <Icon
               style={styles.iconPencil}
-              color="#333333"
+              color={colors.dark}
               name="pencil-outline"
               type="material-community"
               size={25}
@@ -336,21 +344,17 @@ export function ActivityCard({ route, navigation }) {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
-        <View style={styles.container}>
+      <ScrollView style={styles.container}>
+        <View style={{ flex: 1, marginBottom: 20 }}>
           <View style={styles.containerArrowAndText}>
-            <Icon
-              style={styles.arrowIcon}
-              name="arrow-back"
-              color="#333333"
-              size={25}
-            />
             <TouchableOpacity
               testID="buttonGoBack"
               onPress={() => navigation.goBack()}
+              style={{ flexDirection: "row", alignItems: "center" }}
             >
+              <Icon name="arrow-back" color={colors.dark} size={25} />
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
           </View>
@@ -364,7 +368,7 @@ export function ActivityCard({ route, navigation }) {
             <Icon
               type="material-community"
               name="map-marker-outline"
-              color="#333333"
+              color={colors.dark}
               size={25}
             />
             <Text style={styles.textCity}>{activity.city}</Text>
@@ -373,7 +377,7 @@ export function ActivityCard({ route, navigation }) {
             <Icon
               type="material-community"
               name="information-outline"
-              color="#333333"
+              color={colors.dark}
               size={25}
             />
             <Text numberOfLines={2} style={styles.textDescription}>
@@ -386,14 +390,9 @@ export function ActivityCard({ route, navigation }) {
           {adminOpenedActyvity === true && activeActivities === false
             ? adminActionsForInactiveActivities()
             : null}
+          {alertForArchivingAndDelete()}
         </View>
-        <View style={styles.logo}>
-          <Image
-            source={require("../img/Technogarden-logotyp-Large.png")}
-            style={{ width: 140, height: "55%" }}
-          />
-        </View>
-        {alertForArchivingAndDelete()}
+        <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );
@@ -403,155 +402,143 @@ export default ActivityCard;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal: 16,
+    height: 200,
+    paddingHorizontal: 16,
   },
   containerArrowAndText: {
-    flex: 1,
     flexDirection: "row",
     marginLeft: -5,
     marginTop: 30,
   },
-  arrowIcon: { flex: 1 },
   textNearArrow: {
-    flex: 1,
-    fontSize: 16,
+    fontFamily: typography.button.sm.fontFamily,
+    fontSize: typography.button.sm.fontSize,
+    fontWeight: "700",
     textDecorationLine: "underline",
-    color: "#333333",
-    fontWeight: "bold",
+    color: colors.dark,
+    marginLeft: 8,
   },
   textTitle: {
-    flex: 1,
-    fontSize: 34,
-    color: "#333333",
+    ...typography.h2,
+    color: colors.dark,
     marginTop: 32,
   },
   image: {
-    flex: 1,
     resizeMode: "contain",
-
     marginTop: 22,
     height: 98,
     width: 107,
-    borderRadius: 3,
+    borderRadius: 2,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "white",
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
   },
   textCity: {
-    fontSize: 18,
-    paddingTop: 5,
+    flex: 1,
+    ...typography.b1,
     marginLeft: 5,
-    color: "#333333",
+    color: colors.dark,
   },
   containerIconAndCity: {
-    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     marginTop: 40,
-    marginLeft: -3,
-    color: "#333333",
+    color: colors.dark,
   },
   textDescription: {
     flex: 1,
-    fontSize: 18,
-    paddingTop: 3,
-    marginLeft: 3,
-    color: "#333333",
+    ...typography.b2,
+    marginLeft: 5,
+    color: colors.dark,
   },
-
   iconsAndTextTimeContainer: {
-    flex: 1,
+    alignItems: "flex-start",
     flexDirection: "row",
     marginTop: 6,
-    color: "#333333",
-    marginLeft: -3,
+    color: colors.dark,
   },
   containerPancilAndText: {
-    flex: 1,
     flexDirection: "row",
-    marginTop: 37,
+    alignItems: "center",
+    marginTop: 30,
   },
   textNearPencil: {
-    flex: 1,
-    color: "#333333",
-    fontSize: 18,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   iconPencil: {
-    flex: 1,
     marginRight: 7,
   },
   containerIconArchiveArrowAndText: {
-    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
   iconArchiveArrow: {
-    flex: 1,
     marginRight: 7,
   },
   textNearIconArchiveArrow: {
-    flex: 1,
-    color: "#333333",
-    fontSize: 18,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   containerDeleteAndText: {
-    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
-  iconDelete: { flex: 1, marginRight: 7 },
-
+  iconDelete: {
+    marginRight: 7,
+  },
   textNearDelete: {
-    flex: 1,
-    color: "#333333",
-    fontSize: 18,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   containerIconStarAndText: {
-    flex: 1,
     flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
   iconStar: {
-    flex: 1,
     marginRight: 7,
   },
   textNearIconStar: {
-    flex: 1,
-    color: "#333333",
-    fontSize: 18,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
-    fontWeight: "bold",
+    fontWeight: "700",
   },
   buttonSeeAllUsers: {
-    flex: 1,
     marginTop: 32,
-    paddingVertical: 13,
-    fontSize: 20,
-    backgroundColor: "#84BD00",
+    ...typography.button.lg,
+    fontWeight: "500",
+    paddingVertical: 16,
+    backgroundColor: colors.primary,
     textAlign: "center",
     letterSpacing: 2,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
     overflow: "hidden",
   },
   overlay: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light,
     borderRadius: 5,
     width: "90%",
-    marginBottom: 100,
     paddingBottom: 15,
   },
-
-  textQuestionAlert: { color: "#333333", fontSize: 24, marginTop: 23 },
-  textUnderQuestionAlert: { color: "#333333", fontSize: 16 },
+  textQuestionAlert: {
+    color: colors.dark,
+    fontSize: 24,
+    marginTop: 23,
+  },
+  textUnderQuestionAlert: {
+    color: "#333333",
+    fontSize: 16,
+  },
   containerButtonsAlert: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -577,12 +564,5 @@ const styles = StyleSheet.create({
     backgroundColor: "#84BD00",
     overflow: "hidden",
     paddingVertical: 13,
-  },
-  logo: {
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    height: 40,
-    bottom: 0,
   },
 });
