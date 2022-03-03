@@ -58,7 +58,7 @@ const navigation = {
 };
 
 const titleForNewActivity = "Lägg till aktivitet";
-const titleForNewActivityWithCreateNewUser = "Skapa aktivitet   2/2";
+const titleForNewActivityWithCreateNewUser = "Skapa aktivitet";
 const titleForExistingActivityWithCreateNewUser =
   "Lägg till aktivitet för användare   2/2";
 
@@ -73,8 +73,6 @@ describe("Testing  CreateActivity ", () => {
   it(" CreateActivity  screen if existingActivity === false && whileCreatingNewUser === true ", () => {
     route.params.activityExist = false;
     route.params.creatingNewUser = true;
-    // useCreateActivityFunction().sendChoiceFromDropDown.mockImplementation(()=> "Skapa ny aktivitet")
-    // useCreateActivityFunction().sendChoiceFromDropDown.mockReturnValueOnce("Skapa ny aktivitet")
 
     const { getAllByText } = render(<CreateActivity route={route} />);
     expect(getAllByText(titleForNewActivityWithCreateNewUser).length).toBe(1);
@@ -136,7 +134,7 @@ describe("Testing  CreateActivity ", () => {
     const { getAllByText } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
-    expect(getAllByText("Lägg till somTG-favorit").length).toBe(1);
+    expect(getAllByText("Lägg till som TG-favorit").length).toBe(1);
   });
 
   it("ActivityCard. Button buttonSomTGFavorit", () => {
@@ -152,7 +150,7 @@ describe("Testing  CreateActivity ", () => {
     const { getAllByText } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
-    expect(getAllByText("TG-favoriter vissas för alla användare").length).toBe(
+    expect(getAllByText("TG-favoriter visas för alla användare").length).toBe(
       1
     );
   });

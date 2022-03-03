@@ -181,13 +181,10 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
               setSelectedDate(day.dateString);
             }}
             monthFormat={"MMMM yyyy"}
-            // Hide month navigation arrows. Default = false
             hideArrows={true}
             disableMonthChange={true}
-            // If firstDay = 1 week starts from Monday. Note that dayNames and dayNamesShort should still start from Sunday
             firstDay={1}
             disableAllTouchEventsForDisabledDays={true}
-            // Specify theme properties to override specific styles for calendar parts. Default = {}
             theme={{
               todayTextColor: colors.dark,
               textMonthFontSize: typography.b2.fontSize,

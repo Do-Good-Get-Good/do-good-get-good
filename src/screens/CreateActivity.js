@@ -65,10 +65,6 @@ export function CreateActivity({ route, navigation }) {
     }
   }, [newUserInfo]);
 
-  // console.log("existingActivity  ", existingActivity);
-  // console.log("checkBoxPressed   ", checkBoxPressed)
-  // console.log("whileCreatingNewUser  ", whileCreatingNewUser,)
-
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
       setNewActivityImage("symbol_hands_heart-DEFAULT");
@@ -253,7 +249,6 @@ export function CreateActivity({ route, navigation }) {
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
-      // fontSize: 18,
       fontFamily: typography.b1.fontFamily,
       fontSize: typography.b1.fontSize,
       color: colors.dark,
@@ -362,7 +357,7 @@ export function CreateActivity({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <View style={styles.containerTextAndCheckbox}>
-          <Text style={styles.textNearCheckBox}>Lägg till somTG-favorit</Text>
+          <Text style={styles.textNearCheckBox}>Lägg till som TG-favorit</Text>
           <TouchableOpacity
             testID="buttonSomTGFavorit"
             onPress={() => {
@@ -381,7 +376,7 @@ export function CreateActivity({ route, navigation }) {
           </TouchableOpacity>
         </View>
         <Text style={styles.textUnderCheckBox}>
-          TG-favoriter vissas för alla användare
+          TG-favoriter visas för alla användare
         </Text>
         {twoBottomButtonsForAllViews()}
       </View>
@@ -439,14 +434,10 @@ export function CreateActivity({ route, navigation }) {
       <Menu />
       <ScrollView>
         <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.textMainTitle}>
-              {chooseTitle()}
-              <Text style={styles.numbersNearTitle}>
-                {whileCreatingNewUser === true ? "   2/2" : null}
-              </Text>
-            </Text>
-          </View>
+          <Text style={styles.textMainTitle}>{chooseTitle()}</Text>
+          <Text style={styles.numbersNearTitle}>
+            {whileCreatingNewUser === true ? "2/2" : null}
+          </Text>
         </View>
 
         {showDropDownMenyOrNot()}
@@ -461,23 +452,18 @@ export default CreateActivity;
 const styles = StyleSheet.create({
   container: {
     marginHorizontal: 16,
-    marginTop: 15,
+    marginVertical: 15,
+    flexDirection: "row",
+    alignItems: "flex-end",
   },
   textMainTitle: {
-    flex: 3,
     ...typography.h2,
     fontWeight: "500",
-    marginBottom: 10,
     color: colors.dark,
-  },
-  titleContainer: {
-    flex: 1,
-    flexDirection: "row",
+    marginRight: 10,
   },
   numbersNearTitle: {
-    flex: 1,
     ...typography.b1,
-    marginTop: 15,
   },
   dropDown: {
     flex: 1,

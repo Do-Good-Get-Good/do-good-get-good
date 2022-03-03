@@ -134,15 +134,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
 };
 
 const styles = StyleSheet.create({
-  // topH1: {
-  //   flex: 1,
-  //   fontSize: 25,
-  //   marginHorizontal: 20,
-  // },
-  // topH2: {
-  //   flex: 1,
-  //   marginHorizontal: 20,
-  // },
   activityContainer: {
     flex: 1,
     marginTop: 20,

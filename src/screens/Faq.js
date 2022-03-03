@@ -49,10 +49,8 @@ const Faq = () => {
 
     getData().then((res) => {
       if (res != null && res[1] + minutesToCompare > curentTime) {
-        console.log("res come from local storege___________   ");
         setFaqArray(res[0]);
       } else {
-        console.log("res come from Firebase______________  ");
         getFaqData();
       }
     });
@@ -173,7 +171,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 20,
-    color: "red",
+    color: colors.error,
   },
   headerDesc: {
     ...typography.b2,
@@ -191,9 +189,7 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     alignItems: "center",
     justifyContent: "space-between",
-    backgroundColor: "white",
-    overflow: "hidden",
-    borderColor: "white",
+    backgroundColor: colors.background,
     marginTop: 10,
   },
   dropDownOpened: {
@@ -208,7 +204,7 @@ const styles = StyleSheet.create({
     ...typography.b1,
   },
   textAnswerView: {
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     paddingHorizontal: 18,
     paddingTop: 4,
     paddingBottom: 18,
