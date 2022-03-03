@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -39,6 +39,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const [emailFilledUp, setEmailFilledUp] = useState(null);
   const [passwordFilledUp, setPasswordFilledUp] = useState(null);
   const [userStatusActive, setUserStatusActive] = useState(statusActive);
+  const ref_input1 = useRef();
+  const ref_input2 = useRef();
+  const ref_input3 = useRef();
 
   function titleForScreen() {
     if (newUser === true) {
@@ -237,6 +240,11 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           value={email}
           placeholder="E-mail"
           placeholderTextColor={colors.dark}
+          ref={ref_input2}
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            ref_input3.current.focus();
+          }}
         />
         {emailFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -248,6 +256,11 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           value={password}
           placeholder="Lösenord"
           placeholderTextColor={colors.dark}
+          ref={ref_input3}
+          returnKeyType="send"
+          onSubmitEditing={() => {
+            sendNewUserToCreateActivityScreen();
+          }}
         />
         {passwordFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -319,6 +332,8 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             value={name}
             placeholder="Förnamn"
             placeholderTextColor={colors.dark}
+            returnKeyType="next"
+            onSubmitEditing={() => ref_input1.current.focus()}
           />
           {nameFilledUp === false ? (
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -330,6 +345,15 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             value={surname}
             placeholder="Efternamn"
             placeholderTextColor={colors.dark}
+            ref={ref_input1}
+            returnKeyType={newUser ? "next" : "send"}
+            onSubmitEditing={() => {
+              if (!newUser) {
+                buttonSavePressed();
+              } else {
+                ref_input2.current.focus();
+              }
+            }}
           />
           {surnameFilledUp === false ? (
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
