@@ -3,26 +3,21 @@ import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 
- export  function RadioButton() {
-  
+export function RadioButton() {
   const [jaButton, setJaButton] = useState(true);
   const [nejButton, setNejButton] = useState(false);
   const adminGalleryContext = useAdminGalleryFunction();
 
   const jaRadioButtonsPress = () => {
-    if (jaButton != true) {
-      setJaButton(true);
-      setNejButton(false);
-      adminGalleryContext.chooseActiveOrNot(false);
-    }
+    setJaButton(true);
+    setNejButton(false);
+    adminGalleryContext.chooseActiveOrNot(true);
   };
 
   const nejRadioButtonsPress = () => {
-    if (nejButton != true) {
-      setNejButton(true);
-      setJaButton(false);
-      adminGalleryContext.chooseActiveOrNot(true);
-    }
+    setNejButton(true);
+    setJaButton(false);
+    adminGalleryContext.chooseActiveOrNot(false);
   };
 
   return (
@@ -31,7 +26,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
         <View style={styles.radioButtons}>
           <Text style={styles.textAktiva}>Aktiva:</Text>
           <TouchableOpacity
-          testID="pressOnButtonJa" 
+            testID="pressOnButtonJa"
             onPress={jaRadioButtonsPress}
             style={styles.radioButtons}
           >
@@ -52,7 +47,7 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
             </View>
           </TouchableOpacity>
           <TouchableOpacity
-           testID="pressOnButtonNej"
+            testID="pressOnButtonNej"
             onPress={nejRadioButtonsPress}
             style={styles.radioButtons}
           >
@@ -76,11 +71,9 @@ import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
       </View>
     </View>
   );
-};
+}
 
-
-
- export default RadioButton;
+export default RadioButton;
 
 const styles = StyleSheet.create({
   textAktiva: {

@@ -7,12 +7,13 @@ import { useNavigation } from "@react-navigation/native";
 import { Platform } from "react-native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useActivityFunction } from "../context/ActivityContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
-
+  const adminGalleryContext = useAdminGalleryFunction();
   const entryTime = useActivityFunction();
 
   useEffect(() => {
@@ -72,6 +73,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
                 openOverlay();
+                adminGalleryContext.chooseActiveOrNot(true);
                 navigation.navigate("AdminActivityGallery");
               }}
             >

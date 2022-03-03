@@ -1,30 +1,27 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, View, TextInput } from "react-native";
 import { Icon } from "react-native-elements";
-
-import { useRoute } from "@react-navigation/native";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-export const SearchBarComponent = ({ navigation }) => {
-  const rout = useRoute();
+export function SearchBarComponent() {
   const adminGalleryContext = useAdminGalleryFunction();
+  const createActivityContext = useCreateActivityFunction();
   const [wordToSearch, setWordToSearch] = useState("");
-  const [wordTOSend, setWordToSend] = useState("");
-  const [isClean, setIsClean] = useState(true);
+
+  // function searchWordButtonPressed() {
+  //   if (adminGalleryContext.activeOrInactiveActivity === true) {
+  //     createActivityContext.word(wordToSearch);
+  //   } else {
+  //     adminGalleryContext.word(wordToSearch);
+  //   }
+  // }
 
   useEffect(() => {
-    if (isClean === true) {
-      adminGalleryContext.word("");
+    if (adminGalleryContext.activeOrInactiveActivity === true) {
+      createActivityContext.word(wordToSearch);
     } else {
-    }
-    adminGalleryContext.word(wordTOSend);
-  }, [isClean, wordTOSend]);
-
-  useEffect(() => {
-    if (wordToSearch != "") {
-      setIsClean(false);
-    } else {
-      setIsClean(true);
+      adminGalleryContext.word(wordToSearch);
     }
   }, [wordToSearch]);
 
@@ -41,13 +38,14 @@ export const SearchBarComponent = ({ navigation }) => {
           style={styles.icon}
           color="#5B6770"
           name="search"
-          onPress={() => setWordToSend(wordToSearch)}
+          onPress={() => searchWordButtonPressed()}
           size={30}
         />
       </View>
     </View>
   );
-};
+}
+export default SearchBarComponent;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

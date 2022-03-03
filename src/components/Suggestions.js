@@ -14,45 +14,51 @@ import Images from "../Images";
 import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-export function Suggestions ({
+export function Suggestions({
   navigation,
-  search,
   adminGallery,
-  chooseActive,
+  // chooseActive,
   inactiveActivities,
 }) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
+  const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
-  const [activetyDeleted, setActivetyDeleted] = useState(false);
+  // const [activetyDeleted, setActivetyDeleted] = useState(false);
+  const [showActiveArray, setShowActiveArray] = useState(true);
 
-
+  useEffect(() => {
+    setShowActiveArray(adminGalleryContext.activeOrInactiveActivity);
+  }, [adminGalleryContext.activeOrInactiveActivity]);
 
   useEffect(() => {
     if (rout.name === "HomePage") {
       setShowArray(userSuggestionsContext.popularActivities);
     } else if (
       rout.name === "AdminActivityGallery" &&
-      search.length === 0 &&
-      chooseActive === false
-    ) {
-      setShowArray(adminGallery);
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      search.length === 0 &&
-      chooseActive === true
+      showActiveArray === false
     ) {
       setShowArray(inactiveActivities);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      showActiveArray === true
+    ) {
+      setShowArray(adminGallery);
     } else {
       console.log("Nothing to show in AdminGallery");
     }
-  }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
-
-
+  }, [
+    userSuggestionsContext,
+    adminGallery,
+    rout,
+    inactiveActivities,
+    showActiveArray,
+  ]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -76,8 +82,6 @@ export function Suggestions ({
           active: statusActive,
           tgPopular: statusPopular,
         });
-        
-        
   }
 
   useEffect(() => {
@@ -103,8 +107,7 @@ export function Suggestions ({
   }, [activityCardContext.oneActivityHasBeenDeleted]);
 
   useEffect(() => {
-    
-       if (useCreateActivityContext.updateGallery === true) {
+    if (useCreateActivityContext.updateGallery === true) {
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
@@ -113,21 +116,19 @@ export function Suggestions ({
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(newArray);
         activityCardContext.changePopularStatusInAdminGallery(false);
-        useCreateActivityContext.setUpdateGallery(false)
+        useCreateActivityContext.setUpdateGallery(false);
       };
       replaceObjectIfpopularStatusChanged();
     }
-  },[useCreateActivityContext.updateGallery ]);
-  
+  }, [useCreateActivityContext.updateGallery]);
 
   return (
     <View>
-      
-      {rout.name === "HomePage" ? <Text style={styles.topH1}>Förslag & inspiration</Text> : 
+      {rout.name === "HomePage" ? (
+        <Text style={styles.topH1}>Förslag & inspiration</Text>
+      ) : (
         <Text style={styles.topH1}>Aktivitetsgalleri</Text>
-
-      }
-    
+      )}
 
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
@@ -142,7 +143,7 @@ export function Suggestions ({
             <View style={styles.insideActivityContainer}>
               <View style={styles.photoAndText}>
                 <View style={styles.textTitleCityDescriptipn}>
-                  <Text  numberOfLines={2} style={styles.textTitle}>
+                  <Text numberOfLines={2} style={styles.textTitle}>
                     {suggestion.title}
                   </Text>
 
@@ -170,7 +171,7 @@ export function Suggestions ({
                   </View>
                 </View>
                 <Image
-                testID="photo"
+                  testID="photo"
                   style={styles.image}
                   source={setTheRightPhoto(suggestion.photo)}
                 />
@@ -190,7 +191,7 @@ export function Suggestions ({
       </View>
     </View>
   );
-};
+}
 export default Suggestions;
 
 const styles = StyleSheet.create({

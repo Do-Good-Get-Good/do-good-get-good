@@ -10,16 +10,15 @@ import {
   Platform,
 } from "react-native";
 
-import  RadioButton  from "../components/RadioButton";
-import  Suggestions  from "../components/Suggestions";
+import RadioButton from "../components/RadioButton";
+import Suggestions from "../components/Suggestions";
+import SearchBarComponent from "../components/SearchBarComponent";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
 
-
-  export function AdminActivityGallery({ navigation }) {
-  // const AdminActivityGallery = ({ navigation }) => {
+export function AdminActivityGallery({ navigation }) {
   const adminGalleryContext = useAdminGalleryFunction();
   const createActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
@@ -27,46 +26,33 @@ import Menu from "../components/Menu";
   const [arrayOfActiveActivities, setArrayOfActiveActivities] = useState([]);
   const [inactiveActivities, setInactiveActivities] = useState([]);
 
-  
-
-
-
   useEffect(() => {
-    
     setArrayOfActiveActivities(createActivityContext.activeActivities);
     setInactiveActivities(adminGalleryContext.inactiveActivities);
-
   }, [
     adminGalleryContext.inactiveActivities,
     createActivityContext.activeActivities,
   ]);
 
-
-
   useEffect(() => {
-    if(activityCardContext.active === true || activityCardContext.popular === true){
-      createActivityContext.activityHasChanged(true)
+    if (
+      activityCardContext.active === true ||
+      activityCardContext.popular === true
+    ) {
+      createActivityContext.activityHasChanged(true);
 
-      activityCardContext.changePopularStatusInAdminGallery(false)
-      activityCardContext.changeActiveStatusInAdminGallery(false)
-
+      activityCardContext.changePopularStatusInAdminGallery(false);
+      activityCardContext.changeActiveStatusInAdminGallery(false);
     }
-
-  },[activityCardContext.active, activityCardContext.popular])
-
-  
-  
+  }, [activityCardContext.active, activityCardContext.popular]);
 
   useEffect(() => {
-   
-      if(createActivityContext.updateGallery === true){
-       
+    if (createActivityContext.updateGallery === true) {
       const addAndDeleteObjectInArrayAfterStatusActiveChanged = () => {
         if (
           createActivityContext.changedActivity.active === true &&
           createActivityContext.changedActivity.id != ""
         ) {
-          
           var indexActive = arrayOfActiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
@@ -89,22 +75,21 @@ import Menu from "../components/Menu";
 
           if (indexInactive != -1) {
             arrayInactive.splice(indexInactive, 1);
-            setInactiveActivities(arrayInactive);    
+            setInactiveActivities(arrayInactive);
           }
 
-          createActivityContext.activityHasChanged(false)
-          createActivityContext.setUpdateGallery(false)
-        
+          createActivityContext.activityHasChanged(false);
+          createActivityContext.setUpdateGallery(false);
         } else if (
           createActivityContext.changedActivity.active === false &&
           createActivityContext.changedActivity.id != ""
         ) {
-          var indexInactive2  = inactiveActivities.findIndex(
+          var indexInactive2 = inactiveActivities.findIndex(
             (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (
-            indexInactive2  === -1 &&
+            indexInactive2 === -1 &&
             createActivityContext.changedActivity.id != ""
           ) {
             setInactiveActivities((prev) => [
@@ -113,33 +98,49 @@ import Menu from "../components/Menu";
             ]);
           }
 
-         var arrayStatusActive = arrayOfActiveActivities;
-         var indexOfActiveActivities = arrayStatusActive.findIndex(
-           (x) => x.id === createActivityContext.changedActivity.id
-         );
-       
+          var arrayStatusActive = arrayOfActiveActivities;
+          var indexOfActiveActivities = arrayStatusActive.findIndex(
+            (x) => x.id === createActivityContext.changedActivity.id
+          );
 
-         if (indexOfActiveActivities != -1) {
-          arrayStatusActive.splice(indexOfActiveActivities, 1);
-          setArrayOfActiveActivities(arrayStatusActive);
-           
-         } 
-          createActivityContext.activityHasChanged(false)
-          createActivityContext.setUpdateGallery(false)
-         
+          if (indexOfActiveActivities != -1) {
+            arrayStatusActive.splice(indexOfActiveActivities, 1);
+            setArrayOfActiveActivities(arrayStatusActive);
+          }
+          createActivityContext.activityHasChanged(false);
+          createActivityContext.setUpdateGallery(false);
         }
-        
       };
 
       addAndDeleteObjectInArrayAfterStatusActiveChanged();
     }
-  },[createActivityContext.updateGallery]);
-  
+  }, [createActivityContext.updateGallery]);
+
+  useEffect(() => {
+    if (adminGalleryContext.showSearchObject.length != 0) {
+      setInactiveActivities(adminGalleryContext.showSearchObject);
+    } else if (createActivityContext.showSearchObject.length != 0) {
+      setArrayOfActiveActivities(createActivityContext.showSearchObject);
+    } else if (createActivityContext.showSearchObject.length === 0) {
+      setArrayOfActiveActivities(createActivityContext.activeActivities);
+    } else if (adminGalleryContext.showSearchObject.length === 0) {
+      setInactiveActivities(adminGalleryContext.inactiveActivities);
+    } else {
+      console.log(
+        "ADmin gallery can't put searching array adminGalleryContext.showSearchObject.length   "
+      );
+    }
+  }, [
+    adminGalleryContext.showSearchObject,
+    createActivityContext.showSearchObject,
+  ]);
+
   return (
     <SafeAreaView>
       <Menu />
       <ScrollView>
         <View style={styles.container}>
+          <SearchBarComponent />
           <View style={styles.containerRadioButtonAndDropDown}>
             <View style={styles.radioButton}>
               <RadioButton />
@@ -153,15 +154,13 @@ import Menu from "../components/Menu";
           <Suggestions
             navigation={navigation}
             inactiveActivities={inactiveActivities}
-            chooseActive={adminGalleryContext.activeOrInactiveActivity}
-            search={adminGalleryContext.showSearchObject}
             adminGallery={arrayOfActiveActivities}
           ></Suggestions>
         </View>
       </ScrollView>
     </SafeAreaView>
   );
-};
+}
 
 export default AdminActivityGallery;
 
