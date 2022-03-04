@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import ImagesGallery from "../screens/ImagesGallery";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -33,20 +33,18 @@ describe("Testing ImagesGallery", () => {
     expect(image[0].props.source).toEqual({
       testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
     });
-    // expect(image.props.style.borderWidth).toEqual(7);
   });
 
   it("ImagesGallery. Button 'Save' exist and navigate back  ", () => {
-    navigation.goBack.mockImplementation(() => {
-      imageForActivity: imageName;
-    });
     const { getAllByText, getByTestId } = render(
       <ImagesGallery navigation={navigation} />
     );
     expect(getAllByText("Spara").length).toBe(1);
     const saveButton = getByTestId("saveButton");
     fireEvent.press(saveButton);
-    // expect(navigation.goBack).toHaveBeenCalled();
+    expect(navigation.navigate).toHaveBeenCalledWith("CreateActivity", {
+      imageForActivity: "symbol_hands_heart-DEFAULT",
+    });
   });
 
   it("ImagesGallery. Button 'Back' exist and navigate back  ", () => {
@@ -57,5 +55,12 @@ describe("Testing ImagesGallery", () => {
     const backButton = getByTestId("backButton");
     fireEvent.press(backButton);
     expect(navigation.goBack).toHaveBeenCalled();
+  });
+  it("ImagesGallery. When you press on image the border around image should become 7  ", () => {
+    const { getAllByTestId } = render(
+      <ImagesGallery navigation={navigation} />
+    );
+    const image = getAllByTestId("pressOnImage");
+    // expect(image.props.style.borderWidth).toEqual(7);
   });
 });
