@@ -143,16 +143,13 @@ export const CreateActivityProvider = ({ children }) => {
         var searchAtFCity = newArray[i].city.search(searchingWord);
         var searchAtTitle = newArray[i].title.search(searchingWord);
 
-        // console.log("searchAtFCity act  ", searchAtFCity);
-        // console.log("searchAtDescription act  ", searchAtDescription);
-        // console.log("searchAtTitle  act  ", searchAtTitle);
-
         if (searchAtFCity != -1 || searchAtTitle != -1) {
           var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
             (x) => x.id === newArray[i].id
           );
           if (cheackIfObjectOlreadyExistInArray === -1) {
-            setSearchArray((prev) => [...prev, newArray[i]]);
+            arrayWithFoundObjects.push(newArray[i]);
+            setSearchArray(arrayWithFoundObjects);
           }
         }
       }

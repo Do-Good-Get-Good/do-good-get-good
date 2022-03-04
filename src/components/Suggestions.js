@@ -16,12 +16,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-export function Suggestions({
-  navigation,
-  adminGallery,
-  // chooseActive,
-  inactiveActivities,
-}) {
+export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
@@ -29,7 +24,6 @@ export function Suggestions({
   const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
-  // const [activetyDeleted, setActivetyDeleted] = useState(false);
   const [showActiveArray, setShowActiveArray] = useState(true);
 
   useEffect(() => {

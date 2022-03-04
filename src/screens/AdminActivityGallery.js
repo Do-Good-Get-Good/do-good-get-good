@@ -119,16 +119,13 @@ export function AdminActivityGallery({ navigation }) {
   useEffect(() => {
     if (adminGalleryContext.showSearchObject.length != 0) {
       setInactiveActivities(adminGalleryContext.showSearchObject);
-    } else if (createActivityContext.showSearchObject.length != 0) {
-      setArrayOfActiveActivities(createActivityContext.showSearchObject);
-    } else if (createActivityContext.showSearchObject.length === 0) {
-      setArrayOfActiveActivities(createActivityContext.activeActivities);
-    } else if (adminGalleryContext.showSearchObject.length === 0) {
-      setInactiveActivities(adminGalleryContext.inactiveActivities);
     } else {
-      console.log(
-        "ADmin gallery can't put searching array adminGalleryContext.showSearchObject.length   "
-      );
+      setInactiveActivities(adminGalleryContext.inactiveActivities);
+    }
+    if (createActivityContext.showSearchObject.length != 0) {
+      setArrayOfActiveActivities(createActivityContext.showSearchObject);
+    } else {
+      setArrayOfActiveActivities(createActivityContext.activeActivities);
     }
   }, [
     adminGalleryContext.showSearchObject,

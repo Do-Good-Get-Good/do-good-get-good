@@ -1,5 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
@@ -9,39 +15,41 @@ export function SearchBarComponent() {
   const createActivityContext = useCreateActivityFunction();
   const [wordToSearch, setWordToSearch] = useState("");
 
-  // function searchWordButtonPressed() {
-  //   if (adminGalleryContext.activeOrInactiveActivity === true) {
-  //     createActivityContext.word(wordToSearch);
-  //   } else {
-  //     adminGalleryContext.word(wordToSearch);
-  //   }
-  // }
-
-  useEffect(() => {
+  function searchWordButtonPressed() {
     if (adminGalleryContext.activeOrInactiveActivity === true) {
       createActivityContext.word(wordToSearch);
     } else {
       adminGalleryContext.word(wordToSearch);
     }
+  }
+
+  useEffect(() => {
+    if (wordToSearch === "" || wordToSearch === " ") {
+      if (adminGalleryContext.activeOrInactiveActivity === true) {
+        createActivityContext.word("");
+      } else {
+        adminGalleryContext.word("");
+      }
+    }
   }, [wordToSearch]);
 
   return (
-    <View>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={setWordToSearch}
-          value={wordToSearch}
-          placeholder="Sök"
-        />
-        <Icon
-          style={styles.icon}
-          color="#5B6770"
-          name="search"
-          onPress={() => searchWordButtonPressed()}
-          size={30}
-        />
-      </View>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        onChangeText={setWordToSearch}
+        value={wordToSearch}
+        placeholder="Sök"
+      />
+
+      <View style={styles.lineNearIcon}></View>
+      <TouchableOpacity
+        testID="searchButtonPressed"
+        onPress={() => searchWordButtonPressed()}
+        style={styles.iconContainer}
+      >
+        <Icon style={styles.icon} color="#5B6770" name="search" size={30} />
+      </TouchableOpacity>
     </View>
   );
 }
@@ -50,8 +58,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-
-    paddingVertical: 10,
     marginHorizontal: 16,
     marginVertical: 16,
     backgroundColor: "white",
@@ -76,18 +82,22 @@ const styles = StyleSheet.create({
     flex: 3,
     paddingLeft: 15,
     fontSize: 20,
+    paddingVertical: 13,
   },
 
   icon: {
     flex: 1,
-    marginRight: 20,
   },
   textAktiva: {
     fontSize: 20,
   },
-  // textRadioButtonFilter: {
-  //   flex: 1,
-  //   flexDirection: "row",
-  //   marginHorizontal: 16,
-  // },
+  lineNearIcon: {
+    borderLeftWidth: 1,
+    borderColor: "#5B6770",
+    opacity: 0.18,
+  },
+  iconContainer: {
+    marginTop: 13,
+    paddingHorizontal: 15,
+  },
 });
