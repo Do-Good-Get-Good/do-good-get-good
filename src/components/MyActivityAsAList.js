@@ -6,7 +6,9 @@ import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
 import { format } from "date-fns";
-import toDate from 'date-fns/toDate'
+import toDate from "date-fns/toDate";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export const MyActivityAsAList = ({ navigation, showAllList }) => {
   const [oneMoreRender, setOneMoreRender] = useState(false);
@@ -87,9 +89,9 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           <Text
             style={{
               fontWeight: !activity.statusConfirmed ? "bold" : "normal",
-              color: !activity.statusConfirmed ? "#333333" : "gray",
+              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
               flex: 1.5,
-              fontSize: 16,
+              ...typography.b2,
               paddingTop: 10,
             }}
           >
@@ -97,9 +99,9 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           </Text>
           <Text
             style={{
-              color: !activity.statusConfirmed ? "#333333" : "gray",
+              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
               flex: 1,
-              fontSize: 16,
+              ...typography.b2,
               marginLeft: 13,
               paddingTop: 10,
             }}
@@ -108,9 +110,9 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           </Text>
           <Text
             style={{
-              color: !activity.statusConfirmed ? "#333333" : "gray",
+              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
               flex: 0.6,
-              fontSize: 16,
+              ...typography.b2,
               paddingTop: 10,
             }}
           >
@@ -118,7 +120,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           </Text>
           {!activity.statusConfirmed ? (
             <TouchableOpacity
-            testID="editButton"
+              testID="editButton"
               onPress={() => {
                 setActivity(activity);
                 toggleOverlay();
@@ -126,7 +128,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
             >
               <Icon
                 style={{ paddingTop: 5 }}
-                color={activity.statusConfirmed ? "#333333" : "#333333"}
+                color={colors.dark}
                 name="pencil-outline"
                 type="material-community"
                 size={25}
@@ -135,7 +137,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           ) : (
             <Icon
               style={{ paddingTop: 5 }}
-              color={activity.statusConfirmed ? "#333333" : "gray"}
+              color={colors.secondary}
               name={"done"}
               size={25}
             />
@@ -145,7 +147,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
       {rout.name === "HomePage" ? (
         <TouchableOpacity testID="showAllButton" onPress={pressedButtonShowAll}>
           <LinearGradient
-            colors={["#84BD00", "#5B6770"]}
+            colors={[colors.primary, colors.secondary]}
             start={{ x: 0, y: 0 }}
             end={{ x: 1, y: 1 }}
             style={styles.buttonBorderStyle}
@@ -167,39 +169,38 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     justifyContent: "flex-start",
     marginBottom: 8,
   },
   title: {
     flex: 1,
-    fontSize: 24,
+    ...typography.h2,
     marginTop: 30,
     marginBottom: 10,
-    color: "#333333",
+    color: colors.dark,
   },
 
   textVissaAll: {
     flex: 1,
     letterSpacing: 1,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light,
 
     marginVertical: 1,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#F5F5F5",
+    borderColor: colors.light,
     textAlign: "center",
 
     paddingTop: 12,
     paddingHorizontal: 58,
 
     overflow: "hidden",
-    fontSize: 20,
+    ...typography.button.lg,
   },
   activityIside: {
     flex: 1,
     flexDirection: "row",
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     paddingHorizontal: 5,
     paddingVertical: 5,
   },
@@ -208,7 +209,6 @@ const styles = StyleSheet.create({
     height: 55,
     width: 200,
     alignItems: "center",
-
     marginTop: 12,
   },
 });

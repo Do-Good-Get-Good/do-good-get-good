@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-
 import {
   Text,
   StyleSheet,
@@ -17,6 +16,8 @@ import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export function AdminActivityGallery({ navigation }) {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -133,27 +134,24 @@ export function AdminActivityGallery({ navigation }) {
   ]);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
-        <View style={styles.container}>
-          <SearchBarComponent />
-          <View style={styles.containerRadioButtonAndDropDown}>
-            <View style={styles.radioButton}>
-              <RadioButton />
-            </View>
-
-            <View style={styles.dropDown}></View>
+      <ScrollView style={{ paddingHorizontal: 16 }}>
+        <Text style={styles.headerText}>Aktivitetsgalleri</Text>
+        <SearchBarComponent />
+        <View style={styles.radioButtonDropdownView}>
+          <RadioButton style={styles.radioButtonContainer} />
+          <View style={styles.dropDown}>
+            <Text style={{ ...typography.b1 }}>Sorting</Text>
           </View>
         </View>
-
-        <View style={styles.suggestionContainer}>
-          <Suggestions
-            navigation={navigation}
-            inactiveActivities={inactiveActivities}
-            adminGallery={arrayOfActiveActivities}
-          ></Suggestions>
-        </View>
+        <Suggestions
+          navigation={navigation}
+          inactiveActivities={inactiveActivities}
+          chooseActive={adminGalleryContext.activeOrInactiveActivity}
+          search={adminGalleryContext.showSearchObject}
+          adminGallery={arrayOfActiveActivities}
+        />
       </ScrollView>
     </SafeAreaView>
   );
@@ -162,41 +160,29 @@ export function AdminActivityGallery({ navigation }) {
 export default AdminActivityGallery;
 
 const styles = StyleSheet.create({
+  headerText: {
+    ...typography.h2,
+    marginTop: 16,
+    marginBottom: 16,
+  },
   searchBar: {
     flex: 1,
   },
-  container: {
-    flex: 1,
-  },
-  containerRadioButtonAndDropDown: {
+  radioButtonDropdownView: {
     flex: 1,
     flexDirection: "row",
-    justifyContent: "space-around",
+    marginTop: 10,
+    justifyContent: "space-between",
   },
-  radioButton: {
-    flex: 1,
+  radioButtonContainer: {
+    flex: 1.6,
+    flexDirection: "row",
+    alignItems: "center",
   },
   dropDown: {
+    backgroundColor: colors.background,
     flex: 1,
-    margin: 5,
-    marginRight: 15,
-
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 2,
-        },
-        shadowOpacity: 0.3,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
-  },
-
-  suggestionContainer: {
-    flex: 1,
-    marginHorizontal: 16,
+    justifyContent: "center",
+    paddingLeft: 10,
   },
 });

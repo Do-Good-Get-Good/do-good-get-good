@@ -4,6 +4,8 @@ import { Header } from "react-native-elements/dist/header/Header";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import { Platform } from "react-native";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const Menu = () => {
   const [visible, setVisible] = useState(false);
@@ -73,7 +75,8 @@ const styles = StyleSheet.create({
   },
   headerMenuText: {
     textTransform: "uppercase",
-    fontSize: 13,
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
     marginTop: -7,
   },
 });

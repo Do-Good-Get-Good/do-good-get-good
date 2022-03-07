@@ -10,6 +10,8 @@ import {
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
@@ -118,12 +120,6 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   return (
     <View>
-      {rout.name === "HomePage" ? (
-        <Text style={styles.topH1}>Förslag & inspiration</Text>
-      ) : (
-        <Text style={styles.topH1}>Aktivitetsgalleri</Text>
-      )}
-
       <View style={styles.activityContainer}>
         {showArray.map((suggestion, index) => (
           <TouchableOpacity
@@ -145,7 +141,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                     <Icon
                       type="material-community"
                       name="map-marker-outline"
-                      color="#333333"
+                      color={colors.dark}
                       size={25}
                     />
 
@@ -156,7 +152,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                     <Icon
                       type="material-community"
                       name="information-outline"
-                      color="#333333"
+                      color={colors.dark}
                       size={25}
                     />
                     <Text numberOfLines={2} style={styles.textDescription}>
@@ -190,9 +186,9 @@ export default Suggestions;
 
 const styles = StyleSheet.create({
   topH1: {
+    ...typography.title,
     flex: 1,
-    fontSize: 25,
-    color: "#333333",
+    color: colors.dark,
     marginTop: 10,
   },
 
@@ -205,11 +201,11 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     marginVertical: 7,
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     flexWrap: "wrap",
     borderRadius: 2,
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: colors.background,
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -242,25 +238,24 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
-    color: "#333333",
+    color: colors.dark,
   },
 
   textTitle: {
     flex: 2,
-    fontSize: 20,
-    fontWeight: "bold",
-    color: "#333333",
+    ...typography.title,
+    color: colors.dark,
   },
   textCity: {
     flex: 1,
-    fontSize: 18,
+    ...typography.b1,
     paddingTop: 5,
     marginLeft: 12,
   },
 
   textDescription: {
     flex: 1,
-    fontSize: 18,
+    ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
   },
@@ -271,8 +266,8 @@ const styles = StyleSheet.create({
     marginVertical: 10,
     marginHorizontal: 10,
     marginLeft: 200,
-    color: "#333333",
-    fontSize: 16,
+    color: colors.dark,
+    ...typography.b2,
     textAlign: "right",
   },
 

@@ -5,6 +5,7 @@ import {
   View,
   ScrollView,
   Image,
+  Text,
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
@@ -18,6 +19,8 @@ import { SuggestionProvider } from "../context/SuggestionContext";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
+import BottomLogo from "../components/BottomLogo";
+import typography from "../assets/theme/typography";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -29,14 +32,9 @@ export const HomePage = ({ navigation }) => {
       {userLevel === "admin" ? (
         <>
           <ScrollView style={styles.container}>
-            <ConfirmActivities></ConfirmActivities>
-            <MyUsers navigation={navigation}></MyUsers>
-            <View style={styles.logo}>
-              <Image
-                source={require("../img/Technogarden-logotyp-Large.png")}
-                style={{ width: 140, height: "55%" }}
-              />
-            </View>
+            <ConfirmActivities />
+            <MyUsers navigation={navigation} />
+            <BottomLogo />
           </ScrollView>
           <FloatingActionButton />
         </>
@@ -49,25 +47,26 @@ export const HomePage = ({ navigation }) => {
                 <MyActivities
                   myAccumulatedTime={activity.activitiesIDandAccumTime}
                   myActivities={activity.myActivities}
-                ></MyActivities>
-                <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+                />
+                <MyActivityAsAList navigation={navigation} />
                 <SuggestionProvider>
-                  <Suggestions navigation={navigation}></Suggestions>
+                  <Text style={styles.suggestionHeader}>
+                    Förslag & inspiration
+                  </Text>
+                  <Suggestions navigation={navigation} />
                 </SuggestionProvider>
-                <View style={styles.logo}>
-                  <Image
-                    source={require("../img/Technogarden-logotyp-Large.png")}
-                    style={{ width: 140, height: "55%" }}
-                  />
-                </View>
+                <BottomLogo />
               </ScrollView>
             </View>
           ) : (
             <ScrollView style={styles.container}>
               <SuggestionProvider>
-                <Suggestions navigation={navigation}></Suggestions>
+                <Text style={styles.suggestionHeader}>
+                  Förslag & inspiration
+                </Text>
+                <Suggestions navigation={navigation} />
               </SuggestionProvider>
-              <MyActivityAsAList navigation={navigation}></MyActivityAsAList>
+              <MyActivityAsAList navigation={navigation} />
             </ScrollView>
           )}
         </>
@@ -88,6 +87,11 @@ const styles = StyleSheet.create({
   myActivities: {
     flex: 1,
     marginTop: 20,
+  },
+  suggestionHeader: {
+    ...typography.title,
+    marginTop: 16,
+    marginBottom: -10,
   },
   logo: {
     width: "100%",

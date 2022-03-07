@@ -1,18 +1,20 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Platform,
   ScrollView,
   SafeAreaView,
   TextInput,
+  Dimensions,
 } from "react-native";
 import Menu from "../components/Menu";
 import { useCreateUserFunction } from "../context/CreateUserContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
   const createUserOrChangeContext = useCreateUserFunction();
@@ -37,6 +39,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const [emailFilledUp, setEmailFilledUp] = useState(null);
   const [passwordFilledUp, setPasswordFilledUp] = useState(null);
   const [userStatusActive, setUserStatusActive] = useState(statusActive);
+  const ref_input1 = useRef();
+  const ref_input2 = useRef();
+  const ref_input3 = useRef();
 
   function titleForScreen() {
     if (newUser === true) {
@@ -71,8 +76,6 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     ) {
       navigation.navigate("CreateActivity", {
         creatingNewUser: true,
-        // activityExist: null,
-       
         newUserInfo: {
           first_name: name,
           last_name: surname,
@@ -121,20 +124,23 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     if (newUser === true) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity onPress={() => sendNewUserToCreateActivityScreen()}>
-            <Text style={styles.buttonSave}>Näst</Text>
+          <TouchableOpacity
+            onPress={() => sendNewUserToCreateActivityScreen()}
+            style={styles.buttonSave}
+          >
+            <Text style={styles.buttonSaveText}>Nästa</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
+            style={styles.buttonCancel}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.backAndCancelBorderGradient}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.buttonCancelText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -142,20 +148,23 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     } else if (newUser === false) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity onPress={() => buttonSavePressed()}>
-            <Text style={styles.buttonSave}>Spara</Text>
+          <TouchableOpacity
+            onPress={() => buttonSavePressed()}
+            style={styles.buttonSave}
+          >
+            <Text style={styles.buttonSaveText}>Spara</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={{ flex: 1 }}
+            style={styles.buttonCancel}
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.backAndCancelBorderGradient}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.buttonCancelText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -167,13 +176,13 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
   nameSurnameEmailPasswordStyle = function () {
     return {
-      flex: 1,
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
-      fontSize: 18,
-      color: "#333333",
-      backgroundColor: "white",
+      fontSize: typography.b1.fontSize,
+      fontFamily: typography.b1.fontFamily,
+      color: colors.dark,
+      backgroundColor: colors.background,
       ...Platform.select({
         ios: {
           shadowOffset: {
@@ -193,28 +202,29 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: nameFilledUp === false ? "#C62F25" : "white",
+      borderColor: nameFilledUp === false ? colors.error : colors.background,
     };
   };
   surnameBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: surnameFilledUp === false ? "#C62F25" : "white",
+      borderColor: surnameFilledUp === false ? colors.error : colors.background,
     };
   };
   emaiBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: emailFilledUp === false ? "#C62F25" : "white",
+      borderColor: emailFilledUp === false ? colors.error : colors.background,
     };
   };
   passwordBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: passwordFilledUp === false ? "#C62F25" : "white",
+      borderColor:
+        passwordFilledUp === false ? colors.error : colors.background,
     };
   };
 
@@ -226,8 +236,13 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           maxLength={30}
           onChangeText={setEmail}
           value={email}
-          placeholder="E-mail [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholder="E-mail"
+          placeholderTextColor={colors.dark}
+          ref={ref_input2}
+          returnKeyType="next"
+          onSubmitEditing={() => {
+            ref_input3.current.focus();
+          }}
         />
         {emailFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -237,8 +252,13 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           maxLength={30}
           onChangeText={setPassword}
           value={password}
-          placeholder="Lösenord [obligatorisk]"
-          placeholderTextColor="#333333"
+          placeholder="Lösenord"
+          placeholderTextColor={colors.dark}
+          ref={ref_input3}
+          returnKeyType="send"
+          onSubmitEditing={() => {
+            sendNewUserToCreateActivityScreen();
+          }}
         />
         {passwordFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
@@ -292,47 +312,55 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>
             <Text style={styles.numbersNearTitle}>
-              {newUser === true ? "   1/2" : null}
+              {newUser === true ? "1/2" : null}
             </Text>
           </View>
-          <View style={styles.containerInputButton}>
-            <View style={styles.containerForAllInput}>
-              <TextInput
-                style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
-                maxLength={30}
-                onChangeText={setName}
-                value={name}
-                placeholder="Förnamn [obligatorisk]"
-                placeholderTextColor="#333333"
-              />
-              {nameFilledUp === false ? (
-                <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-              ) : null}
-              <TextInput
-                style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
-                maxLength={30}
-                onChangeText={setSurname}
-                value={surname}
-                placeholder="Efternamn [obligatorisk]"
-                placeholderTextColor="#333333"
-              />
-              {surnameFilledUp === false ? (
-                <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-              ) : null}
 
-              {newUser === true ? viewForNewUser() : null}
-              {newUser === false ? pressedUserStatusActive() : null}
-            </View>
-            <View style={{ flex: 1 }}>{twoBottomButtonsForAllViews()}</View>
-          </View>
+          <TextInput
+            style={[nameSurnameEmailPasswordStyle(), nameBorderStyle()]}
+            maxLength={30}
+            onChangeText={setName}
+            value={name}
+            placeholder="Förnamn"
+            placeholderTextColor={colors.dark}
+            returnKeyType="next"
+            onSubmitEditing={() => ref_input1.current.focus()}
+          />
+          {nameFilledUp === false ? (
+            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+          ) : null}
+          <TextInput
+            style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
+            maxLength={30}
+            onChangeText={setSurname}
+            value={surname}
+            placeholder="Efternamn"
+            placeholderTextColor={colors.dark}
+            ref={ref_input1}
+            returnKeyType={newUser ? "next" : "send"}
+            onSubmitEditing={() => {
+              if (!newUser) {
+                buttonSavePressed();
+              } else {
+                ref_input2.current.focus();
+              }
+            }}
+          />
+          {surnameFilledUp === false ? (
+            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+          ) : null}
+
+          {newUser === true ? viewForNewUser() : null}
+          {newUser === false ? pressedUserStatusActive() : null}
         </View>
+        {twoBottomButtonsForAllViews()}
       </ScrollView>
     </SafeAreaView>
   );
@@ -340,131 +368,72 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    marginHorizontal: 16,
-    marginTop: 15,
-  },
-  containerInputButton: {
-    flex: 1,
+    minHeight: Dimensions.get("window").height - 232,
+    paddingHorizontal: 16,
+    paddingTop: 16,
   },
   textMainTitle: {
-    flex: 1.2,
-    fontSize: 34,
+    ...typography.h2,
+    fontWeight: "500",
     marginBottom: 10,
-    color: "#333333",
+    color: colors.dark,
   },
   titleContainer: {
-    flex: 1,
     flexDirection: "row",
   },
   numbersNearTitle: {
-    flex: 1,
-    fontSize: 18,
+    ...typography.b1,
     marginTop: 13,
-    color: "#333333",
+    color: colors.dark,
+    paddingLeft: 10,
   },
   containerForAllInput: {
-    flex: 1,
-  },
-  textInputTitleCityPlace: {
-    flex: 1,
-    paddingVertical: 13,
-    paddingLeft: 11,
-    marginTop: 9,
-    fontSize: 18,
-    color: "#333333",
-    backgroundColor: "white",
-
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
-  textInputDescription: {
-    flex: 1,
-    flexShrink: 1,
-    paddingVertical: 13,
-    paddingLeft: 11,
-    marginTop: 20,
-    fontSize: 18,
-    color: "#333333",
-    marginBottom: 7,
-    paddingBottom: 89,
-    backgroundColor: "white",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
+    height: 500,
   },
   containerForTwoBottomButtons: {
-    flex: 1,
-    marginTop: 250,
-    marginBottom: 40,
+    paddingHorizontal: 16,
+    paddingVertical: 16,
   },
   buttonSave: {
-    flex: 1,
-    fontSize: 20,
-    textAlign: "center",
-    letterSpacing: 2,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
-    overflow: "hidden",
-    paddingVertical: 13,
+    backgroundColor: colors.primary,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center",
   },
-
-  buttonBorderStyleButtonBackAndCancel: {
-    flex: 1,
-    marginTop: 10,
+  buttonSaveText: {
+    ...typography.button.lg,
+    fontWeight: "500",
+    letterSpacing: 2,
+  },
+  backAndCancelBorderGradient: {
     borderRadius: 5,
     paddingVertical: 1,
     paddingHorizontal: 1,
-    alignItems: "center",
   },
   buttonCancel: {
-    flex: 1,
-    fontSize: 20,
-    textAlign: "center",
-    letterSpacing: 2,
-    paddingVertical: 12,
-    paddingHorizontal: 155,
-    backgroundColor: "#F5F5F5",
+    height: 50,
+    marginTop: 10,
     borderRadius: 5,
-    overflow: "hidden",
+  },
+  buttonCancelText: {
+    ...typography.button.lg,
+    fontWeight: "500",
+    letterSpacing: 2,
+    backgroundColor: colors.light,
+    borderRadius: 5,
+    height: "100%",
+    textAlignVertical: "center",
+    textAlign: "center",
   },
   warningAboutRequired: {
-    color: "#C62F25",
-
+    color: colors.error,
     marginTop: 1,
   },
   textChangeStatusActive: {
-    flex: 1,
-    marginTop: 30,
-    color: "#333333",
-    fontSize: 16,
+    marginTop: 20,
+    color: colors.dark,
+    ...typography.button.sm,
     textDecorationLine: "underline",
     fontWeight: "bold",
     marginLeft: 2,
