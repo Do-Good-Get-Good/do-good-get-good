@@ -140,7 +140,6 @@ export default function Login() {
                 value={email}
                 keyboardType={"email-address"}
                 placeholder={"E-post"}
-                secureTextEntry={showPassword ? false : true}
                 returnKeyType="next"
                 onSubmitEditing={() => ref_input2.current.focus()}
                 blurOnSubmit={false}
