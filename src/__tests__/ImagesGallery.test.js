@@ -18,8 +18,6 @@ const navigation = {
   goBack: jest.fn(),
 };
 
-const imageName = jest.fn();
-
 describe("Testing ImagesGallery", () => {
   it("ImagesGallery exist ", () => {
     const { getAllByText } = render(<ImagesGallery />);
@@ -60,7 +58,9 @@ describe("Testing ImagesGallery", () => {
     const { getAllByTestId } = render(
       <ImagesGallery navigation={navigation} />
     );
-    const image = getAllByTestId("pressOnImage");
-    // expect(image.props.style.borderWidth).toEqual(7);
+    const pressOnImage = getAllByTestId("pressOnImage");
+    const image = getAllByTestId("imageInImageGallery");
+    fireEvent.press(pressOnImage[0]);
+    expect(image[0].props.style.borderWidth).toEqual(7);
   });
 });
