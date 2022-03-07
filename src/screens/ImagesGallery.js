@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export function ImagesGallery({ navigation }) {
   const [imagesArray, setImagesArray] = useState(Images);
@@ -40,7 +42,7 @@ export function ImagesGallery({ navigation }) {
         width: 143,
         borderRadius: 3,
         borderWidth: selected === true ? 7 : 1,
-        borderColor: "#84BD00",
+        borderColor: colors.primary,
       };
     },
     [imageName]
@@ -53,7 +55,7 @@ export function ImagesGallery({ navigation }) {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <View>
         <Text style={styles.mainText}>Bildgalleri</Text>
@@ -88,7 +90,7 @@ export function ImagesGallery({ navigation }) {
             onPress={() => navigation.goBack()}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
               style={styles.buttonBorderStyleButtonBackAndCancel}
@@ -105,7 +107,8 @@ export function ImagesGallery({ navigation }) {
 export default ImagesGallery;
 const styles = StyleSheet.create({
   mainText: {
-    fontSize: 34,
+    ...typography.h2,
+    fontWeight: "500",
     marginHorizontal: 16,
     marginTop: 30,
   },
@@ -117,32 +120,30 @@ const styles = StyleSheet.create({
 
   containerForTwoBottomButtons: {
     marginTop: 20,
-
     marginHorizontal: 16,
   },
   buttonSave: {
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     overflow: "hidden",
-
     paddingVertical: 20,
     paddingBottom: 10,
-
     marginBottom: 10,
   },
 
   buttonCancel: {
-    fontSize: 20,
+    ...typography.button.lg,
+    fontWeight: "500",
     textAlign: "center",
     letterSpacing: 2,
     paddingVertical: 12,
-    paddingHorizontal: 155,
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.light,
     borderRadius: 5,
     overflow: "hidden",
   },
@@ -150,8 +151,5 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 1,
     paddingHorizontal: 1,
-
-    alignItems: "center",
-    justifyContent: "center",
   },
 });
