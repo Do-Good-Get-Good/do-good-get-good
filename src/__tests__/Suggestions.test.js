@@ -6,6 +6,7 @@ import Suggestions from "../components/Suggestions";
 import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -16,6 +17,12 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 jest.mock("../context/SuggestionContext", () => ({
   useSuggestionFunction: () => ({
     popularActivities: jest.fn(),
+  }),
+}));
+
+jest.mock("../context/AdminGalleryContext", () => ({
+  useAdminGalleryFunction: () => ({
+    activeOrInactiveActivity: true,
   }),
 }));
 
@@ -82,12 +89,11 @@ describe("Testing Suggestions", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "AdminActivityGallery",
     });
+
     const { getByTestId } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
@@ -103,9 +109,7 @@ describe("Testing Suggestions", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
@@ -115,9 +119,7 @@ describe("Testing Suggestions", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
@@ -128,9 +130,7 @@ describe("Testing Suggestions", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
@@ -141,13 +141,11 @@ describe("Testing Suggestions", () => {
     const { getByTestId } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getByTestId("photo"));
+
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
       testUri: "../../../img/activities_images/symbol_earth.png",
@@ -158,9 +156,7 @@ describe("Testing Suggestions", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );

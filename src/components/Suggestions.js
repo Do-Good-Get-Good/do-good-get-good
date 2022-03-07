@@ -121,6 +121,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   return (
     <View>
       <View style={styles.activityContainer}>
+        {/* {showArray.length > 0  ? */}
         {showArray.map((suggestion, index) => (
           <TouchableOpacity
             testID="lookDetails"
