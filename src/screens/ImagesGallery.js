@@ -33,13 +33,12 @@ export function ImagesGallery({ navigation }) {
         flex: 1,
         flexDirection: "row",
         resizeMode: "contain",
-        backgroundColor: "white",
+        backgroundColor: colors.background,
         alignItems: "center",
-        marginRight: 14,
-        marginTop: 10,
         borderRadius: 5,
-        height: 156,
-        width: 143,
+        height: 150,
+        width: 150,
+        marginHorizontal: 5,
         borderRadius: 3,
         borderWidth: selected === true ? 7 : 1,
         borderColor: colors.primary,
@@ -57,17 +56,21 @@ export function ImagesGallery({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <View>
+      <View style={{ paddingHorizontal: 16, flex: 1 }}>
         <Text style={styles.mainText}>Bildgalleri</Text>
         <FlatList
           style={styles.container}
+          columnWrapperStyle={{ marginBottom: 10 }}
           data={imagesArray}
           numColumns={2}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               testID="pressOnImage"
               onPress={() => changeBorderStyle(index, item.name)}
-              style={{ flex: 0.5, flexDirection: "row" }}
+              style={{
+                flex: 0.5,
+                flexDirection: "row",
+              }}
             >
               <Image
                 testID="imageInImageGallery"
@@ -81,21 +84,23 @@ export function ImagesGallery({ navigation }) {
           <TouchableOpacity
             testID="saveButton"
             onPress={() => buttonSavePressed()}
+            style={styles.saveButton}
           >
-            <Text style={styles.buttonSave}>Spara</Text>
+            <Text style={styles.saveButtonText}>Spara</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             testID="backButton"
             onPress={() => navigation.goBack()}
+            style={styles.cancelButton}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.cancelButtonBorder}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.cancelButtonText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -108,48 +113,43 @@ export default ImagesGallery;
 const styles = StyleSheet.create({
   mainText: {
     ...typography.h2,
-    fontWeight: "500",
-    marginHorizontal: 16,
-    marginTop: 30,
+    marginTop: 12,
   },
   container: {
-    marginLeft: 16,
-    marginRight: 2,
-    marginTop: 20,
+    marginTop: 12,
   },
-
   containerForTwoBottomButtons: {
-    marginTop: 20,
-    marginHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 16,
   },
-  buttonSave: {
-    ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    letterSpacing: 2,
+  saveButton: {
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.primary,
     backgroundColor: colors.primary,
-    overflow: "hidden",
-    paddingVertical: 20,
-    paddingBottom: 10,
+    height: 50,
     marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
-
-  buttonCancel: {
+  saveButtonText: {
     ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    letterSpacing: 2,
-    paddingVertical: 12,
+  },
+  cancelButton: {
+    borderRadius: 5,
+    backgroundColor: colors.light,
+    height: 50,
+  },
+  cancelButtonText: {
+    ...typography.button.lg,
     backgroundColor: colors.light,
     borderRadius: 5,
-    overflow: "hidden",
+    height: "100%",
+    width: "100%",
+    textAlign: "center",
+    textAlignVertical: "center",
   },
-  buttonBorderStyleButtonBackAndCancel: {
-    borderRadius: 5,
+  cancelButtonBorder: {
     paddingVertical: 1,
     paddingHorizontal: 1,
+    borderRadius: 5,
   },
 });
