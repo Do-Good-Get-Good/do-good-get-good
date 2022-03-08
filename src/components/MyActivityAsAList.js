@@ -1,5 +1,11 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
@@ -184,18 +190,17 @@ const styles = StyleSheet.create({
     flex: 1,
     letterSpacing: 1,
     backgroundColor: colors.light,
-
     marginVertical: 1,
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.light,
     textAlign: "center",
-
     paddingTop: 12,
-    paddingHorizontal: 58,
-
+    paddingHorizontal: Platform.OS === "ios" ? 56 : 58,
     overflow: "hidden",
     ...typography.button.lg,
+    fontWeight: "500",
+    color: colors.dark,
   },
   activityIside: {
     flex: 1,

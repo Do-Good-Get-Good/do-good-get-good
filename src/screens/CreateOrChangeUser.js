@@ -409,6 +409,7 @@ const styles = StyleSheet.create({
     //Test för ios
     // lineHeight: 40,
     // paddingTop: 12,
+    color: colors.dark,
   },
   backAndCancelBorderGradient: {
     borderRadius: 5,
@@ -434,6 +435,7 @@ const styles = StyleSheet.create({
     // lineHeight: 40,
     // paddingTop: 12,
     paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   warningAboutRequired: {
     color: colors.error,

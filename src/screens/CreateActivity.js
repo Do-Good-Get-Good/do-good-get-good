@@ -671,6 +671,7 @@ const styles = StyleSheet.create({
     // lineHeight: 40,
     // paddingTop: 12,
     paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
 
   buttonBack: {
@@ -688,6 +689,7 @@ const styles = StyleSheet.create({
     // lineHeight: 40,
     // paddingTop: 12,
     paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   buttonCancel: {
     ...typography.button.lg,
@@ -706,6 +708,7 @@ const styles = StyleSheet.create({
     // flex: 1,
     // paddingTop: 12,
     paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   buttonBorderStyleButtonBackAndCancel: {
     flex: 1,

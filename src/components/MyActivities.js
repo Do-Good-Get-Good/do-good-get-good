@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderColor: colors.primary,
     color: colors.dark,
+    fontWeight: "500",
   },
   iconsAndTextTimeContainer: {
     flex: 1,

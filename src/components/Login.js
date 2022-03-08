@@ -204,7 +204,13 @@ export default function Login() {
                   checkInputsAndSignIn();
                 }}
               >
-                <Text style={{ ...typography.button.lg, color: colors.dark }}>
+                <Text
+                  style={{
+                    ...typography.button.lg,
+                    color: colors.dark,
+                    fontWeight: "500",
+                  }}
+                >
                   Logga in
                 </Text>
               </TouchableOpacity>
