@@ -24,7 +24,7 @@ import BottomLogo from "../components/BottomLogo";
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
-  //   information comes from Suggestion.js with navigation when user or admin press on activity
+
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
     active: "",
@@ -319,7 +319,13 @@ export function ActivityCard({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ChangeActivity", {
+                activity: activityInfo,
+              })
+            }
+          >
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
