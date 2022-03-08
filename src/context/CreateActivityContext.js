@@ -42,6 +42,7 @@ export const CreateActivityProvider = ({ children }) => {
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
+      let tempArray = [];
       const getAllActiveActivities = async () => {
         const allActiveActivities = await firestore()
           .collection("Activities")
@@ -66,12 +67,13 @@ export const CreateActivityProvider = ({ children }) => {
               photo: activities[i].activity_photo,
               popular: activities[i].tg_favorite,
             };
-            setAllActiveActvivitiesFB((prev) => [...prev, dataInfo]);
+            tempArray.push(dataInfo);
           }
         }
       };
       console.log("CreateActivityContext all active actvivitiesFB useEffect");
       getAllActiveActivities();
+      setAllActiveActvivitiesFB(tempArray);
     }
   }, []);
 

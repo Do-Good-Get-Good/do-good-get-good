@@ -1,15 +1,11 @@
-
 import "react-native";
-import React, { useState  as useStateMock  } from "react";
-import { render} from "@testing-library/react-native";
+import React, { useState as useStateMock } from "react";
+import { render } from "@testing-library/react-native";
 
 import AdminActivityGallery from "../screens/AdminActivityGallery";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext"
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
-
-
-
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -25,69 +21,60 @@ jest.mock("../components/RadioButton", () => () => {
 });
 
 jest.mock("../components/Menu", () => () => {
-  return <mockMenu/>;
+  return <mockMenu />;
 });
 
+jest.mock("../components/SearchBarComponent", () => () => {
+  return <mockSearchBar />;
+});
 
-jest.mock('../context/AdminGalleryContext', () => ({
-    
+jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
-    inactiveActivities: jest.fn()
-  })
-
+    inactiveActivities: jest.fn(),
+    showSearchObject: jest.fn(() => ({
+      length: jest.fn(),
+    })),
+  }),
 }));
 
-jest.mock('../context/CreateActivityContext', () => ({
-    
+jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
-    activeActivities: jest.fn()
-  })
-
+    activeActivities: jest.fn(),
+    showSearchObject: jest.fn(() => ({
+      length: jest.fn(),
+    })),
+  }),
 }));
 
-jest.mock('../context/ActivityCardContext', () => ({
-    
+jest.mock("../context/ActivityCardContext", () => ({
   useActivityCardContext: () => ({
     active: jest.fn(),
-    popular: jest.fn()
-  })
-
+    popular: jest.fn(),
+  }),
 }));
 
-
-
-jest.mock('react', () => ({
-  ...jest.requireActual('react'),
+jest.mock("react", () => ({
+  ...jest.requireActual("react"),
   useState: jest.fn(),
-}))
-
-
+}));
 
 describe("Testing AdminActivityGallery ", () => {
-
-  const setArrayOfActiveActivities = jest.fn()
-  const setInactiveActivities = jest.fn()
+  const setArrayOfActiveActivities = jest.fn();
+  const setInactiveActivities = jest.fn();
 
   beforeEach(() => {
-    useStateMock.mockImplementation(init => [init, setArrayOfActiveActivities])
-    useStateMock.mockImplementation(init => [init,  setInactiveActivities])
-  })
+    useStateMock.mockImplementation((init) => [
+      init,
+      setArrayOfActiveActivities,
+    ]);
+    useStateMock.mockImplementation((init) => [init, setInactiveActivities]);
+  });
 
   it("AdminActivityGallery fill up arrayOfActiveActivities and inactiveActivities ", () => {
     const {} = render(<AdminActivityGallery />);
-    setArrayOfActiveActivities(useCreateActivityFunction().activeActivities.mock)
+    setArrayOfActiveActivities(
+      useCreateActivityFunction().activeActivities.mock
+    );
     setInactiveActivities(useAdminGalleryFunction().inactiveActivities.mock);
-    console.log(setArrayOfActiveActivities)
-   
- })
- 
-
+  });
 });
-
-
- // it("AdminActivityGallery fill up arrayOfActiveActivities and inactiveActivities ", () => {
-  //    const {} = render(<AdminActivityGallery />);
-  //   setArrayOfActiveActivities(useCreateActivityFunction().activeActivities.mock );
-  //   setInactiveActivities(useAdminGalleryFunction().inactiveActivities.mock);
-
-  // })

@@ -1,6 +1,6 @@
 import "react-native";
-import React, { useState as useStateMock } from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import React from "react";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
 import Suggestions from "../components/Suggestions";
 import { useSuggestionFunction } from "../context/SuggestionContext";
@@ -47,11 +47,10 @@ jest.mock("../context/ActivityCardContext", () => ({
     changePopularStatusInAdminGallery: jest.fn(),
   }),
 }));
-afterEach(() => {
-  jest.clearAllMocks();
-});
 
-const search = [];
+// afterEach(() => {
+//   jest.clearAllMocks();
+// });
 
 const adminGallery = {
   active: true,
@@ -63,8 +62,6 @@ const adminGallery = {
   popular: true,
   title: "title",
 };
-
-const chooseActive = true;
 
 const inactiveActivities = [
   {
@@ -98,11 +95,13 @@ describe("Testing Suggestions", () => {
       />
     );
 
-    const buttonLookDetails = getByTestId("lookDetails");
-    fireEvent.press(buttonLookDetails);
+    waitFor(() => {
+      const buttonLookDetails = getByTestId("lookDetails");
+      fireEvent.press(buttonLookDetails);
 
-    const buttonLookDetails2 = getByTestId("lookDetails2");
-    fireEvent.press(buttonLookDetails2);
+      const buttonLookDetails2 = getByTestId("lookDetails2");
+      fireEvent.press(buttonLookDetails2);
+    });
   });
 
   it("Suggestions text title exist", () => {
@@ -113,7 +112,9 @@ describe("Testing Suggestions", () => {
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("title").length).toBe(1);
+    waitFor(() => {
+      expect(getAllByText("title").length).toBe(1);
+    });
   });
   it("Suggestions text city exist", () => {
     const { getAllByText } = render(
@@ -123,7 +124,10 @@ describe("Testing Suggestions", () => {
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("city").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("city").length).toBe(1);
+    });
   });
 
   it("Suggestions text description exist", () => {
@@ -134,7 +138,10 @@ describe("Testing Suggestions", () => {
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("description").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("description").length).toBe(1);
+    });
   });
 
   it("Suggestions text photo exist", () => {
@@ -146,9 +153,11 @@ describe("Testing Suggestions", () => {
       />
     );
 
-    const image = getByTestId("photo");
-    expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+    waitFor(() => {
+      const image = getByTestId("photo");
+      expect(image.props.source).toEqual({
+        testUri: "../../../img/activities_images/symbol_earth.png",
+      });
     });
   });
 
@@ -160,7 +169,10 @@ describe("Testing Suggestions", () => {
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("Läs mer").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("Läs mer").length).toBe(1);
+    });
   });
 
   it("Possible for admin to delete activity ", () => {

@@ -121,64 +121,68 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   return (
     <View>
       <View style={styles.activityContainer}>
-        {/* {showArray.length > 0  ? */}
-        {showArray.map((suggestion, index) => (
-          <TouchableOpacity
-            testID="lookDetails"
-            onPress={() =>
-              lookDetails(suggestion, suggestion.active, suggestion.popular)
-            }
-            index={index}
-            key={index}
-          >
-            <View style={styles.insideActivityContainer}>
-              <View style={styles.photoAndText}>
-                <View style={styles.textTitleCityDescriptipn}>
-                  <Text numberOfLines={2} style={styles.textTitle}>
-                    {suggestion.title}
-                  </Text>
-
-                  <View style={styles.iconsAndTextCityContainer}>
-                    <Icon
-                      type="material-community"
-                      name="map-marker-outline"
-                      color={colors.dark}
-                      size={25}
-                    />
-
-                    <Text style={styles.textCity}>{suggestion.city}</Text>
-                  </View>
-
-                  <View style={styles.iconsAndTextTimeContainer}>
-                    <Icon
-                      type="material-community"
-                      name="information-outline"
-                      color={colors.dark}
-                      size={25}
-                    />
-                    <Text numberOfLines={2} style={styles.textDescription}>
-                      {suggestion.description}
+        {showArray.length > 0 &&
+          showArray.map((suggestion, index) => (
+            <TouchableOpacity
+              testID="lookDetails"
+              onPress={() =>
+                lookDetails(suggestion, suggestion.active, suggestion.popular)
+              }
+              index={index}
+              key={index}
+            >
+              <View style={styles.insideActivityContainer}>
+                <View style={styles.photoAndText}>
+                  <View style={styles.textTitleCityDescriptipn}>
+                    <Text numberOfLines={2} style={styles.textTitle}>
+                      {suggestion.title}
                     </Text>
-                  </View>
-                </View>
-                <Image
-                  testID="photo"
-                  style={styles.image}
-                  source={setTheRightPhoto(suggestion.photo)}
-                />
-              </View>
 
-              <TouchableOpacity
-                testID="lookDetails2"
-                onPress={() =>
-                  lookDetails(suggestion, suggestion.active, suggestion.popular)
-                }
-              >
-                <Text style={styles.textLäsMer}>Läs mer</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        ))}
+                    <View style={styles.iconsAndTextCityContainer}>
+                      <Icon
+                        type="material-community"
+                        name="map-marker-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+
+                      <Text style={styles.textCity}>{suggestion.city}</Text>
+                    </View>
+
+                    <View style={styles.iconsAndTextTimeContainer}>
+                      <Icon
+                        type="material-community"
+                        name="information-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+                      <Text numberOfLines={2} style={styles.textDescription}>
+                        {suggestion.description}
+                      </Text>
+                    </View>
+                  </View>
+                  <Image
+                    testID="photo"
+                    style={styles.image}
+                    source={setTheRightPhoto(suggestion.photo)}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  testID="lookDetails2"
+                  onPress={() =>
+                    lookDetails(
+                      suggestion,
+                      suggestion.active,
+                      suggestion.popular
+                    )
+                  }
+                >
+                  <Text style={styles.textLäsMer}>Läs mer</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          ))}
       </View>
     </View>
   );
