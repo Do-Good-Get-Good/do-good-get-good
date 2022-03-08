@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useCallback } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -11,6 +11,8 @@ import {
 } from "react-native";
 import Menu from "../components/Menu";
 import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export function ImagesGallery({ navigation }) {
   const [imagesArray, setImagesArray] = useState(Images);
@@ -31,16 +33,15 @@ export function ImagesGallery({ navigation }) {
         flex: 1,
         flexDirection: "row",
         resizeMode: "contain",
-        backgroundColor: "white",
+        backgroundColor: colors.background,
         alignItems: "center",
-        marginRight: 14,
-        marginTop: 10,
         borderRadius: 5,
-        height: 156,
-        width: 143,
+        height: 150,
+        width: 150,
+        marginHorizontal: 5,
         borderRadius: 3,
         borderWidth: selected === true ? 7 : 1,
-        borderColor: "#84BD00",
+        borderColor: colors.primary,
       };
     },
     [imageName]
@@ -53,19 +54,23 @@ export function ImagesGallery({ navigation }) {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <View>
+      <View style={{ paddingHorizontal: 16, flex: 1 }}>
         <Text style={styles.mainText}>Bildgalleri</Text>
         <FlatList
           style={styles.container}
+          columnWrapperStyle={{ marginBottom: 10 }}
           data={imagesArray}
           numColumns={2}
           renderItem={({ item, index }) => (
             <TouchableOpacity
               testID="pressOnImage"
               onPress={() => changeBorderStyle(index, item.name)}
-              style={{ flex: 0.5, flexDirection: "row" }}
+              style={{
+                flex: 0.5,
+                flexDirection: "row",
+              }}
             >
               <Image
                 testID="imageInImageGallery"
@@ -79,21 +84,23 @@ export function ImagesGallery({ navigation }) {
           <TouchableOpacity
             testID="saveButton"
             onPress={() => buttonSavePressed()}
+            style={styles.saveButton}
           >
-            <Text style={styles.buttonSave}>Spara</Text>
+            <Text style={styles.saveButtonText}>Spara</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             testID="backButton"
             onPress={() => navigation.goBack()}
+            style={styles.cancelButton}
           >
             <LinearGradient
-              colors={["#84BD00", "#5B6770"]}
+              colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.cancelButtonBorder}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.cancelButtonText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -105,53 +112,44 @@ export function ImagesGallery({ navigation }) {
 export default ImagesGallery;
 const styles = StyleSheet.create({
   mainText: {
-    fontSize: 34,
-    marginHorizontal: 16,
-    marginTop: 30,
+    ...typography.h2,
+    marginTop: 12,
   },
   container: {
-    marginLeft: 16,
-    marginRight: 2,
-    marginTop: 20,
+    marginTop: 12,
   },
-
   containerForTwoBottomButtons: {
-    marginTop: 20,
-
-    marginHorizontal: 16,
+    marginTop: 10,
+    marginBottom: 16,
   },
-  buttonSave: {
-    fontSize: 20,
-    textAlign: "center",
-    letterSpacing: 2,
+  saveButton: {
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
-    overflow: "hidden",
-
-    paddingVertical: 20,
-    paddingBottom: 10,
-
+    backgroundColor: colors.primary,
+    height: 50,
     marginBottom: 10,
-  },
-
-  buttonCancel: {
-    fontSize: 20,
-    textAlign: "center",
-    letterSpacing: 2,
-    paddingVertical: 12,
-    paddingHorizontal: 155,
-    backgroundColor: "#F5F5F5",
-    borderRadius: 5,
-    overflow: "hidden",
-  },
-  buttonBorderStyleButtonBackAndCancel: {
-    borderRadius: 5,
-    paddingVertical: 1,
-    paddingHorizontal: 1,
-
     alignItems: "center",
     justifyContent: "center",
+  },
+  saveButtonText: {
+    ...typography.button.lg,
+  },
+  cancelButton: {
+    borderRadius: 5,
+    backgroundColor: colors.light,
+    height: 50,
+  },
+  cancelButtonText: {
+    ...typography.button.lg,
+    backgroundColor: colors.light,
+    borderRadius: 5,
+    height: "100%",
+    width: "100%",
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+  cancelButtonBorder: {
+    paddingVertical: 1,
+    paddingHorizontal: 1,
+    borderRadius: 5,
   },
 });

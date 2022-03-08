@@ -306,7 +306,7 @@ const styles = StyleSheet.create({
   },
   chooseDateText: {
     ...typography.b1,
-    fontWeight: "500",
+    fontWeight: "400",
     marginBottom: 9,
   },
   calendarAndHourView: {
@@ -363,7 +363,7 @@ const styles = StyleSheet.create({
   },
   sendBtnText: {
     ...typography.button.lg,
-    fontWeight: "500",
+    fontWeight: "400",
   },
   changeBtn: {
     marginBottom: 10,

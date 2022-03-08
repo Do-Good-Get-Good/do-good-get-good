@@ -57,7 +57,13 @@
     ],
     "collectCoverage": true,
     "coverageDirectory": "./reports/coverage",
-    "collectCoverageFrom": ["./screens/**","./components/**", "index.js", "App.js", "./context/**"],
+    "collectCoverageFrom": [
+      "./screens/**",
+      "./components/**",
+      "index.js",
+      "App.js",
+      "./context/**"
+    ],
     "coverageReporters": [
       "json",
       "html"

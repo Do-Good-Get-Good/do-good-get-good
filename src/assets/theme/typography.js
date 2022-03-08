@@ -1,37 +1,37 @@
 const typography = {
   h1: {
     fontSize: 48,
-    fontFamily: "DIN Bold",
+    fontFamily: "DIN-Bold",
   },
   h2: {
     fontSize: 34,
-    fontFamily: "DIN Medium Regular",
+    fontFamily: "DIN-Medium",
   },
   title: {
     fontSize: 24,
     paddingVertical: 8,
-    fontFamily: "DIN Medium Regular",
+    fontFamily: "DIN-Medium",
   },
   b1: {
     fontSize: 18,
     paddingVertical: 3,
-    fontFamily: "DIN Regular",
+    fontFamily: "DIN-Regular",
   },
   b2: {
     fontSize: 16,
     paddingVertical: 3,
-    fontFamily: "DIN Regular",
+    fontFamily: "DIN-Regular",
   },
   button: {
     sm: {
       fontSize: 16,
       paddingVertical: 3,
-      fontFamily: "DIN Regular",
+      fontFamily: "DIN-Regular",
     },
     lg: {
       fontSize: 20,
       paddingVertical: 3,
-      fontFamily: "DIN Regular",
+      fontFamily: "DIN-Regular",
     },
   },
 };
