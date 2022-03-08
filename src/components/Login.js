@@ -218,7 +218,6 @@ export default function Login() {
               </Text>
               <TouchableOpacity
                 onPress={() => {
-                  console.log("Tryckte på 'glömt lösenord'");
                   isOpen(true);
                 }}
               >

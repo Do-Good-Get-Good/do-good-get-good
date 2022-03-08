@@ -1,12 +1,10 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 
 import Suggestions from "../components/Suggestions";
-import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -81,6 +79,10 @@ const navigation = {
 
 jest.mock("@react-navigation/native");
 
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
 describe("Testing Suggestions", () => {
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
@@ -95,12 +97,14 @@ describe("Testing Suggestions", () => {
       />
     );
 
-    waitFor(() => {
+    waitFor(async () => {
       const buttonLookDetails = getByTestId("lookDetails");
-      fireEvent.press(buttonLookDetails);
-
       const buttonLookDetails2 = getByTestId("lookDetails2");
-      fireEvent.press(buttonLookDetails2);
+
+      await act(() => {
+        fireEvent.press(buttonLookDetails);
+        fireEvent.press(buttonLookDetails2);
+      });
     });
   });
 
@@ -116,6 +120,7 @@ describe("Testing Suggestions", () => {
       expect(getAllByText("title").length).toBe(1);
     });
   });
+
   it("Suggestions text city exist", () => {
     const { getAllByText } = render(
       <Suggestions
