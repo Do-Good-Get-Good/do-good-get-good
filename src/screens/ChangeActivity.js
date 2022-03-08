@@ -85,21 +85,23 @@ export function ChangeActivity({ route, navigation }) {
           <TouchableOpacity
             testID="saveButton"
             onPress={() => buttonSavePressed()}
+            style={styles.saveButton}
           >
-            <Text style={styles.buttonSave}>Spara</Text>
+            <Text style={styles.saveButtonText}>Spara</Text>
           </TouchableOpacity>
 
           <TouchableOpacity
             testID="backButton"
             onPress={() => navigation.goBack()}
+            style={styles.cancelButton}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
               start={{ x: 0, y: 0 }}
               end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
+              style={styles.cancelButtonBorder}
             >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
+              <Text style={styles.cancelButtonText}>Avbryt</Text>
             </LinearGradient>
           </TouchableOpacity>
         </View>
@@ -127,11 +129,6 @@ const styles = StyleSheet.create({
   },
   textInputs: {
     paddingLeft: 11,
-    // paddingTop: 11,
-    // paddingBottom: 11,
-    // textAlignVertical: "top",
-    // height: 130,
-    // marginTop: 12,
     ...typography.b1,
     color: colors.dark,
     marginBottom: 12,
@@ -160,27 +157,40 @@ const styles = StyleSheet.create({
     textAlignVertical: "top",
     paddingTop: 13,
   },
+
   containerForTwoBottomButtons: {
-    marginTop: 30,
+    marginTop: 10,
     marginBottom: 16,
+    marginHorizontal: 16,
   },
-  buttonSave: {
-    ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    letterSpacing: 2,
+  saveButton: {
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.primary,
     backgroundColor: colors.primary,
-    overflow: "hidden",
-    paddingVertical: 20,
-    paddingBottom: 10,
+    height: 50,
     marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
   },
-  buttonBorderStyleButtonBackAndCancel: {
+  saveButtonText: {
+    ...typography.button.lg,
+  },
+  cancelButton: {
     borderRadius: 5,
+    backgroundColor: colors.light,
+    height: 50,
+  },
+  cancelButtonText: {
+    ...typography.button.lg,
+    backgroundColor: colors.light,
+    borderRadius: 5,
+    height: "100%",
+    width: "100%",
+    textAlign: "center",
+    textAlignVertical: "center",
+  },
+  cancelButtonBorder: {
     paddingVertical: 1,
     paddingHorizontal: 1,
+    borderRadius: 5,
   },
 });
