@@ -16,41 +16,45 @@ import colors from "../assets/theme/colors";
 import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-export function Suggestions({
-  navigation,
-  search,
-  adminGallery,
-  chooseActive,
-  inactiveActivities,
-}) {
+export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
+  const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
-  const [activetyDeleted, setActivetyDeleted] = useState(false);
+  const [showActiveArray, setShowActiveArray] = useState(true);
+
+  useEffect(() => {
+    setShowActiveArray(adminGalleryContext.activeOrInactiveActivity);
+  }, [adminGalleryContext.activeOrInactiveActivity]);
 
   useEffect(() => {
     if (rout.name === "HomePage") {
       setShowArray(userSuggestionsContext.popularActivities);
     } else if (
       rout.name === "AdminActivityGallery" &&
-      search.length === 0 &&
-      chooseActive === false
-    ) {
-      setShowArray(adminGallery);
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      search.length === 0 &&
-      chooseActive === true
+      showActiveArray === false
     ) {
       setShowArray(inactiveActivities);
+    } else if (
+      rout.name === "AdminActivityGallery" &&
+      showActiveArray === true
+    ) {
+      setShowArray(adminGallery);
     } else {
       console.log("Nothing to show in AdminGallery");
     }
-  }, [userSuggestionsContext, adminGallery, rout, search, chooseActive]);
+  }, [
+    userSuggestionsContext,
+    adminGallery,
+    rout,
+    inactiveActivities,
+    showActiveArray,
+  ]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -117,63 +121,68 @@ export function Suggestions({
   return (
     <View>
       <View style={styles.activityContainer}>
-        {showArray.map((suggestion, index) => (
-          <TouchableOpacity
-            testID="lookDetails"
-            onPress={() =>
-              lookDetails(suggestion, suggestion.active, suggestion.popular)
-            }
-            index={index}
-            key={index}
-          >
-            <View style={styles.insideActivityContainer}>
-              <View style={styles.photoAndText}>
-                <View style={styles.textTitleCityDescriptipn}>
-                  <Text numberOfLines={2} style={styles.textTitle}>
-                    {suggestion.title}
-                  </Text>
-
-                  <View style={styles.iconsAndTextCityContainer}>
-                    <Icon
-                      type="material-community"
-                      name="map-marker-outline"
-                      color={colors.dark}
-                      size={25}
-                    />
-
-                    <Text style={styles.textCity}>{suggestion.city}</Text>
-                  </View>
-
-                  <View style={styles.iconsAndTextTimeContainer}>
-                    <Icon
-                      type="material-community"
-                      name="information-outline"
-                      color={colors.dark}
-                      size={25}
-                    />
-                    <Text numberOfLines={2} style={styles.textDescription}>
-                      {suggestion.description}
+        {showArray.length > 0 &&
+          showArray.map((suggestion, index) => (
+            <TouchableOpacity
+              testID="lookDetails"
+              onPress={() =>
+                lookDetails(suggestion, suggestion.active, suggestion.popular)
+              }
+              index={index}
+              key={index}
+            >
+              <View style={styles.insideActivityContainer}>
+                <View style={styles.photoAndText}>
+                  <View style={styles.textTitleCityDescriptipn}>
+                    <Text numberOfLines={2} style={styles.textTitle}>
+                      {suggestion.title}
                     </Text>
-                  </View>
-                </View>
-                <Image
-                  testID="photo"
-                  style={styles.image}
-                  source={setTheRightPhoto(suggestion.photo)}
-                />
-              </View>
 
-              <TouchableOpacity
-                testID="lookDetails2"
-                onPress={() =>
-                  lookDetails(suggestion, suggestion.active, suggestion.popular)
-                }
-              >
-                <Text style={styles.textLäsMer}>Läs mer</Text>
-              </TouchableOpacity>
-            </View>
-          </TouchableOpacity>
-        ))}
+                    <View style={styles.iconsAndTextCityContainer}>
+                      <Icon
+                        type="material-community"
+                        name="map-marker-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+
+                      <Text style={styles.textCity}>{suggestion.city}</Text>
+                    </View>
+
+                    <View style={styles.iconsAndTextTimeContainer}>
+                      <Icon
+                        type="material-community"
+                        name="information-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+                      <Text numberOfLines={2} style={styles.textDescription}>
+                        {suggestion.description}
+                      </Text>
+                    </View>
+                  </View>
+                  <Image
+                    testID="photo"
+                    style={styles.image}
+                    source={setTheRightPhoto(suggestion.photo)}
+                  />
+                </View>
+
+                <TouchableOpacity
+                  testID="lookDetails2"
+                  onPress={() =>
+                    lookDetails(
+                      suggestion,
+                      suggestion.active,
+                      suggestion.popular
+                    )
+                  }
+                >
+                  <Text style={styles.textLäsMer}>Läs mer</Text>
+                </TouchableOpacity>
+              </View>
+            </TouchableOpacity>
+          ))}
       </View>
     </View>
   );

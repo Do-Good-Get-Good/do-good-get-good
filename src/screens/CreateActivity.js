@@ -163,8 +163,6 @@ export function CreateActivity({ route, navigation }) {
       setCity("");
       setDescription("");
       setCheckBoxPressed(false);
-    } else {
-      console.log("One of fild is empty");
     }
 
     if (title != " " && title.trim()) {

@@ -15,7 +15,9 @@ export const CreateActivityProvider = ({ children }) => {
   const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
-  const [updateActivityGallery, setUpdateActivityGallery] = useState(false)
+  const [updateActivityGallery, setUpdateActivityGallery] = useState(false);
+  const [searchArray, setSearchArray] = useState([]);
+  const [searchingWord, setSearchingWord] = useState("");
 
   const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
     active_status: "",
@@ -40,6 +42,7 @@ export const CreateActivityProvider = ({ children }) => {
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
+      let tempArray = [];
       const getAllActiveActivities = async () => {
         const allActiveActivities = await firestore()
           .collection("Activities")
@@ -64,12 +67,13 @@ export const CreateActivityProvider = ({ children }) => {
               photo: activities[i].activity_photo,
               popular: activities[i].tg_favorite,
             };
-            setAllActiveActvivitiesFB((prev) => [...prev, dataInfo]);
+            tempArray.push(dataInfo);
           }
         }
       };
       console.log("CreateActivityContext all active actvivitiesFB useEffect");
       getAllActiveActivities();
+      setAllActiveActvivitiesFB(tempArray);
     }
   }, []);
 
@@ -118,23 +122,41 @@ export const CreateActivityProvider = ({ children }) => {
             description: info.activity_description,
             popular: info.tg_favorite,
           };
-      
-         
-           setNewChangeActivity(dataInfo);
 
-          
+          setNewChangeActivity(dataInfo);
         }
         setChangedOneActivity(false);
         setActivityID(null);
-        setUpdateActivityGallery(true)
-        console.log("CreateActivityContext newChangeActivity in useEffect dataInfo ");
-       
+        setUpdateActivityGallery(true);
       };
       getChangedActivity();
     }
   }, [changedOneActivity]);
 
-  
+  useEffect(() => {
+    let newArray = allActiveActvivitiesFB;
+    let arrayWithFoundObjects = [];
+
+    if (searchingWord != "") {
+      for (let i = 0; i < newArray.length; i++) {
+        var searchAtFCity = newArray[i].city.search(searchingWord);
+        var searchAtTitle = newArray[i].title.search(searchingWord);
+
+        if (searchAtFCity != -1 || searchAtTitle != -1) {
+          var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
+            (x) => x.id === newArray[i].id
+          );
+          if (cheackIfObjectOlreadyExistInArray === -1) {
+            arrayWithFoundObjects.push(newArray[i]);
+            setSearchArray(arrayWithFoundObjects);
+          }
+        }
+      }
+    } else {
+      setSearchArray([]);
+    }
+  }, [searchingWord]);
+
   return (
     <CreateActivityContext.Provider
       value={{
@@ -146,12 +168,13 @@ export const CreateActivityProvider = ({ children }) => {
 
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,
-        
+
         activityHasChangedID: setActivityID,
         updateGallery: updateActivityGallery,
-        setUpdateGallery :setUpdateActivityGallery
+        setUpdateGallery: setUpdateActivityGallery,
 
-
+        word: setSearchingWord,
+        showSearchObject: searchArray,
       }}
     >
       {children}

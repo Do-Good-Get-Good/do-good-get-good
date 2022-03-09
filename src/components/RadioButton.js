@@ -11,19 +11,15 @@ export function RadioButton(props) {
   const adminGalleryContext = useAdminGalleryFunction();
 
   const jaRadioButtonsPress = () => {
-    if (jaButton != true) {
-      setJaButton(true);
-      setNejButton(false);
-      adminGalleryContext.chooseActiveOrNot(false);
-    }
+    setJaButton(true);
+    setNejButton(false);
+    adminGalleryContext.chooseActiveOrNot(true);
   };
 
   const nejRadioButtonsPress = () => {
-    if (nejButton != true) {
-      setNejButton(true);
-      setJaButton(false);
-      adminGalleryContext.chooseActiveOrNot(true);
-    }
+    setNejButton(true);
+    setJaButton(false);
+    adminGalleryContext.chooseActiveOrNot(false);
   };
 
   return (

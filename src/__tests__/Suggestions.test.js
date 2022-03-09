@@ -1,9 +1,8 @@
 import "react-native";
-import React, { useState as useStateMock } from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import React from "react";
+import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
 
 import Suggestions from "../components/Suggestions";
-import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 
@@ -16,6 +15,12 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 jest.mock("../context/SuggestionContext", () => ({
   useSuggestionFunction: () => ({
     popularActivities: jest.fn(),
+  }),
+}));
+
+jest.mock("../context/AdminGalleryContext", () => ({
+  useAdminGalleryFunction: () => ({
+    activeOrInactiveActivity: true,
   }),
 }));
 
@@ -40,11 +45,10 @@ jest.mock("../context/ActivityCardContext", () => ({
     changePopularStatusInAdminGallery: jest.fn(),
   }),
 }));
-afterEach(() => {
-  jest.clearAllMocks();
-});
 
-const search = [];
+// afterEach(() => {
+//   jest.clearAllMocks();
+// });
 
 const adminGallery = {
   active: true,
@@ -56,8 +60,6 @@ const adminGallery = {
   popular: true,
   title: "title",
 };
-
-const chooseActive = true;
 
 const inactiveActivities = [
   {
@@ -77,80 +79,90 @@ const navigation = {
 
 jest.mock("@react-navigation/native");
 
+beforeEach(() => {
+  jest.useFakeTimers();
+});
+
 describe("Testing Suggestions", () => {
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "AdminActivityGallery",
     });
+
     const { getByTestId } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
 
-    const buttonLookDetails = getByTestId("lookDetails");
-    fireEvent.press(buttonLookDetails);
+    waitFor(async () => {
+      const buttonLookDetails = getByTestId("lookDetails");
+      const buttonLookDetails2 = getByTestId("lookDetails2");
 
-    const buttonLookDetails2 = getByTestId("lookDetails2");
-    fireEvent.press(buttonLookDetails2);
+      await act(() => {
+        fireEvent.press(buttonLookDetails);
+        fireEvent.press(buttonLookDetails2);
+      });
+    });
   });
 
   it("Suggestions text title exist", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("title").length).toBe(1);
+    waitFor(() => {
+      expect(getAllByText("title").length).toBe(1);
+    });
   });
+
   it("Suggestions text city exist", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("city").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("city").length).toBe(1);
+    });
   });
 
   it("Suggestions text description exist", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("description").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("description").length).toBe(1);
+    });
   });
 
   it("Suggestions text photo exist", () => {
     const { getByTestId } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getByTestId("photo"));
-    const image = getByTestId("photo");
-    expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+
+    waitFor(() => {
+      const image = getByTestId("photo");
+      expect(image.props.source).toEqual({
+        testUri: "../../../img/activities_images/symbol_earth.png",
+      });
     });
   });
 
@@ -158,13 +170,14 @@ describe("Testing Suggestions", () => {
     const { getAllByText } = render(
       <Suggestions
         navigation={navigation}
-        search={search}
         adminGallery={adminGallery}
-        chooseActive={chooseActive}
         inactiveActivities={inactiveActivities}
       />
     );
-    expect(getAllByText("Läs mer").length).toBe(1);
+
+    waitFor(() => {
+      expect(getAllByText("Läs mer").length).toBe(1);
+    });
   });
 
   it("Possible for admin to delete activity ", () => {
