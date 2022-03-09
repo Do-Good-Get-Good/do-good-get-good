@@ -20,7 +20,6 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
-import { color } from "react-native-reanimated";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
