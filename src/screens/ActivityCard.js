@@ -34,10 +34,8 @@ export function ActivityCard({ route, navigation }) {
     description: "",
     popular: "",
   });
-  const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
-  console.log("ActivityCard active ", active);
-  console.log("ActivityCard admin ", admin);
 
+  const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
   const [activeActivities, setActiveActivities] = useState(active);
   const [popular, setPopular] = useState(tgPopular);
   const [visible, setVisible] = useState(false);
@@ -98,8 +96,11 @@ export function ActivityCard({ route, navigation }) {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
-      //createActivityContext.activityHasChangedID(activityInfo);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: activityInfo.popular,
+        statusActive: false,
+      });
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
@@ -112,8 +113,11 @@ export function ActivityCard({ route, navigation }) {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
-      // createActivityContext.activityHasChangedID(activityInfo);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: activityInfo.popular,
+        statusActive: true,
+      });
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {
       activityCardContext.idActivity(activityInfo.id);
@@ -178,14 +182,20 @@ export function ActivityCard({ route, navigation }) {
       setPopular(false);
       activityCardContext.changePopular(false);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
-      // createActivityContext.activityHasChangedID(activityInfo);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: false,
+        statusActive: activityInfo.active,
+      });
     } else if (popular === false) {
       setPopular(true);
       activityCardContext.changePopular(true);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
-      //createActivityContext.activityHasChangedID(activityInfo);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: true,
+        statusActive: activityInfo.active,
+      });
     } else {
       console.log("Something went wrong with status popular", popular);
     }

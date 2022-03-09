@@ -16,21 +16,25 @@ import { Icon } from "react-native-elements";
 
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export function ChangeActivity({ route, navigation }) {
   const { activity } = route.params;
   const activityCardFunction = useActivityCardContext();
+  const createActivityContext = useCreateActivityFunction();
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
   const [photo, setPhoto] = useState(activity.photo);
+  //console.log("ChangeActivity title,", title);
 
-  // console.log("activity   ", activity);
   function buttonSavePressed() {
-    let changedObject = {
+    let changedObject = {};
+
+    changedObject = {
       active: activity.active,
       city: city,
       description: description,
@@ -40,6 +44,7 @@ export function ChangeActivity({ route, navigation }) {
       popular: activity.popular,
       title: title,
     };
+    console.log("ChangeActivity changedObject  ", changedObject);
 
     activityCardFunction.changeActivityCard(true);
     activityCardFunction.activityWithChangedInfor(changedObject);
@@ -49,6 +54,12 @@ export function ChangeActivity({ route, navigation }) {
       active: true,
       tgPopular: changedObject.popular,
     });
+    createActivityContext.activityHasChangedID({
+      activityInfo: changedObject,
+      popular: changedObject.popular,
+      statusActive: true,
+    });
+    createActivityContext.activityHasChanged(true);
   }
 
   return (

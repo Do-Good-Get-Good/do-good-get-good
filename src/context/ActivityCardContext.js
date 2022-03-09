@@ -92,7 +92,8 @@ export const ActivityCardProvider = ({ children }) => {
   }, [confirmToDelete]);
 
   useEffect(() => {
-    if (activityWithChangedInfor != 0 && changeActivityToTrue != false) {
+    //IT IS NEW FOr ÄNDRA
+    if (activityWithChangedInfor.id != "" && changeActivityToTrue === true) {
       const updateActivityCard = async () => {
         firestore()
           .collection("Activities")
