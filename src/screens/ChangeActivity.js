@@ -15,19 +15,41 @@ import Menu from "../components/Menu";
 import { Icon } from "react-native-elements";
 
 import Images from "../Images";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useActivityCardContext } from "../context/ActivityCardContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export function ChangeActivity({ route, navigation }) {
   const { activity } = route.params;
-  const [title, setTitle] = useState("");
-  const [city, setCity] = useState("");
-  const [place, setPlace] = useState("");
-  const [description, setDescription] = useState("");
-  const [photo, setPhoto] = useState("");
+  const activityCardFunction = useActivityCardContext();
+  const [title, setTitle] = useState(activity.title);
+  const [city, setCity] = useState(activity.city);
+  const [place, setPlace] = useState(activity.place);
+  const [description, setDescription] = useState(activity.description);
+  const [photo, setPhoto] = useState(activity.photo);
 
-  console.log("activity   ", activity);
+  // console.log("activity   ", activity);
+  function buttonSavePressed() {
+    let changedObject = {
+      active: activity.active,
+      city: city,
+      description: description,
+      id: activity.id,
+      photo: photo,
+      place: place,
+      popular: activity.popular,
+      title: title,
+    };
+
+    activityCardFunction.changeActivityCard(true);
+    activityCardFunction.activityWithChangedInfor(changedObject);
+    navigation.navigate("ActivityCard", {
+      activityInfo: changedObject,
+      admin: true,
+      active: true,
+      tgPopular: changedObject.popular,
+    });
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

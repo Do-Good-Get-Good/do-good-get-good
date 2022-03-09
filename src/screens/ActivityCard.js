@@ -35,6 +35,8 @@ export function ActivityCard({ route, navigation }) {
     popular: "",
   });
   const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
+  console.log("ActivityCard active ", active);
+  console.log("ActivityCard admin ", admin);
 
   const [activeActivities, setActiveActivities] = useState(active);
   const [popular, setPopular] = useState(tgPopular);
@@ -97,6 +99,7 @@ export function ActivityCard({ route, navigation }) {
       }
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID(activityInfo.id);
+      //createActivityContext.activityHasChangedID(activityInfo);
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
@@ -110,6 +113,7 @@ export function ActivityCard({ route, navigation }) {
       }
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID(activityInfo.id);
+      // createActivityContext.activityHasChangedID(activityInfo);
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {
       activityCardContext.idActivity(activityInfo.id);
@@ -175,11 +179,13 @@ export function ActivityCard({ route, navigation }) {
       activityCardContext.changePopular(false);
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID(activityInfo.id);
+      // createActivityContext.activityHasChangedID(activityInfo);
     } else if (popular === false) {
       setPopular(true);
       activityCardContext.changePopular(true);
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID(activityInfo.id);
+      //createActivityContext.activityHasChangedID(activityInfo);
     } else {
       console.log("Something went wrong with status popular", popular);
     }

@@ -15,7 +15,7 @@ export const CreateActivityProvider = ({ children }) => {
   const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
-  const [updateActivityGallery, setUpdateActivityGallery] = useState(false)
+  const [updateActivityGallery, setUpdateActivityGallery] = useState(false);
 
   const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
     active_status: "",
@@ -40,6 +40,7 @@ export const CreateActivityProvider = ({ children }) => {
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
+      let tempArray = [];
       const getAllActiveActivities = async () => {
         const allActiveActivities = await firestore()
           .collection("Activities")
@@ -64,6 +65,7 @@ export const CreateActivityProvider = ({ children }) => {
               photo: activities[i].activity_photo,
               popular: activities[i].tg_favorite,
             };
+            //  tempArray.push(dataInfo);
             setAllActiveActvivitiesFB((prev) => [...prev, dataInfo]);
           }
         }
@@ -118,23 +120,20 @@ export const CreateActivityProvider = ({ children }) => {
             description: info.activity_description,
             popular: info.tg_favorite,
           };
-      
-         
-           setNewChangeActivity(dataInfo);
 
-          
+          setNewChangeActivity(dataInfo);
         }
         setChangedOneActivity(false);
         setActivityID(null);
-        setUpdateActivityGallery(true)
-        console.log("CreateActivityContext newChangeActivity in useEffect dataInfo ");
-       
+        setUpdateActivityGallery(true);
+        console.log(
+          "CreateActivityContext newChangeActivity in useEffect dataInfo "
+        );
       };
       getChangedActivity();
     }
   }, [changedOneActivity]);
 
-  
   return (
     <CreateActivityContext.Provider
       value={{
@@ -146,12 +145,10 @@ export const CreateActivityProvider = ({ children }) => {
 
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,
-        
+
         activityHasChangedID: setActivityID,
         updateGallery: updateActivityGallery,
-        setUpdateGallery :setUpdateActivityGallery
-
-
+        setUpdateGallery: setUpdateActivityGallery,
       }}
     >
       {children}
