@@ -383,7 +383,6 @@ const styles = StyleSheet.create({
   },
   numbersNearTitle: {
     ...typography.b1,
-    // marginTop: 13,
     alignSelf: "center",
     color: colors.dark,
     paddingLeft: 10,
@@ -406,9 +405,6 @@ const styles = StyleSheet.create({
     ...typography.button.lg,
     fontWeight: "500",
     letterSpacing: 2,
-    //Test för ios
-    // lineHeight: 40,
-    // paddingTop: 12,
     color: colors.dark,
   },
   backAndCancelBorderGradient: {
@@ -431,9 +427,6 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
     textAlign: "center",
     overflow: "hidden",
-    //Test för ios
-    // lineHeight: 40,
-    // paddingTop: 12,
     paddingTop: Platform.OS === "ios" ? 12 : null,
     color: colors.dark,
   },
