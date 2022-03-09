@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import Menu from "../components/Menu";
 import Images from "../Images";
