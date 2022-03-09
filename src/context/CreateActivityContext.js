@@ -128,9 +128,6 @@ export const CreateActivityProvider = ({ children }) => {
         setChangedOneActivity(false);
         setActivityID(null);
         setUpdateActivityGallery(true);
-        console.log(
-          "CreateActivityContext newChangeActivity in useEffect dataInfo "
-        );
       };
       getChangedActivity();
     }

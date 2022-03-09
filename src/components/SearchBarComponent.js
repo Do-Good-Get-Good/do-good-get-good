@@ -9,6 +9,8 @@ import {
 import { Icon } from "react-native-elements";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 export function SearchBarComponent() {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -41,7 +43,6 @@ export function SearchBarComponent() {
         value={wordToSearch}
         placeholder="Sök"
       />
-
       <View style={styles.lineNearIcon}></View>
       <TouchableOpacity
         testID="searchButtonPressed"
@@ -56,15 +57,11 @@ export function SearchBarComponent() {
 export default SearchBarComponent;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: "row",
-    marginHorizontal: 16,
     marginVertical: 16,
-    backgroundColor: "white",
-
+    backgroundColor: colors.background,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
+    height: 55,
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -75,29 +72,29 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 2,
+        shadowColor: colors.dark,
       },
     }),
   },
   textInput: {
-    flex: 3,
-    paddingLeft: 15,
-    fontSize: 20,
-    paddingVertical: 13,
-  },
-
-  icon: {
     flex: 1,
+    paddingLeft: 15,
+    ...typography.b1,
   },
   textAktiva: {
     fontSize: 20,
   },
   lineNearIcon: {
+    width: 1,
+    height: 55,
     borderLeftWidth: 1,
-    borderColor: "#5B6770",
+    borderColor: colors.dark,
     opacity: 0.18,
   },
   iconContainer: {
-    marginTop: 13,
-    paddingHorizontal: 15,
+    width: 55,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
