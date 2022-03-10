@@ -1,9 +1,17 @@
-import React, { useEffect, useState } from "react";
-
-import { Text, StyleSheet, SafeAreaView, View, ScrollView } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
+import {
+  Text,
+  StyleSheet,
+  SafeAreaView,
+  View,
+  ScrollView,
+  Button,
+  Platform,
+} from "react-native";
 
 import RadioButton from "../components/RadioButton";
 import Suggestions from "../components/Suggestions";
+import SearchBarComponent from "../components/SearchBarComponent";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -109,22 +117,28 @@ export function AdminActivityGallery({ navigation }) {
     }
   }, [createActivityContext.updateGallery]);
 
+  useEffect(() => {
+    if (adminGalleryContext.showSearchObject.length != 0) {
+      setInactiveActivities(adminGalleryContext.showSearchObject);
+    } else {
+      setInactiveActivities(adminGalleryContext.inactiveActivities);
+    }
+    if (createActivityContext.showSearchObject.length != 0) {
+      setArrayOfActiveActivities(createActivityContext.showSearchObject);
+    } else {
+      setArrayOfActiveActivities(createActivityContext.activeActivities);
+    }
+  }, [
+    adminGalleryContext.showSearchObject,
+    createActivityContext.showSearchObject,
+  ]);
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <ScrollView style={{ paddingHorizontal: 16 }}>
         <Text style={styles.headerText}>Aktivitetsgalleri</Text>
-        <View
-          style={{
-            backgroundColor: colors.background,
-            height: 50,
-            justifyContent: "center",
-            paddingLeft: 10,
-            marginBottom: 16,
-          }}
-        >
-          <Text>Searchbar</Text>
-        </View>
+        <SearchBarComponent />
         <View style={styles.radioButtonDropdownView}>
           <RadioButton style={styles.radioButtonContainer} />
           <View style={styles.dropDown}>

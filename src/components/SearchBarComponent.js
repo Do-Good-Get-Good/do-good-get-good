@@ -1,66 +1,67 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, View, TextInput } from "react-native";
+import {
+  StyleSheet,
+  View,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Icon } from "react-native-elements";
-
-import { useRoute } from "@react-navigation/native";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-export const SearchBarComponent = ({ navigation }) => {
-  const rout = useRoute();
+export function SearchBarComponent() {
   const adminGalleryContext = useAdminGalleryFunction();
+  const createActivityContext = useCreateActivityFunction();
   const [wordToSearch, setWordToSearch] = useState("");
-  const [wordTOSend, setWordToSend] = useState("");
-  const [isClean, setIsClean] = useState(true);
 
-  useEffect(() => {
-    if (isClean === true) {
-      adminGalleryContext.word("");
+  function searchWordButtonPressed() {
+    if (adminGalleryContext.activeOrInactiveActivity === true) {
+      createActivityContext.word(wordToSearch);
     } else {
+      adminGalleryContext.word(wordToSearch);
     }
-    adminGalleryContext.word(wordTOSend);
-  }, [isClean, wordTOSend]);
+  }
 
   useEffect(() => {
-    if (wordToSearch != "") {
-      setIsClean(false);
-    } else {
-      setIsClean(true);
+    if (wordToSearch === "" || wordToSearch === " ") {
+      if (adminGalleryContext.activeOrInactiveActivity === true) {
+        createActivityContext.word("");
+      } else {
+        adminGalleryContext.word("");
+      }
     }
   }, [wordToSearch]);
 
   return (
-    <View>
-      <View style={styles.container}>
-        <TextInput
-          style={styles.textInput}
-          onChangeText={setWordToSearch}
-          value={wordToSearch}
-          placeholder="Sök"
-        />
-        <Icon
-          style={styles.icon}
-          color="#5B6770"
-          name="search"
-          onPress={() => setWordToSend(wordToSearch)}
-          size={30}
-        />
-      </View>
+    <View style={styles.container}>
+      <TextInput
+        style={styles.textInput}
+        onChangeText={setWordToSearch}
+        value={wordToSearch}
+        placeholder="Sök"
+      />
+      <View style={styles.lineNearIcon}></View>
+      <TouchableOpacity
+        testID="searchButtonPressed"
+        onPress={() => searchWordButtonPressed()}
+        style={styles.iconContainer}
+      >
+        <Icon style={styles.icon} color="#5B6770" name="search" size={30} />
+      </TouchableOpacity>
     </View>
   );
-};
+}
+export default SearchBarComponent;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     flexDirection: "row",
-
-    paddingVertical: 10,
-    marginHorizontal: 16,
     marginVertical: 16,
-    backgroundColor: "white",
-
+    backgroundColor: colors.background,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: "white",
+    height: 55,
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -71,25 +72,29 @@ const styles = StyleSheet.create({
       },
       android: {
         elevation: 2,
+        shadowColor: colors.dark,
       },
     }),
   },
   textInput: {
-    flex: 3,
-    paddingLeft: 15,
-    fontSize: 20,
-  },
-
-  icon: {
     flex: 1,
-    marginRight: 20,
+    paddingLeft: 15,
+    ...typography.b1,
   },
   textAktiva: {
     fontSize: 20,
   },
-  // textRadioButtonFilter: {
-  //   flex: 1,
-  //   flexDirection: "row",
-  //   marginHorizontal: 16,
-  // },
+  lineNearIcon: {
+    width: 1,
+    height: 55,
+    borderLeftWidth: 1,
+    borderColor: colors.dark,
+    opacity: 0.18,
+  },
+  iconContainer: {
+    width: 55,
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
 });

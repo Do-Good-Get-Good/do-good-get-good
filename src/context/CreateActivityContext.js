@@ -17,6 +17,9 @@ export const CreateActivityProvider = ({ children }) => {
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
   const [updateActivityGallery, setUpdateActivityGallery] = useState(false);
 
+  const [searchArray, setSearchArray] = useState([]);
+  const [searchingWord, setSearchingWord] = useState("");
+
   const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
     active_status: "",
     activity_city: "",
@@ -81,6 +84,7 @@ export const CreateActivityProvider = ({ children }) => {
       };
       console.log("CreateActivityContext all active actvivitiesFB useEffect");
       getAllActiveActivities();
+      setAllActiveActvivitiesFB(tempArray);
     }
   }, []);
 
@@ -128,6 +132,30 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, [changedOneActivity]);
 
+  useEffect(() => {
+    let newArray = allActiveActvivitiesFB;
+    let arrayWithFoundObjects = [];
+
+    if (searchingWord != "") {
+      for (let i = 0; i < newArray.length; i++) {
+        var searchAtFCity = newArray[i].city.search(searchingWord);
+        var searchAtTitle = newArray[i].title.search(searchingWord);
+
+        if (searchAtFCity != -1 || searchAtTitle != -1) {
+          var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
+            (x) => x.id === newArray[i].id
+          );
+          if (cheackIfObjectOlreadyExistInArray === -1) {
+            arrayWithFoundObjects.push(newArray[i]);
+            setSearchArray(arrayWithFoundObjects);
+          }
+        }
+      }
+    } else {
+      setSearchArray([]);
+    }
+  }, [searchingWord]);
+
   return (
     <CreateActivityContext.Provider
       value={{
@@ -143,6 +171,9 @@ export const CreateActivityProvider = ({ children }) => {
         activityHasChangedID: setActivityID,
         updateGallery: updateActivityGallery,
         setUpdateGallery: setUpdateActivityGallery,
+
+        word: setSearchingWord,
+        showSearchObject: searchArray,
       }}
     >
       {children}

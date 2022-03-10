@@ -7,15 +7,13 @@ export const useAdminGalleryFunction = () => {
 };
 
 export const AdminGalleryProvider = ({ children }) => {
-  const [chooseInactive, setchooseInactive] = useState(false);
+  const [chooseInactive, setchooseInactive] = useState(true);
   const [activitiesGallery, setActivitiesGallery] = useState([]);
   const [inactiveActivitiesGallery, setInactiveActivitiesGallery] = useState(
     []
   );
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
-
- 
 
   useEffect(() => {
     let inactiveArray = [];
@@ -49,6 +47,29 @@ export const AdminGalleryProvider = ({ children }) => {
     };
     setInactive();
   }, []);
+
+  useEffect(() => {
+    let newArray = inactiveActivitiesGallery;
+    let arrayWithFoundObjects = [];
+    if (searchingWord != "") {
+      for (let i = 0; i < newArray.length; i++) {
+        var searchAtFCity = newArray[i].city.search(searchingWord);
+        var searchAtTitle = newArray[i].title.search(searchingWord);
+
+        if (searchAtFCity != -1 || searchAtTitle != -1) {
+          var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
+            (x) => x.id === newArray[i].id
+          );
+          if (cheackIfObjectOlreadyExistInArray === -1) {
+            arrayWithFoundObjects.push(newArray[i]);
+            setSearchArray(arrayWithFoundObjects);
+          }
+        }
+      }
+    } else {
+      setSearchArray([]);
+    }
+  }, [searchingWord]);
 
   return (
     <AdminGalleryContext.Provider

@@ -1,180 +1,99 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableNativeFeedback } from "react-native";
-import { CheckBox, Dialog, ListItem } from "react-native-elements";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableNativeFeedback,
+  TouchableOpacity,
+} from "react-native";
+import { CheckBox, Dialog, Icon } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
-  const [userIDs, setUserIDs] = useState([]);
-  const [usersFullName, setUsersFullName] = useState([]);
-  const [usersTimeEntries, setUsersTimeEntries] = useState([]);
-  const [usersTimeEntryIDs, setUsersTimeEntryIDs] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
   const [reload, setReload] = useState(false);
-  const [loadingData, setLoadingData] = useState(true);
+  const [loadingData, setLoadingData] = useState(null);
+  const [noTimeEntriesToConfirm, setNoTimeEntriesToConfirm] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      try {
-        const response = await firestore()
+      setLoadingData(true);
+      let id = 0;
+      let usersFetched = 0;
+      let userIDs = await firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .collection("my_users")
+        .get();
+
+      userIDs.forEach(async (user) => {
+        let userFullName;
+        let userInfo = await firestore()
           .collection("Users")
-          .doc(auth().currentUser.uid)
-          .collection("my_users")
+          .doc(user.id)
+          .collection("personal_information")
           .get();
 
-        var docIDs = response.docs.map((doc) => doc.id);
+        userInfo.docs.map(
+          (doc) =>
+            (userFullName = `${doc.data().first_name} ${doc.data().last_name}`)
+        );
 
-        setUserIDs(docIDs);
-      } catch (error) {
-        console.log(error);
-      }
+        let timeEntries = await firestore()
+          .collection("Users")
+          .doc(user.id)
+          .collection("time_entries")
+          .orderBy("date", "desc")
+          .where("status_confirmed", "==", false)
+          .get();
+
+        timeEntries.forEach(async (timeEntry) => {
+          let activity = await firestore()
+            .collection("Activities")
+            .doc(timeEntry.data().activity_id)
+            .get();
+
+          if (activity.exists) {
+            const userData = {
+              id: id,
+              userID: user.id,
+              fullName: userFullName,
+              activityName: activity.data().activity_title,
+              timeEntryDate: format(
+                timeEntry.data().date.toDate(),
+                "yyyy-MM-dd"
+              ),
+              timeEntryHours: timeEntry.data().time,
+              timeEntryId: timeEntry.id,
+              checked: false,
+              isOpen: false,
+            };
+            setMyUsers((prev) => [...prev, userData]);
+          }
+          id++;
+        });
+        usersFetched++;
+        if (usersFetched === userIDs.size) {
+          setLoadingData(false);
+          if (id === 0) {
+            setNoTimeEntriesToConfirm(true);
+          }
+        }
+      });
     };
-    setLoadingData(true);
     fetchUserData();
 
     return () => {
       setMyUsers([]);
-      setUsersFullName([]);
-      setUsersTimeEntries([]);
-      setIsFinished(false);
-      setReload(false);
+      setNoTimeEntriesToConfirm(false);
     };
   }, [reload]);
-
-  useEffect(() => {
-    fetchNamesAndTimeEntries();
-  }, [userIDs]);
-
-  useEffect(() => {
-    if (isFinished) {
-      fetchActivityNames();
-    }
-
-    return () => {
-      setIsFinished(false);
-    };
-  }, [isFinished]);
-
-  const fetchNamesAndTimeEntries = async () => {
-    if (userIDs.length != 0) {
-      let nameArr = [];
-      let timeEntryArr = [];
-      let timeEntryIDsArr = [];
-      for (let i = 0; i < userIDs.length; i++) {
-        try {
-          const nameResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("personal_information")
-            .get();
-
-          let nameData = nameResponse.docs.map((doc) => doc.data());
-          let fullName = nameData[0].first_name + " " + nameData[0].last_name;
-          nameArr.push(fullName);
-        } catch (error) {
-          console.log(error);
-        }
-        try {
-          const timeEntryResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("time_entries")
-            .orderBy("date", "desc")
-            .where("status_confirmed", "==", false)
-            .get();
-
-          let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          let timeEntryID = timeEntryResponse.docs.map((doc) => doc.id);
-          if (timeEntryData.length === 0 && timeEntryID.length === 0) {
-            timeEntryArr.push(["NO DATA"]);
-            timeEntryIDsArr.push(["NO DATA"]);
-          } else {
-            timeEntryArr.push(timeEntryData);
-            timeEntryIDsArr.push(timeEntryID);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-      }
-      if (
-        nameArr.length === userIDs.length &&
-        timeEntryArr.length === userIDs.length &&
-        timeEntryIDsArr.length === userIDs.length
-      ) {
-        setUsersFullName(nameArr);
-        setUsersTimeEntries(timeEntryArr);
-        setUsersTimeEntryIDs(timeEntryIDsArr);
-        setIsFinished(true);
-      }
-    }
-  };
-
-  const fetchActivityNames = () => {
-    const getActivityName = async (i, j) => {
-      try {
-        const response = await firestore()
-          .collection("Activities")
-          .doc(usersTimeEntries[i][j].activity_id)
-          .get();
-
-        linkToUsersTimeEntry(response.data().activity_title, i, j);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    for (let i = 0; i < usersTimeEntries.length; i++) {
-      for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] !== "NO DATA") {
-          getActivityName(i, j);
-        }
-      }
-    }
-  };
-
-  const linkToUsersTimeEntry = (activity, i, j) => {
-    if (usersTimeEntries[i][0] !== "NO DATA") {
-      let timeEntry = {
-        activityName: activity,
-        date: usersTimeEntries[i][j].date,
-        time: usersTimeEntries[i][j].time,
-      };
-      usersTimeEntries[i][j] = timeEntry;
-    }
-    fillUsersWithInfo();
-  };
-
-  const fillUsersWithInfo = () => {
-    let tempArr = [];
-    let id = 0;
-    for (let i = 0; i < userIDs.length; i++) {
-      for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] !== "NO DATA") {
-          let userInfo = {
-            id: id,
-            fullName: usersFullName[i],
-            timeEntryDate: format(
-              usersTimeEntries[i][j].date.toDate(),
-              "yyyy-MM-dd"
-            ),
-            timeEntryHours: usersTimeEntries[i][j].time,
-            timeEntryActivityName: usersTimeEntries[i][j].activityName,
-            activityId: usersTimeEntryIDs[i][j],
-            userID: userIDs[i],
-            checked: false,
-            isOpen: false,
-          };
-          tempArr.push(userInfo);
-          id++;
-        }
-      }
-    }
-    setMyUsers(tempArr);
-    setLoadingData(false);
-  };
 
   // Check/uncheck the selected users checkbox
   const markSelected = (selectedUser) => {
@@ -238,10 +157,9 @@ const ConfirmActivities = () => {
 
     // For every user in 'selectedUsers' call 'confirmActivity'
     for (let i = 0; i < selectedUsers.length; i++) {
-      confirmActivity(selectedUsers[i].activityId, selectedUsers[i].userID);
+      confirmActivity(selectedUsers[i].timeEntryId, selectedUsers[i].userID);
       if (i === selectedUsers.length - 1) {
-        setReload(true);
-        setLoadingData(true);
+        setReload(!reload);
       }
     }
   };
@@ -273,7 +191,7 @@ const ConfirmActivities = () => {
           iconRight
           containerStyle={styles.checkBoxStyle}
           checked={checked}
-          checkedColor="#84BD00"
+          checkedColor={colors.primary}
           onPress={() => {
             selectAll(!checkAll);
           }}
@@ -281,49 +199,65 @@ const ConfirmActivities = () => {
         />
       </View>
       <View style={styles.content}>
-        {loadingData ? (
-          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
-        ) : null}
-        {!loadingData
-          ? myUsers.map((user, index) => (
-              <ListItem.Accordion
-                key={index}
-                containerStyle={styles.listItemContainerStyle}
-                underlayColor="#F5F5F5"
-                activeOpacity={0.65}
-                content={
-                  <>
-                    <View style={styles.listItemStyle}>
-                      <Text style={styles.listItemNameStyle}>
-                        {user.fullName}
-                      </Text>
-                      <Text style={styles.listItemDateStyle}>
-                        {user.timeEntryDate}
-                      </Text>
-                      <Text style={styles.listItemHourStyle}>
-                        {user.timeEntryHours} tim
-                      </Text>
-                      <CheckBox
-                        iconRight
-                        containerStyle={styles.listItemCheckBoxStyle}
-                        checked={user.checked}
-                        checkedColor="#84BD00"
-                        onPress={() => {
-                          markSelected(user);
-                        }}
-                      />
-                    </View>
-                  </>
-                }
-                isExpanded={user.isOpen}
+        {myUsers.length > 0 &&
+          myUsers.map((user, index) => (
+            <View key={index} testID="confirmActivities.timeEntryView">
+              <TouchableOpacity
+                style={styles.listItemStyle}
                 onPress={() => {
                   openSelectedUser(user);
                 }}
               >
+                <View
+                  style={{
+                    flex: 1.25,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                  }}
+                >
+                  <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
+                  <Icon
+                    style={styles.icon}
+                    color={colors.secondary}
+                    name={
+                      user.isOpen === true ? "arrow-drop-up" : "arrow-drop-down"
+                    }
+                    size={30}
+                  />
+                </View>
+                <Text style={styles.listItemDateStyle}>
+                  {user.timeEntryDate}
+                </Text>
+                <View
+                  style={{
+                    flex: 1,
+                    flexDirection: "row",
+                    alignItems: "center",
+                    justifyContent: "flex-end",
+                  }}
+                >
+                  <View style={{ flex: 0.9 }}>
+                    <Text style={styles.listItemHourStyle}>
+                      {user.timeEntryHours}h
+                    </Text>
+                  </View>
+                  <CheckBox
+                    iconRight
+                    containerStyle={styles.listItemCheckBoxStyle}
+                    checked={user.checked}
+                    checkedColor={colors.primary}
+                    onPress={() => {
+                      markSelected(user);
+                    }}
+                  />
+                </View>
+              </TouchableOpacity>
+              {user.isOpen && (
                 <View style={styles.listItemContentStyle}>
                   <View style={styles.listItemContentNameView}>
                     <Text style={styles.listItemContentNameStyle}>
-                      {user.timeEntryActivityName}
+                      {user.activityName}
                     </Text>
                   </View>
                   <View style={styles.listItemContentDateView}>
@@ -333,13 +267,30 @@ const ConfirmActivities = () => {
                   </View>
                   <View style={styles.listItemContentHourView}>
                     <Text style={styles.listItemContentHourStyle}>
-                      {user.timeEntryHours} tim
+                      {user.timeEntryHours}h
                     </Text>
                   </View>
                 </View>
-              </ListItem.Accordion>
-            ))
-          : null}
+              )}
+            </View>
+          ))}
+        {noTimeEntriesToConfirm && (
+          <View
+            style={{
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Text style={{ ...typography.b2 }}>
+              Du har godkänt alla konsulters tider, kolla igen senare!!
+            </Text>
+          </View>
+        )}
+        {loadingData === true && (
+          <Dialog.Loading
+            loadingProps={{ color: colors.primary }}
+          ></Dialog.Loading>
+        )}
       </View>
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
@@ -353,7 +304,7 @@ const ConfirmActivities = () => {
           style={
             myUsers.filter((user) => user.checked === true).length > 0
               ? styles.confirmButton
-              : [styles.confirmButton, { backgroundColor: "#B7B7B7" }]
+              : [styles.confirmButton, { backgroundColor: colors.disabled }]
           }
         >
           <Text
@@ -378,79 +329,90 @@ const styles = StyleSheet.create({
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    marginTop: 10,
+    alignItems: "flex-end",
+    marginVertical: 10,
     paddingVertical: 6,
   },
-  headerText: { fontSize: 22 },
-  headerTextSmall: { fontWeight: "400" },
+  headerText: { ...typography.title },
+  headerTextSmall: { ...typography.b2, fontWeight: "400" },
   checkBoxStyle: {
     borderWidth: 0,
     paddingHorizontal: 0,
-    paddingVertical: 10,
-    marginTop: 10,
-    right: -15,
-    backgroundColor: "#F5F5F5",
+    padding: 0,
+    right: -2,
+    bottom: 1,
+    backgroundColor: colors.light,
   },
   content: {
     paddingHorizontal: 10,
-    paddingVertical: 10,
+    paddingVertical: 5,
     marginBottom: 10,
-    backgroundColor: "#FFFFFF",
+    backgroundColor: colors.background,
     borderRadius: 5,
   },
-  listItemContainerStyle: { padding: 0 },
   listItemStyle: {
-    flex: 1,
+    backgroundColor: colors.background,
     flexDirection: "row",
-    marginVertical: 16,
-    justifyContent: "space-between",
+    paddingVertical: 10,
     alignItems: "center",
-    // paddingVertical: 6,
   },
   listItemNameStyle: {
-    fontWeight: "bold",
-    // paddingVertical: 10,
-    fontSize: 15,
-    flex: 3,
+    fontWeight: "700",
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
+    flex: 1,
   },
   listItemDateStyle: {
-    flex: 2,
-    textAlign: "center",
-    fontSize: 15,
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
+    flex: 1.05,
   },
   listItemHourStyle: {
-    flex: 1.75,
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
     textAlign: "center",
-    paddingRight: 15,
-    fontSize: 15,
   },
   listItemCheckBoxStyle: {
     padding: 0,
-    right: -20,
-    position: "absolute",
+    margin: 0,
+    marginRight: -2,
   },
   listItemContentStyle: {
-    backgroundColor: "#F5F5F5",
+    backgroundColor: colors.background,
     paddingVertical: 16,
     paddingHorizontal: 10,
     flexDirection: "row",
+    alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
   },
   listItemContentNameView: { flex: 1 },
   listItemContentDateView: { flex: 1 },
   listItemContentHourView: { flex: 1 },
-  listItemContentNameStyle: { fontWeight: "bold", fontSize: 15 },
-  listItemContentDateStyle: { textAlign: "center", fontSize: 15 },
-  listItemContentHourStyle: { textAlign: "center", fontSize: 15 },
+  listItemContentNameStyle: {
+    fontWeight: "700",
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
+    paddingRight: 10,
+  },
+  listItemContentDateStyle: {
+    textAlign: "center",
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
+  },
+  listItemContentHourStyle: {
+    textAlign: "center",
+    fontFamily: typography.b2.fontFamily,
+    fontSize: typography.b2.fontSize,
+  },
   confirmButton: {
     paddingVertical: 12,
-    backgroundColor: "#84BD00",
+    backgroundColor: colors.primary,
     borderRadius: 5,
   },
   confirmButtonText: {
     alignSelf: "center",
-    fontSize: 20,
+    fontFamily: typography.button.lg.fontFamily,
+    fontSize: typography.button.lg.fontSize,
   },
 });

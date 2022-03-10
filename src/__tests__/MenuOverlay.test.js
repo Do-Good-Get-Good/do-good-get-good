@@ -39,6 +39,12 @@ jest.mock("../context/ActivityContext", () => ({
   }),
 }));
 
+jest.mock("../context/AdminGalleryContext", () => ({
+  useAdminGalleryFunction: () => ({
+    chooseActiveOrNot: jest.fn(),
+  }),
+}));
+
 afterEach(() => {
   jest.clearAllMocks();
 });
