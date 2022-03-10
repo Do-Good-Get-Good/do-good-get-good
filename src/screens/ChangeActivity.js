@@ -21,7 +21,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export function ChangeActivity({ route, navigation }) {
-  const { activity } = route.params;
+  const { activity, tgPopular } = route.params;
   const activityCardFunction = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const [title, setTitle] = useState(activity.title);
@@ -29,7 +29,6 @@ export function ChangeActivity({ route, navigation }) {
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
   const [photo, setPhoto] = useState(activity.photo);
-  //console.log("ChangeActivity title,", title);
 
   function buttonSavePressed() {
     let changedObject = {};
@@ -44,7 +43,6 @@ export function ChangeActivity({ route, navigation }) {
       popular: activity.popular,
       title: title,
     };
-    console.log("ChangeActivity changedObject  ", changedObject);
 
     activityCardFunction.changeActivityCard(true);
     activityCardFunction.activityWithChangedInfor(changedObject);
@@ -52,11 +50,11 @@ export function ChangeActivity({ route, navigation }) {
       activityInfo: changedObject,
       admin: true,
       active: true,
-      tgPopular: changedObject.popular,
+      tgPopular: tgPopular,
     });
     createActivityContext.activityHasChangedID({
       activityInfo: changedObject,
-      popular: changedObject.popular,
+      popular: tgPopular,
       statusActive: true,
     });
     createActivityContext.activityHasChanged(true);

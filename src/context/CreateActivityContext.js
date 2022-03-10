@@ -36,7 +36,7 @@ export const CreateActivityProvider = ({ children }) => {
     popular: "",
   });
   const [changedOneActivity, setChangedOneActivity] = useState(false);
-  // const [activityID, setActivityID] = useState(null);
+
   const [activityID, setActivityID] = useState({
     id: "",
     active: null,
@@ -75,7 +75,6 @@ export const CreateActivityProvider = ({ children }) => {
               popular: activities[i].tg_favorite,
             };
             tempArray.push(dataInfo);
-            // setAllActiveActvivitiesFB((prev) => [...prev, dataInfo]);
           }
         }
         setAllActiveActvivitiesFB(tempArray);
@@ -111,63 +110,23 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, [createNewActivityInFB]);
 
-  // useEffect(() => {
-  //   if (changedOneActivity === true && activityID != null) {
-  //     const getChangedActivity = async () => {
-  //       const getActivity = await firestore()
-  //         .collection("Activities")
-  //         .doc(activityID)
-  //         .get();
-
-  //       let info = getActivity.data();
-  //       if (info != null) {
-  //         const dataInfo = {
-  //           id: activityID,
-  //           active: info.active_status,
-  //           title: info.activity_title,
-  //           city: info.activity_city,
-  //           photo: info.activity_photo,
-  //           description: info.activity_description,
-  //           popular: info.tg_favorite,
-  //         };
-
-  //         setNewChangeActivity(dataInfo);
-  //       }
-  //       setChangedOneActivity(false);
-  //       setActivityID(null);
-  //       setUpdateActivityGallery(true);
-  //       console.log(
-  //         "CreateActivityContext newChangeActivity in useEffect dataInfo "
-  //       );
-  //     };
-  //     getChangedActivity();
-  //   }
-  // }, [changedOneActivity]);
-
   useEffect(() => {
     if (changedOneActivity === true) {
       const dataInfo = {
         id: activityID.activityInfo.id,
         active: activityID.statusActive,
-        title: activityID.activityInfo.title,
         city: activityID.activityInfo.city,
-        photo: activityID.activityInfo.photo,
         description: activityID.activityInfo.description,
+        place: activityID.activityInfo.place,
+        photo: activityID.activityInfo.photo,
+        title: activityID.activityInfo.title,
         popular: activityID.popular,
       };
-      console.log("CreacteActivityContext dataInfo  ", dataInfo);
-
       setNewChangeActivity(dataInfo);
-
       setChangedOneActivity(false);
-      // setActivityID({});
       setUpdateActivityGallery(true);
-      // console.log(
-      //   "CreateActivityContext newChangeActivity in useEffect dataInfo "
-      // );
     }
   }, [changedOneActivity]);
-  console.log("activityID  ", activityID);
 
   return (
     <CreateActivityContext.Provider

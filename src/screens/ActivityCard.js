@@ -98,6 +98,7 @@ export function ActivityCard({ route, navigation }) {
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID({
         activityInfo: activityInfo,
+
         popular: activityInfo.popular,
         statusActive: false,
       });
@@ -115,6 +116,7 @@ export function ActivityCard({ route, navigation }) {
       activityCardContext.idActivity(activityInfo.id);
       createActivityContext.activityHasChangedID({
         activityInfo: activityInfo,
+
         popular: activityInfo.popular,
         statusActive: true,
       });
@@ -154,6 +156,7 @@ export function ActivityCard({ route, navigation }) {
   useEffect(() => {
     setAdminOpenedActyvity(admin);
     setActivity({
+      id: activityInfo.id,
       title: activityInfo.title,
       photo: activityInfo.photo,
       city: activityInfo.city,
@@ -197,7 +200,7 @@ export function ActivityCard({ route, navigation }) {
         statusActive: activityInfo.active,
       });
     } else {
-      console.log("Something went wrong with status popular", popular);
+      console.log("Something went wrong with status popular");
     }
   }
 
@@ -339,6 +342,7 @@ export function ActivityCard({ route, navigation }) {
             onPress={() =>
               navigation.navigate("ChangeActivity", {
                 activity: activityInfo,
+                tgPopular: popular,
               })
             }
           >

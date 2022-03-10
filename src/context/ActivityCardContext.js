@@ -92,18 +92,19 @@ export const ActivityCardProvider = ({ children }) => {
   }, [confirmToDelete]);
 
   useEffect(() => {
-    //IT IS NEW FOr ÄNDRA
     if (activityWithChangedInfor.id != "" && changeActivityToTrue === true) {
       const updateActivityCard = async () => {
         firestore()
           .collection("Activities")
           .doc(activityWithChangedInfor.id)
           .update({
-            activity_title: activityWithChangedInfor.title,
+            active_status: activityWithChangedInfor.active,
             activity_city: activityWithChangedInfor.city,
-            activity_place: activityWithChangedInfor.place,
             activity_description: activityWithChangedInfor.description,
             activity_photo: activityWithChangedInfor.photo,
+            activity_place: activityWithChangedInfor.place,
+            activity_title: activityWithChangedInfor.title,
+            tg_favorite: activityWithChangedInfor.popular,
           })
           .then(() => {
             console.log("Actyvity Info changed");

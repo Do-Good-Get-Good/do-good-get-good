@@ -108,10 +108,6 @@ export function AdminActivityGallery({ navigation }) {
       addAndDeleteObjectInArrayAfterStatusActiveChanged();
     }
   }, [createActivityContext.updateGallery]);
-  console.log(
-    "createActivityContext.newChangeActivity    ",
-    createActivityContext.newChangeActivity
-  );
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

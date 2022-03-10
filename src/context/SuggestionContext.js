@@ -12,6 +12,7 @@ export const SuggestionProvider = ({ children }) => {
 
   useEffect(() => {
     if (isFinished === false) {
+      let tempArray = [];
       const popularActivities = async () => {
         const popularTrueActivities = await firestore()
           .collection("Activities")
@@ -28,11 +29,14 @@ export const SuggestionProvider = ({ children }) => {
               city: activities[i].activity_city,
               description: activities[i].activity_description,
               photo: activities[i].activity_photo,
+              popular: activities[i].tg_favorite,
             };
-            setSuggestionsFB((prev) => [...prev, dataInfo]);
+            tempArray.push(dataInfo);
+            // setSuggestionsFB((prev) => [...prev, dataInfo]);
           }
           console.log("SuggestionContext popular activity useEffect");
         }
+        setSuggestionsFB(tempArray);
         setIsFinished(true);
       };
 

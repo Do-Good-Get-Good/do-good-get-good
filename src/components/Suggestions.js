@@ -28,7 +28,17 @@ export function Suggestions({
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
-  const [showArray, setShowArray] = useState([]);
+  const [showArray, setShowArray] = useState([
+    {
+      id: "",
+      active: null,
+      title: "",
+      city: "",
+      photo: "",
+      description: "",
+      popular: "",
+    },
+  ]);
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [activetyDeleted, setActivetyDeleted] = useState(false);
 
