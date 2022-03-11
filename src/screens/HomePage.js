@@ -21,6 +21,7 @@ import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
+import InfoModal from "../components/InfoModal";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -29,7 +30,7 @@ export const HomePage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
-      {userLevel === "admin" ? (
+      {userLevel === "admin" && (
         <>
           <ScrollView style={styles.container}>
             <ConfirmActivities />
@@ -38,12 +39,13 @@ export const HomePage = ({ navigation }) => {
           </ScrollView>
           <FloatingActionButton />
         </>
-      ) : null}
-      {userLevel === "user" ? (
+      )}
+      {userLevel === "user" && (
         <>
           {activity.myActivities.length != 0 ? (
             <View style={styles.view}>
               <ScrollView style={styles.container}>
+                <InfoModal screen="homepage" tooltipWidth={250} />
                 <MyActivities
                   myAccumulatedTime={activity.activitiesIDandAccumTime}
                   myActivities={activity.myActivities}
@@ -60,6 +62,7 @@ export const HomePage = ({ navigation }) => {
             </View>
           ) : (
             <ScrollView style={styles.container}>
+              <InfoModal screen="homepage" textWrapperWidth={250} />
               <SuggestionProvider>
                 <Text style={styles.suggestionHeader}>
                   Förslag & inspiration
@@ -67,10 +70,11 @@ export const HomePage = ({ navigation }) => {
                 <Suggestions navigation={navigation} />
               </SuggestionProvider>
               <MyActivityAsAList navigation={navigation} />
+              <BottomLogo />
             </ScrollView>
           )}
         </>
-      ) : null}
+      )}
     </SafeAreaView>
   );
 };
