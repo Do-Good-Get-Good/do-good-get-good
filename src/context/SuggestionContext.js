@@ -12,7 +12,6 @@ export const SuggestionProvider = ({ children }) => {
 
   useEffect(() => {
     if (isFinished === false) {
-      let tempArray = [];
       const popularActivities = async () => {
         let tempArray = [];
         const popularTrueActivities = await firestore()

@@ -193,6 +193,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 16,
     marginHorizontal: 16,
+    marginTop: 60,
   },
   saveButton: {
     borderRadius: 5,
