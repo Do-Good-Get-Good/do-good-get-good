@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
+import { render } from "@testing-library/react-native";
 
 import InfoModal from "../components/InfoModal";
 
@@ -13,7 +13,7 @@ const homepageInfoText =
 const imageGalleryInfoText =
   "Välj en bild som bäst representerar aktiviteten som den ska tillhöra.";
 
-describe("Testing Faq page", () => {
+describe("Testing InfoModal", () => {
   it("Renders homepage tooltip info correctly", async () => {
     const { getByTestId } = render(
       <InfoModal screen="homepage" tooltipWidth={250} />
@@ -24,7 +24,7 @@ describe("Testing Faq page", () => {
   });
   it("Renders image gallery tooltip info correctly", async () => {
     const { getByTestId } = render(
-      <InfoModal screen="imageGallery" tooltipWidth={250} />
+      <InfoModal screen="imageGallery" tooltipWidth={200} />
     );
 
     const infoText = getByTestId("InfoModal.infoText");
