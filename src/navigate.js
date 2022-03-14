@@ -9,6 +9,7 @@ import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
 import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
 import Faq from "./screens/Faq";
+import ConceptPage from "./screens/ConceptPage";
 
 const Stack = createNativeStackNavigator();
 export const Mystack = () => {
@@ -33,6 +34,7 @@ export const Mystack = () => {
           component={CreateOrChangeUser}
         />
         <Stack.Screen name="Faq" component={Faq} />
+        <Stack.Screen name="ConceptPage" component={ConceptPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

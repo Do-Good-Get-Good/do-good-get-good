@@ -97,8 +97,8 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             testID="menuOverlay.aboutButton"
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
-              // openOverlay();
-              // navigation.navigate("");
+              openOverlay();
+              navigation.navigate("ConceptPage");
             }}
           >
             <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
