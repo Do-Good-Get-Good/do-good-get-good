@@ -10,9 +10,9 @@ import {
   ScrollView,
   SafeAreaView,
   TextInput,
+  Dimensions,
 } from "react-native";
 import Menu from "../components/Menu";
-import { Icon } from "react-native-elements";
 
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -61,80 +61,93 @@ export function ChangeActivity({ route, navigation }) {
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView>
       <Menu />
       <ScrollView>
-        <View style={styles.container}>
-          <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
-        </View>
-        <View style={styles.containerForInputs}>
-          <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textTitleField,
-            }}
-            numberOfLines={2}
-            multiline={true}
-            onChangeText={setTitle}
-            value={title}
-            placeholder={activity.title}
-            placeholderTextColor={colors.dark}
-          />
-          <TextInput
-            style={styles.textInputs}
-            numberOfLines={2}
-            multiline={true}
-            onChangeText={setCity}
-            value={city}
-            placeholder={activity.city}
-            placeholderTextColor={colors.dark}
-          />
-          <TextInput
-            style={styles.textInputs}
-            numberOfLines={2}
-            multiline={true}
-            onChangeText={setPlace}
-            value={place}
-            placeholder={activity.place}
-            placeholderTextColor={colors.dark}
-          />
-          <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textDescriptionField,
-            }}
-            numberOfLines={5}
-            multiline={true}
-            onChangeText={setDescription}
-            value={description}
-            placeholder={activity.description}
-            placeholderTextColor={colors.dark}
-          />
-        </View>
+        <View
+          style={{
+            flex: 1,
+            height: Dimensions.get("screen").height,
+          }}
+        >
+          <View style={styles.container}>
+            <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
 
-        <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity
-            testID="saveButton"
-            onPress={() => buttonSavePressed()}
-            style={styles.saveButton}
-          >
-            <Text style={styles.saveButtonText}>Spara</Text>
-          </TouchableOpacity>
+            <TextInput
+              style={{
+                ...styles.textInputs,
+                ...styles.textTitleField,
+                ...styles.textForTitlePlaceCityInput,
+              }}
+              numberOfLines={2}
+              multiline={true}
+              onChangeText={setTitle}
+              value={title}
+              placeholder={activity.title}
+              placeholderTextColor={colors.dark}
+            />
+            <TextInput
+              style={{
+                ...styles.textInputs,
+                ...styles.textForTitlePlaceCityInput,
+              }}
+              numberOfLines={2}
+              multiline={true}
+              onChangeText={setCity}
+              value={city}
+              placeholder={activity.city}
+              placeholderTextColor={colors.dark}
+            />
+            <TextInput
+              style={{
+                ...styles.textInputs,
+                ...styles.textForTitlePlaceCityInput,
+              }}
+              numberOfLines={2}
+              multiline={true}
+              onChangeText={setPlace}
+              value={place}
+              placeholder={activity.place}
+              placeholderTextColor={colors.dark}
+            />
+            <TextInput
+              style={{
+                ...styles.textInputs,
+                ...styles.textDescriptionField,
+              }}
+              numberOfLines={5}
+              multiline={true}
+              onChangeText={setDescription}
+              value={description}
+              placeholder={activity.description}
+              placeholderTextColor={colors.dark}
+            />
+          </View>
 
-          <TouchableOpacity
-            testID="backButton"
-            onPress={() => navigation.goBack()}
-            style={styles.cancelButton}
-          >
-            <LinearGradient
-              colors={[colors.primary, colors.secondary]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.cancelButtonBorder}
+          <View style={styles.containerForTwoBottomButtons}>
+            <TouchableOpacity
+              testID="saveButton"
+              onPress={() => buttonSavePressed()}
+              style={styles.saveButton}
             >
-              <Text style={styles.cancelButtonText}>Avbryt</Text>
-            </LinearGradient>
-          </TouchableOpacity>
+              <Text style={styles.saveButtonText}>Spara</Text>
+            </TouchableOpacity>
+
+            <TouchableOpacity
+              testID="backButton"
+              onPress={() => navigation.goBack()}
+              style={styles.cancelButton}
+            >
+              <LinearGradient
+                colors={[colors.primary, colors.secondary]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.cancelButtonBorder}
+              >
+                <Text style={styles.cancelButtonText}>Avbryt</Text>
+              </LinearGradient>
+            </TouchableOpacity>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -144,10 +157,9 @@ export default ChangeActivity;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 2.3,
     marginHorizontal: 16,
     marginVertical: 15,
-    flexDirection: "row",
-    alignItems: "flex-end",
   },
   textMainTitle: {
     ...typography.h2,
@@ -155,11 +167,13 @@ const styles = StyleSheet.create({
     color: colors.dark,
     marginRight: 10,
   },
-  containerForInputs: {
-    marginHorizontal: 16,
+
+  textForTitlePlaceCityInput: {
+    flex: 0.2,
   },
   textInputs: {
     paddingLeft: 11,
+
     ...typography.b1,
     color: colors.dark,
     marginBottom: 12,
@@ -187,13 +201,13 @@ const styles = StyleSheet.create({
     marginTop: 18,
     textAlignVertical: "top",
     paddingTop: 13,
+    height: 130,
   },
 
   containerForTwoBottomButtons: {
-    marginTop: 10,
+    flex: 1,
     marginBottom: 16,
     marginHorizontal: 16,
-    marginTop: 60,
   },
   saveButton: {
     borderRadius: 5,
@@ -219,6 +233,7 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     textAlignVertical: "center",
+    overflow: "hidden",
   },
   cancelButtonBorder: {
     paddingVertical: 1,

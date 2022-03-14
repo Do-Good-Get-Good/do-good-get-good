@@ -63,39 +63,32 @@ describe("Testing ChangeActivity screen", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
-    fireEvent.changeText(
-      getByPlaceholderText(route.params.activity.title),
-      "activity name or title"
-    );
+    const input = getByPlaceholderText(route.params.activity.title);
+    fireEvent.changeText(input, "activity name or title");
   });
 
   it("ChangeActivity. Placeholder with city exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
-    fireEvent.changeText(
-      getByPlaceholderText(route.params.activity.city),
-      "activity name or city"
-    );
+    const input = getByPlaceholderText(route.params.activity.city);
+    fireEvent.changeText(input, "activity name or city");
   });
 
   it("ChangeActivity. Placeholder with place exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
-    fireEvent.changeText(
-      getByPlaceholderText(route.params.activity.place),
-      "activity name or place"
-    );
+    const input = getByPlaceholderText(route.params.activity.place);
+    fireEvent.changeText(input, "activity name or place");
+    expect(input.props.value).toEqual("activity name or place");
   });
   it("ChangeActivity. Placeholder with description exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
-    fireEvent.changeText(
-      getByPlaceholderText(route.params.activity.description),
-      "activity name or description"
-    );
+    const input = getByPlaceholderText(route.params.activity.description);
+    fireEvent.changeText(input, "activity name or description");
   });
 
   it("ChangeActivity. Button 'Save' exist and navigate back  ", () => {

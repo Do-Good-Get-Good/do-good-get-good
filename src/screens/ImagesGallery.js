@@ -146,6 +146,7 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     textAlignVertical: "center",
+    overflow: "hidden",
   },
   cancelButtonBorder: {
     paddingVertical: 1,

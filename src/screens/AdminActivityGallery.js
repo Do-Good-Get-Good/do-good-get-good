@@ -136,7 +136,10 @@ export function AdminActivityGallery({ navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={{ paddingHorizontal: 16 }}>
+      <ScrollView
+        keyboardShouldPersistTaps={"always"}
+        style={{ paddingHorizontal: 16 }}
+      >
         <Text style={styles.headerText}>Aktivitetsgalleri</Text>
         <SearchBarComponent />
         <View style={styles.radioButtonDropdownView}>
