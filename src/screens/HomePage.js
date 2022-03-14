@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { MyActivities } from "../components/MyActivities";
 import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { Suggestions } from "../components/Suggestions";
+import Suggestions from "../components/Suggestions";
 
 import Menu from "../components/Menu";
 
@@ -18,6 +18,7 @@ import { useAdminCheckFunction } from "../context/AdminContext";
 import { SuggestionProvider } from "../context/SuggestionContext";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
+import TimeStatistics from "../components/TimeStatistics";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
@@ -44,6 +45,7 @@ export const HomePage = ({ navigation }) => {
           {activity.myActivities.length != 0 ? (
             <View style={styles.view}>
               <ScrollView style={styles.container}>
+                <TimeStatistics />
                 <MyActivities
                   myAccumulatedTime={activity.activitiesIDandAccumTime}
                   myActivities={activity.myActivities}
