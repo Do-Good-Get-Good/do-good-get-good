@@ -145,7 +145,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       isVisible={visible}
       onBackdropPress={toggleVisibility}
       overlayStyle={{
-        backgroundColor: "#F5F5F5",
+        backgroundColor: colors.light,
         borderRadius: 5,
         width: "90%",
         marginTop: 64,
@@ -208,7 +208,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
                 customStyles: {
                   container: {
                     borderWidth: 1,
-                    borderColor: "#84BD00",
+                    borderColor: colors.primary,
                     borderRadius: 0,
                   },
                 },
@@ -218,7 +218,7 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
                   container: {
                     backgroundColor: "#84BD0040",
                     borderWidth: 1,
-                    borderColor: "#84BD00",
+                    borderColor: colors.primary,
                     borderRadius: 0,
                   },
                 },
@@ -335,6 +335,7 @@ const styles = StyleSheet.create({
   },
   hourAmountText: {
     ...typography.h2,
+    color: colors.dark,
   },
   hourButton: {
     width: 50,
@@ -363,7 +364,8 @@ const styles = StyleSheet.create({
   },
   sendBtnText: {
     ...typography.button.lg,
-    fontWeight: "400",
+    fontWeight: "500",
+    color: colors.dark,
   },
   changeBtn: {
     marginBottom: 10,

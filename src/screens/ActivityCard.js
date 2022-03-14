@@ -549,6 +549,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     borderRadius: 5,
     overflow: "hidden",
+    color: colors.dark,
   },
   overlay: {
     backgroundColor: colors.light,
@@ -562,7 +563,7 @@ const styles = StyleSheet.create({
     marginTop: 23,
   },
   textUnderQuestionAlert: {
-    color: "#333333",
+    color: colors.dark,
     fontSize: 16,
   },
   containerButtonsAlert: {
@@ -575,8 +576,8 @@ const styles = StyleSheet.create({
     backgroundColor: "yellow",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#F5F5F5",
-    backgroundColor: "#F5F5F5",
+    borderColor: colors.light,
+    backgroundColor: colors.light,
     paddingHorizontal: 70,
     paddingVertical: 13,
     overflow: "hidden",
@@ -586,8 +587,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 70,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     overflow: "hidden",
     paddingVertical: 13,
   },
