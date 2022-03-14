@@ -149,10 +149,12 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     textAlignVertical: "center",
+
     color: colors.dark,
     overflow: "hidden",
     paddingTop: Platform.OS === "ios" ? 12 : null,
     fontWeight: "500",
+
   },
   cancelButtonBorder: {
     paddingVertical: 1,

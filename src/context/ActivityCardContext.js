@@ -8,17 +8,16 @@ export const useActivityCardContext = () => {
 };
 
 export const ActivityCardProvider = ({ children }) => {
-  
-
   const [changeStatusPopular, setChangeStatusPopular] = useState(null);
   const [changeStatusActive, setChangeStatusActive] = useState(null);
   const [activityID, setActivityID] = useState("");
   const [confirmToDelete, setConfirmToDelete] = useState(false);
-  const [changeActivityInfo, setChangeActivityInfo] = useState(false);
+  const [changeActivityToTrue, setChangeActivityToTrue] = useState(false);
   const [statusActiveHasBeenChanged, setStatusActiveHasBeenChanged] =
     useState(false);
   const [statusPopularHasBeenChanged, setStatusPopularHasBeenChanged] =
     useState(false);
+  const [activityWithChangedInfor, setActivityWithChangedInfor] = useState({});
 
   useEffect(() => {
     if (activityID != "" && changeStatusPopular != null) {
@@ -42,45 +41,41 @@ export const ActivityCardProvider = ({ children }) => {
 
   useEffect(() => {
     if (activityID != "" && changeStatusActive != null) {
-      if(changeStatusActive === false){
+      if (changeStatusActive === false) {
         const updateStatusActive = async () => {
           firestore()
             .collection("Activities")
             .doc(activityID)
-            .update({               
-                active_status: false,
-                tg_favorite: false,             
+            .update({
+              active_status: false,
+              tg_favorite: false,
             })
             .then(() => {
               console.log("Actyvity active_status changed");
               setChangeStatusActive(null);
-              setStatusActiveHasBeenChanged(true)                  
+              setStatusActiveHasBeenChanged(true);
             });
         };
         updateStatusActive();
-      } else if(changeStatusActive === true) {
+      } else if (changeStatusActive === true) {
         const updateStatusActive = async () => {
           firestore()
             .collection("Activities")
             .doc(activityID)
-            .update({      
-                active_status: true,   
+            .update({
+              active_status: true,
             })
             .then(() => {
               console.log("Actyvity active_status changed");
               setChangeStatusActive(null);
-              setStatusActiveHasBeenChanged(true);  
+              setStatusActiveHasBeenChanged(true);
             });
         };
         updateStatusActive();
-
       }
-     
-      
     }
   }, [changeStatusActive, activityID]);
 
- 
   useEffect(() => {
     if (confirmToDelete === true && activityID != "") {
       const deleteActivityFromFB = async () => {
@@ -97,25 +92,28 @@ export const ActivityCardProvider = ({ children }) => {
   }, [confirmToDelete]);
 
   useEffect(() => {
-    // if (activityID != "") {
-    //   const updateActivityCard = async () => {
-    //     firestore()
-    //       .collection("Activities")
-    //       .doc(activityID)
-    //       .update({
-    //         activity_title: activityInfo.title,
-    //         activity_city: activityInfo.city,
-    //         activity_place: activityInfo.place,
-    //         activity_description: activityInfo.description,
-    //         activity_photo: activityInfo.photo,
-    //       })
-    //       .then(() => {
-    //         console.log("Actyvity Info changed");
-    //       });
-    //   };
-    //   updateActivityCard();
-    // }
-  }, [changeActivityInfo, activityID]);
+    if (activityWithChangedInfor.id != "" && changeActivityToTrue === true) {
+      const updateActivityCard = async () => {
+        firestore()
+          .collection("Activities")
+          .doc(activityWithChangedInfor.id)
+          .update({
+            active_status: activityWithChangedInfor.active,
+            activity_city: activityWithChangedInfor.city,
+            activity_description: activityWithChangedInfor.description,
+            activity_photo: activityWithChangedInfor.photo,
+            activity_place: activityWithChangedInfor.place,
+            activity_title: activityWithChangedInfor.title,
+            tg_favorite: activityWithChangedInfor.popular,
+          })
+          .then(() => {
+            console.log("Actyvity Info changed");
+            setChangeActivityToTrue(false);
+          });
+      };
+      updateActivityCard();
+    }
+  }, [changeActivityToTrue]);
 
   return (
     <ActivityCardContext.Provider
@@ -124,14 +122,15 @@ export const ActivityCardProvider = ({ children }) => {
         changeActive: setChangeStatusActive,
         idActivity: setActivityID,
         confirmToDeleteActivity: setConfirmToDelete,
-        changeActivityCard: setChangeActivityInfo,
-        // activityInformation: setActivityInfo,
         popular: statusPopularHasBeenChanged,
         active: statusActiveHasBeenChanged,
         changePopularStatusInAdminGallery: setStatusPopularHasBeenChanged,
         changeActiveStatusInAdminGallery: setStatusActiveHasBeenChanged,
         oneActivityHasBeenDeleted: confirmToDelete,
         idOfTheActivityWhichHasBeenDeleted: activityID,
+
+        changeActivityCard: setChangeActivityToTrue,
+        activityWithChangedInfor: setActivityWithChangedInfor,
       }}
     >
       {children}

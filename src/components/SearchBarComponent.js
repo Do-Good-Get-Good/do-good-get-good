@@ -5,6 +5,7 @@ import {
   TextInput,
   TouchableOpacity,
   Platform,
+  Keyboard,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -23,6 +24,7 @@ export function SearchBarComponent() {
     } else {
       adminGalleryContext.word(wordToSearch);
     }
+    Keyboard.dismiss();
   }
 
   useEffect(() => {
@@ -38,6 +40,8 @@ export function SearchBarComponent() {
   return (
     <View style={styles.container}>
       <TextInput
+        onSubmitEditing={() => searchWordButtonPressed()}
+        returnKeyType="search"
         style={styles.textInput}
         onChangeText={setWordToSearch}
         value={wordToSearch}
