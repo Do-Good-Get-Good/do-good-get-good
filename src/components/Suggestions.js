@@ -23,6 +23,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
+
   const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);

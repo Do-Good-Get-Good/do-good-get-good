@@ -383,7 +383,7 @@ const styles = StyleSheet.create({
   },
   numbersNearTitle: {
     ...typography.b1,
-    marginTop: 13,
+    alignSelf: "center",
     color: colors.dark,
     paddingLeft: 10,
   },
@@ -397,7 +397,7 @@ const styles = StyleSheet.create({
   buttonSave: {
     borderRadius: 5,
     backgroundColor: colors.primary,
-    height: 50,
+    height: 55,
     justifyContent: "center",
     alignItems: "center",
   },
@@ -405,6 +405,7 @@ const styles = StyleSheet.create({
     ...typography.button.lg,
     fontWeight: "500",
     letterSpacing: 2,
+    color: colors.dark,
   },
   backAndCancelBorderGradient: {
     borderRadius: 5,
@@ -412,7 +413,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 1,
   },
   buttonCancel: {
-    height: 50,
+    height: 55,
     marginTop: 10,
     borderRadius: 5,
   },
@@ -425,6 +426,9 @@ const styles = StyleSheet.create({
     height: "100%",
     textAlignVertical: "center",
     textAlign: "center",
+    overflow: "hidden",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   warningAboutRequired: {
     color: colors.error,

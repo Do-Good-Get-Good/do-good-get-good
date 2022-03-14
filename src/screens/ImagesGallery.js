@@ -8,6 +8,7 @@ import {
   TouchableOpacity,
   FlatList,
   SafeAreaView,
+  Platform,
 } from "react-native";
 import Menu from "../components/Menu";
 import Images from "../Images";
@@ -125,18 +126,20 @@ const styles = StyleSheet.create({
   saveButton: {
     borderRadius: 5,
     backgroundColor: colors.primary,
-    height: 50,
+    height: 55,
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
   },
   saveButtonText: {
     ...typography.button.lg,
+    color: colors.dark,
+    fontWeight: "500",
   },
   cancelButton: {
     borderRadius: 5,
     backgroundColor: colors.light,
-    height: 50,
+    height: 55,
   },
   cancelButtonText: {
     ...typography.button.lg,
@@ -146,6 +149,12 @@ const styles = StyleSheet.create({
     width: "100%",
     textAlign: "center",
     textAlignVertical: "center",
+
+    color: colors.dark,
+    overflow: "hidden",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    fontWeight: "500",
+
   },
   cancelButtonBorder: {
     paddingVertical: 1,
