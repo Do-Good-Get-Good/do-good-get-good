@@ -414,5 +414,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
     fontFamily: typography.button.lg.fontFamily,
     fontSize: typography.button.lg.fontSize,
+    fontWeight: "500",
+    color: colors.dark,
   },
 });
