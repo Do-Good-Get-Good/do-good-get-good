@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
+import functions from "@react-native-firebase/functions";
+
 const CreateActivityContext = React.createContext();
 
 export const useCreateActivityFunction = () => {
@@ -28,6 +30,7 @@ export const CreateActivityProvider = ({ children }) => {
     activity_place: "",
     activity_title: "",
     tg_favorite: false,
+    newUserInfo: null,
   });
   const [newChangeActivity, setNewChangeActivity] = useState({
     id: "",
@@ -95,6 +98,7 @@ export const CreateActivityProvider = ({ children }) => {
       createNewActivityInFB.activity_city != ""
     ) {
       const setNewActivityToFireBase = async () => {
+        console.log("skapa aktivitet");
         firestore()
           .collection("Activities")
           .add({
@@ -106,13 +110,44 @@ export const CreateActivityProvider = ({ children }) => {
             activity_title: createNewActivityInFB.activity_title,
             tg_favorite: createNewActivityInFB.tg_favorite,
           })
-          .then(() => {
-            console.log("New Activity added to FireBase!");
+          .then((newActivity) => {
+            console.log("skapade ny aktivitet");
+            if (createNewActivityInFB.newUserInfo != null) {
+              console.log("skapar ny användare");
+              var createUser = functions().httpsCallable("createUser");
+              createUser({
+                firstName: createNewActivityInFB.newUserInfo.firstName,
+                lastName: createNewActivityInFB.newUserInfo.lastName,
+                email: createNewActivityInFB.newUserInfo.email,
+                password: createNewActivityInFB.newUserInfo.password,
+                role: "user",
+                activityId: newActivity.id,
+              }).then((res) => {
+                console.log(res.data.result);
+                resetActivityInfo();
+              });
+            } else {
+              console.log("ingen ny användare");
+              resetActivityInfo();
+            }
           });
       };
       setNewActivityToFireBase();
     }
   }, [createNewActivityInFB]);
+
+  const resetActivityInfo = () => {
+    setCreateNewActivityInFB({
+      active_status: "",
+      activity_city: "",
+      activity_description: "",
+      activity_photo: "",
+      activity_place: "",
+      activity_title: "",
+      tg_favorite: false,
+      newUserInfo: null,
+    });
+  };
 
   useEffect(() => {
     if (changedOneActivity === true) {

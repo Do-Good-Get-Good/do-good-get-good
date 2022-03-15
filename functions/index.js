@@ -2,7 +2,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
-var serviceAccount = require("./do-good-get-good-2f6cc-firebase-adminsdk-kqeyb-0a3929a0ca.json");
+var serviceAccount = require("./do-good-get-good-2f6cc-firebase-adminsdk-kqeyb-39ff5d3e27.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
@@ -90,7 +90,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       activities_and_accumulated_time: [
         {
           accumulated_time: 0,
-          activity_id: "",
+          activity_id: data.activityId,
         },
       ],
       role: data.role,
@@ -123,3 +123,14 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     }
   }
 });
+
+// exports.assignAdminClaim = functions.firestore
+//   .document("tempoAssignClaim/{tempoId}")
+//   .onCreate((snap, context) => {
+//     const claims = {};
+//     claims["admin"] = true;
+
+//     return admin
+//       .auth()
+//       .setCustomUserClaims("WKQm996MKHZooq4v1cDCMEkJgmY2", claims);
+//   });

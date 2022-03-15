@@ -83,11 +83,6 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           password: password,
         },
       });
-
-      setName("");
-      setSurname("");
-      setEmail("");
-      setPassword("");
     } else {
       console.log("One of fild is empty");
     }

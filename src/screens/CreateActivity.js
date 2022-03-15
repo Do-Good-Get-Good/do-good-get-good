@@ -18,6 +18,7 @@ import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import functions from "@react-native-firebase/functions";
 
 export function CreateActivity({ route, navigation }) {
   const createActivityContext = useCreateActivityFunction();
@@ -57,8 +58,8 @@ export function CreateActivity({ route, navigation }) {
   useEffect(() => {
     if (newUserInfo != null) {
       setCreatNewUser({
-        first_name: newUserInfo.first_name,
-        last_name: newUserInfo.last_name,
+        firstName: newUserInfo.first_name,
+        lastName: newUserInfo.last_name,
         email: newUserInfo.email,
         password: newUserInfo.password,
       });
@@ -139,6 +140,27 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
+  function linkChoosenActivityToNewUser() {
+    if (createNewUser != null) {
+      console.log(createNewUser);
+      console.log(activityFromSelectionInDropDown[0]);
+      console.log("skapar ny användare");
+      var createUser = functions().httpsCallable("createUser");
+      createUser({
+        firstName: createNewUser.firstName,
+        lastName: createNewUser.lastName,
+        email: createNewUser.email,
+        password: createNewUser.password,
+        role: "user",
+        activityId: activityFromSelectionInDropDown[0].id,
+      }).then((res) => {
+        console.log(res.data.result);
+      });
+    } else {
+      console.log("ingen ny användare");
+    }
+  }
+
   function sendNewActivityToCreateActivityContext() {
     if (
       title != " " &&
@@ -156,6 +178,7 @@ export function CreateActivity({ route, navigation }) {
         activity_place: place,
         activity_title: title,
         tg_favorite: checkBoxPressed,
+        newUserInfo: createNewUser,
       });
 
       setTitle("");
@@ -194,7 +217,15 @@ export function CreateActivity({ route, navigation }) {
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
             testID="sendNewActivityToCreateActivityContext"
-            onPress={() => sendNewActivityToCreateActivityContext()}
+            onPress={() => {
+              if (
+                createActivityContext.sendChoiceFromDropDown !=
+                  "Skapa ny aktivitet" &&
+                whileCreatingNewUser === true
+              ) {
+                linkChoosenActivityToNewUser();
+              } else sendNewActivityToCreateActivityContext();
+            }}
           >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
