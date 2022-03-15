@@ -14,7 +14,7 @@ export function TimeStatistics({}) {
   const activityContext = useActivityFunction();
 
   const [timeForYear, setTimeForYear] = useState(0.0);
-  const [paidTime, setPaidTime] = useState(0);
+  const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
 
   useEffect(() => {
@@ -56,12 +56,16 @@ export function TimeStatistics({}) {
         <Text style={styles.mainText}>Utförda timmar</Text>
         <View style={styles.containerMonthAndPaidTime}>
           <View style={styles.containerTimeAndTextUndre}>
-            <Text style={styles.textH2ForTime}>{currentForMonth}</Text>
+            <Text testID="currentForMonth" style={styles.textH2ForTime}>
+              {currentForMonth}
+            </Text>
             <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
           </View>
           <Text style={styles.lineBetween}></Text>
           <View style={styles.containerTimeAndTextUndre}>
-            <Text style={styles.textH2ForTime}>{paidTime}</Text>
+            <Text testID="paidTime" style={styles.textH2ForTime}>
+              {paidTime}
+            </Text>
             <Text style={styles.textUnderForMonthAndPaidTime}>
               Ersatta timmar
             </Text>
@@ -69,7 +73,9 @@ export function TimeStatistics({}) {
         </View>
         <View>
           <View style={styles.containerTextTimeForYearPopUp}>
-            <Text>Totall antal timmar i år: {timeForYear}</Text>
+            <Text testID="timeForYear">
+              Totall antal timmar i år: {timeForYear}
+            </Text>
             <TouchableOpacity>
               <Icon
                 type="material-community"
