@@ -3,18 +3,52 @@ import { Text, StyleSheet, SafeAreaView, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { Icon } from "react-native-elements";
+import { useActivityFunction } from "../context/ActivityContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 export function TimeStatistics({}) {
-  const today = new Date();
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth();
 
-  const [timeForYear, setTimeForYear] = useState(13.5);
-  const [timeForCurrentMonth, setTimeForCurrentMonth] = useState(6.0);
-  const [paidTime, setPaidTime] = useState(3.5);
+  const activityContext = useActivityFunction();
 
-  const [currentYear, setCurrentYear] = useState(today.getFullYear());
-  const [currentMonth, setCurrentMonth] = useState(30);
-  //today.toLocaleString("default", { month: "long" })
+  const [timeForYear, setTimeForYear] = useState(0.0);
+  const [paidTime, setPaidTime] = useState(0);
+  const [currentForMonth, setCurrentForMonth] = useState(0.0);
+
+  useEffect(() => {
+    if (activityContext.allListOfTimeEntry.length != 0) {
+      let countTimeForThisMonth = 0.0;
+      let countTimeForThisYear = 0.0;
+      let countTimeForAllPaidTime = 0.0;
+      for (let i = 0; i < activityContext.allListOfTimeEntry.length; i++) {
+        if (
+          activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
+          currentMonth
+        ) {
+          countTimeForThisMonth =
+            countTimeForThisMonth + activityContext.allListOfTimeEntry[i].time;
+        }
+
+        if (
+          activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
+          currentYear
+        ) {
+          countTimeForThisYear =
+            countTimeForThisYear + activityContext.allListOfTimeEntry[i].time;
+        }
+        if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
+          countTimeForAllPaidTime =
+            countTimeForAllPaidTime +
+            activityContext.allListOfTimeEntry[i].time;
+        }
+      }
+      setCurrentForMonth(countTimeForThisMonth);
+      setTimeForYear(countTimeForThisYear);
+      setPaidTime(countTimeForAllPaidTime);
+    }
+  }, [activityContext.allListOfTimeEntry]);
 
   return (
     <SafeAreaView>
@@ -22,7 +56,7 @@ export function TimeStatistics({}) {
         <Text style={styles.mainText}>Utförda timmar</Text>
         <View style={styles.containerMonthAndPaidTime}>
           <View style={styles.containerTimeAndTextUndre}>
-            <Text style={styles.textH2ForTime}>{currentMonth}</Text>
+            <Text style={styles.textH2ForTime}>{currentForMonth}</Text>
             <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
           </View>
           <Text style={styles.lineBetween}></Text>
