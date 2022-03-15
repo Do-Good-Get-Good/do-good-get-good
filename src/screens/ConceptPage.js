@@ -8,22 +8,87 @@ import {
   TouchableNativeFeedback,
   Image,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Menu from "../components/Menu";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon } from "react-native-elements";
+import { Icon, Dialog } from "react-native-elements";
 import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
+
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
+import { format } from "date-fns";
 
 const ConceptPage = () => {
   const [expanded, setExpanded] = useState(false);
   const sortOptions = ["Datum", "Plats", "A - Ö", "Ö - A"];
   const [sortBy, setSortBy] = useState("Datum");
-  const [showArray, setShowArray] = useState([
-    { title: "TEST", city: "GBG", name: "Jimmy", photo: "symbol_sport" },
-    { title: "TEST2", city: "STHLM", name: "Ozzy", photo: "symbol_earth" },
-  ]);
+  const [loadingData, setLoadingData] = useState(null);
+  const [allUsers, setAllUsers] = useState([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoadingData(true);
+      let id = 0;
+      let usersFetched = 0;
+      let response = await firestore().collection("Users").get();
+
+      response.forEach(async (user) => {
+        let timeEntries = await firestore()
+          .collection("Users")
+          .doc(user.id)
+          .collection("time_entries")
+          .orderBy("date", "desc")
+          .where("status_confirmed", "==", true)
+          .get();
+
+        timeEntries.forEach(async (timeEntry) => {
+          let activity = await firestore()
+            .collection("Activities")
+            .doc(timeEntry.data().activity_id)
+            .get();
+
+          let fullName;
+          let userInfo = await firestore()
+            .collection("Users")
+            .doc(user.id)
+            .collection("personal_information")
+            .get();
+
+          userInfo.docs.map(
+            (doc) =>
+              (fullName = `${doc.data().first_name} ${doc.data().last_name}`)
+          );
+
+          if (activity.exists) {
+            const userData = {
+              id: id,
+              userID: user.id,
+              fullName: fullName,
+              activityName: activity.data().activity_title,
+              activityPhoto: activity.data().activity_photo,
+              activityCity: activity.data().activity_city,
+              timeEntryDate: format(
+                timeEntry.data().date.toDate(),
+                "yyyy-MM-dd"
+              ),
+            };
+            setAllUsers((prev) => [...prev, userData]);
+          }
+          id++;
+        });
+        usersFetched++;
+        if (usersFetched === response.size) {
+          setLoadingData(false);
+        }
+      });
+    };
+    fetchData();
+    return () => {
+      setAllUsers([]);
+    };
+  }, []);
 
   const setTheRightPhoto = (activityObjectPhoto) => {
     for (let index = 0; index < Images.length; index++) {
@@ -33,29 +98,18 @@ const ConceptPage = () => {
     }
   };
 
-  //   const sortActivities = (sortOption) => {
-  //     if (sortOption === "A - Ö") {
-  //       let activeUsers = allUsers.filter((user) => {
-  //         if (user.statusActive) {
-  //           return user;
-  //         }
-  //       });
-  //       setMyUsers(
-  //         activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-  //       );
-  //     }
+  const sortActivities = (sortOption) => {
+    if (sortOption === "Datum") {
+      allUsers.sort((a, b) => b.timeEntryDate.localeCompare(a.timeEntryDate));
+    } else if (sortOption === "Plats") {
+      allUsers.sort((a, b) => a.activityCity.localeCompare(b.activityCity));
+    } else if (sortOption === "A - Ö") {
+      allUsers.sort((a, b) => a.activityName.localeCompare(b.activityName));
+    } else if (sortOption === "Ö - A") {
+      allUsers.sort((a, b) => b.activityName.localeCompare(a.activityName));
+    }
+  };
 
-  //     if (sortOption === "Inaktiva") {
-  //       let inactiveUsers = allUsers.filter((user) => {
-  //         if (!user.statusActive) {
-  //           return user;
-  //         }
-  //       });
-  //       setMyUsers(
-  //         inactiveUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-  //       );
-  //     }
-  //   };
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
@@ -141,8 +195,13 @@ const ConceptPage = () => {
         </View>
 
         <View style={styles.activityContainer}>
-          {showArray.length > 0 &&
-            showArray.map((activity, index) => (
+          {loadingData ? (
+            <Dialog.Loading
+              loadingProps={{ color: colors.primary }}
+            ></Dialog.Loading>
+          ) : (
+            allUsers.length > 0 &&
+            allUsers.slice(0, 10).map((activity, index) => (
               //   <TouchableOpacity
               //     onPress={() =>
               //       lookDetails(suggestion, suggestion.active, suggestion.popular)
@@ -152,12 +211,18 @@ const ConceptPage = () => {
               //   >
               <View style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
-                  <View style={styles.textTitleCityDescriptipn}>
+                  <View style={styles.viewTitleCityFullname}>
                     <Text numberOfLines={2} style={styles.textTitle}>
-                      {activity.title}
+                      {activity.activityName}
                     </Text>
 
-                    <View style={styles.iconsAndTextCityContainer}>
+                    <View
+                      style={{
+                        marginTop: activity.activityName.length > 16 ? 0 : 25,
+                        flex: 1,
+                        flexDirection: "row",
+                      }}
+                    >
                       <Icon
                         type="material-community"
                         name="map-marker-outline"
@@ -165,7 +230,9 @@ const ConceptPage = () => {
                         size={25}
                       />
 
-                      <Text style={styles.textCity}>{activity.city}</Text>
+                      <Text style={styles.textCity}>
+                        {activity.activityCity}
+                      </Text>
                     </View>
 
                     <View style={styles.iconsAndTextTimeContainer}>
@@ -175,19 +242,20 @@ const ConceptPage = () => {
                         color={colors.dark}
                         size={25}
                       />
-                      <Text numberOfLines={2} style={styles.textDescription}>
-                        {activity.name}
+                      <Text numberOfLines={2} style={styles.textFullName}>
+                        {activity.fullName}
                       </Text>
                     </View>
                   </View>
                   <Image
                     style={styles.image}
-                    source={setTheRightPhoto(activity.photo)}
+                    source={setTheRightPhoto(activity.activityPhoto)}
                   />
                 </View>
               </View>
               //   </TouchableOpacity>
-            ))}
+            ))
+          )}
         </View>
         <BottomLogo />
       </ScrollView>
@@ -315,7 +383,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
   },
-  textTitleCityDescriptipn: {
+  viewTitleCityFullname: {
     flex: 2,
     marginRight: 7,
     alignItems: "flex-start",
@@ -328,11 +396,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 6,
   },
-  iconsAndTextCityContainer: {
-    marginTop: 25,
-    flex: 1,
-    flexDirection: "row",
-  },
   textTitle: {
     flex: 2,
     ...typography.title,
@@ -343,11 +406,13 @@ const styles = StyleSheet.create({
     ...typography.b1,
     paddingTop: 5,
     marginLeft: 12,
+    color: colors.dark,
   },
-  textDescription: {
+  textFullName: {
     flex: 1,
     ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
+    color: colors.dark,
   },
 });
