@@ -160,7 +160,7 @@ const ConceptPage = () => {
         <View style={styles.header}>
           <Text style={styles.headerText2}>Senaste</Text>
 
-          <TouchableOpacity
+          {/* <TouchableOpacity
             style={styles.sortDropdownStyle}
             onPress={() => setExpanded(!expanded)}
           >
@@ -173,8 +173,8 @@ const ConceptPage = () => {
                 size={30}
               />
             </View>
-          </TouchableOpacity>
-          {expanded === true ? (
+          </TouchableOpacity> */}
+          {/* {expanded === true ? (
             <View style={styles.dropdown}>
               {sortOptions.map((option, index) => (
                 <TouchableNativeFeedback
@@ -191,7 +191,7 @@ const ConceptPage = () => {
                 </TouchableNativeFeedback>
               ))}
             </View>
-          ) : null}
+          ) : null} */}
         </View>
 
         <View style={styles.activityContainer}>
@@ -202,14 +202,7 @@ const ConceptPage = () => {
           ) : (
             allUsers.length > 0 &&
             allUsers.slice(0, 10).map((activity, index) => (
-              //   <TouchableOpacity
-              //     onPress={() =>
-              //       lookDetails(suggestion, suggestion.active, suggestion.popular)
-              //     }
-              //     index={index}
-              //     key={index}
-              //   >
-              <View style={styles.insideActivityContainer}>
+              <View key={index} style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
                   <View style={styles.viewTitleCityFullname}>
                     <Text numberOfLines={2} style={styles.textTitle}>
@@ -253,7 +246,6 @@ const ConceptPage = () => {
                   />
                 </View>
               </View>
-              //   </TouchableOpacity>
             ))
           )}
         </View>
@@ -299,7 +291,7 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   headerText2: {
-    width: "55%",
+    // width: "55%",
     ...typography.h2,
     fontWeight: "500",
     color: colors.dark,
@@ -357,18 +349,18 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: colors.background,
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          hight: 2,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-      },
-      android: {
-        elevation: 3,
-      },
-    }),
+    // ...Platform.select({
+    //   ios: {
+    //     shadowOffset: {
+    //       hight: 2,
+    //     },
+    //     shadowOpacity: 0.5,
+    //     shadowRadius: 5,
+    //   },
+    //   android: {
+    //     elevation: 3,
+    //   },
+    // }),
   },
   image: {
     flex: 1,
