@@ -1,27 +1,19 @@
 import React from "react";
-import {
-  StyleSheet,
-  SafeAreaView,
-  View,
-  ScrollView,
-  Image,
-  Text,
-} from "react-native";
-import { MyActivities } from "../components/MyActivities";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { Suggestions } from "../components/Suggestions";
-
-import Menu from "../components/Menu";
+import { StyleSheet, SafeAreaView, View, ScrollView, Text } from "react-native";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { SuggestionProvider } from "../context/SuggestionContext";
+
+import Menu from "../components/Menu";
+import { MyActivities } from "../components/MyActivities";
+import { MyActivityAsAList } from "../components/MyActivityAsAList";
+import { Suggestions } from "../components/Suggestions";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
-import InfoModal from "../components/InfoModal";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -45,7 +37,6 @@ export const HomePage = ({ navigation }) => {
           {activity.myActivities.length != 0 ? (
             <View style={styles.view}>
               <ScrollView style={styles.container}>
-                <InfoModal screen="homepage" tooltipWidth={250} />
                 <MyActivities
                   myAccumulatedTime={activity.activitiesIDandAccumTime}
                   myActivities={activity.myActivities}
@@ -62,7 +53,6 @@ export const HomePage = ({ navigation }) => {
             </View>
           ) : (
             <ScrollView style={styles.container}>
-              <InfoModal screen="homepage" textWrapperWidth={250} />
               <SuggestionProvider>
                 <Text style={styles.suggestionHeader}>
                   Förslag & inspiration
