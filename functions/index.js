@@ -2,7 +2,7 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
-var serviceAccount = require("./do-good-get-good-2f6cc-firebase-adminsdk-kqeyb-39ff5d3e27.json");
+var serviceAccount = require("./ServiceAccount/serviceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
