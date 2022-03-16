@@ -8,6 +8,8 @@ import { CreateActivity } from "./screens/CreateActivity";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
 import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
+import { ChangeActivity } from "./screens/ChangeActivity";
+
 import Faq from "./screens/Faq";
 
 const Stack = createNativeStackNavigator();
@@ -33,6 +35,7 @@ export const Mystack = () => {
           component={CreateOrChangeUser}
         />
         <Stack.Screen name="Faq" component={Faq} />
+        <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -118,6 +118,7 @@ export const ActivityProvider = ({ children }) => {
       isFinished === true &&
       myActivitiesIDandAccumTime.length > activitiesInformation.length
     ) {
+      let inactiveArray = [];
       const getActivitiesInformation = async () => {
         for (let i = 0; i < myActivitiesIDandAccumTime.length; i++) {
           var id = myActivitiesIDandAccumTime[i];
@@ -133,9 +134,11 @@ export const ActivityProvider = ({ children }) => {
               city: info.activity_city,
               photo: info.activity_photo,
             };
-            setActivitiesInformation((prev) => [...prev, dataInfo]);
+            inactiveArray.push(dataInfo);
+            // setActivitiesInformation((prev) => [...prev, dataInfo]);
           }
         }
+        setActivitiesInformation(inactiveArray);
         console.log("ActivityContext activity info");
       };
       getActivitiesInformation();

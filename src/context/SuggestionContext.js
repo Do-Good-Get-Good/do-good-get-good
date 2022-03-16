@@ -29,6 +29,7 @@ export const SuggestionProvider = ({ children }) => {
               city: activities[i].activity_city,
               description: activities[i].activity_description,
               photo: activities[i].activity_photo,
+              popular: activities[i].tg_favorite,
             };
             tempArray.push(dataInfo);
           }

@@ -222,7 +222,6 @@ export function CreateActivity({ route, navigation }) {
           >
             <Text style={styles.buttonSave}>Spara</Text>
           </TouchableOpacity>
-
           <TouchableOpacity
             style={{ flex: 1 }}
             onPress={() => navigation.goBack()}
@@ -527,11 +526,13 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: colors.light,
     textAlign: "center",
-    paddingTop: 12,
-    paddingHorizontal: 64,
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    textAlignVertical: "center",
+    paddingHorizontal: Platform.OS === "ios" ? 63 : 64,
     ...typography.button.lg,
     fontWeight: "500",
     color: colors.dark,
+    overflow: "hidden",
   },
   image: {
     resizeMode: "contain",
@@ -623,9 +624,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.disabled,
     color: colors.dark,
     marginVertical: 30,
-    paddingTop: 12,
+    paddingTop: Platform.OS === "ios" ? 12 : null,
     overflow: "hidden",
     letterSpacing: 2,
+    height: 55,
+    width: 200,
+    textAlignVertical: "center",
   },
   imageExistingActivity: {
     flex: 1,
@@ -654,6 +658,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     overflow: "hidden",
     height: 55,
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
 
   buttonBack: {
@@ -666,6 +672,9 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.light,
     borderRadius: 5,
+    overflow: "hidden",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   buttonCancel: {
     ...typography.button.lg,
@@ -677,6 +686,9 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.light,
     borderRadius: 5,
+    overflow: "hidden",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    color: colors.dark,
   },
   buttonBorderStyleButtonBackAndCancel: {
     flex: 1,

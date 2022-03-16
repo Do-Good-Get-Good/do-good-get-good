@@ -24,7 +24,7 @@ import BottomLogo from "../components/BottomLogo";
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
-  //   information comes from Suggestion.js with navigation when user or admin press on activity
+
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
     active: "",
@@ -34,8 +34,8 @@ export function ActivityCard({ route, navigation }) {
     description: "",
     popular: "",
   });
-  const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
 
+  const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
   const [activeActivities, setActiveActivities] = useState(active);
   const [popular, setPopular] = useState(tgPopular);
   const [visible, setVisible] = useState(false);
@@ -96,7 +96,12 @@ export function ActivityCard({ route, navigation }) {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+
+        popular: activityInfo.popular,
+        statusActive: false,
+      });
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
@@ -109,7 +114,12 @@ export function ActivityCard({ route, navigation }) {
         );
       }
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+
+        popular: activityInfo.popular,
+        statusActive: true,
+      });
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {
       activityCardContext.idActivity(activityInfo.id);
@@ -146,6 +156,7 @@ export function ActivityCard({ route, navigation }) {
   useEffect(() => {
     setAdminOpenedActyvity(admin);
     setActivity({
+      id: activityInfo.id,
       title: activityInfo.title,
       photo: activityInfo.photo,
       city: activityInfo.city,
@@ -174,14 +185,22 @@ export function ActivityCard({ route, navigation }) {
       setPopular(false);
       activityCardContext.changePopular(false);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: false,
+        statusActive: activityInfo.active,
+      });
     } else if (popular === false) {
       setPopular(true);
       activityCardContext.changePopular(true);
       activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID(activityInfo.id);
+      createActivityContext.activityHasChangedID({
+        activityInfo: activityInfo,
+        popular: true,
+        statusActive: activityInfo.active,
+      });
     } else {
-      console.log("Something went wrong with status popular", popular);
+      console.log("Something went wrong with status popular");
     }
   }
 
@@ -319,7 +338,14 @@ export function ActivityCard({ route, navigation }) {
               size={25}
             />
           </TouchableOpacity>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate("ChangeActivity", {
+                activity: activityInfo,
+                tgPopular: popular,
+              })
+            }
+          >
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
@@ -523,6 +549,7 @@ const styles = StyleSheet.create({
     letterSpacing: 2,
     borderRadius: 5,
     overflow: "hidden",
+    color: colors.dark,
   },
   overlay: {
     backgroundColor: colors.light,
@@ -536,7 +563,7 @@ const styles = StyleSheet.create({
     marginTop: 23,
   },
   textUnderQuestionAlert: {
-    color: "#333333",
+    color: colors.dark,
     fontSize: 16,
   },
   containerButtonsAlert: {
@@ -549,8 +576,8 @@ const styles = StyleSheet.create({
     backgroundColor: "yellow",
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#F5F5F5",
-    backgroundColor: "#F5F5F5",
+    borderColor: colors.light,
+    backgroundColor: colors.light,
     paddingHorizontal: 70,
     paddingVertical: 13,
     overflow: "hidden",
@@ -560,8 +587,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 70,
     borderRadius: 5,
     borderWidth: 1,
-    borderColor: "#84BD00",
-    backgroundColor: "#84BD00",
+    borderColor: colors.primary,
+    backgroundColor: colors.primary,
     overflow: "hidden",
     paddingVertical: 13,
   },
