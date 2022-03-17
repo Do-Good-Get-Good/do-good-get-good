@@ -202,10 +202,10 @@ const styles = StyleSheet.create({
   },
 
   testNoMatchInSearBar: {
-    ...typography.title,
+    ...typography.b2,
     textAlign: "center",
     marginTop: 20,
-    color: colors.disabled,
+    color: colors.dark,
   },
 
   activityContainer: {
