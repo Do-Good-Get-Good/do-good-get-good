@@ -74,6 +74,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               onPress={() => {
                 openOverlay();
                 adminGalleryContext.chooseActiveOrNot(true);
+                adminGalleryContext.setCleanUpSearchBarComponent(true);
                 navigation.navigate("AdminActivityGallery");
               }}
             >

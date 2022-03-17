@@ -122,15 +122,28 @@ export function AdminActivityGallery({ navigation }) {
       setInactiveActivities(adminGalleryContext.showSearchObject);
     } else {
       setInactiveActivities(adminGalleryContext.inactiveActivities);
+      adminGalleryContext.setSearchWordHasNoMatch(false);
     }
     if (createActivityContext.showSearchObject.length != 0) {
       setArrayOfActiveActivities(createActivityContext.showSearchObject);
     } else {
       setArrayOfActiveActivities(createActivityContext.activeActivities);
+      createActivityContext.setSearchWordHasNoMatch(false);
     }
   }, [
     adminGalleryContext.showSearchObject,
     createActivityContext.showSearchObject,
+  ]);
+
+  useEffect(() => {
+    if (createActivityContext.searchWordHasNoMatch) {
+      setArrayOfActiveActivities([]);
+    } else if (adminGalleryContext.searchWordHasNoMatch) {
+      setInactiveActivities([]);
+    }
+  }, [
+    createActivityContext.searchWordHasNoMatch,
+    adminGalleryContext.searchWordHasNoMatch,
   ]);
 
   return (
@@ -151,8 +164,6 @@ export function AdminActivityGallery({ navigation }) {
         <Suggestions
           navigation={navigation}
           inactiveActivities={inactiveActivities}
-          chooseActive={adminGalleryContext.activeOrInactiveActivity}
-          search={adminGalleryContext.showSearchObject}
           adminGallery={arrayOfActiveActivities}
         />
       </ScrollView>
