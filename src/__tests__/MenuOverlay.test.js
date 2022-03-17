@@ -5,6 +5,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 import MenuOverlay from "../components/MenuOverlay";
 
 import { useAdminCheckFunction } from "../context/AdminContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -42,6 +43,7 @@ jest.mock("../context/ActivityContext", () => ({
 jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     chooseActiveOrNot: jest.fn(),
+    setCleanUpSearchBarComponent: jest.fn(),
   }),
 }));
 
@@ -122,6 +124,11 @@ describe("Testing MenuOverlay", () => {
 
       const activitiesButton = getByTestId("menuOverlay.activitiesButton");
       fireEvent.press(activitiesButton);
+      useAdminGalleryFunction().chooseActiveOrNot.mockReturnValue(true);
+      useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
+        true
+      );
+
       expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
     });
 
