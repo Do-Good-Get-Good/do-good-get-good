@@ -4,8 +4,6 @@ import {
   View,
   SafeAreaView,
   ScrollView,
-  TouchableOpacity,
-  TouchableNativeFeedback,
   Image,
 } from "react-native";
 import React, { useEffect, useState } from "react";
@@ -17,15 +15,12 @@ import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
 
 import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 
 const ConceptPage = () => {
-  const [expanded, setExpanded] = useState(false);
-  const sortOptions = ["Datum", "Plats", "A - Ö", "Ö - A"];
-  const [sortBy, setSortBy] = useState("Datum");
   const [loadingData, setLoadingData] = useState(null);
   const [allUsers, setAllUsers] = useState([]);
+  const [concept, setConcept] = useState([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -78,6 +73,7 @@ const ConceptPage = () => {
           }
           id++;
         });
+
         usersFetched++;
         if (usersFetched === response.size) {
           setLoadingData(false);
@@ -90,6 +86,28 @@ const ConceptPage = () => {
     };
   }, []);
 
+  useEffect(() => {
+    const fetchConceptData = async () => {
+      const tempArray = [];
+      await firestore()
+        .collection("concept")
+        .get()
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            tempArray.push({ ...doc.data() });
+          });
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+      setConcept(tempArray.sort((a, b) => a.order_id - b.order_id));
+    };
+    fetchConceptData();
+    return () => {
+      setConcept([]);
+    };
+  }, []);
+
   const setTheRightPhoto = (activityObjectPhoto) => {
     for (let index = 0; index < Images.length; index++) {
       if (activityObjectPhoto === Images[index].name) {
@@ -98,24 +116,23 @@ const ConceptPage = () => {
     }
   };
 
-  const sortActivities = (sortOption) => {
-    if (sortOption === "Datum") {
-      allUsers.sort((a, b) => b.timeEntryDate.localeCompare(a.timeEntryDate));
-    } else if (sortOption === "Plats") {
-      allUsers.sort((a, b) => a.activityCity.localeCompare(b.activityCity));
-    } else if (sortOption === "A - Ö") {
-      allUsers.sort((a, b) => a.activityName.localeCompare(b.activityName));
-    } else if (sortOption === "Ö - A") {
-      allUsers.sort((a, b) => b.activityName.localeCompare(a.activityName));
-    }
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
       <ScrollView style={{ paddingHorizontal: 18 }}>
-        <Text style={styles.headerText}>Om konceptet</Text>
-        <Text style={styles.titleText}>
+        <Text testID="headerText" style={styles.titleText}>
+          Om konceptet
+        </Text>
+        <View style={styles.activityContainer}>
+          {concept.length > 0 &&
+            concept.map((item, index) => (
+              <View key={index}>
+                <Text style={styles.textStyleBold}>{item.heading}</Text>
+                <Text style={styles.textStyleNormal}>{item.body}</Text>
+              </View>
+            ))}
+        </View>
+        {/* <Text style={styles.headerText}>
           Technogarden bygger på människor. Vi ÄR våra medarbetare. Därför är
           välmående ett av våra viktigaste mål, tillsammans med att göra gott.
           Nu startar vi en satsning för våra medarbetare där vi ger dem verktyg
@@ -156,42 +173,9 @@ const ConceptPage = () => {
           Tillsammans kan vi göra mycket positivt för samhället. Vi berättar
           gärna om våra erfarenheter och kan erbjuda stöd och anpassning av
           mobilapplikationen för olika behov.
-        </Text>
+        </Text> */}
         <View style={styles.header}>
-          <Text style={styles.headerText2}>Senaste</Text>
-
-          {/* <TouchableOpacity
-            style={styles.sortDropdownStyle}
-            onPress={() => setExpanded(!expanded)}
-          >
-            <View style={styles.styleForDropdown}>
-              <Text style={styles.listItemNameStyle}>{sortBy}</Text>
-              <Icon
-                color={colors.secondary}
-                style={styles.sortIcon}
-                name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
-                size={30}
-              />
-            </View>
-          </TouchableOpacity> */}
-          {/* {expanded === true ? (
-            <View style={styles.dropdown}>
-              {sortOptions.map((option, index) => (
-                <TouchableNativeFeedback
-                  key={index}
-                  onPress={() => {
-                    setSortBy(option);
-                    sortActivities(option);
-                    setExpanded(false);
-                  }}
-                >
-                  <View style={styles.dropdownItem}>
-                    <Text style={styles.textInsideDropdown}>{option}</Text>
-                  </View>
-                </TouchableNativeFeedback>
-              ))}
-            </View>
-          ) : null} */}
+          <Text style={styles.titleText}>Senaste</Text>
         </View>
 
         <View style={styles.activityContainer}>
@@ -201,52 +185,62 @@ const ConceptPage = () => {
             ></Dialog.Loading>
           ) : (
             allUsers.length > 0 &&
-            allUsers.slice(0, 10).map((activity, index) => (
-              <View key={index} style={styles.insideActivityContainer}>
-                <View style={styles.photoAndText}>
-                  <View style={styles.viewTitleCityFullname}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {activity.activityName}
-                    </Text>
-
-                    <View
-                      style={{
-                        marginTop: activity.activityName.length > 16 ? 0 : 25,
-                        flex: 1,
-                        flexDirection: "row",
-                      }}
-                    >
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
-                      />
-
-                      <Text style={styles.textCity}>
-                        {activity.activityCity}
+            allUsers
+              .sort((a, b) => b.timeEntryDate.localeCompare(a.timeEntryDate))
+              .slice(0, 10)
+              .map((activity, index) => (
+                <View
+                  testID="arrayItems"
+                  key={index}
+                  style={styles.insideActivityContainer}
+                >
+                  <View
+                    testID={`activityCard ${index}`}
+                    style={styles.photoAndText}
+                  >
+                    <View style={styles.viewTitleCityFullname}>
+                      <Text numberOfLines={2} style={styles.textTitle}>
+                        {activity.activityName}
                       </Text>
-                    </View>
 
-                    <View style={styles.iconsAndTextTimeContainer}>
-                      <Icon
-                        type="material-community"
-                        name="account-outline"
-                        color={colors.dark}
-                        size={25}
-                      />
-                      <Text numberOfLines={2} style={styles.textFullName}>
-                        {activity.fullName}
-                      </Text>
+                      <View
+                        style={{
+                          marginTop: activity.activityName.length > 16 ? 0 : 25,
+                          flex: 1,
+                          flexDirection: "row",
+                        }}
+                      >
+                        <Icon
+                          type="material-community"
+                          name="map-marker-outline"
+                          color={colors.dark}
+                          size={25}
+                        />
+
+                        <Text style={styles.textCity}>
+                          {activity.activityCity}
+                        </Text>
+                      </View>
+
+                      <View style={styles.iconsAndTextTimeContainer}>
+                        <Icon
+                          type="material-community"
+                          name="account-outline"
+                          color={colors.dark}
+                          size={25}
+                        />
+                        <Text numberOfLines={2} style={styles.textFullName}>
+                          {activity.fullName}
+                        </Text>
+                      </View>
                     </View>
+                    <Image
+                      style={styles.image}
+                      source={setTheRightPhoto(activity.activityPhoto)}
+                    />
                   </View>
-                  <Image
-                    style={styles.image}
-                    source={setTheRightPhoto(activity.activityPhoto)}
-                  />
                 </View>
-              </View>
-            ))
+              ))
           )}
         </View>
         <BottomLogo />
@@ -261,18 +255,18 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  headerText: {
+  titleText: {
     ...typography.h2,
     fontWeight: "500",
     marginTop: 30,
     color: colors.dark,
   },
-  titleText: {
-    ...typography.b2,
-    marginBottom: 10,
-    fontWeight: "700",
-    color: colors.dark,
-  },
+  // headerText: {
+  //   ...typography.b2,
+  //   marginBottom: 10,
+  //   fontWeight: "700",
+  //   color: colors.dark,
+  // },
   textStyleBold: {
     ...typography.b2,
     fontWeight: "700",
@@ -290,50 +284,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginBottom: 10,
   },
-  headerText2: {
-    // width: "55%",
-    ...typography.h2,
-    fontWeight: "500",
-    color: colors.dark,
-  },
-  styleForDropdown: {
-    flex: 1,
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-    backgroundColor: "white",
-  },
-  listItemNameStyle: {
-    ...typography.b1,
-    color: colors.dark,
-  },
-  dropdown: {
-    width: "45%",
-    position: "absolute",
-    right: 0,
-    top: 45,
-    backgroundColor: colors.background,
-    elevation: 5,
-    color: colors.dark,
-
-    shadowOpacity: 0.2,
-    shadowRadius: 1.5,
-    shadowOffset: { width: 0, height: 1 },
-  },
-  sortDropdownStyle: {
-    width: "45%",
-    backgroundColor: colors.light,
-  },
-  dropdownItem: {
-    paddingHorizontal: 16,
-    paddingVertical: 10,
-  },
-  textInsideDropdown: {
-    ...typography.b1,
-    color: colors.dark,
-  },
-  // Allt för activity
   activityContainer: {
     flex: 1,
     marginTop: 5,
@@ -349,18 +299,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     borderWidth: 1,
     borderColor: colors.background,
-    // ...Platform.select({
-    //   ios: {
-    //     shadowOffset: {
-    //       hight: 2,
-    //     },
-    //     shadowOpacity: 0.5,
-    //     shadowRadius: 5,
-    //   },
-    //   android: {
-    //     elevation: 3,
-    //   },
-    // }),
   },
   image: {
     flex: 1,
