@@ -35,10 +35,6 @@ export const ActivityProvider = ({ children }) => {
             };
             setMyActivitiesIDandAccumTime((prev) => [...prev, idAndTime]);
           }
-        console.log(
-          "ActivityContext user useEffect",
-          myActivitiesIDandAccumTime
-        );
       }
       setIsFinished(true);
     };
@@ -71,7 +67,6 @@ export const ActivityProvider = ({ children }) => {
             timeArray.push(entryTime);
             setTimeEntry(timeArray);
           }
-          console.log("ActivityContext time and status useEffect max 5");
         }
       };
 
@@ -105,7 +100,6 @@ export const ActivityProvider = ({ children }) => {
             timeArray.push(entryTime);
             setTimeEntryArrayForMyTimePage(timeArray);
           }
-          console.log("ActivityContext time and status useEffect all list");
         }
       };
 
@@ -139,7 +133,6 @@ export const ActivityProvider = ({ children }) => {
           }
         }
         setActivitiesInformation(inactiveArray);
-        console.log("ActivityContext activity info");
       };
       getActivitiesInformation();
     }
