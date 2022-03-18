@@ -14,6 +14,7 @@ import Menu from "../components/Menu";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import InfoModal from "../components/InfoModal";
 
 export function ImagesGallery({ navigation }) {
   const [imagesArray, setImagesArray] = useState(Images);
@@ -58,7 +59,10 @@ export function ImagesGallery({ navigation }) {
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <View style={{ paddingHorizontal: 16, flex: 1 }}>
-        <Text style={styles.mainText}>Bildgalleri</Text>
+        <View style={styles.headerView}>
+          <Text style={styles.mainText}>Bildgalleri</Text>
+          <InfoModal screen="imageGallery" tooltipWidth={200} />
+        </View>
         <FlatList
           style={styles.container}
           columnWrapperStyle={{ marginBottom: 10 }}
@@ -112,9 +116,14 @@ export function ImagesGallery({ navigation }) {
 
 export default ImagesGallery;
 const styles = StyleSheet.create({
+  headerView: {
+    marginTop: 12,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
   mainText: {
     ...typography.h2,
-    marginTop: 12,
   },
   container: {
     marginTop: 12,
