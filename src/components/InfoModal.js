@@ -39,12 +39,7 @@ const InfoModal = ({ screen, tooltipWidth }) => {
       withPointer={false}
       containerStyle={styles.overlay}
     >
-      <Icon
-        type="material"
-        name="info-outline"
-        size={25}
-        containerStyle={{ padding: 3 }}
-      />
+      <Icon type="material" name="info-outline" size={20} />
     </Tooltip>
   );
 };

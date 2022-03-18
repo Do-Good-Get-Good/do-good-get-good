@@ -5,6 +5,7 @@ import colors from "../assets/theme/colors";
 import { Icon } from "react-native-elements";
 import { useActivityFunction } from "../context/ActivityContext";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import InfoModal from "../components/InfoModal";
 
 export function TimeStatistics({}) {
   let today = new Date();
@@ -76,14 +77,7 @@ export function TimeStatistics({}) {
             <Text testID="timeForYear">
               Totall antal timmar i år: {timeForYear}
             </Text>
-            <TouchableOpacity>
-              <Icon
-                type="material-community"
-                name="information-outline"
-                color={colors.dark}
-                size={20}
-              />
-            </TouchableOpacity>
+            <InfoModal screen="homepage" tooltipWidth={250}></InfoModal>
           </View>
         </View>
       </View>
