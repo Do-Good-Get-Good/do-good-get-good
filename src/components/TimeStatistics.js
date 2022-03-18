@@ -1,10 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, SafeAreaView, View } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Icon } from "react-native-elements";
 import { useActivityFunction } from "../context/ActivityContext";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import InfoModal from "../components/InfoModal";
 
 export function TimeStatistics({}) {
@@ -28,21 +26,17 @@ export function TimeStatistics({}) {
           activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
           currentMonth
         ) {
-          countTimeForThisMonth =
-            countTimeForThisMonth + activityContext.allListOfTimeEntry[i].time;
+          countTimeForThisMonth += activityContext.allListOfTimeEntry[i].time;
         }
 
         if (
           activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
           currentYear
         ) {
-          countTimeForThisYear =
-            countTimeForThisYear + activityContext.allListOfTimeEntry[i].time;
+          countTimeForThisYear += activityContext.allListOfTimeEntry[i].time;
         }
         if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
-          countTimeForAllPaidTime =
-            countTimeForAllPaidTime +
-            activityContext.allListOfTimeEntry[i].time;
+          countTimeForAllPaidTime += activityContext.allListOfTimeEntry[i].time;
         }
       }
       setCurrentForMonth(countTimeForThisMonth);
@@ -52,36 +46,34 @@ export function TimeStatistics({}) {
   }, [activityContext.allListOfTimeEntry]);
 
   return (
-    <SafeAreaView>
-      <View style={styles.containerForAll}>
-        <Text style={styles.mainText}>Utförda timmar</Text>
-        <View style={styles.containerMonthAndPaidTime}>
-          <View style={styles.containerTimeAndTextUndre}>
-            <Text testID="currentForMonth" style={styles.textH2ForTime}>
-              {currentForMonth}
-            </Text>
-            <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
-          </View>
-          <Text style={styles.lineBetween}></Text>
-          <View style={styles.containerTimeAndTextUndre}>
-            <Text testID="paidTime" style={styles.textH2ForTime}>
-              {paidTime}
-            </Text>
-            <Text style={styles.textUnderForMonthAndPaidTime}>
-              Ersatta timmar
-            </Text>
-          </View>
+    <View style={styles.containerForAll}>
+      <Text style={styles.mainText}>Utförda timmar</Text>
+      <View style={styles.containerMonthAndPaidTime}>
+        <View style={styles.containerTimeAndTextUndre}>
+          <Text testID="currentForMonth" style={styles.textH2ForTime}>
+            {currentForMonth}
+          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
         </View>
-        <View>
-          <View style={styles.containerTextTimeForYearPopUp}>
-            <Text testID="timeForYear">
-              Totall antal timmar i år: {timeForYear}
-            </Text>
-            <InfoModal screen="homepage" tooltipWidth={250}></InfoModal>
-          </View>
+        <Text style={styles.lineBetween}></Text>
+        <View style={styles.containerTimeAndTextUndre}>
+          <Text testID="paidTime" style={styles.textH2ForTime}>
+            {paidTime}
+          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>
+            Ersatta timmar
+          </Text>
         </View>
       </View>
-    </SafeAreaView>
+      <View>
+        <View style={styles.containerTextTimeForYearPopUp}>
+          <Text testID="timeForYear">
+            Totall antal timmar i år: {timeForYear}
+          </Text>
+          <InfoModal screen="homepage" tooltipWidth={250} />
+        </View>
+      </View>
+    </View>
   );
 }
 export default TimeStatistics;
@@ -94,23 +86,20 @@ const styles = StyleSheet.create({
     ...typography.title,
   },
   containerMonthAndPaidTime: {
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     flexDirection: "row",
     paddingTop: 19,
     paddingBottom: 16,
-
     justifyContent: "space-evenly",
   },
   textH2ForTime: {
     ...typography.h2,
-
     alignSelf: "center",
     justifyContent: "center",
   },
   containerTimeAndTextUndre: {
     justifyContent: "center",
   },
-  textUnderForMonthAndPaidTime: {},
   lineBetween: {
     backgroundColor: colors.primary,
     paddingHorizontal: 1.3,
@@ -119,7 +108,7 @@ const styles = StyleSheet.create({
     marginTop: 13,
     ...typography.b2,
     justifyContent: "space-between",
-    backgroundColor: "white",
+    backgroundColor: colors.background,
     flexDirection: "row",
     paddingLeft: 13,
     paddingRight: 3,

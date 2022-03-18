@@ -38,7 +38,6 @@ export const ActivityProvider = ({ children }) => {
           }
         setMyActivitiesIDandAccumTime(temArray);
         setIsFinished(true);
-        console.log("ActivityContext user useEffect");
       }
     };
     getActivitiesID();
@@ -81,8 +80,6 @@ export const ActivityProvider = ({ children }) => {
           for (let j = 0; j < empuntOfItems; j++) {
             onlyFive.push(timeArray[j]);
           }
-
-          console.log("ActivityContext time and status useEffect all list");
         }
         setLastFiveTimeEntries(onlyFive);
         setTimeEntryArrayForMyTimePage(timeArray);
@@ -117,7 +114,6 @@ export const ActivityProvider = ({ children }) => {
           }
         }
         setActivitiesInformation(inactiveArray);
-        console.log("ActivityContext activity info");
       };
       getActivitiesInformation();
     }

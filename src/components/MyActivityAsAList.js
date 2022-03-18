@@ -76,8 +76,6 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
         }
         setTimeEntryList(activityAndTimeEntryArray);
       }
-    } else {
-      console.log("No rout or list is empty ");
     }
   }, [entryTime.timeAndStatus, entryTime.myActivities, showAllList, rout]);
 
