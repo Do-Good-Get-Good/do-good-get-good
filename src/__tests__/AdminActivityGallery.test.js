@@ -31,6 +31,7 @@ jest.mock("../components/SearchBarComponent", () => () => {
 jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     inactiveActivities: jest.fn(),
+    setSearchWordHasNoMatch: jest.fn(),
     showSearchObject: jest.fn(() => ({
       length: jest.fn(),
     })),
@@ -40,6 +41,8 @@ jest.mock("../context/AdminGalleryContext", () => ({
 jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
+    setSearchWordHasNoMatch: jest.fn(),
+    activityHasChanged: jest.fn(),
     showSearchObject: jest.fn(() => ({
       length: jest.fn(),
     })),
@@ -48,8 +51,12 @@ jest.mock("../context/CreateActivityContext", () => ({
 
 jest.mock("../context/ActivityCardContext", () => ({
   useActivityCardContext: () => ({
-    active: jest.fn(),
-    popular: jest.fn(),
+    active: true,
+    popular: true,
+    changePopularStatusInAdminGallery: jest.fn(),
+    changeActiveStatusInAdminGallery: jest.fn(),
+    changePopular: jest.fn(),
+    changeActive: jest.fn(),
   }),
 }));
 
@@ -68,6 +75,20 @@ describe("Testing AdminActivityGallery ", () => {
       setArrayOfActiveActivities,
     ]);
     useStateMock.mockImplementation((init) => [init, setInactiveActivities]);
+  });
+
+  it("AdminActivityGallery if status active or popular has been changed ", () => {
+    useActivityCardContext().popular = true;
+    render(<AdminActivityGallery />);
+
+    useCreateActivityFunction().activityHasChanged.mockReturnValue(true);
+
+    useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
+      false
+    );
+    useActivityCardContext().changeActiveStatusInAdminGallery.mockReturnValue(
+      false
+    );
   });
 
   it("AdminActivityGallery fill up arrayOfActiveActivities and inactiveActivities ", () => {
