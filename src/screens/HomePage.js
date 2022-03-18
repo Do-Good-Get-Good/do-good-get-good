@@ -11,15 +11,16 @@ import { MyActivityAsAList } from "../components/MyActivityAsAList";
 import { Suggestions } from "../components/Suggestions";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
+import TimeStatistics from "../components/TimeStatistics";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
   const userLevel = useAdminCheckFunction();
-
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
@@ -35,8 +36,9 @@ export const HomePage = ({ navigation }) => {
       )}
       {userLevel === "user" && (
         <>
-          {activity.myActivities.length > 0 && (
+          {activity.myActivities.length != 0 ? (
             <ScrollView style={styles.container}>
+              <TimeStatistics />
               <MyActivities
                 myAccumulatedTime={activity.activitiesIDandAccumTime}
                 myActivities={activity.myActivities}
@@ -68,7 +70,6 @@ export const HomePage = ({ navigation }) => {
     </SafeAreaView>
   );
 };
-
 const styles = StyleSheet.create({
   view: {
     flex: 1,

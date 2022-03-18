@@ -9,18 +9,19 @@ export const useActivityFunction = () => {
 };
 
 export const ActivityProvider = ({ children }) => {
-  const [trueOrFalse, setTrueOrFalse] = useState(false);
   const [activitiesInformation, setActivitiesInformation] = useState([]);
-  const [timeEntry, setTimeEntry] = useState([]);
+  const [lastFiveTimeEntries, setLastFiveTimeEntries] = useState([]);
   const [myActivitiesIDandAccumTime, setMyActivitiesIDandAccumTime] = useState(
     []
   );
   const [isFinished, setIsFinished] = useState(false);
+
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
 
   useEffect(() => {
     const getActivitiesID = async () => {
+      let temArray = [];
       const user = await firestore()
         .collection("Users")
         .doc(auth().currentUser.uid)
@@ -33,50 +34,23 @@ export const ActivityProvider = ({ children }) => {
               accumulatedTime: data[i].accumulated_time,
               activityID: data[i].activity_id,
             };
-            setMyActivitiesIDandAccumTime((prev) => [...prev, idAndTime]);
+            temArray.push(idAndTime);
           }
+
+        setMyActivitiesIDandAccumTime(temArray);
+        setIsFinished(true);
+
       }
-      setIsFinished(true);
     };
     getActivitiesID();
   }, []);
 
   useEffect(() => {
     let timeArray = [];
+
+    let onlyFive = [];
+
     if (isFinished === true) {
-      const onlyFiveActivityTimeEntryAndStatus = async () => {
-        const timeAndStatus = await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .collection("time_entries")
-          .orderBy("date", "desc")
-          .limit(5)
-          .get();
-        let data = timeAndStatus.docs.map((doc) => doc.data());
-        let docId = timeAndStatus.docs.map((doc) => doc.id);
-
-        if (data != null) {
-          for (let i = 0; i < data.length; i++) {
-            let entryTime = {
-              activityId: data[i].activity_id,
-              date: data[i].date,
-              time: data[i].time,
-              statusConfirmed: data[i].status_confirmed,
-              fbDocumentID: docId[i],
-            };
-            timeArray.push(entryTime);
-            setTimeEntry(timeArray);
-          }
-        }
-      };
-
-      onlyFiveActivityTimeEntryAndStatus();
-    }
-  }, [isFinished]);
-
-  useEffect(() => {
-    let timeArray = [];
-    if (isFinished === true && trueOrFalse === true) {
       const allActivityTimeEntryAndStatus = async () => {
         const timeAndStatus = await firestore()
           .collection("Users")
@@ -87,7 +61,7 @@ export const ActivityProvider = ({ children }) => {
         let data = timeAndStatus.docs.map((doc) => doc.data());
         let docId = timeAndStatus.docs.map((doc) => doc.id);
 
-        if (data != null) {
+        if (data != null && data.length != 0) {
           for (let i = 0; i < data.length; i++) {
             let entryTime = {
               activityId: data[i].activity_id,
@@ -98,14 +72,27 @@ export const ActivityProvider = ({ children }) => {
             };
 
             timeArray.push(entryTime);
-            setTimeEntryArrayForMyTimePage(timeArray);
           }
+
+          let empuntOfItems = 0;
+          if (timeArray.length > 0 && timeArray.length < 5) {
+            empuntOfItems = timeArray.length;
+          } else {
+            empuntOfItems = 5;
+          }
+
+          for (let j = 0; j < empuntOfItems; j++) {
+            onlyFive.push(timeArray[j]);
+          }
+
         }
+        setLastFiveTimeEntries(onlyFive);
+        setTimeEntryArrayForMyTimePage(timeArray);
       };
 
       allActivityTimeEntryAndStatus();
     }
-  }, [trueOrFalse, isFinished]);
+  }, [isFinished]);
 
   useEffect(() => {
     if (
@@ -129,7 +116,6 @@ export const ActivityProvider = ({ children }) => {
               photo: info.activity_photo,
             };
             inactiveArray.push(dataInfo);
-            // setActivitiesInformation((prev) => [...prev, dataInfo]);
           }
         }
         setActivitiesInformation(inactiveArray);
@@ -138,15 +124,10 @@ export const ActivityProvider = ({ children }) => {
     }
   }, [isFinished]);
 
-  const buttonShowAllPressed = () => {
-    setTrueOrFalse(true);
-  };
-
   return (
     <ActivitynContext.Provider
       value={{
-        getIfoFromActivitiesList: buttonShowAllPressed,
-        timeAndStatus: timeEntry,
+        timeAndStatus: lastFiveTimeEntries,
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
         allListOfTimeEntry: timeEntryArrayForMyTimePage,
