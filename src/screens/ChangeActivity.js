@@ -173,7 +173,6 @@ const styles = StyleSheet.create({
   },
   textInputs: {
     paddingLeft: 11,
-
     ...typography.b1,
     color: colors.dark,
     marginBottom: 12,
@@ -219,6 +218,7 @@ const styles = StyleSheet.create({
   },
   saveButtonText: {
     ...typography.button.lg,
+    fontWeight: "500",
   },
   cancelButton: {
     borderRadius: 5,
@@ -234,6 +234,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
     textAlignVertical: "center",
     overflow: "hidden",
+    fontWeight: "500",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
   },
   cancelButtonBorder: {
     paddingVertical: 1,
