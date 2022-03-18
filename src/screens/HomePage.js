@@ -14,6 +14,7 @@ import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
@@ -34,24 +35,23 @@ export const HomePage = ({ navigation }) => {
       )}
       {userLevel === "user" && (
         <>
-          {activity.myActivities.length != 0 ? (
-            <View style={styles.view}>
-              <ScrollView style={styles.container}>
-                <MyActivities
-                  myAccumulatedTime={activity.activitiesIDandAccumTime}
-                  myActivities={activity.myActivities}
-                />
-                <MyActivityAsAList navigation={navigation} />
-                <SuggestionProvider>
-                  <Text style={styles.suggestionHeader}>
-                    Förslag & inspiration
-                  </Text>
-                  <Suggestions navigation={navigation} />
-                </SuggestionProvider>
-                <BottomLogo />
-              </ScrollView>
-            </View>
-          ) : (
+          {activity.myActivities.length > 0 && (
+            <ScrollView style={styles.container}>
+              <MyActivities
+                myAccumulatedTime={activity.activitiesIDandAccumTime}
+                myActivities={activity.myActivities}
+              />
+              <MyActivityAsAList navigation={navigation} />
+              <SuggestionProvider>
+                <Text style={styles.suggestionHeader}>
+                  Förslag & inspiration
+                </Text>
+                <Suggestions navigation={navigation} />
+              </SuggestionProvider>
+              <BottomLogo />
+            </ScrollView>
+          )}
+          {activity.activitiesIDandAccumTime.length < 1 && (
             <ScrollView style={styles.container}>
               <SuggestionProvider>
                 <Text style={styles.suggestionHeader}>
@@ -70,13 +70,13 @@ export const HomePage = ({ navigation }) => {
 };
 
 const styles = StyleSheet.create({
+  view: {
+    flex: 1,
+    backgroundColor: colors.light,
+  },
   container: {
     paddingHorizontal: 16,
     flex: 1,
-  },
-  view: {
-    flex: 1,
-    backgroundColor: "#F5F5F5",
   },
   myActivities: {
     flex: 1,
