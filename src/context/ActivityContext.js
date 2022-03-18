@@ -36,8 +36,10 @@ export const ActivityProvider = ({ children }) => {
             };
             temArray.push(idAndTime);
           }
+
         setMyActivitiesIDandAccumTime(temArray);
         setIsFinished(true);
+
       }
     };
     getActivitiesID();
@@ -45,6 +47,7 @@ export const ActivityProvider = ({ children }) => {
 
   useEffect(() => {
     let timeArray = [];
+
     let onlyFive = [];
 
     if (isFinished === true) {
@@ -70,6 +73,7 @@ export const ActivityProvider = ({ children }) => {
 
             timeArray.push(entryTime);
           }
+
           let empuntOfItems = 0;
           if (timeArray.length > 0 && timeArray.length < 5) {
             empuntOfItems = timeArray.length;
@@ -80,6 +84,7 @@ export const ActivityProvider = ({ children }) => {
           for (let j = 0; j < empuntOfItems; j++) {
             onlyFive.push(timeArray[j]);
           }
+
         }
         setLastFiveTimeEntries(onlyFive);
         setTimeEntryArrayForMyTimePage(timeArray);
