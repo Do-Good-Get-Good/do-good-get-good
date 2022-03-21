@@ -17,8 +17,6 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export const MyActivityAsAList = ({ navigation, showAllList }) => {
-  const [oneMoreRender, setOneMoreRender] = useState(false);
-
   const entryTime = useActivityFunction();
   const rout = useRoute();
 
@@ -31,7 +29,11 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
 
   useEffect(() => {
     let activityAndTimeEntryArray = [];
-    if (rout.name === "HomePage") {
+    if (
+      rout.name === "HomePage" &&
+      entryTime.timeAndStatus.length != 0 &&
+      entryTime.myActivities.length != 0
+    ) {
       if (entryTime.timeAndStatus.length > timeEntryList.length) {
         for (let i = 0; i < entryTime.timeAndStatus.length; i++) {
           for (let j = 0; j < entryTime.myActivities.length; j++) {
@@ -47,12 +49,16 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
                 timeEntryID: entryTime.timeAndStatus[i].fbDocumentID,
               };
               activityAndTimeEntryArray.push(myTimeAndTitle);
-              setTimeEntryList(activityAndTimeEntryArray);
             }
           }
         }
+        setTimeEntryList(activityAndTimeEntryArray);
       }
-    } else if (rout.name === "MyTimePage") {
+    } else if (
+      rout.name === "MyTimePage" &&
+      entryTime.timeAndStatus.length != 0 &&
+      entryTime.myActivities.length != 0
+    ) {
       if (showAllList.length > timeEntryList.length) {
         for (let i = 0; i < showAllList.length; i++) {
           for (let j = 0; j < entryTime.myActivities.length; j++) {
@@ -65,25 +71,15 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
                 timeEntryID: showAllList[i].fbDocumentID,
               };
               activityAndTimeEntryArray.push(myTimeAndTitle);
-              setTimeEntryList(activityAndTimeEntryArray);
-              setOneMoreRender(true);
             }
           }
         }
+        setTimeEntryList(activityAndTimeEntryArray);
       }
-    } else {
-      console.log("No rout");
     }
-  }, [
-    entryTime.timeAndStatus,
-    entryTime.myActivities,
-    showAllList,
-    rout,
-    oneMoreRender,
-  ]);
+  }, [entryTime.timeAndStatus, entryTime.myActivities, showAllList, rout]);
 
   const pressedButtonShowAll = () => {
-    entryTime.getIfoFromActivitiesList(true);
     navigation.navigate("MyTimePage");
   };
 

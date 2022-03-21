@@ -18,12 +18,11 @@ const ConfirmActivities = () => {
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [reload, setReload] = useState(false);
-  const [loadingData, setLoadingData] = useState(null);
+  const [loadingData, setLoadingData] = useState(true);
   const [noTimeEntriesToConfirm, setNoTimeEntriesToConfirm] = useState(false);
 
   useEffect(() => {
     const fetchUserData = async () => {
-      setLoadingData(true);
       let id = 0;
       let usersFetched = 0;
       let userIDs = await firestore()
@@ -80,10 +79,10 @@ const ConfirmActivities = () => {
         });
         usersFetched++;
         if (usersFetched === userIDs.size) {
-          setLoadingData(false);
           if (id === 0) {
             setNoTimeEntriesToConfirm(true);
           }
+          setLoadingData(false);
         }
       });
     };
@@ -92,6 +91,7 @@ const ConfirmActivities = () => {
     return () => {
       setMyUsers([]);
       setNoTimeEntriesToConfirm(false);
+      setLoadingData(true);
     };
   }, [reload]);
 
@@ -159,6 +159,7 @@ const ConfirmActivities = () => {
     for (let i = 0; i < selectedUsers.length; i++) {
       confirmActivity(selectedUsers[i].timeEntryId, selectedUsers[i].userID);
       if (i === selectedUsers.length - 1) {
+        setChecked(false);
         setReload(!reload);
       }
     }
@@ -189,6 +190,7 @@ const ConfirmActivities = () => {
         <CheckBox
           title="Markera alla"
           iconRight
+          disabled={myUsers.length === 0}
           containerStyle={styles.checkBoxStyle}
           checked={checked}
           checkedColor={colors.primary}
@@ -199,94 +201,100 @@ const ConfirmActivities = () => {
         />
       </View>
       <View style={styles.content}>
-        {myUsers.length > 0 &&
-          myUsers.map((user, index) => (
-            <View key={index} testID="confirmActivities.timeEntryView">
-              <TouchableOpacity
-                style={styles.listItemStyle}
-                onPress={() => {
-                  openSelectedUser(user);
+        {myUsers.length > 0
+          ? myUsers.map((user, index) => (
+              <View key={index} testID="confirmActivities.timeEntryView">
+                <TouchableOpacity
+                  style={styles.listItemStyle}
+                  onPress={() => {
+                    openSelectedUser(user);
+                  }}
+                >
+                  <View
+                    style={{
+                      flex: 1.25,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "space-between",
+                    }}
+                  >
+                    <Text style={styles.listItemNameStyle}>
+                      {user.fullName}
+                    </Text>
+                    <Icon
+                      style={styles.icon}
+                      color={colors.secondary}
+                      name={
+                        user.isOpen === true
+                          ? "arrow-drop-up"
+                          : "arrow-drop-down"
+                      }
+                      size={30}
+                    />
+                  </View>
+                  <Text style={styles.listItemDateStyle}>
+                    {user.timeEntryDate}
+                  </Text>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                    }}
+                  >
+                    <View style={{ flex: 0.9 }}>
+                      <Text style={styles.listItemHourStyle}>
+                        {user.timeEntryHours}h
+                      </Text>
+                    </View>
+                    <CheckBox
+                      iconRight
+                      containerStyle={styles.listItemCheckBoxStyle}
+                      checked={user.checked}
+                      checkedColor={colors.primary}
+                      onPress={() => {
+                        markSelected(user);
+                      }}
+                    />
+                  </View>
+                </TouchableOpacity>
+                {user.isOpen && (
+                  <View style={styles.listItemContentStyle}>
+                    <View style={styles.listItemContentNameView}>
+                      <Text style={styles.listItemContentNameStyle}>
+                        {user.activityName}
+                      </Text>
+                    </View>
+                    <View style={styles.listItemContentDateView}>
+                      <Text style={styles.listItemContentDateStyle}>
+                        {user.timeEntryDate}
+                      </Text>
+                    </View>
+                    <View style={styles.listItemContentHourView}>
+                      <Text style={styles.listItemContentHourStyle}>
+                        {user.timeEntryHours}h
+                      </Text>
+                    </View>
+                  </View>
+                )}
+              </View>
+            ))
+          : !loadingData &&
+            noTimeEntriesToConfirm &&
+            myUsers.length < 1 && (
+              <View
+                style={{
+                  alignItems: "center",
+                  justifyContent: "center",
                 }}
               >
-                <View
-                  style={{
-                    flex: 1.25,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "space-between",
-                  }}
-                >
-                  <Text style={styles.listItemNameStyle}>{user.fullName}</Text>
-                  <Icon
-                    style={styles.icon}
-                    color={colors.secondary}
-                    name={
-                      user.isOpen === true ? "arrow-drop-up" : "arrow-drop-down"
-                    }
-                    size={30}
-                  />
-                </View>
-                <Text style={styles.listItemDateStyle}>
-                  {user.timeEntryDate}
+                <Text style={{ ...typography.b2 }}>
+                  Du har godkänt alla konsulters tider, kolla igen senare!!
                 </Text>
-                <View
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    alignItems: "center",
-                    justifyContent: "flex-end",
-                  }}
-                >
-                  <View style={{ flex: 0.9 }}>
-                    <Text style={styles.listItemHourStyle}>
-                      {user.timeEntryHours}h
-                    </Text>
-                  </View>
-                  <CheckBox
-                    iconRight
-                    containerStyle={styles.listItemCheckBoxStyle}
-                    checked={user.checked}
-                    checkedColor={colors.primary}
-                    onPress={() => {
-                      markSelected(user);
-                    }}
-                  />
-                </View>
-              </TouchableOpacity>
-              {user.isOpen && (
-                <View style={styles.listItemContentStyle}>
-                  <View style={styles.listItemContentNameView}>
-                    <Text style={styles.listItemContentNameStyle}>
-                      {user.activityName}
-                    </Text>
-                  </View>
-                  <View style={styles.listItemContentDateView}>
-                    <Text style={styles.listItemContentDateStyle}>
-                      {user.timeEntryDate}
-                    </Text>
-                  </View>
-                  <View style={styles.listItemContentHourView}>
-                    <Text style={styles.listItemContentHourStyle}>
-                      {user.timeEntryHours}h
-                    </Text>
-                  </View>
-                </View>
-              )}
-            </View>
-          ))}
-        {noTimeEntriesToConfirm && (
-          <View
-            style={{
-              alignItems: "center",
-              justifyContent: "center",
-            }}
-          >
-            <Text style={{ ...typography.b2 }}>
-              Du har godkänt alla konsulters tider, kolla igen senare!!
-            </Text>
-          </View>
-        )}
-        {loadingData === true && (
+              </View>
+            )}
+        {loadingData && (
           <Dialog.Loading
             loadingProps={{ color: colors.primary }}
           ></Dialog.Loading>
