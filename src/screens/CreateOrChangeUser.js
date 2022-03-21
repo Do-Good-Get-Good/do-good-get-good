@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
   StyleSheet,
@@ -11,8 +10,14 @@ import {
   TextInput,
   Dimensions,
 } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
+
+import { Icon } from "react-native-elements";
+
 import Menu from "../components/Menu";
+
 import { useCreateUserFunction } from "../context/CreateUserContext";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -34,6 +39,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const [surname, setSurname] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
   const [nameFilledUp, setNameFilledUp] = useState(null);
   const [surnameFilledUp, setSurnameFilledUp] = useState(null);
   const [emailFilledUp, setEmailFilledUp] = useState(null);
@@ -179,6 +185,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       paddingVertical: 13,
       paddingLeft: 11,
       marginTop: 9,
+      width: "100%",
       fontSize: typography.b1.fontSize,
       fontFamily: typography.b1.fontFamily,
       color: colors.dark,
@@ -244,25 +251,43 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             ref_input3.current.focus();
           }}
         />
-        {emailFilledUp === false ? (
+        {emailFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
-        <TextInput
-          style={[nameSurnameEmailPasswordStyle(), passwordBorderStyle()]}
-          maxLength={30}
-          onChangeText={setPassword}
-          value={password}
-          placeholder="Lösenord"
-          placeholderTextColor={colors.dark}
-          ref={ref_input3}
-          returnKeyType="send"
-          onSubmitEditing={() => {
-            sendNewUserToCreateActivityScreen();
+        )}
+        <View
+          style={{
+            flexDirection: "row",
+            width: "100%",
           }}
-        />
-        {passwordFilledUp === false ? (
+        >
+          <TextInput
+            style={[nameSurnameEmailPasswordStyle(), passwordBorderStyle()]}
+            maxLength={30}
+            onChangeText={setPassword}
+            value={password}
+            placeholder="Lösenord"
+            placeholderTextColor={colors.dark}
+            ref={ref_input3}
+            returnKeyType="send"
+            secureTextEntry={showPassword ? false : true}
+            onSubmitEditing={() => {
+              sendNewUserToCreateActivityScreen();
+            }}
+          />
+          <View style={styles.showPasswordIcon}>
+            <Icon
+              name={showPassword ? "visibility" : "visibility-off"}
+              type="material"
+              size={25}
+              onPress={() => {
+                setShowPassword(!showPassword);
+              }}
+            />
+          </View>
+        </View>
+        {passwordFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
       </>
     );
   }
@@ -319,7 +344,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>
             <Text style={styles.numbersNearTitle}>
-              {newUser === true ? "1/2" : null}
+              {newUser === true && "1/2"}
             </Text>
           </View>
 
@@ -333,9 +358,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             returnKeyType="next"
             onSubmitEditing={() => ref_input1.current.focus()}
           />
-          {nameFilledUp === false ? (
+          {nameFilledUp === false && (
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-          ) : null}
+          )}
           <TextInput
             style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
             maxLength={30}
@@ -353,12 +378,12 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
               }
             }}
           />
-          {surnameFilledUp === false ? (
+          {surnameFilledUp === false && (
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-          ) : null}
+          )}
 
-          {newUser === true ? viewForNewUser() : null}
-          {newUser === false ? pressedUserStatusActive() : null}
+          {newUser === true && viewForNewUser()}
+          {newUser === false && pressedUserStatusActive()}
         </View>
         {twoBottomButtonsForAllViews()}
       </ScrollView>
@@ -389,6 +414,12 @@ const styles = StyleSheet.create({
   },
   containerForAllInput: {
     height: 500,
+  },
+  showPasswordIcon: {
+    justifyContent: "center",
+    right: 36,
+    top: 4,
+    elevation: 2,
   },
   containerForTwoBottomButtons: {
     paddingHorizontal: 16,

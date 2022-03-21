@@ -406,9 +406,7 @@ export function ActivityCard({ route, navigation }) {
               color={colors.dark}
               size={25}
             />
-            <Text numberOfLines={2} style={styles.textDescription}>
-              {activity.description}
-            </Text>
+            <Text style={styles.textDescription}>{activity.description}</Text>
           </View>
           {adminOpenedActyvity === true && activeActivities === true
             ? adminActionsForActiveActivities()
