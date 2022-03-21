@@ -40,10 +40,12 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [invalidPassword, setInvalidPassword] = useState(false);
+  const [passwordFilledUp, setPasswordFilledUp] = useState(null);
   const [nameFilledUp, setNameFilledUp] = useState(null);
   const [surnameFilledUp, setSurnameFilledUp] = useState(null);
   const [emailFilledUp, setEmailFilledUp] = useState(null);
-  const [passwordFilledUp, setPasswordFilledUp] = useState(null);
+  const [invalidEmail, setInvalidEmail] = useState(false);
   const [userStatusActive, setUserStatusActive] = useState(statusActive);
   const ref_input1 = useRef();
   const ref_input2 = useRef();
@@ -70,54 +72,80 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }, [newUser]);
 
   function sendNewUserToCreateActivityScreen() {
-    if (
-      name != " " &&
-      surname != " " &&
-      email != " " &&
-      password != " " &&
-      name.trim() &&
-      surname.trim() &&
-      email.trim() &&
-      password.trim()
-    ) {
-      navigation.navigate("CreateActivity", {
-        creatingNewUser: true,
-        newUserInfo: {
-          first_name: name,
-          last_name: surname,
-          email: email,
-          password: password,
-        },
-      });
-    } else {
-      console.log("One of fild is empty");
-    }
-    ckeckingForEmptyLines();
+    navigation.navigate("CreateActivity", {
+      creatingNewUser: true,
+      newUserInfo: {
+        first_name: name,
+        last_name: surname,
+        email: email,
+        password: password,
+      },
+    });
   }
 
-  function ckeckingForEmptyLines() {
-    if (name != " " && name.trim()) {
+  function validateInputs() {
+    validateFirstAndLastName();
+    validateEmail();
+    validatePassword();
+
+    if (
+      emailFilledUp &&
+      !invalidEmail &&
+      passwordFilledUp &&
+      !invalidPassword &&
+      surnameFilledUp &&
+      nameFilledUp
+    ) {
+      console.log("All inputs are valid");
+      return true;
+    } else {
+      console.log("All inputs are invalid");
+      return false;
+    }
+  }
+
+  function validateFirstAndLastName() {
+    // first name
+    if (name != "" && name.trim()) {
       setNameFilledUp(true);
     } else {
       setNameFilledUp(false);
     }
 
-    if (surname != " " && surname.trim()) {
+    // last name
+    if (surname != "" && surname.trim()) {
       setSurnameFilledUp(true);
     } else {
       setSurnameFilledUp(false);
     }
+  }
 
-    if (email != " " && email.trim()) {
+  function validatePassword() {
+    if (password.length < 6) {
+      setInvalidPassword(true);
+    } else {
+      setInvalidPassword(false);
+    }
+    if (password != "" && password.trim()) {
+      setPasswordFilledUp(true);
+    } else {
+      setPasswordFilledUp(false);
+    }
+  }
+
+  function validateEmail() {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (email != "" && email.trim()) {
       setEmailFilledUp(true);
     } else {
       setEmailFilledUp(false);
     }
 
-    if (password != " " && password.trim()) {
-      setPasswordFilledUp(true);
+    if (reg.test(email) === false) {
+      setInvalidEmail(true);
     } else {
-      setPasswordFilledUp(false);
+      setInvalidEmail(false);
     }
   }
 
@@ -126,7 +154,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
-            onPress={() => sendNewUserToCreateActivityScreen()}
+            onPress={() => {
+              if (validateInputs()) sendNewUserToCreateActivityScreen();
+            }}
             style={styles.buttonSave}
           >
             <Text style={styles.buttonSaveText}>Nästa</Text>
@@ -214,11 +244,14 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       borderColor: surnameFilledUp === false ? colors.error : colors.background,
     };
   };
-  emaiBorderStyle = function () {
+  emailBorderStyle = function () {
     return {
       borderRadius: 5,
       borderWidth: 1,
-      borderColor: emailFilledUp === false ? colors.error : colors.background,
+      borderColor:
+        emailFilledUp === false || invalidEmail
+          ? colors.error
+          : colors.background,
     };
   };
   passwordBorderStyle = function () {
@@ -226,7 +259,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       borderRadius: 5,
       borderWidth: 1,
       borderColor:
-        passwordFilledUp === false ? colors.error : colors.background,
+        passwordFilledUp === false || invalidPassword
+          ? colors.error
+          : colors.background,
     };
   };
 
@@ -234,7 +269,8 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     return (
       <>
         <TextInput
-          style={[nameSurnameEmailPasswordStyle(), surnameBorderStyle()]}
+          textContentType={"emailAddress"}
+          style={[nameSurnameEmailPasswordStyle(), emailBorderStyle()]}
           maxLength={30}
           onChangeText={setEmail}
           value={email}
@@ -248,6 +284,11 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         />
         {emailFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+        )}
+        {invalidEmail && emailFilledUp && (
+          <Text style={styles.warningAboutRequired}>
+            * Ange en giltig e-mail
+          </Text>
         )}
         <View
           style={{
@@ -282,6 +323,11 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         </View>
         {passwordFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+        )}
+        {invalidPassword && passwordFilledUp && (
+          <Text style={styles.warningAboutRequired}>
+            * Lösenordet måste innehålla minst 6 tecken
+          </Text>
         )}
       </>
     );
@@ -357,7 +403,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
           )}
           <TextInput
-            style={[nameSurnameEmailPasswordStyle(), emaiBorderStyle()]}
+            style={[nameSurnameEmailPasswordStyle(), surnameBorderStyle()]}
             maxLength={30}
             onChangeText={setSurname}
             value={surname}
