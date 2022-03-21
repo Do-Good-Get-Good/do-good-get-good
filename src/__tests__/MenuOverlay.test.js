@@ -144,7 +144,7 @@ describe("Testing MenuOverlay", () => {
 
       const aboutButton = getByTestId("menuOverlay.aboutButton");
       fireEvent.press(aboutButton);
-      expect(mockedNavigate).not.toHaveBeenCalled();
+      expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage");
     });
 
     it("FAQ button", () => {
