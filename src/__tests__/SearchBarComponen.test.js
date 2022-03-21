@@ -16,6 +16,8 @@ jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: false,
     word: jest.fn(),
+    setCleanUpSearchBarComponent: jest.fn(),
+    cleanUpSearchBarComponent: true,
   }),
 }));
 
@@ -28,14 +30,41 @@ jest.mock("../context/CreateActivityContext", () => ({
 describe("Testing SearchBarComponent", () => {
   it("SearchBarComponent exist TextInput and it's possible to wrire a text there", () => {
     const { getByPlaceholderText } = render(<SearchBarComponent />);
-
-    fireEvent.changeText(getByPlaceholderText("Sök"), "activity name or title");
+    const input = getByPlaceholderText("Sök");
+    fireEvent.changeText(input, "activity name or title");
+    expect(input.props.value).toEqual("activity name or title");
   });
 
-  it("SearchBarComponent send searching word when you press on the button", () => {
-    useAdminGalleryFunction().word.mockReturnValue("word");
-    const { getByTestId } = render(<SearchBarComponent />);
+  it("SearchBarComponent send searching word when you press on the button for active array", () => {
+    const { getByTestId, getByPlaceholderText } = render(
+      <SearchBarComponent />
+    );
     const button = getByTestId("searchButtonPressed");
+    const input = getByPlaceholderText("Sök");
+    fireEvent.changeText(input, "activity name or title");
+    expect(input.props.value).toEqual("activity name or title");
     fireEvent.press(button);
+    useAdminGalleryFunction().word.mockReturnValue("activity name or title");
+  });
+
+  it("SearchBarComponent send searching word when you press on the button for inactive array ", () => {
+    const { getByTestId, getByPlaceholderText } = render(
+      <SearchBarComponent />
+    );
+    useAdminGalleryFunction().activeOrInactiveActivity = true;
+    const button = getByTestId("searchButtonPressed");
+    const input = getByPlaceholderText("Sök");
+    fireEvent.changeText(input, "activity name or title");
+    expect(input.props.value).toEqual("activity name or title");
+    fireEvent.press(button);
+    useCreateActivityFunction().word.mockReturnValue("activity name or title");
+  });
+
+  it("SearchBarComponent send searching empty string when the user deletes the searched word ", () => {
+    const { getByPlaceholderText } = render(<SearchBarComponent />);
+    const input = getByPlaceholderText("Sök");
+    fireEvent.changeText(input, " ");
+    expect(input.props.value).toEqual(" ");
+    useCreateActivityFunction().word.mockReturnValue("m");
   });
 });
