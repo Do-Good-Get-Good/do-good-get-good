@@ -85,7 +85,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
                 openOverlay();
-                entryTime.getIfoFromActivitiesList(true);
                 navigation.navigate("MyTimePage");
               }}
             >
