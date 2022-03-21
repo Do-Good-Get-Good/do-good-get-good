@@ -11,6 +11,7 @@ import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 
 import Faq from "./screens/Faq";
+import ConceptPage from "./screens/ConceptPage";
 
 const Stack = createNativeStackNavigator();
 export const Mystack = () => {
@@ -35,6 +36,7 @@ export const Mystack = () => {
           component={CreateOrChangeUser}
         />
         <Stack.Screen name="Faq" component={Faq} />
+        <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
       </Stack.Navigator>
     </NavigationContainer>
