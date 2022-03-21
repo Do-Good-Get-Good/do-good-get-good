@@ -36,7 +36,7 @@ export const HomePage = ({ navigation }) => {
       )}
       {userLevel === "user" && (
         <>
-          {activity.myActivities.length != 0 ? (
+          {activity.myActivities.length != 0 && (
             <ScrollView style={styles.container}>
               <TimeStatistics />
               <MyActivities
