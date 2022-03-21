@@ -83,7 +83,7 @@ export const CreateActivityProvider = ({ children }) => {
         }
         setAllActiveActvivitiesFB(tempArray);
       };
-      console.log("CreateActivityContext all active actvivitiesFB useEffect");
+
       getAllActiveActivities();
       setAllActiveActvivitiesFB(tempArray);
     }
@@ -138,7 +138,6 @@ export const CreateActivityProvider = ({ children }) => {
     let arrayWithFoundObjects = [];
 
     if (searchingWord != "") {
-      //setSearchWordHasNoMatch(false);
       for (let i = 0; i < newArray.length; i++) {
         var searchAtFCity = newArray[i].city.search(searchingWord);
         var searchAtTitle = newArray[i].title.search(searchingWord);
