@@ -23,13 +23,21 @@ const ConceptPage = () => {
   const [allUsers, setAllUsers] = useState([]);
   const [concept, setConcept] = useState([]);
   const [error, setError] = useState(null);
+  const [error2, setError2] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoadingUserData(true);
       let id = 0;
       let usersFetched = 0;
-      let response = await firestore().collection("Users").get();
+      let response = await firestore()
+        .collection("Users")
+        .get()
+        .catch((error) => {
+          if (error === "no-data") {
+            setError("Sorry, something went wrong");
+          }
+        });
 
       response.forEach(async (user) => {
         let timeEntries = await firestore()
@@ -38,20 +46,35 @@ const ConceptPage = () => {
           .collection("time_entries")
           .orderBy("date", "desc")
           .where("status_confirmed", "==", true)
-          .get();
+          .get()
+          .catch((error) => {
+            if (error === "no-data") {
+              setError("Sorry, something went wrong");
+            }
+          });
 
         timeEntries.forEach(async (timeEntry) => {
           let activity = await firestore()
             .collection("Activities")
             .doc(timeEntry.data().activity_id)
-            .get();
+            .get()
+            .catch((error) => {
+              if (error === "no-data") {
+                setError("Sorry, something went wrong");
+              }
+            });
 
           let fullName;
           let userInfo = await firestore()
             .collection("Users")
             .doc(user.id)
             .collection("personal_information")
-            .get();
+            .get()
+            .catch((error) => {
+              if (error === "no-data") {
+                setError("Sorry, something went wrong");
+              }
+            });
 
           userInfo.docs.map(
             (doc) =>
@@ -101,9 +124,8 @@ const ConceptPage = () => {
           });
         })
         .catch((error) => {
-          console.log(error);
           if (error === "no-data") {
-            setError("Sorry, something went wrong");
+            setError2("Sorry, something went wrong");
           }
         });
       setConcept(tempArray.sort((a, b) => a.order_id - b.order_id));
@@ -204,6 +226,7 @@ const ConceptPage = () => {
                 </View>
               ))
           )}
+          {error2 != null && <Text style={styles.errorText}>{error2}</Text>}
         </View>
         <BottomLogo />
       </ScrollView>
