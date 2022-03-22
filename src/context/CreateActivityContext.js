@@ -83,7 +83,6 @@ export const CreateActivityProvider = ({ children }) => {
   }, []);
 
   const createActivityAndLinkNewUser = async (newActivityAndUser) => {
-    console.log("skapa aktivitet");
     await firestore()
       .collection("Activities")
       .add({
@@ -96,13 +95,10 @@ export const CreateActivityProvider = ({ children }) => {
         tg_favorite: newActivityAndUser.tg_favorite,
       })
       .then(async (newActivity) => {
-        console.log("skapade ny aktivitet");
-        console.log("newUserInfo: " + newActivityAndUser.newUserInfo);
         if (
           newActivityAndUser.newUserInfo != null ||
           newActivityAndUser.newUserInfo != undefined
         ) {
-          console.log("skapar ny användare");
           var createUser = functions().httpsCallable("createUser");
           await createUser({
             firstName: newActivityAndUser.newUserInfo.firstName,
@@ -111,15 +107,7 @@ export const CreateActivityProvider = ({ children }) => {
             password: newActivityAndUser.newUserInfo.password,
             role: "user",
             activityId: newActivity.id,
-          })
-            .then((res) => {
-              console.log(res.data.result);
-              resetActivityInfo();
-            })
-            .catch((error) => console.log(error));
-        } else {
-          console.log("ingen ny användare");
-          resetActivityInfo();
+          }).catch((error) => console.log(error));
         }
       });
   };

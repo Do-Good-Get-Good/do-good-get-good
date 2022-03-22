@@ -313,7 +313,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             returnKeyType="send"
             secureTextEntry={showPassword ? false : true}
             onSubmitEditing={() => {
-              sendNewUserToCreateActivityScreen();
+              if (validateInputs()) sendNewUserToCreateActivityScreen();
             }}
           />
           <View style={styles.showPasswordIcon}>
