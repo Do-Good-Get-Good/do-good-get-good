@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -119,12 +119,44 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
     }
   }, [useCreateActivityContext.updateGallery]);
 
+  ///////////////////////////////////
+
+  const [size, setSize] = useState(null);
+
+  const onLayout = useCallback((event) => {
+    const { width, height } = event.nativeEvent.layout;
+    setSize({ width, height });
+  }, []);
+  // console.log("size   ", size);
+
+  const [amountOfLinesTitle, setAmountOfLinesTitle] = useState(0);
+
+  const onTextLayout = useCallback((e) => {
+    setAmountOfLinesTitle({
+      amount: e.nativeEvent.lines.length,
+      text: e.nativeEvent.lines,
+    });
+  }, []);
+
+  const titleStyle = useCallback(() => {
+    // console.log("Call amountOfLinesTitle ", amountOfLinesTitle);
+    return {
+      //  marginTop: amountOfLinesTitle > 1 ? 0 : 25,
+    };
+  }, [amountOfLinesTitle]);
+
+  console.log("amountOfLinesTitle   ", amountOfLinesTitle);
+  console.log("______________________________________");
+
+  /////////////////////////////
+
   return (
     <View>
       <View style={styles.activityContainer}>
         {showArray.length > 0 &&
           showArray.map((suggestion, index) => (
             <TouchableOpacity
+              // onLayout={onLayout}
               testID="lookDetails"
               onPress={() =>
                 lookDetails(suggestion, suggestion.active, suggestion.popular)
@@ -135,11 +167,25 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
               <View style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
                   <View style={styles.textTitleCityDescriptipn}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
+                    <Text
+                      onTextLayout={onTextLayout}
+                      // onLayout={onLayout}
+                      // onTextLayout={({ nativeEvent: { lines } }) =>
+                      //   setAmountOfLinesTitle(lines.length)
+                      // }
+                      numberOfLines={2}
+                      style={styles.textTitle}
+                    >
                       {suggestion.title}
                     </Text>
 
-                    <View style={styles.iconsAndTextCityContainer}>
+                    <View
+                      style={{
+                        // marginTop: suggestion.title.length > 16 ? 0 : 25,
+                        ...titleStyle(),
+                        ...styles.iconsAndTextCityContainer,
+                      }}
+                    >
                       <Icon
                         type="material-community"
                         name="map-marker-outline"
@@ -157,7 +203,14 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                         color={colors.dark}
                         size={25}
                       />
-                      <Text numberOfLines={2} style={styles.textDescription}>
+                      <Text
+                        numberOfLines={2}
+                        style={{
+                          // marginBottom:
+                          //   suggestion.description.length > 16 ? 19 : 38,
+                          ...styles.textDescription,
+                        }}
+                      >
                         {suggestion.description}
                       </Text>
                     </View>
@@ -168,19 +221,6 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                     source={setTheRightPhoto(suggestion.photo)}
                   />
                 </View>
-
-                <TouchableOpacity
-                  testID="lookDetails2"
-                  onPress={() =>
-                    lookDetails(
-                      suggestion,
-                      suggestion.active,
-                      suggestion.popular
-                    )
-                  }
-                >
-                  <Text style={styles.textLäsMer}>Läs mer</Text>
-                </TouchableOpacity>
               </View>
             </TouchableOpacity>
           ))}
@@ -228,6 +268,7 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     height: 100,
+
     resizeMode: "contain",
     alignItems: "center",
     marginRight: 12,
@@ -248,9 +289,10 @@ const styles = StyleSheet.create({
   },
 
   textTitle: {
-    flex: 2,
+    flex: 1,
     ...typography.title,
     color: colors.dark,
+    backgroundColor: "pink",
   },
   textCity: {
     flex: 1,
@@ -283,7 +325,6 @@ const styles = StyleSheet.create({
     marginTop: 6,
   },
   iconsAndTextCityContainer: {
-    marginTop: 25,
     flex: 1,
     flexDirection: "row",
   },
