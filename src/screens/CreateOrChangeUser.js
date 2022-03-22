@@ -84,45 +84,45 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }
 
   function validateInputs() {
-    validateFirstAndLastName();
-    validateEmail();
-    validatePassword();
-
     if (
-      emailFilledUp &&
-      !invalidEmail &&
-      passwordFilledUp &&
-      !invalidPassword &&
-      surnameFilledUp &&
-      nameFilledUp
+      validateFirstname() &&
+      validateLastName() &&
+      validateEmail() &&
+      validatePassword()
     ) {
-      console.log("All inputs are valid");
       return true;
     } else {
-      console.log("All inputs are invalid");
       return false;
     }
   }
 
-  function validateFirstAndLastName() {
-    // first name
+  function validateFirstname() {
+    let valid = true;
     if (name != "" && name.trim()) {
       setNameFilledUp(true);
     } else {
       setNameFilledUp(false);
+      valid = false;
     }
+    return valid;
+  }
 
-    // last name
+  function validateLastName() {
+    let valid = true;
     if (surname != "" && surname.trim()) {
       setSurnameFilledUp(true);
     } else {
       setSurnameFilledUp(false);
+      valid = false;
     }
+    return valid;
   }
 
   function validatePassword() {
+    let valid = true;
     if (password.length < 6) {
       setInvalidPassword(true);
+      valid = false;
     } else {
       setInvalidPassword(false);
     }
@@ -130,23 +130,29 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       setPasswordFilledUp(true);
     } else {
       setPasswordFilledUp(false);
+      valid = false;
     }
+    return valid;
   }
 
   function validateEmail() {
+    let valid = true;
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
     if (email != "" && email.trim()) {
       setEmailFilledUp(true);
     } else {
       setEmailFilledUp(false);
+      valid = false;
     }
 
     if (reg.test(email) === false) {
       setInvalidEmail(true);
+      valid = false;
     } else {
       setInvalidEmail(false);
     }
+    return valid;
   }
 
   function twoBottomButtonsForAllViews() {
