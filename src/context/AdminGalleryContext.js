@@ -56,21 +56,28 @@ export const AdminGalleryProvider = ({ children }) => {
     let arrayWithFoundObjects = [];
     if (searchingWord != "") {
       for (let i = 0; i < newArray.length; i++) {
-        var searchAtFCity = newArray[i].city.search(searchingWord);
-        var searchAtTitle = newArray[i].title.search(searchingWord);
+        if (
+          newArray[i].title
+            .toLowerCase()
+            .includes(searchingWord.toLowerCase()) ||
+          newArray[i].city.toLowerCase().includes(searchingWord.toLowerCase())
+        ) {
+          var searchAtTitle = newArray[i].title;
+          var searchAtFCity = newArray[i].city;
 
-        if (searchAtFCity != -1 || searchAtTitle != -1) {
-          var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
-            (x) => x.id === newArray[i].id
-          );
-          if (cheackIfObjectOlreadyExistInArray === -1) {
-            arrayWithFoundObjects.push(newArray[i]);
-            setSearchArray(arrayWithFoundObjects);
+          if (searchAtFCity != -1 || searchAtTitle != -1) {
+            var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
+              (x) => x.id === newArray[i].id
+            );
+            if (cheackIfObjectOlreadyExistInArray === -1) {
+              arrayWithFoundObjects.push(newArray[i]);
+              setSearchArray(arrayWithFoundObjects);
+            }
           }
         }
-        if (arrayWithFoundObjects.length === 0) {
-          setSearchWordHasNoMatch(true);
-        }
+      }
+      if (arrayWithFoundObjects.length === 0) {
+        setSearchWordHasNoMatch(true);
       }
     } else {
       setSearchArray([]);
