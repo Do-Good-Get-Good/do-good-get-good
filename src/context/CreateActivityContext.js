@@ -16,6 +16,7 @@ export const CreateActivityProvider = ({ children }) => {
 
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
   const [updateActivityGallery, setUpdateActivityGallery] = useState(false);
+  const [searchWordHasNoMatch, setSearchWordHasNoMatch] = useState(false);
 
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
@@ -82,7 +83,7 @@ export const CreateActivityProvider = ({ children }) => {
         }
         setAllActiveActvivitiesFB(tempArray);
       };
-      console.log("CreateActivityContext all active actvivitiesFB useEffect");
+
       getAllActiveActivities();
       setAllActiveActvivitiesFB(tempArray);
     }
@@ -150,6 +151,9 @@ export const CreateActivityProvider = ({ children }) => {
             setSearchArray(arrayWithFoundObjects);
           }
         }
+        if (arrayWithFoundObjects.length === 0) {
+          setSearchWordHasNoMatch(true);
+        }
       }
     } else {
       setSearchArray([]);
@@ -172,6 +176,8 @@ export const CreateActivityProvider = ({ children }) => {
         updateGallery: updateActivityGallery,
         setUpdateGallery: setUpdateActivityGallery,
 
+        searchWordHasNoMatch: searchWordHasNoMatch,
+        setSearchWordHasNoMatch: setSearchWordHasNoMatch,
         word: setSearchingWord,
         showSearchObject: searchArray,
       }}
