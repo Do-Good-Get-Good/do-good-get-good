@@ -37,6 +37,13 @@ export function SearchBarComponent() {
     }
   }, [wordToSearch]);
 
+  useEffect(() => {
+    if (adminGalleryContext.cleanUpSearchBarComponent) {
+      setWordToSearch("");
+      adminGalleryContext.setCleanUpSearchBarComponent(false);
+    }
+  }, [adminGalleryContext.cleanUpSearchBarComponent]);
+
   return (
     <View style={styles.container}>
       <TextInput

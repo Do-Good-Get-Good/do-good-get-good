@@ -12,6 +12,9 @@ export const AdminGalleryProvider = ({ children }) => {
   const [inactiveActivitiesGallery, setInactiveActivitiesGallery] = useState(
     []
   );
+  const [searchWordHasNoMatch, setSearchWordHasNoMatch] = useState(false);
+  const [cleanUpSearchBarComponent, setCleanUpSearchBarComponent] =
+    useState(false);
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
 
@@ -72,18 +75,9 @@ export const AdminGalleryProvider = ({ children }) => {
             }
           }
         }
-        // var searchAtFCity = newArray[i].city.search(searchingWord);
-        // var searchAtTitle = newArray[i].title.search(searchingWord);
-
-        // if (searchAtFCity != -1 || searchAtTitle != -1) {
-        //   var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
-        //     (x) => x.id === newArray[i].id
-        //   );
-        //   if (cheackIfObjectOlreadyExistInArray === -1) {
-        //     arrayWithFoundObjects.push(newArray[i]);
-        //     setSearchArray(arrayWithFoundObjects);
-        //   }
-        // }
+      }
+      if (arrayWithFoundObjects.length === 0) {
+        setSearchWordHasNoMatch(true);
       }
     } else {
       setSearchArray([]);
@@ -98,6 +92,10 @@ export const AdminGalleryProvider = ({ children }) => {
         word: setSearchingWord,
         inactiveActivities: inactiveActivitiesGallery,
         activeOrInactiveActivity: chooseInactive,
+        searchWordHasNoMatch: searchWordHasNoMatch,
+        setSearchWordHasNoMatch: setSearchWordHasNoMatch,
+        cleanUpSearchBarComponent: cleanUpSearchBarComponent,
+        setCleanUpSearchBarComponent: setCleanUpSearchBarComponent,
       }}
     >
       {children}

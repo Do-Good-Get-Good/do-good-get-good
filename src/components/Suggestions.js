@@ -26,7 +26,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
-  const [existNewChanges, setExistNewChanges] = useState(false);
+
   const [showActiveArray, setShowActiveArray] = useState(true);
 
   useEffect(() => {
@@ -82,10 +82,6 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   }
 
   useEffect(() => {
-    setExistNewChanges(true);
-  }, [useCreateActivityContext.changedActivity.active]);
-
-  useEffect(() => {
     const deleteObjectFromArray = () => {
       if (
         activityCardContext.oneActivityHasBeenDeleted === true &&
@@ -121,6 +117,13 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   return (
     <View>
+      <View>
+        {(useCreateActivityContext.searchWordHasNoMatch ||
+          adminGalleryContext.searchWordHasNoMatch) && (
+          <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
+        )}
+      </View>
+
       <View style={styles.activityContainer}>
         {showArray.length > 0 &&
           showArray.map((suggestion, index) => (
@@ -196,6 +199,13 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.dark,
     marginTop: 10,
+  },
+
+  testNoMatchInSearBar: {
+    ...typography.b2,
+    textAlign: "center",
+    marginTop: 20,
+    color: colors.dark,
   },
 
   activityContainer: {
