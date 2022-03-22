@@ -59,12 +59,4 @@ describe("Testing SearchBarComponent", () => {
     fireEvent.press(button);
     useCreateActivityFunction().word.mockReturnValue("activity name or title");
   });
-
-  it("SearchBarComponent send searching empty string when the user deletes the searched word ", () => {
-    const { getByPlaceholderText } = render(<SearchBarComponent />);
-    const input = getByPlaceholderText("Sök");
-    fireEvent.changeText(input, " ");
-    expect(input.props.value).toEqual(" ");
-    useCreateActivityFunction().word.mockReturnValue("m");
-  });
 });
