@@ -12,7 +12,7 @@ import {
   TextInput,
 } from "react-native";
 import Menu from "../components/Menu";
-import { Icon } from "react-native-elements";
+import { Icon, Dialog } from "react-native-elements";
 import DropDownSmall from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
@@ -41,17 +41,7 @@ export function CreateActivity({ route, navigation }) {
   const [description, setDescription] = useState("");
   const [newActivityImage, setNewActivityImage] = useState();
   const [createNewUser, setCreatNewUser] = useState(null);
-
-  const [newActivity, setNewActivity] = useState({
-    active_status: true,
-    activity_city: "",
-    activity_description: "",
-    activity_photo: "",
-    activity_place: "",
-    activity_title: "",
-    tg_favorite: false,
-  });
-
+  const [loading, setLoading] = useState(false);
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
 
@@ -142,9 +132,6 @@ export function CreateActivity({ route, navigation }) {
 
   function linkChoosenActivityToNewUser() {
     if (createNewUser != null) {
-      console.log(createNewUser);
-      console.log(activityFromSelectionInDropDown[0]);
-      console.log("skapar ny användare");
       var createUser = functions().httpsCallable("createUser");
       createUser({
         firstName: createNewUser.firstName,
@@ -154,7 +141,8 @@ export function CreateActivity({ route, navigation }) {
         role: "user",
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
-        console.log(res.data.result);
+        setLoading(false);
+        navigation.navigate("HomePage");
       });
     } else {
       console.log("ingen ny användare");
@@ -170,16 +158,35 @@ export function CreateActivity({ route, navigation }) {
       city.trim() &&
       place.trim()
     ) {
-      setNewActivity({
-        active_status: true,
-        activity_city: city,
-        activity_description: description,
-        activity_photo: newActivityImage,
-        activity_place: place,
-        activity_title: title,
-        tg_favorite: checkBoxPressed,
-        newUserInfo: createNewUser,
-      });
+      let newActivityAndUser;
+      if (createNewUser != null) {
+        newActivityAndUser = {
+          active_status: true,
+          activity_city: city,
+          activity_description: description,
+          activity_photo: newActivityImage,
+          activity_place: place,
+          activity_title: title,
+          tg_favorite: checkBoxPressed,
+          newUserInfo: createNewUser,
+        };
+      } else {
+        newActivityAndUser = {
+          active_status: true,
+          activity_city: city,
+          activity_description: description,
+          activity_photo: newActivityImage,
+          activity_place: place,
+          activity_title: title,
+          tg_favorite: checkBoxPressed,
+        };
+      }
+      createActivityContext
+        .createNewActivityAndUser(newActivityAndUser)
+        .then(() => {
+          setLoading(false);
+          navigation.navigate("HomePage");
+        });
 
       setTitle("");
       setPlace("");
@@ -207,10 +214,6 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
-  useEffect(() => {
-    createActivityContext.setNewActivity(newActivity);
-  }, [newActivity]);
-
   function twoBottomButtonsForAllViews() {
     if (whileCreatingNewUser === true) {
       return (
@@ -218,6 +221,7 @@ export function CreateActivity({ route, navigation }) {
           <TouchableOpacity
             testID="sendNewActivityToCreateActivityContext"
             onPress={() => {
+              setLoading(true);
               if (
                 createActivityContext.sendChoiceFromDropDown !=
                   "Skapa ny aktivitet" &&
@@ -227,7 +231,16 @@ export function CreateActivity({ route, navigation }) {
               } else sendNewActivityToCreateActivityContext();
             }}
           >
-            <Text style={styles.buttonSave}>Spara</Text>
+            {loading ? (
+              <Dialog.Loading
+                loadingProps={{
+                  color: colors.secondary,
+                  style: [styles.buttonSave, { width: "100%" }],
+                }}
+              />
+            ) : (
+              <Text style={styles.buttonSave}>Spara</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             testID="goBackButton"

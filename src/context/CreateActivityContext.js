@@ -22,16 +22,6 @@ export const CreateActivityProvider = ({ children }) => {
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
 
-  const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
-    active_status: "",
-    activity_city: "",
-    activity_description: "",
-    activity_photo: "",
-    activity_place: "",
-    activity_title: "",
-    tg_favorite: false,
-    newUserInfo: null,
-  });
   const [newChangeActivity, setNewChangeActivity] = useState({
     id: "",
     active: null,
@@ -91,62 +81,46 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (
-      createNewActivityInFB.activity_title != "" &&
-      createNewActivityInFB.activity_place != "" &&
-      createNewActivityInFB.activity_city != ""
-    ) {
-      const setNewActivityToFireBase = async () => {
-        console.log("skapa aktivitet");
-        firestore()
-          .collection("Activities")
-          .add({
-            active_status: createNewActivityInFB.active_status,
-            activity_city: createNewActivityInFB.activity_city,
-            activity_description: createNewActivityInFB.activity_description,
-            activity_photo: createNewActivityInFB.activity_photo,
-            activity_place: createNewActivityInFB.activity_place,
-            activity_title: createNewActivityInFB.activity_title,
-            tg_favorite: createNewActivityInFB.tg_favorite,
+  const createActivityAndLinkNewUser = async (newActivityAndUser) => {
+    console.log("skapa aktivitet");
+    await firestore()
+      .collection("Activities")
+      .add({
+        active_status: newActivityAndUser.active_status,
+        activity_city: newActivityAndUser.activity_city,
+        activity_description: newActivityAndUser.activity_description,
+        activity_photo: newActivityAndUser.activity_photo,
+        activity_place: newActivityAndUser.activity_place,
+        activity_title: newActivityAndUser.activity_title,
+        tg_favorite: newActivityAndUser.tg_favorite,
+      })
+      .then(async (newActivity) => {
+        console.log("skapade ny aktivitet");
+        console.log("newUserInfo: " + newActivityAndUser.newUserInfo);
+        if (
+          newActivityAndUser.newUserInfo != null ||
+          newActivityAndUser.newUserInfo != undefined
+        ) {
+          console.log("skapar ny användare");
+          var createUser = functions().httpsCallable("createUser");
+          await createUser({
+            firstName: newActivityAndUser.newUserInfo.firstName,
+            lastName: newActivityAndUser.newUserInfo.lastName,
+            email: newActivityAndUser.newUserInfo.email,
+            password: newActivityAndUser.newUserInfo.password,
+            role: "user",
+            activityId: newActivity.id,
           })
-          .then((newActivity) => {
-            console.log("skapade ny aktivitet");
-            if (createNewActivityInFB.newUserInfo != null) {
-              console.log("skapar ny användare");
-              var createUser = functions().httpsCallable("createUser");
-              createUser({
-                firstName: createNewActivityInFB.newUserInfo.firstName,
-                lastName: createNewActivityInFB.newUserInfo.lastName,
-                email: createNewActivityInFB.newUserInfo.email,
-                password: createNewActivityInFB.newUserInfo.password,
-                role: "user",
-                activityId: newActivity.id,
-              }).then((res) => {
-                console.log(res.data.result);
-                resetActivityInfo();
-              });
-            } else {
-              console.log("ingen ny användare");
+            .then((res) => {
+              console.log(res.data.result);
               resetActivityInfo();
-            }
-          });
-      };
-      setNewActivityToFireBase();
-    }
-  }, [createNewActivityInFB]);
-
-  const resetActivityInfo = () => {
-    setCreateNewActivityInFB({
-      active_status: "",
-      activity_city: "",
-      activity_description: "",
-      activity_photo: "",
-      activity_place: "",
-      activity_title: "",
-      tg_favorite: false,
-      newUserInfo: null,
-    });
+            })
+            .catch((error) => console.log(error));
+        } else {
+          console.log("ingen ny användare");
+          resetActivityInfo();
+        }
+      });
   };
 
   useEffect(() => {
@@ -198,7 +172,8 @@ export const CreateActivityProvider = ({ children }) => {
         sendChoiceFromDropDown: answerFromDropDownInCreateActivity,
         sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
-        setNewActivity: setCreateNewActivityInFB,
+
+        createNewActivityAndUser: createActivityAndLinkNewUser,
 
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,
