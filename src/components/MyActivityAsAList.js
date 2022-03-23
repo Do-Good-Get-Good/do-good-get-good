@@ -22,7 +22,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
 
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
-  const [timeEntryList, setTimeEntryList] = React.useState([]);
+  const [timeEntryList, setTimeEntryList] = useState([]);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
