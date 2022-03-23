@@ -95,6 +95,10 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       ],
       role: data.role,
       status_active: true,
+      admin_id: callerUid,
+      total_hours_year: 0,
+      total_hours_month: 0,
+      total_confirmed_hours: 0,
     });
 
     userSubColl.set({
