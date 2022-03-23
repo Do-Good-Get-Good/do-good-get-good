@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect, useCallback, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -28,6 +28,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   const [showArray, setShowArray] = useState([]);
   const [existNewChanges, setExistNewChanges] = useState(false);
   const [showActiveArray, setShowActiveArray] = useState(true);
+  const titleRef = useRef();
 
   useEffect(() => {
     setShowActiveArray(adminGalleryContext.activeOrInactiveActivity);
@@ -123,30 +124,44 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   const [size, setSize] = useState(null);
 
-  const onLayout = useCallback((event) => {
-    const { width, height } = event.nativeEvent.layout;
-    setSize({ width, height });
-  }, []);
+  // const onLayout = useCallback((event) => {
+  //   const { width, height } = event.nativeEvent.layout;
+  //   setSize({ width, height });
+  // }, []);
   // console.log("size   ", size);
 
+  // const [amountOfLinesTitle, setAmountOfLinesTitle] = useState({
+  //   amount: 0,
+  //   text: [],
+  // });
   const [amountOfLinesTitle, setAmountOfLinesTitle] = useState(0);
+  const [activityIndex, setActivityIndex] = useState(0);
+
+  const callBackAmount = useCallback(() => {}, []);
 
   const onTextLayout = useCallback((e) => {
-    setAmountOfLinesTitle({
-      amount: e.nativeEvent.lines.length,
-      text: e.nativeEvent.lines,
-    });
+    console.log("CA amountOfLinesTitle ", amountOfLinesTitle);
+    setAmountOfLinesTitle(e.nativeEvent.lines.length);
+    //setAmountOfLinesTitle((prev) => [...prev, e.nativeEvent.lines.length]);
+    // setAmountOfLinesTitle({
+    //   amount: e.nativeEvent.lines.length,
+    //   text: e.nativeEvent.lines,
+    // });
   }, []);
 
-  const titleStyle = useCallback(() => {
-    // console.log("Call amountOfLinesTitle ", amountOfLinesTitle);
-    return {
-      //  marginTop: amountOfLinesTitle > 1 ? 0 : 25,
-    };
-  }, [amountOfLinesTitle]);
+  // amountOfLinesTitle === 2 &&
 
-  console.log("amountOfLinesTitle   ", amountOfLinesTitle);
-  console.log("______________________________________");
+  // const titleStyle = useCallback(() => {
+  //   console.log("IN CALL BACK  amountOfLinesTitle.text   ", amountOfLinesTitle);
+  //   return {
+  //     marginTop: amountOfLinesTitle.text.width > 215 ? 0 : 25,
+  //   };
+  // }, [amountOfLinesTitle]);
+
+  // console.log(" amountOfLinesTitle.text   ", amountOfLinesTitle);
+  // console.log("______________________________________");
+
+  //console.log("titleRef    ", titleRef.current.style);
 
   /////////////////////////////
 
@@ -156,7 +171,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
         {showArray.length > 0 &&
           showArray.map((suggestion, index) => (
             <TouchableOpacity
-              // onLayout={onLayout}
+              //onLayout={onLayout}
               testID="lookDetails"
               onPress={() =>
                 lookDetails(suggestion, suggestion.active, suggestion.popular)
@@ -182,7 +197,8 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                     <View
                       style={{
                         // marginTop: suggestion.title.length > 16 ? 0 : 25,
-                        ...titleStyle(),
+                        //...titleStyle(),
+                        // marginTop: amountOfLinesTitle > 1 ? 0 : 25,
                         ...styles.iconsAndTextCityContainer,
                       }}
                     >
@@ -193,7 +209,12 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                         size={25}
                       />
 
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
+                      <Text
+                        //ref={titleRef}
+                        style={styles.textCity}
+                      >
+                        {suggestion.city}
+                      </Text>
                     </View>
 
                     <View style={styles.iconsAndTextTimeContainer}>
@@ -245,6 +266,7 @@ const styles = StyleSheet.create({
   },
   insideActivityContainer: {
     flex: 1,
+
     justifyContent: "center",
     marginVertical: 7,
     backgroundColor: colors.background,
