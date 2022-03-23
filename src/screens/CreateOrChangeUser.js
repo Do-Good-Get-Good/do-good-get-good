@@ -103,18 +103,22 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }
 
   useEffect(() => {
-    if (name != "") {
-      setNameFilledUp(true);
-    } else {
-      setNameFilledUp(false);
+    if (name != null) {
+      if (name != "" && name.trim()) {
+        setNameFilledUp(true);
+      } else {
+        setNameFilledUp(false);
+      }
     }
   }, [name]);
 
   useEffect(() => {
-    if (surname != "") {
-      setSurnameFilledUp(true);
-    } else {
-      setSurnameFilledUp(false);
+    if (surname != null) {
+      if (surname != "" && surname.trim()) {
+        setSurnameFilledUp(true);
+      } else {
+        setSurnameFilledUp(false);
+      }
     }
   }, [surname]);
 
@@ -122,7 +126,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
     if (email != null) {
-      if (email != "") {
+      if (email != "" && email.trim()) {
         setEmailFilledUp(true);
       } else {
         setEmailFilledUp(false);
@@ -143,33 +147,13 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       } else {
         setInvalidPassword(false);
       }
-    }
-    if (password != "") {
-      setPasswordFilledUp(true);
-    } else {
-      setPasswordFilledUp(false);
+      if (password != "" && password.trim()) {
+        setPasswordFilledUp(true);
+      } else {
+        setPasswordFilledUp(false);
+      }
     }
   }, [password]);
-
-  function validateFirstname() {
-    let valid = true;
-    return valid;
-  }
-
-  function validateSurname() {
-    let valid = true;
-    return valid;
-  }
-
-  function validatePassword() {
-    let valid = true;
-    return valid;
-  }
-
-  function validateEmail() {
-    let valid = true;
-    return valid;
-  }
 
   function twoBottomButtonsForAllViews() {
     if (newUser === true) {
