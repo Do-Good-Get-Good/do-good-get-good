@@ -35,10 +35,10 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const titleNewUser = "Ny användare";
   const titleChangeUser = "Ändra användare";
 
-  const [name, setName] = useState("");
-  const [surname, setSurname] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [name, setName] = useState(null);
+  const [surname, setSurname] = useState(null);
+  const [email, setEmail] = useState(null);
+  const [password, setPassword] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [passwordFilledUp, setPasswordFilledUp] = useState(null);
@@ -85,73 +85,89 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
   function validateInputs() {
     if (
-      validateFirstname() &&
-      validateLastName() &&
-      validateEmail() &&
-      validatePassword()
+      nameFilledUp &&
+      surnameFilledUp &&
+      emailFilledUp &&
+      passwordFilledUp &&
+      !invalidEmail &&
+      !invalidPassword
     ) {
       return true;
     } else {
+      if (name === null) setNameFilledUp(false);
+      if (surname === null) setSurnameFilledUp(false);
+      if (email === null) setEmailFilledUp(false);
+      if (password === null) setPasswordFilledUp(false);
       return false;
     }
   }
 
-  function validateFirstname() {
-    let valid = true;
-    if (name != "" && name.trim()) {
+  useEffect(() => {
+    if (name != "") {
       setNameFilledUp(true);
     } else {
       setNameFilledUp(false);
-      valid = false;
     }
-    return valid;
-  }
+  }, [name]);
 
-  function validateLastName() {
-    let valid = true;
-    if (surname != "" && surname.trim()) {
+  useEffect(() => {
+    if (surname != "") {
       setSurnameFilledUp(true);
     } else {
       setSurnameFilledUp(false);
-      valid = false;
     }
+  }, [surname]);
+
+  useEffect(() => {
+    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
+
+    if (email != null) {
+      if (email != "") {
+        setEmailFilledUp(true);
+      } else {
+        setEmailFilledUp(false);
+      }
+
+      if (reg.test(email) === false) {
+        setInvalidEmail(true);
+      } else {
+        setInvalidEmail(false);
+      }
+    }
+  }, [email]);
+
+  useEffect(() => {
+    if (password != null) {
+      if (password.length < 6) {
+        setInvalidPassword(true);
+      } else {
+        setInvalidPassword(false);
+      }
+    }
+    if (password != "") {
+      setPasswordFilledUp(true);
+    } else {
+      setPasswordFilledUp(false);
+    }
+  }, [password]);
+
+  function validateFirstname() {
+    let valid = true;
+    return valid;
+  }
+
+  function validateSurname() {
+    let valid = true;
     return valid;
   }
 
   function validatePassword() {
     let valid = true;
-    if (password.length < 6) {
-      setInvalidPassword(true);
-      valid = false;
-    } else {
-      setInvalidPassword(false);
-    }
-    if (password != "" && password.trim()) {
-      setPasswordFilledUp(true);
-    } else {
-      setPasswordFilledUp(false);
-      valid = false;
-    }
     return valid;
   }
 
   function validateEmail() {
     let valid = true;
-    let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
-
-    if (email != "" && email.trim()) {
-      setEmailFilledUp(true);
-    } else {
-      setEmailFilledUp(false);
-      valid = false;
-    }
-
-    if (reg.test(email) === false) {
-      setInvalidEmail(true);
-      valid = false;
-    } else {
-      setInvalidEmail(false);
-    }
     return valid;
   }
 
