@@ -21,7 +21,6 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
   const [myActivitiesArray, setMyActivitiesArray] = useState([]);
-  console.log("myAccumulatedTime   ", myAccumulatedTime);
 
   const toggleOverlay = () => {
     setVisible(!visible);
