@@ -223,7 +223,11 @@ const CalendarView = ({
           <Text style={styles.questionText}>Hur lång aktivitet?</Text>
           <View style={styles.hourAmountView}>
             <TouchableOpacity
-              style={styles.hourButton}
+              style={[
+                styles.hourButton,
+                hours === 0 && { backgroundColor: colors.disabled },
+              ]}
+              disabled={hours === 0}
               onPress={() => {
                 if (hours === 0) {
                   return;
@@ -242,8 +246,17 @@ const CalendarView = ({
               </Text>
             </View>
             <TouchableOpacity
-              style={styles.hourButton}
-              onPress={() => setHours(hours + 0.5)}
+              style={[
+                styles.hourButton,
+                hours === 24 && { backgroundColor: colors.disabled },
+              ]}
+              disabled={hours === 24}
+              onPress={() => {
+                if (hours === 24) {
+                  return;
+                }
+                setHours(hours + 0.5);
+              }}
             >
               <Text style={styles.hourAmountText}>+</Text>
             </TouchableOpacity>
@@ -259,10 +272,14 @@ const CalendarView = ({
 
       {!isEditing ? (
         <TouchableOpacity
-          style={styles.sendBtn}
+          style={[
+            styles.sendBtn,
+            hours === 0 && { backgroundColor: colors.disabled },
+          ]}
           onPress={() => {
             registerTimeEntry();
           }}
+          disabled={hours === 0 ? true : false}
         >
           <Text style={styles.sendBtnText}>Logga tid</Text>
         </TouchableOpacity>
@@ -271,10 +288,15 @@ const CalendarView = ({
       {isEditing ? (
         <>
           <TouchableOpacity
-            style={[styles.sendBtn, styles.changeBtn]}
+            style={[
+              styles.sendBtn,
+              styles.changeBtn,
+              hours === 0 && { backgroundColor: colors.disabled },
+            ]}
             onPress={() => {
               changeTimeEntry();
             }}
+            disabled={hours === 0 ? true : false}
           >
             <Text style={styles.sendBtnText}>Ändra tid</Text>
           </TouchableOpacity>
