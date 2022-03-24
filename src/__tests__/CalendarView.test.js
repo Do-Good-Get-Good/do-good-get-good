@@ -47,6 +47,7 @@ describe("Testing CalendarView", () => {
           visible={true}
           activity={fakeActivity}
           isEditing={false}
+          adminID="123"
         />
       );
       const { getByText, getByTestId } = render(componentToRender);
@@ -70,6 +71,7 @@ describe("Testing CalendarView", () => {
           visible={true}
           activity={fakeActivity}
           isEditing={false}
+          adminID="123"
         />
       );
       const { getByText, getByTestId } = render(componentToRender);
@@ -99,6 +101,7 @@ describe("Testing CalendarView", () => {
           visible={true}
           activity={fakeActivity}
           isEditing={false}
+          adminID="123"
         />
       );
       const { getByText, getByTestId } = render(componentToRender);
@@ -122,6 +125,7 @@ describe("Testing CalendarView", () => {
           visible={true}
           activity={fakeActivity}
           isEditing={false}
+          adminID="123"
         />
       );
       const { getAllByText, getByText, getByTestId, queryByText } =
@@ -155,6 +159,7 @@ describe("Testing CalendarView", () => {
           activity={fakeActivity}
           isEditing={false}
           toggleVisibility={mockToggleVisibility}
+          adminID="123"
         />
       );
       const { getByText } = render(componentToRender);
@@ -168,7 +173,12 @@ describe("Testing CalendarView", () => {
     it("Renders the component correctly when editing", () => {
       fakeActivity.time = 1.5;
       const componentToRender = (
-        <CalendarView visible={true} activity={fakeActivity} isEditing={true} />
+        <CalendarView
+          visible={true}
+          activity={fakeActivity}
+          isEditing={true}
+          adminID="123"
+        />
       );
       const { getAllByText, getByText, getByTestId, queryByText } =
         render(componentToRender);
@@ -201,6 +211,7 @@ describe("Testing CalendarView", () => {
           activity={fakeActivity}
           isEditing={true}
           toggleVisibility={mockToggleVisibility}
+          adminID="123"
         />
       );
       const { getByText } = render(componentToRender);
@@ -216,6 +227,7 @@ describe("Testing CalendarView", () => {
           activity={fakeActivity}
           isEditing={true}
           toggleVisibility={mockToggleVisibility}
+          adminID="123"
         />
       );
       const { getByText } = render(componentToRender);
