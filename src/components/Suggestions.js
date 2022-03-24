@@ -138,19 +138,28 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
               <View style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
                   <View style={styles.textTitleCityDescriptipn}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {suggestion.title}
-                    </Text>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <View style={{ flex: 1 }}>
+                        <Text numberOfLines={2} style={styles.textTitle}>
+                          {suggestion.title}
+                        </Text>
 
-                    <View style={styles.iconsAndTextCityContainer}>
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
+                        <View style={styles.iconsAndTextCityContainer}>
+                          <Icon
+                            type="material-community"
+                            name="map-marker-outline"
+                            color={colors.dark}
+                            size={25}
+                          />
+
+                          <Text style={styles.textCity}>{suggestion.city}</Text>
+                        </View>
+                      </View>
+                      <Image
+                        testID="photo"
+                        style={styles.image}
+                        source={setTheRightPhoto(suggestion.photo)}
                       />
-
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
                     </View>
 
                     <View style={styles.iconsAndTextDescriptionContainer}>
@@ -161,21 +170,11 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                         size={25}
                         style={styles.iconDescription}
                       />
-                      <Text
-                        numberOfLines={2}
-                        style={{
-                          ...styles.textDescription,
-                        }}
-                      >
+                      <Text numberOfLines={2} style={styles.textDescription}>
                         {suggestion.description}
                       </Text>
                     </View>
                   </View>
-                  <Image
-                    testID="photo"
-                    style={styles.image}
-                    source={setTheRightPhoto(suggestion.photo)}
-                  />
                 </View>
               </View>
             </TouchableOpacity>
@@ -230,13 +229,12 @@ const styles = StyleSheet.create({
     }),
   },
   image: {
-    flex: 1,
+    flex: 0.5,
     height: 100,
-
     resizeMode: "contain",
     alignItems: "center",
-    marginRight: 12,
-    marginTop: 10,
+    marginHorizontal: 1,
+    marginTop: 2,
     borderRadius: 5,
   },
   photoAndText: {
@@ -265,6 +263,7 @@ const styles = StyleSheet.create({
   },
 
   textDescription: {
+    flex: 1,
     ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
