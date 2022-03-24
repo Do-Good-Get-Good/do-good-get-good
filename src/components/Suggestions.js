@@ -138,52 +138,44 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
               <View style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
                   <View style={styles.textTitleCityDescriptipn}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {suggestion.title}
-                    </Text>
+                    <View style={{ flex: 1, flexDirection: "row" }}>
+                      <View style={{ flex: 1 }}>
+                        <Text numberOfLines={2} style={styles.textTitle}>
+                          {suggestion.title}
+                        </Text>
 
-                    <View style={styles.iconsAndTextCityContainer}>
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
+                        <View style={styles.iconsAndTextCityContainer}>
+                          <Icon
+                            type="material-community"
+                            name="map-marker-outline"
+                            color={colors.dark}
+                            size={25}
+                          />
+
+                          <Text style={styles.textCity}>{suggestion.city}</Text>
+                        </View>
+                      </View>
+                      <Image
+                        testID="photo"
+                        style={styles.image}
+                        source={setTheRightPhoto(suggestion.photo)}
                       />
-
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
                     </View>
 
-                    <View style={styles.iconsAndTextTimeContainer}>
+                    <View style={styles.iconsAndTextDescriptionContainer}>
                       <Icon
                         type="material-community"
                         name="information-outline"
                         color={colors.dark}
                         size={25}
+                        style={styles.iconDescription}
                       />
                       <Text numberOfLines={2} style={styles.textDescription}>
                         {suggestion.description}
                       </Text>
                     </View>
                   </View>
-                  <Image
-                    testID="photo"
-                    style={styles.image}
-                    source={setTheRightPhoto(suggestion.photo)}
-                  />
                 </View>
-
-                <TouchableOpacity
-                  testID="lookDetails2"
-                  onPress={() =>
-                    lookDetails(
-                      suggestion,
-                      suggestion.active,
-                      suggestion.popular
-                    )
-                  }
-                >
-                  <Text style={styles.textLäsMer}>Läs mer</Text>
-                </TouchableOpacity>
               </View>
             </TouchableOpacity>
           ))}
@@ -215,6 +207,7 @@ const styles = StyleSheet.create({
   },
   insideActivityContainer: {
     flex: 1,
+
     justifyContent: "center",
     marginVertical: 7,
     backgroundColor: colors.background,
@@ -236,12 +229,12 @@ const styles = StyleSheet.create({
     }),
   },
   image: {
-    flex: 1,
+    flex: 0.5,
     height: 100,
     resizeMode: "contain",
     alignItems: "center",
-    marginRight: 12,
-    marginTop: 10,
+    marginHorizontal: 1,
+    marginTop: 2,
     borderRadius: 5,
   },
   photoAndText: {
@@ -253,14 +246,14 @@ const styles = StyleSheet.create({
     marginRight: 7,
     alignItems: "flex-start",
     marginLeft: 10,
-    marginTop: 11,
+    marginTop: 5,
     color: colors.dark,
   },
 
   textTitle: {
-    flex: 2,
     ...typography.title,
     color: colors.dark,
+    height: 65,
   },
   textCity: {
     flex: 1,
@@ -274,6 +267,8 @@ const styles = StyleSheet.create({
     ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
+    height: 60,
+    marginBottom: 3,
   },
 
   textLäsMer: {
@@ -287,14 +282,16 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 
-  iconsAndTextTimeContainer: {
-    flex: 1,
-    flexDirection: "row",
-    marginTop: 6,
-  },
   iconsAndTextCityContainer: {
-    marginTop: 25,
     flex: 1,
     flexDirection: "row",
+    alignItems: "center",
+  },
+  iconsAndTextDescriptionContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  iconDescription: {
+    paddingTop: 2,
   },
 });
