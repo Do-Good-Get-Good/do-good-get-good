@@ -14,7 +14,13 @@ import auth from "@react-native-firebase/auth";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
+const CalendarView = ({
+  visible,
+  toggleVisibility,
+  activity,
+  isEditing,
+  adminID,
+}) => {
   LocaleConfig.locales["sv"] = {
     monthNames: [
       "Januari",
@@ -98,45 +104,34 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
   //Registers a users activity (saving to Firebase Firestore)
   const registerTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-    firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .collection("time_entries")
-      .add({
-        activity_id: activity.id,
-        date: date,
-        status_confirmed: false,
-        time: hours,
-      });
+    firestore().collection("timeentries").add({
+      activity_id: activity.id,
+      user_id: auth().currentUser.uid,
+      date: date,
+      status_confirmed: false,
+      time: hours,
+      admin_id: adminID,
+      activity_title: activity.title,
+    });
     toggleVisibility();
   };
 
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-    firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .collection("time_entries")
-      .doc(activity.timeEntryID)
-      .set(
-        {
-          date: date,
-          time: hours,
-        },
-        { merge: true }
-      );
+    firestore().collection("timeentries").doc(activity.timeEntryID).set(
+      {
+        date: date,
+        time: hours,
+      },
+      { merge: true }
+    );
     toggleVisibility();
   };
 
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
-    firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .collection("time_entries")
-      .doc(activity.timeEntryID)
-      .delete();
+    firestore().collection("timeentries").doc(activity.timeEntryID).delete();
     toggleVisibility();
   };
 
@@ -228,7 +223,11 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
           <Text style={styles.questionText}>Hur lång aktivitet?</Text>
           <View style={styles.hourAmountView}>
             <TouchableOpacity
-              style={styles.hourButton}
+              style={[
+                styles.hourButton,
+                hours === 0 && { backgroundColor: colors.disabled },
+              ]}
+              disabled={hours === 0}
               onPress={() => {
                 if (hours === 0) {
                   return;
@@ -247,8 +246,17 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
               </Text>
             </View>
             <TouchableOpacity
-              style={styles.hourButton}
-              onPress={() => setHours(hours + 0.5)}
+              style={[
+                styles.hourButton,
+                hours === 24 && { backgroundColor: colors.disabled },
+              ]}
+              disabled={hours === 24}
+              onPress={() => {
+                if (hours === 24) {
+                  return;
+                }
+                setHours(hours + 0.5);
+              }}
             >
               <Text style={styles.hourAmountText}>+</Text>
             </TouchableOpacity>
@@ -264,10 +272,14 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
 
       {!isEditing ? (
         <TouchableOpacity
-          style={styles.sendBtn}
+          style={[
+            styles.sendBtn,
+            hours === 0 && { backgroundColor: colors.disabled },
+          ]}
           onPress={() => {
             registerTimeEntry();
           }}
+          disabled={hours === 0 ? true : false}
         >
           <Text style={styles.sendBtnText}>Logga tid</Text>
         </TouchableOpacity>
@@ -276,10 +288,15 @@ const CalendarView = ({ visible, toggleVisibility, activity, isEditing }) => {
       {isEditing ? (
         <>
           <TouchableOpacity
-            style={[styles.sendBtn, styles.changeBtn]}
+            style={[
+              styles.sendBtn,
+              styles.changeBtn,
+              hours === 0 && { backgroundColor: colors.disabled },
+            ]}
             onPress={() => {
               changeTimeEntry();
             }}
+            disabled={hours === 0 ? true : false}
           >
             <Text style={styles.sendBtnText}>Ändra tid</Text>
           </TouchableOpacity>

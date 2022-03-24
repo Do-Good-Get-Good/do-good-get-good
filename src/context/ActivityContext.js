@@ -33,13 +33,13 @@ export const ActivityProvider = ({ children }) => {
             let idAndTime = {
               accumulatedTime: data[i].accumulated_time,
               activityID: data[i].activity_id,
+              adminID: user.data().admin_id,
             };
             temArray.push(idAndTime);
           }
 
         setMyActivitiesIDandAccumTime(temArray);
         setIsFinished(true);
-
       }
     };
     getActivitiesID();
@@ -53,9 +53,8 @@ export const ActivityProvider = ({ children }) => {
     if (isFinished === true) {
       const allActivityTimeEntryAndStatus = async () => {
         const timeAndStatus = await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .collection("time_entries")
+          .collection("timeentries")
+          .where("user_id", "==", auth().currentUser.uid)
           .orderBy("date", "desc")
           .get();
         let data = timeAndStatus.docs.map((doc) => doc.data());
@@ -84,7 +83,6 @@ export const ActivityProvider = ({ children }) => {
           for (let j = 0; j < empuntOfItems; j++) {
             onlyFive.push(timeArray[j]);
           }
-
         }
         setLastFiveTimeEntries(onlyFive);
         setTimeEntryArrayForMyTimePage(timeArray);
