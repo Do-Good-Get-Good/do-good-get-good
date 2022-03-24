@@ -94,6 +94,11 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
           borderRadius: 2,
         }}
       >
+        {timeEntryList.length === 0 && (
+          <Text style={{ ...typography.b2 }}>
+            Du har inte loggat någon tid ännu!
+          </Text>
+        )}
         {timeEntryList.map((activity, index) => (
           <View index={index} key={index} style={styles.activityIside}>
             <Text
