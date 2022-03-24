@@ -65,6 +65,7 @@ describe("Testing ChangeActivity screen", () => {
     );
     const input = getByPlaceholderText(route.params.activity.title);
     fireEvent.changeText(input, "activity name or title");
+    expect(input.props.value).toEqual("activity name or title");
   });
 
   it("ChangeActivity. Placeholder with city exists and possible to wtire", () => {
@@ -73,6 +74,7 @@ describe("Testing ChangeActivity screen", () => {
     );
     const input = getByPlaceholderText(route.params.activity.city);
     fireEvent.changeText(input, "activity name or city");
+    expect(input.props.value).toEqual("activity name or city");
   });
 
   it("ChangeActivity. Placeholder with place exists and possible to wtire", () => {
@@ -89,6 +91,7 @@ describe("Testing ChangeActivity screen", () => {
     );
     const input = getByPlaceholderText(route.params.activity.description);
     fireEvent.changeText(input, "activity name or description");
+    expect(input.props.value).toEqual("activity name or description");
   });
 
   it("ChangeActivity. Button 'Save' exist and navigate back  ", () => {

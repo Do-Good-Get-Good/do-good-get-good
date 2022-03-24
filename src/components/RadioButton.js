@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -9,17 +11,24 @@ export function RadioButton(props) {
   const [jaButton, setJaButton] = useState(true);
   const [nejButton, setNejButton] = useState(false);
   const adminGalleryContext = useAdminGalleryFunction();
+  const createActivityContext = useCreateActivityFunction();
 
   const jaRadioButtonsPress = () => {
     setJaButton(true);
     setNejButton(false);
     adminGalleryContext.chooseActiveOrNot(true);
+    adminGalleryContext.word("");
+    adminGalleryContext.setSearchWordHasNoMatch(false);
+    adminGalleryContext.setCleanUpSearchBarComponent(true);
   };
 
   const nejRadioButtonsPress = () => {
     setNejButton(true);
     setJaButton(false);
     adminGalleryContext.chooseActiveOrNot(false);
+    createActivityContext.word("");
+    createActivityContext.setSearchWordHasNoMatch(false);
+    adminGalleryContext.setCleanUpSearchBarComponent(true);
   };
 
   return (

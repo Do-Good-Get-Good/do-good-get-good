@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -26,9 +26,8 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
-  const [existNewChanges, setExistNewChanges] = useState(false);
+
   const [showActiveArray, setShowActiveArray] = useState(true);
-  const titleRef = useRef();
 
   useEffect(() => {
     setShowActiveArray(adminGalleryContext.activeOrInactiveActivity);
@@ -83,10 +82,6 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   }
 
   useEffect(() => {
-    setExistNewChanges(true);
-  }, [useCreateActivityContext.changedActivity.active]);
-
-  useEffect(() => {
     const deleteObjectFromArray = () => {
       if (
         activityCardContext.oneActivityHasBeenDeleted === true &&
@@ -120,58 +115,19 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
     }
   }, [useCreateActivityContext.updateGallery]);
 
-  ///////////////////////////////////
-
-  const [size, setSize] = useState(null);
-
-  // const onLayout = useCallback((event) => {
-  //   const { width, height } = event.nativeEvent.layout;
-  //   setSize({ width, height });
-  // }, []);
-  // console.log("size   ", size);
-
-  // const [amountOfLinesTitle, setAmountOfLinesTitle] = useState({
-  //   amount: 0,
-  //   text: [],
-  // });
-  const [amountOfLinesTitle, setAmountOfLinesTitle] = useState(0);
-  const [activityIndex, setActivityIndex] = useState(0);
-
-  const callBackAmount = useCallback(() => {}, []);
-
-  const onTextLayout = useCallback((e) => {
-    console.log("CA amountOfLinesTitle ", amountOfLinesTitle);
-    setAmountOfLinesTitle(e.nativeEvent.lines.length);
-    //setAmountOfLinesTitle((prev) => [...prev, e.nativeEvent.lines.length]);
-    // setAmountOfLinesTitle({
-    //   amount: e.nativeEvent.lines.length,
-    //   text: e.nativeEvent.lines,
-    // });
-  }, []);
-
-  // amountOfLinesTitle === 2 &&
-
-  // const titleStyle = useCallback(() => {
-  //   console.log("IN CALL BACK  amountOfLinesTitle.text   ", amountOfLinesTitle);
-  //   return {
-  //     marginTop: amountOfLinesTitle.text.width > 215 ? 0 : 25,
-  //   };
-  // }, [amountOfLinesTitle]);
-
-  // console.log(" amountOfLinesTitle.text   ", amountOfLinesTitle);
-  // console.log("______________________________________");
-
-  //console.log("titleRef    ", titleRef.current.style);
-
-  /////////////////////////////
-
   return (
     <View>
+      <View>
+        {(useCreateActivityContext.searchWordHasNoMatch ||
+          adminGalleryContext.searchWordHasNoMatch) && (
+          <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
+        )}
+      </View>
+
       <View style={styles.activityContainer}>
         {showArray.length > 0 &&
           showArray.map((suggestion, index) => (
             <TouchableOpacity
-              //onLayout={onLayout}
               testID="lookDetails"
               onPress={() =>
                 lookDetails(suggestion, suggestion.active, suggestion.popular)
@@ -182,26 +138,11 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
               <View style={styles.insideActivityContainer}>
                 <View style={styles.photoAndText}>
                   <View style={styles.textTitleCityDescriptipn}>
-                    <Text
-                      onTextLayout={onTextLayout}
-                      // onLayout={onLayout}
-                      // onTextLayout={({ nativeEvent: { lines } }) =>
-                      //   setAmountOfLinesTitle(lines.length)
-                      // }
-                      numberOfLines={2}
-                      style={styles.textTitle}
-                    >
+                    <Text numberOfLines={2} style={styles.textTitle}>
                       {suggestion.title}
                     </Text>
 
-                    <View
-                      style={{
-                        // marginTop: suggestion.title.length > 16 ? 0 : 25,
-                        //...titleStyle(),
-                        // marginTop: amountOfLinesTitle > 1 ? 0 : 25,
-                        ...styles.iconsAndTextCityContainer,
-                      }}
-                    >
+                    <View style={styles.iconsAndTextCityContainer}>
                       <Icon
                         type="material-community"
                         name="map-marker-outline"
@@ -209,12 +150,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                         size={25}
                       />
 
-                      <Text
-                        //ref={titleRef}
-                        style={styles.textCity}
-                      >
-                        {suggestion.city}
-                      </Text>
+                      <Text style={styles.textCity}>{suggestion.city}</Text>
                     </View>
 
                     <View style={styles.iconsAndTextTimeContainer}>
@@ -227,8 +163,6 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                       <Text
                         numberOfLines={2}
                         style={{
-                          // marginBottom:
-                          //   suggestion.description.length > 16 ? 19 : 38,
                           ...styles.textDescription,
                         }}
                       >
@@ -257,6 +191,13 @@ const styles = StyleSheet.create({
     flex: 1,
     color: colors.dark,
     marginTop: 10,
+  },
+
+  testNoMatchInSearBar: {
+    ...typography.b2,
+    textAlign: "center",
+    marginTop: 20,
+    color: colors.dark,
   },
 
   activityContainer: {
@@ -306,15 +247,14 @@ const styles = StyleSheet.create({
     marginRight: 7,
     alignItems: "flex-start",
     marginLeft: 10,
-    marginTop: 11,
+    marginTop: 5,
     color: colors.dark,
   },
 
   textTitle: {
-    flex: 1,
     ...typography.title,
     color: colors.dark,
-    backgroundColor: "pink",
+    height: 65,
   },
   textCity: {
     flex: 1,
@@ -324,10 +264,11 @@ const styles = StyleSheet.create({
   },
 
   textDescription: {
-    flex: 1,
     ...typography.b1,
     paddingTop: 3,
     marginLeft: 12,
+    height: 60,
+    marginBottom: 3,
   },
 
   textLäsMer: {

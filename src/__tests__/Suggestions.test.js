@@ -21,6 +21,7 @@ jest.mock("../context/SuggestionContext", () => ({
 jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,
+    searchWordHasNoMatch: false,
   }),
 }));
 
@@ -32,6 +33,7 @@ jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     changedActivity: jest.fn(),
     setUpdateGallery: jest.fn(),
+    searchWordHasNoMatch: true,
     updateGallery: false,
   }),
 }));
@@ -45,10 +47,6 @@ jest.mock("../context/ActivityCardContext", () => ({
     changePopularStatusInAdminGallery: jest.fn(),
   }),
 }));
-
-// afterEach(() => {
-//   jest.clearAllMocks();
-// });
 
 const adminGallery = {
   active: true,
@@ -180,14 +178,29 @@ describe("Testing Suggestions", () => {
     });
   });
 
-  it("Possible for admin to delete activity ", () => {
-    useActivityCardContext().oneActivityHasBeenDeleted = true;
-    useActivityCardContext().confirmToDeleteActivity(false);
+  it("Possible for admin to change status popular activity ", () => {
+    render(
+      <Suggestions
+        navigation={navigation}
+        adminGallery={adminGallery}
+        inactiveActivities={inactiveActivities}
+      />
+    );
+
+    useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
+      false
+    );
+    useCreateActivityFunction().setUpdateGallery.mockReturnValue(false);
   });
 
-  it("Possible for admin to change status popular activity ", () => {
-    useCreateActivityFunction().updateGallery = true;
-    useActivityCardContext().changePopularStatusInAdminGallery(false);
-    useCreateActivityFunction().setUpdateGallery(false);
+  it("If word from the searchBar doesn't match any activity, should stay text Inga resultat", () => {
+    const { getAllByText } = render(
+      <Suggestions
+        navigation={navigation}
+        adminGallery={adminGallery}
+        inactiveActivities={inactiveActivities}
+      />
+    );
+    expect(getAllByText("Inga resultat").length).toBe(1);
   });
 });
