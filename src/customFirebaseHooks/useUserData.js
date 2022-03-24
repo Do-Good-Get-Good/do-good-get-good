@@ -6,9 +6,8 @@ export const useUserData = async (userId) => {
     .doc(userId)
     .get()
     .then((user) => {
-      let name = user.data();
-      console.log(name);
-      return name;
+      let userData = user.data();
+      return userData;
     })
     .catch((error) => {
       return error;
