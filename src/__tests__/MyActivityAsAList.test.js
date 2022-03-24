@@ -16,14 +16,14 @@ jest.mock("../components/CalendarView", () => () => {
 
 jest.mock("@react-navigation/native");
 
-// jest.mock('../context/ActivityContext', () => ({
-//     useActivityFunction: () => ({
-//         timeAndStatus: jest.fn(),
-//         myActivities: jest.fn(),
-//         allListOfTimeEntry: jest.fn(),
-//         getIfoFromActivitiesList: jest.fn()
-//       }),
-// }))
+// jest.mock("../context/ActivityContext", () => ({
+//   useActivityFunction: () => ({
+//     timeAndStatus: jest.fn(),
+//     myActivities: jest.fn(),
+//     allListOfTimeEntry: jest.fn(),
+//     getIfoFromActivitiesList: jest.fn(),
+//   }),
+// }));
 
 const timeandstatusContext = [
   {
@@ -34,8 +34,15 @@ const timeandstatusContext = [
     time: 1.5,
   },
 ];
-
-var mockGet = jest.fn();
+// const myActivitiesContext = [
+//   {
+//     id: "asd",
+//     title: "Missing people",
+//     city: "Gbg",
+//     photo: "symbol_earth",
+//   },
+// ];
+const mockData = jest.fn();
 
 jest.mock("../context/ActivityContext", () => {
   // const timeandstatusContext = [
@@ -47,18 +54,33 @@ jest.mock("../context/ActivityContext", () => {
   //     time: 1.5,
   //   },
   // ];
-  const myActivitiesContext = [
-    {
-      id: "asd",
-      title: "Missing people",
-      city: "Gbg",
-      photo: "symbol_earth",
-    },
-  ];
+  // const myActivitiesContext = [
+  //   {
+  //     id: "asd",
+  //     title: "Missing people",
+  //     city: "Gbg",
+  //     photo: "symbol_earth",
+  //   },
+  // ];
   return {
     useActivityFunction: () => ({
-      timeAndStatus: timeandstatusContext,
-      myActivities: myActivitiesContext,
+      timeAndStatus: [
+        {
+          activityId: "asd",
+          date: { toDate: () => new Date() },
+          fbDocumentID: "z7kknsEWFeJPhHPev2lA",
+          statusConfirmed: false,
+          time: 1.5,
+        },
+      ],
+      myActivities: [
+        {
+          id: "asd",
+          title: "Missing people",
+          city: "Gbg",
+          photo: "symbol_earth",
+        },
+      ],
       allListOfTimeEntry: jest.fn(),
     }),
   };
@@ -103,6 +125,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
+
     const { getAllByText } = render(<MyActivityAsAList />);
     expect(getAllByText("Missing people").length).toBe(1);
   });
@@ -111,6 +134,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
+
     const { getAllByText } = render(<MyActivityAsAList />);
     expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(1);
     // expect(getAllByText('2022-01-27').length).toBe(1)
@@ -120,6 +144,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
+
     const { getAllByText } = render(<MyActivityAsAList />);
     expect(getAllByText("1.5 tim").length).toBe(1);
   });
@@ -128,6 +153,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
+
     const { getByTestId } = render(<MyActivityAsAList />);
     const button = getByTestId("editButton");
     fireEvent.press(button);
@@ -147,6 +173,8 @@ describe("Testing MyActivityAsAList", () => {
         time: 1.5,
       },
     ];
+    // require("../context/ActivityContext").useActivityFunction().timeAndStatus =
+    //   timeandstatusContext1;
     // const test = [
     //   {
     //     activityId: "asd",
@@ -165,7 +193,10 @@ describe("Testing MyActivityAsAList", () => {
     //     photo: "symbol_earth",
     //   },
     // ];
+    // mockData.mockReturnValue(timeandstatusContext1);
     useActivityFunction().timeAndStatus = timeandstatusContext1;
+    // useActivityFunction().myActivities.mockReturnValue(myActivitiesContext);
+
     // jest.mock("../context/ActivityContext", () => ({
     //   useActivityFunction: () => ({
     //     timeAndStatus: timeandstatusContext1,
