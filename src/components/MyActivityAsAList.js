@@ -86,66 +86,74 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Min tid</Text>
-      {timeEntryList.map((activity, index) => (
-        <View index={index} key={index} style={styles.activityIside}>
-          <Text
-            style={{
-              fontWeight: !activity.statusConfirmed ? "bold" : "normal",
-              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
-              flex: 1.5,
-              ...typography.b2,
-              paddingTop: 10,
-            }}
-          >
-            {activity.title}
-          </Text>
-          <Text
-            style={{
-              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
-              flex: 1,
-              ...typography.b2,
-              marginLeft: 13,
-              paddingTop: 10,
-            }}
-          >
-            {format(activity.date, "yyyy-MM-dd")}
-          </Text>
-          <Text
-            style={{
-              color: !activity.statusConfirmed ? colors.dark : colors.secondary,
-              flex: 0.6,
-              ...typography.b2,
-              paddingTop: 10,
-            }}
-          >
-            {activity.time} tim
-          </Text>
-          {!activity.statusConfirmed ? (
-            <TouchableOpacity
-              testID="editButton"
-              onPress={() => {
-                setActivity(activity);
-                toggleOverlay();
+      <View
+        style={{
+          paddingHorizontal: 8,
+          paddingVertical: 7.5,
+          backgroundColor: colors.background,
+          borderRadius: 2,
+        }}
+      >
+        {timeEntryList.map((activity, index) => (
+          <View index={index} key={index} style={styles.activityIside}>
+            <Text
+              style={{
+                fontWeight: !activity.statusConfirmed ? "bold" : "normal",
+                color: !activity.statusConfirmed
+                  ? colors.dark
+                  : colors.secondary,
+                flex: 1,
+                ...typography.b2,
               }}
             >
-              <Icon
-                style={{ paddingTop: 5 }}
-                color={colors.dark}
-                name="pencil-outline"
-                type="material-community"
-                size={25}
-              />
-            </TouchableOpacity>
-          ) : (
-            <Icon
-              style={{ paddingTop: 5 }}
-              color={colors.secondary}
-              name={"done"}
-              size={25}
-            />
-          )}
-        </View>
-      ))}
+              {activity.title}
+            </Text>
+            <Text
+              style={{
+                color: !activity.statusConfirmed
+                  ? colors.dark
+                  : colors.secondary,
+                flex: 1,
+                ...typography.b2,
+                textAlign: "center",
+              }}
+            >
+              {format(activity.date, "yyyy-MM-dd")}
+            </Text>
+            <Text
+              style={{
+                color: !activity.statusConfirmed
+                  ? colors.dark
+                  : colors.secondary,
+                flex: 0.6,
+                ...typography.b2,
+                textAlign: "center",
+                paddingRight: 5,
+              }}
+            >
+              {activity.time} tim
+            </Text>
+            {!activity.statusConfirmed ? (
+              <TouchableOpacity
+                testID="editButton"
+                onPress={() => {
+                  setActivity(activity);
+                  toggleOverlay();
+                }}
+              >
+                <Icon
+                  color={colors.dark}
+                  name="pencil-outline"
+                  type="material-community"
+                  size={25}
+                />
+              </TouchableOpacity>
+            ) : (
+              <Icon color={colors.secondary} name={"done"} size={25} />
+            )}
+          </View>
+        ))}
+      </View>
       {rout.name === "HomePage" ? (
         <TouchableOpacity testID="showAllButton" onPress={pressedButtonShowAll}>
           <LinearGradient
@@ -199,11 +207,10 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   activityIside: {
-    flex: 1,
     flexDirection: "row",
     backgroundColor: colors.background,
-    paddingHorizontal: 5,
-    paddingVertical: 5,
+    alignItems: "center",
+    paddingVertical: 2.5,
   },
   buttonBorderStyle: {
     borderRadius: 5,

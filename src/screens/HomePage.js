@@ -43,7 +43,9 @@ export const HomePage = ({ navigation }) => {
                 myAccumulatedTime={activity.activitiesIDandAccumTime}
                 myActivities={activity.myActivities}
               />
-              <MyActivityAsAList navigation={navigation} />
+              {activity.timeAndStatus != 0 && (
+                <MyActivityAsAList navigation={navigation} />
+              )}
               <SuggestionProvider>
                 <Text style={styles.suggestionHeader}>
                   Förslag & inspiration
