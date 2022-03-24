@@ -153,12 +153,13 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
                       <Text style={styles.textCity}>{suggestion.city}</Text>
                     </View>
 
-                    <View style={styles.iconsAndTextTimeContainer}>
+                    <View style={styles.iconsAndTextDescriptionContainer}>
                       <Icon
                         type="material-community"
                         name="information-outline"
                         color={colors.dark}
                         size={25}
+                        style={styles.iconDescription}
                       />
                       <Text
                         numberOfLines={2}
@@ -282,13 +283,16 @@ const styles = StyleSheet.create({
     textAlign: "right",
   },
 
-  iconsAndTextTimeContainer: {
-    flex: 1,
-    flexDirection: "row",
-    marginTop: 6,
-  },
   iconsAndTextCityContainer: {
     flex: 1,
     flexDirection: "row",
+    alignItems: "center",
+  },
+  iconsAndTextDescriptionContainer: {
+    flex: 1,
+    flexDirection: "row",
+  },
+  iconDescription: {
+    paddingTop: 2,
   },
 });
