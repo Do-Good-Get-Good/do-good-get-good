@@ -29,8 +29,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     userSurname,
     statusActive,
     userID,
-    personalInfoID,
+    //  personalInfoID,
   } = route.params;
+
   const [newUser, setNewUser] = useState(createNewUser);
   const titleNewUser = "Ny användare";
   const titleChangeUser = "Ändra användare";
@@ -361,22 +362,33 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }
 
   function buttonSavePressed() {
-    if (userStatusActive != statusActive) {
-      createUserOrChangeContext.userActiveStatusChange(userStatusActive);
-      createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-    } else if (name != userName) {
-      createUserOrChangeContext.userFirstNameToChange(name);
-      createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-      createUserOrChangeContext.personalInformationID(personalInfoID);
-      //   setTellToAdminHomePageToUpdate(true);
-    } else if (surname != userSurname) {
-      createUserOrChangeContext.userLastNameToChange(surname);
-      createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-      createUserOrChangeContext.personalInformationID(personalInfoID);
-      //   setTellToAdminHomePageToUpdate(true);
-    } else {
-      console.log("No changes in user personal info ");
+    if (
+      userStatusActive != statusActive ||
+      name != userName ||
+      surname != userSurname
+    ) {
+      createUserOrChangeContext.setNewChangesInUserInfo({
+        userID: userID,
+        userName: name + " " + surname,
+        statusActive: statusActive,
+      });
     }
+    // if (userStatusActive != statusActive) {
+    // createUserOrChangeContext.userActiveStatusChange(userStatusActive);
+    // createUserOrChangeContext.userIDToChangePersonalInfo(userID);
+    // } else if (name != userName) {
+    //   createUserOrChangeContext.userFirstNameToChange(name);
+    //createUserOrChangeContext.userIDToChangePersonalInfo(userID);
+    // createUserOrChangeContext.personalInformationID(personalInfoID);
+    //   setTellToAdminHomePageToUpdate(true);
+    // } else if (surname != userSurname) {
+    //   createUserOrChangeContext.userLastNameToChange(surname);
+    //   createUserOrChangeContext.userIDToChangePersonalInfo(userID);
+    //   createUserOrChangeContext.personalInformationID(personalInfoID);
+    //   setTellToAdminHomePageToUpdate(true);
+    // } else {
+    //   console.log("No changes in user personal info ");
+    // }
     navigation.goBack();
     // navigation.navigate("HomePage", {
     //   reload: tellToAdminHomePageToUpdate,
