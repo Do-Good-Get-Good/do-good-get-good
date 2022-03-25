@@ -98,7 +98,8 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       total_hours_year: 0,
       total_hours_month: 0,
       total_confirmed_hours: 0,
-      fullname: data.firstName + " " + data.lastName,
+      first_name: data.firstName,
+      last_name: data.lastName,
     });
 
     await userCreationRequestRef.update({ status: "Treated" });
