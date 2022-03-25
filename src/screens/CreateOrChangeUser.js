@@ -16,23 +16,22 @@ import { Icon } from "react-native-elements";
 
 import Menu from "../components/Menu";
 
-import { useCreateUserFunction } from "../context/CreateUserContext";
+import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
-  const createUserOrChangeContext = useCreateUserFunction();
+  const changeUserInfoContext = useChangeUserInfoFunction();
   const {
     createNewUser,
+
     userName,
     userSurname,
     statusActive,
     userID,
-    //  personalInfoID,
   } = route.params;
 
-  const [newUser, setNewUser] = useState(createNewUser);
   const titleNewUser = "Ny användare";
   const titleChangeUser = "Ändra användare";
 
@@ -53,9 +52,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const ref_input3 = useRef();
 
   function titleForScreen() {
-    if (newUser === true) {
+    if (createNewUser === true) {
       return titleNewUser;
-    } else if (newUser === false) {
+    } else if (createNewUser === false) {
       return titleChangeUser;
     } else {
       console.log("User undefind");
@@ -64,13 +63,13 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
 
   useEffect(() => {
     const createNewUserOrChangeUser = () => {
-      if (newUser === false) {
+      if (createNewUser === false) {
         setName(userName);
         setSurname(userSurname);
       }
     };
     createNewUserOrChangeUser();
-  }, [newUser]);
+  }, [createNewUser]);
 
   function sendNewUserToCreateActivityScreen() {
     navigation.navigate("CreateActivity", {
@@ -157,7 +156,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   }, [password]);
 
   function twoBottomButtonsForAllViews() {
-    if (newUser === true) {
+    if (createNewUser === true) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
@@ -183,7 +182,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           </TouchableOpacity>
         </View>
       );
-    } else if (newUser === false) {
+    } else if (createNewUser === false) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
@@ -367,32 +366,14 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       name != userName ||
       surname != userSurname
     ) {
-      createUserOrChangeContext.setNewChangesInUserInfo({
+      changeUserInfoContext.setNewChangesInUserInfo({
         userID: userID,
-        userName: name + " " + surname,
-        statusActive: statusActive,
+        userFirstName: name,
+        userLastName: surname,
+        statusActive: userStatusActive,
       });
     }
-    // if (userStatusActive != statusActive) {
-    // createUserOrChangeContext.userActiveStatusChange(userStatusActive);
-    // createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-    // } else if (name != userName) {
-    //   createUserOrChangeContext.userFirstNameToChange(name);
-    //createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-    // createUserOrChangeContext.personalInformationID(personalInfoID);
-    //   setTellToAdminHomePageToUpdate(true);
-    // } else if (surname != userSurname) {
-    //   createUserOrChangeContext.userLastNameToChange(surname);
-    //   createUserOrChangeContext.userIDToChangePersonalInfo(userID);
-    //   createUserOrChangeContext.personalInformationID(personalInfoID);
-    //   setTellToAdminHomePageToUpdate(true);
-    // } else {
-    //   console.log("No changes in user personal info ");
-    // }
     navigation.goBack();
-    // navigation.navigate("HomePage", {
-    //   reload: tellToAdminHomePageToUpdate,
-    // });
   }
 
   return (
@@ -403,7 +384,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>
             <Text style={styles.numbersNearTitle}>
-              {newUser === true && "1/2"}
+              {createNewUser === true && "1/2"}
             </Text>
           </View>
 
@@ -428,9 +409,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             placeholder="Efternamn"
             placeholderTextColor={colors.dark}
             ref={ref_input1}
-            returnKeyType={newUser ? "next" : "send"}
+            returnKeyType={createNewUser ? "next" : "send"}
             onSubmitEditing={() => {
-              if (!newUser) {
+              if (!createNewUser) {
                 buttonSavePressed();
               } else {
                 ref_input2.current.focus();
@@ -441,8 +422,8 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
           )}
 
-          {newUser === true && viewForNewUser()}
-          {newUser === false && pressedUserStatusActive()}
+          {createNewUser === true && viewForNewUser()}
+          {createNewUser === false && pressedUserStatusActive()}
         </View>
         {twoBottomButtonsForAllViews()}
       </ScrollView>

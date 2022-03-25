@@ -8,7 +8,7 @@ import { ActivityProvider } from "./context/ActivityContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { AdminProvider } from "./context/AdminContext";
-import { CreateUserProvider } from "./context/CreateUserContext";
+import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -35,7 +35,7 @@ export default function App() {
 
   return (
     <SafeAreaProvider>
-      <CreateUserProvider>
+      <ChangeUserInfoProvider>
         <ActivityCardProvider>
           <AdminGalleryProvider>
             <CreateActivityProvider>
@@ -47,7 +47,7 @@ export default function App() {
             </CreateActivityProvider>
           </AdminGalleryProvider>
         </ActivityCardProvider>
-      </CreateUserProvider>
+      </ChangeUserInfoProvider>
     </SafeAreaProvider>
   );
 }
