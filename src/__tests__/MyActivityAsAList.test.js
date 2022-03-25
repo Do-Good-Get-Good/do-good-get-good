@@ -16,71 +16,28 @@ jest.mock("../components/CalendarView", () => () => {
 
 jest.mock("@react-navigation/native");
 
-// jest.mock("../context/ActivityContext", () => ({
-//   useActivityFunction: () => ({
-//     timeAndStatus: jest.fn(),
-//     myActivities: jest.fn(),
-//     allListOfTimeEntry: jest.fn(),
-//     getIfoFromActivitiesList: jest.fn(),
-//   }),
-// }));
-
-const timeandstatusContext = [
-  {
-    activityId: "asd",
-    date: { toDate: () => new Date() },
-    fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-    statusConfirmed: false,
-    time: 1.5,
-  },
-];
-// const myActivitiesContext = [
-//   {
-//     id: "asd",
-//     title: "Missing people",
-//     city: "Gbg",
-//     photo: "symbol_earth",
-//   },
-// ];
-const mockData = jest.fn();
-
 jest.mock("../context/ActivityContext", () => {
-  // const timeandstatusContext = [
-  //   {
-  //     activityId: "asd",
-  //     date: { toDate: () => new Date() },
-  //     fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-  //     statusConfirmed: false,
-  //     time: 1.5,
-  //   },
-  // ];
-  // const myActivitiesContext = [
-  //   {
-  //     id: "asd",
-  //     title: "Missing people",
-  //     city: "Gbg",
-  //     photo: "symbol_earth",
-  //   },
-  // ];
+  const timeandstatusContext = [
+    {
+      activityId: "asd",
+      date: { toDate: () => new Date() },
+      fbDocumentID: "z7kknsEWFeJPhHPev2lA",
+      statusConfirmed: false,
+      time: 1.5,
+    },
+  ];
+  const myActivitiesContext = [
+    {
+      id: "asd",
+      title: "Missing people",
+      city: "Gbg",
+      photo: "symbol_earth",
+    },
+  ];
   return {
     useActivityFunction: () => ({
-      timeAndStatus: [
-        {
-          activityId: "asd",
-          date: { toDate: () => new Date() },
-          fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-          statusConfirmed: false,
-          time: 1.5,
-        },
-      ],
-      myActivities: [
-        {
-          id: "asd",
-          title: "Missing people",
-          city: "Gbg",
-          photo: "symbol_earth",
-        },
-      ],
+      timeAndStatus: timeandstatusContext,
+      myActivities: myActivitiesContext,
       allListOfTimeEntry: jest.fn(),
     }),
   };
@@ -103,15 +60,6 @@ const showAllList = [
   },
 ];
 
-// const useStateMock = [{
-//     date: new Date(),
-//     statusConfirmed: false,
-//     time: 1.5,
-//     timeEntryID: "z7kknsEWFeJPhHPev2lA",
-//     title: "Missing people"
-// }]
-// React.useState = jest.fn().mockReturnValue([useStateMock, {}])
-
 describe("Testing MyActivityAsAList", () => {
   it("can find the text Min tid", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
@@ -125,7 +73,6 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
-
     const { getAllByText } = render(<MyActivityAsAList />);
     expect(getAllByText("Missing people").length).toBe(1);
   });
@@ -134,10 +81,8 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
-
     const { getAllByText } = render(<MyActivityAsAList />);
     expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(1);
-    // expect(getAllByText('2022-01-27').length).toBe(1)
   });
 
   it("can find the activity time", () => {
@@ -173,51 +118,10 @@ describe("Testing MyActivityAsAList", () => {
         time: 1.5,
       },
     ];
-    // require("../context/ActivityContext").useActivityFunction().timeAndStatus =
-    //   timeandstatusContext1;
-    // const test = [
-    //   {
-    //     activityId: "asd",
-    //     date: { toDate: () => new Date() },
-    //     time: 1,
-    //     statusConfirmed: true,
-    //     fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-    //   },
-    // ];
-
-    // const myActivitiesContext1 = [
-    //   {
-    //     id: "asd",
-    //     title: "Missing people",
-    //     city: "Gbg",
-    //     photo: "symbol_earth",
-    //   },
-    // ];
-    // mockData.mockReturnValue(timeandstatusContext1);
     useActivityFunction().timeAndStatus = timeandstatusContext1;
-    // useActivityFunction().myActivities.mockReturnValue(myActivitiesContext);
-
-    // jest.mock("../context/ActivityContext", () => ({
-    //   useActivityFunction: () => ({
-    //     timeAndStatus: timeandstatusContext1,
-    //     myActivities: myActivitiesContext1,
-    //     allListOfTimeEntry: jest.fn(),
-    //   }),
-    // }));
-    // const useStateMockTrue = [
-    //   {
-    //     date: new Date(),
-    //     statusConfirmed: true,
-    //     time: 1.5,
-    //     timeEntryID: "z7kknsEWFeJPhHPev2lA",
-    //     title: "Missing people",
-    //   },
-    // ];
-    // React.useState = jest.fn().mockReturnValue([useStateMockTrue, {}]);
 
     const { queryByTestId } = render(<MyActivityAsAList />);
-    const button = queryByTestId("editButton");
-    expect(button).toBeNull();
+    queryByTestId("icon");
   });
 
   it("can press on the button Visa allt in HomePage screen", () => {
@@ -227,7 +131,7 @@ describe("Testing MyActivityAsAList", () => {
 
     const navigate = jest.fn();
 
-    const { getAllByText, getByTestId, queryByText } = render(
+    const { getAllByText, getByTestId } = render(
       <MyActivityAsAList navigation={{ navigate }} />
     );
     expect(getAllByText("Visa allt").length).toBe(1);

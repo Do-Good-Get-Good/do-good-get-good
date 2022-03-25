@@ -129,6 +129,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
               }}
             >
               <Icon
+                testID="icon"
                 style={{ paddingTop: 5 }}
                 color={colors.dark}
                 name="pencil-outline"
