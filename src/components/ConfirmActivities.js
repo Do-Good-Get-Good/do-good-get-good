@@ -6,101 +6,102 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
 } from "react-native";
-import { CheckBox, Dialog, Icon } from "react-native-elements";
+import { CheckBox, Icon } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { useUserData } from "../customFirebaseHooks/useUserData";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
-  const [reload, setReload] = useState(false);
-  const [loadingData, setLoadingData] = useState(true);
-  const [noTimeEntriesToConfirm, setNoTimeEntriesToConfirm] = useState(false);
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      let id = 0;
-      let usersFetched = 0;
-      let userIDs = await firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .collection("my_users")
-        .get();
-
-      userIDs.forEach(async (user) => {
-        let userFullName;
-        let userInfo = await firestore()
-          .collection("Users")
-          .doc(user.id)
-          .collection("personal_information")
-          .get();
-
-        userInfo.docs.map(
-          (doc) =>
-            (userFullName = `${doc.data().first_name} ${doc.data().last_name}`)
-        );
-
-        let timeEntries = await firestore()
-          .collection("Users")
-          .doc(user.id)
-          .collection("time_entries")
-          .orderBy("date", "desc")
-          .where("status_confirmed", "==", false)
-          .get();
-
-        timeEntries.forEach(async (timeEntry) => {
-          let activity = await firestore()
-            .collection("Activities")
-            .doc(timeEntry.data().activity_id)
-            .get();
-
-          if (activity.exists) {
-            const userData = {
-              id: id,
-              userID: user.id,
-              fullName: userFullName,
-              activityName: activity.data().activity_title,
-              timeEntryDate: format(
-                timeEntry.data().date.toDate(),
-                "yyyy-MM-dd"
-              ),
-              timeEntryHours: timeEntry.data().time,
-              timeEntryId: timeEntry.id,
-              checked: false,
-              isOpen: false,
-            };
-            setMyUsers((prev) => [...prev, userData]);
-          }
-          id++;
-        });
-        usersFetched++;
-        if (usersFetched === userIDs.size) {
-          if (id === 0) {
-            setNoTimeEntriesToConfirm(true);
-          }
-          setLoadingData(false);
+    let unSubscribe = firestore()
+      .collection("timeentries")
+      .where("status_confirmed", "==", false)
+      .orderBy("date", "desc")
+      .onSnapshot(
+        (snapshot) => {
+          snapshot.docChanges().forEach((change) => {
+            if (change.type === "added") {
+              addTimeEntry(change);
+            }
+            if (change.type === "modified") {
+              updateTimeEntry(change);
+            }
+            if (change.type === "removed") {
+              removeTimeEntry(change);
+            }
+          });
+        },
+        (error) => {
+          console.log(error);
         }
-      });
-    };
-    fetchUserData();
+      );
 
     return () => {
-      setMyUsers([]);
-      setNoTimeEntriesToConfirm(false);
-      setLoadingData(true);
+      unSubscribe();
     };
-  }, [reload]);
+  }, []);
+
+  const addTimeEntry = async (change) => {
+    console.log("New doc: ", change.doc.data().activity_title);
+    let userData = await useUserData(change.doc.data().user_id);
+    const timeEntryData = {
+      userID: change.doc.data().user_id,
+      fullName: `${userData.first_name} ${userData.last_name}`,
+      activityName: change.doc.data().activity_title,
+      timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
+      timeEntryHours: change.doc.data().time,
+      timeEntryId: change.doc.id,
+      checked: false,
+      isOpen: false,
+    };
+    setMyUsers((prev) => [...prev, timeEntryData]);
+  };
+
+  const updateTimeEntry = (change) => {
+    console.log("Modified doc: ", change.doc.id);
+    console.log(myUsers);
+    let modifiedMyUsersArray = myUsers.map((user) => {
+      console.log("------------------------------", user);
+      if (user.timeEntryId === change.doc.id) {
+        return {
+          ...user,
+          timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
+          timeEntryHours: change.doc.data().time,
+        };
+      } else {
+        return user;
+      }
+    });
+    console.log("MODIFIED ARRAY: ", modifiedMyUsersArray);
+    setMyUsers(modifiedMyUsersArray);
+  };
+
+  const removeTimeEntry = (change) => {
+    console.log("Removed doc: ", change.doc.data().activity_title);
+    console.log(change.doc.id);
+    let newUserTimeEntryArray = myUsers.filter((timeEntry) => {
+      if (timeEntry.timeEntryId != change.doc.id) {
+        return timeEntry;
+      }
+    });
+    setMyUsers(newUserTimeEntryArray);
+  };
 
   // Check/uncheck the selected users checkbox
   const markSelected = (selectedUser) => {
     const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
-        checked: user.id === selectedUser.id ? !user.checked : user.checked,
+        checked:
+          user.timeEntryId === selectedUser.timeEntryId
+            ? !user.checked
+            : user.checked,
       };
     });
     setMyUsers(newUsersArr);
@@ -141,7 +142,10 @@ const ConfirmActivities = () => {
     const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
-        isOpen: user.id === pressedUser.id ? !user.isOpen : user.isOpen,
+        isOpen:
+          user.timeEntryId === pressedUser.timeEntryId
+            ? !user.isOpen
+            : user.isOpen,
       };
     });
     setMyUsers(newUsersArr);
@@ -157,30 +161,19 @@ const ConfirmActivities = () => {
 
     // For every user in 'selectedUsers' call 'confirmActivity'
     for (let i = 0; i < selectedUsers.length; i++) {
-      confirmActivity(selectedUsers[i].timeEntryId, selectedUsers[i].userID);
+      confirmActivity(selectedUsers[i].timeEntryId);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
-        setReload(!reload);
+        // setReload(!reload);
       }
     }
   };
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
-  const confirmActivity = (documentID, userID) => {
-    firestore()
-      .collection("Users")
-      .doc(userID)
-      .collection("time_entries")
-      .doc(documentID)
-      .set(
-        {
-          status_confirmed: true,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        console.log("Confirmed users time entry!");
-      });
+  const confirmActivity = (timeEntryID) => {
+    firestore().collection("timeentries").doc(timeEntryID).update({
+      status_confirmed: true,
+    });
   };
 
   return (
@@ -280,9 +273,7 @@ const ConfirmActivities = () => {
                 )}
               </View>
             ))
-          : !loadingData &&
-            noTimeEntriesToConfirm &&
-            myUsers.length < 1 && (
+          : myUsers.length < 1 && (
               <View
                 style={{
                   alignItems: "center",
@@ -294,11 +285,11 @@ const ConfirmActivities = () => {
                 </Text>
               </View>
             )}
-        {loadingData && (
+        {/* {loadingData && (
           <Dialog.Loading
             loadingProps={{ color: colors.primary }}
           ></Dialog.Loading>
-        )}
+        )} */}
       </View>
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
@@ -386,7 +377,7 @@ const styles = StyleSheet.create({
     marginRight: -2,
   },
   listItemContentStyle: {
-    backgroundColor: colors.background,
+    backgroundColor: colors.light,
     paddingVertical: 16,
     paddingHorizontal: 10,
     flexDirection: "row",
