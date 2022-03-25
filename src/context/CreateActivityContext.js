@@ -1,5 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
+import functions from "@react-native-firebase/functions";
+
 const CreateActivityContext = React.createContext();
 
 export const useCreateActivityFunction = () => {
@@ -21,15 +23,6 @@ export const CreateActivityProvider = ({ children }) => {
   const [searchArray, setSearchArray] = useState([]);
   const [searchingWord, setSearchingWord] = useState("");
 
-  const [createNewActivityInFB, setCreateNewActivityInFB] = useState({
-    active_status: "",
-    activity_city: "",
-    activity_description: "",
-    activity_photo: "",
-    activity_place: "",
-    activity_title: "",
-    tg_favorite: false,
-  });
   const [newChangeActivity, setNewChangeActivity] = useState({
     id: "",
     active: null,
@@ -89,31 +82,35 @@ export const CreateActivityProvider = ({ children }) => {
     }
   }, []);
 
-  useEffect(() => {
-    if (
-      createNewActivityInFB.activity_title != "" &&
-      createNewActivityInFB.activity_place != "" &&
-      createNewActivityInFB.activity_city != ""
-    ) {
-      const setNewActivityToFireBase = async () => {
-        firestore()
-          .collection("Activities")
-          .add({
-            active_status: createNewActivityInFB.active_status,
-            activity_city: createNewActivityInFB.activity_city,
-            activity_description: createNewActivityInFB.activity_description,
-            activity_photo: createNewActivityInFB.activity_photo,
-            activity_place: createNewActivityInFB.activity_place,
-            activity_title: createNewActivityInFB.activity_title,
-            tg_favorite: createNewActivityInFB.tg_favorite,
-          })
-          .then(() => {
-            console.log("New Activity added to FireBase!");
-          });
-      };
-      setNewActivityToFireBase();
-    }
-  }, [createNewActivityInFB]);
+  const createActivityAndLinkNewUser = async (newActivityAndUser) => {
+    await firestore()
+      .collection("Activities")
+      .add({
+        active_status: newActivityAndUser.active_status,
+        activity_city: newActivityAndUser.activity_city,
+        activity_description: newActivityAndUser.activity_description,
+        activity_photo: newActivityAndUser.activity_photo,
+        activity_place: newActivityAndUser.activity_place,
+        activity_title: newActivityAndUser.activity_title,
+        tg_favorite: newActivityAndUser.tg_favorite,
+      })
+      .then(async (newActivity) => {
+        if (
+          newActivityAndUser.newUserInfo != null ||
+          newActivityAndUser.newUserInfo != undefined
+        ) {
+          var createUser = functions().httpsCallable("createUser");
+          await createUser({
+            firstName: newActivityAndUser.newUserInfo.firstName,
+            lastName: newActivityAndUser.newUserInfo.lastName,
+            email: newActivityAndUser.newUserInfo.email,
+            password: newActivityAndUser.newUserInfo.password,
+            role: "user",
+            activityId: newActivity.id,
+          }).catch((error) => console.log(error));
+        }
+      });
+  };
 
   useEffect(() => {
     if (changedOneActivity === true) {
@@ -173,7 +170,8 @@ export const CreateActivityProvider = ({ children }) => {
         sendChoiceFromDropDown: answerFromDropDownInCreateActivity,
         sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
-        setNewActivity: setCreateNewActivityInFB,
+
+        createNewActivityAndUser: createActivityAndLinkNewUser,
 
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,

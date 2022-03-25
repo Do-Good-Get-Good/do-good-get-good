@@ -12,12 +12,13 @@ import {
   TextInput,
 } from "react-native";
 import Menu from "../components/Menu";
-import { Icon } from "react-native-elements";
+import { Icon, Dialog } from "react-native-elements";
 import DropDownSmall from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import functions from "@react-native-firebase/functions";
 
 export function CreateActivity({ route, navigation }) {
   const createActivityContext = useCreateActivityFunction();
@@ -40,25 +41,15 @@ export function CreateActivity({ route, navigation }) {
   const [description, setDescription] = useState("");
   const [newActivityImage, setNewActivityImage] = useState();
   const [createNewUser, setCreatNewUser] = useState(null);
-
-  const [newActivity, setNewActivity] = useState({
-    active_status: true,
-    activity_city: "",
-    activity_description: "",
-    activity_photo: "",
-    activity_place: "",
-    activity_title: "",
-    tg_favorite: false,
-  });
-
+  const [loading, setLoading] = useState(false);
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
 
   useEffect(() => {
     if (newUserInfo != null) {
       setCreatNewUser({
-        first_name: newUserInfo.first_name,
-        last_name: newUserInfo.last_name,
+        firstName: newUserInfo.first_name,
+        lastName: newUserInfo.last_name,
         email: newUserInfo.email,
         password: newUserInfo.password,
       });
@@ -139,6 +130,25 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
+  function linkChoosenActivityToNewUser() {
+    if (createNewUser != null) {
+      var createUser = functions().httpsCallable("createUser");
+      createUser({
+        firstName: createNewUser.firstName,
+        lastName: createNewUser.lastName,
+        email: createNewUser.email,
+        password: createNewUser.password,
+        role: "user",
+        activityId: activityFromSelectionInDropDown[0].id,
+      }).then((res) => {
+        setLoading(false);
+        navigation.navigate("HomePage");
+      });
+    } else {
+      console.log("ingen ny användare");
+    }
+  }
+
   function sendNewActivityToCreateActivityContext() {
     if (
       title != " " &&
@@ -148,15 +158,35 @@ export function CreateActivity({ route, navigation }) {
       city.trim() &&
       place.trim()
     ) {
-      setNewActivity({
-        active_status: true,
-        activity_city: city,
-        activity_description: description,
-        activity_photo: newActivityImage,
-        activity_place: place,
-        activity_title: title,
-        tg_favorite: checkBoxPressed,
-      });
+      let newActivityAndUser;
+      if (createNewUser != null) {
+        newActivityAndUser = {
+          active_status: true,
+          activity_city: city,
+          activity_description: description,
+          activity_photo: newActivityImage,
+          activity_place: place,
+          activity_title: title,
+          tg_favorite: checkBoxPressed,
+          newUserInfo: createNewUser,
+        };
+      } else {
+        newActivityAndUser = {
+          active_status: true,
+          activity_city: city,
+          activity_description: description,
+          activity_photo: newActivityImage,
+          activity_place: place,
+          activity_title: title,
+          tg_favorite: checkBoxPressed,
+        };
+      }
+      createActivityContext
+        .createNewActivityAndUser(newActivityAndUser)
+        .then(() => {
+          setLoading(false);
+          navigation.navigate("HomePage");
+        });
 
       setTitle("");
       setPlace("");
@@ -184,19 +214,33 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
-  useEffect(() => {
-    createActivityContext.setNewActivity(newActivity);
-  }, [newActivity]);
-
   function twoBottomButtonsForAllViews() {
     if (whileCreatingNewUser === true) {
       return (
         <View style={styles.containerForTwoBottomButtons}>
           <TouchableOpacity
             testID="sendNewActivityToCreateActivityContext"
-            onPress={() => sendNewActivityToCreateActivityContext()}
+            onPress={() => {
+              setLoading(true);
+              if (
+                createActivityContext.sendChoiceFromDropDown !=
+                  "Skapa ny aktivitet" &&
+                whileCreatingNewUser === true
+              ) {
+                linkChoosenActivityToNewUser();
+              } else sendNewActivityToCreateActivityContext();
+            }}
           >
-            <Text style={styles.buttonSave}>Spara</Text>
+            {loading ? (
+              <Dialog.Loading
+                loadingProps={{
+                  color: colors.secondary,
+                  style: [styles.buttonSave, { width: "100%" }],
+                }}
+              />
+            ) : (
+              <Text style={styles.buttonSave}>Spara</Text>
+            )}
           </TouchableOpacity>
           <TouchableOpacity
             testID="goBackButton"

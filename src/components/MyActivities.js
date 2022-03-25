@@ -127,6 +127,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
         visible={visible}
         toggleVisibility={toggleOverlay}
         activity={activity}
+        adminID={myAccumulatedTime[0].adminID}
         isEditing={false}
       />
     </View>
