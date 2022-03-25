@@ -9,9 +9,9 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock("../context/CreateUserContext", () => ({
-  useCreateUserFunction: () => ({
-    getChangedUserInfoTo: jest.fn(),
+jest.mock("../context/ChangeUserInfoContext", () => ({
+  useChangeUserInfoFunction: () => ({
+    setNewChangesInUserInfo: jest.fn(),
   }),
 }));
 

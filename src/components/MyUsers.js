@@ -11,10 +11,10 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import { Icon } from "react-native-elements";
-import { useCreateUserFunction } from "../context/CreateUserContext";
+import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 
 const MyUsers = ({ navigation }) => {
-  const createUserContext = useCreateUserFunction();
+  const createUserContext = useChangeUserInfoFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
