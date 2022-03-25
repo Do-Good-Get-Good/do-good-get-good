@@ -88,12 +88,12 @@ const MyUsers = ({ navigation }) => {
           const nameResponse = await firestore()
             .collection("Users")
             .doc(userIDs[i])
-            //.collection("personal_information")
+            .collection("personal_information")
             .get();
           let userPersonalInfoID = nameResponse.docs.map((doc) => doc.id);
           let nameData = nameResponse.docs.map((doc) => doc.data());
-          let firstName = nameData.first_name;
-          let lastName = nameData.last_name;
+          let firstName = nameData[0].first_name;
+          let lastName = nameData[0].last_name;
 
           nameArr.push({
             firstName: firstName,
@@ -192,7 +192,7 @@ const MyUsers = ({ navigation }) => {
         isOpen: false,
         statusActive: usersActiveStatus[i],
         userID: userIDs[i],
-        // idPersonalInfo: usersFullName[i].personalInfoID,
+        idPersonalInfo: usersFullName[i].personalInfoID,
       };
       tempArr.push(userInfo);
     }
@@ -365,7 +365,7 @@ const MyUsers = ({ navigation }) => {
                             userSurname: user.lastName,
                             statusActive: user.statusActive,
                             userID: user.userID,
-                            // personalInfoID: user.idPersonalInfo[0],
+                            personalInfoID: user.idPersonalInfo[0],
                             useEmail: "",
                           })
                         }
