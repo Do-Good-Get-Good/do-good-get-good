@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -17,25 +18,17 @@ const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
+  const [snapshot, setSnapshot] = useState(null);
 
   useEffect(() => {
     let unSubscribe = firestore()
       .collection("timeentries")
+      .where("admin_id", "==", auth().currentUser.uid)
       .where("status_confirmed", "==", false)
       .orderBy("date", "desc")
       .onSnapshot(
         (snapshot) => {
-          snapshot.docChanges().forEach((change) => {
-            if (change.type === "added") {
-              addTimeEntry(change);
-            }
-            if (change.type === "modified") {
-              updateTimeEntry(change);
-            }
-            if (change.type === "removed") {
-              removeTimeEntry(change);
-            }
-          });
+          setSnapshot(snapshot);
         },
         (error) => {
           console.log(error);
@@ -44,11 +37,29 @@ const ConfirmActivities = () => {
 
     return () => {
       unSubscribe();
+      setMyUsers([]);
+      setCheckAll(false);
+      setChecked(false);
     };
   }, []);
 
+  useEffect(() => {
+    if (snapshot != null) {
+      snapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          addTimeEntry(change);
+        }
+        if (change.type === "modified") {
+          updateTimeEntry(change);
+        }
+        if (change.type === "removed") {
+          removeTimeEntry(change);
+        }
+      });
+    }
+  }, [snapshot]);
+
   const addTimeEntry = async (change) => {
-    console.log("New doc: ", change.doc.data().activity_title);
     let userData = await useUserData(change.doc.data().user_id);
     const timeEntryData = {
       userID: change.doc.data().user_id,
@@ -64,10 +75,7 @@ const ConfirmActivities = () => {
   };
 
   const updateTimeEntry = (change) => {
-    console.log("Modified doc: ", change.doc.id);
-    console.log(myUsers);
     let modifiedMyUsersArray = myUsers.map((user) => {
-      console.log("------------------------------", user);
       if (user.timeEntryId === change.doc.id) {
         return {
           ...user,
@@ -78,13 +86,10 @@ const ConfirmActivities = () => {
         return user;
       }
     });
-    console.log("MODIFIED ARRAY: ", modifiedMyUsersArray);
     setMyUsers(modifiedMyUsersArray);
   };
 
   const removeTimeEntry = (change) => {
-    console.log("Removed doc: ", change.doc.data().activity_title);
-    console.log(change.doc.id);
     let newUserTimeEntryArray = myUsers.filter((timeEntry) => {
       if (timeEntry.timeEntryId != change.doc.id) {
         return timeEntry;
