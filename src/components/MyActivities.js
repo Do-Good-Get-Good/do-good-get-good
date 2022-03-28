@@ -7,6 +7,7 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  RecyclerViewBackedScrollViewComponent,
 } from "react-native";
 
 import { Icon } from "react-native-elements";

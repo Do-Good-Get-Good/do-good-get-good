@@ -8,6 +8,7 @@ import { Platform } from "react-native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
@@ -61,6 +62,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
+              entryTime.setLimitAmountForTimeEntries(5);
               navigation.navigate("HomePage");
             }}
           >

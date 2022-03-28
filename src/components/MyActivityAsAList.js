@@ -12,7 +12,6 @@ import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
 import { format } from "date-fns";
-import toDate from "date-fns/toDate";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -28,58 +27,64 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
   };
 
   useEffect(() => {
-    let activityAndTimeEntryArray = [];
-    if (
-      rout.name === "HomePage" &&
-      entryTime.timeAndStatus.length != 0 &&
-      entryTime.myActivities.length != 0
-    ) {
-      if (entryTime.timeAndStatus.length > timeEntryList.length) {
-        for (let i = 0; i < entryTime.timeAndStatus.length; i++) {
-          for (let j = 0; j < entryTime.myActivities.length; j++) {
-            if (
-              entryTime.myActivities[j].id ===
-              entryTime.timeAndStatus[i].activityId
-            ) {
-              const myTimeAndTitle = {
-                title: entryTime.myActivities[j].title,
-                date: entryTime.timeAndStatus[i].date.toDate(),
-                statusConfirmed: entryTime.timeAndStatus[i].statusConfirmed,
-                time: entryTime.timeAndStatus[i].time,
-                timeEntryID: entryTime.timeAndStatus[i].fbDocumentID,
-              };
-              activityAndTimeEntryArray.push(myTimeAndTitle);
-            }
-          }
-        }
-        setTimeEntryList(activityAndTimeEntryArray);
-      }
+    if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
+      entryTime.setLimitAmountForTimeEntries(5);
+      objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.lastFiveTimeEntries,
+        entryTime.myActivities
+      );
     } else if (
       rout.name === "MyTimePage" &&
-      entryTime.timeAndStatus.length != 0 &&
-      entryTime.myActivities.length != 0
+      entryTime.allListOfTimeEntry.length != 0
     ) {
-      if (showAllList.length > timeEntryList.length) {
-        for (let i = 0; i < showAllList.length; i++) {
-          for (let j = 0; j < entryTime.myActivities.length; j++) {
-            if (entryTime.myActivities[j].id === showAllList[i].activityId) {
-              const myTimeAndTitle = {
-                title: entryTime.myActivities[j].title,
-                date: showAllList[i].date.toDate(),
-                statusConfirmed: showAllList[i].statusConfirmed,
-                time: showAllList[i].time,
-                timeEntryID: showAllList[i].fbDocumentID,
-              };
-              activityAndTimeEntryArray.push(myTimeAndTitle);
-            }
-          }
-        }
-        setTimeEntryList(activityAndTimeEntryArray);
-      }
+      objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.allListOfTimeEntry,
+        entryTime.myActivities
+      );
     }
-  }, [entryTime.timeAndStatus, entryTime.myActivities, showAllList, rout]);
+  }, [
+    entryTime.lastFiveTimeEntries,
+    entryTime.myActivities,
+    showAllList,
+    rout,
+  ]);
+
+  function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {
+    let activityAndTimeEntryArray = [];
+    let myTimeAndTitle = {};
+
+    for (let i = 0; i < timeEntries.length; i++) {
+      for (let j = 0; j < activities.length; j++) {
+        if (activities[j].id === timeEntries[i].activity_id) {
+          myTimeAndTitle = {
+            adminID: timeEntries[i].admin_id,
+            timeEntryID: timeEntries[i].doc_id,
+            date: timeEntries[i].date.toDate(),
+            statusConfirmed: timeEntries[i].status_confirmed,
+            time: timeEntries[i].time,
+            id: timeEntries[i].activity_id,
+            title: timeEntries[i].activity_title,
+            city: activities[j].city,
+          };
+        } else {
+          myTimeAndTitle = {
+            adminID: timeEntries[i].admin_id,
+            timeEntryID: timeEntries[i].doc_id,
+            date: timeEntries[i].date.toDate(),
+            statusConfirmed: timeEntries[i].status_confirmed,
+            time: timeEntries[i].time,
+            title: timeEntries[i].activity_title,
+            id: timeEntries[i].activity_id,
+          };
+        }
+      }
+      activityAndTimeEntryArray.push(myTimeAndTitle);
+    }
+    setTimeEntryList(activityAndTimeEntryArray);
+  }
 
   const pressedButtonShowAll = () => {
+    entryTime.setLimitAmountForTimeEntries(20);
     navigation.navigate("MyTimePage");
   };
 
@@ -176,6 +181,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
         visible={visible}
         toggleVisibility={toggleOverlay}
         activity={activity}
+        adminID={activity.adminID}
         isEditing={true}
       />
     </View>
