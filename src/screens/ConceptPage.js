@@ -16,6 +16,7 @@ import BottomLogo from "../components/BottomLogo";
 
 import firestore from "@react-native-firebase/firestore";
 import { format } from "date-fns";
+import { useUserData } from "../customFirebaseHooks/useUserData";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -54,16 +55,8 @@ const ConceptPage = () => {
           });
 
         let fullName;
-        let userInfo = await firestore()
-          .collection("Users")
-          .doc(timeEntry.data().user_id)
-          .get()
-          .catch((error) => {
-            if (error === "no-data") {
-              setError("Sorry, something went wrong");
-            }
-          });
-        fullName = `${userInfo.data().first_name} ${userInfo.data().last_name}`;
+        let userInfo = await useUserData(timeEntry.data().user_id);
+        fullName = `${userInfo.first_name} ${userInfo.last_name}`;
 
         if (activity.exists) {
           const userData = {
