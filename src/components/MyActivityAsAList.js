@@ -22,7 +22,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
 
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
-  const [timeEntryList, setTimeEntryList] = React.useState([]);
+  const [timeEntryList, setTimeEntryList] = useState([]);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
@@ -147,6 +147,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
                 }}
               >
                 <Icon
+                  testID="icon"
                   color={colors.dark}
                   name="pencil-outline"
                   type="material-community"
