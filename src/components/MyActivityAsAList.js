@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -15,7 +15,9 @@ import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-export const MyActivityAsAList = ({ navigation, showAllList }) => {
+import { useIsFocused } from "@react-navigation/native";
+
+function MyActivityAsAList({ navigation }) {
   const entryTime = useActivityFunction();
   const rout = useRoute();
 
@@ -25,18 +27,20 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (rout.name === "HomePage") {
-      // console.log("rout.name HomePage ", rout.name);
       entryTime.setLimitAmountForTimeEntries(5);
     } else if (rout.name === "MyTimePage") {
-      // console.log("rout.name ", rout.name);
       entryTime.setLimitAmountForTimeEntries(20);
     }
-  }, [rout.name]);
+  }, [isFocused]);
 
-  //console.log("rout.name ", rout.name);
+  console.log(
+    "entryTime.lastFiveTimeEntries  ",
+    entryTime.lastFiveTimeEntries[0].date
+  );
 
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
@@ -56,8 +60,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
   }, [
     entryTime.lastFiveTimeEntries,
     entryTime.myActivities,
-    showAllList,
-    // rout.name,
+    entryTime.allListOfTimeEntry,
   ]);
 
   function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {
@@ -197,7 +200,8 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
       />
     </View>
   );
-};
+}
+export default MyActivityAsAList;
 
 const styles = StyleSheet.create({
   container: {

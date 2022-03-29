@@ -7,7 +7,7 @@ import { SuggestionProvider } from "../context/SuggestionContext";
 
 import Menu from "../components/Menu";
 import { MyActivities } from "../components/MyActivities";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
+import MyActivityAsAList from "../components/MyActivityAsAList";
 import { Suggestions } from "../components/Suggestions";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";

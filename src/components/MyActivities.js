@@ -18,7 +18,9 @@ import colors from "../assets/theme/colors";
 
 export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   const [activityObject, setActivityObject] = useState([]);
-  const [timeObject, setTimeObject] = useState([]);
+  const [timeObject, setTimeObject] = useState([
+    { accumulatedTime: 0, activityID: " ", adminID: " " },
+  ]);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
   const [myActivitiesArray, setMyActivitiesArray] = useState([]);
@@ -128,7 +130,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
         visible={visible}
         toggleVisibility={toggleOverlay}
         activity={activity}
-        adminID={myAccumulatedTime[0].adminID}
+        adminID={timeObject[0].adminID}
         isEditing={false}
       />
     </View>
