@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -27,8 +27,19 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
   };
 
   useEffect(() => {
-    if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
+    if (rout.name === "HomePage") {
+      // console.log("rout.name HomePage ", rout.name);
       entryTime.setLimitAmountForTimeEntries(5);
+    } else if (rout.name === "MyTimePage") {
+      // console.log("rout.name ", rout.name);
+      entryTime.setLimitAmountForTimeEntries(20);
+    }
+  }, [rout.name]);
+
+  //console.log("rout.name ", rout.name);
+
+  useEffect(() => {
+    if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
       objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.lastFiveTimeEntries,
         entryTime.myActivities
@@ -46,7 +57,7 @@ export const MyActivityAsAList = ({ navigation, showAllList }) => {
     entryTime.lastFiveTimeEntries,
     entryTime.myActivities,
     showAllList,
-    rout,
+    // rout.name,
   ]);
 
   function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {

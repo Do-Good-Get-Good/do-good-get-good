@@ -62,7 +62,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
-              entryTime.setLimitAmountForTimeEntries(5);
+              // entryTime.setLimitAmountForTimeEntries(5);
               navigation.navigate("HomePage");
             }}
           >
