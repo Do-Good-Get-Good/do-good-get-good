@@ -23,8 +23,7 @@ const MyUsers = ({ navigation }) => {
   const [loadingData, setLoadingData] = useState(true);
 
   const [userDataSnapshot, setUserDataSnapshot] = useState(null);
-  const [userTimeEntrySnapshot, setUserTimeEntrySnapshot] = useState(null);
-  const [userData, setUserData] = useState(null);
+  // const [userData, setUserData] = useState(null);
 
   /*
     let userInfo = {
@@ -43,7 +42,6 @@ const MyUsers = ({ navigation }) => {
       .where("admin_id", "==", auth().currentUser.uid)
       .onSnapshot(
         (snapshot) => {
-          snapshot.docChanges();
           setUserDataSnapshot(snapshot);
         },
         (error) => {
@@ -61,8 +59,16 @@ const MyUsers = ({ navigation }) => {
       let users = [];
       userDataSnapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
-          users.push({ ...change.doc.data(), user_id: change.doc.id });
-
+          // users.push({ ...change.doc.data(), user_id: change.doc.id });
+          let userInfo = {
+            firstName: change.doc.data().first_name,
+            lastName: change.doc.data().last_name,
+            timeEntries: change.doc.data().latest_confirmed_time_entries,
+            isOpen: false,
+            statusActive: change.doc.data().status_active,
+            userID: change.doc.id,
+          };
+          users.push(userInfo);
           // addUser(change);
         }
         if (change.type === "modified") {
@@ -72,38 +78,44 @@ const MyUsers = ({ navigation }) => {
           // removeUser(change);
         }
       });
-      setUserData(users);
+      setMyUsers(users);
+      setLoadingData(false);
     }
   }, [userDataSnapshot]);
 
-  useEffect(() => {
-    if (userData != null) {
-      for (let i = 0; i < userData.length; i++) {
-        console.log(userData[i].first_name);
-        let unSubscribe = firestore()
-          .collection("timeentries")
-          .where("admin_id", "==", auth().currentUser.uid)
-          .where("status_confirmed", "==", true)
-          .limit(5)
-          .onSnapshot(
-            (snapshot) => {
-              console.log("TEST");
-              setUserTimeEntrySnapshot(snapshot);
-            },
-            (error) => {
-              console.log(error);
-            }
-          );
-        setUserTimeEntrySnapshot(unSubscribe);
-      }
+  // useEffect(() => {
+  //   if (userData != null) {
+  //     console.log(userData[2]);
+  // let subscribeArr = [];
+  // for (let i = 0; i < userData.length; i++) {
+  //   console.log(userData[i].user_id);
+  //   let unSubscribe = firestore()
+  //     .collection("timeentries")
+  //     .where("admin_id", "==", auth().currentUser.uid)
+  //     .where("user_id", "==", userData[i].user_id)
+  //     .where("status_confirmed", "==", true)
+  //     .limit(5)
+  //     .onSnapshot(
+  //       (snapshot) => {
+  //         setUserTimeEntrySnapshot((prev) => [...prev, snapshot]);
+  //       },
+  //       (error) => {
+  //         console.log(error);
+  //       }
+  //     );
+  //   subscribeArr.push(unSubscribe);
+  // }
+  // setUserTimeEntryUnSubscribe(subscribeArr);
 
-      return () => {
-        for (let i = 0; i < userTimeEntrySnapshot.length; i++) {
-          userTimeEntrySnapshot[i]();
-        }
-      };
-    }
-  }, [userData]);
+  // return () => {
+  //   for (let i = 0; i < userTimeEntryUnSubscribe.length; i++) {
+  //     console.log(userTimeEntryUnSubscribe[i]);
+  //     userTimeEntryUnSubscribe[i]();
+  //   }
+  //   console.log("--------------------------");
+  // };
+  //   }
+  // }, [userData]);
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =
@@ -228,7 +240,7 @@ const MyUsers = ({ navigation }) => {
                           <View key={index} style={styles.listItemContentStyle}>
                             <View style={styles.listItemContentNameView}>
                               <Text style={styles.listItemContentNameStyle}>
-                                {timeEntry.activityName}
+                                {timeEntry.activity_title}
                               </Text>
                             </View>
                             <View style={styles.listItemContentDateView}>
@@ -349,6 +361,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
     borderRadius: 5,
   },
   listItemContentNameView: { flex: 1 },
