@@ -18,199 +18,92 @@ const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-  const [userIDs, setUserIDs] = useState([]);
-  const [usersFullName, setUsersFullName] = useState([]);
-  const [usersTimeEntries, setUsersTimeEntries] = useState([]);
-  const [usersActiveStatus, setUsersActiveStatus] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-  const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
+
+  const [userDataSnapshot, setUserDataSnapshot] = useState(null);
+  const [userTimeEntrySnapshot, setUserTimeEntrySnapshot] = useState(null);
+  const [userData, setUserData] = useState(null);
+
+  /*
+    let userInfo = {
+      firstName: usersFullName[i].firstName,
+      lastName: usersFullName[i].lastName,
+      timeEntries: usersTimeEntries[i],
+      isOpen: false,
+      statusActive: usersActiveStatus[i],
+      userID: userIDs[i],
+    };
+  */
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .collection("my_users")
-          .get();
-
-        var docIDs = response.docs.map((doc) => doc.id);
-        setUserIDs(docIDs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    setLoadingData(true);
-    fetchUserData();
+    let unSubscribe = firestore()
+      .collection("Users")
+      .where("admin_id", "==", auth().currentUser.uid)
+      .onSnapshot(
+        (snapshot) => {
+          snapshot.docChanges();
+          setUserDataSnapshot(snapshot);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
 
     return () => {
-      setMyUsers([]);
-      setUsersFullName([]);
-      setUsersTimeEntries([]);
-      setIsFinished(false);
+      unSubscribe();
     };
   }, []);
 
   useEffect(() => {
-    fetchNamesAndTimeEntries();
-    if (reloadAfterChanges === true) {
-      setReloadAfterChanges(false);
+    if (userDataSnapshot != null) {
+      let users = [];
+      userDataSnapshot.docChanges().forEach((change) => {
+        if (change.type === "added") {
+          users.push({ ...change.doc.data(), user_id: change.doc.id });
+
+          // addUser(change);
+        }
+        if (change.type === "modified") {
+          // updateUser(change);
+        }
+        if (change.type === "removed") {
+          // removeUser(change);
+        }
+      });
+      setUserData(users);
     }
-  }, [userIDs, reloadAfterChanges]);
+  }, [userDataSnapshot]);
 
   useEffect(() => {
-    if (createUserContext.getChangedUserInfoTo === true) {
-      setReloadAfterChanges(true);
-      createUserContext.setChangedUserInfoTo(false);
-    }
-  }, [createUserContext.getChangedUserInfoTo]);
-
-  useEffect(() => {
-    if (isFinished) {
-      fetchActivityNames();
-    }
-
-    return () => {
-      setIsFinished(false);
-    };
-  }, [isFinished]);
-
-  const fetchNamesAndTimeEntries = async () => {
-    if (userIDs.length != 0) {
-      let nameArr = [];
-      let timeEntryArr = [];
-      let userStatusArr = [];
-      for (let i = 0; i < userIDs.length; i++) {
-        try {
-          const nameResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("personal_information")
-            .get();
-          let userPersonalInfoID = nameResponse.docs.map((doc) => doc.id);
-          let nameData = nameResponse.docs.map((doc) => doc.data());
-          let firstName = nameData[0].first_name;
-          let lastName = nameData[0].last_name;
-
-          nameArr.push({
-            firstName: firstName,
-            lastName: lastName,
-            personalInfoID: userPersonalInfoID,
-          });
-        } catch (error) {
-          console.log(error);
-        }
-
-        try {
-          const timeEntryResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("time_entries")
-            .where("status_confirmed", "==", true)
-            .orderBy("date", "desc")
-            .get();
-
-          let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          if (timeEntryData.length === 0) {
-            timeEntryArr.push(["NO DATA"]);
-          } else {
-            timeEntryArr.push(timeEntryData);
-          }
-        } catch (error) {
-          console.log(error);
-        }
-        try {
-          const userStatusResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .get();
-
-          let userStatusData = userStatusResponse.data().status_active;
-          userStatusArr.push(userStatusData);
-        } catch (error) {
-          console.log(error);
-        }
+    if (userData != null) {
+      for (let i = 0; i < userData.length; i++) {
+        console.log(userData[i].first_name);
+        let unSubscribe = firestore()
+          .collection("timeentries")
+          .where("admin_id", "==", auth().currentUser.uid)
+          .where("status_confirmed", "==", true)
+          .limit(5)
+          .onSnapshot(
+            (snapshot) => {
+              console.log("TEST");
+              setUserTimeEntrySnapshot(snapshot);
+            },
+            (error) => {
+              console.log(error);
+            }
+          );
+        setUserTimeEntrySnapshot(unSubscribe);
       }
-      if (
-        nameArr.length === userIDs.length &&
-        timeEntryArr.length === userIDs.length &&
-        userStatusArr.length === userIDs.length
-      ) {
-        setUsersFullName(nameArr);
-        setUsersTimeEntries(timeEntryArr);
-        setUsersActiveStatus(userStatusArr);
-        setIsFinished(true);
-      }
-    }
-  };
 
-  const fetchActivityNames = () => {
-    const getActivityName = async (i, j) => {
-      try {
-        const response = await firestore()
-          .collection("Activities")
-          .doc(usersTimeEntries[i][j].activity_id)
-          .get();
-
-        linkToUsersTimeEntry(response.data().activity_title, i, j);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    for (let i = 0; i < usersTimeEntries.length; i++) {
-      for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] !== "NO DATA") {
-          getActivityName(i, j);
+      return () => {
+        for (let i = 0; i < userTimeEntrySnapshot.length; i++) {
+          userTimeEntrySnapshot[i]();
         }
-      }
-    }
-  };
-
-  const linkToUsersTimeEntry = (activity, i, j) => {
-    if (usersTimeEntries[i][0] !== "NO DATA") {
-      let timeEntry = {
-        activityName: activity,
-        date: usersTimeEntries[i][j].date,
-        time: usersTimeEntries[i][j].time,
       };
-      usersTimeEntries[i][j] = timeEntry;
     }
-    fillUsersWithInfo();
-  };
-
-  const fillUsersWithInfo = () => {
-    let tempArr = [];
-    for (let i = 0; i < userIDs.length; i++) {
-      let userInfo = {
-        firstName: usersFullName[i].firstName,
-        lastName: usersFullName[i].lastName,
-        timeEntries: usersTimeEntries[i],
-        isOpen: false,
-        statusActive: usersActiveStatus[i],
-        userID: userIDs[i],
-        idPersonalInfo: usersFullName[i].personalInfoID,
-      };
-      tempArr.push(userInfo);
-    }
-
-    setAllUsers(tempArr);
-
-    // Creates a new filtered array with all active users and sorts them alphabetically
-    let activeUsers = tempArr.filter((user) => {
-      if (user.statusActive) {
-        return user;
-      }
-    });
-
-    setMyUsers(
-      activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-    );
-    setLoadingData(false);
-  };
+  }, [userData]);
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =
