@@ -169,7 +169,6 @@ const ConfirmActivities = () => {
       confirmActivity(selectedUsers[i].timeEntryId);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
-        // setReload(!reload);
       }
     }
   };

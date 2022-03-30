@@ -18,104 +18,98 @@ const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
+  const [userData, setUserData] = useState([]);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-
-  const [userDataSnapshot, setUserDataSnapshot] = useState(null);
-  // const [userData, setUserData] = useState(null);
-
-  /*
-    let userInfo = {
-      firstName: usersFullName[i].firstName,
-      lastName: usersFullName[i].lastName,
-      timeEntries: usersTimeEntries[i],
-      isOpen: false,
-      statusActive: usersActiveStatus[i],
-      userID: userIDs[i],
-    };
-  */
+  const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
 
   useEffect(() => {
-    let unSubscribe = firestore()
-      .collection("Users")
-      .where("admin_id", "==", auth().currentUser.uid)
-      .onSnapshot(
-        (snapshot) => {
-          setUserDataSnapshot(snapshot);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    const fetchUserData = () => {
+      firestore()
+        .collection("Users")
+        .where("admin_id", "==", auth().currentUser.uid)
+        .get()
+        .then((data) => {
+          setUserData(
+            data.docs.map((doc) => ({
+              id: doc.id,
+              ...doc.data(),
+            }))
+          );
+        })
+        .catch((error) => console.log(error));
+    };
+    setLoadingData(true);
+    fetchUserData();
 
     return () => {
-      unSubscribe();
+      setMyUsers([]);
     };
   }, []);
 
   useEffect(() => {
-    if (userDataSnapshot != null) {
-      let users = [];
-      userDataSnapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          // users.push({ ...change.doc.data(), user_id: change.doc.id });
+    fetchUserTimeEntries();
+    if (reloadAfterChanges === true) {
+      setReloadAfterChanges(false);
+    }
+  }, [userData, reloadAfterChanges]);
+
+  useEffect(() => {
+    if (createUserContext.getChangedUserInfoTo === true) {
+      setReloadAfterChanges(true);
+      createUserContext.setChangedUserInfoTo(false);
+    }
+  }, [createUserContext.getChangedUserInfoTo]);
+
+  const fetchUserTimeEntries = async () => {
+    if (userData.length != 0) {
+      let tempArr = [];
+      for (let i = 0; i < userData.length; i++) {
+        let userTimeEntryData;
+
+        try {
+          let response = await firestore()
+            .collection("timeentries")
+            .where("user_id", "==", userData[i].id)
+            .where("status_confirmed", "==", true)
+            .orderBy("date", "desc")
+            .limit(5)
+            .get();
+
+          userTimeEntryData = response.docs.map((doc) => doc.data());
+        } catch (error) {
+          console.log(error);
+        }
+
+        if (userTimeEntryData.length != 0) {
           let userInfo = {
-            firstName: change.doc.data().first_name,
-            lastName: change.doc.data().last_name,
-            timeEntries: change.doc.data().latest_confirmed_time_entries,
+            firstName: userData[i].first_name,
+            lastName: userData[i].last_name,
+            timeEntries: userTimeEntryData,
             isOpen: false,
-            statusActive: change.doc.data().status_active,
-            userID: change.doc.id,
+            statusActive: userData[i].status_active,
+            userID: userData[i].id,
           };
-          users.push(userInfo);
-          // addUser(change);
+          tempArr.push(userInfo);
         }
-        if (change.type === "modified") {
-          // updateUser(change);
-        }
-        if (change.type === "removed") {
-          // removeUser(change);
+      }
+      setAllUsers(tempArr);
+      console.log(tempArr);
+
+      // Creates a new filtered array with all active users and sorts them alphabetically
+      let activeUsers = tempArr.filter((user) => {
+        if (user.statusActive) {
+          return user;
         }
       });
-      setMyUsers(users);
+
+      setMyUsers(
+        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
+      );
       setLoadingData(false);
     }
-  }, [userDataSnapshot]);
-
-  // useEffect(() => {
-  //   if (userData != null) {
-  //     console.log(userData[2]);
-  // let subscribeArr = [];
-  // for (let i = 0; i < userData.length; i++) {
-  //   console.log(userData[i].user_id);
-  //   let unSubscribe = firestore()
-  //     .collection("timeentries")
-  //     .where("admin_id", "==", auth().currentUser.uid)
-  //     .where("user_id", "==", userData[i].user_id)
-  //     .where("status_confirmed", "==", true)
-  //     .limit(5)
-  //     .onSnapshot(
-  //       (snapshot) => {
-  //         setUserTimeEntrySnapshot((prev) => [...prev, snapshot]);
-  //       },
-  //       (error) => {
-  //         console.log(error);
-  //       }
-  //     );
-  //   subscribeArr.push(unSubscribe);
-  // }
-  // setUserTimeEntryUnSubscribe(subscribeArr);
-
-  // return () => {
-  //   for (let i = 0; i < userTimeEntryUnSubscribe.length; i++) {
-  //     console.log(userTimeEntryUnSubscribe[i]);
-  //     userTimeEntryUnSubscribe[i]();
-  //   }
-  //   console.log("--------------------------");
-  // };
-  //   }
-  // }, [userData]);
+  };
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =
@@ -202,10 +196,10 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {loadingData ? (
+        {loadingData && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
-        ) : null}
-        {!loadingData ? (
+        )}
+        {!loadingData && (
           <>
             {myUsers.map((user, index) => (
               <View key={index}>
@@ -232,7 +226,7 @@ const MyUsers = ({ navigation }) => {
                     />
                   </View>
                 </TouchableOpacity>
-                {user.isOpen ? (
+                {user.isOpen && (
                   <View>
                     {user.timeEntries.map((timeEntry, index) => (
                       <View key={index}>
@@ -277,11 +271,11 @@ const MyUsers = ({ navigation }) => {
                       />
                     </View>
                   </View>
-                ) : null}
+                )}
               </View>
             ))}
           </>
-        ) : null}
+        )}
       </View>
     </View>
   );
@@ -361,7 +355,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center",
     borderRadius: 5,
   },
   listItemContentNameView: { flex: 1 },
