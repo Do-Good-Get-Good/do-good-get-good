@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import MyActivityAsAList from "../components/MyActivityAsAList";
-import { useActivityFunction } from "../context/ActivityContext";
+// import { useActivityFunction } from "../context/ActivityContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -19,11 +19,14 @@ jest.mock("@react-navigation/native");
 jest.mock("../context/ActivityContext", () => {
   const timeandstatusContext = [
     {
-      activityId: "asd",
-      date: { nanoseconds: 0, seconds: 1648512000 },
-      fbDocumentID: "z7kknsEWFeJPhHPev2lA",
+      activity_id: "asd",
+      activity_title: "Missing people",
+      admin_id: "aaa",
+      date: { toDate: () => new Date() },
+      doc_id: "z7kknsEWFeJPhHPev2lA",
       statusConfirmed: false,
       time: 1.5,
+      user_id: "asd",
     },
   ];
 
@@ -52,7 +55,7 @@ jest.mock("../context/ActivityContext", () => {
       lastFiveTimeEntries: timeandstatusContext,
       myActivities: myActivitiesContext,
       setLimitAmountForTimeEntries: jest.fn(),
-      allListOfTimeEntry: jest.fn(),
+      // allListOfTimeEntry: jest.fn(),
     }),
   };
 });
