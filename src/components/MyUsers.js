@@ -13,7 +13,7 @@ import { format } from "date-fns";
 import { Icon } from "react-native-elements";
 import { useCreateUserFunction } from "../context/CreateUserContext";
 
-const MyUsers = ({ navigation }) => {
+const MyUsers = ({ navigation, usersData }) => {
   const createUserContext = useCreateUserFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
@@ -25,6 +25,9 @@ const MyUsers = ({ navigation }) => {
   const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
 
   useEffect(() => {
+    if (usersData != null) {
+      console.log("MyUsers: ", usersData);
+    }
     const fetchUserData = () => {
       firestore()
         .collection("Users")
@@ -46,7 +49,7 @@ const MyUsers = ({ navigation }) => {
     return () => {
       setMyUsers([]);
     };
-  }, []);
+  }, [usersData]);
 
   useEffect(() => {
     fetchUserTimeEntries();
@@ -54,13 +57,6 @@ const MyUsers = ({ navigation }) => {
       setReloadAfterChanges(false);
     }
   }, [userData, reloadAfterChanges]);
-
-  useEffect(() => {
-    if (createUserContext.getChangedUserInfoTo === true) {
-      setReloadAfterChanges(true);
-      createUserContext.setChangedUserInfoTo(false);
-    }
-  }, [createUserContext.getChangedUserInfoTo]);
 
   const fetchUserTimeEntries = async () => {
     if (userData.length != 0) {
@@ -95,7 +91,6 @@ const MyUsers = ({ navigation }) => {
         }
       }
       setAllUsers(tempArr);
-      console.log(tempArr);
 
       // Creates a new filtered array with all active users and sorts them alphabetically
       let activeUsers = tempArr.filter((user) => {
@@ -110,6 +105,13 @@ const MyUsers = ({ navigation }) => {
       setLoadingData(false);
     }
   };
+
+  useEffect(() => {
+    if (createUserContext.getChangedUserInfoTo === true) {
+      setReloadAfterChanges(true);
+      createUserContext.setChangedUserInfoTo(false);
+    }
+  }, [createUserContext.getChangedUserInfoTo]);
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =

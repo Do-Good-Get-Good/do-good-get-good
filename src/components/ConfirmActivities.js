@@ -14,13 +14,14 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useUserData } from "../customFirebaseHooks/useUserData";
 
-const ConfirmActivities = () => {
+const ConfirmActivities = ({ userData }) => {
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [snapshot, setSnapshot] = useState(null);
 
   useEffect(() => {
+    console.log("ConfirmActivities: ", userData);
     let unSubscribe = firestore()
       .collection("timeentries")
       .where("admin_id", "==", auth().currentUser.uid)
@@ -41,7 +42,7 @@ const ConfirmActivities = () => {
       setCheckAll(false);
       setChecked(false);
     };
-  }, []);
+  }, [userData]);
 
   useEffect(() => {
     if (snapshot != null) {
