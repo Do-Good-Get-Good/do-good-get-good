@@ -37,11 +37,6 @@ function MyActivityAsAList({ navigation }) {
     }
   }, [isFocused]);
 
-  console.log(
-    "entryTime.lastFiveTimeEntries  ",
-    entryTime.lastFiveTimeEntries[0].date
-  );
-
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
       objectsWithActivitiesAndTimeEntriesInfo(

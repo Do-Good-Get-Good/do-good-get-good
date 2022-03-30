@@ -2,7 +2,6 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import MyActivityAsAList from "../components/MyActivityAsAList";
-// import { useActivityFunction } from "../context/ActivityContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -39,43 +38,15 @@ jest.mock("../context/ActivityContext", () => {
     },
   ];
 
-  // let arrayWithTimeAntries = [];
-  // for (let i = 0; i < 5; i++) {
-  //   arrayWithTimeAntries.push(timeandstatusContext);
-  // }
-
-  // let arrayWithTwentyTimeAntries = [];
-  // for (let i = 0; i < 20; i++) {
-  //   arrayWithTimeAntries.push(timeandstatusContext);
-  // }
-
   return {
     useActivityFunction: () => ({
       allListOfTimeEntry: timeandstatusContext,
       lastFiveTimeEntries: timeandstatusContext,
       myActivities: myActivitiesContext,
       setLimitAmountForTimeEntries: jest.fn(),
-      // allListOfTimeEntry: jest.fn(),
     }),
   };
 });
-
-// const showAllList = [
-//   {
-//     activityId: "asd",
-//     date: { toDate: () => new Date() },
-//     fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-//     statusConfirmed: false,
-//     time: 1.5,
-//   },
-//   {
-//     activityId: "abc",
-//     date: { toDate: () => new Date() },
-//     fbDocumentID: "z7kknsEWFeJPhHPev2lB",
-//     statusConfirmed: false,
-//     time: 1,
-//   },
-// ];
 
 describe("Testing MyActivityAsAList", () => {
   it("can find the text Min tid", () => {
@@ -126,17 +97,6 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const timeandstatusContext1 = [
-      {
-        activityId: "asd",
-        date: { toDate: () => new Date() },
-        fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-        statusConfirmed: true,
-        time: 1.5,
-      },
-    ];
-    // useActivityFunction().lastFiveTimeEntries = timeandstatusContext1;
-
     const { queryByTestId } = render(<MyActivityAsAList />);
     queryByTestId("icon");
   });
@@ -154,7 +114,7 @@ describe("Testing MyActivityAsAList", () => {
     expect(getAllByText("Visa allt").length).toBe(1);
     const button = getByTestId("showAllButton");
     fireEvent.press(button);
-    //useActivityFunction().setLimitAmountForTimeEntries().mockReturnValue(20);
+
     expect(navigate).toHaveBeenCalledWith("MyTimePage");
   });
 
@@ -162,7 +122,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "MyTimePage",
     });
-    // useActivityFunction().setLimitAmountForTimeEntries().mockReturnValue(20);
+
     const { queryByText } = render(<MyActivityAsAList />);
     expect(queryByText("Visa allt")).toBeNull();
   });
