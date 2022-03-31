@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, SafeAreaView, View, ScrollView, Text } from "react-native";
 
 import { useActivityFunction } from "../context/ActivityContext";
@@ -7,7 +7,7 @@ import { SuggestionProvider } from "../context/SuggestionContext";
 
 import Menu from "../components/Menu";
 import { MyActivities } from "../components/MyActivities";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
+import MyActivityAsAList from "../components/MyActivityAsAList";
 import { Suggestions } from "../components/Suggestions";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
@@ -21,6 +21,7 @@ import colors from "../assets/theme/colors";
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
   const userLevel = useAdminCheckFunction();
+
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
