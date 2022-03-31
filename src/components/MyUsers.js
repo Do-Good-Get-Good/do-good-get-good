@@ -12,44 +12,19 @@ import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import { Icon } from "react-native-elements";
 import { useCreateUserFunction } from "../context/CreateUserContext";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
-const MyUsers = ({ navigation, usersData }) => {
+const MyUsers = ({ navigation }) => {
   const createUserContext = useCreateUserFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-  const [userData, setUserData] = useState([]);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
   const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
-
-  useEffect(() => {
-    if (usersData != null) {
-      console.log("MyUsers: ", usersData);
-    }
-    const fetchUserData = () => {
-      firestore()
-        .collection("Users")
-        .where("admin_id", "==", auth().currentUser.uid)
-        .get()
-        .then((data) => {
-          setUserData(
-            data.docs.map((doc) => ({
-              id: doc.id,
-              ...doc.data(),
-            }))
-          );
-        })
-        .catch((error) => console.log(error));
-    };
-    setLoadingData(true);
-    fetchUserData();
-
-    return () => {
-      setMyUsers([]);
-    };
-  }, [usersData]);
+  const userData = useAdminHomePageFunction().userData;
+  const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
 
   useEffect(() => {
     fetchUserTimeEntries();
@@ -58,8 +33,32 @@ const MyUsers = ({ navigation, usersData }) => {
     }
   }, [userData, reloadAfterChanges]);
 
+  useEffect(() => {
+    if (confirmedTimeEntries.length != 0) {
+      let oldArray = allUsers;
+      for (let i = 0; i < confirmedTimeEntries.length; i++) {
+        var index = oldArray.findIndex(
+          (x) => x.userID === confirmedTimeEntries[i].user_id
+        );
+        oldArray.slice(index, 1, confirmedTimeEntries[i]);
+      }
+
+      // Creates a new filtered array with all active users and sorts them alphabetically
+      let activeUsers = oldArray.filter((user) => {
+        if (user.statusActive) {
+          return user;
+        }
+      });
+
+      setMyUsers(
+        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
+      );
+    }
+  }, [confirmedTimeEntries]);
+
   const fetchUserTimeEntries = async () => {
-    if (userData.length != 0) {
+    if (userData.length != 0 && userData != null) {
+      setLoadingData(true);
       let tempArr = [];
       for (let i = 0; i < userData.length; i++) {
         let userTimeEntryData;
@@ -266,8 +265,6 @@ const MyUsers = ({ navigation, usersData }) => {
                             userSurname: user.lastName,
                             statusActive: user.statusActive,
                             userID: user.userID,
-                            personalInfoID: user.idPersonalInfo[0],
-                            useEmail: "",
                           })
                         }
                       />

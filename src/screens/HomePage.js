@@ -18,29 +18,11 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import auth from "@react-native-firebase/auth";
-import { useAllUserData } from "../customFirebaseHooks/useAllUserData";
+import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
   const userLevel = useAdminCheckFunction();
-  const [userData, setUserData] = useState(null);
-
-  useEffect(() => {
-    const fetchUserData = async () => {
-      let data = await useAllUserData(auth().currentUser.uid);
-      setUserData(data);
-    };
-    if (userLevel === "admin") {
-      fetchUserData();
-    }
-  }, [userLevel]);
-
-  useEffect(() => {
-    if (userData != null) {
-      console.log("HOMEPAGE - UserData: ", userData);
-    }
-  }, [userData]);
 
   return (
     <SafeAreaView style={styles.view}>
@@ -48,8 +30,10 @@ export const HomePage = ({ navigation }) => {
       {userLevel === "admin" && (
         <>
           <ScrollView style={styles.container}>
-            <ConfirmActivities userData={userData} />
-            <MyUsers navigation={navigation} usersData={userData} />
+            <AdminHomePageProvider>
+              <ConfirmActivities />
+              <MyUsers navigation={navigation} />
+            </AdminHomePageProvider>
             <BottomLogo />
           </ScrollView>
           <FloatingActionButton />

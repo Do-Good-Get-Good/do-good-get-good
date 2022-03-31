@@ -13,15 +13,18 @@ import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useUserData } from "../customFirebaseHooks/useUserData";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
-const ConfirmActivities = ({ userData }) => {
+const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [snapshot, setSnapshot] = useState(null);
+  const userData = useAdminHomePageFunction().userData;
+  const setUsersId = useAdminHomePageFunction().setUsersId;
+  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
 
   useEffect(() => {
-    console.log("ConfirmActivities: ", userData);
     let unSubscribe = firestore()
       .collection("timeentries")
       .where("admin_id", "==", auth().currentUser.uid)
@@ -61,10 +64,15 @@ const ConfirmActivities = ({ userData }) => {
   }, [snapshot]);
 
   const addTimeEntry = async (change) => {
-    let userData = await useUserData(change.doc.data().user_id);
+    let fullName;
+    for (let i = 0; i < userData.length; i++) {
+      if (userData[i].id === change.doc.data().user_id) {
+        fullName = `${userData[i].first_name} ${userData[i].last_name}`;
+      }
+    }
     const timeEntryData = {
       userID: change.doc.data().user_id,
-      fullName: `${userData.first_name} ${userData.last_name}`,
+      fullName: fullName,
       activityName: change.doc.data().activity_title,
       timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
       timeEntryHours: change.doc.data().time,
@@ -166,12 +174,16 @@ const ConfirmActivities = ({ userData }) => {
     });
 
     // For every user in 'selectedUsers' call 'confirmActivity'
+    let timeEntryIdsToSendToMyUsers = [];
     for (let i = 0; i < selectedUsers.length; i++) {
+      timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
     }
+    setUsersId(timeEntryIdsToSendToMyUsers);
+    setReloadOneUserData(true);
   };
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
