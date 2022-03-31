@@ -9,56 +9,57 @@ import {
 import { Dialog } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import { Icon } from "react-native-elements";
-import { useCreateUserFunction } from "../context/CreateUserContext";
+//import { useCreateUserFunction } from "../context/CreateUserContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
+import { el } from "date-fns/locale";
 
 const MyUsers = ({ navigation }) => {
-  const createUserContext = useCreateUserFunction();
+  // const createUserContext = useCreateUserFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [inactiveUsers, setInactiveUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-  const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
+  // const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
   const userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
+  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+  const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
 
   useEffect(() => {
-    fetchUserTimeEntries();
-    if (reloadAfterChanges === true) {
-      setReloadAfterChanges(false);
+    if (reloadOneUserData === false) {
+      fetchUserTimeEntries();
     }
-  }, [userData, reloadAfterChanges]);
+    //if (reloadAfterChanges === true) {
+    // setReloadAfterChanges(false);
+    // }
+  }, [userData]);
 
   useEffect(() => {
     if (confirmedTimeEntries.length != 0) {
       let oldArray = allUsers;
-      for (let i = 0; i < confirmedTimeEntries.length; i++) {
+      for (let j = 0; j < confirmedTimeEntries.length; j++) {
         var index = oldArray.findIndex(
-          (x) => x.userID === confirmedTimeEntries[i].user_id
+          (x) => x.userID === confirmedTimeEntries[j][0].user_id
         );
-        oldArray.slice(index, 1, confirmedTimeEntries[i]);
+        if (index != -1) {
+          oldArray[index].timeEntries = confirmedTimeEntries[j];
+        }
       }
 
-      // Creates a new filtered array with all active users and sorts them alphabetically
-      let activeUsers = oldArray.filter((user) => {
-        if (user.statusActive) {
-          return user;
-        }
-      });
-
-      setMyUsers(
-        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-      );
+      setAllUsers(oldArray);
+      setLoadingData(true);
+      setReloadOneUserData(false);
     }
   }, [confirmedTimeEntries]);
 
   const fetchUserTimeEntries = async () => {
     if (userData.length != 0 && userData != null) {
-      setLoadingData(true);
       let tempArr = [];
       for (let i = 0; i < userData.length; i++) {
         let userTimeEntryData;
@@ -90,27 +91,16 @@ const MyUsers = ({ navigation }) => {
         }
       }
       setAllUsers(tempArr);
-
-      // Creates a new filtered array with all active users and sorts them alphabetically
-      let activeUsers = tempArr.filter((user) => {
-        if (user.statusActive) {
-          return user;
-        }
-      });
-
-      setMyUsers(
-        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-      );
-      setLoadingData(false);
+      setLoadingData(true);
     }
   };
 
-  useEffect(() => {
-    if (createUserContext.getChangedUserInfoTo === true) {
-      setReloadAfterChanges(true);
-      createUserContext.setChangedUserInfoTo(false);
-    }
-  }, [createUserContext.getChangedUserInfoTo]);
+  // useEffect(() => {
+  //   if (createUserContext.getChangedUserInfoTo === true) {
+  //     setReloadAfterChanges(true);
+  //     createUserContext.setChangedUserInfoTo(false);
+  //   }
+  // }, [createUserContext.getChangedUserInfoTo]);
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =
@@ -126,30 +116,43 @@ const MyUsers = ({ navigation }) => {
   };
 
   const sortUsers = (sortOption) => {
-    // Sorts myUsers array alphabetically
     if (sortOption === "A - Ö") {
-      let activeUsers = allUsers.filter((user) => {
-        if (user.statusActive) {
-          return user;
-        }
-      });
-
       setMyUsers(
         activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
-    // filter myUsers array to only show inactive users
+
     if (sortOption === "Inaktiva") {
-      let inactiveUsers = allUsers.filter((user) => {
-        if (!user.statusActive) {
-          return user;
-        }
-      });
       setMyUsers(
         inactiveUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
   };
+
+  useEffect(() => {
+    let arrayWithActiveUsers = [];
+    let arrayWithInactiveUsers = [];
+    if (loadingData) {
+      arrayWithActiveUsers = allUsers.filter((user) => {
+        if (user.statusActive) {
+          return user;
+        }
+      });
+      setActiveUsers(arrayWithActiveUsers);
+
+      arrayWithInactiveUsers = allUsers.filter((user) => {
+        if (!user.statusActive) {
+          return user;
+        }
+      });
+      setInactiveUsers(arrayWithInactiveUsers);
+      setLoadingData(false);
+    }
+  }, [loadingData]);
+
+  useEffect(() => {
+    sortUsers(sortBy);
+  }, [activeUsers, inactiveUsers]);
 
   return (
     <View style={styles.container}>
@@ -181,6 +184,7 @@ const MyUsers = ({ navigation }) => {
                 key={index}
                 onPress={() => {
                   setSortBy(option);
+
                   sortUsers(option);
                   setExpanded(false);
                 }}
