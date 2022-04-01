@@ -8,6 +8,7 @@ import { Platform } from "react-native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 

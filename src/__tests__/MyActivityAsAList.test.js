@@ -1,8 +1,7 @@
 import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { useActivityFunction } from "../context/ActivityContext";
+import MyActivityAsAList from "../components/MyActivityAsAList";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -19,13 +18,17 @@ jest.mock("@react-navigation/native");
 jest.mock("../context/ActivityContext", () => {
   const timeandstatusContext = [
     {
-      activityId: "asd",
+      activity_id: "asd",
+      activity_title: "Missing people",
+      admin_id: "aaa",
       date: { toDate: () => new Date() },
-      fbDocumentID: "z7kknsEWFeJPhHPev2lA",
+      doc_id: "z7kknsEWFeJPhHPev2lA",
       statusConfirmed: false,
       time: 1.5,
+      user_id: "asd",
     },
   ];
+
   const myActivitiesContext = [
     {
       id: "asd",
@@ -34,31 +37,16 @@ jest.mock("../context/ActivityContext", () => {
       photo: "symbol_earth",
     },
   ];
+
   return {
     useActivityFunction: () => ({
-      timeAndStatus: timeandstatusContext,
+      allListOfTimeEntry: timeandstatusContext,
+      lastFiveTimeEntries: timeandstatusContext,
       myActivities: myActivitiesContext,
-      allListOfTimeEntry: jest.fn(),
+      setLimitAmountForTimeEntries: jest.fn(),
     }),
   };
 });
-
-const showAllList = [
-  {
-    activityId: "asd",
-    date: { toDate: () => new Date() },
-    fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-    statusConfirmed: false,
-    time: 1.5,
-  },
-  {
-    activityId: "abc",
-    date: { toDate: () => new Date() },
-    fbDocumentID: "z7kknsEWFeJPhHPev2lB",
-    statusConfirmed: false,
-    time: 1,
-  },
-];
 
 describe("Testing MyActivityAsAList", () => {
   it("can find the text Min tid", () => {
@@ -109,17 +97,6 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const timeandstatusContext1 = [
-      {
-        activityId: "asd",
-        date: { toDate: () => new Date() },
-        fbDocumentID: "z7kknsEWFeJPhHPev2lA",
-        statusConfirmed: true,
-        time: 1.5,
-      },
-    ];
-    useActivityFunction().timeAndStatus = timeandstatusContext1;
-
     const { queryByTestId } = render(<MyActivityAsAList />);
     queryByTestId("icon");
   });
@@ -137,6 +114,7 @@ describe("Testing MyActivityAsAList", () => {
     expect(getAllByText("Visa allt").length).toBe(1);
     const button = getByTestId("showAllButton");
     fireEvent.press(button);
+
     expect(navigate).toHaveBeenCalledWith("MyTimePage");
   });
 
@@ -145,9 +123,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "MyTimePage",
     });
 
-    const { queryByText } = render(
-      <MyActivityAsAList showAllList={showAllList} />
-    );
+    const { queryByText } = render(<MyActivityAsAList />);
     expect(queryByText("Visa allt")).toBeNull();
   });
 });

@@ -16,6 +16,7 @@ import BottomLogo from "../components/BottomLogo";
 
 import firestore from "@react-native-firebase/firestore";
 import { format } from "date-fns";
+import { useUserData } from "../customFirebaseHooks/useUserData";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -31,7 +32,10 @@ const ConceptPage = () => {
       let id = 0;
       let usersFetched = 0;
       let response = await firestore()
-        .collection("Users")
+        .collection("timeentries")
+        .orderBy("date", "desc")
+        .where("status_confirmed", "==", true)
+        .limit(10)
         .get()
         .catch((error) => {
           if (error === "no-data") {
@@ -39,13 +43,10 @@ const ConceptPage = () => {
           }
         });
 
-      response.forEach(async (user) => {
-        let timeEntries = await firestore()
-          .collection("Users")
-          .doc(user.id)
-          .collection("time_entries")
-          .orderBy("date", "desc")
-          .where("status_confirmed", "==", true)
+      response.forEach(async (timeEntry) => {
+        let activity = await firestore()
+          .collection("Activities")
+          .doc(timeEntry.data().activity_id)
           .get()
           .catch((error) => {
             if (error === "no-data") {
@@ -53,51 +54,23 @@ const ConceptPage = () => {
             }
           });
 
-        timeEntries.forEach(async (timeEntry) => {
-          let activity = await firestore()
-            .collection("Activities")
-            .doc(timeEntry.data().activity_id)
-            .get()
-            .catch((error) => {
-              if (error === "no-data") {
-                setError("Sorry, something went wrong");
-              }
-            });
+        let fullName;
+        let userInfo = await useUserData(timeEntry.data().user_id);
+        fullName = `${userInfo.first_name} ${userInfo.last_name}`;
 
-          let fullName;
-          let userInfo = await firestore()
-            .collection("Users")
-            .doc(user.id)
-            .collection("personal_information")
-            .get()
-            .catch((error) => {
-              if (error === "no-data") {
-                setError("Sorry, something went wrong");
-              }
-            });
-
-          userInfo.docs.map(
-            (doc) =>
-              (fullName = `${doc.data().first_name} ${doc.data().last_name}`)
-          );
-
-          if (activity.exists) {
-            const userData = {
-              id: id,
-              userID: user.id,
-              fullName: fullName,
-              activityName: activity.data().activity_title,
-              activityPhoto: activity.data().activity_photo,
-              activityCity: activity.data().activity_city,
-              timeEntryDate: format(
-                timeEntry.data().date.toDate(),
-                "yyyy-MM-dd"
-              ),
-            };
-            setAllUsers((prev) => [...prev, userData]);
-          }
-          id++;
-        });
+        if (activity.exists) {
+          const userData = {
+            id: id,
+            userID: userInfo.id,
+            fullName: fullName,
+            activityName: activity.data().activity_title,
+            activityPhoto: activity.data().activity_photo,
+            activityCity: activity.data().activity_city,
+            timeEntryDate: format(timeEntry.data().date.toDate(), "yyyy-MM-dd"),
+          };
+          setAllUsers((prev) => [...prev, userData]);
+        }
+        id++;
 
         usersFetched++;
         if (usersFetched === response.size) {
@@ -178,7 +151,6 @@ const ConceptPage = () => {
             allUsers.length > 0 &&
             allUsers
               .sort((a, b) => b.timeEntryDate.localeCompare(a.timeEntryDate))
-              .slice(0, 10)
               .map((activity, index) => (
                 <View key={index} style={styles.insideActivityContainer}>
                   <View style={styles.photoAndText}>
@@ -192,6 +164,7 @@ const ConceptPage = () => {
                           marginTop: activity.activityName.length > 16 ? 0 : 25,
                           flex: 1,
                           flexDirection: "row",
+                          alignItems: "center",
                         }}
                       >
                         <Icon
@@ -296,6 +269,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     marginTop: 6,
+    alignItems: "center",
   },
   textTitle: {
     flex: 2,
