@@ -8,208 +8,112 @@ import {
 } from "react-native";
 import { Dialog } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
-import { format } from "date-fns";
+
+import { format, set } from "date-fns";
 import { Icon } from "react-native-elements";
-import { useCreateUserFunction } from "../context/CreateUserContext";
+
+import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
 const MyUsers = ({ navigation }) => {
-  const createUserContext = useCreateUserFunction();
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
+  const [activeUsers, setActiveUsers] = useState([]);
+  const [inactiveUsers, setInactiveUsers] = useState([]);
   const [allUsers, setAllUsers] = useState([]);
-  const [userIDs, setUserIDs] = useState([]);
-  const [usersFullName, setUsersFullName] = useState([]);
-  const [usersTimeEntries, setUsersTimeEntries] = useState([]);
-  const [usersActiveStatus, setUsersActiveStatus] = useState([]);
-  const [isFinished, setIsFinished] = useState(false);
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-  const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
+  const userData = useAdminHomePageFunction().userData;
+  const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
+  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+  const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
+  const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      try {
-        const response = await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .collection("my_users")
-          .get();
-
-        var docIDs = response.docs.map((doc) => doc.id);
-        setUserIDs(docIDs);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-    setLoadingData(true);
-    fetchUserData();
-
-    return () => {
-      setMyUsers([]);
-      setUsersFullName([]);
-      setUsersTimeEntries([]);
-      setIsFinished(false);
-    };
-  }, []);
-
-  useEffect(() => {
-    fetchNamesAndTimeEntries();
-    if (reloadAfterChanges === true) {
-      setReloadAfterChanges(false);
+    if (reloadOneUserData === false) {
+      fetchUserTimeEntries();
     }
-  }, [userIDs, reloadAfterChanges]);
+  }, [userData]);
 
   useEffect(() => {
-    if (createUserContext.getChangedUserInfoTo === true) {
-      setReloadAfterChanges(true);
-      createUserContext.setChangedUserInfoTo(false);
-    }
-  }, [createUserContext.getChangedUserInfoTo]);
-
-  useEffect(() => {
-    if (isFinished) {
-      fetchActivityNames();
-    }
-
-    return () => {
-      setIsFinished(false);
-    };
-  }, [isFinished]);
-
-  const fetchNamesAndTimeEntries = async () => {
-    if (userIDs.length != 0) {
-      let nameArr = [];
-      let timeEntryArr = [];
-      let userStatusArr = [];
-      for (let i = 0; i < userIDs.length; i++) {
-        try {
-          const nameResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("personal_information")
-            .get();
-          let userPersonalInfoID = nameResponse.docs.map((doc) => doc.id);
-          let nameData = nameResponse.docs.map((doc) => doc.data());
-          let firstName = nameData[0].first_name;
-          let lastName = nameData[0].last_name;
-
-          nameArr.push({
-            firstName: firstName,
-            lastName: lastName,
-            personalInfoID: userPersonalInfoID,
-          });
-        } catch (error) {
-          console.log(error);
+    if (confirmedTimeEntries.length != 0) {
+      let oldArray = allUsers;
+      for (let j = 0; j < confirmedTimeEntries.length; j++) {
+        var index = oldArray.findIndex(
+          (x) => x.userID === confirmedTimeEntries[j][0].user_id
+        );
+        if (index != -1) {
+          oldArray[index].timeEntries = confirmedTimeEntries[j];
         }
+      }
+
+      setAllUsers(oldArray);
+      setLoadingData(true);
+
+      setReloadOneUserData(false);
+    }
+  }, [confirmedTimeEntries]);
+
+  useEffect(() => {
+    if (
+      changeUserInfoContext.reloadAfterUserNameChanged &&
+      changeUserInfoContext.newChangesInUserInfo.userID != 0
+    ) {
+      let oldArray = allUsers;
+
+      var index = oldArray.findIndex(
+        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
+      );
+      if (index != -1) {
+        oldArray[index].firstName =
+          changeUserInfoContext.newChangesInUserInfo.userFirstName;
+        oldArray[index].lastName =
+          changeUserInfoContext.newChangesInUserInfo.userLastName;
+        oldArray[index].statusActive =
+          changeUserInfoContext.newChangesInUserInfo.statusActive;
+      }
+      setAllUsers(oldArray);
+      setLoadingData(true);
+      changeUserInfoContext.setReloadAfterUserNameChanged(false);
+    }
+  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
+
+  const fetchUserTimeEntries = async () => {
+    if (userData.length != 0 && userData != null) {
+      let tempArr = [];
+      for (let i = 0; i < userData.length; i++) {
+        let userTimeEntryData;
 
         try {
-          const timeEntryResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .collection("time_entries")
+          let response = await firestore()
+            .collection("timeentries")
+            .where("user_id", "==", userData[i].id)
             .where("status_confirmed", "==", true)
             .orderBy("date", "desc")
+            .limit(5)
             .get();
 
-          let timeEntryData = timeEntryResponse.docs.map((doc) => doc.data());
-          if (timeEntryData.length === 0) {
-            timeEntryArr.push(["NO DATA"]);
-          } else {
-            timeEntryArr.push(timeEntryData);
-          }
+          userTimeEntryData = response.docs.map((doc) => doc.data());
         } catch (error) {
           console.log(error);
         }
-        try {
-          const userStatusResponse = await firestore()
-            .collection("Users")
-            .doc(userIDs[i])
-            .get();
 
-          let userStatusData = userStatusResponse.data().status_active;
-          userStatusArr.push(userStatusData);
-        } catch (error) {
-          console.log(error);
+        if (userTimeEntryData.length != 0) {
+          let userInfo = {
+            firstName: userData[i].first_name,
+            lastName: userData[i].last_name,
+            timeEntries: userTimeEntryData,
+            isOpen: false,
+            statusActive: userData[i].status_active,
+            userID: userData[i].id,
+          };
+          tempArr.push(userInfo);
         }
       }
-      if (
-        nameArr.length === userIDs.length &&
-        timeEntryArr.length === userIDs.length &&
-        userStatusArr.length === userIDs.length
-      ) {
-        setUsersFullName(nameArr);
-        setUsersTimeEntries(timeEntryArr);
-        setUsersActiveStatus(userStatusArr);
-        setIsFinished(true);
-      }
+      setAllUsers(tempArr);
+      setLoadingData(true);
     }
-  };
-
-  const fetchActivityNames = () => {
-    const getActivityName = async (i, j) => {
-      try {
-        const response = await firestore()
-          .collection("Activities")
-          .doc(usersTimeEntries[i][j].activity_id)
-          .get();
-
-        linkToUsersTimeEntry(response.data().activity_title, i, j);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    for (let i = 0; i < usersTimeEntries.length; i++) {
-      for (let j = 0; j < usersTimeEntries[i].length; j++) {
-        if (usersTimeEntries[i][0] !== "NO DATA") {
-          getActivityName(i, j);
-        }
-      }
-    }
-  };
-
-  const linkToUsersTimeEntry = (activity, i, j) => {
-    if (usersTimeEntries[i][0] !== "NO DATA") {
-      let timeEntry = {
-        activityName: activity,
-        date: usersTimeEntries[i][j].date,
-        time: usersTimeEntries[i][j].time,
-      };
-      usersTimeEntries[i][j] = timeEntry;
-    }
-    fillUsersWithInfo();
-  };
-
-  const fillUsersWithInfo = () => {
-    let tempArr = [];
-    for (let i = 0; i < userIDs.length; i++) {
-      let userInfo = {
-        firstName: usersFullName[i].firstName,
-        lastName: usersFullName[i].lastName,
-        timeEntries: usersTimeEntries[i],
-        isOpen: false,
-        statusActive: usersActiveStatus[i],
-        userID: userIDs[i],
-        idPersonalInfo: usersFullName[i].personalInfoID,
-      };
-      tempArr.push(userInfo);
-    }
-
-    setAllUsers(tempArr);
-
-    // Creates a new filtered array with all active users and sorts them alphabetically
-    let activeUsers = tempArr.filter((user) => {
-      if (user.statusActive) {
-        return user;
-      }
-    });
-
-    setMyUsers(
-      activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-    );
-    setLoadingData(false);
   };
 
   const openSelectedUser = (pressedUser) => {
@@ -226,30 +130,43 @@ const MyUsers = ({ navigation }) => {
   };
 
   const sortUsers = (sortOption) => {
-    // Sorts myUsers array alphabetically
     if (sortOption === "A - Ö") {
-      let activeUsers = allUsers.filter((user) => {
-        if (user.statusActive) {
-          return user;
-        }
-      });
-
       setMyUsers(
         activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
-    // filter myUsers array to only show inactive users
+
     if (sortOption === "Inaktiva") {
-      let inactiveUsers = allUsers.filter((user) => {
-        if (!user.statusActive) {
-          return user;
-        }
-      });
       setMyUsers(
         inactiveUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
       );
     }
   };
+
+  useEffect(() => {
+    let arrayWithActiveUsers = [];
+    let arrayWithInactiveUsers = [];
+    if (loadingData) {
+      arrayWithActiveUsers = allUsers.filter((user) => {
+        if (user.statusActive) {
+          return user;
+        }
+      });
+      setActiveUsers(arrayWithActiveUsers);
+
+      arrayWithInactiveUsers = allUsers.filter((user) => {
+        if (!user.statusActive) {
+          return user;
+        }
+      });
+      setInactiveUsers(arrayWithInactiveUsers);
+      setLoadingData(false);
+    }
+  }, [loadingData]);
+
+  useEffect(() => {
+    sortUsers(sortBy);
+  }, [activeUsers, inactiveUsers]);
 
   return (
     <View style={styles.container}>
@@ -281,6 +198,7 @@ const MyUsers = ({ navigation }) => {
                 key={index}
                 onPress={() => {
                   setSortBy(option);
+
                   sortUsers(option);
                   setExpanded(false);
                 }}
@@ -297,10 +215,10 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {loadingData ? (
+        {myUsers.length === 0 && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
-        ) : null}
-        {!loadingData ? (
+        )}
+        {!loadingData && (
           <>
             {myUsers.map((user, index) => (
               <View key={index}>
@@ -309,10 +227,14 @@ const MyUsers = ({ navigation }) => {
                   style={styles.listItemContainerStyle}
                   onPress={() => {
                     openSelectedUser(user);
+                    console.log(`userDropdown ${index}`);
                   }}
                 >
                   <View style={styles.listItemStyle}>
-                    <Text style={styles.listItemNameStyle}>
+                    <Text
+                      testID={`user ${index} name`}
+                      style={styles.listItemNameStyle}
+                    >
                       {user.firstName + " " + user.lastName}
                     </Text>
                     <Icon
@@ -327,24 +249,33 @@ const MyUsers = ({ navigation }) => {
                     />
                   </View>
                 </TouchableOpacity>
-                {user.isOpen ? (
+                {user.isOpen && (
                   <View>
                     {user.timeEntries.map((timeEntry, index) => (
                       <View key={index}>
                         {timeEntry !== "NO DATA" ? (
                           <View key={index} style={styles.listItemContentStyle}>
                             <View style={styles.listItemContentNameView}>
-                              <Text style={styles.listItemContentNameStyle}>
-                                {timeEntry.activityName}
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentNameStyle}
+                              >
+                                {timeEntry.activity_title}
                               </Text>
                             </View>
                             <View style={styles.listItemContentDateView}>
-                              <Text style={styles.listItemContentDateStyle}>
+                              <Text
+                                testID={`user timeEntry ${index} date`}
+                                style={styles.listItemContentDateStyle}
+                              >
                                 {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
                               </Text>
                             </View>
                             <View style={styles.listItemContentHourView}>
-                              <Text style={styles.listItemContentHourStyle}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentHourStyle}
+                              >
                                 {timeEntry.time} tim
                               </Text>
                             </View>
@@ -365,18 +296,16 @@ const MyUsers = ({ navigation }) => {
                             userSurname: user.lastName,
                             statusActive: user.statusActive,
                             userID: user.userID,
-                            personalInfoID: user.idPersonalInfo[0],
-                            useEmail: "",
                           })
                         }
                       />
                     </View>
                   </View>
-                ) : null}
+                )}
               </View>
             ))}
           </>
-        ) : null}
+        )}
       </View>
     </View>
   );

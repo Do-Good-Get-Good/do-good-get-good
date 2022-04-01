@@ -164,6 +164,7 @@ const styles = StyleSheet.create({
   textMainTitle: {
     ...typography.h2,
     fontWeight: "500",
+    paddingTop: 7,
     color: colors.dark,
     marginRight: 10,
   },

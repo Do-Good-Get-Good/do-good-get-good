@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import MyUsers from "../components/MyUsers";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -9,9 +9,45 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock("../context/CreateUserContext", () => ({
-  useCreateUserFunction: () => ({
-    getChangedUserInfoTo: jest.fn(),
+jest.mock("../context/ChangeUserInfoContext", () => ({
+  useChangeUserInfoFunction: () => ({
+    setNewChangesInUserInfo: jest.fn(),
+  }),
+}));
+
+jest.mock("../context/AdminHomePageContext", () => ({
+  useAdminHomePageFunction: () => ({
+    userData: [
+      {
+        activities_and_accumulated_time: [
+          {
+            accumulated_time: 2.5,
+            activity_id: "activity_id",
+          },
+        ],
+        admin_id: "admin_id",
+        first_name: "Test",
+        last_name: "1",
+        id: "user_id",
+        role: "user",
+        status_active: true,
+      },
+      {
+        activities_and_accumulated_time: [
+          {
+            accumulated_time: 2.5,
+            activity_id: "activity_id",
+          },
+        ],
+        admin_id: "admin_id",
+        first_name: "Test",
+        id: "user_id",
+        last_name: "2",
+        role: "user",
+        status_active: false,
+      },
+    ],
+    confirmedTimeEntries: [],
   }),
 }));
 

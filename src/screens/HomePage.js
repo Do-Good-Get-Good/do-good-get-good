@@ -1,9 +1,10 @@
-import React, { useEffect } from "react";
-import { StyleSheet, SafeAreaView, View, ScrollView, Text } from "react-native";
+import React from "react";
+import { StyleSheet, SafeAreaView, ScrollView, Text } from "react-native";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { SuggestionProvider } from "../context/SuggestionContext";
+import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 
 import Menu from "../components/Menu";
 import { MyActivities } from "../components/MyActivities";
@@ -28,8 +29,10 @@ export const HomePage = ({ navigation }) => {
       {userLevel === "admin" && (
         <>
           <ScrollView style={styles.container}>
-            <ConfirmActivities />
-            <MyUsers navigation={navigation} />
+            <AdminHomePageProvider>
+              <ConfirmActivities />
+              <MyUsers navigation={navigation} />
+            </AdminHomePageProvider>
             <BottomLogo />
           </ScrollView>
           <FloatingActionButton />
