@@ -12,8 +12,8 @@ import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { useUserData } from "../customFirebaseHooks/useUserData";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
+import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
@@ -23,6 +23,7 @@ const ConfirmActivities = () => {
   const userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+  const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
     let unSubscribe = firestore()
@@ -62,6 +63,25 @@ const ConfirmActivities = () => {
       });
     }
   }, [snapshot]);
+
+  useEffect(() => {
+    if (
+      changeUserInfoContext.reloadAfterUserNameChanged &&
+      changeUserInfoContext.newChangesInUserInfo.userID != 0
+    ) {
+      let oldArray = myUsers;
+      var index = oldArray.findIndex(
+        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
+      );
+      if (index != -1) {
+        oldArray[index].fullName =
+          changeUserInfoContext.newChangesInUserInfo.userFirstName +
+          " " +
+          changeUserInfoContext.newChangesInUserInfo.userLastName;
+      }
+      setMyUsers(oldArray);
+    }
+  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const addTimeEntry = async (change) => {
     let fullName;
