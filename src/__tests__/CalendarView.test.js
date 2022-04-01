@@ -7,6 +7,8 @@ import CalendarView from "../components/CalendarView";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
+
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
