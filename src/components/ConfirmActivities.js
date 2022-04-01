@@ -322,11 +322,6 @@ const ConfirmActivities = () => {
                 </Text>
               </View>
             )}
-        {/* {loadingData && (
-          <Dialog.Loading
-            loadingProps={{ color: colors.primary }}
-          ></Dialog.Loading>
-        )} */}
       </View>
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
