@@ -1,23 +1,16 @@
 import React from "react";
 import { SafeAreaView, ScrollView, View, StyleSheet } from "react-native";
+import MyActivityAsAList from "../components/MyActivityAsAList";
 
-import auth from "@react-native-firebase/auth";
-
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
-import { useActivityFunction } from "../context/ActivityContext";
 import Menu from "../components/Menu";
 
-export const MyTimePage = ({ navigation }) => {
-
-  const listOfAllTimeEntry = useActivityFunction();
+export const MyTimePage = () => {
   return (
     <SafeAreaView>
       <Menu />
       <ScrollView>
         <View style={styles.container}>
-          <MyActivityAsAList
-            showAllList={listOfAllTimeEntry.allListOfTimeEntry}
-          ></MyActivityAsAList>
+          <MyActivityAsAList></MyActivityAsAList>
         </View>
       </ScrollView>
     </SafeAreaView>

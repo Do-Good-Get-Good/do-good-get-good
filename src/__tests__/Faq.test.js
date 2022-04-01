@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
 import Faq from "../screens/Faq";
 
@@ -11,7 +11,6 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 });
 
 const mockedNavigate = jest.fn();
-
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
   return {
@@ -23,10 +22,12 @@ jest.mock("@react-navigation/native", () => {
 });
 
 jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
+  );
   return {
-    AsyncStorage: () => ({
-      setItem: jest.fn(),
-    }),
+    ...actualAsyncStorage,
+    getItem: () => null,
   };
 });
 
@@ -70,11 +71,8 @@ jest.mock("@react-native-firebase/firestore", () => {
 
 describe("Testing Faq page", () => {
   it("Renders page correctly", async () => {
-    // mockGet.mockReturnValueOnce(testDataArray);
     mockGet.mockResolvedValueOnce(testDataArray);
-    const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
-      <Faq />
-    );
+    const { getByTestId, getAllByTestId, getByText } = render(<Faq />);
 
     getByTestId("faq.headerText");
     getByTestId("faq.descText");
@@ -98,9 +96,7 @@ describe("Testing Faq page", () => {
 
   it("Can open the answers", async () => {
     mockGet.mockResolvedValueOnce(testDataArray);
-    const { getByTestId, getAllByTestId, getAllByText, getByText } = render(
-      <Faq />
-    );
+    const { getByTestId, getByText } = render(<Faq />);
 
     await waitFor(() => {
       const button1 = getByTestId("question 0");

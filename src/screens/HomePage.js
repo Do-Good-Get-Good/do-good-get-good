@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, SafeAreaView, View, ScrollView, Text } from "react-native";
+import React from "react";
+import { StyleSheet, SafeAreaView, ScrollView, Text } from "react-native";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { SuggestionProvider } from "../context/SuggestionContext";
+import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 
 import Menu from "../components/Menu";
 import { MyActivities } from "../components/MyActivities";
-import { MyActivityAsAList } from "../components/MyActivityAsAList";
+import MyActivityAsAList from "../components/MyActivityAsAList";
 import { Suggestions } from "../components/Suggestions";
 import FloatingActionButton from "../components/FloatingActionButton";
 import ConfirmActivities from "../components/ConfirmActivities";
@@ -17,8 +18,6 @@ import BottomLogo from "../components/BottomLogo";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-
-import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();

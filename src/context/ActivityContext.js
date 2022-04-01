@@ -14,8 +14,8 @@ export const ActivityProvider = ({ children }) => {
   const [myActivitiesIDandAccumTime, setMyActivitiesIDandAccumTime] = useState(
     []
   );
+  const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
   const [isFinished, setIsFinished] = useState(false);
-
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
 
@@ -46,51 +46,30 @@ export const ActivityProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    let timeArray = [];
-
-    let onlyFive = [];
-
     if (isFinished === true) {
-      const allActivityTimeEntryAndStatus = async () => {
-        const timeAndStatus = await firestore()
-          .collection("timeentries")
-          .where("user_id", "==", auth().currentUser.uid)
-          .orderBy("date", "desc")
-          .get();
-        let data = timeAndStatus.docs.map((doc) => doc.data());
-        let docId = timeAndStatus.docs.map((doc) => doc.id);
-
-        if (data != null && data.length != 0) {
-          for (let i = 0; i < data.length; i++) {
-            let entryTime = {
-              activityId: data[i].activity_id,
-              date: data[i].date,
-              time: data[i].time,
-              statusConfirmed: data[i].status_confirmed,
-              fbDocumentID: docId[i],
-            };
-
-            timeArray.push(entryTime);
-          }
-
-          let empuntOfItems = 0;
-          if (timeArray.length > 0 && timeArray.length < 5) {
-            empuntOfItems = timeArray.length;
+      let allActivityTimeEntryAndStatus = firestore()
+        .collection("timeentries")
+        .where("user_id", "==", auth().currentUser.uid)
+        .orderBy("date", "desc")
+        .limit(limitAmountForTimeEntries)
+        .onSnapshot((snap) => {
+          let docs = [];
+          snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+          if (limitAmountForTimeEntries === 5) {
+            setLastFiveTimeEntries(docs);
           } else {
-            empuntOfItems = 5;
+            setTimeEntryArrayForMyTimePage(docs);
           }
-
-          for (let j = 0; j < empuntOfItems; j++) {
-            onlyFive.push(timeArray[j]);
-          }
-        }
-        setLastFiveTimeEntries(onlyFive);
-        setTimeEntryArrayForMyTimePage(timeArray);
+        });
+      (error) => {
+        console.log(error);
       };
 
-      allActivityTimeEntryAndStatus();
+      return () => {
+        allActivityTimeEntryAndStatus();
+      };
     }
-  }, [isFinished]);
+  }, [isFinished, limitAmountForTimeEntries]);
 
   useEffect(() => {
     if (
@@ -125,7 +104,8 @@ export const ActivityProvider = ({ children }) => {
   return (
     <ActivitynContext.Provider
       value={{
-        timeAndStatus: lastFiveTimeEntries,
+        lastFiveTimeEntries: lastFiveTimeEntries,
+        setLimitAmountForTimeEntries: setLimitAmountForTimeEntries,
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
         allListOfTimeEntry: timeEntryArrayForMyTimePage,
