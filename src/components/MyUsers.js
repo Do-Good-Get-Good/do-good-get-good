@@ -215,7 +215,7 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {loadingData && (
+        {myUsers.length === 0 && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
         {!loadingData && (
