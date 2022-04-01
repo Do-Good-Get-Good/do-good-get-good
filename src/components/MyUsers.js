@@ -227,10 +227,14 @@ const MyUsers = ({ navigation }) => {
                   style={styles.listItemContainerStyle}
                   onPress={() => {
                     openSelectedUser(user);
+                    console.log(`userDropdown ${index}`);
                   }}
                 >
                   <View style={styles.listItemStyle}>
-                    <Text style={styles.listItemNameStyle}>
+                    <Text
+                      testID={`user ${index} name`}
+                      style={styles.listItemNameStyle}
+                    >
                       {user.firstName + " " + user.lastName}
                     </Text>
                     <Icon
@@ -252,17 +256,26 @@ const MyUsers = ({ navigation }) => {
                         {timeEntry !== "NO DATA" ? (
                           <View key={index} style={styles.listItemContentStyle}>
                             <View style={styles.listItemContentNameView}>
-                              <Text style={styles.listItemContentNameStyle}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentNameStyle}
+                              >
                                 {timeEntry.activity_title}
                               </Text>
                             </View>
                             <View style={styles.listItemContentDateView}>
-                              <Text style={styles.listItemContentDateStyle}>
+                              <Text
+                                testID={`user timeEntry ${index} date`}
+                                style={styles.listItemContentDateStyle}
+                              >
                                 {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
                               </Text>
                             </View>
                             <View style={styles.listItemContentHourView}>
-                              <Text style={styles.listItemContentHourStyle}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentHourStyle}
+                              >
                                 {timeEntry.time} tim
                               </Text>
                             </View>

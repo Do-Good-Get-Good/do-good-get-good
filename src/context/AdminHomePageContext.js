@@ -43,7 +43,6 @@ export const AdminHomePageProvider = ({ children }) => {
             console.log(error);
           }
         }
-
         setConfirmedTimeEntries(timeEntryData);
       };
       fetchTimeEntryData();
