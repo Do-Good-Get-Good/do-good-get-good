@@ -50,6 +50,7 @@ const MyUsers = ({ navigation }) => {
 
       setAllUsers(oldArray);
       setLoadingData(true);
+
       setReloadOneUserData(false);
     }
   }, [confirmedTimeEntries]);

@@ -20,7 +20,6 @@ export const AdminHomePageProvider = ({ children }) => {
     const fetchUserData = async () => {
       let data = await useAllUserData(auth().currentUser.uid);
       setUserData(data);
-      console.log("AdminHomePageContext   ");
     };
     fetchUserData();
   }, []);
@@ -44,9 +43,8 @@ export const AdminHomePageProvider = ({ children }) => {
             console.log(error);
           }
         }
-        // console.log("TIME ENTRY DATA: ", timeEntryData[0]);
+
         setConfirmedTimeEntries(timeEntryData);
-        // setReloadOneUserData(false);
       };
       fetchTimeEntryData();
     }
