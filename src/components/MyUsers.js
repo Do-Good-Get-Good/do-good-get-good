@@ -8,19 +8,14 @@ import {
 } from "react-native";
 import { Dialog } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
+
 import { format, set } from "date-fns";
 import { Icon } from "react-native-elements";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
-
-//import { useCreateUserFunction } from "../context/CreateUserContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-import { el } from "date-fns/locale";
 
 const MyUsers = ({ navigation }) => {
-  // const createUserContext = useCreateUserFunction();
-
   const [expanded, setExpanded] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [activeUsers, setActiveUsers] = useState([]);
@@ -29,19 +24,16 @@ const MyUsers = ({ navigation }) => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-  // const [reloadAfterChanges, setReloadAfterChanges] = useState(false);
   const userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
+  const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
     if (reloadOneUserData === false) {
       fetchUserTimeEntries();
     }
-    //if (reloadAfterChanges === true) {
-    // setReloadAfterChanges(false);
-    // }
   }, [userData]);
 
   useEffect(() => {
@@ -61,6 +53,30 @@ const MyUsers = ({ navigation }) => {
       setReloadOneUserData(false);
     }
   }, [confirmedTimeEntries]);
+
+  useEffect(() => {
+    if (
+      changeUserInfoContext.reloadAfterUserNameChanged &&
+      changeUserInfoContext.newChangesInUserInfo.userID != 0
+    ) {
+      let oldArray = allUsers;
+
+      var index = oldArray.findIndex(
+        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
+      );
+      if (index != -1) {
+        oldArray[index].firstName =
+          changeUserInfoContext.newChangesInUserInfo.userFirstName;
+        oldArray[index].lastName =
+          changeUserInfoContext.newChangesInUserInfo.userLastName;
+        oldArray[index].statusActive =
+          changeUserInfoContext.newChangesInUserInfo.statusActive;
+      }
+      setAllUsers(oldArray);
+      setLoadingData(true);
+      changeUserInfoContext.setReloadAfterUserNameChanged(false);
+    }
+  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const fetchUserTimeEntries = async () => {
     if (userData.length != 0 && userData != null) {
@@ -98,13 +114,6 @@ const MyUsers = ({ navigation }) => {
       setLoadingData(true);
     }
   };
-
-  // useEffect(() => {
-  //   if (createUserContext.getChangedUserInfoTo === true) {
-  //     setReloadAfterChanges(true);
-  //     createUserContext.setChangedUserInfoTo(false);
-  //   }
-  // }, [createUserContext.getChangedUserInfoTo]);
 
   const openSelectedUser = (pressedUser) => {
     let pressedUserFullName =
