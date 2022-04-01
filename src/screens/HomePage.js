@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, SafeAreaView, View, ScrollView, Text } from "react-native";
 
 import { useActivityFunction } from "../context/ActivityContext";
@@ -18,17 +18,22 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
+import { AdminHomePageProvider } from "../context/AdminHomePageContext";
+
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
   const userLevel = useAdminCheckFunction();
+
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       {userLevel === "admin" && (
         <>
           <ScrollView style={styles.container}>
-            <ConfirmActivities />
-            <MyUsers navigation={navigation} />
+            <AdminHomePageProvider>
+              <ConfirmActivities />
+              <MyUsers navigation={navigation} />
+            </AdminHomePageProvider>
             <BottomLogo />
           </ScrollView>
           <FloatingActionButton />
