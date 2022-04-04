@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, Platform } from "react-native";
 
 import { Icon, Overlay } from "react-native-elements";
 
@@ -134,7 +134,14 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
-    paddingTop: 12,
+    ...Platform.select({
+      ios: {
+        paddingTop: 12,
+      },
+      android: {
+        paddingTop: 2,
+      },
+    }),
   },
   menuOverlayHeader: {
     alignSelf: "flex-end",
