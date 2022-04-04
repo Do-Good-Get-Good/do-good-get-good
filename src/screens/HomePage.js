@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, SafeAreaView, ScrollView, Text } from "react-native";
+import { StyleSheet, ScrollView, Text } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";

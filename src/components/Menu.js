@@ -16,16 +16,16 @@ const Menu = () => {
 
   return (
     <View
-      style={{
-        ...Platform.select({
-          ios: {
-            marginTop: -50,
-          },
-          android: {
-            marginTop: 0,
-          },
-        }),
-      }}
+    // style={{
+    //   ...Platform.select({
+    //     ios: {
+    //       marginTop: -50,
+    //     },
+    //     android: {
+    //       marginTop: -60,
+    //     },
+    //   }),
+    // }}
     >
       <Header
         leftComponent={
