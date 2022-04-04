@@ -1,23 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Text, View, Pressable } from "react-native";
+
 import { Icon, Overlay } from "react-native-elements";
+
 import auth from "@react-native-firebase/auth";
-import { StatusBar } from "expo-status-bar";
+
 import { useNavigation } from "@react-navigation/native";
-import { Platform } from "react-native";
+
 import { useAdminCheckFunction } from "../context/AdminContext";
-import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
-  const entryTime = useActivityFunction();
 
   useEffect(() => {
     const checkIfUserIsAdmin = () => {
@@ -32,10 +33,11 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       isVisible={isVisible}
       fullScreen
       animationType="fade"
-      overlayStyle={{ backgroundColor: colors.primary }}
+      overlayStyle={{
+        backgroundColor: colors.primary,
+      }}
     >
-      <StatusBar style="auto" />
-      <View style={styles.menuOverlay}>
+      <SafeAreaView style={styles.menuOverlay}>
         <View style={styles.menuOverlayHeader}>
           <Pressable
             testID="menuOverlay.closeButton"
@@ -122,7 +124,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         >
           <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
         </Pressable>
-      </View>
+      </SafeAreaView>
     </Overlay>
   );
 };
@@ -132,18 +134,11 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
-    margin: -10,
-    ...Platform.select({
-      ios: {
-        marginTop: 35,
-        marginBottom: 10,
-      },
-    }),
+    paddingTop: 12,
   },
   menuOverlayHeader: {
     alignSelf: "flex-end",
-    marginTop: 10,
-    marginRight: 16,
+    paddingRight: 4,
   },
   menuOverlayCloseButton: {
     alignItems: "flex-start",

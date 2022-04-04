@@ -1,10 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, Image, Pressable } from "react-native";
-import { Header } from "react-native-elements/dist/header/Header";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
-import { Platform } from "react-native";
-import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 const Menu = () => {
@@ -15,63 +12,52 @@ const Menu = () => {
   };
 
   return (
-    <View
-    // style={{
-    //   ...Platform.select({
-    //     ios: {
-    //       marginTop: -50,
-    //     },
-    //     android: {
-    //       marginTop: -60,
-    //     },
-    //   }),
-    // }}
-    >
-      <Header
-        leftComponent={
+    <>
+      <View style={styles.header}>
+        <View style={styles.headerLogo}>
           <Image
             testID="dgggLogo"
             source={require("../img/Logotyp_DGGG.png")}
             style={styles.headerLogo}
           />
-        }
-        rightComponent={
-          <Pressable
-            testID="showOverlayButton"
-            onPress={() => {
-              toggleOverlay();
-            }}
-          >
-            <View style={styles.headerMenu}>
-              <Icon
-                name="menu"
-                type="material"
-                size={30}
-                style={{ marginLeft: -7 }}
-              />
-              <Text style={styles.headerMenuText}>Meny</Text>
-            </View>
-          </Pressable>
-        }
-        barStyle="dark-content"
-      />
+        </View>
+        <Pressable
+          testID="showOverlayButton"
+          onPress={() => {
+            toggleOverlay();
+          }}
+          style={styles.headerMenu}
+        >
+          <Icon
+            name="menu"
+            type="material"
+            size={30}
+            style={{ marginLeft: -7 }}
+          />
+          <Text style={styles.headerMenuText}>Meny</Text>
+        </Pressable>
+      </View>
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
-    </View>
+    </>
   );
 };
 
 export default Menu;
 
 const styles = StyleSheet.create({
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    padding: 16,
+    height: 65,
+  },
   headerLogo: {
     width: 75,
     height: 37,
-    marginLeft: 6,
   },
   headerMenu: {
     alignItems: "flex-start",
-    marginRight: 8,
-    marginTop: -3,
   },
   headerMenuText: {
     textTransform: "uppercase",
