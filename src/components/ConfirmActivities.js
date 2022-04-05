@@ -198,12 +198,25 @@ const ConfirmActivities = () => {
     for (let i = 0; i < selectedUsers.length; i++) {
       timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
+      addTotalConfirmedHours(selectedUsers[i]);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
     }
     setUsersId(timeEntryIdsToSendToMyUsers);
     setReloadOneUserData(true);
+  };
+
+  const addTotalConfirmedHours = (user) => {
+    console.log("%%%", user.userID, user.timeEntryHours);
+    firestore()
+      .collection("Users")
+      .doc(user.userID)
+      .update({
+        total_confirmed_hours: firestore.FieldValue.increment(
+          user.timeEntryHours
+        ),
+      });
   };
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)

@@ -4,6 +4,8 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useActivityFunction } from "../context/ActivityContext";
 import InfoModal from "../components/InfoModal";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 export function TimeStatistics({}) {
   let today = new Date();
@@ -15,6 +17,19 @@ export function TimeStatistics({}) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .get();
+      let data = user.data().total_confirmed_hours;
+      console.log("!!!!!!", data);
+      setPaidTime(data);
+    };
+    getUser();
+  }, []);
 
   useEffect(() => {
     if (activityContext.allListOfTimeEntry.length != 0) {
@@ -41,7 +56,7 @@ export function TimeStatistics({}) {
       }
       setCurrentForMonth(countTimeForThisMonth);
       setTimeForYear(countTimeForThisYear);
-      setPaidTime(countTimeForAllPaidTime);
+      // setPaidTime(countTimeForAllPaidTime);
     }
   }, [activityContext.allListOfTimeEntry]);
 
