@@ -104,34 +104,72 @@ const CalendarView = ({
   //Registers a users activity (saving to Firebase Firestore)
   const registerTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-    firestore().collection("timeentries").add({
-      activity_id: activity.id,
-      user_id: auth().currentUser.uid,
-      date: date,
-      status_confirmed: false,
-      time: hours,
-      admin_id: adminID,
-      activity_title: activity.title,
-    });
+    try {
+      firestore()
+        .collection("timeentries")
+        .add({
+          activity_id: activity.id,
+          user_id: auth().currentUser.uid,
+          date: date,
+          status_confirmed: false,
+          time: hours,
+          admin_id: adminID,
+          activity_title: activity.title,
+        })
+        .then(() => {
+          console.log("it went good ");
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
     toggleVisibility();
   };
 
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-    firestore().collection("timeentries").doc(activity.timeEntryID).set(
-      {
-        date: date,
-        time: hours,
-      },
-      { merge: true }
-    );
+    try {
+      firestore()
+        .collection("timeentries")
+        .doc(activity.timeEntryID)
+        .set(
+          {
+            date: date,
+            time: hours,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          console.log("it went good change time entry");
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
     toggleVisibility();
   };
 
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
-    firestore().collection("timeentries").doc(activity.timeEntryID).delete();
+    try {
+      firestore()
+        .collection("timeentries")
+        .doc(activity.timeEntryID)
+        .delete()
+        .then(() => {
+          console.log("it went good to delete ");
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
     toggleVisibility();
   };
 
