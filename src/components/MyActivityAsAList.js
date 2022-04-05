@@ -99,7 +99,7 @@ function MyActivityAsAList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Min tid</Text>
+      <Text style={styles.title}>Min aktiviteter</Text>
       <View
         style={{
           paddingHorizontal: 8,
@@ -206,9 +206,9 @@ const styles = StyleSheet.create({
   },
   title: {
     flex: 1,
-    ...typography.h2,
+    ...typography.title,
     marginTop: 30,
-    marginBottom: 10,
+    marginBottom: 5,
     color: colors.dark,
   },
 
