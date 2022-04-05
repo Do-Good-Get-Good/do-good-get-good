@@ -20,6 +20,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
+import ManageUsers from "../components/ManageUsers";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
@@ -39,6 +40,7 @@ export function ActivityCard({ route, navigation }) {
   const [activeActivities, setActiveActivities] = useState(active);
   const [popular, setPopular] = useState(tgPopular);
   const [visible, setVisible] = useState(false);
+  const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
 
   const alertQuestionToTakeAwayFromArchive =
     "Vill du flytta denna aktivitet från arkiv";
@@ -56,6 +58,7 @@ export function ActivityCard({ route, navigation }) {
   const [pressedToTakeAwayFromArchive, setPressedToTakeAwayFromArchive] =
     useState(false);
   const [pressedToDelete, setPressedToDelete] = useState(false);
+
   const alertToArchiveActivity = () => {
     setVisible(!visible);
     setPressedToArchive(true);
@@ -353,7 +356,11 @@ export function ActivityCard({ route, navigation }) {
         {toArchiveOrToTakeAwayFromArchive()}
         {deleteActivity()}
         {tgFavourite()}
-        <TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => {
+            setIsManageUsersOpen(!isManageUsersOpen);
+          }}
+        >
           <Text style={styles.buttonSeeAllUsers}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
@@ -368,6 +375,10 @@ export function ActivityCard({ route, navigation }) {
       </View>
     );
   }
+
+  const closeManageUsers = () => {
+    setIsManageUsersOpen(false);
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -418,6 +429,11 @@ export function ActivityCard({ route, navigation }) {
         </View>
         <BottomLogo />
       </ScrollView>
+      <ManageUsers
+        visible={isManageUsersOpen}
+        closeModal={closeManageUsers}
+        currentActivityId={activityInfo.id}
+      />
     </SafeAreaView>
   );
 }
