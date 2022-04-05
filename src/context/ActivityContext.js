@@ -20,29 +20,37 @@ export const ActivityProvider = ({ children }) => {
     useState([]);
 
   useEffect(() => {
-    const getActivitiesID = async () => {
-      let temArray = [];
-      const user = await firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .get();
-      let data = user.data().activities_and_accumulated_time;
-      if (data != null) {
-        if (data.length > myActivitiesIDandAccumTime)
-          for (let i = 0; i < data.length; i++) {
-            let idAndTime = {
-              accumulatedTime: data[i].accumulated_time,
-              activityID: data[i].activity_id,
-              adminID: user.data().admin_id,
-            };
-            temArray.push(idAndTime);
-          }
+    let temArray = [];
+    const getActivitiesID = firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .onSnapshot(
+        (doc) => {
+          let data = doc.data().activities_and_accumulated_time;
+          if (data != null) {
+            if (data.length > myActivitiesIDandAccumTime)
+              for (let i = 0; i < data.length; i++) {
+                let idAndTime = {
+                  accumulatedTime: data[i].accumulated_time,
+                  activityID: data[i].activity_id,
+                  adminID: doc.data().admin_id,
+                };
+                temArray.push(idAndTime);
+              }
 
-        setMyActivitiesIDandAccumTime(temArray);
-        setIsFinished(true);
-      }
+            setMyActivitiesIDandAccumTime(temArray);
+            setIsFinished(true);
+            temArray = [];
+          }
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+    return () => {
+      getActivitiesID();
     };
-    getActivitiesID();
   }, []);
 
   useEffect(() => {
@@ -52,18 +60,20 @@ export const ActivityProvider = ({ children }) => {
         .where("user_id", "==", auth().currentUser.uid)
         .orderBy("date", "desc")
         .limit(limitAmountForTimeEntries)
-        .onSnapshot((snap) => {
-          let docs = [];
-          snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
-          if (limitAmountForTimeEntries === 5) {
-            setLastFiveTimeEntries(docs);
-          } else {
-            setTimeEntryArrayForMyTimePage(docs);
+        .onSnapshot(
+          (snap) => {
+            let docs = [];
+            snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+            if (limitAmountForTimeEntries === 5) {
+              setLastFiveTimeEntries(docs);
+            } else {
+              setTimeEntryArrayForMyTimePage(docs);
+            }
+          },
+          (error) => {
+            console.log(error);
           }
-        });
-      (error) => {
-        console.log(error);
-      };
+        );
 
       return () => {
         allActivityTimeEntryAndStatus();
@@ -96,6 +106,7 @@ export const ActivityProvider = ({ children }) => {
           }
         }
         setActivitiesInformation(inactiveArray);
+        setIsFinished(false);
       };
       getActivitiesInformation();
     }

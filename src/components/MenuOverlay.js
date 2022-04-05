@@ -27,6 +27,19 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
     checkIfUserIsAdmin();
   }, [isVisible]);
 
+  function signOutFunction() {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log("User signOut");
+      })
+      .catch((error) => {
+        console.log("Enable in your firebase console.");
+
+        console.error(error);
+      });
+  }
+
   return (
     <Overlay
       isVisible={isVisible}
@@ -118,7 +131,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         <Pressable
           testID="menuOverlay.logoutButton"
           style={styles.menuOverlayLogOutButton}
-          onPress={() => auth().signOut()}
+          onPress={() => signOutFunction()}
         >
           <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
         </Pressable>
