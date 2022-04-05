@@ -119,7 +119,7 @@ describe("Testing MyActivities", () => {
       />
     );
     const view = getByTestId("viewId");
-    expect(view.props.style.paddingTop).toEqual(0);
+    expect(view.props.style.paddingTop).toEqual(5);
     expect(getAllByText("Studiehjälp för lågstadiebarn").length).toBe(1);
   });
 });

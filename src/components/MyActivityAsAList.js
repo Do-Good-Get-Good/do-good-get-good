@@ -99,7 +99,7 @@ function MyActivityAsAList({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Min aktiviteter</Text>
+      <Text style={styles.title}>Mina aktiviteter</Text>
       <View
         style={{
           paddingHorizontal: 8,

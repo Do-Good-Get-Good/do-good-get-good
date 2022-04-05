@@ -54,7 +54,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
     const { getAllByText } = render(<MyActivityAsAList />);
-    expect(getAllByText("Min tid").length).toBe(1);
+    expect(getAllByText("Mina aktiviteter").length).toBe(1);
   });
 
   it("can find the activity title", () => {

@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
     return {
       flex: 1,
       flexDirection: "row",
-      paddingTop: myActivity.title.length > 16 ? 10 : 25,
+      paddingTop: myActivity.title.length > 16 ? 5 : 25,
       alignItems: "center",
     };
   },
