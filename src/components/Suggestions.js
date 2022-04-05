@@ -192,14 +192,12 @@ const styles = StyleSheet.create({
     color: colors.dark,
     marginTop: 10,
   },
-
   testNoMatchInSearBar: {
     ...typography.b2,
     textAlign: "center",
     marginTop: 20,
     color: colors.dark,
   },
-
   activityContainer: {
     flex: 1,
     marginTop: 5,
@@ -207,7 +205,6 @@ const styles = StyleSheet.create({
   },
   insideActivityContainer: {
     flex: 1,
-
     justifyContent: "center",
     marginVertical: 7,
     backgroundColor: colors.background,
@@ -249,7 +246,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     color: colors.dark,
   },
-
   textTitle: {
     ...typography.title,
     color: colors.dark,
@@ -261,37 +257,23 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     marginLeft: 12,
   },
-
-  textDescription: {
-    flex: 1,
-    ...typography.b1,
-    paddingTop: 3,
-    marginLeft: 12,
-    height: 60,
-    marginBottom: 3,
-  },
-
-  textLäsMer: {
-    flex: 1,
-    textDecorationLine: "underline",
-    marginVertical: 10,
-    marginHorizontal: 10,
-    marginLeft: 200,
-    color: colors.dark,
-    ...typography.b2,
-    textAlign: "right",
-  },
-
   iconsAndTextCityContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },
+  textDescription: {
+    flex: 1,
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
+    paddingVertical: 1.5,
+    marginLeft: 12,
+  },
   iconsAndTextDescriptionContainer: {
     flex: 1,
     flexDirection: "row",
+    alignItems: "flex-start",
+    height: 60,
   },
-  iconDescription: {
-    paddingTop: 2,
-  },
+  iconDescription: {},
 });
