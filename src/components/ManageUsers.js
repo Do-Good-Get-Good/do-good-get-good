@@ -4,10 +4,11 @@ import {
   Text,
   TouchableNativeFeedback,
   View,
+  Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import { CheckBox, Overlay } from "react-native-elements";
+import { CheckBox, Overlay, Icon } from "react-native-elements";
 
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
@@ -60,9 +61,6 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       .get();
 
     if (!otherUsersRes.empty) {
-      otherUsersRes.docs.map((doc) =>
-        console.log(doc.data().first_name, doc.data().last_name)
-      );
       let users = otherUsersRes.docs.map((doc) => {
         let userInfo = {
           fullName: `${doc.data().first_name} ${doc.data().last_name}`,
@@ -144,6 +142,9 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       backdropStyle={styles.backdropStyle}
       animationType="fade"
     >
+      <Pressable style={styles.closeButton} onPress={() => closeModal()}>
+        <Icon name="close" size={35} />
+      </Pressable>
       <Text style={styles.modalHeader}>Lägg till eller ta bort:</Text>
       <ScrollView style={styles.contentScrollView}>
         <Text style={styles.contentScrollViewHeader1}>Mina användare</Text>
@@ -188,6 +189,18 @@ const styles = StyleSheet.create({
   backdropStyle: {
     backgroundColor: "#000000",
     opacity: 0.5,
+  },
+  closeButton: {
+    position: "absolute",
+    right: -8,
+    top: -8,
+    backgroundColor: colors.background,
+    borderRadius: 25,
+    width: 35,
+    height: 35,
+    alignItems: "center",
+    justifyContent: "center",
+    zIndex: 1,
   },
   modalHeader: {
     ...typography.title,

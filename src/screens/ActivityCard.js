@@ -356,11 +356,12 @@ export function ActivityCard({ route, navigation }) {
         {deleteActivity()}
         {tgFavourite()}
         <TouchableOpacity
+          style={styles.buttonSeeAllUsers}
           onPress={() => {
             setIsManageUsersOpen(!isManageUsersOpen);
           }}
         >
-          <Text style={styles.buttonSeeAllUsers}> Se alla användare</Text>
+          <Text style={styles.buttonSeeAllUsersText}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
     );
@@ -556,14 +557,17 @@ const styles = StyleSheet.create({
   },
   buttonSeeAllUsers: {
     marginTop: 32,
-    ...typography.button.lg,
-    fontWeight: "500",
     paddingVertical: 16,
     backgroundColor: colors.primary,
-    textAlign: "center",
-    letterSpacing: 2,
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 5,
     overflow: "hidden",
+  },
+  buttonSeeAllUsersText: {
+    ...typography.button.lg,
+    fontWeight: "500",
+    letterSpacing: 2,
     color: colors.dark,
   },
   overlay: {
