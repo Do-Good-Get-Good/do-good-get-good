@@ -216,6 +216,7 @@ const ConfirmActivities = () => {
         total_confirmed_hours: firestore.FieldValue.increment(
           user.timeEntryHours
         ),
+        total_hours_year: firestore.FieldValue.increment(user.timeEntryHours),
       });
   };
 

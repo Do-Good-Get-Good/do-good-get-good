@@ -19,46 +19,46 @@ export function TimeStatistics({}) {
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
 
   useEffect(() => {
-    const getUser = async () => {
-      const user = await firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .get();
-      let data = user.data().total_confirmed_hours;
-      console.log("!!!!!!", data);
-      setPaidTime(data);
-    };
-    getUser();
+    let user = firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .onSnapshot((snap) => {
+        let data = snap.data();
+        setPaidTime(data.total_confirmed_hours);
+        setTimeForYear(data.total_hours_year);
+        setCurrentForMonth(data.total_hours_month);
+      });
+    return () => user();
   }, []);
 
-  useEffect(() => {
-    if (activityContext.allListOfTimeEntry.length != 0) {
-      let countTimeForThisMonth = 0.0;
-      let countTimeForThisYear = 0.0;
-      let countTimeForAllPaidTime = 0.0;
-      for (let i = 0; i < activityContext.allListOfTimeEntry.length; i++) {
-        if (
-          activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
-          currentMonth
-        ) {
-          countTimeForThisMonth += activityContext.allListOfTimeEntry[i].time;
-        }
+  // useEffect(() => {
+  //   if (activityContext.allListOfTimeEntry.length != 0) {
+  //     let countTimeForThisMonth = 0.0;
+  //     let countTimeForThisYear = 0.0;
+  //     let countTimeForAllPaidTime = 0.0;
+  //     for (let i = 0; i < activityContext.allListOfTimeEntry.length; i++) {
+  //       if (
+  //         activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
+  //         currentMonth
+  //       ) {
+  //         countTimeForThisMonth += activityContext.allListOfTimeEntry[i].time;
+  //       }
 
-        if (
-          activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
-          currentYear
-        ) {
-          countTimeForThisYear += activityContext.allListOfTimeEntry[i].time;
-        }
-        if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
-          countTimeForAllPaidTime += activityContext.allListOfTimeEntry[i].time;
-        }
-      }
-      setCurrentForMonth(countTimeForThisMonth);
-      setTimeForYear(countTimeForThisYear);
-      // setPaidTime(countTimeForAllPaidTime);
-    }
-  }, [activityContext.allListOfTimeEntry]);
+  //       if (
+  //         activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
+  //         currentYear
+  //       ) {
+  //         countTimeForThisYear += activityContext.allListOfTimeEntry[i].time;
+  //       }
+  //       if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
+  //         countTimeForAllPaidTime += activityContext.allListOfTimeEntry[i].time;
+  //       }
+  //     }
+  //     setCurrentForMonth(countTimeForThisMonth);
+  //     setTimeForYear(countTimeForThisYear);
+  //     // setPaidTime(countTimeForAllPaidTime);
+  //   }
+  // }, [activityContext.allListOfTimeEntry]);
 
   return (
     <View style={styles.containerForAll}>
@@ -83,7 +83,7 @@ export function TimeStatistics({}) {
       <View>
         <View style={styles.containerTextTimeForYearPopUp}>
           <Text testID="timeForYear">
-            Totall antal timmar i år: {timeForYear}
+            Totalt antal timmar i år: {timeForYear}
           </Text>
           <InfoModal screen="homepage" tooltipWidth={250} />
         </View>
