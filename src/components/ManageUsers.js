@@ -12,51 +12,57 @@ import { CheckBox, Overlay } from "react-native-elements";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
+  const userData = useAdminHomePageFunction().userData;
 
   useEffect(() => {
-    fetchAllMyUsers();
-    fetchAllOtherUsers();
-  }, []);
+    if (visible) {
+      fetchAllMyUsers();
+      fetchAllOtherUsers();
+    }
+  }, [visible]);
 
   const fetchAllMyUsers = async () => {
-    let myUsersRes = await firestore()
-      .collection("Users")
-      .where("admin_id", "==", auth().currentUser.uid)
-      .get();
+    let users = userData.map((user) => {
+      let activitesArray = user.activities_and_accumulated_time;
 
-    if (!myUsersRes.empty) {
-      let users = myUsersRes.docs.map((doc) => {
-        let activitesArray = doc.data().activities_and_accumulated_time;
-
-        let userInfo = {
-          userID: doc.id,
-          fullName: `${doc.data().first_name} ${doc.data().last_name}`,
-          checked: false,
-        };
-        for (let i = 0; i < activitesArray.length; i++) {
-          if (activitesArray[i].activity_id === currentActivityId) {
-            userInfo.checked = true;
-          }
+      let userInfo = {
+        userID: user.id,
+        fullName: `${user.first_name} ${user.last_name}`,
+        checked: false,
+      };
+      for (let i = 0; i < activitesArray.length; i++) {
+        if (activitesArray[i].activity_id === currentActivityId) {
+          userInfo.checked = true;
         }
-        return userInfo;
-      });
-      setMyUsers(users);
-    }
+      }
+      return userInfo;
+    });
+    setMyUsers(users);
   };
 
   const fetchAllOtherUsers = async () => {
     let otherUsersRes = await firestore()
       .collection("Users")
       .where("admin_id", "!=", auth().currentUser.uid)
+      .where(
+        "connected_activities",
+        "array-contains",
+        currentActivityId.toString()
+      )
       .get();
 
     if (!otherUsersRes.empty) {
+      otherUsersRes.docs.map((doc) =>
+        console.log(doc.data().first_name, doc.data().last_name)
+      );
       let users = otherUsersRes.docs.map((doc) => {
         let userInfo = {
           fullName: `${doc.data().first_name} ${doc.data().last_name}`,
@@ -76,22 +82,17 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   };
 
   const connectNewActivityToUser = async (pressedUser) => {
-    let userActivites = await firestore()
-      .collection("Users")
-      .doc(pressedUser.userID)
-      .get();
-    let activitiesAndAccumulatedTimeArr =
-      userActivites.data().activities_and_accumulated_time;
     let userToUpdate = firestore().collection("Users").doc(pressedUser.userID);
 
     let newActivity = {
       accumulated_time: 0,
       activity_id: currentActivityId,
     };
-    activitiesAndAccumulatedTimeArr.push(newActivity);
+
     await userToUpdate
       .update({
-        activities_and_accumulated_time: activitiesAndAccumulatedTimeArr,
+        activities_and_accumulated_time:
+          firestore.FieldValue.arrayUnion(newActivity),
       })
       .then(() => {
         setMyUsers(checkOrUncheckUser(myUsers, pressedUser));

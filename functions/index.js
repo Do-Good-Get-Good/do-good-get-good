@@ -92,6 +92,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
           activity_id: data.activityId,
         },
       ],
+      connected_activities: [data.activityId],
       role: data.role,
       status_active: true,
       admin_id: callerUid,

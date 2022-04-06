@@ -99,17 +99,15 @@ const MyUsers = ({ navigation }) => {
           console.log(error);
         }
 
-        if (userTimeEntryData.length != 0) {
-          let userInfo = {
-            firstName: userData[i].first_name,
-            lastName: userData[i].last_name,
-            timeEntries: userTimeEntryData,
-            isOpen: false,
-            statusActive: userData[i].status_active,
-            userID: userData[i].id,
-          };
-          tempArr.push(userInfo);
-        }
+        let userInfo = {
+          firstName: userData[i].first_name,
+          lastName: userData[i].last_name,
+          timeEntries: userTimeEntryData,
+          isOpen: false,
+          statusActive: userData[i].status_active,
+          userID: userData[i].id,
+        };
+        tempArr.push(userInfo);
       }
       setAllUsers(tempArr);
       setLoadingData(true);
@@ -227,7 +225,6 @@ const MyUsers = ({ navigation }) => {
                   style={styles.listItemContainerStyle}
                   onPress={() => {
                     openSelectedUser(user);
-                    console.log(`userDropdown ${index}`);
                   }}
                 >
                   <View style={styles.listItemStyle}>
@@ -253,34 +250,32 @@ const MyUsers = ({ navigation }) => {
                   <View>
                     {user.timeEntries.map((timeEntry, index) => (
                       <View key={index}>
-                        {timeEntry !== "NO DATA" ? (
-                          <View key={index} style={styles.listItemContentStyle}>
-                            <View style={styles.listItemContentNameView}>
-                              <Text
-                                testID={`user timeEntry ${index} title`}
-                                style={styles.listItemContentNameStyle}
-                              >
-                                {timeEntry.activity_title}
-                              </Text>
-                            </View>
-                            <View style={styles.listItemContentDateView}>
-                              <Text
-                                testID={`user timeEntry ${index} date`}
-                                style={styles.listItemContentDateStyle}
-                              >
-                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                              </Text>
-                            </View>
-                            <View style={styles.listItemContentHourView}>
-                              <Text
-                                testID={`user timeEntry ${index} title`}
-                                style={styles.listItemContentHourStyle}
-                              >
-                                {timeEntry.time} tim
-                              </Text>
-                            </View>
+                        <View key={index} style={styles.listItemContentStyle}>
+                          <View style={styles.listItemContentNameView}>
+                            <Text
+                              testID={`user timeEntry ${index} title`}
+                              style={styles.listItemContentNameStyle}
+                            >
+                              {timeEntry.activity_title}
+                            </Text>
                           </View>
-                        ) : null}
+                          <View style={styles.listItemContentDateView}>
+                            <Text
+                              testID={`user timeEntry ${index} date`}
+                              style={styles.listItemContentDateStyle}
+                            >
+                              {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                            </Text>
+                          </View>
+                          <View style={styles.listItemContentHourView}>
+                            <Text
+                              testID={`user timeEntry ${index} title`}
+                              style={styles.listItemContentHourStyle}
+                            >
+                              {timeEntry.time} tim
+                            </Text>
+                          </View>
+                        </View>
                       </View>
                     ))}
                     <View style={styles.editUserIconView}>

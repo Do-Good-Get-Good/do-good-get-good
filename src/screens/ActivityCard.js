@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
-import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
   StyleSheet,
   View,
   Image,
   TouchableOpacity,
-  Platform,
   ScrollView,
   SafeAreaView,
 } from "react-native";
@@ -16,6 +14,7 @@ import { Icon, Overlay } from "react-native-elements";
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -429,11 +428,13 @@ export function ActivityCard({ route, navigation }) {
         </View>
         <BottomLogo />
       </ScrollView>
-      <ManageUsers
-        visible={isManageUsersOpen}
-        closeModal={closeManageUsers}
-        currentActivityId={activityInfo.id}
-      />
+      <AdminHomePageProvider>
+        <ManageUsers
+          visible={isManageUsersOpen}
+          closeModal={closeManageUsers}
+          currentActivityId={activityInfo.id}
+        />
+      </AdminHomePageProvider>
     </SafeAreaView>
   );
 }
