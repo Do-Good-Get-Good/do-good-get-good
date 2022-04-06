@@ -71,16 +71,17 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     }
   };
 
-  const updateUser = (pressedUser) => {
-    if (!pressedUser.checked) {
-      connectNewActivityToUser(pressedUser);
-    } else {
-      removeActivityFromUser(pressedUser);
-    }
+  const updateUsers = () => {
+    myUsers.map((user) => {
+      if (user.checked) {
+        connectNewActivityToUser(user);
+      } else removeActivityFromUser(user);
+    });
+    closeModal();
   };
 
-  const connectNewActivityToUser = async (pressedUser) => {
-    let userToUpdate = firestore().collection("Users").doc(pressedUser.userID);
+  const connectNewActivityToUser = async (user) => {
+    let userToUpdate = firestore().collection("Users").doc(user.userID);
 
     let newActivity = {
       accumulated_time: 0,
@@ -91,20 +92,24 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       .update({
         activities_and_accumulated_time:
           firestore.FieldValue.arrayUnion(newActivity),
+        connected_activities:
+          firestore.FieldValue.arrayUnion(currentActivityId),
       })
       .then(() => {
-        setMyUsers(checkOrUncheckUser(myUsers, pressedUser));
+        console.log(
+          `User '${user.userID}', was CONNECTED to activity: '${currentActivityId}'`
+        );
       });
   };
 
-  const removeActivityFromUser = async (pressedUser) => {
+  const removeActivityFromUser = async (user) => {
     let userActivites = await firestore()
       .collection("Users")
-      .doc(pressedUser.userID)
+      .doc(user.userID)
       .get();
     let activitiesAndAccumulatedTimeArr =
       userActivites.data().activities_and_accumulated_time;
-    let userToUpdate = firestore().collection("Users").doc(pressedUser.userID);
+    let userToUpdate = firestore().collection("Users").doc(user.userID);
 
     let newActivitiesAndAccumulatedTimeArr =
       activitiesAndAccumulatedTimeArr.filter((activity) => {
@@ -115,14 +120,18 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     await userToUpdate
       .update({
         activities_and_accumulated_time: newActivitiesAndAccumulatedTimeArr,
+        connected_activities:
+          firestore.FieldValue.arrayRemove(currentActivityId),
       })
       .then(() => {
-        setMyUsers(checkOrUncheckUser(myUsers, pressedUser));
+        console.log(
+          `User '${user.userID}', was REMOVED from activity: '${currentActivityId}'`
+        );
       });
   };
 
-  const checkOrUncheckUser = (userArr, pressedUser) => {
-    let newUserArr = userArr.map((user) => {
+  const checkOrUncheckUser = (pressedUser) => {
+    let newUserArr = myUsers.map((user) => {
       if (pressedUser.fullName === user.fullName) {
         return {
           ...user,
@@ -131,7 +140,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       }
       return user;
     });
-    return newUserArr;
+    setMyUsers(newUserArr);
   };
 
   return (
@@ -153,7 +162,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             <Text style={styles.userViewText}>{user.fullName}</Text>
             <CheckBox
               checked={user.checked}
-              onPress={() => updateUser(user)}
+              onPress={() => checkOrUncheckUser(user)}
               containerStyle={styles.checkBoxContainerStyle}
               checkedColor={colors.primary}
             />
@@ -166,7 +175,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           </View>
         ))}
       </ScrollView>
-      <TouchableNativeFeedback>
+      <TouchableNativeFeedback onPress={() => updateUsers()}>
         <View style={styles.saveButton}>
           <Text style={styles.saveButtonText}>Spara</Text>
         </View>
