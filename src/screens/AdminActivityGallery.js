@@ -2,12 +2,13 @@ import React, { useContext, useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
-  SafeAreaView,
   View,
   ScrollView,
   Button,
   Platform,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import RadioButton from "../components/RadioButton";
 import Suggestions from "../components/Suggestions";
