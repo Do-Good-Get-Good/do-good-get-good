@@ -8,10 +8,6 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
 export function TimeStatistics({}) {
-  let today = new Date();
-  let currentYear = today.getFullYear();
-  let currentMonth = today.getMonth();
-
   const activityContext = useActivityFunction();
 
   const [timeForYear, setTimeForYear] = useState(0.0);
@@ -19,16 +15,20 @@ export function TimeStatistics({}) {
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
 
   useEffect(() => {
-    let user = firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .onSnapshot((snap) => {
-        let data = snap.data();
-        setPaidTime(data.total_confirmed_hours);
-        setTimeForYear(data.total_hours_year);
-        setCurrentForMonth(data.total_hours_month);
-      });
-    return () => user();
+    try {
+      let user = firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .onSnapshot((snap) => {
+          let data = snap.data();
+          setPaidTime(data.total_confirmed_hours);
+          setTimeForYear(data.total_hours_year);
+          setCurrentForMonth(data.total_hours_month);
+        });
+      return () => user();
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
   }, []);
 
   // useEffect(() => {

@@ -25,6 +25,7 @@ const ConceptPage = () => {
   const [concept, setConcept] = useState([]);
   const [error, setError] = useState(null);
   const [error2, setError2] = useState(null);
+  const [noData, setNoData] = useState(null);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +43,10 @@ const ConceptPage = () => {
             setError("Sorry, something went wrong");
           }
         });
+      if (response.size === 0) {
+        setLoadingUserData(false);
+        setNoData("Det finns för tillfället inga godkända aktiviteter");
+      }
 
       response.forEach(async (timeEntry) => {
         let activity = await firestore()
@@ -139,7 +144,7 @@ const ConceptPage = () => {
               </View>
             ))
           )}
-          {error != null && <Text style={styles.errorText}>{error}</Text>}
+          {error2 != null && <Text style={styles.errorText}>{error2}</Text>}
         </View>
         <Text style={styles.titleText}>Senaste</Text>
         <View style={styles.activityContainer}>
@@ -199,7 +204,8 @@ const ConceptPage = () => {
                 </View>
               ))
           )}
-          {error2 != null && <Text style={styles.errorText}>{error2}</Text>}
+          {noData != null && <Text style={styles.errorText}>{noData}</Text>}
+          {error != null && <Text style={styles.errorText}>{error}</Text>}
         </View>
         <BottomLogo />
       </ScrollView>

@@ -208,16 +208,52 @@ const ConfirmActivities = () => {
   };
 
   const addTotalConfirmedHours = (user) => {
-    console.log("%%%", user.userID, user.timeEntryHours);
-    firestore()
-      .collection("Users")
-      .doc(user.userID)
-      .update({
-        total_confirmed_hours: firestore.FieldValue.increment(
-          user.timeEntryHours
-        ),
-        total_hours_year: firestore.FieldValue.increment(user.timeEntryHours),
-      });
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    console.log("%%%", currentYear, new Date(user.timeEntryDate).getFullYear());
+    if (
+      currentMonth === new Date(user.timeEntryDate).getMonth() &&
+      currentYear === new Date(user.timeEntryDate).getFullYear()
+    ) {
+      try {
+        firestore()
+          .collection("Users")
+          .doc(user.userID)
+          .update({
+            total_confirmed_hours: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+            total_hours_year: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
+          });
+      } catch (error) {
+        console.log("errorMessage ", error);
+      }
+    } else if (
+      currentMonth != new Date(user.timeEntryDate).getMonth() &&
+      currentYear === new Date(user.timeEntryDate).getFullYear()
+    ) {
+      try {
+        firestore()
+          .collection("Users")
+          .doc(user.userID)
+          .update({
+            total_hours_year: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
+          });
+      } catch (error) {
+        console.log("errorMessage ", error);
+      }
+    }
   };
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)

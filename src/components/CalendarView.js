@@ -101,23 +101,37 @@ const CalendarView = ({
     }
   }, [selectedDate]);
 
-  const addTotalConfirmedHours = (hours) => {
+  const addTotalHoursMonth = (hours) => {
     // console.log("%%%", user.userID, user.timeEntryHours);
-    firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(hours),
-      });
+    try {
+      firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .update({
+          total_hours_month: firestore.FieldValue.increment(hours),
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
   };
-  const removeTotalConfirmedHours = (hours) => {
+  const removeTotalHoursMonth = (hours) => {
     // console.log("%%%", user.userID, user.timeEntryHours);
-    firestore()
-      .collection("Users")
-      .doc(auth().currentUser.uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(-hours),
-      });
+    try {
+      firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .update({
+          total_hours_month: firestore.FieldValue.increment(-hours),
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
   };
 
   //Registers a users activity (saving to Firebase Firestore)
@@ -132,13 +146,16 @@ const CalendarView = ({
       admin_id: adminID,
       activity_title: activity.title,
     });
-    addTotalConfirmedHours(hours);
+    addTotalHoursMonth(hours);
     toggleVisibility();
   };
 
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
-    console.log("++++++", activity.time);
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    console.log("++++++", new Date(selectedDate).getMonth(), "!!!!!", activity);
     let date = toDate(new Date(selectedDate));
     firestore().collection("timeentries").doc(activity.timeEntryID).set(
       {
@@ -147,12 +164,17 @@ const CalendarView = ({
       },
       { merge: true }
     );
-    if (activity.time < hours) {
-      let newTime = hours - activity.time;
-      addTotalConfirmedHours(newTime);
-    } else if (activity.time > hours) {
-      let newTime = activity.time - hours;
-      removeTotalConfirmedHours(newTime);
+    if (
+      currentMonth === new Date(selectedDate).getMonth() &&
+      currentYear === new Date(selectedDate).getFullYear()
+    ) {
+      if (activity.time < hours) {
+        let newTime = hours - activity.time;
+        addTotalHoursMonth(newTime);
+      } else if (activity.time > hours) {
+        let newTime = activity.time - hours;
+        removeTotalHoursMonth(newTime);
+      }
     }
 
     toggleVisibility();
@@ -161,7 +183,7 @@ const CalendarView = ({
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
     firestore().collection("timeentries").doc(activity.timeEntryID).delete();
-    removeTotalConfirmedHours(hours);
+    removeTotalHoursMonth(hours);
     toggleVisibility();
   };
 
