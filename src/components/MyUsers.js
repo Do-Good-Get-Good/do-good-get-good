@@ -229,7 +229,6 @@ const MyUsers = ({ navigation }) => {
                   style={styles.listItemContainerStyle}
                   onPress={() => {
                     openSelectedUser(user);
-                    console.log(`userDropdown ${index}`);
                   }}
                 >
                   <View style={styles.listItemStyle}>

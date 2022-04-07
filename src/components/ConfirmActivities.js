@@ -90,17 +90,25 @@ const ConfirmActivities = () => {
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }
-    const timeEntryData = {
-      userID: change.doc.data().user_id,
-      fullName: fullName,
-      activityName: change.doc.data().activity_title,
-      timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
-      timeEntryHours: change.doc.data().time,
-      timeEntryId: change.doc.id,
-      checked: false,
-      isOpen: false,
-    };
-    setMyUsers((prev) => [...prev, timeEntryData]);
+
+    console.log("change.doc ", change.doc.id);
+    var cheackIfThisTimeEntriesAlreadyExist = myUsers.findIndex(
+      (x) => x.timeEntryId === change.doc.id
+    );
+    if (cheackIfThisTimeEntriesAlreadyExist === -1) {
+      const timeEntryData = {
+        userID: change.doc.data().user_id,
+        fullName: fullName,
+        activityName: change.doc.data().activity_title,
+        timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
+        timeEntryHours: change.doc.data().time,
+        timeEntryId: change.doc.id,
+        checked: false,
+        isOpen: false,
+      };
+
+      setMyUsers((prev) => [...prev, timeEntryData]);
+    }
   };
 
   const updateTimeEntry = (change) => {
@@ -208,9 +216,18 @@ const ConfirmActivities = () => {
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
   const confirmActivity = (timeEntryID) => {
-    firestore().collection("timeentries").doc(timeEntryID).update({
-      status_confirmed: true,
-    });
+    firestore()
+      .collection("timeentries")
+      .doc(timeEntryID)
+      .update({
+        status_confirmed: true,
+      })
+      .then(() => {
+        console.log("ConfirmActivities. It went good to update timeentries ");
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   return (
