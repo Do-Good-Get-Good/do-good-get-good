@@ -50,24 +50,28 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   };
 
   const fetchAllOtherUsers = async () => {
-    let otherUsersRes = await firestore()
-      .collection("Users")
-      .where("admin_id", "!=", auth().currentUser.uid)
-      .where(
-        "connected_activities",
-        "array-contains",
-        currentActivityId.toString()
-      )
-      .get();
+    try {
+      let otherUsersRes = await firestore()
+        .collection("Users")
+        .where("admin_id", "!=", auth().currentUser.uid)
+        .where(
+          "connected_activities",
+          "array-contains",
+          currentActivityId.toString()
+        )
+        .get();
 
-    if (!otherUsersRes.empty) {
-      let users = otherUsersRes.docs.map((doc) => {
-        let userInfo = {
-          fullName: `${doc.data().first_name} ${doc.data().last_name}`,
-        };
-        return userInfo;
-      });
-      setOtherUsers(users);
+      if (!otherUsersRes.empty) {
+        let users = otherUsersRes.docs.map((doc) => {
+          let userInfo = {
+            fullName: `${doc.data().first_name} ${doc.data().last_name}`,
+          };
+          return userInfo;
+        });
+        setOtherUsers(users);
+      }
+    } catch (error) {
+      console.log(error);
     }
   };
 
@@ -147,12 +151,19 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       <Pressable style={styles.closeButton} onPress={() => closeModal()}>
         <Icon name="close" size={35} />
       </Pressable>
-      <Text style={styles.modalHeader}>Lägg till eller ta bort:</Text>
+      <Text testID="test.modalHeader" style={styles.modalHeader}>
+        Lägg till eller ta bort:
+      </Text>
       <ScrollView style={styles.contentScrollView}>
         <Text style={styles.contentScrollViewHeader1}>Mina användare</Text>
         {myUsers.map((user, index) => (
-          <View style={styles.userView} key={index}>
-            <Text style={styles.userViewText}>{user.fullName}</Text>
+          <View testID="test.userView" style={styles.userView} key={index}>
+            <Text
+              testID={`test.userFullName${index}`}
+              style={styles.userViewText}
+            >
+              {user.fullName}
+            </Text>
             <CheckBox
               checked={user.checked}
               onPress={() => checkOrUncheckUser(user)}
