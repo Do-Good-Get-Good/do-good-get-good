@@ -15,7 +15,10 @@ export const ActivityProvider = ({ children }) => {
     []
   );
   const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
+    useState(false);
+  const [isFinishedToLoadMyEntries, setIsFinishedToLoadMyEntries] =
+    useState(false);
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
 
@@ -39,7 +42,9 @@ export const ActivityProvider = ({ children }) => {
               }
 
             setMyActivitiesIDandAccumTime(temArray);
-            setIsFinished(true);
+            setIsFinishedToLoadActivitiesID(true);
+            setIsFinishedToLoadMyEntries(true);
+
             temArray = [];
           }
         },
@@ -54,7 +59,7 @@ export const ActivityProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    if (isFinished === true) {
+    if (isFinishedToLoadActivitiesID === true) {
       let allActivityTimeEntryAndStatus = firestore()
         .collection("timeentries")
         .where("user_id", "==", auth().currentUser.uid)
@@ -64,6 +69,7 @@ export const ActivityProvider = ({ children }) => {
           (snap) => {
             let docs = [];
             snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+
             if (limitAmountForTimeEntries === 5) {
               setLastFiveTimeEntries(docs);
             } else {
@@ -79,38 +85,48 @@ export const ActivityProvider = ({ children }) => {
         allActivityTimeEntryAndStatus();
       };
     }
-  }, [isFinished, limitAmountForTimeEntries]);
+  }, [isFinishedToLoadActivitiesID, limitAmountForTimeEntries]);
 
   useEffect(() => {
-    if (
-      isFinished === true &&
-      myActivitiesIDandAccumTime.length > activitiesInformation.length
-    ) {
+    if (isFinishedToLoadMyEntries === true) {
       let inactiveArray = [];
       const getActivitiesInformation = async () => {
         for (let i = 0; i < myActivitiesIDandAccumTime.length; i++) {
           var id = myActivitiesIDandAccumTime[i];
-          const information = await firestore()
-            .collection("Activities")
-            .doc(id.activityID)
-            .get();
-          let info = information.data();
-          if (info != null) {
-            const dataInfo = {
-              id: id.activityID,
-              title: info.activity_title,
-              city: info.activity_city,
-              photo: info.activity_photo,
-            };
-            inactiveArray.push(dataInfo);
+          try {
+            await firestore()
+              .collection("Activities")
+              .doc(id.activityID)
+              .get()
+              .then((doc) => {
+                let info = doc.data();
+                let dataInfo = {};
+                if (info != null) {
+                  dataInfo = {
+                    id: id.activityID,
+                    title: info.activity_title,
+                    city: info.activity_city,
+                    photo: info.activity_photo,
+                  };
+                  inactiveArray.push(dataInfo);
+                }
+              })
+              .catch((error) => {
+                console.log("errorMessage ", error);
+              });
+          } catch (error) {
+            console.log("ActivitynContex errorMessage ", error);
           }
         }
+
         setActivitiesInformation(inactiveArray);
-        setIsFinished(false);
+
+        setIsFinishedToLoadMyEntries(false);
       };
+
       getActivitiesInformation();
     }
-  }, [isFinished]);
+  }, [isFinishedToLoadMyEntries]);
 
   return (
     <ActivitynContext.Provider

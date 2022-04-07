@@ -101,6 +101,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               onPress={() => {
                 openOverlay();
                 navigation.navigate("MyTimePage");
+                entryTime.setLimitAmountForTimeEntries(20);
               }}
             >
               <Text style={styles.menuOverlayLinkText}>Min tid</Text>
