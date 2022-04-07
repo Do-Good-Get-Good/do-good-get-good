@@ -8,11 +8,12 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  SafeAreaView,
   TextInput,
   Dimensions,
 } from "react-native";
 import Menu from "../components/Menu";
+
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
