@@ -24,6 +24,7 @@ const MyUsers = ({ navigation }) => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
+  const [myUsersLoading, setMyUsersLoading] = useState(true);
   const userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
@@ -86,33 +87,34 @@ const MyUsers = ({ navigation }) => {
         let userTimeEntryData;
 
         try {
-          let response = await firestore()
+          await firestore()
             .collection("timeentries")
             .where("user_id", "==", userData[i].id)
             .where("status_confirmed", "==", true)
             .orderBy("date", "desc")
             .limit(5)
-            .get();
-
-          userTimeEntryData = response.docs.map((doc) => doc.data());
+            .get()
+            .then((response) => {
+              userTimeEntryData = response.docs.map((doc) => doc.data());
+            })
+            .catch((error) => console.log("MyUsers ", error));
         } catch (error) {
-          console.log(error);
+          console.log("MyUsers ", error);
         }
 
-        if (userTimeEntryData.length != 0) {
-          let userInfo = {
-            firstName: userData[i].first_name,
-            lastName: userData[i].last_name,
-            timeEntries: userTimeEntryData,
-            isOpen: false,
-            statusActive: userData[i].status_active,
-            userID: userData[i].id,
-          };
-          tempArr.push(userInfo);
-        }
+        let userInfo = {
+          firstName: userData[i].first_name,
+          lastName: userData[i].last_name,
+          timeEntries: userTimeEntryData,
+          isOpen: false,
+          statusActive: userData[i].status_active,
+          userID: userData[i].id,
+        };
+        tempArr.push(userInfo);
       }
       setAllUsers(tempArr);
       setLoadingData(true);
+      setMyUsersLoading(false);
     }
   };
 
@@ -215,7 +217,7 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {myUsers.length === 0 && (
+        {myUsersLoading && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
         {!loadingData && (

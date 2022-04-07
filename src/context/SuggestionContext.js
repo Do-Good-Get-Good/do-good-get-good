@@ -13,30 +13,43 @@ export const SuggestionProvider = ({ children }) => {
   useEffect(() => {
     if (isFinished === false) {
       const popularActivities = async () => {
-        let tempArray = [];
-        const popularTrueActivities = await firestore()
-          .collection("Activities")
-          .where("tg_favorite", "==", true)
-          .get();
+        try {
+          let tempArray = [];
+          await firestore()
+            .collection("Activities")
+            .where("tg_favorite", "==", true)
+            .get()
+            .then((popularTrueActivities) => {
+              let activities = popularTrueActivities.docs.map((doc) =>
+                doc.data()
+              );
 
-        let activities = popularTrueActivities.docs.map((doc) => doc.data());
-
-        if (activities != null && activities.length > suggestionsFB.length) {
-          for (let i = 0; i < activities.length; i++) {
-            const dataInfo = {
-              id: activities[i].activityID,
-              title: activities[i].activity_title,
-              city: activities[i].activity_city,
-              description: activities[i].activity_description,
-              photo: activities[i].activity_photo,
-              popular: activities[i].tg_favorite,
-            };
-            tempArray.push(dataInfo);
-          }
-          console.log("SuggestionContext popular activity useEffect");
+              if (
+                activities != null &&
+                activities.length > suggestionsFB.length
+              ) {
+                for (let i = 0; i < activities.length; i++) {
+                  const dataInfo = {
+                    id: activities[i].activityID,
+                    title: activities[i].activity_title,
+                    city: activities[i].activity_city,
+                    description: activities[i].activity_description,
+                    photo: activities[i].activity_photo,
+                    popular: activities[i].tg_favorite,
+                  };
+                  tempArray.push(dataInfo);
+                }
+                console.log("SuggestionContext popular activity useEffect");
+              }
+              setSuggestionsFB(tempArray);
+              setIsFinished(true);
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("SuggestionContext errorMessage ", error);
         }
-        setSuggestionsFB(tempArray);
-        setIsFinished(true);
       };
 
       popularActivities();
