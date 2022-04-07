@@ -32,15 +32,15 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
 
   const fetchAllMyUsers = async () => {
     let users = userData.map((user) => {
-      let activitesArray = user.activities_and_accumulated_time;
+      let connectedActivitiesArray = user.connected_activities;
 
       let userInfo = {
         userID: user.id,
         fullName: `${user.first_name} ${user.last_name}`,
         checked: false,
       };
-      for (let i = 0; i < activitesArray.length; i++) {
-        if (activitesArray[i].activity_id === currentActivityId) {
+      for (let i = 0; i < connectedActivitiesArray.length; i++) {
+        if (connectedActivitiesArray[i] === currentActivityId) {
           userInfo.checked = true;
         }
       }
@@ -99,27 +99,17 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         console.log(
           `User '${user.userID}', was CONNECTED to activity: '${currentActivityId}'`
         );
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
   const removeActivityFromUser = async (user) => {
-    let userActivites = await firestore()
-      .collection("Users")
-      .doc(user.userID)
-      .get();
-    let activitiesAndAccumulatedTimeArr =
-      userActivites.data().activities_and_accumulated_time;
     let userToUpdate = firestore().collection("Users").doc(user.userID);
 
-    let newActivitiesAndAccumulatedTimeArr =
-      activitiesAndAccumulatedTimeArr.filter((activity) => {
-        if (activity.activity_id != currentActivityId) {
-          return activity;
-        }
-      });
     await userToUpdate
       .update({
-        activities_and_accumulated_time: newActivitiesAndAccumulatedTimeArr,
         connected_activities:
           firestore.FieldValue.arrayRemove(currentActivityId),
       })
@@ -127,6 +117,9 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         console.log(
           `User '${user.userID}', was REMOVED from activity: '${currentActivityId}'`
         );
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -169,11 +162,26 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           </View>
         ))}
         <Text style={styles.contentScrollViewHeader2}>Andra användare</Text>
-        {otherUsers.map((user, index) => (
-          <View style={styles.userView} key={index}>
-            <Text style={styles.userViewText}>{user.fullName}</Text>
+        {otherUsers.length > 0 ? (
+          otherUsers.map((user, index) => (
+            <View
+              style={
+                index != otherUsers.length - 1
+                  ? styles.userView
+                  : [styles.userView, styles.lastUserView]
+              }
+              key={index}
+            >
+              <Text style={styles.userViewText}>{user.fullName}</Text>
+            </View>
+          ))
+        ) : (
+          <View style={styles.noOtherUsersView}>
+            <Text style={styles.userViewText}>
+              Inga andra användare är kopplade till den här aktiviteten!
+            </Text>
           </View>
-        ))}
+        )}
       </ScrollView>
       <TouchableNativeFeedback onPress={() => updateUsers()}>
         <View style={styles.saveButton}>
@@ -241,7 +249,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingVertical: 5,
   },
-  userViewText: { ...typography.b2 },
+  lastUserView: {
+    marginBottom: 22,
+  },
+  userViewText: {
+    ...typography.b2,
+  },
+  noOtherUsersView: {
+    paddingVertical: 5,
+    marginBottom: 22,
+  },
   checkBoxContainerStyle: {
     padding: 0,
     margin: 0,
