@@ -1,6 +1,13 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import {
+  render,
+  fireEvent,
+  waitFor,
+  act,
+  cleanup,
+  screen,
+} from "@testing-library/react-native";
 import ManageUsers from "../components/ManageUsers";
 
 jest.useFakeTimers();
@@ -86,6 +93,11 @@ jest.mock("@react-native-firebase/auth", () => () => ({
   },
 }));
 
+afterEach(() => {
+  cleanup();
+  jest.clearAllMocks();
+});
+
 describe("Testing ManageUsers component", () => {
   it("Can find the header text", () => {
     const { getByTestId } = render(
@@ -95,27 +107,27 @@ describe("Testing ManageUsers component", () => {
         currentActivityId={"activity_id"}
       />
     );
-    waitFor(() => {
-      expect(getByTestId("test.modalHeader").children[0]).toEqual(
-        "Lägg till eller ta bort:"
-      );
-    });
+    waitFor(() => {});
+    expect(getByTestId("test.modalHeader").children[0]).toEqual(
+      "Lägg till eller ta bort:"
+    );
   });
 
-  // it("Can find connected users", () => {
-  //   const { getByTestId } = render(
-  //     <ManageUsers
-  //       visible={true}
-  //       closeModal={jest.fn()}
-  //       currentActivityId={"activity_id"}
-  //     />
-  //   );
-  //   waitFor(() => {
-  //     expect(getByTestId("test.userView").length).toBe(2);
-  //     expect(getByTestId("test.userFullName0")).toEqual("Test 1");
-  //     expect(getByTestId("test.userFullName1")).toEqual("Test 2");
-  //   });
-  // });
+  it("Can find connected users", () => {
+    const { getAllByTestId, getByTestId } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"activity_id"}
+      />
+    );
+
+    waitFor(() => {});
+
+    expect(getAllByTestId("test.userView").length).toBe(2);
+    expect(getByTestId("test.userFullName0").children[0]).toEqual("Test 1");
+    expect(getByTestId("test.userFullName1").children[0]).toEqual("Test 2");
+  });
 
   // it("Can find other connected users", () => {
   //   const { getByTestId } = render(

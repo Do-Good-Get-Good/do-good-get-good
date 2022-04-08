@@ -28,9 +28,14 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       fetchAllMyUsers();
       fetchAllOtherUsers();
     }
+
+    return () => {
+      setMyUsers([]);
+      setOtherUsers([]);
+    };
   }, [visible]);
 
-  const fetchAllMyUsers = async () => {
+  const fetchAllMyUsers = () => {
     let users = userData.map((user) => {
       let connectedActivitiesArray = user.connected_activities;
 
