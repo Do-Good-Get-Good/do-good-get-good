@@ -176,6 +176,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         {otherUsers.length > 0 ? (
           otherUsers.map((user, index) => (
             <View
+              testID="test.otherUsersView"
               style={
                 index != otherUsers.length - 1
                   ? styles.userView
@@ -183,7 +184,12 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
               }
               key={index}
             >
-              <Text style={styles.userViewText}>{user.fullName}</Text>
+              <Text
+                testID={`test.otherUserFullName${index}`}
+                style={styles.userViewText}
+              >
+                {user.fullName}
+              </Text>
             </View>
           ))
         ) : (
