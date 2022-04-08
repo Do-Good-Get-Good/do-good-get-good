@@ -3,6 +3,8 @@ import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import ManageUsers from "../components/ManageUsers";
 
+jest.useFakeTimers();
+
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
@@ -93,10 +95,11 @@ describe("Testing ManageUsers component", () => {
         currentActivityId={"activity_id"}
       />
     );
-
-    expect(getByTestId("test.modalHeader").children[0]).toEqual(
-      "Lägg till eller ta bort:"
-    );
+    waitFor(() => {
+      expect(getByTestId("test.modalHeader").children[0]).toEqual(
+        "Lägg till eller ta bort:"
+      );
+    });
   });
 
   // it("Can find connected users", () => {
