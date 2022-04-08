@@ -160,7 +160,12 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         Lägg till eller ta bort:
       </Text>
       <ScrollView style={styles.contentScrollView}>
-        <Text style={styles.contentScrollViewHeader1}>Mina användare</Text>
+        <Text
+          testID="test.myUsersHeader"
+          style={styles.contentScrollViewHeader1}
+        >
+          Mina användare
+        </Text>
         {myUsers.map((user, index) => (
           <View testID="test.userView" style={styles.userView} key={index}>
             <Text
@@ -177,7 +182,12 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             />
           </View>
         ))}
-        <Text style={styles.contentScrollViewHeader2}>Andra användare</Text>
+        <Text
+          testID="test.otherUsersHeader"
+          style={styles.contentScrollViewHeader2}
+        >
+          Andra användare
+        </Text>
         {otherUsers.length > 0 ? (
           otherUsers.map((user, index) => (
             <View

@@ -93,14 +93,14 @@ jest.mock("@react-native-firebase/auth", () => () => ({
   },
 }));
 
-afterEach(() => {
-  cleanup();
-  jest.clearAllMocks();
+afterEach(async () => {
+  await cleanup();
+  // jest.clearAllMocks();
 });
 
 describe("Testing ManageUsers component", () => {
   it("Can find the header text", () => {
-    const { getByTestId } = render(
+    const { getByTestId, getAllByTestId } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
@@ -111,36 +111,25 @@ describe("Testing ManageUsers component", () => {
     expect(getByTestId("test.modalHeader").children[0]).toEqual(
       "Lägg till eller ta bort:"
     );
-  });
 
-  it("Can find connected users", () => {
-    const { getAllByTestId, getByTestId } = render(
-      <ManageUsers
-        visible={true}
-        closeModal={jest.fn()}
-        currentActivityId={"activity_id"}
-      />
+    expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
+      "Mina användare"
     );
-
-    waitFor(() => {});
 
     expect(getAllByTestId("test.userView").length).toBe(2);
     expect(getByTestId("test.userFullName0").children[0]).toEqual("Test 1");
     expect(getByTestId("test.userFullName1").children[0]).toEqual("Test 2");
-  });
 
-  // it("Can find other connected users", () => {
-  //   const { getByTestId } = render(
-  //     <ManageUsers
-  //       visible={true}
-  //       closeModal={jest.fn()}
-  //       currentActivityId={"activity_id"}
-  //     />
-  //   );
-  //   waitFor(() => {
-  //     expect(getByTestId("test.otherUsersView").length).toBe(2);
-  //     expect(getByTestId("test.otherUserFullName0")).toEqual("Otr Uer");
-  //     expect(getByTestId("test.otherUserFullName1")).toEqual("Oth User");
-  //   });
-  // });
+    // expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+    //   "Andra användare"
+    // );
+
+    // expect(getAllByTestId("test.otherUsersView").length).toBe(2);
+    // expect(getByTestId("test.otherUsersFullName0").children[0]).toEqual(
+    //   "Test 1"
+    // );
+    // expect(getByTestId("test.otherUsersFullName1").children[0]).toEqual(
+    //   "Test 2"
+    // );
+  });
 });
