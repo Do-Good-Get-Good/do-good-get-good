@@ -26,22 +26,24 @@ const ConfirmActivities = () => {
   const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
-    let unSubscribe = firestore()
-      .collection("timeentries")
-      .where("admin_id", "==", auth().currentUser.uid)
-      .where("status_confirmed", "==", false)
-      .orderBy("date", "desc")
-      .onSnapshot(
-        (snapshot) => {
-          setSnapshot(snapshot);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    if (userData.length != 0) {
+      return firestore()
+        .collection("timeentries")
+        .where("admin_id", "==", auth().currentUser.uid)
+        .where("status_confirmed", "==", false)
+        .orderBy("date", "desc")
+        .onSnapshot(
+          (snapshot) => {
+            console.log("snapshot  ", snapshot.docs.length);
+            setSnapshot(snapshot);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+    }
 
     return () => {
-      unSubscribe();
       setMyUsers([]);
       setCheckAll(false);
       setChecked(false);
@@ -85,13 +87,13 @@ const ConfirmActivities = () => {
 
   const addTimeEntry = async (change) => {
     let fullName;
+
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === change.doc.data().user_id) {
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }
 
-    console.log("change.doc ", change.doc.id);
     var cheackIfThisTimeEntriesAlreadyExist = myUsers.findIndex(
       (x) => x.timeEntryId === change.doc.id
     );
