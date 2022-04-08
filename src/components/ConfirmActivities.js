@@ -93,6 +93,7 @@ const ConfirmActivities = () => {
     const timeEntryData = {
       userID: change.doc.data().user_id,
       fullName: fullName,
+      activityID: change.doc.data().activity_id,
       activityName: change.doc.data().activity_title,
       timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
       timeEntryHours: change.doc.data().time,
@@ -198,7 +199,9 @@ const ConfirmActivities = () => {
     for (let i = 0; i < selectedUsers.length; i++) {
       timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
+      console.log("&&&&&&&", selectedUsers[i]);
       addTotalConfirmedHours(selectedUsers[i]);
+      // addAccumulatedTime(selectedUsers[i]);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
@@ -206,6 +209,22 @@ const ConfirmActivities = () => {
     setUsersId(timeEntryIdsToSendToMyUsers);
     setReloadOneUserData(true);
   };
+
+  // const addAccumulatedTime = (user) => {
+  //   try {
+  //     firestore()
+  //       .collection("Users")
+  //       .doc(user.userID)
+  //       .update({
+  //         accumulated_time: firestore.FieldValue.increment(user.timeEntryHours),
+  //       })
+  //       .catch((error) => {
+  //         console.log("errorMessage ", error);
+  //       });
+  //   } catch (error) {
+  //     console.log("errorMessage ", error);
+  //   }
+  // };
 
   const addTotalConfirmedHours = (user) => {
     let today = new Date();

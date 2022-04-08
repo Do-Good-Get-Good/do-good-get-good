@@ -102,7 +102,6 @@ const CalendarView = ({
   }, [selectedDate]);
 
   const addTotalHoursMonth = (hours) => {
-    // console.log("%%%", user.userID, user.timeEntryHours);
     try {
       firestore()
         .collection("Users")
@@ -118,7 +117,6 @@ const CalendarView = ({
     }
   };
   const removeTotalHoursMonth = (hours) => {
-    // console.log("%%%", user.userID, user.timeEntryHours);
     try {
       firestore()
         .collection("Users")
@@ -155,7 +153,6 @@ const CalendarView = ({
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
-    console.log("++++++", new Date(selectedDate).getMonth(), "!!!!!", activity);
     let date = toDate(new Date(selectedDate));
     firestore().collection("timeentries").doc(activity.timeEntryID).set(
       {

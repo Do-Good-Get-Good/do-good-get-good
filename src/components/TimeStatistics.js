@@ -2,14 +2,11 @@ import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { useActivityFunction } from "../context/ActivityContext";
 import InfoModal from "../components/InfoModal";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
 export function TimeStatistics({}) {
-  const activityContext = useActivityFunction();
-
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
@@ -30,35 +27,6 @@ export function TimeStatistics({}) {
       console.log("errorMessage ", error);
     }
   }, []);
-
-  // useEffect(() => {
-  //   if (activityContext.allListOfTimeEntry.length != 0) {
-  //     let countTimeForThisMonth = 0.0;
-  //     let countTimeForThisYear = 0.0;
-  //     let countTimeForAllPaidTime = 0.0;
-  //     for (let i = 0; i < activityContext.allListOfTimeEntry.length; i++) {
-  //       if (
-  //         activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
-  //         currentMonth
-  //       ) {
-  //         countTimeForThisMonth += activityContext.allListOfTimeEntry[i].time;
-  //       }
-
-  //       if (
-  //         activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
-  //         currentYear
-  //       ) {
-  //         countTimeForThisYear += activityContext.allListOfTimeEntry[i].time;
-  //       }
-  //       if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
-  //         countTimeForAllPaidTime += activityContext.allListOfTimeEntry[i].time;
-  //       }
-  //     }
-  //     setCurrentForMonth(countTimeForThisMonth);
-  //     setTimeForYear(countTimeForThisYear);
-  //     // setPaidTime(countTimeForAllPaidTime);
-  //   }
-  // }, [activityContext.allListOfTimeEntry]);
 
   return (
     <View style={styles.containerForAll}>
