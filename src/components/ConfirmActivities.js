@@ -199,9 +199,8 @@ const ConfirmActivities = () => {
     for (let i = 0; i < selectedUsers.length; i++) {
       timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
-      console.log("&&&&&&&", selectedUsers[i]);
       addTotalConfirmedHours(selectedUsers[i]);
-      // addAccumulatedTime(selectedUsers[i]);
+      addAccumulatedTime(selectedUsers[i]);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
@@ -210,27 +209,46 @@ const ConfirmActivities = () => {
     setReloadOneUserData(true);
   };
 
-  // const addAccumulatedTime = (user) => {
-  //   try {
-  //     firestore()
-  //       .collection("Users")
-  //       .doc(user.userID)
-  //       .update({
-  //         accumulated_time: firestore.FieldValue.increment(user.timeEntryHours),
-  //       })
-  //       .catch((error) => {
-  //         console.log("errorMessage ", error);
-  //       });
-  //   } catch (error) {
-  //     console.log("errorMessage ", error);
-  //   }
-  // };
+  const addAccumulatedTime = (user) => {
+    for (let i = 0; i < userData.length; i++) {
+      if (userData[i].id === user.userID) {
+        const timeArray = userData[i].activities_and_accumulated_time;
+        const objNum = timeArray.findIndex(
+          (obj) => obj.activity_id === user.activityID
+        );
+
+        nyObj = {
+          accumulated_time: (userData[i].activities_and_accumulated_time[
+            objNum
+          ].accumulated_time += user.timeEntryHours),
+          activity_id: user.activityID,
+        };
+
+        timeArray.push(nyObj);
+        timeArray.splice(objNum, 1);
+
+        try {
+          firestore()
+            .collection("Users")
+            .doc(user.userID)
+            .update({
+              activities_and_accumulated_time: timeArray,
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("errorMessage ", error);
+        }
+      }
+    }
+  };
 
   const addTotalConfirmedHours = (user) => {
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
-    console.log("%%%", currentYear, new Date(user.timeEntryDate).getFullYear());
+
     if (
       currentMonth === new Date(user.timeEntryDate).getMonth() &&
       currentYear === new Date(user.timeEntryDate).getFullYear()
