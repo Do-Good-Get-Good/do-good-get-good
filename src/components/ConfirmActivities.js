@@ -34,7 +34,6 @@ const ConfirmActivities = () => {
         .orderBy("date", "desc")
         .onSnapshot(
           (snapshot) => {
-            console.log("snapshot  ", snapshot.docs.length);
             setSnapshot(snapshot);
           },
           (error) => {

@@ -81,11 +81,8 @@ const MyUsers = ({ navigation }) => {
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const fetchUserTimeEntries = async () => {
-    if (userData.length != 0 && userData != null) {
-      let tempArr = [];
+    if (userData.length != 0 && userData != null && allUsers.length === 0) {
       for (let i = 0; i < userData.length; i++) {
-        let userTimeEntryData;
-
         try {
           await firestore()
             .collection("timeentries")
@@ -95,26 +92,26 @@ const MyUsers = ({ navigation }) => {
             .limit(5)
             .get()
             .then((response) => {
-              userTimeEntryData = response.docs.map((doc) => doc.data());
+              let userInfo = {
+                firstName: userData[i].first_name,
+                lastName: userData[i].last_name,
+                timeEntries: response.docs.map((doc) => doc.data()),
+                isOpen: false,
+                statusActive: userData[i].status_active,
+                userID: userData[i].id,
+              };
+
+              setAllUsers((prev) => [...prev, userInfo]);
+              setLoadingData(true);
             })
             .catch((error) => console.log("MyUsers ", error));
         } catch (error) {
           console.log("MyUsers ", error);
         }
-
-        let userInfo = {
-          firstName: userData[i].first_name,
-          lastName: userData[i].last_name,
-          timeEntries: userTimeEntryData,
-          isOpen: false,
-          statusActive: userData[i].status_active,
-          userID: userData[i].id,
-        };
-        tempArr.push(userInfo);
       }
-      setAllUsers(tempArr);
-      setLoadingData(true);
+
       setMyUsersLoading(false);
+      setLoadingData(false);
     }
   };
 
@@ -164,7 +161,7 @@ const MyUsers = ({ navigation }) => {
       setInactiveUsers(arrayWithInactiveUsers);
       setLoadingData(false);
     }
-  }, [loadingData]);
+  }, [allUsers, loadingData]);
 
   useEffect(() => {
     sortUsers(sortBy);
@@ -192,6 +189,7 @@ const MyUsers = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
+
         {expanded === true ? (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
@@ -220,7 +218,7 @@ const MyUsers = ({ navigation }) => {
         {myUsersLoading && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
-        {!loadingData && (
+        {allUsers.length != 0 && (
           <>
             {myUsers.map((user, index) => (
               <View key={index}>

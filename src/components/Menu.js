@@ -18,6 +18,8 @@ import { useNetInfo } from "@react-native-community/netinfo";
 const Menu = () => {
   const [visible, setVisible] = useState(false);
   const inetInfo = useNetInfo();
+  const noInternetText =
+    "Ingen internetanslutning, dina ändringar kanske inte sparas";
 
   const toggleOverlay = () => {
     setVisible(!visible);
@@ -26,9 +28,7 @@ const Menu = () => {
   const ifNoInternetConnection = () => {
     return (
       <View>
-        <Text style={styles.ifNoInternet}>
-          Ingen internetanslutning, dina ändringar kanske inte sparas
-        </Text>
+        <Text style={styles.ifNoInternet}>{noInternetText}</Text>
       </View>
     );
   };
