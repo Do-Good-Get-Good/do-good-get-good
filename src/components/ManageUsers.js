@@ -208,8 +208,8 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             </View>
           ))
         ) : (
-          <View style={styles.noOtherUsersView}>
-            <Text style={styles.userViewText}>
+          <View testID="test.otherUsersView" style={styles.noOtherUsersView}>
+            <Text testID="test.noOtherUsers" style={styles.userViewText}>
               Inga andra användare är kopplade till den här aktiviteten!
             </Text>
           </View>

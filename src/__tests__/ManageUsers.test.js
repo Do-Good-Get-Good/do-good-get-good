@@ -93,13 +93,13 @@ jest.mock("@react-native-firebase/auth", () => () => ({
   },
 }));
 
-afterEach(async () => {
-  await cleanup();
+afterEach(() => {
+  cleanup();
   // jest.clearAllMocks();
 });
 
 describe("Testing ManageUsers component", () => {
-  it("Can find the header text", () => {
+  it("Can render users connected and correct other users when no other users are connected", () => {
     const { getByTestId, getAllByTestId } = render(
       <ManageUsers
         visible={true}
@@ -120,11 +120,15 @@ describe("Testing ManageUsers component", () => {
     expect(getByTestId("test.userFullName0").children[0]).toEqual("Test 1");
     expect(getByTestId("test.userFullName1").children[0]).toEqual("Test 2");
 
-    // expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
-    //   "Andra användare"
-    // );
+    expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+      "Andra användare"
+    );
 
-    // expect(getAllByTestId("test.otherUsersView").length).toBe(2);
+    expect(getAllByTestId("test.otherUsersView").length).toBe(1);
+
+    expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
+      "Inga andra användare är kopplade till den här aktiviteten!"
+    );
     // expect(getByTestId("test.otherUsersFullName0").children[0]).toEqual(
     //   "Test 1"
     // );
