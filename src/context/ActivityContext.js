@@ -14,6 +14,7 @@ export const ActivityProvider = ({ children }) => {
   const [myActivitiesIDandAccumTime, setMyActivitiesIDandAccumTime] = useState(
     []
   );
+
   const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
   const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
     useState(false);
@@ -31,22 +32,35 @@ export const ActivityProvider = ({ children }) => {
         (doc) => {
           let data = doc.data().activities_and_accumulated_time;
           if (data != null) {
-            if (data.length > myActivitiesIDandAccumTime)
-              for (let i = 0; i < data.length; i++) {
+            for (let i = 0; i < data.length; i++) {
+              var userConnectedActivitiesIndex = doc
+                .data()
+                .connected_activities.findIndex(
+                  (x) => x === data[i].activity_id
+                );
+
+              if (userConnectedActivitiesIndex != -1) {
                 let idAndTime = {
                   accumulatedTime: data[i].accumulated_time,
                   activityID: data[i].activity_id,
                   adminID: doc.data().admin_id,
+
+                  connectedActivities: doc.data().connected_activities,
                 };
                 temArray.push(idAndTime);
               }
-
+            }
             setMyActivitiesIDandAccumTime(temArray);
             setIsFinishedToLoadActivitiesID(true);
-            setIsFinishedToLoadMyEntries(true);
 
-            temArray = [];
+            if (doc.data().connected_activities.length != 0) {
+              setIsFinishedToLoadMyEntries(true);
+            } else {
+              setActivitiesInformation([]);
+            }
           }
+
+          temArray = [];
         },
         (error) => {
           console.log(error);

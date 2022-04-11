@@ -28,7 +28,9 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   };
 
   useEffect(() => {
-    setTimeObject(myAccumulatedTime);
+    if (myAccumulatedTime.adminID != " " && myAccumulatedTime.length != 0) {
+      setTimeObject(myAccumulatedTime);
+    }
   }, [myAccumulatedTime]);
 
   useEffect(() => {

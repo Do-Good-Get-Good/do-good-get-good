@@ -13,6 +13,7 @@ import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import errorMessage from "../assets/recyclingStyles/errorMessage";
 
 const CalendarView = ({
   visible,
@@ -68,6 +69,7 @@ const CalendarView = ({
   const [selectedDate, setSelectedDate] = useState(null);
   const [hours, setHours] = useState(null);
   const [todaySelected, setTodaySelected] = useState(null);
+  const [error, setError] = useState(null);
 
   //If the calendar view (modal) is visible it gets the current date and selects it
   //If a user edits an activity the activity date gets selected and the activity time (in hours) is shown
@@ -104,27 +106,27 @@ const CalendarView = ({
   //Registers a users activity (saving to Firebase Firestore)
   const registerTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-    try {
-      firestore()
-        .collection("timeentries")
-        .add({
-          activity_id: activity.id,
-          user_id: auth().currentUser.uid,
-          date: date,
-          status_confirmed: false,
-          time: hours,
-          admin_id: adminID,
-          activity_title: activity.title,
-        })
-        .then(() => {
-          console.log("it went good ");
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
-        });
-    } catch (error) {
-      console.log("errorMessage ", error);
-    }
+
+    firestore()
+      .collection("timeentries")
+      .add({
+        activity_id: activity.id,
+        user_id: auth().currentUser.uid,
+        date: date,
+        status_confirmed: false,
+        time: hours,
+        admin_id: adminID,
+        activity_title: activity.title,
+      })
+      .then(() => {
+        console.log("it went good ");
+      })
+      .catch((error) => {
+        if (error) {
+          setError("Sorry, something went wrong");
+        }
+      });
+
     toggleVisibility();
   };
 
@@ -147,9 +149,11 @@ const CalendarView = ({
         })
         .catch((error) => {
           console.log("errorMessage ", error);
+          setError("Sorry, something went wrong");
         });
     } catch (error) {
       console.log("errorMessage ", error);
+      setError("Sorry, something went wrong");
     }
     toggleVisibility();
   };
@@ -166,9 +170,11 @@ const CalendarView = ({
         })
         .catch((error) => {
           console.log("errorMessage ", error);
+          setError("Sorry, something went wrong");
         });
     } catch (error) {
       console.log("errorMessage ", error);
+      setError("Sorry, something went wrong");
     }
     toggleVisibility();
   };
@@ -204,6 +210,11 @@ const CalendarView = ({
           padding: 16,
         }}
       >
+        {error != null && (
+          <Text testID="errorTextId" style={errorMessage}>
+            {error}
+          </Text>
+        )}
         <Text testID="calendarView.headerText" style={styles.activityTitle}>
           {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
