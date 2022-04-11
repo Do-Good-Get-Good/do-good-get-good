@@ -1,13 +1,6 @@
 import "react-native";
 import React from "react";
-import {
-  render,
-  fireEvent,
-  waitFor,
-  act,
-  cleanup,
-  screen,
-} from "@testing-library/react-native";
+import { render, waitFor, cleanup } from "@testing-library/react-native";
 import ManageUsers from "../components/ManageUsers";
 
 jest.useFakeTimers();
@@ -95,7 +88,6 @@ jest.mock("@react-native-firebase/auth", () => () => ({
 
 afterEach(() => {
   cleanup();
-  // jest.clearAllMocks();
 });
 
 describe("Testing ManageUsers component", () => {
@@ -129,11 +121,5 @@ describe("Testing ManageUsers component", () => {
     expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
       "Inga andra användare är kopplade till den här aktiviteten!"
     );
-    // expect(getByTestId("test.otherUsersFullName0").children[0]).toEqual(
-    //   "Test 1"
-    // );
-    // expect(getByTestId("test.otherUsersFullName1").children[0]).toEqual(
-    //   "Test 2"
-    // );
   });
 });
