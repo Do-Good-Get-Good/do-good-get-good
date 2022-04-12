@@ -8,9 +8,11 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  SafeAreaView,
   TextInput,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import Menu from "../components/Menu";
 import { Icon, Dialog } from "react-native-elements";
 import DropDownSmall from "../components/DropDownSmall";

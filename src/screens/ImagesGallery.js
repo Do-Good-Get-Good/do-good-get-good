@@ -7,9 +7,11 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  SafeAreaView,
   Platform,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import Menu from "../components/Menu";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
@@ -163,7 +165,6 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     paddingTop: Platform.OS === "ios" ? 12 : null,
     fontWeight: "500",
-
   },
   cancelButtonBorder: {
     paddingVertical: 1,

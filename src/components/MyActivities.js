@@ -80,11 +80,7 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
 
                 <View
                   testID="viewId"
-                  style={{
-                    flex: 1,
-                    flexDirection: "row",
-                    paddingTop: myActivity.title.length > 16 ? 0 : 25,
-                  }}
+                  style={styles.mapIconAndCityText(myActivity)}
                 >
                   <Icon
                     type="material-community"
@@ -177,6 +173,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: colors.dark,
   },
+  mapIconAndCityText(myActivity) {
+    return {
+      flex: 1,
+      flexDirection: "row",
+      paddingTop: myActivity.title.length > 16 ? 5 : 25,
+      alignItems: "center",
+    };
+  },
   textCity: {
     ...typography.b1,
     paddingTop: 5,
@@ -209,6 +213,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     marginTop: 6,
+    alignItems: "center",
   },
   shedowForButton: {
     ...Platform.select({

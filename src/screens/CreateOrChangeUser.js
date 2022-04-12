@@ -6,10 +6,12 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  SafeAreaView,
   TextInput,
   Dimensions,
 } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import LinearGradient from "react-native-linear-gradient";
 
 import { Icon } from "react-native-elements";
