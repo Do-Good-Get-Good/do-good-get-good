@@ -47,10 +47,10 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
             photo: myActivities[i].photo,
           };
           activitiAndTimeArray.push(setAllInformation);
-          setMyActivitiesArray(activitiAndTimeArray);
         }
       }
     }
+    setMyActivitiesArray(activitiAndTimeArray);
   }, [myAccumulatedTime, myActivities]);
 
   function setTheRightPhoto(activityObjectPhoto) {
