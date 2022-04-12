@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useActivityFunction } from "../context/ActivityContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -19,6 +20,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
+  const entryTime = useActivityFunction();
 
   useEffect(() => {
     const checkIfUserIsAdmin = () => {

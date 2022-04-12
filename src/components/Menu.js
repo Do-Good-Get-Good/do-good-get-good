@@ -1,17 +1,10 @@
-
-import React, { useState} from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  Pressable,
-
-} from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import typography from "../assets/theme/typography";
 import { useNetInfo } from "@react-native-community/netinfo";
+import colors from "../assets/theme/colors";
 
 const Menu = () => {
   const [visible, setVisible] = useState(false);
@@ -40,7 +33,6 @@ const Menu = () => {
             source={require("../img/Logotyp_DGGG.png")}
             style={styles.headerLogo}
           />
-
         </View>
         <Pressable
           testID="showOverlayButton"
@@ -58,7 +50,7 @@ const Menu = () => {
           <Text style={styles.headerMenuText}>Meny</Text>
         </Pressable>
       </View>
-{inetInfo.isConnected === false && ifNoInternetConnection()}
+      {inetInfo.isConnected === false && ifNoInternetConnection()}
 
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
     </>
