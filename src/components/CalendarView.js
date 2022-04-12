@@ -122,9 +122,7 @@ const CalendarView = ({
         console.log("it went good ");
       })
       .catch((error) => {
-        if (error) {
-          setError("Sorry, something went wrong");
-        }
+        setError("Sorry, something went wrong");
       });
 
     toggleVisibility();
@@ -133,42 +131,49 @@ const CalendarView = ({
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
-
-    firestore()
-      .collection("timeentries")
-      .doc(activity.timeEntryID)
-      .set(
-        {
-          date: date,
-          time: hours,
-        },
-        { merge: true }
-      )
-      .then(() => {
-        console.log("it went good change time entry");
-      })
-      .catch((error) => {
-        console.log("errorMessage ", error);
-        setError("Sorry, something went wrong");
-      });
-
+    try {
+      firestore()
+        .collection("timeentries")
+        .doc(activity.timeEntryID)
+        .set(
+          {
+            date: date,
+            time: hours,
+          },
+          { merge: true }
+        )
+        .then(() => {
+          console.log("it went good change time entry");
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+          setError("Sorry, something went wrong");
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+      setError("Sorry, something went wrong");
+    }
     toggleVisibility();
   };
 
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
-    firestore()
-      .collection("timeentries")
-      .doc(activity.timeEntryID)
-      .delete()
-      .then(() => {
-        console.log("it went good to delete ");
-      })
-      .catch((error) => {
-        console.log("errorMessage ", error);
-        setError("Sorry, something went wrong");
-      });
-
+    try {
+      firestore()
+        .collection("timeentries")
+        .doc(activity.timeEntryID)
+        .delete()
+        .then(() => {
+          console.log("it went good to delete ");
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+          setError("Sorry, something went wrong");
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+      setError("Sorry, something went wrong");
+    }
     toggleVisibility();
   };
 

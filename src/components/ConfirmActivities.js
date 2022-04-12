@@ -24,7 +24,6 @@ const ConfirmActivities = () => {
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const changeUserInfoContext = useChangeUserInfoFunction();
-  const [error, setError] = useState(null);
 
   useEffect(() => {
     if (userData.length != 0) {
@@ -38,7 +37,6 @@ const ConfirmActivities = () => {
             setSnapshot(snapshot);
           },
           (error) => {
-            setError("Sorry, something went wrong");
             console.log(error);
           }
         );
