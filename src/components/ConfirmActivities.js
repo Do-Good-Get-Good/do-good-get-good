@@ -200,7 +200,6 @@ const ConfirmActivities = () => {
       timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
       addTotalConfirmedHours(selectedUsers[i]);
-      addAccumulatedTime(selectedUsers[i]);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
@@ -210,44 +209,24 @@ const ConfirmActivities = () => {
   };
 
   const addAccumulatedTime = (user) => {
+    let timeArray = [];
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === user.userID) {
-        const timeArray = userData[i].activities_and_accumulated_time;
+        timeArray = userData[i].activities_and_accumulated_time;
         const objNum = timeArray.findIndex(
           (obj) => obj.activity_id === user.activityID
         );
-
-        nyObj = {
-          accumulated_time: (userData[i].activities_and_accumulated_time[
-            objNum
-          ].accumulated_time += user.timeEntryHours),
-          activity_id: user.activityID,
-        };
-
-        timeArray.push(nyObj);
-        timeArray.splice(objNum, 1);
-
-        try {
-          firestore()
-            .collection("Users")
-            .doc(user.userID)
-            .update({
-              activities_and_accumulated_time: timeArray,
-            })
-            .catch((error) => {
-              console.log("errorMessage ", error);
-            });
-        } catch (error) {
-          console.log("errorMessage ", error);
-        }
+        timeArray[objNum].accumulated_time += user.timeEntryHours;
       }
     }
+    return timeArray;
   };
 
   const addTotalConfirmedHours = (user) => {
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
+    let accumulatedTime = addAccumulatedTime(user);
 
     if (
       currentMonth === new Date(user.timeEntryDate).getMonth() &&
@@ -264,6 +243,7 @@ const ConfirmActivities = () => {
             total_hours_year: firestore.FieldValue.increment(
               user.timeEntryHours
             ),
+            activities_and_accumulated_time: accumulatedTime,
           })
           .catch((error) => {
             console.log("errorMessage ", error);
@@ -283,6 +263,7 @@ const ConfirmActivities = () => {
             total_hours_year: firestore.FieldValue.increment(
               user.timeEntryHours
             ),
+            activities_and_accumulated_time: accumulatedTime,
           })
           .catch((error) => {
             console.log("errorMessage ", error);
