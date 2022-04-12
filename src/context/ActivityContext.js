@@ -14,92 +14,133 @@ export const ActivityProvider = ({ children }) => {
   const [myActivitiesIDandAccumTime, setMyActivitiesIDandAccumTime] = useState(
     []
   );
+
   const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
-  const [isFinished, setIsFinished] = useState(false);
+  const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
+    useState(false);
+  const [isFinishedToLoadMyEntries, setIsFinishedToLoadMyEntries] =
+    useState(false);
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
 
   useEffect(() => {
-    const getActivitiesID = async () => {
-      let temArray = [];
-      const user = await firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .get();
-      let data = user.data().activities_and_accumulated_time;
-      if (data != null) {
-        if (data.length > myActivitiesIDandAccumTime)
-          for (let i = 0; i < data.length; i++) {
-            let idAndTime = {
-              accumulatedTime: data[i].accumulated_time,
-              activityID: data[i].activity_id,
-              adminID: user.data().admin_id,
-            };
-            temArray.push(idAndTime);
+    let temArray = [];
+    const getActivitiesID = firestore()
+      .collection("Users")
+      .doc(auth().currentUser.uid)
+      .onSnapshot(
+        (doc) => {
+          let data = doc.data().activities_and_accumulated_time;
+          if (data != null) {
+            for (let i = 0; i < data.length; i++) {
+              var userConnectedActivitiesIndex = doc
+                .data()
+                .connected_activities.findIndex(
+                  (x) => x === data[i].activity_id
+                );
+
+              if (userConnectedActivitiesIndex != -1) {
+                let idAndTime = {
+                  accumulatedTime: data[i].accumulated_time,
+                  activityID: data[i].activity_id,
+                  adminID: doc.data().admin_id,
+
+                  connectedActivities: doc.data().connected_activities,
+                };
+                temArray.push(idAndTime);
+              }
+            }
+            setMyActivitiesIDandAccumTime(temArray);
+            setIsFinishedToLoadActivitiesID(true);
+
+            if (doc.data().connected_activities.length != 0) {
+              setIsFinishedToLoadMyEntries(true);
+            } else {
+              setActivitiesInformation([]);
+            }
           }
 
-        setMyActivitiesIDandAccumTime(temArray);
-        setIsFinished(true);
-      }
+          temArray = [];
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+
+    return () => {
+      getActivitiesID();
     };
-    getActivitiesID();
   }, []);
 
   useEffect(() => {
-    if (isFinished === true) {
+    if (isFinishedToLoadActivitiesID === true) {
       let allActivityTimeEntryAndStatus = firestore()
         .collection("timeentries")
         .where("user_id", "==", auth().currentUser.uid)
         .orderBy("date", "desc")
         .limit(limitAmountForTimeEntries)
-        .onSnapshot((snap) => {
-          let docs = [];
-          snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
-          if (limitAmountForTimeEntries === 5) {
-            setLastFiveTimeEntries(docs);
-          } else {
-            setTimeEntryArrayForMyTimePage(docs);
+        .onSnapshot(
+          (snap) => {
+            let docs = [];
+            snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+
+            if (limitAmountForTimeEntries === 5) {
+              setLastFiveTimeEntries(docs);
+            } else {
+              setTimeEntryArrayForMyTimePage(docs);
+            }
+          },
+          (error) => {
+            console.log(error);
           }
-        });
-      (error) => {
-        console.log(error);
-      };
+        );
 
       return () => {
         allActivityTimeEntryAndStatus();
       };
     }
-  }, [isFinished, limitAmountForTimeEntries]);
+  }, [isFinishedToLoadActivitiesID, limitAmountForTimeEntries]);
 
   useEffect(() => {
-    if (
-      isFinished === true &&
-      myActivitiesIDandAccumTime.length > activitiesInformation.length
-    ) {
+    if (isFinishedToLoadMyEntries === true) {
       let inactiveArray = [];
       const getActivitiesInformation = async () => {
         for (let i = 0; i < myActivitiesIDandAccumTime.length; i++) {
           var id = myActivitiesIDandAccumTime[i];
-          const information = await firestore()
-            .collection("Activities")
-            .doc(id.activityID)
-            .get();
-          let info = information.data();
-          if (info != null) {
-            const dataInfo = {
-              id: id.activityID,
-              title: info.activity_title,
-              city: info.activity_city,
-              photo: info.activity_photo,
-            };
-            inactiveArray.push(dataInfo);
+          try {
+            await firestore()
+              .collection("Activities")
+              .doc(id.activityID)
+              .get()
+              .then((doc) => {
+                let info = doc.data();
+                let dataInfo = {};
+                if (info != null) {
+                  dataInfo = {
+                    id: id.activityID,
+                    title: info.activity_title,
+                    city: info.activity_city,
+                    photo: info.activity_photo,
+                  };
+                  inactiveArray.push(dataInfo);
+                }
+              })
+              .catch((error) => {
+                console.log("errorMessage ", error);
+              });
+          } catch (error) {
+            console.log("ActivitynContex errorMessage ", error);
           }
         }
+
         setActivitiesInformation(inactiveArray);
+
+        setIsFinishedToLoadMyEntries(false);
       };
+
       getActivitiesInformation();
     }
-  }, [isFinished]);
+  }, [isFinishedToLoadMyEntries]);
 
   return (
     <ActivitynContext.Provider

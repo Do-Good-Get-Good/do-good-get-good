@@ -7,7 +7,6 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-  RecyclerViewBackedScrollViewComponent,
 } from "react-native";
 
 import { Icon } from "react-native-elements";
@@ -17,7 +16,6 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
-  const [activityObject, setActivityObject] = useState([]);
   const [timeObject, setTimeObject] = useState([
     { accumulatedTime: 0, activityID: " ", adminID: " " },
   ]);
@@ -30,30 +28,30 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   };
 
   useEffect(() => {
-    setActivityObject(myActivities);
-    setTimeObject(myAccumulatedTime);
-  }, [myActivities, myAccumulatedTime]);
+    if (myAccumulatedTime.adminID != " " && myAccumulatedTime.length != 0) {
+      setTimeObject(myAccumulatedTime);
+    }
+  }, [myAccumulatedTime]);
 
   useEffect(() => {
     let activitiAndTimeArray = [];
-    if (activityObject.length > myActivitiesArray.length) {
-      for (let i = 0; i < activityObject.length; i++) {
-        for (let j = 0; j < timeObject.length; j++) {
-          if (activityObject[i].id === timeObject[j].activityID) {
-            const setAllInformation = {
-              title: activityObject[i].title,
-              city: activityObject[i].city,
-              time: timeObject[j].accumulatedTime,
-              id: activityObject[i].id,
-              photo: activityObject[i].photo,
-            };
-            activitiAndTimeArray.push(setAllInformation);
-            setMyActivitiesArray(activitiAndTimeArray);
-          }
+
+    for (let i = 0; i < myActivities.length; i++) {
+      for (let j = 0; j < myAccumulatedTime.length; j++) {
+        if (myActivities[i].id === myAccumulatedTime[j].activityID) {
+          const setAllInformation = {
+            title: myActivities[i].title,
+            city: myActivities[i].city,
+            time: myAccumulatedTime[j].accumulatedTime,
+            id: myActivities[i].id,
+            photo: myActivities[i].photo,
+          };
+          activitiAndTimeArray.push(setAllInformation);
         }
       }
     }
-  }, [activityObject]);
+    setMyActivitiesArray(activitiAndTimeArray);
+  }, [myAccumulatedTime, myActivities]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
