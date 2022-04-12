@@ -26,18 +26,6 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-// var mockedSendPasswordResetEmail = jest.fn();
-
-// jest.mock("@react-native-firebase/auth", () => {
-//     const actualAuth = jest.requireActual("@react-native-firebase/auth");
-//     return () => ({
-//         ...actualAuth,
-//         sendPasswordResetEmail: mockedSendPasswordResetEmail
-//     });
-// });
-
-//var mockedLogOut = jest.fn();
-
 let mockAuthSignOut = jest.fn();
 
 jest.mock("@react-native-firebase/auth", () => {
@@ -47,11 +35,6 @@ jest.mock("@react-native-firebase/auth", () => {
     signOut: mockAuthSignOut,
   });
 });
-
-// jest.mock("@react-native-firebase/auth", () => () => ({
-//   auth: jest.fn(),
-//   signOut: jest.fn(),
-// }));
 
 jest.mock("../context/AdminContext", () => ({
   useAdminCheckFunction: jest.fn(),

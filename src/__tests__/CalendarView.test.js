@@ -237,22 +237,5 @@ describe("Testing CalendarView", () => {
       const changeTimeButton = getByText("Ta bort tid");
       fireEvent.press(changeTimeButton);
     });
-    // it("Testing error message", async () => {
-    //   mockAdd.mockRejectedValueOnce();
-    //   const { queryByTestId } = render(
-    //     <CalendarView
-    //       visible={true}
-    //       activity={fakeActivity}
-    //       isEditing={true}
-    //       toggleVisibility={mockToggleVisibility}
-    //       adminID="123"
-    //     />
-    //   );
-    // await waitFor(() => {
-    //   expect(queryByTestId("errorTextId").props.children).toEqual(
-    //     "Sorry, something went wrong"
-    //   );
-    // });
-    //});
   });
 });

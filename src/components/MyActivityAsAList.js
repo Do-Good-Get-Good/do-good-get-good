@@ -39,24 +39,14 @@ function MyActivityAsAList({ navigation }) {
 
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
-      objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.lastFiveTimeEntries
-        //entryTime.myActivities
-      );
+      objectsWithActivitiesAndTimeEntriesInfo(entryTime.lastFiveTimeEntries);
     } else if (
       rout.name === "MyTimePage" &&
       entryTime.allListOfTimeEntry.length != 0
     ) {
-      objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.allListOfTimeEntry
-        //entryTime.myActivities
-      );
+      objectsWithActivitiesAndTimeEntriesInfo(entryTime.allListOfTimeEntry);
     }
-  }, [
-    entryTime.lastFiveTimeEntries,
-    //entryTime.myActivities,
-    entryTime.allListOfTimeEntry,
-  ]);
+  }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
 
   function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {
     let activityAndTimeEntryArray = [];
@@ -72,8 +62,7 @@ function MyActivityAsAList({ navigation }) {
         title: timeEntries[i].activity_title,
         id: timeEntries[i].activity_id,
       };
-      //}
-      // }
+
       activityAndTimeEntryArray.push(myTimeAndTitle);
     }
     setTimeEntryList(activityAndTimeEntryArray);
