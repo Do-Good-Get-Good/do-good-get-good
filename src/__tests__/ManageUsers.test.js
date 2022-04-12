@@ -11,7 +11,7 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock("react-native-elements/dist/checkbox/Checkbox", () => () => {
+jest.mock("react-native-elements/dist/checkbox/CheckBox", () => () => {
   return <fakeCheckbox />;
 });
 
