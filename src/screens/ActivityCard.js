@@ -8,8 +8,9 @@ import {
   TouchableOpacity,
   Platform,
   ScrollView,
-  SafeAreaView,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import Menu from "../components/Menu";
 import { Icon, Overlay } from "react-native-elements";
 

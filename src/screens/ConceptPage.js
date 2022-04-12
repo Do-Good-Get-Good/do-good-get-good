@@ -1,11 +1,7 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  SafeAreaView,
-  ScrollView,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
 import React, { useEffect, useState } from "react";
 import Menu from "../components/Menu";
 import colors from "../assets/theme/colors";

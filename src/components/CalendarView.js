@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Overlay } from "react-native-elements";
 import { Calendar } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
@@ -7,6 +13,7 @@ import { Icon } from "react-native-elements";
 import tw from "tailwind-react-native-classnames";
 import { format } from "date-fns";
 import toDate from "date-fns/toDate";
+import { sv } from "date-fns/locale";
 import { ScrollView } from "react-native";
 import { Platform } from "react-native";
 import firestore from "@react-native-firebase/firestore";
@@ -184,15 +191,15 @@ const CalendarView = ({
       overlayStyle={{
         backgroundColor: colors.light,
         borderRadius: 5,
+        paddingTop: 32,
         width: "90%",
-        marginTop: 64,
-        marginBottom: 55,
+        height: "85%",
         flexDirection: "column",
         justifyContent: "space-between",
       }}
       animationType="fade"
     >
-      <TouchableOpacity
+      <Pressable
         style={{ position: "absolute", right: -10, top: -10 }}
         onPress={toggleVisibility}
       >
@@ -202,10 +209,10 @@ const CalendarView = ({
           size={35}
           style={tw`bg-white rounded-full`}
         />
-      </TouchableOpacity>
+      </Pressable>
       <ScrollView
         style={{
-          padding: 16,
+          paddingHorizontal: 16,
         }}
       >
         {error != null && (
@@ -313,7 +320,8 @@ const CalendarView = ({
           testID="calendarView.dateAndHourInput"
           style={styles.dateAndHourSummary}
         >
-          {format(new Date(selectedDate), "eee d LLLL") + `, ${hours}h`}
+          {format(new Date(selectedDate), "EEE d LLLL", { locale: sv }) +
+            `, ${hours}h`}
         </Text>
       </ScrollView>
 
@@ -409,6 +417,7 @@ const styles = StyleSheet.create({
   },
   dateAndHourSummary: {
     ...typography.b1,
+    paddingBottom: 16,
   },
   sendBtn: {
     height: 55,

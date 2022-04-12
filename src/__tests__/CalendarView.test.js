@@ -2,6 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { format } from "date-fns";
+import { sv } from "date-fns/locale";
 
 import CalendarView from "../components/CalendarView";
 
@@ -61,7 +62,8 @@ describe("Testing CalendarView", () => {
 
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("0.5");
 
-      const dateAndHourInput = format(new Date(), "eee d LLLL") + ", 0.5h";
+      const dateAndHourInput =
+        format(new Date(), "eee d LLLL", { locale: sv }) + ", 0.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
@@ -83,7 +85,8 @@ describe("Testing CalendarView", () => {
       const increaseTimeButton = getByText("+");
       fireEvent.press(increaseTimeButton);
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("0.5");
-      var dateAndHourInput = format(new Date(), "eee d LLLL") + ", 0.5h";
+      var dateAndHourInput =
+        format(new Date(), "eee d LLLL", { locale: sv }) + ", 0.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
@@ -91,7 +94,8 @@ describe("Testing CalendarView", () => {
       const decreaseTimeButton = getByText("-");
       fireEvent.press(decreaseTimeButton);
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("0");
-      dateAndHourInput = format(new Date(), "eee d LLLL") + ", 0h";
+      dateAndHourInput =
+        format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
@@ -113,7 +117,8 @@ describe("Testing CalendarView", () => {
       const decreaseTimeButton = getByText("-");
       fireEvent.press(decreaseTimeButton);
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("0");
-      var dateAndHourInput = format(new Date(), "eee d LLLL") + ", 0h";
+      var dateAndHourInput =
+        format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
@@ -141,7 +146,8 @@ describe("Testing CalendarView", () => {
       getByText("-");
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("0");
       getByText("+");
-      const dateAndHourInput = format(new Date(), "eee d LLLL") + ", 0h";
+      const dateAndHourInput =
+        format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
@@ -194,7 +200,8 @@ describe("Testing CalendarView", () => {
       expect(getByTestId("calendarView.hourInput").children[0]).toEqual("1.5");
       getByText("+");
       const dateAndHourInput =
-        format(new Date(fakeActivity.date), "eee d LLLL") + ", 1.5h";
+        format(new Date(fakeActivity.date), "eee d LLLL", { locale: sv }) +
+        ", 1.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
         dateAndHourInput
       );
