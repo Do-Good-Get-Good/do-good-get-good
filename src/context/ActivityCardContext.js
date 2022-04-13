@@ -22,18 +22,25 @@ export const ActivityCardProvider = ({ children }) => {
   useEffect(() => {
     if (activityID != "" && changeStatusPopular != null) {
       const updateStatusPopular = async () => {
-        firestore()
-          .collection("Activities")
-          .doc(activityID)
-          .update({
-            tg_favorite: changeStatusPopular,
-          })
+        try {
+          firestore()
+            .collection("Activities")
+            .doc(activityID)
+            .update({
+              tg_favorite: changeStatusPopular,
+            })
 
-          .then(() => {
-            console.log("Actyvity tg_favorite changed");
-            setChangeStatusPopular(null);
-            setStatusPopularHasBeenChanged(true);
-          });
+            .then(() => {
+              console.log("Actyvity tg_favorite changed");
+              setChangeStatusPopular(null);
+              setStatusPopularHasBeenChanged(true);
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("errorMessage ", error);
+        }
       };
       updateStatusPopular();
     }
@@ -43,33 +50,47 @@ export const ActivityCardProvider = ({ children }) => {
     if (activityID != "" && changeStatusActive != null) {
       if (changeStatusActive === false) {
         const updateStatusActive = async () => {
-          firestore()
-            .collection("Activities")
-            .doc(activityID)
-            .update({
-              active_status: false,
-              tg_favorite: false,
-            })
-            .then(() => {
-              console.log("Actyvity active_status changed");
-              setChangeStatusActive(null);
-              setStatusActiveHasBeenChanged(true);
-            });
+          try {
+            firestore()
+              .collection("Activities")
+              .doc(activityID)
+              .update({
+                active_status: false,
+                tg_favorite: false,
+              })
+              .then(() => {
+                console.log("Actyvity active_status changed");
+                setChangeStatusActive(null);
+                setStatusActiveHasBeenChanged(true);
+              })
+              .catch((error) => {
+                console.log("errorMessage ", error);
+              });
+          } catch (error) {
+            console.log("errorMessage ", error);
+          }
         };
         updateStatusActive();
       } else if (changeStatusActive === true) {
         const updateStatusActive = async () => {
-          firestore()
-            .collection("Activities")
-            .doc(activityID)
-            .update({
-              active_status: true,
-            })
-            .then(() => {
-              console.log("Actyvity active_status changed");
-              setChangeStatusActive(null);
-              setStatusActiveHasBeenChanged(true);
-            });
+          try {
+            firestore()
+              .collection("Activities")
+              .doc(activityID)
+              .update({
+                active_status: true,
+              })
+              .then(() => {
+                console.log("Actyvity active_status changed");
+                setChangeStatusActive(null);
+                setStatusActiveHasBeenChanged(true);
+              })
+              .catch((error) => {
+                console.log("errorMessage ", error);
+              });
+          } catch (error) {
+            console.log("errorMessage ", error);
+          }
         };
         updateStatusActive();
       }
@@ -79,13 +100,20 @@ export const ActivityCardProvider = ({ children }) => {
   useEffect(() => {
     if (confirmToDelete === true && activityID != "") {
       const deleteActivityFromFB = async () => {
-        firestore()
-          .collection("Activities")
-          .doc(activityID)
-          .delete()
-          .then(() => {
-            console.log("Activity deleted!");
-          });
+        try {
+          firestore()
+            .collection("Activities")
+            .doc(activityID)
+            .delete()
+            .then(() => {
+              console.log("Activity deleted!");
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("errorMessage ", error);
+        }
       };
       deleteActivityFromFB();
     }
@@ -94,22 +122,29 @@ export const ActivityCardProvider = ({ children }) => {
   useEffect(() => {
     if (activityWithChangedInfor.id != "" && changeActivityToTrue === true) {
       const updateActivityCard = async () => {
-        firestore()
-          .collection("Activities")
-          .doc(activityWithChangedInfor.id)
-          .update({
-            active_status: activityWithChangedInfor.active,
-            activity_city: activityWithChangedInfor.city,
-            activity_description: activityWithChangedInfor.description,
-            activity_photo: activityWithChangedInfor.photo,
-            activity_place: activityWithChangedInfor.place,
-            activity_title: activityWithChangedInfor.title,
-            tg_favorite: activityWithChangedInfor.popular,
-          })
-          .then(() => {
-            console.log("Actyvity Info changed");
-            setChangeActivityToTrue(false);
-          });
+        try {
+          firestore()
+            .collection("Activities")
+            .doc(activityWithChangedInfor.id)
+            .update({
+              active_status: activityWithChangedInfor.active,
+              activity_city: activityWithChangedInfor.city,
+              activity_description: activityWithChangedInfor.description,
+              activity_photo: activityWithChangedInfor.photo,
+              activity_place: activityWithChangedInfor.place,
+              activity_title: activityWithChangedInfor.title,
+              tg_favorite: activityWithChangedInfor.popular,
+            })
+            .then(() => {
+              console.log("Actyvity Info changed");
+              setChangeActivityToTrue(false);
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("errorMessage ", error);
+        }
       };
       updateActivityCard();
     }

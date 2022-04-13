@@ -24,6 +24,7 @@ const MyUsers = ({ navigation }) => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
+  const [myUsersLoading, setMyUsersLoading] = useState(true);
   const userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
@@ -80,37 +81,37 @@ const MyUsers = ({ navigation }) => {
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const fetchUserTimeEntries = async () => {
-    if (userData.length != 0 && userData != null) {
-      let tempArr = [];
+    if (userData.length != 0 && userData != null && allUsers.length === 0) {
       for (let i = 0; i < userData.length; i++) {
-        let userTimeEntryData;
-
         try {
-          let response = await firestore()
+          await firestore()
             .collection("timeentries")
             .where("user_id", "==", userData[i].id)
             .where("status_confirmed", "==", true)
             .orderBy("date", "desc")
             .limit(5)
-            .get();
+            .get()
+            .then((response) => {
+              let userInfo = {
+                firstName: userData[i].first_name,
+                lastName: userData[i].last_name,
+                timeEntries: response.docs.map((doc) => doc.data()),
+                isOpen: false,
+                statusActive: userData[i].status_active,
+                userID: userData[i].id,
+              };
 
-          userTimeEntryData = response.docs.map((doc) => doc.data());
+              setAllUsers((prev) => [...prev, userInfo]);
+              setLoadingData(true);
+            })
+            .catch((error) => console.log("MyUsers ", error));
         } catch (error) {
-          console.log(error);
+          console.log("MyUsers ", error);
         }
-
-        let userInfo = {
-          firstName: userData[i].first_name,
-          lastName: userData[i].last_name,
-          timeEntries: userTimeEntryData,
-          isOpen: false,
-          statusActive: userData[i].status_active,
-          userID: userData[i].id,
-        };
-        tempArr.push(userInfo);
       }
-      setAllUsers(tempArr);
-      setLoadingData(true);
+
+      setMyUsersLoading(false);
+      setLoadingData(false);
     }
   };
 
@@ -160,7 +161,7 @@ const MyUsers = ({ navigation }) => {
       setInactiveUsers(arrayWithInactiveUsers);
       setLoadingData(false);
     }
-  }, [loadingData]);
+  }, [allUsers, loadingData]);
 
   useEffect(() => {
     sortUsers(sortBy);
@@ -188,6 +189,7 @@ const MyUsers = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
+
         {expanded === true ? (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
@@ -213,10 +215,10 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {myUsers.length === 0 && (
+        {myUsersLoading && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
-        {!loadingData && (
+        {allUsers.length != 0 && (
           <>
             {myUsers.map((user, index) => (
               <View key={index}>
@@ -250,32 +252,34 @@ const MyUsers = ({ navigation }) => {
                   <View>
                     {user.timeEntries.map((timeEntry, index) => (
                       <View key={index}>
-                        <View key={index} style={styles.listItemContentStyle}>
-                          <View style={styles.listItemContentNameView}>
-                            <Text
-                              testID={`user timeEntry ${index} title`}
-                              style={styles.listItemContentNameStyle}
-                            >
-                              {timeEntry.activity_title}
-                            </Text>
+                        {timeEntry !== "NO DATA" ? (
+                          <View key={index} style={styles.listItemContentStyle}>
+                            <View style={styles.listItemContentNameView}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentNameStyle}
+                              >
+                                {timeEntry.activity_title}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentDateView}>
+                              <Text
+                                testID={`user timeEntry ${index} date`}
+                                style={styles.listItemContentDateStyle}
+                              >
+                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentHourView}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentHourStyle}
+                              >
+                                {timeEntry.time} tim
+                              </Text>
+                            </View>
                           </View>
-                          <View style={styles.listItemContentDateView}>
-                            <Text
-                              testID={`user timeEntry ${index} date`}
-                              style={styles.listItemContentDateStyle}
-                            >
-                              {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                            </Text>
-                          </View>
-                          <View style={styles.listItemContentHourView}>
-                            <Text
-                              testID={`user timeEntry ${index} title`}
-                              style={styles.listItemContentHourStyle}
-                            >
-                              {timeEntry.time} tim
-                            </Text>
-                          </View>
-                        </View>
+                        ) : null}
                       </View>
                     ))}
                     <View style={styles.editUserIconView}>
