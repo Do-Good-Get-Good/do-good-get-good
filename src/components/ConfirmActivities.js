@@ -100,6 +100,7 @@ const ConfirmActivities = () => {
       const timeEntryData = {
         userID: change.doc.data().user_id,
         fullName: fullName,
+        activityID: change.doc.data().activity_id,
         activityName: change.doc.data().activity_title,
         timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
         timeEntryHours: change.doc.data().time,
@@ -110,6 +111,7 @@ const ConfirmActivities = () => {
 
       setMyUsers((prev) => [...prev, timeEntryData]);
     }
+
   };
 
   const updateTimeEntry = (change) => {
@@ -207,12 +209,79 @@ const ConfirmActivities = () => {
     for (let i = 0; i < selectedUsers.length; i++) {
       timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
       confirmActivity(selectedUsers[i].timeEntryId);
+      addTotalConfirmedHours(selectedUsers[i]);
       if (i === selectedUsers.length - 1) {
         setChecked(false);
       }
     }
     setUsersId(timeEntryIdsToSendToMyUsers);
     setReloadOneUserData(true);
+  };
+
+  const addAccumulatedTime = (user) => {
+    let timeArray = [];
+    for (let i = 0; i < userData.length; i++) {
+      if (userData[i].id === user.userID) {
+        timeArray = userData[i].activities_and_accumulated_time;
+        const objNum = timeArray.findIndex(
+          (obj) => obj.activity_id === user.activityID
+        );
+        timeArray[objNum].accumulated_time += user.timeEntryHours;
+      }
+    }
+    return timeArray;
+  };
+
+  const addTotalConfirmedHours = (user) => {
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
+    let accumulatedTime = addAccumulatedTime(user);
+
+    if (
+      currentMonth === new Date(user.timeEntryDate).getMonth() &&
+      currentYear === new Date(user.timeEntryDate).getFullYear()
+    ) {
+      try {
+        firestore()
+          .collection("Users")
+          .doc(user.userID)
+          .update({
+            total_confirmed_hours: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+            total_hours_year: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+            activities_and_accumulated_time: accumulatedTime,
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
+          });
+      } catch (error) {
+        console.log("errorMessage ", error);
+      }
+    } else if (
+      currentMonth != new Date(user.timeEntryDate).getMonth() &&
+      currentYear === new Date(user.timeEntryDate).getFullYear()
+    ) {
+      try {
+        firestore()
+          .collection("Users")
+          .doc(user.userID)
+          .update({
+            total_hours_year: firestore.FieldValue.increment(
+              user.timeEntryHours
+            ),
+            activities_and_accumulated_time: accumulatedTime,
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
+          });
+      } catch (error) {
+        console.log("errorMessage ", error);
+      }
+    }
   };
 
   // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)

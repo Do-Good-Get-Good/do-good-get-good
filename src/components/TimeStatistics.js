@@ -2,48 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { useActivityFunction } from "../context/ActivityContext";
 import InfoModal from "../components/InfoModal";
+import firestore from "@react-native-firebase/firestore";
+import auth from "@react-native-firebase/auth";
 
 export function TimeStatistics({}) {
-  let today = new Date();
-  let currentYear = today.getFullYear();
-  let currentMonth = today.getMonth();
-
-  const activityContext = useActivityFunction();
-
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
 
   useEffect(() => {
-    if (activityContext.allListOfTimeEntry.length != 0) {
-      let countTimeForThisMonth = 0.0;
-      let countTimeForThisYear = 0.0;
-      let countTimeForAllPaidTime = 0.0;
-      for (let i = 0; i < activityContext.allListOfTimeEntry.length; i++) {
-        if (
-          activityContext.allListOfTimeEntry[i].date.toDate().getMonth() ===
-          currentMonth
-        ) {
-          countTimeForThisMonth += activityContext.allListOfTimeEntry[i].time;
-        }
-
-        if (
-          activityContext.allListOfTimeEntry[i].date.toDate().getFullYear() ===
-          currentYear
-        ) {
-          countTimeForThisYear += activityContext.allListOfTimeEntry[i].time;
-        }
-        if (activityContext.allListOfTimeEntry[i].statusConfirmed === true) {
-          countTimeForAllPaidTime += activityContext.allListOfTimeEntry[i].time;
-        }
-      }
-      setCurrentForMonth(countTimeForThisMonth);
-      setTimeForYear(countTimeForThisYear);
-      setPaidTime(countTimeForAllPaidTime);
+    try {
+      let user = firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .onSnapshot((snap) => {
+          let data = snap.data();
+          setPaidTime(data.total_confirmed_hours);
+          setTimeForYear(data.total_hours_year);
+          setCurrentForMonth(data.total_hours_month);
+        });
+      return () => user();
+    } catch (error) {
+      console.log("errorMessage ", error);
     }
-  }, [activityContext.allListOfTimeEntry]);
+  }, []);
 
   return (
     <View style={styles.containerForAll}>
@@ -68,7 +51,7 @@ export function TimeStatistics({}) {
       <View>
         <View style={styles.containerTextTimeForYearPopUp}>
           <Text testID="timeForYear">
-            Totall antal timmar i år: {timeForYear}
+            Totalt antal timmar i år: {timeForYear}
           </Text>
           <InfoModal screen="homepage" tooltipWidth={250} />
         </View>
