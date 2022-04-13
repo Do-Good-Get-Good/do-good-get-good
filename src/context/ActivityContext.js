@@ -44,8 +44,10 @@ export const ActivityProvider = ({ children }) => {
                   accumulatedTime: data[i].accumulated_time,
                   activityID: data[i].activity_id,
                   adminID: doc.data().admin_id,
-
                   connectedActivities: doc.data().connected_activities,
+                  paidTime: doc.data().total_confirmed_hours,
+                  timeForYear: doc.data().total_hours_year,
+                  currentForMonth: doc.data().total_hours_month,
                 };
                 temArray.push(idAndTime);
               }

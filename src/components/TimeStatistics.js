@@ -5,28 +5,25 @@ import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import { useActivityFunction } from "../context/ActivityContext";
 
 export function TimeStatistics({}) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
+  const activityFunction = useActivityFunction();
 
   useEffect(() => {
-    try {
-      let user = firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .onSnapshot((snap) => {
-          let data = snap.data();
-          setPaidTime(data.total_confirmed_hours);
-          setTimeForYear(data.total_hours_year);
-          setCurrentForMonth(data.total_hours_month);
-        });
-      return () => user();
-    } catch (error) {
-      console.log("errorMessage ", error);
-    }
-  }, []);
+    console.log(
+      "activityFunction.activitiesIDandAccumTime ",
+      activityFunction.activitiesIDandAccumTime
+    );
+    setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
+    setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
+    setCurrentForMonth(
+      activityFunction.activitiesIDandAccumTime[0].currentForMonth
+    );
+  }, [activityFunction.activitiesIDandAccumTime]);
 
   return (
     <View style={styles.containerForAll}>
