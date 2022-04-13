@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useActivityFunction } from "../context/ActivityContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -19,6 +20,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   const [isAdmin, setIsAdmin] = useState(false);
   const response = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
+  const entryTime = useActivityFunction();
 
   useEffect(() => {
     const checkIfUserIsAdmin = () => {
@@ -27,6 +29,19 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
     };
     checkIfUserIsAdmin();
   }, [isVisible]);
+
+  function signOutFunction() {
+    auth()
+      .signOut()
+      .then(() => {
+        console.log("User signOut");
+      })
+      .catch((error) => {
+        console.log("Enable in your firebase console.");
+
+        console.error(error);
+      });
+  }
 
   return (
     <Overlay
@@ -90,6 +105,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               onPress={() => {
                 openOverlay();
                 navigation.navigate("MyTimePage");
+                entryTime.setLimitAmountForTimeEntries(20);
               }}
             >
               <Text style={styles.menuOverlayLinkText}>Min tid</Text>
@@ -120,7 +136,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         <Pressable
           testID="menuOverlay.logoutButton"
           style={styles.menuOverlayLogOutButton}
-          onPress={() => auth().signOut()}
+          onPress={() => signOutFunction()}
         >
           <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
         </Pressable>

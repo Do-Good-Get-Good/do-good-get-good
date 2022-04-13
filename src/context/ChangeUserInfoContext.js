@@ -19,7 +19,7 @@ export const ChangeUserInfoProvider = ({ children }) => {
 
   useEffect(() => {
     if (newChangesInUserInfo.userID != " ") {
-      const setchangedUserFirstNameToFirebase = () => {
+      try {
         firestore()
           .collection("Users")
           .doc(newChangesInUserInfo.userID)
@@ -31,9 +31,13 @@ export const ChangeUserInfoProvider = ({ children }) => {
           .then(() => {
             console.log("User first name has been changed");
             setReloadAfterUserNameChanged(true);
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
           });
-      };
-      setchangedUserFirstNameToFirebase();
+      } catch (error) {
+        console.log("errorMessage ", error);
+      }
     }
   }, [newChangesInUserInfo]);
 

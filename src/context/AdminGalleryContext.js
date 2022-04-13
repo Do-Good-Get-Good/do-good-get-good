@@ -22,30 +22,43 @@ export const AdminGalleryProvider = ({ children }) => {
     let inactiveArray = [];
 
     const setInactive = async () => {
-      const allActiveActivities = await firestore()
-        .collection("Activities")
-        .where("active_status", "==", false)
-        .get();
+      try {
+        await firestore()
+          .collection("Activities")
+          .where("active_status", "==", false)
+          .get()
+          .then((allActiveActivities) => {
+            let activities = allActiveActivities.docs.map((doc) => doc.data());
+            let docId = allActiveActivities.docs.map((doc) => doc.id);
 
-      let activities = allActiveActivities.docs.map((doc) => doc.data());
-      let docId = allActiveActivities.docs.map((doc) => doc.id);
+            if (
+              activities != null &&
+              activities.length > activitiesGallery.length
+            ) {
+              for (let i = 0; i < activities.length; i++) {
+                const dataInfo = {
+                  id: docId[i],
+                  title: activities[i].activity_title,
+                  active: activities[i].active_status,
+                  city: activities[i].activity_city,
+                  description: activities[i].activity_description,
+                  photo: activities[i].activity_photo,
+                  popular: activities[i].tg_favorite,
+                };
+                inactiveArray.push(dataInfo);
 
-      if (activities != null && activities.length > activitiesGallery.length) {
-        for (let i = 0; i < activities.length; i++) {
-          const dataInfo = {
-            id: docId[i],
-            title: activities[i].activity_title,
-            active: activities[i].active_status,
-            city: activities[i].activity_city,
-            description: activities[i].activity_description,
-            photo: activities[i].activity_photo,
-            popular: activities[i].tg_favorite,
-          };
-          inactiveArray.push(dataInfo);
-
-          setInactiveActivitiesGallery(inactiveArray);
-        }
-        console.log("ActivityGaleryContext inactive activity in useEffect");
+                setInactiveActivitiesGallery(inactiveArray);
+              }
+              console.log(
+                "ActivityGaleryContext inactive activity in useEffect"
+              );
+            }
+          })
+          .catch((error) => {
+            console.log("errorMessage ", error);
+          });
+      } catch (error) {
+        console.log("AdminContex errorMessage ", error);
       }
     };
     setInactive();
