@@ -81,6 +81,7 @@ export const ActivityProvider = ({ children }) => {
         .limit(limitAmountForTimeEntries)
         .onSnapshot(
           (snap) => {
+            console.log("With limit");
             let docs = [];
             snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
 
@@ -99,7 +100,35 @@ export const ActivityProvider = ({ children }) => {
         allActivityTimeEntryAndStatus();
       };
     }
-  }, [isFinishedToLoadActivitiesID, limitAmountForTimeEntries]);
+    // }, [isFinishedToLoadActivitiesID, limitAmountForTimeEntries]);
+  }, [isFinishedToLoadActivitiesID]);
+
+  ////////
+  useEffect(() => {
+    if (limitAmountForTimeEntries === 20) {
+      let allActivityTimeEntryAndStatus = firestore()
+        .collection("timeentries")
+        .where("user_id", "==", auth().currentUser.uid)
+        .orderBy("date", "desc")
+        .onSnapshot(
+          (snap) => {
+            let docs = [];
+            snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+            console.log("No limit", docs.length);
+
+            setTimeEntryArrayForMyTimePage(docs);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+
+      return () => {
+        allActivityTimeEntryAndStatus();
+      };
+    }
+  }, [limitAmountForTimeEntries]);
+  //////
 
   useEffect(() => {
     if (isFinishedToLoadMyEntries === true) {
