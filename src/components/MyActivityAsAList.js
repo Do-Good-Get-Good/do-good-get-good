@@ -39,30 +39,54 @@ function MyActivityAsAList({ navigation }) {
 
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
-      objectsWithActivitiesAndTimeEntriesInfo(entryTime.lastFiveTimeEntries);
+      objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.lastFiveTimeEntries,
+        entryTime.myActivities
+      );
     } else if (
       rout.name === "MyTimePage" &&
       entryTime.allListOfTimeEntry.length != 0
     ) {
-      objectsWithActivitiesAndTimeEntriesInfo(entryTime.allListOfTimeEntry);
+      objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.allListOfTimeEntry,
+        entryTime.myActivities
+      );
     }
-  }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
+  }, [
+    entryTime.lastFiveTimeEntries,
+    entryTime.myActivities,
+    entryTime.allListOfTimeEntry,
+  ]);
 
   function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {
     let activityAndTimeEntryArray = [];
     let myTimeAndTitle = {};
 
     for (let i = 0; i < timeEntries.length; i++) {
-      myTimeAndTitle = {
-        adminID: timeEntries[i].admin_id,
-        timeEntryID: timeEntries[i].doc_id,
-        date: timeEntries[i].date.toDate(),
-        statusConfirmed: timeEntries[i].status_confirmed,
-        time: timeEntries[i].time,
-        title: timeEntries[i].activity_title,
-        id: timeEntries[i].activity_id,
-      };
-
+      for (let j = 0; j < activities.length; j++) {
+        if (activities[j].id === timeEntries[i].activity_id) {
+          myTimeAndTitle = {
+            adminID: timeEntries[i].admin_id,
+            timeEntryID: timeEntries[i].doc_id,
+            date: timeEntries[i].date.toDate(),
+            statusConfirmed: timeEntries[i].status_confirmed,
+            time: timeEntries[i].time,
+            id: timeEntries[i].activity_id,
+            title: timeEntries[i].activity_title,
+            city: activities[j].city,
+          };
+        } else {
+          myTimeAndTitle = {
+            adminID: timeEntries[i].admin_id,
+            timeEntryID: timeEntries[i].doc_id,
+            date: timeEntries[i].date.toDate(),
+            statusConfirmed: timeEntries[i].status_confirmed,
+            time: timeEntries[i].time,
+            title: timeEntries[i].activity_title,
+            id: timeEntries[i].activity_id,
+          };
+        }
+      }
       activityAndTimeEntryArray.push(myTimeAndTitle);
     }
     setTimeEntryList(activityAndTimeEntryArray);

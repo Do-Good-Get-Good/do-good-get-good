@@ -13,23 +13,15 @@ export const AdminProvider = ({ children }) => {
 
   useEffect(() => {
     const checkIfUserIsAdmin = async () => {
-      try {
-        await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .get()
-          .then((response) => {
-            if (response.data().role === "admin") {
-              setUserLevel("admin");
-            } else {
-              setUserLevel("user");
-            }
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("AdminContex errorMessage ", error);
+      const response = await firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .get();
+
+      if (response.data().role === "admin") {
+        setUserLevel("admin");
+      } else {
+        setUserLevel("user");
       }
     };
     checkIfUserIsAdmin();

@@ -3,25 +3,12 @@ import { StyleSheet, Text, View, Image, Pressable } from "react-native";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import typography from "../assets/theme/typography";
-import { useNetInfo } from "@react-native-community/netinfo";
-import colors from "../assets/theme/colors";
 
 const Menu = () => {
   const [visible, setVisible] = useState(false);
-  const inetInfo = useNetInfo();
-  const noInternetText =
-    "Ingen internetanslutning, dina ändringar kanske inte sparas";
 
   const toggleOverlay = () => {
     setVisible(!visible);
-  };
-
-  const ifNoInternetConnection = () => {
-    return (
-      <View>
-        <Text style={styles.ifNoInternet}>{noInternetText}</Text>
-      </View>
-    );
   };
 
   return (
@@ -50,8 +37,6 @@ const Menu = () => {
           <Text style={styles.headerMenuText}>Meny</Text>
         </Pressable>
       </View>
-      {inetInfo.isConnected === false && ifNoInternetConnection()}
-
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
     </>
   );
@@ -79,11 +64,5 @@ const styles = StyleSheet.create({
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     marginTop: -7,
-  },
-  ifNoInternet: {
-    ...typography.b1,
-    color: colors.error,
-    alignSelf: "flex-start",
-    marginHorizontal: 16,
   },
 });

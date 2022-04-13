@@ -30,17 +30,15 @@ export const AdminHomePageProvider = ({ children }) => {
         let timeEntryData = [];
         for (let i = 0; i < usersId.length; i++) {
           try {
-            await firestore()
+            let response = await firestore()
               .collection("timeentries")
               .where("user_id", "==", usersId[i])
               .where("status_confirmed", "==", true)
               .orderBy("date", "desc")
               .limit(5)
-              .get()
-              .then((response) => {
-                timeEntryData.push(response.docs.map((doc) => doc.data()));
-              })
-              .catch((error) => console.log(error));
+              .get();
+
+            timeEntryData.push(response.docs.map((doc) => doc.data()));
           } catch (error) {
             console.log(error);
           }

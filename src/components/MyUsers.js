@@ -24,7 +24,6 @@ const MyUsers = ({ navigation }) => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
-  const [myUsersLoading, setMyUsersLoading] = useState(true);
   const userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
@@ -81,37 +80,37 @@ const MyUsers = ({ navigation }) => {
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const fetchUserTimeEntries = async () => {
-    if (userData.length != 0 && userData != null && allUsers.length === 0) {
+    if (userData.length != 0 && userData != null) {
+      let tempArr = [];
       for (let i = 0; i < userData.length; i++) {
+        let userTimeEntryData;
+
         try {
-          await firestore()
+          let response = await firestore()
             .collection("timeentries")
             .where("user_id", "==", userData[i].id)
             .where("status_confirmed", "==", true)
             .orderBy("date", "desc")
             .limit(5)
-            .get()
-            .then((response) => {
-              let userInfo = {
-                firstName: userData[i].first_name,
-                lastName: userData[i].last_name,
-                timeEntries: response.docs.map((doc) => doc.data()),
-                isOpen: false,
-                statusActive: userData[i].status_active,
-                userID: userData[i].id,
-              };
+            .get();
 
-              setAllUsers((prev) => [...prev, userInfo]);
-              setLoadingData(true);
-            })
-            .catch((error) => console.log("MyUsers ", error));
+          userTimeEntryData = response.docs.map((doc) => doc.data());
         } catch (error) {
-          console.log("MyUsers ", error);
+          console.log(error);
         }
-      }
 
-      setMyUsersLoading(false);
-      setLoadingData(false);
+        let userInfo = {
+          firstName: userData[i].first_name,
+          lastName: userData[i].last_name,
+          timeEntries: userTimeEntryData,
+          isOpen: false,
+          statusActive: userData[i].status_active,
+          userID: userData[i].id,
+        };
+        tempArr.push(userInfo);
+      }
+      setAllUsers(tempArr);
+      setLoadingData(true);
     }
   };
 
@@ -161,7 +160,7 @@ const MyUsers = ({ navigation }) => {
       setInactiveUsers(arrayWithInactiveUsers);
       setLoadingData(false);
     }
-  }, [allUsers, loadingData]);
+  }, [loadingData]);
 
   useEffect(() => {
     sortUsers(sortBy);
@@ -189,7 +188,6 @@ const MyUsers = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
-
         {expanded === true ? (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
@@ -215,10 +213,10 @@ const MyUsers = ({ navigation }) => {
       </View>
 
       <View testID="contentViewId" style={styles.content}>
-        {myUsersLoading && (
+        {myUsers.length === 0 && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
-        {allUsers.length != 0 && (
+        {!loadingData && (
           <>
             {myUsers.map((user, index) => (
               <View key={index}>

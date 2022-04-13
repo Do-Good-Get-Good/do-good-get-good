@@ -5,7 +5,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import MenuOverlay from "../components/MenuOverlay";
 
 import { useAdminCheckFunction } from "../context/AdminContext";
-import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -26,15 +25,10 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-let mockAuthSignOut = jest.fn();
-
-jest.mock("@react-native-firebase/auth", () => {
-  const auth = jest.requireActual("@react-native-firebase/auth");
-  return () => ({
-    ...auth,
-    signOut: mockAuthSignOut,
-  });
-});
+jest.mock("@react-native-firebase/auth", () => () => ({
+  auth: jest.fn(),
+  signOut: jest.fn(),
+}));
 
 jest.mock("../context/AdminContext", () => ({
   useAdminCheckFunction: jest.fn(),
@@ -43,7 +37,6 @@ jest.mock("../context/AdminContext", () => ({
 jest.mock("../context/ActivityContext", () => ({
   useActivityFunction: () => ({
     getIfoFromActivitiesList: jest.fn(),
-    setLimitAmountForTimeEntries: jest.fn(),
   }),
 }));
 
@@ -147,7 +140,6 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuOverlay.myTimeButton");
       fireEvent.press(myTimeButton);
-      useActivityFunction().setLimitAmountForTimeEntries.mockReturnValue(20);
       expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
     });
 
@@ -175,13 +167,11 @@ describe("Testing MenuOverlay", () => {
 
     it("Log out button", () => {
       const onClickMock = jest.fn();
-      let error = "ete";
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
       );
 
       const logoutButton = getByTestId("menuOverlay.logoutButton");
-      mockAuthSignOut.mockResolvedValue();
       fireEvent.press(logoutButton);
       expect(mockedNavigate).not.toHaveBeenCalled();
     });

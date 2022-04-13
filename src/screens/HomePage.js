@@ -1,9 +1,7 @@
-
 import React from "react";
 import { StyleSheet, ScrollView, Text } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
@@ -44,29 +42,35 @@ export const HomePage = ({ navigation }) => {
       )}
       {userLevel === "user" && (
         <>
-          <ScrollView style={styles.container}>
-            <TimeStatistics />
-            {activity.myActivities.length != 0 && (
-              <>
-                <MyActivities
-                  myAccumulatedTime={activity.activitiesIDandAccumTime}
-                  myActivities={activity.myActivities}
-                />
-                <MyActivityAsAList navigation={navigation} />
-              </>
-            )}
-
-            <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
-            <SuggestionProvider>
-              <Suggestions navigation={navigation} />
-            </SuggestionProvider>
-
-            {activity.myActivities.length === 0 && (
+          {activity.myActivities.length != 0 && (
+            <ScrollView style={styles.container}>
+              <TimeStatistics />
+              <MyActivities
+                myAccumulatedTime={activity.activitiesIDandAccumTime}
+                myActivities={activity.myActivities}
+              />
               <MyActivityAsAList navigation={navigation} />
-            )}
-
-            <BottomLogo />
-          </ScrollView>
+              <SuggestionProvider>
+                <Text style={styles.suggestionHeader}>
+                  Förslag & inspiration
+                </Text>
+                <Suggestions navigation={navigation} />
+              </SuggestionProvider>
+              <BottomLogo />
+            </ScrollView>
+          )}
+          {activity.activitiesIDandAccumTime.length < 1 && (
+            <ScrollView style={styles.container}>
+              <SuggestionProvider>
+                <Text style={styles.suggestionHeader}>
+                  Förslag & inspiration
+                </Text>
+                <Suggestions navigation={navigation} />
+              </SuggestionProvider>
+              <MyActivityAsAList navigation={navigation} />
+              <BottomLogo />
+            </ScrollView>
+          )}
         </>
       )}
     </SafeAreaView>
