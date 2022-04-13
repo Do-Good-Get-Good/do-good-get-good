@@ -110,6 +110,37 @@ const CalendarView = ({
     }
   }, [selectedDate]);
 
+  const addTotalHoursMonth = (hours) => {
+    try {
+      firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .update({
+          total_hours_month: firestore.FieldValue.increment(hours),
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
+  };
+  const removeTotalHoursMonth = (hours) => {
+    try {
+      firestore()
+        .collection("Users")
+        .doc(auth().currentUser.uid)
+        .update({
+          total_hours_month: firestore.FieldValue.increment(-hours),
+        })
+        .catch((error) => {
+          console.log("errorMessage ", error);
+        });
+    } catch (error) {
+      console.log("errorMessage ", error);
+    }
+  };
+
   //Registers a users activity (saving to Firebase Firestore)
   const registerTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
@@ -132,12 +163,17 @@ const CalendarView = ({
         setError("Sorry, something went wrong");
       });
 
+    addTotalHoursMonth(hours);
     toggleVisibility();
   };
 
   //Change activity date and time (hours) - (Saving to Firebase Firestore)
   const changeTimeEntry = () => {
+    let today = new Date();
+    let currentYear = today.getFullYear();
+    let currentMonth = today.getMonth();
     let date = toDate(new Date(selectedDate));
+
     try {
       firestore()
         .collection("timeentries")
@@ -160,11 +196,25 @@ const CalendarView = ({
       console.log("errorMessage ", error);
       setError("Sorry, something went wrong");
     }
+
+    if (
+      currentMonth === new Date(selectedDate).getMonth() &&
+      currentYear === new Date(selectedDate).getFullYear()
+    ) {
+      if (activity.time < hours) {
+        let newTime = hours - activity.time;
+        addTotalHoursMonth(newTime);
+      } else if (activity.time > hours) {
+        let newTime = activity.time - hours;
+        removeTotalHoursMonth(newTime);
+      }
+    }
     toggleVisibility();
   };
 
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
+
     try {
       firestore()
         .collection("timeentries")
@@ -181,6 +231,7 @@ const CalendarView = ({
       console.log("errorMessage ", error);
       setError("Sorry, something went wrong");
     }
+    removeTotalHoursMonth(hours);
     toggleVisibility();
   };
 

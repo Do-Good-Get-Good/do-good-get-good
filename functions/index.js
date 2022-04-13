@@ -124,6 +124,36 @@ exports.createUser = functions.https.onCall(async (data, context) => {
   }
 });
 
+const database = admin.firestore();
+
+exports.updateMonth = functions.pubsub
+  .schedule("0 0 1 * *")
+  .onRun(async (context) => {
+    await database
+      .collection("Users")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          doc.ref.update({ total_confirmed_hours: 0, total_hours_month: 0 });
+        });
+      });
+
+    return console.log("Successful reset of time for month and approvedtimes");
+  });
+exports.updateYear = functions.pubsub
+  .schedule("0 0 1 1 *")
+  .onRun(async (context) => {
+    await database
+      .collection("Users")
+      .get()
+      .then((snap) => {
+        snap.forEach((doc) => {
+          doc.ref.update({ total_hours_year: 0 });
+        });
+      });
+
+    return console.log("Successful reset of time for year");
+  });
 // exports.assignAdminClaim = functions.firestore
 //   .document("tempoAssignClaim/{tempoId}")
 //   .onCreate((snap, context) => {
