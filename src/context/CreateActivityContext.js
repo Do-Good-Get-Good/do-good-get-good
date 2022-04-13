@@ -48,33 +48,43 @@ export const CreateActivityProvider = ({ children }) => {
     if (showAllActiveActivities === true) {
       let tempArray = [];
       const getAllActiveActivities = async () => {
-        const allActiveActivities = await firestore()
-          .collection("Activities")
-          .where("active_status", "==", true)
-          .get();
+        try {
+          await firestore()
+            .collection("Activities")
+            .where("active_status", "==", true)
+            .get()
+            .then((allActiveActivities) => {
+              let activities = allActiveActivities.docs.map((doc) =>
+                doc.data()
+              );
+              let docId = allActiveActivities.docs.map((doc) => doc.id);
 
-        let activities = allActiveActivities.docs.map((doc) => doc.data());
-        let docId = allActiveActivities.docs.map((doc) => doc.id);
-
-        if (
-          activities != null &&
-          activities.length > allActiveActvivitiesFB.length
-        ) {
-          for (let i = 0; i < activities.length; i++) {
-            const dataInfo = {
-              id: docId[i],
-              title: activities[i].activity_title,
-              active: activities[i].active_status,
-              city: activities[i].activity_city,
-              place: activities[i].activity_place,
-              description: activities[i].activity_description,
-              photo: activities[i].activity_photo,
-              popular: activities[i].tg_favorite,
-            };
-            tempArray.push(dataInfo);
-          }
+              if (
+                activities != null &&
+                activities.length > allActiveActvivitiesFB.length
+              ) {
+                for (let i = 0; i < activities.length; i++) {
+                  const dataInfo = {
+                    id: docId[i],
+                    title: activities[i].activity_title,
+                    active: activities[i].active_status,
+                    city: activities[i].activity_city,
+                    place: activities[i].activity_place,
+                    description: activities[i].activity_description,
+                    photo: activities[i].activity_photo,
+                    popular: activities[i].tg_favorite,
+                  };
+                  tempArray.push(dataInfo);
+                }
+              }
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+          setAllActiveActvivitiesFB(tempArray);
+        } catch (error) {
+          console.log("CreateActivityContext errorMessage ", error);
         }
-        setAllActiveActvivitiesFB(tempArray);
       };
 
       getAllActiveActivities();

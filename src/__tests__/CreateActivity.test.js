@@ -10,6 +10,11 @@ jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
+jest.mock("@react-native-community/netinfo", () => ({
+  useNetInfo: () => ({
+    isConnected: true,
+  }),
+}));
 
 jest.mock("../components/DropDownSmall", () => () => {
   return <mockDropDownSmall />;
