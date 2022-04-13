@@ -111,7 +111,6 @@ const ConfirmActivities = () => {
 
       setMyUsers((prev) => [...prev, timeEntryData]);
     }
-
   };
 
   const updateTimeEntry = (change) => {
@@ -338,6 +337,15 @@ const ConfirmActivities = () => {
                     <Text style={styles.listItemNameStyle}>
                       {user.fullName}
                     </Text>
+                  </View>
+                  <View
+                    style={{
+                      flex: 1,
+                      flexDirection: "row",
+                      alignItems: "center",
+                      justifyContent: "flex-end",
+                    }}
+                  >
                     <Icon
                       style={styles.icon}
                       color={colors.secondary}
@@ -348,23 +356,6 @@ const ConfirmActivities = () => {
                       }
                       size={30}
                     />
-                  </View>
-                  <Text style={styles.listItemDateStyle}>
-                    {user.timeEntryDate}
-                  </Text>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <View style={{ flex: 0.9 }}>
-                      <Text style={styles.listItemHourStyle}>
-                        {user.timeEntryHours}h
-                      </Text>
-                    </View>
                     <CheckBox
                       iconRight
                       containerStyle={styles.listItemCheckBoxStyle}
@@ -387,6 +378,9 @@ const ConfirmActivities = () => {
                       <Text style={styles.listItemContentDateStyle}>
                         {user.timeEntryDate}
                       </Text>
+                      {/* <Text style={styles.listItemContentHourStyle}>
+                        {user.timeEntryHours}h
+                      </Text> */}
                     </View>
                     <View style={styles.listItemContentHourView}>
                       <Text style={styles.listItemContentHourStyle}>
@@ -499,27 +493,37 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     paddingVertical: 16,
     paddingHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
+    // alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
   },
-  listItemContentNameView: { flex: 1 },
-  listItemContentDateView: { flex: 1 },
+  listItemContentNameView: {
+    flex: 1,
+    // alignItems: "center",
+  },
+  listItemContentDateView: {
+    flex: 1,
+    flexDirection: "row",
+    // justifyContent: "space-around",
+    justifyContent: "space-between",
+  },
   listItemContentHourView: { flex: 1 },
   listItemContentNameStyle: {
     fontWeight: "700",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     paddingRight: 10,
+    paddingBottom: 10,
   },
   listItemContentDateStyle: {
-    textAlign: "center",
+    // textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
+    paddingBottom: 10,
   },
   listItemContentHourStyle: {
-    textAlign: "center",
+    // textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
   },
