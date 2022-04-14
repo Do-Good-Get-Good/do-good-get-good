@@ -111,7 +111,6 @@ const ConfirmActivities = () => {
 
       setMyUsers((prev) => [...prev, timeEntryData]);
     }
-
   };
 
   const updateTimeEntry = (change) => {
@@ -301,7 +300,7 @@ const ConfirmActivities = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.header}>
         <Text style={styles.headerText}>Att godkänna</Text>
         <CheckBox
@@ -327,17 +326,12 @@ const ConfirmActivities = () => {
                     openSelectedUser(user);
                   }}
                 >
-                  <View
-                    style={{
-                      flex: 1.25,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
+                  <View style={styles.viewForListItemName}>
                     <Text style={styles.listItemNameStyle}>
                       {user.fullName}
                     </Text>
+                  </View>
+                  <View style={styles.viewForIconAndCheckbox}>
                     <Icon
                       style={styles.icon}
                       color={colors.secondary}
@@ -348,23 +342,6 @@ const ConfirmActivities = () => {
                       }
                       size={30}
                     />
-                  </View>
-                  <Text style={styles.listItemDateStyle}>
-                    {user.timeEntryDate}
-                  </Text>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                    }}
-                  >
-                    <View style={{ flex: 0.9 }}>
-                      <Text style={styles.listItemHourStyle}>
-                        {user.timeEntryHours}h
-                      </Text>
-                    </View>
                     <CheckBox
                       iconRight
                       containerStyle={styles.listItemCheckBoxStyle}
@@ -398,12 +375,7 @@ const ConfirmActivities = () => {
               </View>
             ))
           : myUsers.length < 1 && (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <View style={styles.viewAllConfirmed}>
                 <Text style={{ ...typography.b2 }}>
                   Du har godkänt alla konsulters tider, kolla igen senare!!
                 </Text>
@@ -443,7 +415,6 @@ const ConfirmActivities = () => {
 export default ConfirmActivities;
 
 const styles = StyleSheet.create({
-  container: {},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -480,16 +451,6 @@ const styles = StyleSheet.create({
     fontSize: typography.b2.fontSize,
     flex: 1,
   },
-  listItemDateStyle: {
-    fontFamily: typography.b2.fontFamily,
-    fontSize: typography.b2.fontSize,
-    flex: 1.05,
-  },
-  listItemHourStyle: {
-    fontFamily: typography.b2.fontFamily,
-    fontSize: typography.b2.fontSize,
-    textAlign: "center",
-  },
   listItemCheckBoxStyle: {
     padding: 0,
     margin: 0,
@@ -499,27 +460,32 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     paddingVertical: 16,
     paddingHorizontal: 10,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: "column",
     justifyContent: "center",
     borderRadius: 5,
   },
-  listItemContentNameView: { flex: 1 },
-  listItemContentDateView: { flex: 1 },
+  listItemContentNameView: {
+    flex: 1,
+  },
+  listItemContentDateView: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+  },
   listItemContentHourView: { flex: 1 },
   listItemContentNameStyle: {
     fontWeight: "700",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     paddingRight: 10,
+    paddingBottom: 10,
   },
   listItemContentDateStyle: {
-    textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
+    paddingBottom: 10,
   },
   listItemContentHourStyle: {
-    textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
   },
@@ -534,5 +500,21 @@ const styles = StyleSheet.create({
     fontSize: typography.button.lg.fontSize,
     fontWeight: "500",
     color: colors.dark,
+  },
+  viewForIconAndCheckbox: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  viewForListItemName: {
+    flex: 1.25,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  viewAllConfirmed: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
