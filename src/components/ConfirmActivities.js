@@ -326,26 +326,12 @@ const ConfirmActivities = () => {
                     openSelectedUser(user);
                   }}
                 >
-                  <View
-                    style={{
-                      flex: 1.25,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "space-between",
-                    }}
-                  >
+                  <View style={styles.viewForListItemName}>
                     <Text style={styles.listItemNameStyle}>
                       {user.fullName}
                     </Text>
                   </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "center",
-                      justifyContent: "flex-end",
-                    }}
-                  >
+                  <View style={styles.viewForIconAndCheckbox}>
                     <Icon
                       style={styles.icon}
                       color={colors.secondary}
@@ -389,12 +375,7 @@ const ConfirmActivities = () => {
               </View>
             ))
           : myUsers.length < 1 && (
-              <View
-                style={{
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
+              <View style={styles.viewAllConfirmed}>
                 <Text style={{ ...typography.b2 }}>
                   Du har godkänt alla konsulters tider, kolla igen senare!!
                 </Text>
@@ -519,5 +500,21 @@ const styles = StyleSheet.create({
     fontSize: typography.button.lg.fontSize,
     fontWeight: "500",
     color: colors.dark,
+  },
+  viewForIconAndCheckbox: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+  },
+  viewForListItemName: {
+    flex: 1.25,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  viewAllConfirmed: {
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
