@@ -387,7 +387,11 @@ export function CreateActivity({ route, navigation }) {
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
-            onPress={() => navigation.navigate("ImagesGallery")}
+            onPress={() =>
+              navigation.navigate("ImagesGallery", {
+                cameFrom: "CreateActivity",
+              })
+            }
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
