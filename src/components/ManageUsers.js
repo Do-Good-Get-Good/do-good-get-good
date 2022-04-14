@@ -36,6 +36,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   }, [visible]);
 
   const fetchAllMyUsers = () => {
+    console.log(userData);
     let users = userData.map((user) => {
       let connectedActivitiesArray = user.connected_activities;
 
