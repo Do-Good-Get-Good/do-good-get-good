@@ -300,7 +300,7 @@ const ConfirmActivities = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View>
       <View style={styles.header}>
         <Text style={styles.headerText}>Att godkänna</Text>
         <CheckBox
@@ -378,9 +378,6 @@ const ConfirmActivities = () => {
                       <Text style={styles.listItemContentDateStyle}>
                         {user.timeEntryDate}
                       </Text>
-                      {/* <Text style={styles.listItemContentHourStyle}>
-                        {user.timeEntryHours}h
-                      </Text> */}
                     </View>
                     <View style={styles.listItemContentHourView}>
                       <Text style={styles.listItemContentHourStyle}>
@@ -437,7 +434,6 @@ const ConfirmActivities = () => {
 export default ConfirmActivities;
 
 const styles = StyleSheet.create({
-  container: {},
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -474,16 +470,6 @@ const styles = StyleSheet.create({
     fontSize: typography.b2.fontSize,
     flex: 1,
   },
-  listItemDateStyle: {
-    fontFamily: typography.b2.fontFamily,
-    fontSize: typography.b2.fontSize,
-    flex: 1.05,
-  },
-  listItemHourStyle: {
-    fontFamily: typography.b2.fontFamily,
-    fontSize: typography.b2.fontSize,
-    textAlign: "center",
-  },
   listItemCheckBoxStyle: {
     padding: 0,
     margin: 0,
@@ -494,18 +480,15 @@ const styles = StyleSheet.create({
     paddingVertical: 16,
     paddingHorizontal: 10,
     flexDirection: "column",
-    // alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
   },
   listItemContentNameView: {
     flex: 1,
-    // alignItems: "center",
   },
   listItemContentDateView: {
     flex: 1,
     flexDirection: "row",
-    // justifyContent: "space-around",
     justifyContent: "space-between",
   },
   listItemContentHourView: { flex: 1 },
@@ -517,13 +500,11 @@ const styles = StyleSheet.create({
     paddingBottom: 10,
   },
   listItemContentDateStyle: {
-    // textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     paddingBottom: 10,
   },
   listItemContentHourStyle: {
-    // textAlign: "center",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
   },
