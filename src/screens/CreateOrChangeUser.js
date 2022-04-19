@@ -279,7 +279,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         <TextInput
           textContentType={"emailAddress"}
           style={[nameSurnameEmailPasswordStyle(), emailBorderStyle()]}
-          maxLength={30}
+          maxLength={100}
           onChangeText={setEmail}
           value={email}
           placeholder="E-mail"
