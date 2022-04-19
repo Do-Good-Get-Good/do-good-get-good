@@ -350,8 +350,8 @@ export function CreateActivity({ route, navigation }) {
         <TextInput
           style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
-          onChangeText={setPlace}
-          value={place}
+          onChangeText={setCity}
+          value={city}
           placeholder="Var"
           placeholderTextColor={colors.dark}
         />
@@ -361,8 +361,8 @@ export function CreateActivity({ route, navigation }) {
         <TextInput
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
-          onChangeText={setCity}
-          value={city}
+          onChangeText={setPlace}
+          value={place}
           placeholder="Aktör"
           placeholderTextColor={colors.dark}
         />
