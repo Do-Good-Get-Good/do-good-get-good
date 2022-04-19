@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 
 import InfoModal from "../components/InfoModal";
 
@@ -19,6 +19,9 @@ describe("Testing InfoModal", () => {
       <InfoModal screen="homepage" tooltipWidth={250} />
     );
 
+    const icon = getByTestId("InfoModal.viewAroundIcon");
+    fireEvent.press(icon);
+
     const infoText = getByTestId("InfoModal.infoText");
     expect(infoText.props.children).toEqual(homepageInfoText);
   });
@@ -26,6 +29,9 @@ describe("Testing InfoModal", () => {
     const { getByTestId } = render(
       <InfoModal screen="imageGallery" tooltipWidth={200} />
     );
+
+    const icon = getByTestId("InfoModal.viewAroundIcon");
+    fireEvent.press(icon);
 
     const infoText = getByTestId("InfoModal.infoText");
     expect(infoText.props.children).toEqual(imageGalleryInfoText);
