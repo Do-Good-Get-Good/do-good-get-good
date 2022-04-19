@@ -33,6 +33,7 @@ export function ActivityCard({ route, navigation }) {
     photo: "",
     city: "",
     description: "",
+    place: "",
     popular: "",
   });
 
@@ -163,6 +164,7 @@ export function ActivityCard({ route, navigation }) {
       title: activityInfo.title,
       photo: activityInfo.photo,
       city: activityInfo.city,
+      place: activityInfo.place,
       description: activityInfo.description,
     });
   }, [admin, activityInfo]);
@@ -411,6 +413,16 @@ export function ActivityCard({ route, navigation }) {
             />
             <Text style={styles.textCity}>{activity.city}</Text>
           </View>
+          <View style={styles.iconAndPlaceContainer}>
+            <Icon
+              type="font-awesome"
+              name="building-o"
+              color={colors.dark}
+              size={23}
+              paddingHorizontal={3}
+            />
+            <Text style={styles.textCity}>{activity.place}</Text>
+          </View>
           <View style={styles.iconsAndTextTimeContainer}>
             <Icon
               type="material-community"
@@ -496,6 +508,12 @@ const styles = StyleSheet.create({
   },
   iconsAndTextTimeContainer: {
     alignItems: "flex-start",
+    flexDirection: "row",
+    marginTop: 6,
+    color: colors.dark,
+  },
+  iconAndPlaceContainer: {
+    alignItems: "center",
     flexDirection: "row",
     marginTop: 6,
     color: colors.dark,
