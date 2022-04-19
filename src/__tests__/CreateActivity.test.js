@@ -126,7 +126,9 @@ describe("Testing  CreateActivity ", () => {
 
     const imagesGalleryButton = getByTestId("navigateToImagesGallery");
     fireEvent.press(imagesGalleryButton);
-    expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery");
+    expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery", {
+      cameFrom: "CreateActivity",
+    });
   });
 
   it("ActivityCard. Text 'Infoga' exidst", () => {
