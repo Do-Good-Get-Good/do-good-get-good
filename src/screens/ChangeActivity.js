@@ -4,12 +4,12 @@ import {
   Text,
   StyleSheet,
   View,
-  Image,
   TouchableOpacity,
   Platform,
   ScrollView,
   TextInput,
   Dimensions,
+  Image,
 } from "react-native";
 import Menu from "../components/Menu";
 
@@ -31,10 +31,32 @@ export function ChangeActivity({ route, navigation }) {
   const [description, setDescription] = useState(activity.description);
   const [photo, setPhoto] = useState(activity.photo);
 
-  function buttonSavePressed() {
-    let changedObject = {};
+  const MENU_HEIGHT = 65;
 
-    changedObject = {
+  useEffect(() => {
+    if (route.params?.imageForActivity != undefined) {
+      setPhoto(route.params?.imageForActivity);
+    }
+  }, [route.params?.imageForActivity]);
+
+  function calculateBottomButtonHeight() {
+    let saveButtonHeight = styles.saveButton.height;
+    let cancelButtonHeight = styles.cancelButton.height;
+    let saveButtonMarginBottom = styles.saveButton.marginBottom;
+    let bottomButtonContainerMarginBottom =
+      styles.containerForTwoBottomButtons.marginBottom;
+
+    let sum =
+      saveButtonHeight +
+      cancelButtonHeight +
+      saveButtonMarginBottom +
+      bottomButtonContainerMarginBottom;
+
+    return sum;
+  }
+
+  function buttonSavePressed() {
+    let changedObject = {
       active: activity.active,
       city: city,
       description: description,
@@ -61,94 +83,124 @@ export function ChangeActivity({ route, navigation }) {
     createActivityContext.activityHasChanged(true);
   }
 
+  function changeImageForActivity() {
+    for (let index = 0; index < Images.length; index++) {
+      if (photo === Images[index].name) {
+        return Images[index].image;
+      }
+    }
+  }
+
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView style={styles.container}>
         <View
           style={{
-            flex: 1,
-            height: Dimensions.get("screen").height,
+            minHeight:
+              Dimensions.get("window").height -
+              MENU_HEIGHT -
+              calculateBottomButtonHeight(),
           }}
         >
-          <View style={styles.container}>
-            <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
+          <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
+          <TextInput
+            style={{
+              ...styles.textInputs,
+              ...styles.textTitleField,
+              ...styles.textForTitlePlaceCityInput,
+            }}
+            numberOfLines={2}
+            multiline={true}
+            onChangeText={setTitle}
+            value={title}
+            placeholder={activity.title}
+            placeholderTextColor={colors.dark}
+          />
+          <TextInput
+            style={{
+              ...styles.textInputs,
+              ...styles.textForTitlePlaceCityInput,
+            }}
+            numberOfLines={2}
+            multiline={true}
+            onChangeText={setCity}
+            value={city}
+            placeholder={activity.city}
+            placeholderTextColor={colors.dark}
+          />
+          <TextInput
+            style={{
+              ...styles.textInputs,
+              ...styles.textForTitlePlaceCityInput,
+            }}
+            numberOfLines={2}
+            multiline={true}
+            onChangeText={setPlace}
+            value={place}
+            placeholder={activity.place}
+            placeholderTextColor={colors.dark}
+          />
+          <TextInput
+            style={{
+              ...styles.textInputs,
+              ...styles.textDescriptionField,
+            }}
+            numberOfLines={5}
+            multiline={true}
+            onChangeText={setDescription}
+            value={description}
+            placeholder={activity.description}
+            placeholderTextColor={colors.dark}
+          />
 
-            <TextInput
-              style={{
-                ...styles.textInputs,
-                ...styles.textTitleField,
-                ...styles.textForTitlePlaceCityInput,
-              }}
-              numberOfLines={2}
-              multiline={true}
-              onChangeText={setTitle}
-              value={title}
-              placeholder={activity.title}
-              placeholderTextColor={colors.dark}
-            />
-            <TextInput
-              style={{
-                ...styles.textInputs,
-                ...styles.textForTitlePlaceCityInput,
-              }}
-              numberOfLines={2}
-              multiline={true}
-              onChangeText={setCity}
-              value={city}
-              placeholder={activity.city}
-              placeholderTextColor={colors.dark}
-            />
-            <TextInput
-              style={{
-                ...styles.textInputs,
-                ...styles.textForTitlePlaceCityInput,
-              }}
-              numberOfLines={2}
-              multiline={true}
-              onChangeText={setPlace}
-              value={place}
-              placeholder={activity.place}
-              placeholderTextColor={colors.dark}
-            />
-            <TextInput
-              style={{
-                ...styles.textInputs,
-                ...styles.textDescriptionField,
-              }}
-              numberOfLines={5}
-              multiline={true}
-              onChangeText={setDescription}
-              value={description}
-              placeholder={activity.description}
-              placeholderTextColor={colors.dark}
-            />
-          </View>
-
-          <View style={styles.containerForTwoBottomButtons}>
+          <View style={styles.containerImageAndInsertButton}>
+            <Image style={styles.image} source={changeImageForActivity()} />
             <TouchableOpacity
-              testID="saveButton"
-              onPress={() => buttonSavePressed()}
-              style={styles.saveButton}
-            >
-              <Text style={styles.saveButtonText}>Spara</Text>
-            </TouchableOpacity>
-
-            <TouchableOpacity
-              testID="backButton"
-              onPress={() => navigation.goBack()}
-              style={styles.cancelButton}
+              testID="navigateToImagesGallery"
+              onPress={() =>
+                navigation.navigate("ImagesGallery", {
+                  activity: activity,
+                  tgPopular: tgPopular,
+                  cameFrom: "ChangeActivity",
+                })
+              }
             >
               <LinearGradient
                 colors={[colors.primary, colors.secondary]}
                 start={{ x: 0, y: 0 }}
                 end={{ x: 1, y: 1 }}
-                style={styles.cancelButtonBorder}
+                style={styles.buttonBorderStyle}
               >
-                <Text style={styles.cancelButtonText}>Avbryt</Text>
+                <Text style={styles.textButtonInsert}>Ändra bild</Text>
               </LinearGradient>
             </TouchableOpacity>
           </View>
+        </View>
+
+        <View style={styles.containerForTwoBottomButtons}>
+          <TouchableOpacity
+            testID="saveButton"
+            onPress={() => buttonSavePressed()}
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>Spara</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            testID="backButton"
+            onPress={() => navigation.goBack()}
+            style={styles.cancelButton}
+          >
+            <LinearGradient
+              colors={[colors.primary, colors.secondary]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.cancelButtonBorder}
+            >
+              <Text style={styles.cancelButtonText}>Avbryt</Text>
+            </LinearGradient>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </SafeAreaView>
@@ -158,26 +210,22 @@ export default ChangeActivity;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 2.3,
-    marginHorizontal: 16,
-    marginVertical: 15,
+    flex: 1,
+    paddingHorizontal: 16,
   },
   textMainTitle: {
     ...typography.h2,
     fontWeight: "500",
-    paddingTop: 7,
+    paddingTop: 5,
     color: colors.dark,
     marginRight: 10,
   },
-
-  textForTitlePlaceCityInput: {
-    flex: 0.2,
-  },
+  textForTitlePlaceCityInput: {},
   textInputs: {
-    paddingLeft: 11,
+    paddingLeft: 10,
     ...typography.b1,
     color: colors.dark,
-    marginBottom: 12,
+    marginBottom: 10,
     backgroundColor: colors.background,
     borderRadius: 5,
     borderWidth: 1,
@@ -204,11 +252,46 @@ const styles = StyleSheet.create({
     paddingTop: 13,
     height: 130,
   },
-
-  containerForTwoBottomButtons: {
+  containerImageAndInsertButton: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 20,
+  },
+  image: {
+    resizeMode: "contain",
+    height: 100,
+    width: 100,
+    borderRadius: 3,
+    borderWidth: 1,
+    borderColor: colors.primary,
+    backgroundColor: colors.background,
+  },
+  textButtonInsert: {
     flex: 1,
+    letterSpacing: 2,
+    backgroundColor: colors.light,
+    marginVertical: 1,
+    borderRadius: 5,
+    borderWidth: 1,
+    borderColor: colors.light,
+    textAlign: "center",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    textAlignVertical: "center",
+    width: "99%",
+    ...typography.button.lg,
+    fontWeight: "500",
+    color: colors.dark,
+    overflow: "hidden",
+  },
+  buttonBorderStyle: {
+    borderRadius: 5,
+    height: 55,
+    width: 200,
+    alignItems: "center",
+  },
+  containerForTwoBottomButtons: {
     marginBottom: 16,
-    marginHorizontal: 16,
   },
   saveButton: {
     borderRadius: 5,

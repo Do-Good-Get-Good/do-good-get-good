@@ -18,7 +18,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 
-export function ImagesGallery({ navigation }) {
+export function ImagesGallery({ navigation, route }) {
   const [imagesArray, setImagesArray] = useState(Images);
   const [imageName, setImageName] = useState("symbol_hands_heart-DEFAULT");
 
@@ -52,9 +52,18 @@ export function ImagesGallery({ navigation }) {
   );
 
   const buttonSavePressed = () => {
-    navigation.navigate("CreateActivity", {
-      imageForActivity: imageName,
-    });
+    if (route.params?.cameFrom === "CreateActivity") {
+      navigation.navigate("CreateActivity", {
+        imageForActivity: imageName,
+      });
+    }
+    if (route.params?.cameFrom === "ChangeActivity") {
+      navigation.navigate("ChangeActivity", {
+        activity: route.params?.activity,
+        tgPopular: route.params?.tgPopular,
+        imageForActivity: imageName,
+      });
+    }
   };
 
   return (

@@ -18,6 +18,10 @@ const navigation = {
   goBack: jest.fn(),
 };
 
+const route = {
+  params: { cameFrom: "CreateActivity" },
+};
+
 describe("Testing ImagesGallery", () => {
   it("ImagesGallery exist ", () => {
     const { getAllByText } = render(<ImagesGallery />);
@@ -35,7 +39,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. Button 'Save' exist and navigate back  ", () => {
     const { getAllByText, getByTestId } = render(
-      <ImagesGallery navigation={navigation} />
+      <ImagesGallery navigation={navigation} route={route} />
     );
     expect(getAllByText("Spara").length).toBe(1);
     const saveButton = getByTestId("saveButton");
@@ -54,6 +58,7 @@ describe("Testing ImagesGallery", () => {
     fireEvent.press(backButton);
     expect(navigation.goBack).toHaveBeenCalled();
   });
+
   it("ImagesGallery. When you press on image the border around image should become 7  ", () => {
     const { getAllByTestId } = render(
       <ImagesGallery navigation={navigation} />
