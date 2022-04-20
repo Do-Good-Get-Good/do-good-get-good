@@ -12,8 +12,10 @@ import MenuOverlay from "./MenuOverlay";
 import typography from "../assets/theme/typography";
 import { useNetInfo } from "@react-native-community/netinfo";
 import colors from "../assets/theme/colors";
+import { useNavigation } from "@react-navigation/native";
 
 const Menu = () => {
+  const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const inetInfo = useNetInfo();
   const noInternetText =
@@ -40,11 +42,17 @@ const Menu = () => {
           animated
         />
         <View style={styles.headerLogo}>
-          <Image
-            testID="dgggLogo"
-            source={require("../img/Logotyp_DGGG.png")}
-            style={styles.headerLogo}
-          />
+          <Pressable
+            onPress={() => {
+              navigation.navigate("HomePage");
+            }}
+          >
+            <Image
+              testID="dgggLogo"
+              source={require("../img/Logotyp_DGGG.png")}
+              style={styles.headerLogo}
+            />
+          </Pressable>
         </View>
         <Pressable
           testID="showOverlayButton"
