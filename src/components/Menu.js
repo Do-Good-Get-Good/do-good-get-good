@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, Image, Pressable } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  Pressable,
+  StatusBar,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import MenuOverlay from "./MenuOverlay";
 import typography from "../assets/theme/typography";
@@ -27,6 +34,11 @@ const Menu = () => {
   return (
     <>
       <View style={styles.header}>
+        <StatusBar
+          backgroundColor={visible ? colors.primary : colors.light}
+          barStyle="dark-content"
+          animated
+        />
         <View style={styles.headerLogo}>
           <Image
             testID="dgggLogo"
