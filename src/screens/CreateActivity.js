@@ -18,6 +18,7 @@ import { Icon, Dialog } from "react-native-elements";
 import DropDownSmall from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import functions from "@react-native-firebase/functions";
@@ -46,6 +47,8 @@ export function CreateActivity({ route, navigation }) {
   const [loading, setLoading] = useState(false);
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
+
+  const newUserAdded = useAdminHomePageFunction().newUserAdded;
 
   useEffect(() => {
     if (newUserInfo != null) {
@@ -143,6 +146,12 @@ export function CreateActivity({ route, navigation }) {
         role: "user",
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
+        let newUser = res.data.createdUser;
+        console.log("New User: ", newUser);
+
+        // Save new user locally
+        newUserAdded(newUser);
+
         setLoading(false);
         navigation.navigate("HomePage");
       });

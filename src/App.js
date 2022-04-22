@@ -9,6 +9,7 @@ import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { AdminProvider } from "./context/AdminContext";
 import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
+import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -41,7 +42,9 @@ export default function App() {
             <CreateActivityProvider>
               <AdminProvider>
                 <ActivityProvider>
-                  <Mystack />
+                  <AdminHomePageProvider>
+                    <Mystack />
+                  </AdminHomePageProvider>
                 </ActivityProvider>
               </AdminProvider>
             </CreateActivityProvider>

@@ -84,7 +84,6 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     await admin.auth().setCustomUserClaims(userId, claims);
 
     let userDoc = admin.firestore().collection("Users").doc(userId);
-
     userDoc.set({
       activities_and_accumulated_time: [
         {
@@ -103,10 +102,17 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       last_name: data.lastName,
     });
 
+    let newUserDoc = await userDoc.get();
+    let userData = {
+      id: userId,
+      ...newUserDoc.data(),
+    };
+
     await userCreationRequestRef.update({ status: "Treated" });
 
     return {
       result: "The new user has been successfully created.",
+      createdUser: userData,
     };
   } catch (error) {
     if (error.type === "UnauthenticatedError") {

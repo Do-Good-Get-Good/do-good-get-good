@@ -51,10 +51,15 @@ export const AdminHomePageProvider = ({ children }) => {
     }
   }, [reloadOneUserData]);
 
+  function newUserAdded(newUser) {
+    setUserData((prev) => [...prev, newUser]);
+  }
+
   return (
     <AdminHomePageContext.Provider
       value={{
         userData: userData,
+        newUserAdded: newUserAdded,
         setReloadOneUserData: setReloadOneUserData,
         reloadOneUserData: reloadOneUserData,
         confirmedTimeEntries: confirmedTimeEntries,
