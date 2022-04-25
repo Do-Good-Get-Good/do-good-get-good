@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import { el } from "date-fns/locale";
 
 const ActivitynContext = React.createContext();
 
@@ -16,12 +17,28 @@ export const ActivityProvider = ({ children }) => {
   );
 
   const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
+
   const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
     useState(false);
   const [isFinishedToLoadMyEntries, setIsFinishedToLoadMyEntries] =
     useState(false);
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
+
+  ///////
+  const [scrollToGetMoreTimeEntries, setScrollToGetMoreTimeEntries] =
+    useState(false);
+
+  const [start, setStart] = useState({});
+  const [startPointAfterScroll, setStartPointAfterScroll] = useState({});
+  const [timeEntriesAfterScrolling, setTimeEntriesAfterScrolling] = useState(
+    []
+  );
+  //1 look for today day
+  //2 onSnapshot   startAt point(today day)  endAt point(today day + 2 month)
+  //3 if array with onSnapshot array less then 25 length then  get() limit (25) start(start point thaat last timeentrie from onSnap)
+
+  ///////////
 
   useEffect(() => {
     let temArray = [];
@@ -53,6 +70,7 @@ export const ActivityProvider = ({ children }) => {
               }
             }
             setMyActivitiesIDandAccumTime(temArray);
+
             setIsFinishedToLoadActivitiesID(true);
 
             if (doc.data().connected_activities.length != 0) {
@@ -74,51 +92,42 @@ export const ActivityProvider = ({ children }) => {
     };
   }, []);
 
+  //=========================================================================
+  //===================================================================================
+
+  //////////////////////////////////////
+  /////////////////////////////////////
+
   useEffect(() => {
     if (isFinishedToLoadActivitiesID === true) {
+      const today = new Date();
+      const twoMonthBefore = subtractTwoMonths(2, today);
+
       let allActivityTimeEntryAndStatus = firestore()
         .collection("timeentries")
         .where("user_id", "==", auth().currentUser.uid)
         .orderBy("date", "desc")
-        .limit(limitAmountForTimeEntries)
+        .startAt(today)
+        .endAt(twoMonthBefore)
         .onSnapshot(
           (snap) => {
-            console.log("With limit");
             let docs = [];
             snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
+            let firstFive = [];
 
-            if (limitAmountForTimeEntries === 5) {
-              setLastFiveTimeEntries(docs);
+            if (docs.length >= 5) {
+              for (let i = 0; i < 5; i++) {
+                firstFive.push(docs[i]);
+              }
             } else {
-              setTimeEntryArrayForMyTimePage(docs);
+              for (let i = 0; i < docs.length; i++) {
+                firstFive.push(docs[i]);
+              }
             }
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
 
-      return () => {
-        allActivityTimeEntryAndStatus();
-      };
-    }
-    // }, [isFinishedToLoadActivitiesID, limitAmountForTimeEntries]);
-  }, [isFinishedToLoadActivitiesID]);
-
-  ////////
-  useEffect(() => {
-    if (limitAmountForTimeEntries === 20) {
-      let allActivityTimeEntryAndStatus = firestore()
-        .collection("timeentries")
-        .where("user_id", "==", auth().currentUser.uid)
-        .orderBy("date", "desc")
-        .onSnapshot(
-          (snap) => {
-            let docs = [];
-            snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
-            console.log("No limit", docs.length);
-
+            setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
+            setStart(snap.docs[snap.docs.length - 1]);
           },
           (error) => {
             console.log(error);
@@ -129,8 +138,60 @@ export const ActivityProvider = ({ children }) => {
         allActivityTimeEntryAndStatus();
       };
     }
-  }, [limitAmountForTimeEntries]);
-  //////
+  }, [isFinishedToLoadActivitiesID]);
+  console.log("start  ", start);
+
+  function subtractTwoMonths(numOfMonths, date = new Date()) {
+    const dateCopy = new Date(date.getTime());
+    dateCopy.setMonth(dateCopy.getMonth() - numOfMonths);
+    return dateCopy;
+  }
+
+  useEffect(() => {
+    if (scrollToGetMoreTimeEntries) {
+      const getMoreTimeEntries = async () => {
+        let startPoint = null;
+        if (Object.keys(startPointAfterScroll).length != 0) {
+          startPoint = startPointAfterScroll;
+        } else {
+          startPoint = start;
+        }
+        console.log("startPoint  ", startPoint);
+        let timeEntriesArray = [];
+
+        try {
+          await firestore()
+            .collection("timeentries")
+            .where("user_id", "==", auth().currentUser.uid)
+
+            .orderBy("date", "desc")
+            .startAfter(startPoint)
+            .limit(2)
+            .get()
+            .then((response) => {
+              response.forEach((doc) =>
+                timeEntriesArray.push({ ...doc.data(), doc_id: doc.id })
+              );
+              setTimeEntriesAfterScrolling(timeEntriesArray);
+
+              setStartPointAfterScroll(response.docs[response.docs.length - 1]);
+              setScrollToGetMoreTimeEntries(false);
+
+              console.log("With limit ", timeEntriesArray);
+            })
+            .catch((error) => {
+              console.log("errorMessage ", error);
+            });
+        } catch (error) {
+          console.log("AdminContex errorMessage ", error);
+        }
+      };
+      getMoreTimeEntries();
+    }
+  }, [scrollToGetMoreTimeEntries]);
+
+  ////////////////////////////////////////////
+  ////////////////////////////////////////////
 
   useEffect(() => {
     if (isFinishedToLoadMyEntries === true) {
@@ -165,7 +226,6 @@ export const ActivityProvider = ({ children }) => {
         }
 
         setActivitiesInformation(inactiveArray);
-
         setIsFinishedToLoadMyEntries(false);
       };
 
@@ -181,6 +241,9 @@ export const ActivityProvider = ({ children }) => {
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
         allListOfTimeEntry: timeEntryArrayForMyTimePage,
+        scrollToGetMoreTimeEntries: scrollToGetMoreTimeEntries,
+        setScrollToGetMoreTimeEntries: setScrollToGetMoreTimeEntries,
+        timeEntriesAfterScrolling: timeEntriesAfterScrolling,
       }}
     >
       {children}

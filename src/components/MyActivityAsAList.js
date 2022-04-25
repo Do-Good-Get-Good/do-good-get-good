@@ -7,48 +7,68 @@ import {
   Platform,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import { Icon } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
 import { useActivityFunction } from "../context/ActivityContext";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-
-import { useIsFocused } from "@react-navigation/native";
+import errorMessage from "../assets/recyclingStyles/errorMessage";
 
 function MyActivityAsAList({ navigation }) {
   const entryTime = useActivityFunction();
   const rout = useRoute();
-
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
   const [timeEntryList, setTimeEntryList] = useState([]);
+  const [showErrorMessage, setShowErrorMessage] = useState(false);
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-  const isFocused = useIsFocused();
 
-  useEffect(() => {
-    if (rout.name === "HomePage") {
-      entryTime.setLimitAmountForTimeEntries(5);
-    } else if (rout.name === "MyTimePage") {
-      entryTime.setLimitAmountForTimeEntries(20);
-    }
-  }, [isFocused]);
+  const [timeEntriesTwoMonthsBefore, seTimeEntriesTwoMonthsBefore] = useState(
+    []
+  );
 
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
-      objectsWithActivitiesAndTimeEntriesInfo(entryTime.lastFiveTimeEntries);
+      let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.lastFiveTimeEntries
+      );
+      setTimeEntryList(firstFiveTimeEntries);
     } else if (
       rout.name === "MyTimePage" &&
-      entryTime.allListOfTimeEntry.length != 0
+      entryTime.allListOfTimeEntry.length != 0 &&
+      entryTime.timeEntriesAfterScrolling.length === 0
     ) {
-      objectsWithActivitiesAndTimeEntriesInfo(entryTime.allListOfTimeEntry);
+      let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.allListOfTimeEntry
+      );
+      setTimeEntryList(allOnSnapshotTimeEntries);
     }
   }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
 
-  function objectsWithActivitiesAndTimeEntriesInfo(timeEntries, activities) {
+  useEffect(() => {
+    let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
+      entryTime.timeEntriesAfterScrolling
+    );
+    for (let i = 0; i < timeEntriesAfterScroll.length; i++) {
+      console.log("timeEntriesAfterScroll  ", timeEntriesAfterScroll);
+      var index = timeEntriesTwoMonthsBefore.findIndex(
+        (x) => x.timeEntryID === timeEntriesAfterScroll.timeEntryID
+      );
+      console.log("index ", index);
+      if (index != -1) {
+        seTimeEntriesTwoMonthsBefore((prev) => [
+          ...prev,
+          timeEntriesAfterScroll[i],
+        ]);
+      }
+    }
+  }, [entryTime.timeEntriesAfterScrolling]);
+
+  function objectsWithActivitiesAndTimeEntriesInfo(timeEntries) {
     let activityAndTimeEntryArray = [];
     let myTimeAndTitle = {};
 
@@ -65,120 +85,149 @@ function MyActivityAsAList({ navigation }) {
 
       activityAndTimeEntryArray.push(myTimeAndTitle);
     }
-    setTimeEntryList(activityAndTimeEntryArray);
+
+    return activityAndTimeEntryArray;
   }
 
   const pressedButtonShowAll = () => {
-    entryTime.setLimitAmountForTimeEntries(20);
     navigation.navigate("MyTimePage");
   };
 
-  return (
-    <View style={styles.container}>
-      <Text style={styles.title}>Mina aktiviteter</Text>
-      <View
-        style={{
-          paddingHorizontal: 8,
-          paddingVertical: 7.5,
-          backgroundColor: colors.background,
-          borderRadius: 2,
-        }}
-      >
-        {timeEntryList.length === 0 && (
-          <Text style={{ ...typography.b2 }}>
-            Du har inte loggat någon tid ännu!
-          </Text>
-        )}
-        {timeEntryList.map((activity, index) => (
-          <View index={index} key={index} style={styles.activityIside}>
-            <Text
-              style={{
-                fontWeight: !activity.statusConfirmed ? "bold" : "normal",
-                color: !activity.statusConfirmed
-                  ? colors.dark
-                  : colors.secondary,
-                flex: 1,
-                ...typography.b2,
-              }}
-            >
-              {activity.title}
+  function showTimeEntriesList(arrayToShow, possibleToMakeChanges) {
+    return (
+      <View style={styles.container}>
+        <View
+          style={{
+            paddingHorizontal: 8,
+            backgroundColor: colors.background,
+            borderRadius: 2,
+          }}
+        >
+          {arrayToShow.length === 0 && (
+            <Text style={{ ...typography.b2 }}>
+              Du har inte loggat någon tid ännu!
             </Text>
-            <Text
-              style={{
-                color: !activity.statusConfirmed
-                  ? colors.dark
-                  : colors.secondary,
-                flex: 1,
-                ...typography.b2,
-                textAlign: "center",
-              }}
-            >
-              {format(activity.date, "yyyy-MM-dd")}
-            </Text>
-            <Text
-              style={{
-                color: !activity.statusConfirmed
-                  ? colors.dark
-                  : colors.secondary,
-                flex: 0.6,
-                ...typography.b2,
-                textAlign: "center",
-                paddingRight: 5,
-              }}
-            >
-              {activity.time} tim
-            </Text>
-            {!activity.statusConfirmed ? (
-              <TouchableOpacity
-                testID="editButton"
-                onPress={() => {
-                  setActivity(activity);
-                  toggleOverlay();
+          )}
+          {arrayToShow.map((activity, index) => (
+            <View index={index} key={index} style={styles.activityIside}>
+              <Text
+                style={{
+                  fontWeight: !activity.statusConfirmed ? "bold" : "normal",
+                  color: !activity.statusConfirmed
+                    ? colors.dark
+                    : colors.secondary,
+                  flex: 1,
+                  ...typography.b2,
                 }}
               >
-                <Icon
-                  testID="icon"
-                  color={colors.dark}
-                  name="pencil-outline"
-                  type="material-community"
-                  size={25}
-                />
-              </TouchableOpacity>
-            ) : (
-              <Icon color={colors.secondary} name={"done"} size={25} />
-            )}
-          </View>
-        ))}
-      </View>
-      {rout.name === "HomePage" ? (
-        <TouchableOpacity testID="showAllButton" onPress={pressedButtonShowAll}>
-          <LinearGradient
-            colors={[colors.primary, colors.secondary]}
-            start={{ x: 0, y: 0 }}
-            end={{ x: 1, y: 1 }}
-            style={styles.buttonBorderStyle}
+                {activity.title}
+              </Text>
+              <Text
+                style={{
+                  color: !activity.statusConfirmed
+                    ? colors.dark
+                    : colors.secondary,
+                  flex: 1,
+                  ...typography.b2,
+                  textAlign: "center",
+                }}
+              >
+                {format(activity.date, "yyyy-MM-dd")}
+              </Text>
+              <Text
+                style={{
+                  color: !activity.statusConfirmed
+                    ? colors.dark
+                    : colors.secondary,
+                  flex: 0.6,
+                  ...typography.b2,
+                  textAlign: "center",
+                  paddingRight: 5,
+                }}
+              >
+                {activity.time} tim
+              </Text>
+              {!activity.statusConfirmed ? (
+                <TouchableOpacity
+                  testID="editButton"
+                  onPress={() => {
+                    if (possibleToMakeChanges) {
+                      setActivity(activity);
+                      toggleOverlay();
+                    } else {
+                      setShowErrorMessage(true);
+                    }
+                  }}
+                >
+                  <Icon
+                    testID="icon"
+                    color={colors.dark}
+                    name="pencil-outline"
+                    type="material-community"
+                    size={25}
+                  />
+                </TouchableOpacity>
+              ) : (
+                <Icon color={colors.secondary} name={"done"} size={25} />
+              )}
+            </View>
+          ))}
+        </View>
+        {rout.name === "HomePage" ? (
+          <TouchableOpacity
+            testID="showAllButton"
+            onPress={pressedButtonShowAll}
           >
-            <Text style={styles.textVissaAll}>Visa allt</Text>
-          </LinearGradient>
-        </TouchableOpacity>
-      ) : null}
-      <CalendarView
-        visible={visible}
-        toggleVisibility={toggleOverlay}
-        activity={activity}
-        adminID={activity.adminID}
-        isEditing={true}
-      />
+            <LinearGradient
+              colors={[colors.primary, colors.secondary]}
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonBorderStyle}
+            >
+              <Text style={styles.textVissaAll}>Visa allt</Text>
+            </LinearGradient>
+          </TouchableOpacity>
+        ) : null}
+        <CalendarView
+          visible={visible}
+          toggleVisibility={toggleOverlay}
+          activity={activity}
+          adminID={activity.adminID}
+          isEditing={true}
+        />
+      </View>
+    );
+  }
+
+  return (
+    <View style={styles.containerForTheWholeComponent}>
+      <Text style={styles.title}>Mina aktiviteter</Text>
+
+      {showTimeEntriesList(timeEntryList, true)}
+
+      <Overlay
+        isVisible={showErrorMessage}
+        animationType="fade"
+        overlayStyle={{ fontSize: 20 }}
+        onBackdropPress={() => setShowErrorMessage(false)}
+      >
+        <Text>Man kan inte ändra på tidsinmatningar äldre än två månader</Text>
+      </Overlay>
+      {timeEntriesTwoMonthsBefore.length != 0 &&
+        showTimeEntriesList(timeEntriesTwoMonthsBefore, false)}
     </View>
   );
 }
 export default MyActivityAsAList;
 
 const styles = StyleSheet.create({
+  containerForTheWholeComponent: {
+    marginBottom: 8,
+  },
+
   container: {
     flex: 1,
     justifyContent: "flex-start",
-    marginBottom: 8,
   },
   title: {
     flex: 1,
@@ -216,5 +265,9 @@ const styles = StyleSheet.create({
     width: 200,
     alignItems: "center",
     marginTop: 12,
+  },
+  errorText: {
+    fontSize: 20,
+    color: colors.error,
   },
 });

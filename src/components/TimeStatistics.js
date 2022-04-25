@@ -2,9 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import InfoModal from "../components/InfoModal";
-import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
+
 import { useActivityFunction } from "../context/ActivityContext";
 
 export function TimeStatistics({}) {
@@ -14,10 +12,6 @@ export function TimeStatistics({}) {
   const activityFunction = useActivityFunction();
 
   useEffect(() => {
-    console.log(
-      "activityFunction.activitiesIDandAccumTime ",
-      activityFunction.activitiesIDandAccumTime
-    );
     setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
     setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
     setCurrentForMonth(
@@ -50,7 +44,6 @@ export function TimeStatistics({}) {
           <Text testID="timeForYear">
             Totalt antal timmar i år: {timeForYear}
           </Text>
-          <InfoModal screen="homepage" tooltipWidth={250} />
         </View>
       </View>
     </View>
