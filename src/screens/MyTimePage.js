@@ -19,37 +19,17 @@ export const MyTimePage = () => {
   //console.log("makeScrolle ", makeScrolle);
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView
-      // scrollEventThrottle={400}
-      // onScroll={() => console.log("scroll")}
-      // onScrollBeginDrag={() => console.log("begin")}
-      // onScrollEndDrag={() => {
-      //   console.log("end"),
-      //     activityContext.setScrollToGetMoreTimeEntries(true);
-      // }}
 
-      // onScroll={(e) => {
-      //   let paddingToBottom = 10;
-      //   paddingToBottom += e.nativeEvent.layoutMeasurement.height;
-      //   if (
-      //     e.nativeEvent.contentOffset.y >=
-      //     e.nativeEvent.contentSize.height - paddingToBottom
-      //   ) {
-      //     setMakeScrolle(true);
-      //   }
-      // }}
-      >
-        <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() => activityContext.setScrollToGetMoreTimeEntries(true)}
-          >
-            <Text>button</Text>
-          </TouchableOpacity>
-          <MyActivityAsAList></MyActivityAsAList>
-        </View>
-      </ScrollView>
+      <View style={styles.container}>
+        <TouchableOpacity
+          onPress={() => activityContext.setScrollToGetMoreTimeEntries(true)}
+        >
+          <Text>button</Text>
+        </TouchableOpacity>
+        <MyActivityAsAList></MyActivityAsAList>
+      </View>
     </SafeAreaView>
   );
 };

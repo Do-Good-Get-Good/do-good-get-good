@@ -127,7 +127,9 @@ export const ActivityProvider = ({ children }) => {
 
             setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
+            // if (Object.keys(start).length != 0) {
             setStart(snap.docs[snap.docs.length - 1]);
+            // }
           },
           (error) => {
             console.log(error);
@@ -139,7 +141,7 @@ export const ActivityProvider = ({ children }) => {
       };
     }
   }, [isFinishedToLoadActivitiesID]);
-  console.log("start  ", start);
+  // console.log("start  ", start);
 
   function subtractTwoMonths(numOfMonths, date = new Date()) {
     const dateCopy = new Date(date.getTime());
@@ -175,9 +177,9 @@ export const ActivityProvider = ({ children }) => {
               setTimeEntriesAfterScrolling(timeEntriesArray);
 
               setStartPointAfterScroll(response.docs[response.docs.length - 1]);
-              setScrollToGetMoreTimeEntries(false);
+              //setScrollToGetMoreTimeEntries(false);
 
-              console.log("With limit ", timeEntriesArray);
+              // console.log("With limit ", timeEntriesArray);
             })
             .catch((error) => {
               console.log("errorMessage ", error);

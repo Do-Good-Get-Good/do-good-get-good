@@ -5,6 +5,7 @@ import {
   View,
   TouchableOpacity,
   Platform,
+  FlatList,
 } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
 import { Icon, Overlay } from "react-native-elements";
@@ -14,7 +15,6 @@ import { useActivityFunction } from "../context/ActivityContext";
 import { format, set } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import errorMessage from "../assets/recyclingStyles/errorMessage";
 
 function MyActivityAsAList({ navigation }) {
   const entryTime = useActivityFunction();
@@ -34,7 +34,8 @@ function MyActivityAsAList({ navigation }) {
   useEffect(() => {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
       let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.lastFiveTimeEntries
+        entryTime.lastFiveTimeEntries,
+        true
       );
       setTimeEntryList(firstFiveTimeEntries);
     } else if (
@@ -43,32 +44,33 @@ function MyActivityAsAList({ navigation }) {
       entryTime.timeEntriesAfterScrolling.length === 0
     ) {
       let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.allListOfTimeEntry
+        entryTime.allListOfTimeEntry,
+        true
       );
       setTimeEntryList(allOnSnapshotTimeEntries);
     }
   }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
 
   useEffect(() => {
-    let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
-      entryTime.timeEntriesAfterScrolling
-    );
-    for (let i = 0; i < timeEntriesAfterScroll.length; i++) {
-      console.log("timeEntriesAfterScroll  ", timeEntriesAfterScroll);
-      var index = timeEntriesTwoMonthsBefore.findIndex(
-        (x) => x.timeEntryID === timeEntriesAfterScroll.timeEntryID
+    if (entryTime.scrollToGetMoreTimeEntries) {
+      let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.timeEntriesAfterScrolling,
+        false
       );
-      console.log("index ", index);
-      if (index != -1) {
-        seTimeEntriesTwoMonthsBefore((prev) => [
-          ...prev,
-          timeEntriesAfterScroll[i],
-        ]);
+      let tempArray = timeEntriesTwoMonthsBefore;
+      for (let i = 0; i < timeEntriesAfterScroll.length; i++) {
+        tempArray.push(timeEntriesAfterScroll[i]);
       }
+
+      seTimeEntriesTwoMonthsBefore(tempArray);
+      entryTime.setScrollToGetMoreTimeEntries(false);
     }
   }, [entryTime.timeEntriesAfterScrolling]);
 
-  function objectsWithActivitiesAndTimeEntriesInfo(timeEntries) {
+  function objectsWithActivitiesAndTimeEntriesInfo(
+    timeEntries,
+    possibleToMakeChanges
+  ) {
     let activityAndTimeEntryArray = [];
     let myTimeAndTitle = {};
 
@@ -81,6 +83,7 @@ function MyActivityAsAList({ navigation }) {
         time: timeEntries[i].time,
         title: timeEntries[i].activity_title,
         id: timeEntries[i].activity_id,
+        possibleToMakeChanges: possibleToMakeChanges,
       };
 
       activityAndTimeEntryArray.push(myTimeAndTitle);
@@ -92,6 +95,73 @@ function MyActivityAsAList({ navigation }) {
   const pressedButtonShowAll = () => {
     navigation.navigate("MyTimePage");
   };
+
+  function viewOfTimeEntries(activity, key, possibleToMakeChanges) {
+    return (
+      <View index={key} key={key} style={styles.activityIside}>
+        <Text
+          style={{
+            fontWeight: !activity.statusConfirmed ? "bold" : "normal",
+            color: !activity.statusConfirmed ? colors.dark : colors.secondary,
+            flex: 1,
+            ...typography.b2,
+          }}
+        >
+          {activity.title}
+        </Text>
+        <Text
+          style={{
+            color: !activity.statusConfirmed ? colors.dark : colors.secondary,
+            flex: 1,
+            ...typography.b2,
+            textAlign: "center",
+          }}
+        >
+          {format(activity.date, "yyyy-MM-dd")}
+        </Text>
+        <Text
+          style={{
+            color: !activity.statusConfirmed ? colors.dark : colors.secondary,
+            flex: 0.6,
+            ...typography.b2,
+            textAlign: "center",
+            paddingRight: 5,
+          }}
+        >
+          {activity.time} tim
+        </Text>
+        {!activity.statusConfirmed ? (
+          <TouchableOpacity
+            testID="editButton"
+            onPress={() => {
+              if (possibleToMakeChanges) {
+                setActivity(activity);
+                toggleOverlay();
+              } else {
+                setShowErrorMessage(true);
+              }
+            }}
+          >
+            <Icon
+              testID="icon"
+              color={colors.dark}
+              name="pencil-outline"
+              type="material-community"
+              size={25}
+            />
+          </TouchableOpacity>
+        ) : (
+          <Icon color={colors.secondary} name={"done"} size={25} />
+        )}
+      </View>
+    );
+  }
+
+  console.log(
+    "timeEntriesTwoMonthsBefore  ",
+
+    timeEntriesTwoMonthsBefore.length
+  );
 
   function showTimeEntriesList(arrayToShow, possibleToMakeChanges) {
     return (
@@ -108,70 +178,29 @@ function MyActivityAsAList({ navigation }) {
               Du har inte loggat någon tid ännu!
             </Text>
           )}
-          {arrayToShow.map((activity, index) => (
-            <View index={index} key={index} style={styles.activityIside}>
-              <Text
-                style={{
-                  fontWeight: !activity.statusConfirmed ? "bold" : "normal",
-                  color: !activity.statusConfirmed
-                    ? colors.dark
-                    : colors.secondary,
-                  flex: 1,
-                  ...typography.b2,
-                }}
-              >
-                {activity.title}
-              </Text>
-              <Text
-                style={{
-                  color: !activity.statusConfirmed
-                    ? colors.dark
-                    : colors.secondary,
-                  flex: 1,
-                  ...typography.b2,
-                  textAlign: "center",
-                }}
-              >
-                {format(activity.date, "yyyy-MM-dd")}
-              </Text>
-              <Text
-                style={{
-                  color: !activity.statusConfirmed
-                    ? colors.dark
-                    : colors.secondary,
-                  flex: 0.6,
-                  ...typography.b2,
-                  textAlign: "center",
-                  paddingRight: 5,
-                }}
-              >
-                {activity.time} tim
-              </Text>
-              {!activity.statusConfirmed ? (
-                <TouchableOpacity
-                  testID="editButton"
-                  onPress={() => {
-                    if (possibleToMakeChanges) {
-                      setActivity(activity);
-                      toggleOverlay();
-                    } else {
-                      setShowErrorMessage(true);
-                    }
-                  }}
-                >
-                  <Icon
-                    testID="icon"
-                    color={colors.dark}
-                    name="pencil-outline"
-                    type="material-community"
-                    size={25}
-                  />
-                </TouchableOpacity>
-              ) : (
-                <Icon color={colors.secondary} name={"done"} size={25} />
-              )}
-            </View>
-          ))}
+          {rout.name === "HomePage" ? (
+            arrayToShow.map((activity, index) =>
+              viewOfTimeEntries(activity, index, possibleToMakeChanges)
+            )
+          ) : (
+            <FlatList
+              data={[...timeEntryList, ...timeEntriesTwoMonthsBefore]}
+              onEndReached={() => {
+                () => console.log("HERE THE BOTTOM");
+                entryTime.setScrollToGetMoreTimeEntries(true);
+              }}
+              onEndReachedThreshold={0.01}
+              keyExtractor={(item) => item.timeEntryID}
+              renderItem={({ item }) =>
+                viewOfTimeEntries(
+                  item,
+                  item.timeEntryID,
+                  item.possibleToMakeChanges
+                )
+              }
+              // extraData={timeEntriesTwoMonthsBefore}
+            />
+          )}
         </View>
         {rout.name === "HomePage" ? (
           <TouchableOpacity
@@ -201,7 +230,7 @@ function MyActivityAsAList({ navigation }) {
 
   return (
     <View style={styles.containerForTheWholeComponent}>
-      <Text style={styles.title}>Mina aktiviteter</Text>
+      <Text style={styles.title}>Min tid</Text>
 
       {showTimeEntriesList(timeEntryList, true)}
 
@@ -213,8 +242,8 @@ function MyActivityAsAList({ navigation }) {
       >
         <Text>Man kan inte ändra på tidsinmatningar äldre än två månader</Text>
       </Overlay>
-      {timeEntriesTwoMonthsBefore.length != 0 &&
-        showTimeEntriesList(timeEntriesTwoMonthsBefore, false)}
+      {/* {timeEntriesTwoMonthsBefore.length != 0 &&
+        showTimeEntriesList(timeEntriesTwoMonthsBefore, false)} */}
     </View>
   );
 }
@@ -223,17 +252,18 @@ export default MyActivityAsAList;
 const styles = StyleSheet.create({
   containerForTheWholeComponent: {
     marginBottom: 8,
+    flex: 1,
   },
 
   container: {
-    flex: 1,
     justifyContent: "flex-start",
   },
   title: {
     flex: 1,
     ...typography.title,
     marginTop: 30,
-    marginBottom: 5,
+    marginBottom: 30,
+    paddingBottom: 20,
     color: colors.dark,
   },
 
@@ -269,5 +299,11 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 20,
     color: colors.error,
+  },
+  footer: {
+    padding: 10,
+    justifyContent: "center",
+    alignItems: "center",
+    flexDirection: "row",
   },
 });
