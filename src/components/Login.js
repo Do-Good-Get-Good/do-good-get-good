@@ -21,6 +21,7 @@ import { Icon } from "react-native-elements";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "./BottomLogo";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 export default function Login() {
   const [email, setEmail] = useState("");
@@ -60,6 +61,8 @@ export default function Login() {
           setError("Ange en giltig e-post");
           checkValidity(false, true);
         }
+        crashlytics().recordError(error);
+        crashlytics().setAttributes(email);
         console.error(error);
       });
   };
