@@ -89,6 +89,11 @@ const ConfirmActivities = () => {
 
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === change.doc.data().user_id) {
+        console.log(
+          `USERDATA ${i} - name: `,
+          userData[i].first_name,
+          userData[i].last_name
+        );
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }

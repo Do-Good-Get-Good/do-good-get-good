@@ -135,10 +135,10 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
-  function linkChoosenActivityToNewUser() {
+  async function linkChoosenActivityToNewUser() {
     if (createNewUser != null) {
       var createUser = functions().httpsCallable("createUser");
-      createUser({
+      await createUser({
         firstName: createNewUser.firstName,
         lastName: createNewUser.lastName,
         email: createNewUser.email,
