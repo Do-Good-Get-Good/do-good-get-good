@@ -19,14 +19,14 @@ jobs:
       - name: Install React Native CLI
         run: |
           npm install react-native-cli -g
-      - name: Install yarn dependencies
+      - name: Install npm dependencies
         run: |
           npm install
         working-directory: src/
-      - name: Building bundle
-        run: |
-          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
-        working-directory: src/
+      # - name: Building bundle
+      #   run: |
+      #     npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+      #   working-directory: src/
       - name: Build android
         env:
           KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}
