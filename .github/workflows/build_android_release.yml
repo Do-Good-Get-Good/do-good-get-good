@@ -1,0 +1,63 @@
+name: Build Android adhoc
+
+on:
+  workflow_dispatch:
+    inputs:
+      comments:
+        description: "Comments"
+        required: true
+        default: "Manual build Actions"
+
+jobs:
+  build-android-adhoc:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Getting the repo
+        uses: actions/checkout@v2
+      - name: Installing node
+        uses: actions/setup-node@v1
+      - name: Install React Native CLI
+        run: |
+          npm install react-native-cli -g
+      - name: Install yarn dependencies
+        run: |
+          npm install
+        working-directory: src/
+      - name: Building bundle
+        run: |
+          npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
+        working-directory: src/
+      - name: Build android
+        env:
+          KEYSTORE_ALIAS_PASSPHRASE: ${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}
+          KEYSTORE_ALIAS: ${{ secrets.DGGG_KEYSTORE_ALIAS }}
+          KEYSTORE_PASSPHRASE: ${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}
+        run: |
+          export VERSION_CODE=${{ github.run_number }}
+          export VERSION_NAME=0.1.${{ github.run_number }}
+          echo "{{ secrets.DGGG_RELEASE_KEYSTORE }}" > dggg_release.keystore.asc
+          gpg -d --passphrase "${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}"" --batch dggg_release.keystore.asc > android/app/dggg_key.keystore
+          cd android && ./gradlew -PversCode=$VERSION_CODE -PversName=$VERSION_NAME assembleRelease
+        working-directory: src/
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v2
+        with:
+          name: artifact
+          path: android/app/build/outputs/apk/staging/app-staging.apk
+          working-directory: src/
+
+  upload-android:
+    needs: build-android-adhoc
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v2
+        with:
+          name: artifact
+      - name: upload artifact to Firebase App Distribution
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+          appId: ${{secrets.FIREBASE_APP_ID_ANDROID}}
+          token: ${{secrets.FIREBASE_TOKEN}}
+          groups: android_testers
+          file: app-staging.apk
