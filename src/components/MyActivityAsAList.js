@@ -53,20 +53,26 @@ function MyActivityAsAList({ navigation }) {
   }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
 
   useEffect(() => {
+    console.log("****************'useeffect befor if");
+    console.log(
+      "***************    entryTime.scrollToGetMoreTimeEntries  ",
+      entryTime.scrollToGetMoreTimeEntries
+    );
     if (entryTime.scrollToGetMoreTimeEntries) {
       let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.timeEntriesAfterScrolling,
         false
       );
-      let tempArray = timeEntriesTwoMonthsBefore;
-      for (let i = 0; i < timeEntriesAfterScroll.length; i++) {
-        tempArray.push(timeEntriesAfterScroll[i]);
-      }
-
-      seTimeEntriesTwoMonthsBefore(tempArray);
+      console.log("**************'useeffect after if");
+      seTimeEntriesTwoMonthsBefore(timeEntriesAfterScroll);
       entryTime.setScrollToGetMoreTimeEntries(false);
     }
   }, [entryTime.timeEntriesAfterScrolling]);
+
+  console.log(
+    "_________entryTime.timeEntriesAfterScrolling]   ",
+    entryTime.timeEntriesAfterScrolling
+  );
 
   function objectsWithActivitiesAndTimeEntriesInfo(
     timeEntries,
@@ -158,12 +164,14 @@ function MyActivityAsAList({ navigation }) {
     );
   }
 
-  // console.log(
-  //   "MyActivityAsAList  timeEntriesTwoMonthsBefore  ",
-
-  //   timeEntriesTwoMonthsBefore.length
-  // );
-  // console.log("MyActivityAsAList timeEntryList ", timeEntryList);
+  console.log(
+    "==========timeEntriesTwoMonthsBefore  ",
+    timeEntriesTwoMonthsBefore
+  );
+  console.log(
+    "timeEntriesTwoMonthsBefore.length  ",
+    timeEntriesTwoMonthsBefore.length
+  );
 
   function showTimeEntriesList() {
     return (
@@ -188,22 +196,25 @@ function MyActivityAsAList({ navigation }) {
               viewOfTimeEntries(activity, index, true)
             )
           ) : (
-            <FlatList
-              data={[...timeEntryList, ...timeEntriesTwoMonthsBefore]}
-              onEndReached={() => {
-                () => console.log("HERE THE BOTTOM");
-                entryTime.setScrollToGetMoreTimeEntries(true);
-              }}
-              onEndReachedThreshold={0.01}
-              keyExtractor={(item) => item.timeEntryID}
-              renderItem={({ item }) =>
-                viewOfTimeEntries(
-                  item,
-                  item.timeEntryID,
-                  item.possibleToMakeChanges
-                )
-              }
-            />
+            <View style={{ maxHeight: 600 }}>
+              <FlatList
+                contentContainerStyle={{ marginBottom: 20 }}
+                data={[...timeEntryList, ...timeEntriesTwoMonthsBefore]}
+                onEndReached={() => {
+                  console.log("HHHHHHHHHHHHHHHHHHHHHHHHHERE THE BOTTOM");
+                  entryTime.setScrollToGetMoreTimeEntries(true);
+                }}
+                onEndReachedThreshold={0.01}
+                keyExtractor={(item) => item.timeEntryID}
+                renderItem={({ item }) =>
+                  viewOfTimeEntries(
+                    item,
+                    item.timeEntryID,
+                    item.possibleToMakeChanges
+                  )
+                }
+              />
+            </View>
           )}
         </View>
         {rout.name === "HomePage" ? (
