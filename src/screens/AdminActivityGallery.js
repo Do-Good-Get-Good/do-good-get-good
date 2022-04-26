@@ -1,14 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  Button,
-  Platform,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
