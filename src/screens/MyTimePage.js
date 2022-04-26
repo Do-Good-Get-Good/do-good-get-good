@@ -23,11 +23,11 @@ export const MyTimePage = () => {
       <Menu />
 
       <View style={styles.container}>
-        <TouchableOpacity
+        {/* <TouchableOpacity
           onPress={() => activityContext.setScrollToGetMoreTimeEntries(true)}
         >
           <Text>button</Text>
-        </TouchableOpacity>
+        </TouchableOpacity> */}
         <MyActivityAsAList></MyActivityAsAList>
       </View>
     </SafeAreaView>

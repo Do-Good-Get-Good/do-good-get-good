@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { el } from "date-fns/locale";
+import { format } from "date-fns";
 
 const ActivitynContext = React.createContext();
 
@@ -31,12 +31,10 @@ export const ActivityProvider = ({ children }) => {
 
   const [start, setStart] = useState({});
   const [startPointAfterScroll, setStartPointAfterScroll] = useState({});
+
   const [timeEntriesAfterScrolling, setTimeEntriesAfterScrolling] = useState(
     []
   );
-  //1 look for today day
-  //2 onSnapshot   startAt point(today day)  endAt point(today day + 2 month)
-  //3 if array with onSnapshot array less then 25 length then  get() limit (25) start(start point thaat last timeentrie from onSnap)
 
   ///////////
 
@@ -97,18 +95,50 @@ export const ActivityProvider = ({ children }) => {
 
   //////////////////////////////////////
   /////////////////////////////////////
+  const today = new Date();
+  let startPoint = todayDatefunction(
+    today.getUTCFullYear(),
+    today.getMonth() + 2,
+    1
+  );
+  let endPoint = todayDatefunction(
+    today.getUTCFullYear(),
+    today.getMonth() - 1,
+    today.getUTCDate()
+  );
+
+  console.log("today  ", today);
+
+  console.log("endPoint  ", endPoint);
+  console.log("startPoint  ", startPoint);
+
+  function todayDatefunction(currentYear, currentMonth, currentDay) {
+    let year = currentYear;
+    let month = currentMonth;
+    let day = currentDay;
+    if (currentMonth < 10) {
+      month = "0" + month;
+    }
+    console.log("currentDay  ", currentDay);
+    if (currentDay < 10) {
+      day = "0" + day;
+    }
+
+    let yearMonthDay = new Date(
+      year + "-" + month + "-" + day + "T00:00:00.000Z"
+    );
+
+    return yearMonthDay;
+  }
 
   useEffect(() => {
     if (isFinishedToLoadActivitiesID === true) {
-      const today = new Date();
-      const twoMonthBefore = subtractTwoMonths(2, today);
-
       let allActivityTimeEntryAndStatus = firestore()
         .collection("timeentries")
         .where("user_id", "==", auth().currentUser.uid)
         .orderBy("date", "desc")
-        .startAt(today)
-        .endAt(twoMonthBefore)
+        .startAfter(startPoint)
+        .endAt(endPoint)
         .onSnapshot(
           (snap) => {
             let docs = [];
@@ -118,6 +148,7 @@ export const ActivityProvider = ({ children }) => {
             if (docs.length >= 5) {
               for (let i = 0; i < 5; i++) {
                 firstFive.push(docs[i]);
+                console.log("docs[i].date  ", docs[i].date);
               }
             } else {
               for (let i = 0; i < docs.length; i++) {
@@ -128,7 +159,7 @@ export const ActivityProvider = ({ children }) => {
             setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
             // if (Object.keys(start).length != 0) {
-            setStart(snap.docs[snap.docs.length - 1]);
+            // setStart(snap.docs[snap.docs.length - 1]);
             // }
           },
           (error) => {
@@ -141,51 +172,58 @@ export const ActivityProvider = ({ children }) => {
       };
     }
   }, [isFinishedToLoadActivitiesID]);
-  // console.log("start  ", start);
-
-  function subtractTwoMonths(numOfMonths, date = new Date()) {
-    const dateCopy = new Date(date.getTime());
-    dateCopy.setMonth(dateCopy.getMonth() - numOfMonths);
-    return dateCopy;
-  }
+  console.log("start  ", start);
 
   useEffect(() => {
     if (scrollToGetMoreTimeEntries) {
       const getMoreTimeEntries = async () => {
-        let startPoint = null;
+        // let startPoint = {};
+        let startPoint = undefined;
+
         if (Object.keys(startPointAfterScroll).length != 0) {
           startPoint = startPointAfterScroll;
-        } else {
-          startPoint = start;
+        } else if (Object.keys(startPointAfterScroll).length === 0) {
+          startPoint = endPoint;
         }
+
+        // if (Object.keys(startPointAfterScroll).length != 0) {
+        //   startPoint = startPointAfterScroll;
+        // } else if (
+        //   Object.keys(start).length != 0 &&
+        //   Object.keys(startPointAfterScroll).length === 0
+        // ) {
+        //   startPoint = start;
+        // }
         console.log("startPoint  ", startPoint);
         let timeEntriesArray = [];
+        if (Object.keys(startPoint).length != undefined) {
+          try {
+            await firestore()
+              .collection("timeentries")
+              .where("user_id", "==", auth().currentUser.uid)
+              .orderBy("date", "desc")
+              .startAfter(startPoint)
+              .limit(2)
+              .get()
+              .then((response) => {
+                response.forEach((doc) =>
+                  timeEntriesArray.push({ ...doc.data(), doc_id: doc.id })
+                );
+                setTimeEntriesAfterScrolling(timeEntriesArray);
 
-        try {
-          await firestore()
-            .collection("timeentries")
-            .where("user_id", "==", auth().currentUser.uid)
+                setStartPointAfterScroll(
+                  response.docs[response.docs.length - 1]
+                );
+                //setScrollToGetMoreTimeEntries(false);
 
-            .orderBy("date", "desc")
-            .startAfter(startPoint)
-            .limit(2)
-            .get()
-            .then((response) => {
-              response.forEach((doc) =>
-                timeEntriesArray.push({ ...doc.data(), doc_id: doc.id })
-              );
-              setTimeEntriesAfterScrolling(timeEntriesArray);
-
-              setStartPointAfterScroll(response.docs[response.docs.length - 1]);
-              //setScrollToGetMoreTimeEntries(false);
-
-              // console.log("With limit ", timeEntriesArray);
-            })
-            .catch((error) => {
-              console.log("errorMessage ", error);
-            });
-        } catch (error) {
-          console.log("AdminContex errorMessage ", error);
+                // console.log("With limit ", timeEntriesArray);
+              })
+              .catch((error) => {
+                console.log("errorMessage ", error);
+              });
+          } catch (error) {
+            console.log("AdminContex errorMessage ", error);
+          }
         }
       };
       getMoreTimeEntries();

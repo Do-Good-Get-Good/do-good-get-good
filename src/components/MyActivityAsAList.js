@@ -21,6 +21,7 @@ function MyActivityAsAList({ navigation }) {
   const rout = useRoute();
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
+  const [timeEntryListOnlyFive, setTimeEntryListOnlyFive] = useState([]);
   const [timeEntryList, setTimeEntryList] = useState([]);
   const [showErrorMessage, setShowErrorMessage] = useState(false);
   const toggleOverlay = () => {
@@ -32,16 +33,16 @@ function MyActivityAsAList({ navigation }) {
   );
 
   useEffect(() => {
+    // if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
       let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.lastFiveTimeEntries,
         true
       );
-      setTimeEntryList(firstFiveTimeEntries);
+      setTimeEntryListOnlyFive(firstFiveTimeEntries);
     } else if (
       rout.name === "MyTimePage" &&
-      entryTime.allListOfTimeEntry.length != 0 &&
-      entryTime.timeEntriesAfterScrolling.length === 0
+      entryTime.allListOfTimeEntry.length != 0
     ) {
       let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.allListOfTimeEntry,
@@ -157,13 +158,14 @@ function MyActivityAsAList({ navigation }) {
     );
   }
 
-  console.log(
-    "timeEntriesTwoMonthsBefore  ",
+  // console.log(
+  //   "MyActivityAsAList  timeEntriesTwoMonthsBefore  ",
 
-    timeEntriesTwoMonthsBefore.length
-  );
+  //   timeEntriesTwoMonthsBefore.length
+  // );
+  // console.log("MyActivityAsAList timeEntryList ", timeEntryList);
 
-  function showTimeEntriesList(arrayToShow, possibleToMakeChanges) {
+  function showTimeEntriesList() {
     return (
       <View style={styles.container}>
         <View
@@ -173,14 +175,17 @@ function MyActivityAsAList({ navigation }) {
             borderRadius: 2,
           }}
         >
-          {arrayToShow.length === 0 && (
-            <Text style={{ ...typography.b2 }}>
-              Du har inte loggat någon tid ännu!
-            </Text>
-          )}
+          {(timeEntryListOnlyFive.length === 0 && rout.name === "HomePage") ||
+            (rout.name === "MyTimePage" &&
+              timeEntryList.length === 0 &&
+              timeEntriesTwoMonthsBefore.length === 0 && (
+                <Text style={{ ...typography.b2 }}>
+                  Du har inte loggat någon tid ännu!
+                </Text>
+              ))}
           {rout.name === "HomePage" ? (
-            arrayToShow.map((activity, index) =>
-              viewOfTimeEntries(activity, index, possibleToMakeChanges)
+            timeEntryListOnlyFive.map((activity, index) =>
+              viewOfTimeEntries(activity, index, true)
             )
           ) : (
             <FlatList
@@ -198,14 +203,13 @@ function MyActivityAsAList({ navigation }) {
                   item.possibleToMakeChanges
                 )
               }
-              // extraData={timeEntriesTwoMonthsBefore}
             />
           )}
         </View>
         {rout.name === "HomePage" ? (
           <TouchableOpacity
             testID="showAllButton"
-            onPress={pressedButtonShowAll}
+            onPress={() => pressedButtonShowAll()}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
@@ -231,8 +235,9 @@ function MyActivityAsAList({ navigation }) {
   return (
     <View style={styles.containerForTheWholeComponent}>
       <Text style={styles.title}>Min tid</Text>
+      {showTimeEntriesList()}
 
-      {showTimeEntriesList(timeEntryList, true)}
+      {/* {showTimeEntriesList(timeEntryListOnlyFive, true)} */}
 
       <Overlay
         isVisible={showErrorMessage}
@@ -262,7 +267,7 @@ const styles = StyleSheet.create({
     flex: 1,
     ...typography.title,
     marginTop: 30,
-    marginBottom: 30,
+    // marginBottom: 30,
     paddingBottom: 20,
     color: colors.dark,
   },
