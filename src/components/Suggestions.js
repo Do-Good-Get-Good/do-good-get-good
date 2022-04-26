@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   Platform,
+  Keyboard,
 } from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
@@ -66,6 +67,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
   }
 
   function lookDetails(activety, statusActive, statusPopular) {
+    Keyboard.dismiss();
     rout.name === "HomePage"
       ? navigation.navigate("ActivityCard", {
           admin: false,
