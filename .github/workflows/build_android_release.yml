@@ -27,7 +27,7 @@ jobs:
           npm install react-native-cli -g
       - name: Install npm dependencies
         run: |
-          npm install
+          npm ci
         working-directory: src/
       # - name: Building bundle
       #   run: |
@@ -43,14 +43,13 @@ jobs:
           export VERSION_NAME=0.1.${{ github.run_number }}
           echo "${{ secrets.DGGG_RELEASE_KEYSTORE }}" > dggg_release.keystore.asc
           gpg -d --passphrase "${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}" --batch dggg_release.keystore.asc > android/app/dggg_key.keystore
-          cd android && ./gradlew assembleRelease
+          cd android && ./gradlew assembleRelease -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
         working-directory: src/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: android/app/build/outputs/apk/staging/app-staging.apk
-          working-directory: src/
+          path: src/android/app/build/outputs/apk/release/app-release.apk
 
   upload-android:
     needs: build-android-adhoc
@@ -64,6 +63,6 @@ jobs:
         uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
           appId: ${{secrets.FIREBASE_APP_ID_ANDROID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          groups: android_testers
-          file: app-staging.apk
+          token: ${{secrets.FIREBASE_CI_KEY}}
+          groups: dev-team
+          file: app-release.apk
