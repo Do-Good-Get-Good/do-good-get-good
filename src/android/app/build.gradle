@@ -159,9 +159,9 @@ android {
         }
         release {
             storeFile file('dggg_key.keystore')
-            storePassword System.getenv("DGGG_KEYSTORE_PASSPHRASE")
-            keyAlias 'do_good_get_good_key'
-            keyPassword System.getenv("DGGG_KEYSTORE_PASSPHRASE")
+            storePassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
+            keyAlias System.getenv("KEYSTORE_ALIAS")
+            keyPassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
         }
     }
     buildTypes {
