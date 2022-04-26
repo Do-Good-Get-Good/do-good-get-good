@@ -5,7 +5,13 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Keyboard,
+} from "react-native";
 
 export function RadioButton(props) {
   const [jaButton, setJaButton] = useState(true);
@@ -14,6 +20,7 @@ export function RadioButton(props) {
   const createActivityContext = useCreateActivityFunction();
 
   const jaRadioButtonsPress = () => {
+    Keyboard.dismiss();
     setJaButton(true);
     setNejButton(false);
     adminGalleryContext.chooseActiveOrNot(true);
@@ -23,6 +30,7 @@ export function RadioButton(props) {
   };
 
   const nejRadioButtonsPress = () => {
+    Keyboard.dismiss();
     setNejButton(true);
     setJaButton(false);
     adminGalleryContext.chooseActiveOrNot(false);
