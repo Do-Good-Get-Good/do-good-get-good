@@ -11,6 +11,8 @@ import firestore from "@react-native-firebase/firestore";
 
 import { format, set } from "date-fns";
 import { Icon } from "react-native-elements";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
@@ -220,89 +222,103 @@ const MyUsers = ({ navigation }) => {
         )}
         {allUsers.length != 0 && (
           <>
-            {myUsers.map((user, index) => (
-              <View key={index}>
-                <TouchableOpacity
-                  testID={`userDropdown ${index}`}
-                  style={styles.listItemContainerStyle}
-                  onPress={() => {
-                    openSelectedUser(user);
-                  }}
-                >
-                  <View style={styles.listItemStyle}>
-                    <Text
-                      testID={`user ${index} name`}
-                      style={styles.listItemNameStyle}
+            {myUsers.length != 0 ? (
+              <>
+                {myUsers.map((user, index) => (
+                  <View key={index}>
+                    <TouchableOpacity
+                      testID={`userDropdown ${index}`}
+                      style={styles.listItemContainerStyle}
+                      onPress={() => {
+                        openSelectedUser(user);
+                      }}
                     >
-                      {user.firstName + " " + user.lastName}
-                    </Text>
-                    <Icon
-                      color="#5B6770"
-                      style={styles.sortIcon}
-                      name={
-                        user.isOpen === true
-                          ? "arrow-drop-up"
-                          : "arrow-drop-down"
-                      }
-                      size={30}
-                    />
-                  </View>
-                </TouchableOpacity>
-                {user.isOpen && (
-                  <View>
-                    {user.timeEntries.map((timeEntry, index) => (
-                      <View key={index}>
-                        {timeEntry !== "NO DATA" ? (
-                          <View key={index} style={styles.listItemContentStyle}>
-                            <View style={styles.listItemContentNameView}>
-                              <Text
-                                testID={`user timeEntry ${index} title`}
-                                style={styles.listItemContentNameStyle}
-                              >
-                                {timeEntry.activity_title}
-                              </Text>
-                            </View>
-                            <View style={styles.listItemContentDateView}>
-                              <Text
-                                testID={`user timeEntry ${index} date`}
-                                style={styles.listItemContentDateStyle}
-                              >
-                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
-                              </Text>
-                            </View>
-                            <View style={styles.listItemContentHourView}>
-                              <Text
-                                testID={`user timeEntry ${index} title`}
-                                style={styles.listItemContentHourStyle}
-                              >
-                                {timeEntry.time} tim
-                              </Text>
-                            </View>
-                          </View>
-                        ) : null}
+                      <View style={styles.listItemStyle}>
+                        <Text
+                          testID={`user ${index} name`}
+                          style={styles.listItemNameStyle}
+                        >
+                          {user.firstName + " " + user.lastName}
+                        </Text>
+                        <Icon
+                          color="#5B6770"
+                          style={styles.sortIcon}
+                          name={
+                            user.isOpen === true
+                              ? "arrow-drop-up"
+                              : "arrow-drop-down"
+                          }
+                          size={30}
+                        />
                       </View>
-                    ))}
-                    <View style={styles.editUserIconView}>
-                      <Icon
-                        name="pencil-outline"
-                        type="material-community"
-                        size={25}
-                        containerStyle={styles.editUserIcon}
-                        onPress={() =>
-                          navigation.navigate("CreateOrChangeUser", {
-                            createNewUser: false,
-                            userName: user.firstName,
-                            userSurname: user.lastName,
-                            statusActive: user.statusActive,
-                            userID: user.userID,
-                          })
-                        }
-                      />
-                    </View>
+                    </TouchableOpacity>
+                    {user.isOpen && (
+                      <View>
+                        {user.timeEntries.map((timeEntry, index) => (
+                          <View key={index}>
+                            {timeEntry !== "NO DATA" ? (
+                              <View
+                                key={index}
+                                style={styles.listItemContentStyle}
+                              >
+                                <View style={styles.listItemContentNameView}>
+                                  <Text
+                                    testID={`user timeEntry ${index} title`}
+                                    style={styles.listItemContentNameStyle}
+                                  >
+                                    {timeEntry.activity_title}
+                                  </Text>
+                                </View>
+                                <View style={styles.listItemContentDateView}>
+                                  <Text
+                                    testID={`user timeEntry ${index} date`}
+                                    style={styles.listItemContentDateStyle}
+                                  >
+                                    {format(
+                                      timeEntry.date.toDate(),
+                                      "yyyy-MM-dd"
+                                    )}
+                                  </Text>
+                                </View>
+                                <View style={styles.listItemContentHourView}>
+                                  <Text
+                                    testID={`user timeEntry ${index} title`}
+                                    style={styles.listItemContentHourStyle}
+                                  >
+                                    {timeEntry.time} tim
+                                  </Text>
+                                </View>
+                              </View>
+                            ) : null}
+                          </View>
+                        ))}
+                        <View style={styles.editUserIconView}>
+                          <Icon
+                            name="pencil-outline"
+                            type="material-community"
+                            size={25}
+                            containerStyle={styles.editUserIcon}
+                            onPress={() =>
+                              navigation.navigate("CreateOrChangeUser", {
+                                createNewUser: false,
+                                userName: user.firstName,
+                                userSurname: user.lastName,
+                                statusActive: user.statusActive,
+                                userID: user.userID,
+                              })
+                            }
+                          />
+                        </View>
+                      </View>
+                    )}
                   </View>
-                )}
-              </View>
-            ))}
+                ))}
+              </>
+            ) : (
+              <Text style={styles.noInactiveUsers}>
+                Du har inga inaktiva användare
+              </Text>
+            )}
           </>
         )}
       </View>
@@ -404,5 +420,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: 10,
     bottom: 10,
+  },
+  noInactiveUsers: {
+    ...typography.b2,
+    textAlign: "center",
+    marginTop: 20,
+    color: colors.dark,
   },
 });
