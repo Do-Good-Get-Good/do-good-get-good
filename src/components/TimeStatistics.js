@@ -12,11 +12,13 @@ export function TimeStatistics({}) {
   const activityFunction = useActivityFunction();
 
   useEffect(() => {
-    setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
-    setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
-    setCurrentForMonth(
-      activityFunction.activitiesIDandAccumTime[0].currentForMonth
-    );
+    if (activityFunction.activitiesIDandAccumTime.length != 0) {
+      setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
+      setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
+      setCurrentForMonth(
+        activityFunction.activitiesIDandAccumTime[0].currentForMonth
+      );
+    }
   }, [activityFunction.activitiesIDandAccumTime]);
 
   return (

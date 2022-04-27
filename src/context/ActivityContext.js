@@ -16,7 +16,7 @@ export const ActivityProvider = ({ children }) => {
     []
   );
 
-  const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
+  // const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
 
   const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
     useState(false);
@@ -29,12 +29,13 @@ export const ActivityProvider = ({ children }) => {
   const [scrollToGetMoreTimeEntries, setScrollToGetMoreTimeEntries] =
     useState(false);
 
-  const [start, setStart] = useState({});
   const [startPointAfterScroll, setStartPointAfterScroll] = useState(undefined);
 
   const [timeEntriesAfterScrolling, setTimeEntriesAfterScrolling] = useState(
     []
   );
+  const [addMoreTimeEntriesAfterScroll, setAddMoreTimeEntriesAfterScroll] =
+    useState(false);
 
   ///////////
 
@@ -168,7 +169,6 @@ export const ActivityProvider = ({ children }) => {
       };
     }
   }, [isFinishedToLoadActivitiesID]);
-  console.log("start  ", start);
 
   useEffect(() => {
     if (scrollToGetMoreTimeEntries) {
@@ -200,12 +200,18 @@ export const ActivityProvider = ({ children }) => {
 
                 for (let i = 0; i < timeEntriesArray.length; i++) {
                   tempArray.push(timeEntriesArray[i]);
+                  console.log(
+                    "ActivityContext  timeEntriesArray[i]  ",
+                    timeEntriesArray[i].doc_id
+                  );
                 }
                 setTimeEntriesAfterScrolling(tempArray);
 
                 setStartPointAfterScroll(
                   response.docs[response.docs.length - 1]
                 );
+                setScrollToGetMoreTimeEntries(false);
+                setAddMoreTimeEntriesAfterScroll(true);
               })
               .catch((error) => {
                 console.log("errorMessage ", error);
@@ -218,6 +224,10 @@ export const ActivityProvider = ({ children }) => {
       getMoreTimeEntries();
     }
   }, [scrollToGetMoreTimeEntries]);
+  console.log(
+    "+++++ActivityContext scrollToGetMoreTimeEntries  ",
+    scrollToGetMoreTimeEntries
+  );
 
   ////////////////////////////////////////////
   ////////////////////////////////////////////
@@ -266,13 +276,15 @@ export const ActivityProvider = ({ children }) => {
     <ActivitynContext.Provider
       value={{
         lastFiveTimeEntries: lastFiveTimeEntries,
-        setLimitAmountForTimeEntries: setLimitAmountForTimeEntries,
+        // setLimitAmountForTimeEntries: setLimitAmountForTimeEntries,
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
         allListOfTimeEntry: timeEntryArrayForMyTimePage,
         scrollToGetMoreTimeEntries: scrollToGetMoreTimeEntries,
         setScrollToGetMoreTimeEntries: setScrollToGetMoreTimeEntries,
         timeEntriesAfterScrolling: timeEntriesAfterScrolling,
+        addMoreTimeEntriesAfterScroll: addMoreTimeEntriesAfterScroll,
+        setAddMoreTimeEntriesAfterScroll: setAddMoreTimeEntriesAfterScroll,
       }}
     >
       {children}

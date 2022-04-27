@@ -15,6 +15,7 @@ import { useActivityFunction } from "../context/ActivityContext";
 import { format, set } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import DropDownForSorting from "./DropDownForSorting";
 
 function MyActivityAsAList({ navigation }) {
   const entryTime = useActivityFunction();
@@ -53,22 +54,24 @@ function MyActivityAsAList({ navigation }) {
   }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
 
   useEffect(() => {
-    console.log("****************'useeffect befor if");
-    console.log(
-      "***************    entryTime.scrollToGetMoreTimeEntries  ",
-      entryTime.scrollToGetMoreTimeEntries
-    );
-    if (entryTime.scrollToGetMoreTimeEntries) {
+    if (
+      entryTime.scrollToGetMoreTimeEntries.length != 0 &&
+      entryTime.addMoreTimeEntriesAfterScroll
+    ) {
       let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.timeEntriesAfterScrolling,
         false
       );
-      console.log("**************'useeffect after if");
-      seTimeEntriesTwoMonthsBefore(timeEntriesAfterScroll);
-      entryTime.setScrollToGetMoreTimeEntries(false);
-    }
-  }, [entryTime.timeEntriesAfterScrolling]);
 
+      seTimeEntriesTwoMonthsBefore(timeEntriesAfterScroll);
+      entryTime.setAddMoreTimeEntriesAfterScroll(false);
+    }
+  }, [entryTime.addMoreTimeEntriesAfterScroll]);
+
+  console.log(
+    "_________entryTime.timeEntriesAfterScrolling.length   ",
+    entryTime.timeEntriesAfterScrolling.length
+  );
   console.log(
     "_________entryTime.timeEntriesAfterScrolling]   ",
     entryTime.timeEntriesAfterScrolling
@@ -164,14 +167,14 @@ function MyActivityAsAList({ navigation }) {
     );
   }
 
-  console.log(
-    "==========timeEntriesTwoMonthsBefore  ",
-    timeEntriesTwoMonthsBefore
-  );
-  console.log(
-    "timeEntriesTwoMonthsBefore.length  ",
-    timeEntriesTwoMonthsBefore.length
-  );
+  // console.log(
+  //   "==========timeEntriesTwoMonthsBefore  ",
+  //   timeEntriesTwoMonthsBefore
+  // );
+  // console.log(
+  //   "timeEntriesTwoMonthsBefore.length  ",
+  //   timeEntriesTwoMonthsBefore.length
+  // );
 
   function showTimeEntriesList() {
     return (
@@ -245,7 +248,13 @@ function MyActivityAsAList({ navigation }) {
 
   return (
     <View style={styles.containerForTheWholeComponent}>
-      <Text style={styles.title}>Min tid</Text>
+      <View style={styles.containerForTitleAndDropDown}>
+        <Text style={styles.title}>Min tid</Text>
+        <View style={{ backgroundColor: "pink" }}>
+          <DropDownForSorting />
+        </View>
+      </View>
+
       {showTimeEntriesList()}
 
       {/* {showTimeEntriesList(timeEntryListOnlyFive, true)} */}
@@ -275,12 +284,18 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   title: {
-    flex: 1,
-    ...typography.title,
-    marginTop: 30,
-    // marginBottom: 30,
-    paddingBottom: 20,
+    flex: 0.5,
+    ...typography.h2,
     color: colors.dark,
+    backgroundColor: "red",
+    paddingTop: 13,
+  },
+  containerForTitleAndDropDown: {
+    flex: 1,
+    flexDirection: "row",
+    marginTop: 30,
+    paddingBottom: 20,
+    backgroundColor: "yellow",
   },
 
   textVissaAll: {
