@@ -84,7 +84,8 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     await admin.auth().setCustomUserClaims(userId, claims);
 
     let userDoc = admin.firestore().collection("Users").doc(userId);
-    userDoc.set({
+
+    let userData = {
       activities_and_accumulated_time: [
         {
           accumulated_time: 0,
@@ -100,15 +101,16 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       total_confirmed_hours: 0,
       first_name: data.firstName,
       last_name: data.lastName,
-    });
-
-    let newUserDoc = await userDoc.get();
-    let userData = {
-      id: userId,
-      ...newUserDoc.data(),
     };
 
-    await userCreationRequestRef.update({ status: "Treated" });
+    userDoc.set(userData).then(async () => {
+      await userCreationRequestRef.update({ status: "Treated" });
+
+      userData = {
+        id: userId,
+        ...userData,
+      };
+    });
 
     return {
       result: "The new user has been successfully created.",

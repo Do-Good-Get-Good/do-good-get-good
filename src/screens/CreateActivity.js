@@ -48,7 +48,8 @@ export function CreateActivity({ route, navigation }) {
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
 
-  const newUserAdded = useAdminHomePageFunction().newUserAdded;
+  const setUserData = useAdminHomePageFunction().setUserData;
+  const setNewUser = useAdminHomePageFunction().setNewUser;
 
   useEffect(() => {
     if (newUserInfo != null) {
@@ -147,10 +148,13 @@ export function CreateActivity({ route, navigation }) {
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
         let newUser = res.data.createdUser;
-        console.log("New User: ", newUser);
 
         // Save new user locally
-        newUserAdded(newUser);
+        //setUserData((prev) => [...prev, newUser]);
+        // setNewUser(newUser);
+        setNewUser({ newUser: " hiii" });
+
+        console.log("linkChoosenActivityToNewUse New User: ", newUser);
 
         setLoading(false);
         navigation.navigate("HomePage");

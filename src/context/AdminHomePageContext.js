@@ -15,6 +15,7 @@ export const AdminHomePageProvider = ({ children }) => {
   const [reloadOneUserData, setReloadOneUserData] = useState(false);
   const [confirmedTimeEntries, setConfirmedTimeEntries] = useState([]);
   const [usersId, setUsersId] = useState([]);
+  const [newUser, setNewUser] = useState(undefined);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -51,19 +52,17 @@ export const AdminHomePageProvider = ({ children }) => {
     }
   }, [reloadOneUserData]);
 
-  function newUserAdded(newUser) {
-    setUserData((prev) => [...prev, newUser]);
-  }
-
   return (
     <AdminHomePageContext.Provider
       value={{
         userData: userData,
-        newUserAdded: newUserAdded,
+        setUserData: setUserData,
         setReloadOneUserData: setReloadOneUserData,
         reloadOneUserData: reloadOneUserData,
         confirmedTimeEntries: confirmedTimeEntries,
         setUsersId: setUsersId,
+        newUser: newUser,
+        setNewUser: setNewUser,
       }}
     >
       {children}

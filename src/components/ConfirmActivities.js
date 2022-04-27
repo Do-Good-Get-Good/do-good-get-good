@@ -24,9 +24,14 @@ const ConfirmActivities = () => {
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const changeUserInfoContext = useChangeUserInfoFunction();
+  const newUser = useAdminHomePageFunction().newUser;
 
   useEffect(() => {
     if (userData.length != 0) {
+      console.log(userData.length);
+      console.log("TEST TEST TEST TEST TEST TEST");
+      console.log("SETTING UP SNAPSHOT");
+
       return firestore()
         .collection("timeentries")
         .where("admin_id", "==", auth().currentUser.uid)
@@ -44,6 +49,7 @@ const ConfirmActivities = () => {
 
     return () => {
       setMyUsers([]);
+      setSnapshot(null);
       setCheckAll(false);
       setChecked(false);
     };
@@ -54,6 +60,7 @@ const ConfirmActivities = () => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           addTimeEntry(change);
+          console.log("add function");
         }
         if (change.type === "modified") {
           updateTimeEntry(change);
@@ -84,16 +91,32 @@ const ConfirmActivities = () => {
     }
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
+  useEffect(() => {
+    console.log("############################ newUser  ", newUser);
+  }, [newUser]);
+  console.log("1 ############################ newUser  ", newUser);
+
   const addTimeEntry = async (change) => {
     let fullName;
 
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === change.doc.data().user_id) {
         console.log(
-          `USERDATA ${i} - name: `,
+          "IN SNAPSHOT: ",
           userData[i].first_name,
           userData[i].last_name
         );
+        console.log(
+          "userData[i].id === change.doc.data().user_i  ",
+          userData[i].id,
+          "   ",
+          change.doc.data().user_id
+        );
+        // console.log(
+        //   `USERDATA ${i} - name: `,
+        //   userData[i].first_name,
+        //   userData[i].last_name
+        // );
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }
