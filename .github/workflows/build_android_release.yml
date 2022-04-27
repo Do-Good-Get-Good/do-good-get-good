@@ -68,8 +68,7 @@ jobs:
       - name: Upload Android APK
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_CI_KEY}}
-        run:
-          npm install -g firebase-cli 
+        run: |
           firebase appdistribution:distribute app-release.apk --app ${{secrets.FIREBASE_APP_ID_ANDROID}} --token ${{ secrets.FIREBASE_CI_KEY }}
 
   # upload-android:
