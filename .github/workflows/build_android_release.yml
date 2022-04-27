@@ -51,18 +51,36 @@ jobs:
           name: artifact
           path: src/android/app/build/outputs/apk/release/app-release.apk
 
-  upload-android:
+  upload-android-release:
     needs: build-android-adhoc
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/setup-node@v2
+        with:
+          node-version: "17"
+      - name: Install Firebase-cli
+        run: |
+          npm install -g firebase-cli 
       - name: Download artifact
         uses: actions/download-artifact@v2
         with:
           name: artifact
-      - name: upload artifact to Firebase App Distribution
-        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
-        with:
-          app_id: ${{secrets.FIREBASE_APP_ID_ANDROID}}
-          firebase_token: ${{secrets.FIREBASE_CI_KEY}}
-          tester_groups: dev-team
-          app_file: app-release.apk
+      - name: Upload Android APK    
+        run:
+           firebase appdistribution:distribute --app ${{secrets.FIREBASE_APP_ID_ANDROID}} --token ${{secrets.FIREBASE_CI_KEY}} app-release.apk
+
+  # upload-android:
+  #   needs: build-android-adhoc
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Download artifact
+  #       uses: actions/download-artifact@v2
+  #       with:
+  #         name: artifact
+  #     - name: upload artifact to Firebase App Distribution
+  #       uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
+  #       with:
+  #         app_id: ${{secrets.FIREBASE_APP_ID_ANDROID}}
+  #         firebase_token: ${{secrets.FIREBASE_CI_KEY}}
+  #         tester_groups: dev-team
+  #         app_file: app-release.apk
