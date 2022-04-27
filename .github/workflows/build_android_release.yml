@@ -60,7 +60,7 @@ jobs:
         with:
           name: artifact
       - name: upload artifact to Firebase App Distribution
-        uses: hasretsariyer/firebase-app-distribution-github-action@v1
+        uses: hasretsariyer/firebase-app-distribution-github-action@v1.0
         with:
           app_id: ${{secrets.FIREBASE_APP_ID_ANDROID}}
           firebase_token: ${{secrets.FIREBASE_CI_KEY}}
