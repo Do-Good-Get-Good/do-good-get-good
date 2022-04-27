@@ -65,9 +65,11 @@ jobs:
         uses: actions/download-artifact@v2
         with:
           name: artifact
-      - name: Upload Android APK    
+      - name: Upload Android APK
+        env:
+          FIREBASE_TOKEN: ${{secrets.FIREBASE_CI_KEY}}
         run:
-           firebase appdistribution:distribute --app ${{secrets.FIREBASE_APP_ID_ANDROID}} --token ${{secrets.FIREBASE_CI_KEY}} app-release.apk
+           firebase appdistribution:distribute --app ${{secrets.FIREBASE_APP_ID_ANDROID}} app-release.apk
 
   # upload-android:
   #   needs: build-android-adhoc
