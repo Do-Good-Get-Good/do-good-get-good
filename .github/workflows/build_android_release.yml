@@ -69,7 +69,8 @@ jobs:
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_CI_KEY}}
         run:
-           firebase appdistribution:distribute --app ${{secrets.FIREBASE_APP_ID_ANDROID}} app-release.apk
+          npm install -g firebase-cli 
+          firebase appdistribution:distribute app-release.apk --app ${{secrets.FIREBASE_APP_ID_ANDROID}} --token ${{ secrets.FIREBASE_CI_KEY }}
 
   # upload-android:
   #   needs: build-android-adhoc
