@@ -15,7 +15,6 @@ export const AdminHomePageProvider = ({ children }) => {
   const [reloadOneUserData, setReloadOneUserData] = useState(false);
   const [confirmedTimeEntries, setConfirmedTimeEntries] = useState([]);
   const [usersId, setUsersId] = useState([]);
-  const [newUser, setNewUser] = useState(undefined);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -24,6 +23,12 @@ export const AdminHomePageProvider = ({ children }) => {
     };
     fetchUserData();
   }, []);
+
+  useEffect(() => {
+    userData.forEach((user) => {
+      console.log(user);
+    });
+  }, [userData]);
 
   useEffect(() => {
     if (usersId.length != 0 && reloadOneUserData) {
@@ -61,8 +66,6 @@ export const AdminHomePageProvider = ({ children }) => {
         reloadOneUserData: reloadOneUserData,
         confirmedTimeEntries: confirmedTimeEntries,
         setUsersId: setUsersId,
-        newUser: newUser,
-        setNewUser: setNewUser,
       }}
     >
       {children}

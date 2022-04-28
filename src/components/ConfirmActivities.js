@@ -60,7 +60,6 @@ const ConfirmActivities = () => {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           addTimeEntry(change);
-          console.log("add function");
         }
         if (change.type === "modified") {
           updateTimeEntry(change);
@@ -106,17 +105,6 @@ const ConfirmActivities = () => {
           userData[i].first_name,
           userData[i].last_name
         );
-        console.log(
-          "userData[i].id === change.doc.data().user_i  ",
-          userData[i].id,
-          "   ",
-          change.doc.data().user_id
-        );
-        // console.log(
-        //   `USERDATA ${i} - name: `,
-        //   userData[i].first_name,
-        //   userData[i].last_name
-        // );
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }

@@ -49,7 +49,6 @@ export function CreateActivity({ route, navigation }) {
     useState([]);
 
   const setUserData = useAdminHomePageFunction().setUserData;
-  const setNewUser = useAdminHomePageFunction().setNewUser;
 
   useEffect(() => {
     if (newUserInfo != null) {
@@ -150,11 +149,9 @@ export function CreateActivity({ route, navigation }) {
         let newUser = res.data.createdUser;
 
         // Save new user locally
-        //setUserData((prev) => [...prev, newUser]);
-        // setNewUser(newUser);
-        setNewUser({ newUser: " hiii" });
+        setUserData((prev) => [...prev, newUser]);
 
-        console.log("linkChoosenActivityToNewUse New User: ", newUser);
+        console.log("newUser: ", res.data);
 
         setLoading(false);
         navigation.navigate("HomePage");
