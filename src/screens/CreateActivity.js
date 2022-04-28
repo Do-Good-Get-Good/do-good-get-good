@@ -479,7 +479,7 @@ export function CreateActivity({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView keyboardDismissMode={"on-drag"}>
         <View style={styles.container}>
           <Text style={styles.textMainTitle}>{chooseTitle()}</Text>
           <Text style={styles.numbersNearTitle}>
