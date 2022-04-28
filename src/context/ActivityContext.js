@@ -1,7 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { format } from "date-fns";
 
 const ActivitynContext = React.createContext();
 
@@ -107,6 +106,7 @@ export const ActivityProvider = ({ children }) => {
   let endPoint = todayDatefunction(
     today.getUTCFullYear(),
     today.getMonth() - 1,
+    //today.getMonth() - 3,
     today.getUTCDate()
   );
 
@@ -122,6 +122,7 @@ export const ActivityProvider = ({ children }) => {
       day = "0" + day;
     }
 
+    console.log("year +  + month + + day   ", year + "-" + month + "-" + day);
     let yearMonthDay = new Date(
       year + "-" + month + "-" + day + "T00:00:00.000Z"
     );
@@ -155,9 +156,6 @@ export const ActivityProvider = ({ children }) => {
 
             setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
-            // if (Object.keys(start).length != 0) {
-            // setStart(snap.docs[snap.docs.length - 1]);
-            // }
           },
           (error) => {
             console.log(error);
@@ -177,13 +175,24 @@ export const ActivityProvider = ({ children }) => {
 
         if (startPointAfterScroll != undefined) {
           startPoint = startPointAfterScroll;
-        } else if (startPointAfterScroll === undefined) {
+        } else if (
+          startPointAfterScroll === undefined &&
+          timeEntriesAfterScrolling.length === 0
+        ) {
           startPoint = endPoint;
         }
 
         let timeEntriesArray = [];
 
+        console.log(
+          "useEffect  timeEntriesAfterScrolling.length  ",
+          timeEntriesAfterScrolling.length
+        );
         if (startPoint != undefined) {
+          console.log(
+            "ÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ       UseEffect  startPoint  ",
+            startPoint
+          );
           try {
             await firestore()
               .collection("timeentries")
@@ -201,17 +210,15 @@ export const ActivityProvider = ({ children }) => {
                 for (let i = 0; i < timeEntriesArray.length; i++) {
                   tempArray.push(timeEntriesArray[i]);
                   console.log(
-                    "ActivityContext  timeEntriesArray[i]  ",
+                    "################## ActivityContext  timeEntriesArray[i]  ",
                     timeEntriesArray[i].doc_id
                   );
                 }
                 setTimeEntriesAfterScrolling(tempArray);
-
-                setStartPointAfterScroll(
-                  response.docs[response.docs.length - 1]
-                );
-                setScrollToGetMoreTimeEntries(false);
+                startPoint = response.docs[response.docs.length - 1];
+                setStartPointAfterScroll(startPoint);
                 setAddMoreTimeEntriesAfterScroll(true);
+                setScrollToGetMoreTimeEntries(false);
               })
               .catch((error) => {
                 console.log("errorMessage ", error);
@@ -219,8 +226,15 @@ export const ActivityProvider = ({ children }) => {
           } catch (error) {
             console.log("AdminContex errorMessage ", error);
           }
+        } else if (
+          startPoint === undefined &&
+          timeEntriesAfterScrolling.length != 0
+        ) {
+          setAddMoreTimeEntriesAfterScroll(true);
+          setScrollToGetMoreTimeEntries(false);
         }
       };
+
       getMoreTimeEntries();
     }
   }, [scrollToGetMoreTimeEntries]);

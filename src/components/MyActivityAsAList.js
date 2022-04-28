@@ -67,7 +67,10 @@ function MyActivityAsAList({ navigation }) {
       entryTime.setAddMoreTimeEntriesAfterScroll(false);
     }
   }, [entryTime.addMoreTimeEntriesAfterScroll]);
-
+  console.log(
+    " entryTime.addMoreTimeEntriesAfterScroll]  ",
+    entryTime.addMoreTimeEntriesAfterScroll
+  );
   console.log(
     "_________entryTime.timeEntriesAfterScrolling.length   ",
     entryTime.timeEntriesAfterScrolling.length
