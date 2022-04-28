@@ -15,8 +15,6 @@ export const ActivityProvider = ({ children }) => {
     []
   );
 
-  // const [limitAmountForTimeEntries, setLimitAmountForTimeEntries] = useState(5);
-
   const [isFinishedToLoadActivitiesID, setIsFinishedToLoadActivitiesID] =
     useState(false);
   const [isFinishedToLoadMyEntries, setIsFinishedToLoadMyEntries] =
@@ -24,7 +22,6 @@ export const ActivityProvider = ({ children }) => {
   const [timeEntryArrayForMyTimePage, setTimeEntryArrayForMyTimePage] =
     useState([]);
 
-  ///////
   const [scrollToGetMoreTimeEntries, setScrollToGetMoreTimeEntries] =
     useState(false);
 
@@ -35,8 +32,6 @@ export const ActivityProvider = ({ children }) => {
   );
   const [addMoreTimeEntriesAfterScroll, setAddMoreTimeEntriesAfterScroll] =
     useState(false);
-
-  ///////////
 
   useEffect(() => {
     let temArray = [];
@@ -92,26 +87,6 @@ export const ActivityProvider = ({ children }) => {
     };
   }, []);
 
-  //=========================================================================
-  //===================================================================================
-
-  //////////////////////////////////////
-  /////////////////////////////////////
-
-  // let startPoint = todayDatefunction(
-  //   today.getUTCFullYear(),
-  //   today.getMonth() + 2,
-  //   today.getUTCDate(),
-  //   false
-  // );
-  // let endPoint = todayDatefunction(
-  //   today.getUTCFullYear(),
-  //   today.getMonth() - 5,
-  //   today.getUTCDate(),
-  //   true
-  // );
-  //today.getMonth() - 1,
-
   let startPoint = todayDatefunction(true);
   let endPoint = todayDatefunction(false);
 
@@ -120,9 +95,6 @@ export const ActivityProvider = ({ children }) => {
     let year = undefined;
     let month = undefined;
     let day = undefined;
-    // let year = today.getUTCFullYear();
-    // let month = today.getMonth();
-    // let day = today.getUTCDate();
     let yearMonthDay = undefined;
 
     if (getStartPoint) {
@@ -137,9 +109,6 @@ export const ActivityProvider = ({ children }) => {
       year = subtracTwoMonths.getUTCFullYear();
       month = subtracTwoMonths.getMonth() + 1;
       day = today.getUTCDate();
-      console.log("subtracTwoMonths  ", subtracTwoMonths);
-      console.log("day ", day);
-      console.log("month ", month);
     }
 
     if (month < 10) {
@@ -151,43 +120,8 @@ export const ActivityProvider = ({ children }) => {
     }
 
     yearMonthDay = new Date(year + "-" + month + "-" + day + "T00:00:00.000Z");
-    console.log("yearMonthDay  ", yearMonthDay);
     return yearMonthDay;
   }
-
-  // function todayDatefunction(
-  //   currentYear,
-  //   currentMonth,
-  //   currentDay,
-  //   subtraction
-  // ) {
-  //   let year = currentYear;
-  //   let month = currentMonth;
-  //   let day = currentDay;
-  //   let yearMonthDay = undefined;
-
-  //   if (currentMonth < 10) {
-  //     month = "0" + month;
-  //   }
-
-  //   if (currentDay < 10) {
-  //     day = "0" + day;
-  //   }
-
-  //   if (subtraction) {
-  //     console.log("sub ", year + "-" + month + "-" + day);
-  //     yearMonthDay = new Date(today);
-  //     console.log("sub before yearMonthDay  ", yearMonthDay);
-  //     yearMonthDay.setMonth(yearMonthDay.getMonth() - 5);
-  //     console.log("sub after yearMonthDay  ", yearMonthDay);
-  //   }
-
-  //   yearMonthDay = new Date(year + "-" + month + "-" + day + "T00:00:00.000Z");
-
-  //   return yearMonthDay;
-  // }
-  console.log("startPoint  ", startPoint);
-  console.log("endPoint  ", endPoint);
 
   useEffect(() => {
     if (isFinishedToLoadActivitiesID === true) {
@@ -243,22 +177,14 @@ export const ActivityProvider = ({ children }) => {
 
         let timeEntriesArray = [];
 
-        console.log(
-          "useEffect  timeEntriesAfterScrolling.length  ",
-          timeEntriesAfterScrolling.length
-        );
         if (startPoint != undefined) {
-          console.log(
-            "ÅÅÅÅÅÅÅÅÅÅÅÅÅÅÅ       UseEffect  startPoint  ",
-            startPoint
-          );
           try {
             await firestore()
               .collection("timeentries")
               .where("user_id", "==", auth().currentUser.uid)
               .orderBy("date", "desc")
               .startAfter(startPoint)
-              .limit(2)
+              .limit(20)
               .get()
               .then((response) => {
                 response.forEach((doc) =>
@@ -268,10 +194,6 @@ export const ActivityProvider = ({ children }) => {
 
                 for (let i = 0; i < timeEntriesArray.length; i++) {
                   tempArray.push(timeEntriesArray[i]);
-                  console.log(
-                    "################## ActivityContext  timeEntriesArray[i]  ",
-                    timeEntriesArray[i].doc_id
-                  );
                 }
                 setTimeEntriesAfterScrolling(tempArray);
                 startPoint = response.docs[response.docs.length - 1];
@@ -297,13 +219,6 @@ export const ActivityProvider = ({ children }) => {
       getMoreTimeEntries();
     }
   }, [scrollToGetMoreTimeEntries]);
-  console.log(
-    "+++++ActivityContext scrollToGetMoreTimeEntries  ",
-    scrollToGetMoreTimeEntries
-  );
-
-  ////////////////////////////////////////////
-  ////////////////////////////////////////////
 
   useEffect(() => {
     if (isFinishedToLoadMyEntries === true) {

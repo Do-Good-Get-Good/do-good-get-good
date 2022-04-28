@@ -34,7 +34,6 @@ function MyActivityAsAList({ navigation }) {
   );
 
   useEffect(() => {
-    // if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
     if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
       let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.lastFiveTimeEntries,
@@ -67,18 +66,6 @@ function MyActivityAsAList({ navigation }) {
       entryTime.setAddMoreTimeEntriesAfterScroll(false);
     }
   }, [entryTime.addMoreTimeEntriesAfterScroll]);
-  console.log(
-    " entryTime.addMoreTimeEntriesAfterScroll]  ",
-    entryTime.addMoreTimeEntriesAfterScroll
-  );
-  console.log(
-    "_________entryTime.timeEntriesAfterScrolling.length   ",
-    entryTime.timeEntriesAfterScrolling.length
-  );
-  console.log(
-    "_________entryTime.timeEntriesAfterScrolling]   ",
-    entryTime.timeEntriesAfterScrolling
-  );
 
   function objectsWithActivitiesAndTimeEntriesInfo(
     timeEntries,
@@ -170,15 +157,6 @@ function MyActivityAsAList({ navigation }) {
     );
   }
 
-  // console.log(
-  //   "==========timeEntriesTwoMonthsBefore  ",
-  //   timeEntriesTwoMonthsBefore
-  // );
-  // console.log(
-  //   "timeEntriesTwoMonthsBefore.length  ",
-  //   timeEntriesTwoMonthsBefore.length
-  // );
-
   function showTimeEntriesList() {
     return (
       <View style={styles.container}>
@@ -207,7 +185,6 @@ function MyActivityAsAList({ navigation }) {
                 contentContainerStyle={{ marginBottom: 20 }}
                 data={[...timeEntryList, ...timeEntriesTwoMonthsBefore]}
                 onEndReached={() => {
-                  console.log("HHHHHHHHHHHHHHHHHHHHHHHHHERE THE BOTTOM");
                   entryTime.setScrollToGetMoreTimeEntries(true);
                 }}
                 onEndReachedThreshold={0.01}
@@ -259,9 +236,6 @@ function MyActivityAsAList({ navigation }) {
       </View>
 
       {showTimeEntriesList()}
-
-      {/* {showTimeEntriesList(timeEntryListOnlyFive, true)} */}
-
       <Overlay
         isVisible={showErrorMessage}
         animationType="fade"
@@ -270,8 +244,6 @@ function MyActivityAsAList({ navigation }) {
       >
         <Text>Man kan inte ändra på tidsinmatningar äldre än två månader</Text>
       </Overlay>
-      {/* {timeEntriesTwoMonthsBefore.length != 0 &&
-        showTimeEntriesList(timeEntriesTwoMonthsBefore, false)} */}
     </View>
   );
 }
