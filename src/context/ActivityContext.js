@@ -97,38 +97,97 @@ export const ActivityProvider = ({ children }) => {
 
   //////////////////////////////////////
   /////////////////////////////////////
-  const today = new Date();
-  let startPoint = todayDatefunction(
-    today.getUTCFullYear(),
-    today.getMonth() + 2,
-    1
-  );
-  let endPoint = todayDatefunction(
-    today.getUTCFullYear(),
-    today.getMonth() - 1,
-    //today.getMonth() - 3,
-    today.getUTCDate()
-  );
 
-  function todayDatefunction(currentYear, currentMonth, currentDay) {
-    let year = currentYear;
-    let month = currentMonth;
-    let day = currentDay;
-    if (currentMonth < 10) {
+  // let startPoint = todayDatefunction(
+  //   today.getUTCFullYear(),
+  //   today.getMonth() + 2,
+  //   today.getUTCDate(),
+  //   false
+  // );
+  // let endPoint = todayDatefunction(
+  //   today.getUTCFullYear(),
+  //   today.getMonth() - 5,
+  //   today.getUTCDate(),
+  //   true
+  // );
+  //today.getMonth() - 1,
+
+  let startPoint = todayDatefunction(true);
+  let endPoint = todayDatefunction(false);
+
+  function todayDatefunction(getStartPoint) {
+    const today = new Date();
+    let year = undefined;
+    let month = undefined;
+    let day = undefined;
+    // let year = today.getUTCFullYear();
+    // let month = today.getMonth();
+    // let day = today.getUTCDate();
+    let yearMonthDay = undefined;
+
+    if (getStartPoint) {
+      let getStartOfTheNextMonth = new Date(
+        today.setMonth(today.getMonth() + 1)
+      );
+      year = getStartOfTheNextMonth.getUTCFullYear();
+      month = getStartOfTheNextMonth.getMonth() + 1;
+      day = 1;
+    } else {
+      let subtracTwoMonths = new Date(today.setMonth(today.getMonth() - 2));
+      year = subtracTwoMonths.getUTCFullYear();
+      month = subtracTwoMonths.getMonth() + 1;
+      day = today.getUTCDate();
+      console.log("subtracTwoMonths  ", subtracTwoMonths);
+      console.log("day ", day);
+      console.log("month ", month);
+    }
+
+    if (month < 10) {
       month = "0" + month;
     }
 
-    if (currentDay < 10) {
+    if (day < 10) {
       day = "0" + day;
     }
 
-    console.log("year +  + month + + day   ", year + "-" + month + "-" + day);
-    let yearMonthDay = new Date(
-      year + "-" + month + "-" + day + "T00:00:00.000Z"
-    );
-
+    yearMonthDay = new Date(year + "-" + month + "-" + day + "T00:00:00.000Z");
+    console.log("yearMonthDay  ", yearMonthDay);
     return yearMonthDay;
   }
+
+  // function todayDatefunction(
+  //   currentYear,
+  //   currentMonth,
+  //   currentDay,
+  //   subtraction
+  // ) {
+  //   let year = currentYear;
+  //   let month = currentMonth;
+  //   let day = currentDay;
+  //   let yearMonthDay = undefined;
+
+  //   if (currentMonth < 10) {
+  //     month = "0" + month;
+  //   }
+
+  //   if (currentDay < 10) {
+  //     day = "0" + day;
+  //   }
+
+  //   if (subtraction) {
+  //     console.log("sub ", year + "-" + month + "-" + day);
+  //     yearMonthDay = new Date(today);
+  //     console.log("sub before yearMonthDay  ", yearMonthDay);
+  //     yearMonthDay.setMonth(yearMonthDay.getMonth() - 5);
+  //     console.log("sub after yearMonthDay  ", yearMonthDay);
+  //   }
+
+  //   yearMonthDay = new Date(year + "-" + month + "-" + day + "T00:00:00.000Z");
+
+  //   return yearMonthDay;
+  // }
+  console.log("startPoint  ", startPoint);
+  console.log("endPoint  ", endPoint);
 
   useEffect(() => {
     if (isFinishedToLoadActivitiesID === true) {
