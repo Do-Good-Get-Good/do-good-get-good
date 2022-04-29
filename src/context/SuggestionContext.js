@@ -32,6 +32,7 @@ export const SuggestionProvider = ({ children }) => {
                   id: activities[i].activityID,
                   title: activities[i].activity_title,
                   city: activities[i].activity_city,
+                  place: activities[i].activity_place,
                   description: activities[i].activity_description,
                   photo: activities[i].activity_photo,
                   popular: activities[i].tg_favorite,

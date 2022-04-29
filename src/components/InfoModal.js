@@ -1,9 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 
-import { Icon } from "react-native-elements";
-
-import Tooltip from "rn-tooltip";
+import { Icon, Tooltip } from "react-native-elements";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -33,13 +31,16 @@ const InfoModal = ({ screen, tooltipWidth }) => {
           {infoText}
         </Text>
       }
+      skipAndroidStatusBar
       height="auto"
       width={tooltipWidth}
       withOverlay={false}
       withPointer={false}
       containerStyle={styles.overlay}
     >
-      <Icon type="material" name="info-outline" size={20} />
+      <View testID="InfoModal.viewAroundIcon">
+        <Icon type="material" name="info-outline" size={20} />
+      </View>
     </Tooltip>
   );
 };

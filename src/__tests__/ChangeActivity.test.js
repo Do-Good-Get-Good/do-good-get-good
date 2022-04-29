@@ -1,6 +1,6 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 
 import ChangeActivity from "../screens/ChangeActivity";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -52,14 +52,14 @@ const route = {
 };
 
 describe("Testing ChangeActivity screen", () => {
-  it("ChangeActivity. Main title exist", () => {
+  it("Main title exist", () => {
     const { getAllByText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
     expect(getAllByText("Ändra aktivitet").length).toBe(1);
   });
 
-  it("ChangeActivity. Placeholder with title exists and possible to wtire", () => {
+  it("Placeholder with title exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -68,7 +68,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or title");
   });
 
-  it("ChangeActivity. Placeholder with city exists and possible to wtire", () => {
+  it("Placeholder with city exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -77,7 +77,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or city");
   });
 
-  it("ChangeActivity. Placeholder with place exists and possible to wtire", () => {
+  it("Placeholder with place exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -85,7 +85,7 @@ describe("Testing ChangeActivity screen", () => {
     fireEvent.changeText(input, "activity name or place");
     expect(input.props.value).toEqual("activity name or place");
   });
-  it("ChangeActivity. Placeholder with description exists and possible to wtire", () => {
+  it("Placeholder with description exists and possible to wtire", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -94,7 +94,25 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or description");
   });
 
-  it("ChangeActivity. Button 'Save' exist and navigate back  ", () => {
+  it("Change image button exists and navigate to ImagesGalley when pressed", () => {
+    const { getByTestId } = render(
+      <ChangeActivity navigation={navigation} route={route} />
+    );
+
+    const changeImageButton = getByTestId("navigateToImagesGallery");
+    expect(changeImageButton.children[0].props.children.props.children).toEqual(
+      "Ändra bild"
+    );
+
+    fireEvent.press(changeImageButton);
+    expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery", {
+      activity: route.params.activity,
+      tgPopular: route.params.tgPopular,
+      cameFrom: "ChangeActivity",
+    });
+  });
+
+  it("Button 'Save' exist and navigate back  ", () => {
     const { getAllByText, getByTestId } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -128,7 +146,7 @@ describe("Testing ChangeActivity screen", () => {
     useCreateActivityFunction().activityHasChanged.mockReturnValue(true);
   });
 
-  it("ChangeActivity. Button 'Back' exist and navigate back  ", () => {
+  it("Button 'Back' exist and navigate back  ", () => {
     const { getAllByText, getByTestId } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );

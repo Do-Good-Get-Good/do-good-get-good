@@ -279,7 +279,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         <TextInput
           textContentType={"emailAddress"}
           style={[nameSurnameEmailPasswordStyle(), emailBorderStyle()]}
-          maxLength={30}
+          maxLength={100}
           onChangeText={setEmail}
           value={email}
           placeholder="E-mail"
@@ -381,7 +381,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView keyboardDismissMode={"on-drag"} style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>

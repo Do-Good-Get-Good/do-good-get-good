@@ -350,8 +350,8 @@ export function CreateActivity({ route, navigation }) {
         <TextInput
           style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
-          onChangeText={setPlace}
-          value={place}
+          onChangeText={setCity}
+          value={city}
           placeholder="Var"
           placeholderTextColor={colors.dark}
         />
@@ -361,8 +361,8 @@ export function CreateActivity({ route, navigation }) {
         <TextInput
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
-          onChangeText={setCity}
-          value={city}
+          onChangeText={setPlace}
+          value={place}
           placeholder="Aktör"
           placeholderTextColor={colors.dark}
         />
@@ -387,7 +387,11 @@ export function CreateActivity({ route, navigation }) {
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
-            onPress={() => navigation.navigate("ImagesGallery")}
+            onPress={() =>
+              navigation.navigate("ImagesGallery", {
+                cameFrom: "CreateActivity",
+              })
+            }
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
@@ -475,7 +479,7 @@ export function CreateActivity({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView keyboardDismissMode={"on-drag"}>
         <View style={styles.container}>
           <Text style={styles.textMainTitle}>{chooseTitle()}</Text>
           <Text style={styles.numbersNearTitle}>

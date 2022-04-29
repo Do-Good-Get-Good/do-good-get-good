@@ -33,9 +33,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   function signOutFunction() {
     auth()
       .signOut()
-      .then(() => {
-        console.log("User signOut");
-      })
+      .then(() => {})
       .catch((error) => {
         console.log("Enable in your firebase console.");
 

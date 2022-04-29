@@ -14,6 +14,18 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
+const mockedNavigate = jest.fn();
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+  };
+});
+
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: false,
