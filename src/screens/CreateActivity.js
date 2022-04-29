@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -151,10 +152,13 @@ export function CreateActivity({ route, navigation }) {
         // Save new user locally
         setUserData((prev) => [...prev, newUser]);
 
-        console.log("newUser: ", res.data);
-
         setLoading(false);
-        navigation.navigate("HomePage");
+
+        Alert.alert(
+          "Skapa användare",
+          `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
+          [{ text: "OK", onPress: () => navigation.navigate("HomePage") }]
+        );
       });
     } else {
       console.log("ingen ny användare");
