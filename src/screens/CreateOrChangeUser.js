@@ -382,7 +382,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={{ flex: 1 }}>
+      <ScrollView keyboardDismissMode={"on-drag"} style={{ flex: 1 }}>
         <View style={styles.container}>
           <View style={styles.titleContainer}>
             <Text style={styles.textMainTitle}>{titleForScreen()}</Text>

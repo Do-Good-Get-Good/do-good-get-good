@@ -1,6 +1,7 @@
 apply plugin: "com.android.application"
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
+apply plugin: 'com.google.firebase.crashlytics'
 
 import com.android.build.OutputFile
 
@@ -158,9 +159,9 @@ android {
         }
         release {
             storeFile file('dggg_key.keystore')
-            storePassword ''
-            keyAlias 'do_good_get_good_key'
-            keyPassword ''
+            storePassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
+            keyAlias System.getenv("KEYSTORE_ALIAS")
+            keyPassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
         }
     }
     buildTypes {
@@ -173,6 +174,10 @@ android {
             signingConfig signingConfigs.release
             minifyEnabled enableProguardInReleaseBuilds
             proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            firebaseCrashlytics {
+                nativeSymbolUploadEnabled true
+                unstrippedNativeLibsDir 'build/intermediates/merged_native_libs/release/out/lib'
+            }
         }
     }
 

@@ -1,12 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  Button,
-  Platform,
-} from "react-native";
+import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -152,6 +145,7 @@ export function AdminActivityGallery({ navigation }) {
       <Menu />
       <ScrollView
         keyboardShouldPersistTaps={"always"}
+        keyboardDismissMode={"on-drag"}
         style={{ paddingHorizontal: 16 }}
       >
         <Text style={styles.headerText}>Aktivitetsgalleri</Text>
