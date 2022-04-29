@@ -110,16 +110,14 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       last_name: data.lastName,
     };
 
-    let userData = {};
+    let userData = {
+      id: userId,
+      ...firebaseUserData,
+    };
 
-    userDoc.set(firebaseUserData).then(async () => {
-      await userCreationRequestRef.update({ status: "Treated" });
+    userDoc.set(firebaseUserData);
 
-      userData = {
-        id: userId,
-        ...firebaseUserData,
-      };
-    });
+    await userCreationRequestRef.update({ status: "Treated" });
 
     return {
       result: "The new user has been successfully created.",
