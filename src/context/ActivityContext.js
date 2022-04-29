@@ -32,6 +32,10 @@ export const ActivityProvider = ({ children }) => {
   );
   const [addMoreTimeEntriesAfterScroll, setAddMoreTimeEntriesAfterScroll] =
     useState(false);
+  const [
+    userHasLassThanFiveTimeEntriesForLastTwoMonthes,
+    setUserHasLassThanFiveTimeEntriesForLastTwoMonthes,
+  ] = useState([]);
 
   useEffect(() => {
     let temArray = [];
@@ -145,8 +149,8 @@ export const ActivityProvider = ({ children }) => {
               for (let i = 0; i < docs.length; i++) {
                 firstFive.push(docs[i]);
               }
+              setScrollToGetMoreTimeEntries(true);
             }
-
             setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
           },
@@ -198,6 +202,11 @@ export const ActivityProvider = ({ children }) => {
                 setTimeEntriesAfterScrolling(tempArray);
                 startPoint = response.docs[response.docs.length - 1];
                 setStartPointAfterScroll(startPoint);
+                if (lastFiveTimeEntries.length < 5 && tempArray.length != 0) {
+                  functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
+                    tempArray
+                  );
+                }
                 setAddMoreTimeEntriesAfterScroll(true);
                 setScrollToGetMoreTimeEntries(false);
               })
@@ -219,6 +228,32 @@ export const ActivityProvider = ({ children }) => {
       getMoreTimeEntries();
     }
   }, [scrollToGetMoreTimeEntries]);
+
+  function functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
+    arrayWithOldTimeEntries
+  ) {
+    let tempArray = [];
+    let amountOfTimeEntriesForLastTwoMonthes = 0;
+    if (lastFiveTimeEntries.length + arrayWithOldTimeEntries.length >= 5) {
+      amountOfTimeEntriesForLastTwoMonthes = 5 - lastFiveTimeEntries.length;
+    } else {
+      amountOfTimeEntriesForLastTwoMonthes =
+        arrayWithOldTimeEntries.length + lastFiveTimeEntries.length;
+    }
+
+    console.log(
+      "functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes  lastFiveTimeEntries.length  ",
+      lastFiveTimeEntries.length
+    );
+    for (let j = 0; j < amountOfTimeEntriesForLastTwoMonthes; j++) {
+      tempArray.push(arrayWithOldTimeEntries[j]);
+    }
+    setUserHasLassThanFiveTimeEntriesForLastTwoMonthes(tempArray);
+  }
+  console.log(
+    "userHasLassThanFiveTimeEntriesForLastTwoMonthes  ",
+    userHasLassThanFiveTimeEntriesForLastTwoMonthes
+  );
 
   useEffect(() => {
     if (isFinishedToLoadMyEntries === true) {
@@ -264,7 +299,6 @@ export const ActivityProvider = ({ children }) => {
     <ActivitynContext.Provider
       value={{
         lastFiveTimeEntries: lastFiveTimeEntries,
-        // setLimitAmountForTimeEntries: setLimitAmountForTimeEntries,
         myActivities: activitiesInformation,
         activitiesIDandAccumTime: myActivitiesIDandAccumTime,
         allListOfTimeEntry: timeEntryArrayForMyTimePage,
@@ -273,6 +307,8 @@ export const ActivityProvider = ({ children }) => {
         timeEntriesAfterScrolling: timeEntriesAfterScrolling,
         addMoreTimeEntriesAfterScroll: addMoreTimeEntriesAfterScroll,
         setAddMoreTimeEntriesAfterScroll: setAddMoreTimeEntriesAfterScroll,
+        userHasLassThanFiveTimeEntriesForLastTwoMonthes:
+          userHasLassThanFiveTimeEntriesForLastTwoMonthes,
       }}
     >
       {children}

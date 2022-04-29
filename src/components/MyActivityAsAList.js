@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -28,22 +28,28 @@ function MyActivityAsAList({ navigation }) {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
+  const [oldTimeEntriesForHomePage, setOldTimeEntriesForHomePage] = useState(
+    []
+  );
 
   const [timeEntriesTwoMonthsBefore, seTimeEntriesTwoMonthsBefore] = useState(
     []
   );
 
   useEffect(() => {
-    if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
+    // if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
+    if (rout.name === "HomePage") {
       let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.lastFiveTimeEntries,
         true
       );
+      let oldTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+        entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
+        false
+      );
       setTimeEntryListOnlyFive(firstFiveTimeEntries);
-    } else if (
-      rout.name === "MyTimePage" &&
-      entryTime.allListOfTimeEntry.length != 0
-    ) {
+      setOldTimeEntriesForHomePage(oldTimeEntries);
+    } else if (rout.name === "MyTimePage") {
       let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.allListOfTimeEntry,
         true
@@ -156,6 +162,23 @@ function MyActivityAsAList({ navigation }) {
       </View>
     );
   }
+  console.log("timeEntryListOnlyFive  ", timeEntryListOnlyFive);
+  console.log("oldTimeEntriesForHomePage  ", oldTimeEntriesForHomePage);
+
+  // console.log("...timeEntryList, ", timeEntryList);
+  // console.log("...timeEntriesTwoMonthsBefore   ", timeEntriesTwoMonthsBefore);
+
+  const twoArraysForHomePage = () => {
+    console.log("nnnnn");
+    return [
+      timeEntryListOnlyFive.map((activity) =>
+        viewOfTimeEntries(activity, activity.timeEntryID, true)
+      ),
+      oldTimeEntriesForHomePage.map((activity) =>
+        viewOfTimeEntries(activity, activity.timeEntryID, false)
+      ),
+    ];
+  };
 
   function showTimeEntriesList() {
     return (
@@ -167,18 +190,18 @@ function MyActivityAsAList({ navigation }) {
             borderRadius: 2,
           }}
         >
-          {(timeEntryListOnlyFive.length === 0 && rout.name === "HomePage") ||
-            (rout.name === "MyTimePage" &&
-              timeEntryList.length === 0 &&
-              timeEntriesTwoMonthsBefore.length === 0 && (
-                <Text style={{ ...typography.b2 }}>
-                  Du har inte loggat någon tid ännu!
-                </Text>
-              ))}
+          {(timeEntryListOnlyFive.length === 0 &&
+            oldTimeEntriesForHomePage.length === 0 &&
+            rout.name === "HomePage") ||
+          (rout.name === "MyTimePage" &&
+            timeEntryList.length === 0 &&
+            timeEntriesTwoMonthsBefore.length === 0) ? (
+            <Text style={{ ...typography.b2 }}>
+              Du har inte loggat någon tid ännu!
+            </Text>
+          ) : null}
           {rout.name === "HomePage" ? (
-            timeEntryListOnlyFive.map((activity, index) =>
-              viewOfTimeEntries(activity, index, true)
-            )
+            twoArraysForHomePage()
           ) : (
             <View style={{ maxHeight: 600 }}>
               <FlatList
