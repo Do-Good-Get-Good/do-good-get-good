@@ -25,12 +25,6 @@ export const AdminHomePageProvider = ({ children }) => {
   }, []);
 
   useEffect(() => {
-    userData.forEach((user) => {
-      console.log(user);
-    });
-  }, [userData]);
-
-  useEffect(() => {
     if (usersId.length != 0 && reloadOneUserData) {
       const fetchTimeEntryData = async () => {
         let timeEntryData = [];

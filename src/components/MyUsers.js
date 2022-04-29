@@ -27,7 +27,7 @@ const MyUsers = ({ navigation }) => {
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
   const [myUsersLoading, setMyUsersLoading] = useState(true);
-  const userData = useAdminHomePageFunction().userData;
+  let userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;

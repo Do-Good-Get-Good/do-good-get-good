@@ -140,6 +140,17 @@ exports.createUser = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.deleteUser = functions.auth.user().onDelete((user, context) => {
+  let userUid = user.uid;
+
+  admin
+    .firestore()
+    .collection("Users")
+    .doc(userUid)
+    .delete()
+    .then(() => console.log(`Deleted user '${userUid}' successfully!`));
+});
+
 const database = admin.firestore();
 
 exports.updateMonth = functions.pubsub

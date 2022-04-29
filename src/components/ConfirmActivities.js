@@ -20,43 +20,32 @@ const ConfirmActivities = () => {
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [snapshot, setSnapshot] = useState(null);
-  const userData = useAdminHomePageFunction().userData;
+  let userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const changeUserInfoContext = useChangeUserInfoFunction();
-  const newUser = useAdminHomePageFunction().newUser;
 
   useEffect(() => {
-    if (userData.length != 0) {
-      console.log(userData.length);
-      console.log("TEST TEST TEST TEST TEST TEST");
-      console.log("SETTING UP SNAPSHOT");
-
-      return firestore()
-        .collection("timeentries")
-        .where("admin_id", "==", auth().currentUser.uid)
-        .where("status_confirmed", "==", false)
-        .orderBy("date", "desc")
-        .onSnapshot(
-          (snapshot) => {
-            setSnapshot(snapshot);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-
-    return () => {
-      setMyUsers([]);
-      setSnapshot(null);
-      setCheckAll(false);
-      setChecked(false);
-    };
-  }, [userData]);
+    return firestore()
+      .collection("timeentries")
+      .where("admin_id", "==", auth().currentUser.uid)
+      .where("status_confirmed", "==", false)
+      .orderBy("date", "desc")
+      .onSnapshot(
+        (snapshot) => {
+          setSnapshot(null);
+          setCheckAll(false);
+          setChecked(false);
+          setSnapshot(snapshot);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
 
   useEffect(() => {
-    if (snapshot != null) {
+    if (snapshot != null && userData.length != 0) {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           addTimeEntry(change);
@@ -69,7 +58,7 @@ const ConfirmActivities = () => {
         }
       });
     }
-  }, [snapshot]);
+  }, [userData, snapshot]);
 
   useEffect(() => {
     if (
@@ -90,21 +79,11 @@ const ConfirmActivities = () => {
     }
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
-  useEffect(() => {
-    console.log("############################ newUser  ", newUser);
-  }, [newUser]);
-  console.log("1 ############################ newUser  ", newUser);
-
   const addTimeEntry = async (change) => {
     let fullName;
 
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === change.doc.data().user_id) {
-        console.log(
-          "IN SNAPSHOT: ",
-          userData[i].first_name,
-          userData[i].last_name
-        );
         fullName = `${userData[i].first_name} ${userData[i].last_name}`;
       }
     }
