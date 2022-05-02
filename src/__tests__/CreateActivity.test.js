@@ -22,6 +22,13 @@ jest.mock("../components/DropDownSmall", () => () => {
 
 jest.mock("@react-navigation/native");
 
+jest.mock("../context/AdminHomePageContext", () => ({
+  useAdminHomePageFunction: () => ({
+    setUserData: jest.fn(),
+    setNewUser: jest.fn(),
+  }),
+}));
+
 jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     changedActivity: jest.fn(),
