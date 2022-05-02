@@ -50,6 +50,7 @@ export function CreateActivity({ route, navigation }) {
     useState([]);
 
   const setUserData = useAdminHomePageFunction().setUserData;
+  const setNewUser = useAdminHomePageFunction().setNewUser;
 
   useEffect(() => {
     if (newUserInfo != null) {
@@ -151,6 +152,7 @@ export function CreateActivity({ route, navigation }) {
 
         // Save new user locally
         setUserData((prev) => [...prev, newUser]);
+        setNewUser(newUser);
 
         setLoading(false);
 
