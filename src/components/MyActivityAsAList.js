@@ -37,7 +37,6 @@ function MyActivityAsAList({ navigation }) {
   );
 
   useEffect(() => {
-    // if (rout.name === "HomePage" && entryTime.lastFiveTimeEntries.length != 0) {
     if (rout.name === "HomePage") {
       let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.lastFiveTimeEntries,
@@ -56,7 +55,11 @@ function MyActivityAsAList({ navigation }) {
       );
       setTimeEntryList(allOnSnapshotTimeEntries);
     }
-  }, [entryTime.lastFiveTimeEntries, entryTime.allListOfTimeEntry]);
+  }, [
+    entryTime.lastFiveTimeEntries,
+    entryTime.allListOfTimeEntry,
+    entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
+  ]);
 
   useEffect(() => {
     if (
@@ -162,11 +165,17 @@ function MyActivityAsAList({ navigation }) {
       </View>
     );
   }
-  console.log("timeEntryListOnlyFive  ", timeEntryListOnlyFive);
-  console.log("oldTimeEntriesForHomePage  ", oldTimeEntriesForHomePage);
+  console.log("timeEntryListOnlyFive HOMePAGE  ", timeEntryListOnlyFive);
+  console.log(
+    "++++++++++++++++ oldTimeEntriesForHomePage HOMePAGE ",
+    oldTimeEntriesForHomePage
+  );
 
-  // console.log("...timeEntryList, ", timeEntryList);
-  // console.log("...timeEntriesTwoMonthsBefore   ", timeEntriesTwoMonthsBefore);
+  console.log("...timeEntryList TimePAge ", timeEntryList);
+  console.log(
+    "????????????????????  timeEntriesTwoMonthsBefore TimePAge   ",
+    timeEntriesTwoMonthsBefore
+  );
 
   const twoArraysForHomePage = () => {
     console.log("nnnnn");
@@ -282,14 +291,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   title: {
-    flex: 0.5,
+    flex: 1,
     ...typography.h2,
     color: colors.dark,
     backgroundColor: "red",
     paddingTop: 13,
   },
   containerForTitleAndDropDown: {
-    flex: 1,
+    flex: 0.1,
     flexDirection: "row",
     marginTop: 30,
     paddingBottom: 20,
