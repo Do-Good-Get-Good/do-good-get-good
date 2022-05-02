@@ -16,18 +16,12 @@ import Menu from "../components/Menu";
 export const MyTimePage = () => {
   const [makeScrolle, setMakeScrolle] = useState(false);
   const activityContext = useActivityFunction();
-  //console.log("makeScrolle ", makeScrolle);
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
 
       <View style={styles.container}>
-        {/* <TouchableOpacity
-          onPress={() => activityContext.setScrollToGetMoreTimeEntries(true)}
-        >
-          <Text>button</Text>
-        </TouchableOpacity> */}
         <MyActivityAsAList></MyActivityAsAList>
       </View>
     </SafeAreaView>

@@ -5,7 +5,8 @@ import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-export function DropDownForSorting({}) {
+export function DropDownForSorting({ choice }) {
+  const rout = useRoute();
   const [sortArrayForTimeEntries, setSortArrayForTimeEntries] = useState([
     { title: "Datum" },
     { title: "Godkänd" },
@@ -24,8 +25,16 @@ export function DropDownForSorting({}) {
 
   function pressSelectionInsideDropDown(selection) {
     setOpenDropDown(false);
-    //creactActivityContext.chooseInDropDown(selection);
     setSortBy(selection);
+    if (rout.name === "MyTimePage" || rout.name === "HomePage") {
+      if (selection === "Godkänd") {
+        choice(true);
+      } else if (selection === "Inte Godkänd") {
+        choice(false);
+      } else {
+        choice(null);
+      }
+    }
   }
 
   const styleForDropDownInsideConrainer = {
@@ -82,12 +91,12 @@ export function DropDownForSorting({}) {
 export default DropDownForSorting;
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
+    // flex: 1,
     overflow: "hidden",
   },
 
   sortText: {
-    flex: 3,
+    // flex: 3,
     ...typography.b1,
     color: colors.dark,
     paddingVertical: 7,
@@ -96,7 +105,7 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   insideSortBox: {
-    flex: 1,
+    /// flex: 1,
     justifyContent: "space-between",
     marginLeft: 19,
     paddingVertical: 5,
