@@ -145,13 +145,29 @@ export const ActivityProvider = ({ children }) => {
               for (let i = 0; i < 5; i++) {
                 firstFive.push(docs[i]);
               }
+              functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
+                [],
+                firstFive
+              );
             } else {
               for (let i = 0; i < docs.length; i++) {
                 firstFive.push(docs[i]);
               }
+              if (timeEntriesAfterScrolling.length != 0) {
+                functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
+                  timeEntriesAfterScrolling,
+                  firstFive
+                );
+              }
+              //  else {
+              //   setScrollToGetMoreTimeEntries(true);
+              // }
+            }
+
+            setLastFiveTimeEntries(firstFive);
+            if (firstFive.length < 5) {
               setScrollToGetMoreTimeEntries(true);
             }
-            setLastFiveTimeEntries(firstFive);
             setTimeEntryArrayForMyTimePage(docs);
           },
           (error) => {
@@ -194,19 +210,22 @@ export const ActivityProvider = ({ children }) => {
                 response.forEach((doc) =>
                   timeEntriesArray.push({ ...doc.data(), doc_id: doc.id })
                 );
+
                 let tempArray = timeEntriesAfterScrolling;
 
                 for (let i = 0; i < timeEntriesArray.length; i++) {
                   tempArray.push(timeEntriesArray[i]);
                 }
-                setTimeEntriesAfterScrolling(tempArray);
+
                 startPoint = response.docs[response.docs.length - 1];
                 setStartPointAfterScroll(startPoint);
                 if (lastFiveTimeEntries.length < 5 && tempArray.length != 0) {
                   functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
-                    tempArray
+                    tempArray,
+                    lastFiveTimeEntries
                   );
                 }
+                setTimeEntriesAfterScrolling(tempArray);
                 setAddMoreTimeEntriesAfterScroll(true);
                 setScrollToGetMoreTimeEntries(false);
               })
@@ -230,30 +249,41 @@ export const ActivityProvider = ({ children }) => {
   }, [scrollToGetMoreTimeEntries]);
 
   function functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes(
-    arrayWithOldTimeEntries
+    arrayWithOldTimeEntries,
+    lastFive
   ) {
     let tempArray = [];
-    let amountOfTimeEntriesForLastTwoMonthes = 0;
-    if (lastFiveTimeEntries.length + arrayWithOldTimeEntries.length >= 5) {
-      amountOfTimeEntriesForLastTwoMonthes = 5 - lastFiveTimeEntries.length;
-    } else {
-      amountOfTimeEntriesForLastTwoMonthes =
-        arrayWithOldTimeEntries.length + lastFiveTimeEntries.length;
-    }
+    let amountOfTimeEntriesForLastTwoMonthes =
+      lastFive.length + arrayWithOldTimeEntries.length;
+    if (amountOfTimeEntriesForLastTwoMonthes >= 5) {
+      amountOfTimeEntriesForLastTwoMonthes = 5 - lastFive.length;
+    } else if (amountOfTimeEntriesForLastTwoMonthes <= 5) {
+      amountOfTimeEntriesForLastTwoMonthes = arrayWithOldTimeEntries.length;
 
+      // lastFive   1
+      // arrayWithOldTimeEntries   4
+      //
+
+      // lastFive   3
+      // arrayWithOldTimeEntries   1
+
+      // amountOfTimeEntriesForLastTwoMonthes =
+      //   arrayWithOldTimeEntries.length + lastFive.length;
+    }
     console.log(
-      "functionUserHasLassThanFiveTimeEntriesForLastTwoMonthes  lastFiveTimeEntries.length  ",
-      lastFiveTimeEntries.length
+      " amountOfTimeEntriesForLastTwoMonthes   ",
+      amountOfTimeEntriesForLastTwoMonthes
     );
+    console.log(
+      "--------useEffect  arrayWithOldTimeEntries  ",
+      arrayWithOldTimeEntries.length
+    );
+    console.log(" --------useEffect lastFive   ", lastFive.length);
     for (let j = 0; j < amountOfTimeEntriesForLastTwoMonthes; j++) {
       tempArray.push(arrayWithOldTimeEntries[j]);
     }
     setUserHasLassThanFiveTimeEntriesForLastTwoMonthes(tempArray);
   }
-  console.log(
-    "userHasLassThanFiveTimeEntriesForLastTwoMonthes  ",
-    userHasLassThanFiveTimeEntriesForLastTwoMonthes
-  );
 
   useEffect(() => {
     if (isFinishedToLoadMyEntries === true) {
@@ -294,6 +324,14 @@ export const ActivityProvider = ({ children }) => {
       getActivitiesInformation();
     }
   }, [isFinishedToLoadMyEntries]);
+  console.log(
+    "ActivityContext  userHasLassThanFiveTimeEntriesForLastTwoMonthes  ",
+    userHasLassThanFiveTimeEntriesForLastTwoMonthes
+  );
+  // console.log(
+  //   "ActivityContext  timeEntriesAfterScrolling  ",
+  //   timeEntriesAfterScrolling
+  // );
 
   return (
     <ActivitynContext.Provider

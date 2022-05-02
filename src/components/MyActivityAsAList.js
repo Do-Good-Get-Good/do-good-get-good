@@ -37,44 +37,63 @@ function MyActivityAsAList({ navigation }) {
   );
 
   useEffect(() => {
-    if (rout.name === "HomePage") {
-      let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.lastFiveTimeEntries,
-        true
-      );
-      let oldTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
-        false
-      );
-      setTimeEntryListOnlyFive(firstFiveTimeEntries);
-      setOldTimeEntriesForHomePage(oldTimeEntries);
-    } else if (rout.name === "MyTimePage") {
-      let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
-        entryTime.allListOfTimeEntry,
-        true
-      );
-      setTimeEntryList(allOnSnapshotTimeEntries);
-    }
+    // if (rout.name === "HomePage") {
+    let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+      entryTime.lastFiveTimeEntries,
+      true
+    );
+    let oldTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+      entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
+      false
+    );
+    setTimeEntryListOnlyFive(firstFiveTimeEntries);
+    setOldTimeEntriesForHomePage(oldTimeEntries);
+    //  }
   }, [
     entryTime.lastFiveTimeEntries,
-    entryTime.allListOfTimeEntry,
     entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
   ]);
+  useEffect(() => {
+    //if (rout.name === "MyTimePage") {
+    let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
+      entryTime.allListOfTimeEntry,
+      true
+    );
+    setTimeEntryList(allOnSnapshotTimeEntries);
+    // }
+  }, [entryTime.allListOfTimeEntry]);
 
   useEffect(() => {
-    if (
-      entryTime.scrollToGetMoreTimeEntries.length != 0 &&
-      entryTime.addMoreTimeEntriesAfterScroll
-    ) {
+    if (entryTime.addMoreTimeEntriesAfterScroll || rout.name === "MyTimePage") {
       let timeEntriesAfterScroll = objectsWithActivitiesAndTimeEntriesInfo(
         entryTime.timeEntriesAfterScrolling,
         false
       );
-
       seTimeEntriesTwoMonthsBefore(timeEntriesAfterScroll);
       entryTime.setAddMoreTimeEntriesAfterScroll(false);
     }
-  }, [entryTime.addMoreTimeEntriesAfterScroll]);
+  }, [entryTime.addMoreTimeEntriesAfterScroll, rout.name]);
+
+  // console.log("...timeEntryList TimePAge ", timeEntryList);
+  // console.log("  oldTimeEntriesForHomePage   ", oldTimeEntriesForHomePage);
+
+  // console.log(
+  //   "  entryTime.lastFiveTimeEntries,   ",
+  //   entryTime.lastFiveTimeEntries
+  // );
+  // console.log(
+  //   "entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes  ",
+  //   entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes
+  // );
+
+  // console.log(
+  //   "????????????????????  timeEntriesTwoMonthsBefore TimePAge   ",
+  //   timeEntriesTwoMonthsBefore
+  // );
+  // console.log(
+  //   "========  MyActivityAsAList entryTime.timeEntriesAfterScrolling  ",
+  //   entryTime.timeEntriesAfterScrolling
+  // );
 
   function objectsWithActivitiesAndTimeEntriesInfo(
     timeEntries,
@@ -165,20 +184,8 @@ function MyActivityAsAList({ navigation }) {
       </View>
     );
   }
-  console.log("timeEntryListOnlyFive HOMePAGE  ", timeEntryListOnlyFive);
-  console.log(
-    "++++++++++++++++ oldTimeEntriesForHomePage HOMePAGE ",
-    oldTimeEntriesForHomePage
-  );
-
-  console.log("...timeEntryList TimePAge ", timeEntryList);
-  console.log(
-    "????????????????????  timeEntriesTwoMonthsBefore TimePAge   ",
-    timeEntriesTwoMonthsBefore
-  );
 
   const twoArraysForHomePage = () => {
-    console.log("nnnnn");
     return [
       timeEntryListOnlyFive.map((activity) =>
         viewOfTimeEntries(activity, activity.timeEntryID, true)
