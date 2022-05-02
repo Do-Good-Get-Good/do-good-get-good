@@ -170,7 +170,6 @@ export function CreateActivity({ route, navigation }) {
   useEffect(() => {
     let newUser = createActivityContext.newUserInfo;
     if (newUser != null) {
-      console.log(newUser);
       // Save new user locally
       setUserData((prev) => [...prev, newUser]);
       setNewUser(newUser);
