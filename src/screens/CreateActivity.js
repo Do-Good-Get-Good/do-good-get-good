@@ -167,6 +167,38 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
+  useEffect(() => {
+    let newUser = createActivityContext.newUserInfo;
+    if (newUser != null) {
+      console.log(newUser);
+      // Save new user locally
+      setUserData((prev) => [...prev, newUser]);
+      setNewUser(newUser);
+
+      createActivityContext.setNewUserInfo(null);
+
+      setLoading(false);
+
+      Alert.alert(
+        "Skapa aktivitet och användare",
+        `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setTitle("");
+              setPlace("");
+              setCity("");
+              setDescription("");
+              setCheckBoxPressed(false);
+              navigation.navigate("HomePage");
+            },
+          },
+        ]
+      );
+    }
+  }, [createActivityContext.newUserInfo]);
+
   function sendNewActivityToCreateActivityContext() {
     if (
       title != " " &&
@@ -199,18 +231,7 @@ export function CreateActivity({ route, navigation }) {
           tg_favorite: checkBoxPressed,
         };
       }
-      createActivityContext
-        .createNewActivityAndUser(newActivityAndUser)
-        .then(() => {
-          setLoading(false);
-          navigation.navigate("HomePage");
-        });
-
-      setTitle("");
-      setPlace("");
-      setCity("");
-      setDescription("");
-      setCheckBoxPressed(false);
+      createActivityContext.createNewActivityAndUser(newActivityAndUser);
     }
 
     if (title != " " && title.trim()) {
