@@ -63,7 +63,7 @@ export default function Login() {
           checkValidity(false, true);
         }
         crashlytics().recordError(error);
-        crashlytics().setAttributes(email);
+        crashlytics().setAttributes({ email });
         console.error(error);
       });
   };
