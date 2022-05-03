@@ -1,0 +1,46 @@
+{
+  "project_info": {
+    "project_number": "593203780666",
+    "project_id": "dev-do-good-get-good",
+    "storage_bucket": "dev-do-good-get-good.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:593203780666:android:8965137c185d413d0fe903",
+        "android_client_info": {
+          "package_name": "com.src.dev"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "593203780666-skb6l35gqhmg09fp3uvo3mpa6fg763bn.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBVELAL-N-D020d-XRXCR0cC-JNnfH-maA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "593203780666-skb6l35gqhmg09fp3uvo3mpa6fg763bn.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "593203780666-rb4pgvjlr2e9ejt9qob5tv54927h8p8p.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "se.technogarden.dogoodgetgood"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
