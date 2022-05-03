@@ -1,12 +1,19 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
-var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+
+// var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL:
+//   "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
+// });
+
+var serviceAccount = require("./ServiceAccount/devServiceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 class UnauthenticatedError extends Error {
@@ -186,7 +193,8 @@ exports.updateYear = functions.pubsub
 //   .onCreate((snap, context) => {
 //     const claims = {};
 //     claims["admin"] = true;
+
 //     return admin
 //       .auth()
-//       .setCustomUserClaims("WKQm996MKHZooq4v1cDCMEkJgmY2", claims);
+//       .setCustomUserClaims("VZyL8bD0RxXp5UVFpSubX8r4a2x1", claims);
 //   });
