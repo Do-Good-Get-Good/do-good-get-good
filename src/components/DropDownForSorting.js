@@ -4,6 +4,7 @@ import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { useIsFocused } from "@react-navigation/native";
 
 export function DropDownForSorting({ choice }) {
   const rout = useRoute();
@@ -15,6 +16,7 @@ export function DropDownForSorting({ choice }) {
 
   const [sortBy, setSortBy] = useState("Datum");
   const [openDropDown, setOpenDropDown] = useState(false);
+  const isFocused = useIsFocused();
 
   const pressDropDawn = () => {
     setOpenDropDown(true);
@@ -26,7 +28,7 @@ export function DropDownForSorting({ choice }) {
   function pressSelectionInsideDropDown(selection) {
     setOpenDropDown(false);
     setSortBy(selection);
-    if (rout.name === "MyTimePage" || rout.name === "HomePage") {
+    if (rout.name === "MyTimePage") {
       if (selection === "Godkänd") {
         choice(true);
       } else if (selection === "Inte Godkänd") {
@@ -36,6 +38,13 @@ export function DropDownForSorting({ choice }) {
       }
     }
   }
+
+  useEffect(() => {}, []);
+
+  useEffect(() => {
+    setSortBy("Datum");
+    choice(null);
+  }, [rout.name, isFocused]);
 
   const styleForDropDownInsideConrainer = {
     borderColor: openDropDown === true ? colors.dark : colors.background,

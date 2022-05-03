@@ -31,12 +31,12 @@ function MyActivityAsAList({ navigation }) {
   const [oldTimeEntriesForHomePage, setOldTimeEntriesForHomePage] = useState(
     []
   );
-
   const [timeEntriesTwoMonthsBefore, seTimeEntriesTwoMonthsBefore] = useState(
     []
   );
   const [selectedOptionForSorting, setSelectedOptionForSorting] =
     useState(null);
+  // const [viewCounter, setViewCounter] = useState(0);
 
   useEffect(() => {
     let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
@@ -53,6 +53,7 @@ function MyActivityAsAList({ navigation }) {
     entryTime.lastFiveTimeEntries,
     entryTime.userHasLassThanFiveTimeEntriesForLastTwoMonthes,
   ]);
+
   useEffect(() => {
     let allOnSnapshotTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
       entryTime.allListOfTimeEntry,
@@ -100,6 +101,47 @@ function MyActivityAsAList({ navigation }) {
   const pressedButtonShowAll = () => {
     navigation.navigate("MyTimePage");
   };
+
+  function counter(arrayOnSnapShot, arrayWithOldTimeEntries, amount) {
+    let count = 0;
+    if (selectedOptionForSorting != null) {
+      for (let i = 0; i < arrayOnSnapShot.length; i++) {
+        if (arrayOnSnapShot[i].statusConfirmed === selectedOptionForSorting) {
+          count = count + 1;
+        }
+      }
+
+      for (let j = 0; j < arrayWithOldTimeEntries.length; j++) {
+        if (
+          arrayWithOldTimeEntries[j].statusConfirmed ===
+          selectedOptionForSorting
+        ) {
+          count = count + 1;
+        }
+      }
+
+      console.log("count  ", count);
+      if (entryTime.noMoreData != true) {
+        if (count < amount) {
+          entryTime.setScrollToGetMoreTimeEntries(true);
+        }
+      }
+    } else if (selectedOptionForSorting === null) {
+      if (entryTime.noMoreData != true) {
+        count = arrayOnSnapShot.length + arrayWithOldTimeEntries.length;
+
+        if (count < amount) {
+          entryTime.setScrollToGetMoreTimeEntries(true);
+        }
+      }
+    }
+  }
+
+  useEffect(() => {
+    if (rout.name === "MyTimePage") {
+      counter(timeEntryList, timeEntriesTwoMonthsBefore, 25);
+    }
+  }, [selectedOptionForSorting, timeEntryList, timeEntriesTwoMonthsBefore]);
 
   function viewOfTimeEntries(activity, key, possibleToMakeChanges) {
     if (
@@ -210,7 +252,7 @@ function MyActivityAsAList({ navigation }) {
                 onEndReached={() => {
                   entryTime.setScrollToGetMoreTimeEntries(true);
                 }}
-                onEndReachedThreshold={0.01}
+                onEndReachedThreshold={0.05}
                 keyExtractor={(item) => item.timeEntryID}
                 renderItem={({ item }) =>
                   viewOfTimeEntries(
@@ -254,11 +296,13 @@ function MyActivityAsAList({ navigation }) {
       <View style={styles.containerForTitleAndDropDown}>
         <Text style={styles.title}>Min tid</Text>
         <View style={{ flex: 1, backgroundColor: "pink" }}>
-          <DropDownForSorting
-            choice={(selectedOptionForSorting) =>
-              setSelectedOptionForSorting(selectedOptionForSorting)
-            }
-          />
+          {rout.name === "MyTimePage" && (
+            <DropDownForSorting
+              choice={(selectedOptionForSorting) =>
+                setSelectedOptionForSorting(selectedOptionForSorting)
+              }
+            />
+          )}
         </View>
       </View>
 
@@ -279,7 +323,7 @@ export default MyActivityAsAList;
 const styles = StyleSheet.create({
   containerForTheWholeComponent: {
     marginBottom: 8,
-    flex: 1,
+    // flex: 1,
   },
 
   container: {

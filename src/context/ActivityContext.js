@@ -30,6 +30,7 @@ export const ActivityProvider = ({ children }) => {
   const [timeEntriesAfterScrolling, setTimeEntriesAfterScrolling] = useState(
     []
   );
+  const [noMoreData, setNoMoreData] = useState(false);
   const [addMoreTimeEntriesAfterScroll, setAddMoreTimeEntriesAfterScroll] =
     useState(false);
   const [
@@ -207,7 +208,10 @@ export const ActivityProvider = ({ children }) => {
                 response.forEach((doc) =>
                   timeEntriesArray.push({ ...doc.data(), doc_id: doc.id })
                 );
-
+                if (timeEntriesArray.length === 0) {
+                  setNoMoreData(true);
+                }
+                console.log("UseEffect     _________________________________");
                 let tempArray = timeEntriesAfterScrolling;
 
                 for (let i = 0; i < timeEntriesArray.length; i++) {
@@ -317,6 +321,7 @@ export const ActivityProvider = ({ children }) => {
         setAddMoreTimeEntriesAfterScroll: setAddMoreTimeEntriesAfterScroll,
         userHasLassThanFiveTimeEntriesForLastTwoMonthes:
           userHasLassThanFiveTimeEntriesForLastTwoMonthes,
+        noMoreData: noMoreData,
       }}
     >
       {children}
