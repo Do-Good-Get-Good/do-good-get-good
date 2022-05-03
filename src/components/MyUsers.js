@@ -27,17 +27,37 @@ const MyUsers = ({ navigation }) => {
   const [sortBy, setSortBy] = useState("A - Ö");
   const [loadingData, setLoadingData] = useState(true);
   const [myUsersLoading, setMyUsersLoading] = useState(true);
-  const userData = useAdminHomePageFunction().userData;
+
+  let userData = useAdminHomePageFunction().userData;
   const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
+  const newUser = useAdminHomePageFunction().newUser;
+  const setNewUser = useAdminHomePageFunction().setNewUser;
+
   const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
-    if (reloadOneUserData === false) {
+    if (!reloadOneUserData) {
       fetchUserTimeEntries();
     }
   }, [userData]);
+
+  useEffect(() => {
+    if (newUser != null) {
+      setLoadingData(true);
+      let userInfo = {
+        firstName: newUser.first_name,
+        lastName: newUser.last_name,
+        timeEntries: [],
+        isOpen: false,
+        statusActive: newUser.status_active,
+        userID: newUser.id,
+      };
+      setAllUsers((prev) => [...prev, userInfo]);
+      setNewUser(null);
+    }
+  }, [newUser]);
 
   useEffect(() => {
     if (confirmedTimeEntries.length != 0) {
@@ -145,17 +165,15 @@ const MyUsers = ({ navigation }) => {
   };
 
   useEffect(() => {
-    let arrayWithActiveUsers = [];
-    let arrayWithInactiveUsers = [];
     if (loadingData) {
-      arrayWithActiveUsers = allUsers.filter((user) => {
+      let arrayWithActiveUsers = allUsers.filter((user) => {
         if (user.statusActive) {
           return user;
         }
       });
       setActiveUsers(arrayWithActiveUsers);
 
-      arrayWithInactiveUsers = allUsers.filter((user) => {
+      let arrayWithInactiveUsers = allUsers.filter((user) => {
         if (!user.statusActive) {
           return user;
         }

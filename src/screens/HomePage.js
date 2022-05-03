@@ -1,9 +1,7 @@
-
 import React from "react";
 import { StyleSheet, ScrollView, Text } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-
 
 import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminCheckFunction } from "../context/AdminContext";
@@ -33,10 +31,8 @@ export const HomePage = ({ navigation }) => {
       {userLevel === "admin" && (
         <>
           <ScrollView style={styles.container}>
-            <AdminHomePageProvider>
-              <ConfirmActivities />
-              <MyUsers navigation={navigation} />
-            </AdminHomePageProvider>
+            <ConfirmActivities />
+            <MyUsers navigation={navigation} />
             <BottomLogo />
           </ScrollView>
           <FloatingActionButton />

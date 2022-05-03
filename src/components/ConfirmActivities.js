@@ -20,37 +20,32 @@ const ConfirmActivities = () => {
   const [checked, setChecked] = useState(false);
   const [myUsers, setMyUsers] = useState([]);
   const [snapshot, setSnapshot] = useState(null);
-  const userData = useAdminHomePageFunction().userData;
+  let userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const changeUserInfoContext = useChangeUserInfoFunction();
 
   useEffect(() => {
-    if (userData.length != 0) {
-      return firestore()
-        .collection("timeentries")
-        .where("admin_id", "==", auth().currentUser.uid)
-        .where("status_confirmed", "==", false)
-        .orderBy("date", "desc")
-        .onSnapshot(
-          (snapshot) => {
-            setSnapshot(snapshot);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-    }
-
-    return () => {
-      setMyUsers([]);
-      setCheckAll(false);
-      setChecked(false);
-    };
-  }, [userData]);
+    return firestore()
+      .collection("timeentries")
+      .where("admin_id", "==", auth().currentUser.uid)
+      .where("status_confirmed", "==", false)
+      .orderBy("date", "desc")
+      .onSnapshot(
+        (snapshot) => {
+          setSnapshot(null);
+          setCheckAll(false);
+          setChecked(false);
+          setSnapshot(snapshot);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+  }, []);
 
   useEffect(() => {
-    if (snapshot != null) {
+    if (snapshot != null && userData.length != 0) {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           addTimeEntry(change);
@@ -63,7 +58,7 @@ const ConfirmActivities = () => {
         }
       });
     }
-  }, [snapshot]);
+  }, [userData, snapshot]);
 
   useEffect(() => {
     if (
