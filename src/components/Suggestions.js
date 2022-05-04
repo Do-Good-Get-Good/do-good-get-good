@@ -19,7 +19,12 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
+export function Suggestions({
+  navigation,
+  adminGallery,
+  inactiveActivities,
+  choiceFromDropDown,
+}) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
@@ -116,6 +121,23 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
       replaceObjectIfpopularStatusChanged();
     }
   }, [useCreateActivityContext.updateGallery]);
+
+  useEffect(() => {
+    let sortArray = [];
+    if (choiceFromDropDown === "Favoriter") {
+      //setShowArray(showArray.sort((a, b) => a.title.localeCompare(b.title)));
+    } else if (choiceFromDropDown === "Namn") {
+      sortArray = showArray.sort((a, b) => a.title.localeCompare(b.title));
+      setShowArray(sortArray);
+    } else if (choiceFromDropDown === "Plats") {
+      sortArray = showArray.sort((a, b) => a.city.localeCompare(b.city));
+      setShowArray(sortArray);
+    } else {
+      //Sort on date
+    }
+  }, [choiceFromDropDown]);
+  console.log("choiceFromDropDown  ", choiceFromDropDown);
+  console.log("showArray   ", showArray);
 
   return (
     <View>

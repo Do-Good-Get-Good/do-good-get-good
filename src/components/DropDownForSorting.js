@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
@@ -8,11 +8,19 @@ import { useIsFocused } from "@react-navigation/native";
 
 export function DropDownForSorting({ choice }) {
   const rout = useRoute();
-  const [sortArrayForTimeEntries, setSortArrayForTimeEntries] = useState([
+  const sortArrayForTimeEntries = [
     { title: "Datum" },
     { title: "Godkänd" },
     { title: "Inte Godkänd" },
-  ]);
+  ];
+  const sortArrayForAdminGallery = [
+    { title: "Datum" },
+    { title: "Favoriter" },
+    { title: "Namn" },
+    { title: "Plats" },
+  ];
+
+  const [showSelection, setShowSelection] = useState([]);
 
   const [sortBy, setSortBy] = useState("Datum");
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -36,10 +44,22 @@ export function DropDownForSorting({ choice }) {
       } else {
         choice(null);
       }
+    } else if (rout.name === "AdminActivityGallery") {
+      if (selection === "Favoriter" || "Namn" || "Plats") {
+        choice(selection);
+      } else {
+        choice(null);
+      }
     }
   }
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    if (rout.name === "MyTimePage") {
+      setShowSelection(sortArrayForTimeEntries);
+    } else if (rout.name === "AdminActivityGallery") {
+      setShowSelection(sortArrayForAdminGallery);
+    }
+  }, [rout.name, isFocused]);
 
   useEffect(() => {
     setSortBy("Datum");
@@ -48,15 +68,12 @@ export function DropDownForSorting({ choice }) {
 
   const styleForDropDownInsideConrainer = {
     borderColor: openDropDown === true ? colors.dark : colors.background,
-
-    flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 8,
     ...typography.b1,
     marginLeft: 19,
-
-    paddingRight: 15,
+    paddingRight: 14,
     paddingLeft: 14,
     borderRadius: 3,
     borderWidth: 1,
@@ -78,7 +95,7 @@ export function DropDownForSorting({ choice }) {
       </TouchableOpacity>
       <View>
         {openDropDown === true
-          ? sortArrayForTimeEntries.map((sort, index) => (
+          ? showSelection.map((sort, index) => (
               <View index={index} key={index} style={styles.insideSortBox}>
                 <TouchableOpacity
                   testID="insideDropDownPressed"
@@ -86,7 +103,6 @@ export function DropDownForSorting({ choice }) {
                     pressSelectionInsideDropDown(sort.title);
                   }}
                 >
-                  {/* <Text style={toStileTitle(sort.title, index)}> */}
                   <Text>{sort.title}</Text>
                 </TouchableOpacity>
               </View>
@@ -100,12 +116,12 @@ export function DropDownForSorting({ choice }) {
 export default DropDownForSorting;
 const styles = StyleSheet.create({
   container: {
-    // flex: 1,
+    ...typography.b1,
+
     overflow: "hidden",
   },
 
   sortText: {
-    // flex: 3,
     ...typography.b1,
     color: colors.dark,
     paddingVertical: 7,
@@ -114,11 +130,10 @@ const styles = StyleSheet.create({
     paddingTop: 5,
   },
   insideSortBox: {
-    /// flex: 1,
     justifyContent: "space-between",
     marginLeft: 19,
     paddingVertical: 5,
-    overflow: "hidden",
+
     paddingRight: 15,
     paddingLeft: 14,
     borderRadius: 2,

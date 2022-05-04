@@ -36,7 +36,6 @@ function MyActivityAsAList({ navigation }) {
   );
   const [selectedOptionForSorting, setSelectedOptionForSorting] =
     useState(null);
-  // const [viewCounter, setViewCounter] = useState(0);
 
   useEffect(() => {
     let firstFiveTimeEntries = objectsWithActivitiesAndTimeEntriesInfo(
@@ -243,7 +242,7 @@ function MyActivityAsAList({ navigation }) {
           {rout.name === "HomePage" ? (
             twoArraysForHomePage()
           ) : (
-            <View style={{ maxHeight: 600 }}>
+            <View style={{ maxHeight: 550 }}>
               <FlatList
                 contentContainerStyle={{
                   marginBottom: 20,
@@ -295,7 +294,7 @@ function MyActivityAsAList({ navigation }) {
     <View style={styles.containerForTheWholeComponent}>
       <View style={styles.containerForTitleAndDropDown}>
         <Text style={styles.title}>Min tid</Text>
-        <View style={{ flex: 1, backgroundColor: "pink" }}>
+        <View>
           {rout.name === "MyTimePage" && (
             <DropDownForSorting
               choice={(selectedOptionForSorting) =>
@@ -323,7 +322,6 @@ export default MyActivityAsAList;
 const styles = StyleSheet.create({
   containerForTheWholeComponent: {
     marginBottom: 8,
-    // flex: 1,
   },
 
   container: {
@@ -333,15 +331,12 @@ const styles = StyleSheet.create({
     flex: 1,
     ...typography.h2,
     color: colors.dark,
-    backgroundColor: "red",
     paddingTop: 13,
   },
   containerForTitleAndDropDown: {
-    //flex: 1,
     flexDirection: "row",
     marginTop: 30,
     paddingBottom: 20,
-    backgroundColor: "yellow",
   },
 
   textVissaAll: {
@@ -377,10 +372,10 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.error,
   },
-  footer: {
-    padding: 10,
-    justifyContent: "center",
-    alignItems: "center",
-    flexDirection: "row",
-  },
+  // footer: {
+  //   padding: 10,
+  //   justifyContent: "center",
+  //   alignItems: "center",
+  //   flexDirection: "row",
+  // },
 });
