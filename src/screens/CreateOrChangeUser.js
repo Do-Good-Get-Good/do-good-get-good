@@ -8,6 +8,7 @@ import {
   ScrollView,
   TextInput,
   Dimensions,
+  TouchableNativeFeedback,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -52,6 +53,10 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const ref_input1 = useRef();
   const ref_input2 = useRef();
   const ref_input3 = useRef();
+
+  const sortOptions = ["User", "Admin"];
+  const [sortBy, setSortBy] = useState("A - Ö");
+  const [expanded, setExpanded] = useState(false);
 
   function titleForScreen() {
     if (createNewUser === true) {
@@ -338,6 +343,45 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             * Lösenordet måste innehålla minst 6 tecken
           </Text>
         )}
+
+        <View>
+          <TouchableOpacity
+            style={nameSurnameEmailPasswordStyle()}
+            onPress={() => setExpanded(!expanded)}
+          >
+            <View style={styles.styleForDropdown}>
+              <Text testID="dropdownText" style={styles.listItemNameStyle}>
+                {sortBy}
+              </Text>
+              <Icon
+                color="#5B6770"
+                style={styles.sortIcon}
+                name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
+                size={30}
+              />
+            </View>
+          </TouchableOpacity>
+
+          {expanded === true ? (
+            <View style={styles.listItemContentStyle}>
+              {sortOptions.map((option, index) => (
+                <TouchableNativeFeedback
+                  key={index}
+                  onPress={() => {
+                    setSortBy(option);
+
+                    sortUsers(option);
+                    setExpanded(false);
+                  }}
+                >
+                  <View style={styles.dropdownItem}>
+                    <Text>{option}</Text>
+                  </View>
+                </TouchableNativeFeedback>
+              ))}
+            </View>
+          ) : null}
+        </View>
       </>
     );
   }
@@ -515,5 +559,27 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontWeight: "bold",
     marginLeft: 2,
+  },
+  styleForDropdown: {
+    flex: 1,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    // padding: 10,
+    backgroundColor: "white",
+  },
+  listItemContentStyle: {
+    marginTop: -10,
+    marginBottom: 10,
+    backgroundColor: "#FFFFFF",
+    paddingVertical: 12,
+    paddingHorizontal: 10,
+    // flexDirection: "row",
+    justifyContent: "center",
+    borderRadius: 5,
+  },
+  dropdownItem: {
+    paddingHorizontal: 16,
+    paddingVertical: 10,
   },
 });
