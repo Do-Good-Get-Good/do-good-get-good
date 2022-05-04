@@ -1,4 +1,4 @@
-package com.src.generated;
+package se.technogarden.dogoodgetgood.generated;
 
 import java.util.Arrays;
 import java.util.List;
