@@ -10,8 +10,8 @@ export function DropDownForSorting({ choice }) {
   const rout = useRoute();
   const sortArrayForTimeEntries = [
     { title: "Datum" },
-    { title: "Godkänd" },
-    { title: "Inte Godkänd" },
+    { title: "Godkända" },
+    { title: "Inte godkända" },
   ];
   const sortArrayForAdminGallery = [
     { title: "Datum" },
@@ -37,9 +37,9 @@ export function DropDownForSorting({ choice }) {
     setOpenDropDown(false);
     setSortBy(selection);
     if (rout.name === "MyTimePage") {
-      if (selection === "Godkänd") {
+      if (selection === "Godkända") {
         choice(true);
-      } else if (selection === "Inte Godkänd") {
+      } else if (selection === "Inte godkända") {
         choice(false);
       } else {
         choice(null);
@@ -67,21 +67,18 @@ export function DropDownForSorting({ choice }) {
   }, [rout.name, isFocused]);
 
   const styleForDropDownInsideConrainer = {
-    borderColor: openDropDown === true ? colors.dark : colors.background,
     flexDirection: "row",
-    justifyContent: "space-between",
-    padding: 8,
+    justifyContent: "space-around",
+    paddingVertical: 10,
+    paddingHorizontal: 14,
     ...typography.b1,
-    marginLeft: 19,
-    paddingRight: 14,
-    paddingLeft: 14,
     borderRadius: 3,
-    borderWidth: 1,
     backgroundColor: colors.background,
     overflow: "hidden",
+    alignItems: "center",
   };
   return (
-    <View style={styles.container}>
+    <>
       <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
         <View style={styleForDropDownInsideConrainer}>
           <Text style={styles.sortText}>{sortBy}</Text>
@@ -93,54 +90,47 @@ export function DropDownForSorting({ choice }) {
           />
         </View>
       </TouchableOpacity>
-      <View>
-        {openDropDown === true
-          ? showSelection.map((sort, index) => (
-              <View index={index} key={index} style={styles.insideSortBox}>
-                <TouchableOpacity
-                  testID="insideDropDownPressed"
-                  onPress={() => {
-                    pressSelectionInsideDropDown(sort.title);
-                  }}
-                >
-                  <Text>{sort.title}</Text>
-                </TouchableOpacity>
-              </View>
-            ))
-          : null}
-      </View>
-    </View>
+      {openDropDown === true && (
+        <View style={styles.sortBox}>
+          {showSelection.map((sort, index) => (
+            <TouchableOpacity
+              index={index}
+              key={index}
+              style={styles.insideSortBox}
+              testID="insideDropDownPressed"
+              onPress={() => {
+                pressSelectionInsideDropDown(sort.title);
+              }}
+            >
+              <Text>{sort.title}</Text>
+            </TouchableOpacity>
+          ))}
+        </View>
+      )}
+    </>
   );
 }
 
 export default DropDownForSorting;
 const styles = StyleSheet.create({
-  container: {
-    ...typography.b1,
-
-    overflow: "hidden",
-  },
-
   sortText: {
     ...typography.b1,
     color: colors.dark,
     paddingVertical: 7,
   },
-  sortIcon: {
-    paddingTop: 5,
+  sortBox: {
+    position: "absolute",
+    top: 40,
+    right: 0,
+    left: 0,
+    backgroundColor: colors.background,
+    elevation: 3,
   },
   insideSortBox: {
-    justifyContent: "space-between",
-    marginLeft: 19,
-    paddingVertical: 5,
+    paddingVertical: 8,
+    paddingHorizontal: 10,
 
-    paddingRight: 15,
-    paddingLeft: 14,
-    borderRadius: 2,
-    borderWidth: 1,
-    backgroundColor: colors.background,
     overflow: "hidden",
-
-    borderColor: colors.background,
+    elevation: 3,
   },
 });

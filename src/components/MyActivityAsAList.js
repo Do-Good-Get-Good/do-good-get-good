@@ -244,9 +244,6 @@ function MyActivityAsAList({ navigation }) {
           ) : (
             <View style={{ maxHeight: 550 }}>
               <FlatList
-                contentContainerStyle={{
-                  marginBottom: 20,
-                }}
                 data={[...timeEntryList, ...timeEntriesTwoMonthsBefore]}
                 onEndReached={() => {
                   entryTime.setScrollToGetMoreTimeEntries(true);
@@ -292,8 +289,8 @@ function MyActivityAsAList({ navigation }) {
 
   return (
     <View style={styles.containerForTheWholeComponent}>
-      <View style={styles.containerForTitleAndDropDown}>
-        <Text style={styles.title}>Min tid</Text>
+      <View style={styles.containerForTitleAndDropDown(rout)}>
+        <Text style={styles.title}>Mina aktiviteter</Text>
         <View>
           {rout.name === "MyTimePage" && (
             <DropDownForSorting
@@ -309,10 +306,12 @@ function MyActivityAsAList({ navigation }) {
       <Overlay
         isVisible={showErrorMessage}
         animationType="fade"
-        overlayStyle={{ fontSize: 20 }}
+        overlayStyle={{ width: "92%", padding: 12, borderRadius: 5 }}
         onBackdropPress={() => setShowErrorMessage(false)}
       >
-        <Text>Man kan inte ändra på tidsinmatningar äldre än två månader</Text>
+        <Text style={{ ...typography.b2 }}>
+          Man kan inte ändra på tidsinmatningar äldre än två månader
+        </Text>
       </Overlay>
     </View>
   );
@@ -322,23 +321,22 @@ export default MyActivityAsAList;
 const styles = StyleSheet.create({
   containerForTheWholeComponent: {
     marginBottom: 8,
+    zIndex: 4,
   },
-
   container: {
     justifyContent: "flex-start",
   },
   title: {
     flex: 1,
-    ...typography.h2,
+    ...typography.title,
     color: colors.dark,
-    paddingTop: 13,
   },
-  containerForTitleAndDropDown: {
+  containerForTitleAndDropDown: (route) => ({
     flexDirection: "row",
-    marginTop: 30,
-    paddingBottom: 20,
-  },
-
+    marginTop: 16,
+    paddingBottom: route.name === "MyTimePage" ? 16 : 0,
+    zIndex: 1,
+  }),
   textVissaAll: {
     flex: 1,
     letterSpacing: 1,
