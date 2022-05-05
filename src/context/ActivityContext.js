@@ -211,7 +211,7 @@ export const ActivityProvider = ({ children }) => {
                 if (timeEntriesArray.length === 0) {
                   setNoMoreData(true);
                 }
-                console.log("UseEffect     _________________________________");
+
                 let tempArray = timeEntriesAfterScrolling;
 
                 for (let i = 0; i < timeEntriesArray.length; i++) {

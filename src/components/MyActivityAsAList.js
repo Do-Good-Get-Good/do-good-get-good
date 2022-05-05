@@ -79,19 +79,21 @@ function MyActivityAsAList({ navigation }) {
     let activityAndTimeEntryArray = [];
     let myTimeAndTitle = {};
 
-    for (let i = 0; i < timeEntries.length; i++) {
-      myTimeAndTitle = {
-        adminID: timeEntries[i].admin_id,
-        timeEntryID: timeEntries[i].doc_id,
-        date: timeEntries[i].date.toDate(),
-        statusConfirmed: timeEntries[i].status_confirmed,
-        time: timeEntries[i].time,
-        title: timeEntries[i].activity_title,
-        id: timeEntries[i].activity_id,
-        possibleToMakeChanges: possibleToMakeChanges,
-      };
+    if (timeEntries.length != 0) {
+      for (let i = 0; i < timeEntries.length; i++) {
+        myTimeAndTitle = {
+          adminID: timeEntries[i].admin_id,
+          timeEntryID: timeEntries[i].doc_id,
+          date: timeEntries[i].date.toDate(),
+          statusConfirmed: timeEntries[i].status_confirmed,
+          time: timeEntries[i].time,
+          title: timeEntries[i].activity_title,
+          id: timeEntries[i].activity_id,
+          possibleToMakeChanges: possibleToMakeChanges,
+        };
 
-      activityAndTimeEntryArray.push(myTimeAndTitle);
+        activityAndTimeEntryArray.push(myTimeAndTitle);
+      }
     }
 
     return activityAndTimeEntryArray;

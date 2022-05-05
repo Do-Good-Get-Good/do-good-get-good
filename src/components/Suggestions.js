@@ -32,7 +32,6 @@ export function Suggestions({
 
   const adminGalleryContext = useAdminGalleryFunction();
   const [showArray, setShowArray] = useState([]);
-  //const [showArrayAfterSorting, setShowArrayAfterSorting] = useState([])
 
   const [showActiveArray, setShowActiveArray] = useState(true);
 
@@ -138,7 +137,7 @@ export function Suggestions({
     }
 
     return sortArray;
-  }, [choiceFromDropDown]);
+  }, [choiceFromDropDown, showArray]);
 
   function sortingByTitle(arrayToSort) {
     return arrayToSort.sort((a, b) => a.title.localeCompare(b.title));

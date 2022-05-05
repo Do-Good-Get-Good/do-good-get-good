@@ -1,5 +1,11 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 import { Icon } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";

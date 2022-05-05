@@ -8,6 +8,9 @@ jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
+jest.mock("../components/Menu", () => () => {
+  return <mockDropDownForSorting />;
+});
 
 jest.mock("../components/CalendarView", () => () => {
   return <fakeCalenderView />;
