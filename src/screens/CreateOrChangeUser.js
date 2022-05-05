@@ -20,11 +20,13 @@ import { Icon } from "react-native-elements";
 import Menu from "../components/Menu";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
+import { useAdminCheckFunction } from "../context/AdminContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
+  const userLevel = useAdminCheckFunction();
   const changeUserInfoContext = useChangeUserInfoFunction();
   const {
     createNewUser,
@@ -54,9 +56,11 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
   const ref_input2 = useRef();
   const ref_input3 = useRef();
 
-  const sortOptions = ["User", "Admin"];
-  const [sortBy, setSortBy] = useState("A - Ö");
+  const sortOptions = ["User", "Admin", "Super admin"];
+  const [placeholder, setPlaceholder] = useState("Role");
   const [expanded, setExpanded] = useState(false);
+  const [role, setRole] = useState("user");
+  const [placeholderFilledUp, setPlaceholderFilledUp] = useState(null);
 
   function titleForScreen() {
     if (createNewUser === true) {
@@ -86,6 +90,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         last_name: surname,
         email: email,
         password: password,
+        role: role,
       },
     });
   }
@@ -97,7 +102,9 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       emailFilledUp &&
       passwordFilledUp &&
       !invalidEmail &&
-      !invalidPassword
+      !invalidPassword &&
+      placeholderFilledUp &&
+      placeholder != "Role"
     ) {
       return true;
     } else {
@@ -105,6 +112,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       if (surname === null) setSurnameFilledUp(false);
       if (email === null) setEmailFilledUp(false);
       if (password === null) setPasswordFilledUp(false);
+      if (placeholder === "Role") setPlaceholderFilledUp(false);
       return false;
     }
   }
@@ -161,6 +169,19 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       }
     }
   }, [password]);
+
+  useEffect(() => {
+    if (userLevel === "admin") {
+      setPlaceholderFilledUp(true);
+      setPlaceholder("");
+    } else {
+      if (placeholder === "admin" || "user") {
+        setPlaceholderFilledUp(true);
+      } else {
+        setPlaceholderFilledUp(false);
+      }
+    }
+  }, [placeholder]);
 
   function twoBottomButtonsForAllViews() {
     if (createNewUser === true) {
@@ -278,6 +299,14 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
     };
   };
 
+  roleBorderStyle = function () {
+    return {
+      borderRadius: 5,
+      borderWidth: 1,
+      borderColor: expanded ? colors.dark : colors.background,
+    };
+  };
+
   function viewForNewUser() {
     return (
       <>
@@ -344,44 +373,44 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           </Text>
         )}
 
-        <View>
-          <TouchableOpacity
-            style={nameSurnameEmailPasswordStyle()}
-            onPress={() => setExpanded(!expanded)}
-          >
-            <View style={styles.styleForDropdown}>
-              <Text testID="dropdownText" style={styles.listItemNameStyle}>
-                {sortBy}
-              </Text>
-              <Icon
-                color="#5B6770"
-                style={styles.sortIcon}
-                name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
-                size={30}
-              />
-            </View>
-          </TouchableOpacity>
+        {userLevel === "superadmin" && (
+          <View>
+            <TouchableOpacity
+              style={styles.test}
+              onPress={() => setExpanded(!expanded)}
+            >
+              <View style={[styles.styleForDropdown, roleBorderStyle()]}>
+                <Text style={styles.placeholderText}>{placeholder}</Text>
+                <Icon
+                  color="#5B6770"
+                  style={styles.sortIcon}
+                  name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
+                  size={30}
+                />
+              </View>
+            </TouchableOpacity>
 
-          {expanded === true ? (
-            <View style={styles.listItemContentStyle}>
-              {sortOptions.map((option, index) => (
-                <TouchableNativeFeedback
-                  key={index}
-                  onPress={() => {
-                    setSortBy(option);
-
-                    sortUsers(option);
-                    setExpanded(false);
-                  }}
-                >
-                  <View style={styles.dropdownItem}>
-                    <Text>{option}</Text>
-                  </View>
-                </TouchableNativeFeedback>
-              ))}
-            </View>
-          ) : null}
-        </View>
+            {expanded === true && (
+              <View style={styles.listItemContentStyle}>
+                {sortOptions.map((option, index) => (
+                  <TouchableNativeFeedback
+                    key={index}
+                    onPress={() => {
+                      setPlaceholder(option);
+                      setRole(option.toLowerCase().replace(" ", ""));
+                      setExpanded(false);
+                    }}
+                  >
+                    <Text style={styles.dropdownItem}>{option}</Text>
+                  </TouchableNativeFeedback>
+                ))}
+              </View>
+            )}
+            {placeholderFilledUp === false && (
+              <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+            )}
+          </View>
+        )}
       </>
     );
   }
@@ -560,26 +589,60 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 2,
   },
+  test: {
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
+  },
   styleForDropdown: {
-    flex: 1,
+    alignItems: "center",
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "center",
-    // padding: 10,
-    backgroundColor: "white",
+    padding: 8,
+    paddingLeft: 11,
+    borderRadius: 3,
+    backgroundColor: colors.background,
+    overflow: "hidden",
+    paddingVertical: 13,
+    marginTop: 9,
+  },
+  placeholderText: {
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
+    color: colors.dark,
   },
   listItemContentStyle: {
-    marginTop: -10,
-    marginBottom: 10,
-    backgroundColor: "#FFFFFF",
-    paddingVertical: 12,
-    paddingHorizontal: 10,
-    // flexDirection: "row",
-    justifyContent: "center",
-    borderRadius: 5,
+    justifyContent: "space-between",
+    overflow: "hidden",
+    paddingLeft: 14,
+    borderRadius: 3,
+    backgroundColor: colors.background,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 1,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 1,
+      },
+    }),
   },
   dropdownItem: {
-    paddingHorizontal: 16,
     paddingVertical: 10,
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
+    color: colors.dark,
   },
 });
