@@ -47,6 +47,11 @@ jest.mock("../context/ActivityContext", () => {
       lastFiveTimeEntries: timeandstatusContext,
       myActivities: myActivitiesContext,
       setLimitAmountForTimeEntries: jest.fn(),
+      addMoreTimeEntriesAfterScroll: true,
+      timeEntriesAfterScrolling: timeandstatusContext,
+      userHasLassThanFiveTimeEntriesForLastTwoMonthes: timeandstatusContext,
+      setAddMoreTimeEntriesAfterScroll: jest.fn(),
+      setScrollToGetMoreTimeEntries: jest.fn(),
     }),
   };
 });
@@ -65,7 +70,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
     const { getAllByText } = render(<MyActivityAsAList />);
-    expect(getAllByText("Missing people").length).toBe(1);
+    expect(getAllByText("Missing people").length).toBe(2);
   });
 
   it("can find the activity date", () => {
@@ -73,7 +78,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
     const { getAllByText } = render(<MyActivityAsAList />);
-    expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(1);
+    expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(2);
   });
 
   it("can find the activity time", () => {
@@ -82,7 +87,7 @@ describe("Testing MyActivityAsAList", () => {
     });
 
     const { getAllByText } = render(<MyActivityAsAList />);
-    expect(getAllByText("1.5 tim").length).toBe(1);
+    expect(getAllByText("1.5 tim").length).toBe(2);
   });
 
   it("can press the edit button if statusConfirmed is false", () => {

@@ -19,7 +19,7 @@ jest.mock("../components/Suggestions", () => () => {
 jest.mock("../components/RadioButton", () => () => {
   return <mockRadioButton />;
 });
-jest.mock("../components/Menu", () => () => {
+jest.mock("../components/DropDownForSorting", () => () => {
   return <mockDropDownForSorting />;
 });
 

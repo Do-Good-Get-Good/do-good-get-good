@@ -140,6 +140,10 @@ export function Suggestions({
   }, [choiceFromDropDown, showArray]);
 
   function sortingByTitle(arrayToSort) {
+    // let temArray = Array.isArray(arrayToSort)
+    //   ? arrayToSort.sort((a, b) => a.title.localeCompare(b.title))
+    //   : [];
+
     return arrayToSort.sort((a, b) => a.title.localeCompare(b.title));
   }
 
@@ -319,5 +323,4 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     height: 60,
   },
-  iconDescription: {},
 });

@@ -112,6 +112,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
     waitFor(() => {
@@ -125,6 +126,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -139,6 +141,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -153,6 +156,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -170,6 +174,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -184,6 +189,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -199,6 +205,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
     expect(getAllByText("Inga resultat").length).toBe(1);

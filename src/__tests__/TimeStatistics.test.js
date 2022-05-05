@@ -10,6 +10,22 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
+jest.mock("../context/ActivityContext", () => ({
+  useActivityFunction: () => ({
+    activitiesIDandAccumTime: [
+      {
+        accumulatedTime: 1,
+        activityID: "activityID",
+        adminID: "adminID",
+        connectedActivities: ["activityID"],
+        paidTime: 1,
+        timeForYear: 1,
+        currentForMonth: 1,
+      },
+    ],
+  }),
+}));
+
 describe("Testing TimeStatistics ", () => {
   it("TimeStatistics timeForYear text", () => {
     const { getByTestId } = render(<TimeStatistics />);

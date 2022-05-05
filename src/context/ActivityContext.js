@@ -141,7 +141,7 @@ export const ActivityProvider = ({ children }) => {
             let docs = [];
             snap.forEach((doc) => docs.push({ ...doc.data(), doc_id: doc.id }));
             let firstFive = [];
-
+            console.log("docs   ", docs);
             if (docs.length >= 5) {
               for (let i = 0; i < 5; i++) {
                 firstFive.push(docs[i]);
