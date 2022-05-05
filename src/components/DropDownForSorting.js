@@ -66,6 +66,8 @@ export function DropDownForSorting({ choice }) {
   }, [rout.name, isFocused]);
 
   const styleForDropDownInsideConrainer = {
+    borderWidth: 1,
+    borderColor: openDropDown ? colors.dark : colors.background,
     flexDirection: "row",
     justifyContent: "space-around",
     paddingVertical: 10,
@@ -120,7 +122,7 @@ const styles = StyleSheet.create({
   },
   sortBox: {
     position: "absolute",
-    top: 40,
+    top: 45,
     right: 0,
     left: 0,
     backgroundColor: colors.background,
