@@ -155,11 +155,13 @@ export function AdminActivityGallery({ navigation }) {
         <SearchBarComponent />
         <View style={styles.radioButtonDropdownView}>
           <RadioButton style={styles.radioButtonContainer} />
-          <DropDownForSorting
-            choice={(selectedOptionForSorting) =>
-              setSelectedOptionForSorting(selectedOptionForSorting)
-            }
-          />
+          <View>
+            <DropDownForSorting
+              choice={(selectedOptionForSorting) =>
+                setSelectedOptionForSorting(selectedOptionForSorting)
+              }
+            />
+          </View>
         </View>
         <Suggestions
           choiceFromDropDown={selectedOptionForSorting}
@@ -188,6 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     justifyContent: "space-between",
+    zIndex: 1,
   },
   radioButtonContainer: {
     flex: 1.6,
