@@ -14,7 +14,6 @@ export function DropDownForSorting({ choice }) {
     { title: "Inte godkända" },
   ];
   const sortArrayForAdminGallery = [
-    { title: "Datum" },
     { title: "Favoriter" },
     { title: "Namn" },
     { title: "Plats" },
@@ -22,7 +21,7 @@ export function DropDownForSorting({ choice }) {
 
   const [showSelection, setShowSelection] = useState([]);
 
-  const [sortBy, setSortBy] = useState("Datum");
+  const [sortBy, setSortBy] = useState("");
   const [openDropDown, setOpenDropDown] = useState(false);
   const isFocused = useIsFocused();
 
@@ -47,8 +46,6 @@ export function DropDownForSorting({ choice }) {
     } else if (rout.name === "AdminActivityGallery") {
       if (selection === "Favoriter" || "Namn" || "Plats") {
         choice(selection);
-      } else {
-        choice(null);
       }
     }
   }
@@ -56,14 +53,16 @@ export function DropDownForSorting({ choice }) {
   useEffect(() => {
     if (rout.name === "MyTimePage") {
       setShowSelection(sortArrayForTimeEntries);
+      setSortBy("Datum");
+      choice(null);
     } else if (rout.name === "AdminActivityGallery") {
       setShowSelection(sortArrayForAdminGallery);
+      setSortBy("Name");
+      choice(null);
+    } else {
+      setOpenDropDown(false);
+      choice(null);
     }
-  }, [rout.name, isFocused]);
-
-  useEffect(() => {
-    setSortBy("Datum");
-    choice(null);
   }, [rout.name, isFocused]);
 
   const styleForDropDownInsideConrainer = {
@@ -73,6 +72,7 @@ export function DropDownForSorting({ choice }) {
     paddingHorizontal: 14,
     ...typography.b1,
     borderRadius: 3,
+
     backgroundColor: colors.background,
     overflow: "hidden",
     alignItems: "center",
@@ -125,6 +125,18 @@ const styles = StyleSheet.create({
     left: 0,
     backgroundColor: colors.background,
     elevation: 3,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          hight: 3,
+        },
+        shadowOpacity: 0.2,
+        shadowRadius: 3,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
   insideSortBox: {
     paddingVertical: 8,
