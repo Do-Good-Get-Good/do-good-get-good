@@ -225,7 +225,6 @@ function MyActivityAsAList({ navigation }) {
         <View
           style={{
             paddingHorizontal: 8,
-            backgroundColor: colors.background,
             borderRadius: 2,
           }}
         >
@@ -325,6 +324,7 @@ const styles = StyleSheet.create({
   },
   container: {
     justifyContent: "flex-start",
+    marginHorizontal: -16,
   },
   title: {
     flex: 1,
@@ -358,6 +358,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     alignItems: "center",
     paddingVertical: 2.5,
+    paddingHorizontal: 8,
+    marginHorizontal: 8,
   },
   buttonBorderStyle: {
     borderRadius: 5,
@@ -370,10 +372,4 @@ const styles = StyleSheet.create({
     fontSize: 20,
     color: colors.error,
   },
-  // footer: {
-  //   padding: 10,
-  //   justifyContent: "center",
-  //   alignItems: "center",
-  //   flexDirection: "row",
-  // },
 });
