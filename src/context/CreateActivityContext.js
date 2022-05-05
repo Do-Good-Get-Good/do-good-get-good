@@ -81,30 +81,40 @@ export const CreateActivityProvider = ({ children }) => {
             .catch((error) => {
               console.log("errorMessage ", error);
             });
-          setAllActiveActvivitiesFB(tempArray);
         } catch (error) {
           console.log("CreateActivityContext errorMessage ", error);
         }
       };
-
       getAllActiveActivities();
       setAllActiveActvivitiesFB(tempArray);
     }
   }, []);
 
   const createActivityAndLinkNewUser = async (newActivityAndUser) => {
+    let newFirebaseActivity = {
+      active_status: newActivityAndUser.active_status,
+      activity_city: newActivityAndUser.activity_city,
+      activity_description: newActivityAndUser.activity_description,
+      activity_photo: newActivityAndUser.activity_photo,
+      activity_place: newActivityAndUser.activity_place,
+      activity_title: newActivityAndUser.activity_title,
+      tg_favorite: newActivityAndUser.tg_favorite,
+    };
     await firestore()
       .collection("Activities")
-      .add({
-        active_status: newActivityAndUser.active_status,
-        activity_city: newActivityAndUser.activity_city,
-        activity_description: newActivityAndUser.activity_description,
-        activity_photo: newActivityAndUser.activity_photo,
-        activity_place: newActivityAndUser.activity_place,
-        activity_title: newActivityAndUser.activity_title,
-        tg_favorite: newActivityAndUser.tg_favorite,
-      })
+      .add(newFirebaseActivity)
       .then(async (newActivity) => {
+        let newActivityToAddLocally = {
+          id: newActivity.id,
+          title: newActivityAndUser.activity_title,
+          active: newActivityAndUser.active_status,
+          city: newActivityAndUser.activity_city,
+          place: newActivityAndUser.activity_place,
+          description: newActivityAndUser.activity_description,
+          photo: newActivityAndUser.activity_photo,
+          popular: newActivityAndUser.tg_favorite,
+        };
+        setAllActiveActvivitiesFB((prev) => [...prev, newActivityToAddLocally]);
         if (
           newActivityAndUser.newUserInfo != null ||
           newActivityAndUser.newUserInfo != undefined
