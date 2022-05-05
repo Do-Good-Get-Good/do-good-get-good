@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:593203780666:android:8965137c185d413d0fe903",
+        "mobilesdk_app_id": "1:593203780666:android:363d3bed5170eba60fe903",
         "android_client_info": {
-          "package_name": "com.src.dev"
+          "package_name": "se.technogarden.dogoodgetgood.dev"
         }
       },
       "oauth_client": [

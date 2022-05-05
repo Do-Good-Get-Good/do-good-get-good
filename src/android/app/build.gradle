@@ -142,7 +142,7 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.src"
+        applicationId "se.technogarden.dogoodgetgood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
@@ -154,15 +154,15 @@ android {
     productFlavors {
         dev {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "com.src.dev"
+            applicationId "se.technogarden.dogoodgetgood.dev"
             targetSdkVersion rootProject.ext.targetSdkVersion
-            resValue "string", "build_config_package", "com.src"
+            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
         }
         prod {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "com.src"
+            applicationId "se.technogarden.dogoodgetgood"
             targetSdkVersion rootProject.ext.targetSdkVersion
-            resValue "string", "build_config_package", "com.src"
+            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
         }
     }
 
