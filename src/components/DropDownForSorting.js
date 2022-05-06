@@ -77,11 +77,11 @@ export function DropDownForSorting({ choice }) {
     paddingHorizontal: 14,
     ...typography.b1,
     borderRadius: 3,
-
     backgroundColor: colors.background,
     overflow: "hidden",
     alignItems: "center",
   };
+
   return (
     <>
       <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
