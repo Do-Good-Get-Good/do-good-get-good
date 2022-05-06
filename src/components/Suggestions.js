@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -19,7 +19,12 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
+export function Suggestions({
+  navigation,
+  adminGallery,
+  inactiveActivities,
+  choiceFromDropDown,
+}) {
   const rout = useRoute();
   const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
@@ -36,17 +41,17 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
 
   useEffect(() => {
     if (rout.name === "HomePage") {
-      setShowArray(userSuggestionsContext.popularActivities);
+      setShowArray(sortingByTitle(userSuggestionsContext.popularActivities));
     } else if (
       rout.name === "AdminActivityGallery" &&
       showActiveArray === false
     ) {
-      setShowArray(inactiveActivities);
+      setShowArray(sortingByTitle(inactiveActivities));
     } else if (
       rout.name === "AdminActivityGallery" &&
       showActiveArray === true
     ) {
-      setShowArray(adminGallery);
+      setShowArray(sortingByTitle(adminGallery));
     } else {
       console.log("Nothing to show in AdminGallery");
     }
@@ -94,7 +99,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
           (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
         );
         newArray.splice(index, 1);
-        setShowArray(newArray);
+        setShowArray(sortingByTitle(newArray));
         activityCardContext.confirmToDeleteActivity(false);
       }
     };
@@ -109,13 +114,106 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
           (x) => x.id === useCreateActivityContext.changedActivity.id
         );
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
-        setShowArray(newArray);
+        setShowArray(sortingByTitle(newArray));
         activityCardContext.changePopularStatusInAdminGallery(false);
         useCreateActivityContext.setUpdateGallery(false);
       };
       replaceObjectIfpopularStatusChanged();
     }
   }, [useCreateActivityContext.updateGallery]);
+
+  const showArrayAfterSorting = useCallback(() => {
+    let sortArray = [];
+    if (choiceFromDropDown === "Favoriter") {
+      sortArray = showArray.sort(
+        (a, b) => Number(b.popular) - Number(a.popular)
+      );
+    } else if (choiceFromDropDown === "Namn") {
+      sortArray = sortingByTitle(showArray);
+    } else if (choiceFromDropDown === "Plats") {
+      sortArray = showArray.sort((a, b) => a.city.localeCompare(b.city));
+    } else {
+      sortArray = null;
+    }
+
+    return sortArray;
+  }, [choiceFromDropDown, showArray]);
+
+  function sortingByTitle(arrayToSort) {
+    return arrayToSort.sort((a, b) => a.title.localeCompare(b.title));
+  }
+
+  function viewToShow(suggestion, index, id) {
+    return (
+      <View index={index} key={id}>
+        <TouchableOpacity
+          testID="lookDetails"
+          onPress={() =>
+            lookDetails(suggestion, suggestion.active, suggestion.popular)
+          }
+        >
+          <View style={styles.insideActivityContainer}>
+            <View style={styles.photoAndText}>
+              <View style={styles.textTitleCityDescriptipn}>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                  <View style={{ flex: 1 }}>
+                    <Text numberOfLines={2} style={styles.textTitle}>
+                      {suggestion.title}
+                    </Text>
+
+                    <View style={styles.iconsAndTextCityContainer}>
+                      <Icon
+                        type="material-community"
+                        name="map-marker-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+
+                      <Text style={styles.textCity}>{suggestion.city}</Text>
+                    </View>
+                  </View>
+                  <Image
+                    testID="photo"
+                    style={styles.image}
+                    source={setTheRightPhoto(suggestion.photo)}
+                  />
+                </View>
+
+                <View style={styles.iconsAndTextDescriptionContainer}>
+                  <Icon
+                    type="material-community"
+                    name="information-outline"
+                    color={colors.dark}
+                    size={25}
+                    style={styles.iconDescription}
+                  />
+                  <Text numberOfLines={2} style={styles.textDescription}>
+                    {suggestion.description}
+                  </Text>
+                </View>
+              </View>
+            </View>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  }
+
+  function whichArrayToShow() {
+    let viewArray = [];
+    if (showArray.length > 0 && showArrayAfterSorting() === null) {
+      viewArray = showArray;
+    } else if (showArrayAfterSorting() != null) {
+      viewArray = showArrayAfterSorting();
+    }
+    return (
+      <View style={styles.activityContainer}>
+        {viewArray.map((suggestion, index) =>
+          viewToShow(suggestion, index, suggestion.id + index)
+        )}
+      </View>
+    );
+  }
 
   return (
     <View>
@@ -125,63 +223,7 @@ export function Suggestions({ navigation, adminGallery, inactiveActivities }) {
           <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
         )}
       </View>
-
-      <View style={styles.activityContainer}>
-        {showArray.length > 0 &&
-          showArray.map((suggestion, index) => (
-            <TouchableOpacity
-              testID="lookDetails"
-              onPress={() =>
-                lookDetails(suggestion, suggestion.active, suggestion.popular)
-              }
-              index={index}
-              key={index}
-            >
-              <View style={styles.insideActivityContainer}>
-                <View style={styles.photoAndText}>
-                  <View style={styles.textTitleCityDescriptipn}>
-                    <View style={{ flex: 1, flexDirection: "row" }}>
-                      <View style={{ flex: 1 }}>
-                        <Text numberOfLines={2} style={styles.textTitle}>
-                          {suggestion.title}
-                        </Text>
-
-                        <View style={styles.iconsAndTextCityContainer}>
-                          <Icon
-                            type="material-community"
-                            name="map-marker-outline"
-                            color={colors.dark}
-                            size={25}
-                          />
-
-                          <Text style={styles.textCity}>{suggestion.city}</Text>
-                        </View>
-                      </View>
-                      <Image
-                        testID="photo"
-                        style={styles.image}
-                        source={setTheRightPhoto(suggestion.photo)}
-                      />
-                    </View>
-
-                    <View style={styles.iconsAndTextDescriptionContainer}>
-                      <Icon
-                        type="material-community"
-                        name="information-outline"
-                        color={colors.dark}
-                        size={25}
-                        style={styles.iconDescription}
-                      />
-                      <Text numberOfLines={2} style={styles.textDescription}>
-                        {suggestion.description}
-                      </Text>
-                    </View>
-                  </View>
-                </View>
-              </View>
-            </TouchableOpacity>
-          ))}
-      </View>
+      {whichArrayToShow()}
     </View>
   );
 }
@@ -277,5 +319,4 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     height: 60,
   },
-  iconDescription: {},
 });

@@ -1,27 +1,28 @@
 import React from "react";
-import { ScrollView, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import MyActivityAsAList from "../components/MyActivityAsAList";
+
+import BottomLogo from "../components/BottomLogo";
 import Menu from "../components/Menu";
 
 export const MyTimePage = () => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
-        <View style={styles.container}>
-          <MyActivityAsAList></MyActivityAsAList>
-        </View>
-      </ScrollView>
+
+      <View style={styles.container}>
+        <MyActivityAsAList />
+        <BottomLogo />
+      </View>
     </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     marginHorizontal: 16,
   },
 });
