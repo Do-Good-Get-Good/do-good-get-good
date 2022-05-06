@@ -8,7 +8,7 @@
       "buildNumber": "1.0.0"
     },
     "android": {
-      "package": "com.src",
+      "package": "se.technogarden.dogoodgetgood",
       "versionCode": 1
     },
     "assetBundlePatterns": [
