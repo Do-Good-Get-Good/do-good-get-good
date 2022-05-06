@@ -1,4 +1,4 @@
-package com.src;
+package se.technogarden.dogoodgetgood;
 
 import android.os.Bundle;
 

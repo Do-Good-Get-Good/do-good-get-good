@@ -2,12 +2,18 @@ const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
-var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+// var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL:
+//   "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
+// });
+
+var serviceAccount = require("./ServiceAccount/devServiceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL:
-    "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
 });
 
 class UnauthenticatedError extends Error {
@@ -40,7 +46,6 @@ function roleIsValid(role) {
 }
 
 // Cloud functions below //
-
 exports.createUser = functions.https.onCall(async (data, context) => {
   try {
     //Checking that the user calling the Cloud Function is authenticated
@@ -49,31 +54,40 @@ exports.createUser = functions.https.onCall(async (data, context) => {
         "The user is not authenticated. Only authenticated Admin users can create new users."
       );
     }
+
     //Checking that the user calling the Cloud Function is an Admin user
     const callerUid = context.auth.uid; //uid of the user calling the Cloud Function
+
     const callerUserRecord = await admin.auth().getUser(callerUid);
+
     if (!callerUserRecord.customClaims.admin) {
       throw new NotAnAdminError("Only Admin users can create new users.");
     }
+
     //Checking that the new user role is valid
     const role = data.role;
+
     if (!roleIsValid(role)) {
       throw new InvalidRoleError('The "' + role + '" role is not a valid role');
     }
+
     const userCreationRequest = {
       userDetails: data,
       status: "Pending",
       createdBy: callerUid,
       createdOn: FieldValue.serverTimestamp(),
     };
+
     const userCreationRequestRef = await admin
       .firestore()
       .collection("userCreationRequests")
       .add(userCreationRequest);
+
     const newUser = {
       email: data.email,
       password: data.password,
     };
+
     const userRecord = await admin.auth().createUser(newUser);
 
     const userId = userRecord.uid;
@@ -85,7 +99,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
 
     let userDoc = admin.firestore().collection("Users").doc(userId);
 
-    userDoc.set({
+    let firebaseUserData = {
       activities_and_accumulated_time: [
         {
           accumulated_time: 0,
@@ -101,12 +115,20 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       total_confirmed_hours: 0,
       first_name: data.firstName,
       last_name: data.lastName,
-    });
+    };
+
+    let userData = {
+      id: userId,
+      ...firebaseUserData,
+    };
+
+    userDoc.set(firebaseUserData);
 
     await userCreationRequestRef.update({ status: "Treated" });
 
     return {
       result: "The new user has been successfully created.",
+      createdUser: userData,
     };
   } catch (error) {
     if (error.type === "UnauthenticatedError") {
@@ -125,6 +147,17 @@ exports.createUser = functions.https.onCall(async (data, context) => {
   }
 });
 
+exports.deleteUser = functions.auth.user().onDelete((user, context) => {
+  let userUid = user.uid;
+
+  admin
+    .firestore()
+    .collection("Users")
+    .doc(userUid)
+    .delete()
+    .then(() => console.log(`Deleted user '${userUid}' successfully!`));
+});
+
 const database = admin.firestore();
 
 exports.updateMonth = functions.pubsub
@@ -138,9 +171,9 @@ exports.updateMonth = functions.pubsub
           doc.ref.update({ total_confirmed_hours: 0, total_hours_month: 0 });
         });
       });
-
     return console.log("Successful reset of time for month and approvedtimes");
   });
+
 exports.updateYear = functions.pubsub
   .schedule("0 0 1 1 *")
   .onRun(async (context) => {
@@ -152,9 +185,9 @@ exports.updateYear = functions.pubsub
           doc.ref.update({ total_hours_year: 0 });
         });
       });
-
     return console.log("Successful reset of time for year");
   });
+
 // exports.assignAdminClaim = functions.firestore
 //   .document("tempoAssignClaim/{tempoId}")
 //   .onCreate((snap, context) => {
@@ -163,5 +196,5 @@ exports.updateYear = functions.pubsub
 
 //     return admin
 //       .auth()
-//       .setCustomUserClaims("WKQm996MKHZooq4v1cDCMEkJgmY2", claims);
+//       .setCustomUserClaims("VZyL8bD0RxXp5UVFpSubX8r4a2x1", claims);
 //   });

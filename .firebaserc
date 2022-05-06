@@ -1,5 +1,7 @@
 {
   "projects": {
-    "default": "do-good-get-good-2f6cc"
-  }
+    "default": "do-good-get-good-2f6cc",
+    "dev": "dev-do-good-get-good"
+  },
+  "targets": {}
 }

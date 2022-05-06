@@ -9,6 +9,7 @@ import {
   Platform,
   ScrollView,
   TextInput,
+  Alert,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -18,6 +19,7 @@ import { Icon, Dialog } from "react-native-elements";
 import DropDownSmall from "../components/DropDownSmall";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import functions from "@react-native-firebase/functions";
@@ -46,6 +48,9 @@ export function CreateActivity({ route, navigation }) {
   const [loading, setLoading] = useState(false);
   const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
     useState([]);
+
+  const setUserData = useAdminHomePageFunction().setUserData;
+  const setNewUser = useAdminHomePageFunction().setNewUser;
 
   useEffect(() => {
     if (newUserInfo != null) {
@@ -132,10 +137,10 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
-  function linkChoosenActivityToNewUser() {
+  async function linkChoosenActivityToNewUser() {
     if (createNewUser != null) {
       var createUser = functions().httpsCallable("createUser");
-      createUser({
+      await createUser({
         firstName: createNewUser.firstName,
         lastName: createNewUser.lastName,
         email: createNewUser.email,
@@ -143,13 +148,55 @@ export function CreateActivity({ route, navigation }) {
         role: "user",
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
+        let newUser = res.data.createdUser;
+
+        // Save new user locally
+        setUserData((prev) => [...prev, newUser]);
+        setNewUser(newUser);
+
         setLoading(false);
-        navigation.navigate("HomePage");
+
+        Alert.alert(
+          "Skapa användare",
+          `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
+          [{ text: "OK", onPress: () => navigation.navigate("HomePage") }]
+        );
       });
     } else {
       console.log("ingen ny användare");
     }
   }
+
+  useEffect(() => {
+    let newUser = createActivityContext.newUserInfo;
+    if (newUser != null) {
+      // Save new user locally
+      setUserData((prev) => [...prev, newUser]);
+      setNewUser(newUser);
+
+      createActivityContext.setNewUserInfo(null);
+
+      setLoading(false);
+
+      Alert.alert(
+        "Skapa aktivitet och användare",
+        `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
+        [
+          {
+            text: "OK",
+            onPress: () => {
+              setTitle("");
+              setPlace("");
+              setCity("");
+              setDescription("");
+              setCheckBoxPressed(false);
+              navigation.navigate("HomePage");
+            },
+          },
+        ]
+      );
+    }
+  }, [createActivityContext.newUserInfo]);
 
   function sendNewActivityToCreateActivityContext() {
     if (
@@ -183,18 +230,7 @@ export function CreateActivity({ route, navigation }) {
           tg_favorite: checkBoxPressed,
         };
       }
-      createActivityContext
-        .createNewActivityAndUser(newActivityAndUser)
-        .then(() => {
-          setLoading(false);
-          navigation.navigate("HomePage");
-        });
-
-      setTitle("");
-      setPlace("");
-      setCity("");
-      setDescription("");
-      setCheckBoxPressed(false);
+      createActivityContext.createNewActivityAndUser(newActivityAndUser);
     }
 
     if (title != " " && title.trim()) {
@@ -479,7 +515,7 @@ export function CreateActivity({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView>
+      <ScrollView keyboardDismissMode={"on-drag"}>
         <View style={styles.container}>
           <Text style={styles.textMainTitle}>{chooseTitle()}</Text>
           <Text style={styles.numbersNearTitle}>

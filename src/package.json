@@ -30,6 +30,7 @@
     "react-dom": "^17.0.2",
     "react-native": "^0.68.1",
     "react-native-calendars": "^1.1282.0",
+    "react-native-config": "^1.4.5",
     "react-native-elements": "^3.4.2",
     "react-native-gesture-handler": "~1.10.2",
     "react-native-linear-gradient": "^2.5.6",

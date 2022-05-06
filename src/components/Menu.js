@@ -14,6 +14,8 @@ import { useNetInfo } from "@react-native-community/netinfo";
 import colors from "../assets/theme/colors";
 import { useNavigation } from "@react-navigation/native";
 
+import Config from "react-native-config";
+
 const Menu = () => {
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
@@ -29,6 +31,14 @@ const Menu = () => {
     return (
       <View>
         <Text style={styles.ifNoInternet}>{noInternetText}</Text>
+      </View>
+    );
+  };
+
+  const devRelease = () => {
+    return (
+      <View style={{ alignSelf: "center" }}>
+        <Text style={{ fontSize: 16 }}>Utvecklarmiljö</Text>
       </View>
     );
   };
@@ -71,7 +81,7 @@ const Menu = () => {
         </Pressable>
       </View>
       {inetInfo.isConnected === false && ifNoInternetConnection()}
-
+      {Config.NODE_ENV === "dev" && devRelease()}
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
     </>
   );

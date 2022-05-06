@@ -44,6 +44,8 @@ export const CreateActivityProvider = ({ children }) => {
     popular: "",
   });
 
+  const [newUserInfo, setNewUserInfo] = useState(null);
+
   useEffect(() => {
     if (showAllActiveActivities === true) {
       let tempArray = [];
@@ -127,7 +129,12 @@ export const CreateActivityProvider = ({ children }) => {
             password: newActivityAndUser.newUserInfo.password,
             role: "user",
             activityId: newActivity.id,
-          }).catch((error) => console.log(error));
+          })
+            .then((res) => {
+              let newUser = res.data.createdUser;
+              setNewUserInfo(newUser);
+            })
+            .catch((error) => console.log(error));
         }
       });
   };
@@ -204,6 +211,9 @@ export const CreateActivityProvider = ({ children }) => {
         setSearchWordHasNoMatch: setSearchWordHasNoMatch,
         word: setSearchingWord,
         showSearchObject: searchArray,
+
+        newUserInfo: newUserInfo,
+        setNewUserInfo: setNewUserInfo,
       }}
     >
       {children}

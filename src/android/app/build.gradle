@@ -1,5 +1,12 @@
-apply plugin: "com.android.application"
 apply plugin: 'com.android.application'
+
+
+project.ext.envConfigFiles = [
+    dev: ".env.dev",
+    prod: ".env.prod"
+]
+
+apply from: project(':react-native-config').projectDir.getPath() + "/dotenv.gradle"
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'com.google.firebase.crashlytics'
 
@@ -135,13 +142,30 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.src"
+        applicationId "se.technogarden.dogoodgetgood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
         versionCode 1
         versionName "0.1"
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "se.technogarden.dogoodgetgood.dev"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
+        }
+        prod {
+            minSdkVersion rootProject.ext.minSdkVersion
+            applicationId "se.technogarden.dogoodgetgood"
+            targetSdkVersion rootProject.ext.targetSdkVersion
+            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
+        }
+    }
+
     splits {
         abi {
             reset()
