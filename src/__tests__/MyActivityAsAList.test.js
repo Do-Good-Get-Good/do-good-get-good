@@ -26,7 +26,31 @@ jest.mock("../context/ActivityContext", () => {
       admin_id: "aaa",
       date: { toDate: () => new Date() },
       doc_id: "z7kknsEWFeJPhHPev2lA",
-      statusConfirmed: false,
+      statusConfirmed: true,
+      time: 1.5,
+      user_id: "asd",
+    },
+  ];
+  const timeandstatusOldTimeEntriesContext = [
+    {
+      activity_id: "asd",
+      activity_title: "Missing people",
+      admin_id: "aaa",
+      date: { toDate: () => new Date() },
+      doc_id: "z7kknsEWFeJPhHPev2lA2222",
+      statusConfirmed: true,
+      time: 1.5,
+      user_id: "asd",
+    },
+  ];
+  const allListOfTimeEntryFromContext = [
+    {
+      activity_id: "asd",
+      activity_title: "Missing people",
+      admin_id: "aaa",
+      date: { toDate: () => new Date() },
+      doc_id: "gkknsEWFeJ65465edgcyu",
+      statusConfirmed: true,
       time: 1.5,
       user_id: "asd",
     },
@@ -43,12 +67,12 @@ jest.mock("../context/ActivityContext", () => {
 
   return {
     useActivityFunction: () => ({
-      allListOfTimeEntry: timeandstatusContext,
+      allListOfTimeEntry: allListOfTimeEntryFromContext,
       lastFiveTimeEntries: timeandstatusContext,
       myActivities: myActivitiesContext,
       setLimitAmountForTimeEntries: jest.fn(),
       addMoreTimeEntriesAfterScroll: true,
-      timeEntriesAfterScrolling: timeandstatusContext,
+      timeEntriesAfterScrolling: timeandstatusOldTimeEntriesContext,
       userHasLassThanFiveTimeEntriesForLastTwoMonthes: timeandstatusContext,
       setAddMoreTimeEntriesAfterScroll: jest.fn(),
       setScrollToGetMoreTimeEntries: jest.fn(),
@@ -95,9 +119,10 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const { getByTestId } = render(<MyActivityAsAList />);
-    const button = getByTestId("editButton");
+    const { getAllByTestId } = render(<MyActivityAsAList />);
+    const button = getAllByTestId("editButton")[0];
     fireEvent.press(button);
+    expect(button).toBeTruthy();
   });
 
   it("the edit button is unabled when statusConfirmed is true", () => {

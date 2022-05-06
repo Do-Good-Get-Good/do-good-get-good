@@ -48,16 +48,18 @@ jest.mock("../context/ActivityCardContext", () => ({
   }),
 }));
 
-const adminGallery = {
-  active: true,
-  city: "city",
-  description: "description",
-  id: "id",
-  photo: "symbol_earth",
-  place: "place",
-  popular: true,
-  title: "title",
-};
+const adminGallery = [
+  {
+    active: true,
+    city: "city",
+    description: "description",
+    id: "id",
+    photo: "symbol_earth",
+    place: "place",
+    popular: true,
+    title: "title",
+  },
+];
 
 const inactiveActivities = [
   {

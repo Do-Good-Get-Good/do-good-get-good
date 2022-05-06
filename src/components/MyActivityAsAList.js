@@ -121,7 +121,6 @@ function MyActivityAsAList({ navigation }) {
         }
       }
 
-      console.log("count  ", count);
       if (entryTime.noMoreData != true) {
         if (count < amount) {
           entryTime.setScrollToGetMoreTimeEntries(true);
@@ -144,13 +143,13 @@ function MyActivityAsAList({ navigation }) {
     }
   }, [selectedOptionForSorting, timeEntryList, timeEntriesTwoMonthsBefore]);
 
-  function viewOfTimeEntries(activity, key, possibleToMakeChanges) {
+  function viewOfTimeEntries(activity, key, index, possibleToMakeChanges) {
     if (
       selectedOptionForSorting === activity.statusConfirmed ||
       selectedOptionForSorting === null
     ) {
       return (
-        <View index={key} key={key} style={styles.activityIside}>
+        <View index={index} key={key} style={styles.activityIside}>
           <Text
             style={{
               fontWeight: !activity.statusConfirmed ? "bold" : "normal",
@@ -212,11 +211,11 @@ function MyActivityAsAList({ navigation }) {
 
   const twoArraysForHomePage = () => {
     return [
-      timeEntryListOnlyFive.map((activity) =>
-        viewOfTimeEntries(activity, activity.timeEntryID, true)
+      timeEntryListOnlyFive.map((activity, index) =>
+        viewOfTimeEntries(activity, activity.timeEntryID, index, true)
       ),
-      oldTimeEntriesForHomePage.map((activity) =>
-        viewOfTimeEntries(activity, activity.timeEntryID, false)
+      oldTimeEntriesForHomePage.map((activity, index) =>
+        viewOfTimeEntries(activity, index, index, false)
       ),
     ];
   };
@@ -264,6 +263,7 @@ function MyActivityAsAList({ navigation }) {
         </View>
         {rout.name === "HomePage" ? (
           <TouchableOpacity
+            style={{ marginLeft: 16 }}
             testID="showAllButton"
             onPress={() => pressedButtonShowAll()}
           >
