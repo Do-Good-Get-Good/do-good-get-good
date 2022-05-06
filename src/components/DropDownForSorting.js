@@ -32,10 +32,7 @@ export function DropDownForSorting({ choice }) {
   const isFocused = useIsFocused();
 
   const pressDropDawn = () => {
-    setOpenDropDown(true);
-    if (openDropDown === true) {
-      setOpenDropDown(false);
-    }
+    setOpenDropDown(!openDropDown);
   };
 
   function pressSelectionInsideDropDown(selection) {
@@ -132,7 +129,6 @@ const styles = StyleSheet.create({
     right: 0,
     left: 0,
     backgroundColor: colors.background,
-    elevation: 3,
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -149,7 +145,6 @@ const styles = StyleSheet.create({
   insideSortBox: {
     paddingVertical: 8,
     paddingHorizontal: 10,
-
     overflow: "hidden",
     elevation: 3,
   },
