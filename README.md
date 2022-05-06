@@ -24,11 +24,15 @@ The app is a cross platform application built in react native. Development focus
 10. Standing in the root for the source code run:
     
     **Android:** 
+    
     Development build: `npx react-native run-android --variant=devDebug --appIdSuffix=dev`
+    
     Production build: `npx react-native run-android --variant=prodDebug`
     
     **iOS:** 
+    
     Development build: `npx react-native run-ios --scheme "srcDev"`
+    
     Production build: `npx react-native run-ios`
 
 #### **Note that you need to have an Android emulator running before you run the _Android_ start command** ####
