@@ -48,16 +48,18 @@ jest.mock("../context/ActivityCardContext", () => ({
   }),
 }));
 
-const adminGallery = {
-  active: true,
-  city: "city",
-  description: "description",
-  id: "id",
-  photo: "symbol_earth",
-  place: "place",
-  popular: true,
-  title: "title",
-};
+const adminGallery = [
+  {
+    active: true,
+    city: "city",
+    description: "description",
+    id: "id",
+    photo: "symbol_earth",
+    place: "place",
+    popular: true,
+    title: "title",
+  },
+];
 
 const inactiveActivities = [
   {
@@ -112,6 +114,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
     waitFor(() => {
@@ -125,6 +128,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -139,6 +143,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -153,6 +158,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -170,6 +176,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -184,6 +191,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
 
@@ -199,6 +207,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
+        choiceFromDropDown={"Namn"}
       />
     );
     expect(getAllByText("Inga resultat").length).toBe(1);
