@@ -2,6 +2,7 @@ import React, { useContext, useEffect, useState } from "react";
 import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
+import DropDownForSorting from "../components/DropDownForSorting";
 
 import RadioButton from "../components/RadioButton";
 import Suggestions from "../components/Suggestions";
@@ -20,6 +21,8 @@ export function AdminActivityGallery({ navigation }) {
 
   const [arrayOfActiveActivities, setArrayOfActiveActivities] = useState([]);
   const [inactiveActivities, setInactiveActivities] = useState([]);
+  const [selectedOptionForSorting, setSelectedOptionForSorting] =
+    useState(null);
 
   useEffect(() => {
     setArrayOfActiveActivities(createActivityContext.activeActivities);
@@ -152,11 +155,16 @@ export function AdminActivityGallery({ navigation }) {
         <SearchBarComponent />
         <View style={styles.radioButtonDropdownView}>
           <RadioButton style={styles.radioButtonContainer} />
-          <View style={styles.dropDown}>
-            <Text style={{ ...typography.b1 }}>Sorting</Text>
+          <View>
+            <DropDownForSorting
+              choice={(selectedOptionForSorting) =>
+                setSelectedOptionForSorting(selectedOptionForSorting)
+              }
+            />
           </View>
         </View>
         <Suggestions
+          choiceFromDropDown={selectedOptionForSorting}
           navigation={navigation}
           inactiveActivities={inactiveActivities}
           adminGallery={arrayOfActiveActivities}
@@ -182,6 +190,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     justifyContent: "space-between",
+    zIndex: 1,
   },
   radioButtonContainer: {
     flex: 1.6,

@@ -14,13 +14,14 @@ export const SuggestionProvider = ({ children }) => {
     if (isFinished === false) {
       const popularActivities = async () => {
         let tempArray = [];
+        let activities = [];
         await firestore()
           .collection("Activities")
           .where("tg_favorite", "==", true)
           .get()
           .then((popularTrueActivities) => {
-            let activities = popularTrueActivities.docs.map((doc) =>
-              doc.data()
+            popularTrueActivities.forEach((doc) =>
+              activities.push({ ...doc.data(), doc_id: doc.id })
             );
 
             if (
@@ -29,7 +30,8 @@ export const SuggestionProvider = ({ children }) => {
             ) {
               for (let i = 0; i < activities.length; i++) {
                 const dataInfo = {
-                  id: activities[i].activityID,
+                  id: activities[i].doc_id,
+
                   title: activities[i].activity_title,
                   city: activities[i].activity_city,
                   place: activities[i].activity_place,
