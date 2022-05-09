@@ -39,7 +39,7 @@
 		0218B2E7BBBE4F989BDD97E4 /* EvilIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = EvilIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/EvilIcons.ttf"; sourceTree = "<group>"; };
 		0727725A7526487A8EF62C5D /* FontAwesome5_Brands.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Brands.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Brands.ttf"; sourceTree = "<group>"; };
 		0E2C35391691476EA5A37C78 /* Feather.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Feather.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Feather.ttf"; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* src.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = src.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* Do Good Get Good Debug.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Do Good Get Good Debug.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = src/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = src/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -70,7 +70,7 @@
 		B7E8C7F46FA11293F053A190 /* Pods-src.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src.debug.xcconfig"; path = "Target Support Files/Pods-src/Pods-src.debug.xcconfig"; sourceTree = "<group>"; };
 		BB2F792C24A3F905000567C9 /* Expo.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Expo.plist; sourceTree = "<group>"; };
 		BF7DC1802821635F00048E60 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		BF7DC9F8282133A7001EECD7 /* src Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "src Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		BF7DC9F8282133A7001EECD7 /* DGGG iPhone Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DGGG iPhone Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7DC9F9282133A7001EECD7 /* src copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "src copy-Info.plist"; path = "/Users/jimmy/Documents/Technogarden/do-good-get-good/src/ios/src copy-Info.plist"; sourceTree = "<absolute>"; };
 		C06A84A640654379BB99EE18 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
 		D6CCEF25D2A54B9483F6C668 /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
@@ -181,8 +181,8 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* src.app */,
-				BF7DC9F8282133A7001EECD7 /* src Dev.app */,
+				13B07F961A680F5B00A75B9A /* Do Good Get Good Debug.app */,
+				BF7DC9F8282133A7001EECD7 /* DGGG iPhone Dev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -235,9 +235,9 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		13B07F861A680F5B00A75B9A /* src */ = {
+		13B07F861A680F5B00A75B9A /* DGGG iPhone */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "src" */;
+			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DGGG iPhone" */;
 			buildPhases = (
 				08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
@@ -253,14 +253,14 @@
 			);
 			dependencies = (
 			);
-			name = src;
+			name = "DGGG iPhone";
 			productName = src;
-			productReference = 13B07F961A680F5B00A75B9A /* src.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* Do Good Get Good Debug.app */;
 			productType = "com.apple.product-type.application";
 		};
-		BF7DC9DF282133A7001EECD7 /* src Dev */ = {
+		BF7DC9DF282133A7001EECD7 /* DGGG iPhone Dev */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = BF7DC9F5282133A7001EECD7 /* Build configuration list for PBXNativeTarget "src Dev" */;
+			buildConfigurationList = BF7DC9F5282133A7001EECD7 /* Build configuration list for PBXNativeTarget "DGGG iPhone Dev" */;
 			buildPhases = (
 				39877B59E5E65FC46D8CF80E /* [CP] Check Pods Manifest.lock */,
 				BF7DC9E1282133A7001EECD7 /* Start Packager */,
@@ -276,9 +276,9 @@
 			);
 			dependencies = (
 			);
-			name = "src Dev";
+			name = "DGGG iPhone Dev";
 			productName = src;
-			productReference = BF7DC9F8282133A7001EECD7 /* src Dev.app */;
+			productReference = BF7DC9F8282133A7001EECD7 /* DGGG iPhone Dev.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -291,7 +291,6 @@
 				ORGANIZATIONNAME = "Technogarden AB";
 				TargetAttributes = {
 					13B07F861A680F5B00A75B9A = {
-						DevelopmentTeam = J764NBMJTL;
 						LastSwiftMigration = 1120;
 					};
 				};
@@ -309,8 +308,8 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				13B07F861A680F5B00A75B9A /* src */,
-				BF7DC9DF282133A7001EECD7 /* src Dev */,
+				13B07F861A680F5B00A75B9A /* DGGG iPhone */,
+				BF7DC9DF282133A7001EECD7 /* DGGG iPhone Dev */,
 			);
 		};
 /* End PBXProject section */
@@ -592,7 +591,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J764NBMJTL;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -610,7 +609,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
-				PRODUCT_NAME = src;
+				PRODUCT_NAME = "Do Good Get Good Debug";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -624,7 +623,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J764NBMJTL;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				INFOPLIST_FILE = src/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -637,7 +636,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
-				PRODUCT_NAME = src;
+				PRODUCT_NAME = "Do Good Get Good";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
 			};
@@ -761,13 +760,13 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J764NBMJTL;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
 					"FB_SONARKIT_ENABLED=1",
 				);
-				INFOPLIST_FILE = "src copy-Info.plist";
+				INFOPLIST_FILE = src/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -793,8 +792,8 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = J764NBMJTL;
-				INFOPLIST_FILE = "src copy-Info.plist";
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
+				INFOPLIST_FILE = src/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 11.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -815,7 +814,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "src" */ = {
+		13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DGGG iPhone" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				13B07F941A680F5B00A75B9A /* Debug */,
@@ -833,7 +832,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		BF7DC9F5282133A7001EECD7 /* Build configuration list for PBXNativeTarget "src Dev" */ = {
+		BF7DC9F5282133A7001EECD7 /* Build configuration list for PBXNativeTarget "DGGG iPhone Dev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				BF7DC9F6282133A7001EECD7 /* Debug */,

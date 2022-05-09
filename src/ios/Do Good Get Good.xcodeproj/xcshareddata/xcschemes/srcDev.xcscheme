@@ -24,8 +24,8 @@
             <BuildableReference
                BuildableIdentifier = "primary"
                BlueprintIdentifier = "BF7DC9DF282133A7001EECD7"
-               BuildableName = "src Dev.app"
-               BlueprintName = "src Dev"
+               BuildableName = "DGGG App Dev.app"
+               BlueprintName = "DGGG iPhone Dev"
                ReferencedContainer = "container:Do Good Get Good.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -54,8 +54,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF7DC9DF282133A7001EECD7"
-            BuildableName = "src Dev.app"
-            BlueprintName = "src Dev"
+            BuildableName = "DGGG App Dev.app"
+            BlueprintName = "DGGG iPhone Dev"
             ReferencedContainer = "container:Do Good Get Good.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
@@ -71,8 +71,8 @@
          <BuildableReference
             BuildableIdentifier = "primary"
             BlueprintIdentifier = "BF7DC9DF282133A7001EECD7"
-            BuildableName = "src Dev.app"
-            BlueprintName = "src Dev"
+            BuildableName = "DGGG App Dev.app"
+            BlueprintName = "DGGG iPhone Dev"
             ReferencedContainer = "container:Do Good Get Good.xcodeproj">
          </BuildableReference>
       </BuildableProductRunnable>
