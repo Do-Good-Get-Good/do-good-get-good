@@ -12,6 +12,7 @@ import { ChangeActivity } from "./screens/ChangeActivity";
 
 import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
+import DownloadUserData from "./screens/DownloadUserData";
 
 const Stack = createNativeStackNavigator();
 export const Mystack = () => {
@@ -38,6 +39,7 @@ export const Mystack = () => {
         <Stack.Screen name="Faq" component={Faq} />
         <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
+        <Stack.Screen name="DownloadUserData" component={DownloadUserData} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -130,6 +130,17 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </Pressable>
+
+          <Pressable
+            testID="menuOverlay.activitiesButton"
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              openOverlay();
+              navigation.navigate("DownloadUserData");
+            }}
+          >
+            <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
+          </Pressable>
         </View>
         <Pressable
           testID="menuOverlay.logoutButton"
