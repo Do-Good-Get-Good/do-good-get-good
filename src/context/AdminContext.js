@@ -21,6 +21,8 @@ export const AdminProvider = ({ children }) => {
           .then((response) => {
             if (response.data().role === "admin") {
               setUserLevel("admin");
+            } else if (response.data().role === "superadmin") {
+              setUserLevel("superadmin");
             } else {
               setUserLevel("user");
             }
