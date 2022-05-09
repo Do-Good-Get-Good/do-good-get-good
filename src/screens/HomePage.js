@@ -28,7 +28,7 @@ export const HomePage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
-      {userLevel === "admin" && (
+      {(userLevel === "admin" || userLevel === "superadmin") && (
         <>
           <ScrollView style={styles.container}>
             <ConfirmActivities />

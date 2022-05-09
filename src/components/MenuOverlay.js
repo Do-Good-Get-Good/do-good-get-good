@@ -17,18 +17,9 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const response = useAdminCheckFunction();
+  const userLevel = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   const entryTime = useActivityFunction();
-
-  useEffect(() => {
-    const checkIfUserIsAdmin = () => {
-      if (response === "admin") setIsAdmin(true);
-      else setIsAdmin(false);
-    };
-    checkIfUserIsAdmin();
-  }, [isVisible]);
 
   function signOutFunction() {
     auth()
@@ -83,7 +74,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
           </Pressable>
 
-          {isAdmin ? (
+          {userLevel === "admin" || userLevel === "superadmin" ? (
             <Pressable
               testID="menuOverlay.activitiesButton"
               style={styles.menuOverlayLinkStyling}
@@ -103,7 +94,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               onPress={() => {
                 openOverlay();
                 navigation.navigate("MyTimePage");
-                entryTime.setLimitAmountForTimeEntries(20);
               }}
             >
               <Text style={styles.menuOverlayLinkText}>Min tid</Text>
@@ -130,7 +120,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </Pressable>
-          {response === "superadmin" && (
+          {userLevel === "superadmin" && (
             <Pressable
               testID="menuOverlay.activitiesButton"
               style={styles.menuOverlayLinkStyling}
