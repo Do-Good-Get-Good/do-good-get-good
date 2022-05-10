@@ -59,6 +59,7 @@ export function CreateActivity({ route, navigation }) {
         lastName: newUserInfo.last_name,
         email: newUserInfo.email,
         password: newUserInfo.password,
+        role: newUserInfo.role,
       });
     }
   }, [newUserInfo]);
@@ -145,7 +146,7 @@ export function CreateActivity({ route, navigation }) {
         lastName: createNewUser.lastName,
         email: createNewUser.email,
         password: createNewUser.password,
-        role: "user",
+        role: createNewUser.role,
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
         let newUser = res.data.createdUser;
