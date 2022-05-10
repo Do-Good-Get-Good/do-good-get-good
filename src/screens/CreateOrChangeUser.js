@@ -175,7 +175,7 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
       setPlaceholderFilledUp(true);
       setPlaceholder("");
     } else {
-      if (placeholder === "admin" || "user") {
+      if (placeholder === "Admin" || "User" || "Super admin") {
         setPlaceholderFilledUp(true);
       } else {
         setPlaceholderFilledUp(false);
@@ -374,11 +374,8 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
         )}
 
         {userLevel === "superadmin" && (
-          <View>
-            <TouchableOpacity
-              style={styles.test}
-              onPress={() => setExpanded(!expanded)}
-            >
+          <View style={styles.dropdownShadow}>
+            <TouchableOpacity onPress={() => setExpanded(!expanded)}>
               <View style={[styles.styleForDropdown, roleBorderStyle()]}>
                 <Text style={styles.placeholderText}>{placeholder}</Text>
                 <Icon
@@ -589,7 +586,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginLeft: 2,
   },
-  test: {
+  dropdownShadow: {
     ...Platform.select({
       ios: {
         shadowOffset: {
