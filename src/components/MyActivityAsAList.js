@@ -250,10 +250,11 @@ function MyActivityAsAList({ navigation }) {
                 }}
                 onEndReachedThreshold={0.05}
                 keyExtractor={(item) => item.timeEntryID}
-                renderItem={({ item }) =>
+                renderItem={({ item, index }) =>
                   viewOfTimeEntries(
                     item,
                     item.timeEntryID,
+                    index,
                     item.possibleToMakeChanges
                   )
                 }
