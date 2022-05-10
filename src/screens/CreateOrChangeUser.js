@@ -24,10 +24,12 @@ import { useAdminCheckFunction } from "../context/AdminContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
   const userLevel = useAdminCheckFunction();
   const changeUserInfoContext = useChangeUserInfoFunction();
+  const createActivityContext = useCreateActivityFunction();
   const {
     createNewUser,
 
@@ -196,7 +198,10 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
             <Text style={styles.buttonSaveText}>Nästa</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              createActivityContext.chooseInDropDown(null);
+              navigation.goBack();
+            }}
             style={styles.buttonCancel}
           >
             <LinearGradient
@@ -221,7 +226,10 @@ export const CreateOrChangeUser = ({ route, navigation }) => {
           </TouchableOpacity>
           <TouchableOpacity
             style={styles.buttonCancel}
-            onPress={() => navigation.goBack()}
+            onPress={() => {
+              createActivityContext.chooseInDropDown(null);
+              navigation.goBack();
+            }}
           >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}

@@ -14,7 +14,7 @@ export function DropDownSmall({}) {
   const [sortArray, setSortArray] = useState([]);
   const [mainWordAdminGallery, setMainWordAdminGallery] = useState("Datum");
   const [mainWordCreateActivity, setMainWordCreateActivity] =
-    useState("Aktivitet");
+    useState("Välj aktivitet");
   const sortingAdminGallery = [
     { title: "Favoriter" },
     { title: "Namn" },

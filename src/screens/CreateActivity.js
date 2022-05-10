@@ -160,7 +160,15 @@ export function CreateActivity({ route, navigation }) {
         Alert.alert(
           "Skapa användare",
           `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
-          [{ text: "OK", onPress: () => navigation.navigate("HomePage") }]
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                createActivityContext.chooseInDropDown(null);
+                navigation.navigate("HomePage");
+              },
+            },
+          ]
         );
       });
     } else {
@@ -212,6 +220,7 @@ export function CreateActivity({ route, navigation }) {
           setCity("");
           setDescription("");
           setCheckBoxPressed(false);
+          createActivityContext.chooseInDropDown(null);
           navigation.navigate("HomePage");
         },
       },
@@ -527,8 +536,6 @@ export function CreateActivity({ route, navigation }) {
       whileCreatingNewUser === true
     ) {
       return <>{viewAddExistingActivityToTheUser()}</>;
-    } else {
-      console.log("Something went wrong");
     }
   }
 
