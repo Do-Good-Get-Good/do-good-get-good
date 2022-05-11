@@ -32,6 +32,9 @@ jest.mock("@react-native-firebase/auth", () => {
   const auth = jest.requireActual("@react-native-firebase/auth");
   return () => ({
     ...auth,
+    currentUser: {
+      email: "test@test.com",
+    },
     signOut: mockAuthSignOut,
   });
 });
