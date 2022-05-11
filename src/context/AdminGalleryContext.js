@@ -20,7 +20,6 @@ export const AdminGalleryProvider = ({ children }) => {
 
   useEffect(() => {
     let inactiveArray = [];
-
     const setInactive = async () => {
       try {
         await firestore()
@@ -110,6 +109,7 @@ export const AdminGalleryProvider = ({ children }) => {
         setSearchWordHasNoMatch: setSearchWordHasNoMatch,
         cleanUpSearchBarComponent: cleanUpSearchBarComponent,
         setCleanUpSearchBarComponent: setCleanUpSearchBarComponent,
+        setInactiveActivitiesGallery: setInactiveActivitiesGallery,
       }}
     >
       {children}

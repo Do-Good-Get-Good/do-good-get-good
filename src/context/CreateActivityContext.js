@@ -200,6 +200,7 @@ export const CreateActivityProvider = ({ children }) => {
         sendChoiceFromDropDown: answerFromDropDownInCreateActivity,
         sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
+        setAllActiveActvivitiesFB: setAllActiveActvivitiesFB,
 
         createNewActivityAndUser: createActivityAndLinkNewUser,
 
