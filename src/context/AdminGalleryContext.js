@@ -22,9 +22,9 @@ export const AdminGalleryProvider = ({ children }) => {
     let inactiveArray = [];
     const setInactive = async () => {
       try {
-        getAllInactiveActivities().then((allActiveActivities) => {
-          let activities = allActiveActivities.docs.map((doc) => doc.data());
-          let docId = allActiveActivities.docs.map((doc) => doc.id);
+        getAllInactiveActivities().then((allInactiveActivities) => {
+          let activities = allInactiveActivities.docs.map((doc) => doc.data());
+          let docId = allInactiveActivities.docs.map((doc) => doc.id);
 
           if (
             activities != null &&

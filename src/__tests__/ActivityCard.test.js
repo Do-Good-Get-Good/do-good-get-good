@@ -18,6 +18,12 @@ jest.mock("../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+jest.mock("../context/AdminGalleryContext", () => ({
+  useAdminGalleryFunction: () => ({
+    setCleanUpSearchBarComponent: jest.fn(),
+  }),
+}));
+
 jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
