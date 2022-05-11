@@ -59,6 +59,7 @@ export function CreateActivity({ route, navigation }) {
         lastName: newUserInfo.last_name,
         email: newUserInfo.email,
         password: newUserInfo.password,
+        role: newUserInfo.role,
       });
     }
   }, [newUserInfo]);
@@ -145,7 +146,7 @@ export function CreateActivity({ route, navigation }) {
         lastName: createNewUser.lastName,
         email: createNewUser.email,
         password: createNewUser.password,
-        role: "user",
+        role: createNewUser.role,
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
         let newUser = res.data.createdUser;
@@ -159,7 +160,15 @@ export function CreateActivity({ route, navigation }) {
         Alert.alert(
           "Skapa användare",
           `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
-          [{ text: "OK", onPress: () => navigation.navigate("HomePage") }]
+          [
+            {
+              text: "OK",
+              onPress: () => {
+                createActivityContext.chooseInDropDown(null);
+                navigation.navigate("HomePage");
+              },
+            },
+          ]
         );
       });
     } else {
@@ -178,25 +187,45 @@ export function CreateActivity({ route, navigation }) {
 
       setLoading(false);
 
-      Alert.alert(
-        "Skapa aktivitet och användare",
-        `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
-        [
-          {
-            text: "OK",
-            onPress: () => {
-              setTitle("");
-              setPlace("");
-              setCity("");
-              setDescription("");
-              setCheckBoxPressed(false);
-              navigation.navigate("HomePage");
-            },
-          },
-        ]
-      );
+      alertPopUp(false, newUser);
     }
   }, [createActivityContext.newUserInfo]);
+
+  useEffect(() => {
+    let onlyActivityCreated = createActivityContext.onlyActivityCreated;
+    if (onlyActivityCreated) {
+      alertPopUp(true);
+      createActivityContext.setOnlyActivityCreated(false);
+    }
+  }, [createActivityContext.onlyActivityCreated]);
+
+  function alertPopUp(onlyActivityCreated, newUser) {
+    let alertTitle = "";
+    let alertMessage = "";
+
+    if (onlyActivityCreated) {
+      alertTitle = "Skapa aktivitet";
+      alertMessage = `Aktiviteten '${title}' har skapats!`;
+    } else {
+      alertTitle = "Skapa aktivitet och användare";
+      alertMessage = `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`;
+    }
+
+    Alert.alert(alertTitle, alertMessage, [
+      {
+        text: "OK",
+        onPress: () => {
+          setTitle("");
+          setPlace("");
+          setCity("");
+          setDescription("");
+          setCheckBoxPressed(false);
+          createActivityContext.chooseInDropDown(null);
+          navigation.navigate("HomePage");
+        },
+      },
+    ]);
+  }
 
   function sendNewActivityToCreateActivityContext() {
     if (
@@ -507,8 +536,6 @@ export function CreateActivity({ route, navigation }) {
       whileCreatingNewUser === true
     ) {
       return <>{viewAddExistingActivityToTheUser()}</>;
-    } else {
-      console.log("Something went wrong");
     }
   }
 

@@ -45,6 +45,7 @@ export const CreateActivityProvider = ({ children }) => {
   });
 
   const [newUserInfo, setNewUserInfo] = useState(null);
+  const [onlyActivityCreated, setOnlyActivityCreated] = useState(null);
 
   useEffect(() => {
     if (showAllActiveActivities === true) {
@@ -135,6 +136,8 @@ export const CreateActivityProvider = ({ children }) => {
               setNewUserInfo(newUser);
             })
             .catch((error) => console.log(error));
+        } else {
+          setOnlyActivityCreated(true);
         }
       });
   };
@@ -214,6 +217,9 @@ export const CreateActivityProvider = ({ children }) => {
 
         newUserInfo: newUserInfo,
         setNewUserInfo: setNewUserInfo,
+
+        onlyActivityCreated: onlyActivityCreated,
+        setOnlyActivityCreated: setOnlyActivityCreated,
       }}
     >
       {children}

@@ -1,5 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, Platform } from "react-native";
+import React, { useEffect, useState } from "react";
+import {
+  StyleSheet,
+  View,
+  Text,
+  Platform,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { FAB, Icon } from "react-native-elements";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useNavigation } from "@react-navigation/native";
@@ -12,34 +18,40 @@ const FloatingActionButton = ({}) => {
 
   return (
     <>
-      {isOpen ? (
-        <View style={styles.menuItems}>
-          <TouchableOpacity
-            testID="createActivity.button"
-            style={styles.buttonStyle}
-            onPress={() => {
-              navigation.navigate("CreateActivity", {
-                creatingNewUser: false,
-                activityExist: false,
-              });
-              setIsOpen(false);
-            }}
-          >
-            <Text style={styles.buttonText}>Lägg till aktivitet</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            testID="CreateOrChangeUser.button"
-            style={styles.buttonStyle}
-            onPress={() => {
-              navigation.navigate("CreateOrChangeUser", {
-                createNewUser: true,
-              });
-            }}
-          >
-            <Text style={styles.buttonText}>Lägg till användare</Text>
-          </TouchableOpacity>
-        </View>
-      ) : null}
+      {isOpen && (
+        <>
+          <TouchableWithoutFeedback onPress={() => setIsOpen(false)}>
+            <View style={StyleSheet.absoluteFill}></View>
+          </TouchableWithoutFeedback>
+          <View style={styles.menuItems}>
+            <TouchableOpacity
+              testID="createActivity.button"
+              style={styles.buttonStyle}
+              onPress={() => {
+                setIsOpen(false);
+                navigation.navigate("CreateActivity", {
+                  creatingNewUser: false,
+                  activityExist: false,
+                });
+              }}
+            >
+              <Text style={styles.buttonText}>Lägg till aktivitet</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              testID="CreateOrChangeUser.button"
+              style={styles.buttonStyle}
+              onPress={() => {
+                setIsOpen(false);
+                navigation.navigate("CreateOrChangeUser", {
+                  createNewUser: true,
+                });
+              }}
+            >
+              <Text style={styles.buttonText}>Lägg till användare</Text>
+            </TouchableOpacity>
+          </View>
+        </>
+      )}
       <FAB
         icon={
           <Icon type="material-community" name={isOpen ? "close" : "plus"} />
@@ -88,6 +100,7 @@ const styles = StyleSheet.create({
         elevation: 3,
       },
     }),
+    zIndex: 1,
   },
   buttonText: {
     fontFamily: typography.button.sm.fontFamily,
