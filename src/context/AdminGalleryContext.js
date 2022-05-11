@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
+import { getAllInactiveActivities } from "../customFirebaseHooks/getFunctions";
 const AdminGalleryContext = React.createContext();
 
 export const useAdminGalleryFunction = () => {
@@ -22,41 +22,32 @@ export const AdminGalleryProvider = ({ children }) => {
     let inactiveArray = [];
     const setInactive = async () => {
       try {
-        await firestore()
-          .collection("Activities")
-          .where("active_status", "==", false)
-          .get()
-          .then((allActiveActivities) => {
-            let activities = allActiveActivities.docs.map((doc) => doc.data());
-            let docId = allActiveActivities.docs.map((doc) => doc.id);
+        getAllInactiveActivities().then((allActiveActivities) => {
+          let activities = allActiveActivities.docs.map((doc) => doc.data());
+          let docId = allActiveActivities.docs.map((doc) => doc.id);
 
-            if (
-              activities != null &&
-              activities.length > activitiesGallery.length
-            ) {
-              for (let i = 0; i < activities.length; i++) {
-                const dataInfo = {
-                  id: docId[i],
-                  title: activities[i].activity_title,
-                  active: activities[i].active_status,
-                  city: activities[i].activity_city,
-                  place: activities[i].activity_place,
-                  description: activities[i].activity_description,
-                  photo: activities[i].activity_photo,
-                  popular: activities[i].tg_favorite,
-                };
-                inactiveArray.push(dataInfo);
+          if (
+            activities != null &&
+            activities.length > activitiesGallery.length
+          ) {
+            for (let i = 0; i < activities.length; i++) {
+              const dataInfo = {
+                id: docId[i],
+                title: activities[i].activity_title,
+                active: activities[i].active_status,
+                city: activities[i].activity_city,
+                place: activities[i].activity_place,
+                description: activities[i].activity_description,
+                photo: activities[i].activity_photo,
+                popular: activities[i].tg_favorite,
+              };
+              inactiveArray.push(dataInfo);
 
-                setInactiveActivitiesGallery(inactiveArray);
-              }
-              console.log(
-                "ActivityGaleryContext inactive activity in useEffect"
-              );
+              setInactiveActivitiesGallery(inactiveArray);
             }
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
+            console.log("ActivityGaleryContext inactive activity in useEffect");
+          }
+        });
       } catch (error) {
         console.log("AdminContex errorMessage ", error);
       }

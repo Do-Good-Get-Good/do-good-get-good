@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
 import functions from "@react-native-firebase/functions";
+import { getAllActiveActivities } from "../customFirebaseHooks/getFunctions";
+import { addActivities } from "../customFirebaseHooks/addFunctions";
 
 const CreateActivityContext = React.createContext();
 
@@ -50,45 +51,35 @@ export const CreateActivityProvider = ({ children }) => {
   useEffect(() => {
     if (showAllActiveActivities === true) {
       let tempArray = [];
-      const getAllActiveActivities = async () => {
+      const getActiveActivities = async () => {
         try {
-          await firestore()
-            .collection("Activities")
-            .where("active_status", "==", true)
-            .get()
-            .then((allActiveActivities) => {
-              let activities = allActiveActivities.docs.map((doc) =>
-                doc.data()
-              );
-              let docId = allActiveActivities.docs.map((doc) => doc.id);
-
-              if (
-                activities != null &&
-                activities.length > allActiveActvivitiesFB.length
-              ) {
-                for (let i = 0; i < activities.length; i++) {
-                  const dataInfo = {
-                    id: docId[i],
-                    title: activities[i].activity_title,
-                    active: activities[i].active_status,
-                    city: activities[i].activity_city,
-                    place: activities[i].activity_place,
-                    description: activities[i].activity_description,
-                    photo: activities[i].activity_photo,
-                    popular: activities[i].tg_favorite,
-                  };
-                  tempArray.push(dataInfo);
-                }
+          getAllActiveActivities().then((allActiveActivities) => {
+            let activities = allActiveActivities.docs.map((doc) => doc.data());
+            let docId = allActiveActivities.docs.map((doc) => doc.id);
+            if (
+              activities != null &&
+              activities.length > allActiveActvivitiesFB.length
+            ) {
+              for (let i = 0; i < activities.length; i++) {
+                const dataInfo = {
+                  id: docId[i],
+                  title: activities[i].activity_title,
+                  active: activities[i].active_status,
+                  city: activities[i].activity_city,
+                  place: activities[i].activity_place,
+                  description: activities[i].activity_description,
+                  photo: activities[i].activity_photo,
+                  popular: activities[i].tg_favorite,
+                };
+                tempArray.push(dataInfo);
               }
-            })
-            .catch((error) => {
-              console.log("errorMessage ", error);
-            });
+            }
+          });
         } catch (error) {
           console.log("CreateActivityContext errorMessage ", error);
         }
       };
-      getAllActiveActivities();
+      getActiveActivities();
       setAllActiveActvivitiesFB(tempArray);
     }
   }, []);
@@ -103,43 +94,40 @@ export const CreateActivityProvider = ({ children }) => {
       activity_title: newActivityAndUser.activity_title,
       tg_favorite: newActivityAndUser.tg_favorite,
     };
-    await firestore()
-      .collection("Activities")
-      .add(newFirebaseActivity)
-      .then(async (newActivity) => {
-        let newActivityToAddLocally = {
-          id: newActivity.id,
-          title: newActivityAndUser.activity_title,
-          active: newActivityAndUser.active_status,
-          city: newActivityAndUser.activity_city,
-          place: newActivityAndUser.activity_place,
-          description: newActivityAndUser.activity_description,
-          photo: newActivityAndUser.activity_photo,
-          popular: newActivityAndUser.tg_favorite,
-        };
-        setAllActiveActvivitiesFB((prev) => [...prev, newActivityToAddLocally]);
-        if (
-          newActivityAndUser.newUserInfo != null ||
-          newActivityAndUser.newUserInfo != undefined
-        ) {
-          var createUser = functions().httpsCallable("createUser");
-          await createUser({
-            firstName: newActivityAndUser.newUserInfo.firstName,
-            lastName: newActivityAndUser.newUserInfo.lastName,
-            email: newActivityAndUser.newUserInfo.email,
-            password: newActivityAndUser.newUserInfo.password,
-            role: "user",
-            activityId: newActivity.id,
+    addActivities(newFirebaseActivity).then(async (newActivity) => {
+      let newActivityToAddLocally = {
+        id: newActivity.id,
+        title: newActivityAndUser.activity_title,
+        active: newActivityAndUser.active_status,
+        city: newActivityAndUser.activity_city,
+        place: newActivityAndUser.activity_place,
+        description: newActivityAndUser.activity_description,
+        photo: newActivityAndUser.activity_photo,
+        popular: newActivityAndUser.tg_favorite,
+      };
+      setAllActiveActvivitiesFB((prev) => [...prev, newActivityToAddLocally]);
+      if (
+        newActivityAndUser.newUserInfo != null ||
+        newActivityAndUser.newUserInfo != undefined
+      ) {
+        var createUser = functions().httpsCallable("createUser");
+        await createUser({
+          firstName: newActivityAndUser.newUserInfo.firstName,
+          lastName: newActivityAndUser.newUserInfo.lastName,
+          email: newActivityAndUser.newUserInfo.email,
+          password: newActivityAndUser.newUserInfo.password,
+          role: "user",
+          activityId: newActivity.id,
+        })
+          .then((res) => {
+            let newUser = res.data.createdUser;
+            setNewUserInfo(newUser);
           })
-            .then((res) => {
-              let newUser = res.data.createdUser;
-              setNewUserInfo(newUser);
-            })
-            .catch((error) => console.log(error));
-        } else {
-          setOnlyActivityCreated(true);
-        }
-      });
+          .catch((error) => console.log(error));
+      } else {
+        setOnlyActivityCreated(true);
+      }
+    });
   };
 
   useEffect(() => {
