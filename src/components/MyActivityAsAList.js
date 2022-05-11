@@ -235,7 +235,7 @@ function MyActivityAsAList({ navigation }) {
           (rout.name === "MyTimePage" &&
             timeEntryList.length === 0 &&
             timeEntriesTwoMonthsBefore.length === 0) ? (
-            <Text style={{ ...typography.b2 }}>
+            <Text style={{ ...typography.b2, marginLeft: 10 }}>
               Du har inte loggat någon tid ännu!
             </Text>
           ) : null}
