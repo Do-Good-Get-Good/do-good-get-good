@@ -30,33 +30,34 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     }
 
     return () => {
-      setMyUsers([]);
       setOtherUsers([]);
     };
   }, [visible]);
 
   const fetchAllMyUsers = () => {
-    let users = userData.map((user) => {
-      let connectedActivitiesArray = user.connected_activities;
+    if (myUsers.length === 0) {
+      let users = userData.map((user) => {
+        let connectedActivitiesArray = user.connected_activities;
 
-      let userInfo = {
-        userID: user.id,
-        fullName: `${user.first_name} ${user.last_name}`,
-        checked: false,
-      };
-      for (let i = 0; i < connectedActivitiesArray.length; i++) {
-        if (connectedActivitiesArray[i] === currentActivityId) {
-          userInfo.checked = true;
+        let userInfo = {
+          userID: user.id,
+          fullName: `${user.first_name} ${user.last_name}`,
+          checked: false,
+        };
+        for (let i = 0; i < connectedActivitiesArray.length; i++) {
+          if (connectedActivitiesArray[i] === currentActivityId) {
+            userInfo.checked = true;
+          }
         }
-      }
-      return userInfo;
-    });
-    setMyUsers(users);
+        return userInfo;
+      });
+      setMyUsers(users);
+    }
   };
 
   const fetchAllOtherUsers = async () => {
     try {
-      let otherUsersRes = await firestore()
+      await firestore()
         .collection("Users")
         .where("admin_id", "!=", auth().currentUser.uid)
         .where(
@@ -64,17 +65,17 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           "array-contains",
           currentActivityId.toString()
         )
-        .get();
-
-      if (!otherUsersRes.empty) {
-        let users = otherUsersRes.docs.map((doc) => {
-          let userInfo = {
-            fullName: `${doc.data().first_name} ${doc.data().last_name}`,
-          };
-          return userInfo;
+        .get()
+        .then((otherUsersRes) => {
+          if (otherUsersRes.docs.length != 0) {
+            otherUsersRes.docs.map((doc) => {
+              let users = {
+                fullName: `${doc.data().first_name} ${doc.data().last_name}`,
+              };
+              setOtherUsers((prev) => [...prev, users]);
+            });
+          }
         });
-        setOtherUsers(users);
-      }
     } catch (error) {
       console.log(error);
     }

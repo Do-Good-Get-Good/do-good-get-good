@@ -235,7 +235,7 @@ function MyActivityAsAList({ navigation }) {
           (rout.name === "MyTimePage" &&
             timeEntryList.length === 0 &&
             timeEntriesTwoMonthsBefore.length === 0) ? (
-            <Text style={{ ...typography.b2 }}>
+            <Text style={{ ...typography.b2, marginLeft: 10 }}>
               Du har inte loggat någon tid ännu!
             </Text>
           ) : null}
@@ -250,10 +250,11 @@ function MyActivityAsAList({ navigation }) {
                 }}
                 onEndReachedThreshold={0.05}
                 keyExtractor={(item) => item.timeEntryID}
-                renderItem={({ item }) =>
+                renderItem={({ item, index }) =>
                   viewOfTimeEntries(
                     item,
                     item.timeEntryID,
+                    index,
                     item.possibleToMakeChanges
                   )
                 }
