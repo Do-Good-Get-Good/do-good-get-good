@@ -13,6 +13,7 @@ import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import BottomLogo from "../components/BottomLogo";
 
 export function AdminActivityGallery({ navigation }) {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -169,6 +170,7 @@ export function AdminActivityGallery({ navigation }) {
           inactiveActivities={inactiveActivities}
           adminGallery={arrayOfActiveActivities}
         />
+        <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );

@@ -23,6 +23,8 @@ export const MyTimePage = () => {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginHorizontal: 16,
+    justifyContent: "space-between",
   },
 });

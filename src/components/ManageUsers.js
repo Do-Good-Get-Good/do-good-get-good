@@ -167,22 +167,30 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Mina användare
         </Text>
-        {myUsers.map((user, index) => (
-          <View testID="test.userView" style={styles.userView} key={index}>
-            <Text
-              testID={`test.userFullName${index}`}
-              style={styles.userViewText}
-            >
-              {user.fullName}
+        {myUsers.length != 0 ? (
+          myUsers.map((user, index) => (
+            <View testID="test.userView" style={styles.userView} key={index}>
+              <Text
+                testID={`test.userFullName${index}`}
+                style={styles.userViewText}
+              >
+                {user.fullName}
+              </Text>
+              <CheckBox
+                checked={user.checked}
+                onPress={() => checkOrUncheckUser(user)}
+                containerStyle={styles.checkBoxContainerStyle}
+                checkedColor={colors.primary}
+              />
+            </View>
+          ))
+        ) : (
+          <View testID="test.userView" style={styles.userView}>
+            <Text style={styles.userViewText}>
+              Du har inga användare kopplade till dig
             </Text>
-            <CheckBox
-              checked={user.checked}
-              onPress={() => checkOrUncheckUser(user)}
-              containerStyle={styles.checkBoxContainerStyle}
-              checkedColor={colors.primary}
-            />
           </View>
-        ))}
+        )}
         <Text
           testID="test.otherUsersHeader"
           style={styles.contentScrollViewHeader2}
