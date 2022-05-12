@@ -17,6 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import firestore from "@react-native-firebase/firestore";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import BottomLogo from "../components/BottomLogo";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
@@ -156,6 +157,7 @@ const Faq = () => {
           )}
         </View>
       </ScrollView>
+      <BottomLogo />
     </SafeAreaView>
   );
 };
