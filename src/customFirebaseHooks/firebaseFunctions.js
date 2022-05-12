@@ -26,14 +26,3 @@ export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
     });
   return response;
 };
-
-export const getFaq = async () => {
-  let response = null;
-  await firestore()
-    .collection("faq")
-    .get()
-    .then((querySnapshot) => {
-      response = querySnapshot;
-    });
-  return response;
-};

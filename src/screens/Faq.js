@@ -14,11 +14,10 @@ import Menu from "../components/Menu";
 
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-import firestore from "@react-native-firebase/firestore";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
-import { getFaq } from "../customFirebaseHooks/firebaseFunctions";
+import { getFaq } from "../customFirebaseHooks/getFunctions";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);

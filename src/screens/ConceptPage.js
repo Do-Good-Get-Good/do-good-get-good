@@ -13,6 +13,7 @@ import BottomLogo from "../components/BottomLogo";
 import firestore from "@react-native-firebase/firestore";
 import { format } from "date-fns";
 import { useUserData } from "../customFirebaseHooks/useUserData";
+import { getActivitiesMatchTimeEntries } from "../customFirebaseHooks/getFunctions";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -45,15 +46,13 @@ const ConceptPage = () => {
       }
 
       response.forEach(async (timeEntry) => {
-        let activity = await firestore()
-          .collection("Activities")
-          .doc(timeEntry.data().activity_id)
-          .get()
-          .catch((error) => {
+        let activity = await getActivitiesMatchTimeEntries(timeEntry).catch(
+          (error) => {
             if (error === "no-data") {
               setError("Sorry, something went wrong");
             }
-          });
+          }
+        );
 
         let fullName;
         let userInfo = await useUserData(timeEntry.data().user_id);
