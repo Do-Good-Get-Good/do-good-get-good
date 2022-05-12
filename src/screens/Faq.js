@@ -18,6 +18,7 @@ import firestore from "@react-native-firebase/firestore";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
+import { getFaq } from "../customFirebaseHooks/firebaseFunctions";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
@@ -30,9 +31,7 @@ const Faq = () => {
       const timeWhenDataSavedLastTime = curentTime;
       const arrayWithDataAndCurentTime = [];
       const tempArray = [];
-      await firestore()
-        .collection("faq")
-        .get()
+      await getFaq()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             tempArray.push({ id: doc.id, opened: false, ...doc.data() });

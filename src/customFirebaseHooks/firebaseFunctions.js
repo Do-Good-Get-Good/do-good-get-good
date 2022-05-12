@@ -1,19 +1,19 @@
-import firestore from "@react-native-firebase/firestore"
+import firestore from "@react-native-firebase/firestore";
 
 export function updateUsersTotalMonthlyHours(uid, hours) {
-    firestore()
-        .collection("Users")
-        .doc(uid)
-        .update({
-          total_hours_month: firestore.FieldValue.increment(hours),
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
+  firestore()
+    .collection("Users")
+    .doc(uid)
+    .update({
+      total_hours_month: firestore.FieldValue.increment(hours),
     })
+    .catch((error) => {
+      console.log("errorMessage ", error);
+    });
 }
 
 export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
-  let response = null
+  let response = null;
   await firestore()
     .collection("timeentries")
     .where("user_id", "==", uid)
@@ -22,7 +22,18 @@ export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
     .limit(20)
     .get()
     .then((res) => {
-      response = res
-    })
-    return response
-}
+      response = res;
+    });
+  return response;
+};
+
+export const getFaq = async () => {
+  let response = null;
+  await firestore()
+    .collection("faq")
+    .get()
+    .then((querySnapshot) => {
+      response = querySnapshot;
+    });
+  return response;
+};
