@@ -10,7 +10,6 @@ import { Overlay } from "react-native-elements";
 import { Calendar } from "react-native-calendars";
 import { LocaleConfig } from "react-native-calendars";
 import { Icon } from "react-native-elements";
-import tw from "tailwind-react-native-classnames";
 import { format } from "date-fns";
 import toDate from "date-fns/toDate";
 import { sv } from "date-fns/locale";
@@ -214,7 +213,6 @@ const CalendarView = ({
 
   //Removes a users time entry from the database (Firebase Firestore)
   const deleteTimeEntry = () => {
-
     try {
       firestore()
         .collection("timeentries")
@@ -258,7 +256,7 @@ const CalendarView = ({
           name="close"
           type="material"
           size={35}
-          style={tw`bg-white rounded-full`}
+          style={{ backgroundColor: colors.background, borderRadius: 25 }}
         />
       </Pressable>
       <ScrollView
