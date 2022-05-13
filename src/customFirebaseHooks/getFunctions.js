@@ -29,3 +29,49 @@ export const getAllActiveActivities = async () => {
     });
   return activities;
 };
+
+export const getFaq = async () => {
+  let response = null;
+  await firestore()
+    .collection("faq")
+    .get()
+    .then((querySnapshot) => {
+      response = querySnapshot;
+    });
+  return response;
+};
+
+export const getActivitiesMatchTimeEntries = async (timeEntry) => {
+  let response = await firestore()
+    .collection("Activities")
+    .doc(timeEntry.data().activity_id)
+    .get()
+    .catch((error) => {
+      console.log("errorMessage ", error);
+    });
+  return response;
+};
+
+export const getTenLastConfirmedTimeEntries = async () => {
+  let response = await firestore()
+    .collection("timeentries")
+    .orderBy("date", "desc")
+    .where("status_confirmed", "==", true)
+    .limit(10)
+    .get()
+    .catch((error) => {
+      console.log("errorMessage ", error);
+    });
+  return response;
+};
+
+export const getConcept = async () => {
+  let response = null;
+  await firestore()
+    .collection("concept")
+    .get()
+    .then((querySnapshot) => {
+      response = querySnapshot;
+    });
+  return response;
+};
