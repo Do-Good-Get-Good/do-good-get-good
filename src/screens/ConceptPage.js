@@ -10,10 +10,13 @@ import { Icon, Dialog } from "react-native-elements";
 import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
 
-import firestore from "@react-native-firebase/firestore";
 import { format } from "date-fns";
 import { useUserData } from "../customFirebaseHooks/useUserData";
-import { getActivitiesMatchTimeEntries } from "../customFirebaseHooks/getFunctions";
+import {
+  getActivitiesMatchTimeEntries,
+  getConcept,
+  getTenLastConfirmedTimeEntries,
+} from "../customFirebaseHooks/getFunctions";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -29,17 +32,12 @@ const ConceptPage = () => {
       setLoadingUserData(true);
       let id = 0;
       let usersFetched = 0;
-      let response = await firestore()
-        .collection("timeentries")
-        .orderBy("date", "desc")
-        .where("status_confirmed", "==", true)
-        .limit(10)
-        .get()
-        .catch((error) => {
-          if (error === "no-data") {
-            setError("Sorry, something went wrong");
-          }
-        });
+      let response = await getTenLastConfirmedTimeEntries().catch((error) => {
+        if (error === "no-data") {
+          setError("Sorry, something went wrong");
+        }
+      });
+
       if (response.size === 0) {
         setLoadingUserData(false);
         setNoData("Det finns för tillfället inga godkända aktiviteter");
@@ -88,9 +86,7 @@ const ConceptPage = () => {
     const fetchConceptData = async () => {
       setLoadingConceptData(true);
       const tempArray = [];
-      await firestore()
-        .collection("concept")
-        .get()
+      await getConcept()
         .then((querySnapshot) => {
           querySnapshot.forEach((doc) => {
             tempArray.push({ ...doc.data() });
@@ -101,6 +97,7 @@ const ConceptPage = () => {
             setError2("Sorry, something went wrong");
           }
         });
+
       setConcept(tempArray.sort((a, b) => a.order_id - b.order_id));
       setLoadingConceptData(false);
     };
