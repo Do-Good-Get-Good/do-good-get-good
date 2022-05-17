@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   TouchableNativeFeedback,
+  TouchableOpacity,
   View,
 } from "react-native";
 import React, { useState } from "react";
@@ -32,49 +33,46 @@ const DownloadUserData = () => {
       <View style={styles.container}>
         <View style={styles.userChoiceWrapper}>
           <Text style={styles.headerText}>Exportera data</Text>
-          <View style={{ marginBottom: 16 }}>
-            <TouchableNativeFeedback
+          <View style={{ marginBottom: 16, minWidth: 200 }}>
+            <TouchableOpacity
               onPress={() => setOpenDropDown(!openDropDown)}
+              style={styles.dropdownStyle(openDropDown)}
             >
-              <View style={styles.dropdownStyle(openDropDown)}>
-                <Text style={{ ...typography.button.lg }}>
-                  {choseDate === null && "Välj typ av nedladdning"}
-                  {choseDate && choseDate != null && "Välj datum"}
-                  {!choseDate && choseDate != null && "Löpande 12 månader"}
-                </Text>
-                <Icon
-                  color={colors.dark}
-                  name={
-                    openDropDown === true ? "arrow-drop-up" : "arrow-drop-down"
-                  }
-                  size={30}
-                />
-              </View>
-            </TouchableNativeFeedback>
+              <Text style={{ ...typography.button.lg }}>
+                {choseDate === null && "Välj typ av nedladdning"}
+                {choseDate && choseDate != null && "Välj datum"}
+                {!choseDate && choseDate != null && "Löpande 12 månader"}
+              </Text>
+              <Icon
+                color={colors.dark}
+                name={
+                  openDropDown === true ? "arrow-drop-up" : "arrow-drop-down"
+                }
+                size={30}
+              />
+            </TouchableOpacity>
             {openDropDown && (
               <View style={styles.dropdownItemBackground}>
-                <TouchableNativeFeedback
+                <TouchableOpacity
                   onPress={() => {
                     setOpenDropDown(false);
                     setChoseDate(false);
                   }}
+                  style={styles.dropdownItemStyle}
                 >
-                  <View style={styles.dropdownItemStyle}>
-                    <Text style={{ ...typography.button.sm }}>
-                      Löpande 12 månader
-                    </Text>
-                  </View>
-                </TouchableNativeFeedback>
-                <TouchableNativeFeedback
+                  <Text style={{ ...typography.button.sm }}>
+                    Löpande 12 månader
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity
                   onPress={() => {
                     setOpenDropDown(false);
                     setChoseDate(true);
                   }}
+                  style={styles.dropdownItemStyle}
                 >
-                  <View style={styles.dropdownItemStyle}>
-                    <Text style={{ ...typography.button.sm }}>Välj datum</Text>
-                  </View>
-                </TouchableNativeFeedback>
+                  <Text style={{ ...typography.button.sm }}>Välj datum</Text>
+                </TouchableOpacity>
               </View>
             )}
           </View>
@@ -99,11 +97,11 @@ const DownloadUserData = () => {
           )}
         </View>
         <View style={styles.downloadButtonWrapper}>
-          <TouchableNativeFeedback disabled={choseDate === null ? true : false}>
+          <TouchableOpacity disabled={choseDate === null ? true : false}>
             <View style={styles.downloadButton(choseDate)}>
               <Text style={{ ...typography.button.lg }}>Exportera data</Text>
             </View>
-          </TouchableNativeFeedback>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -140,14 +138,45 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
     borderWidth: 1,
     borderColor: openDropDown ? colors.dark : colors.background,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
   }),
   dropdownItemBackground: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    zIndex: 1,
     backgroundColor: colors.background,
     alignItems: "center",
     justifyContent: "center",
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   dropdownItemStyle: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     width: "100%",
     alignItems: "center",
   },
