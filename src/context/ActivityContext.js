@@ -45,42 +45,48 @@ export const ActivityProvider = ({ children }) => {
       .doc(auth().currentUser.uid)
       .onSnapshot(
         (doc) => {
-          let data = doc.data().activities_and_accumulated_time;
-          if (data != null) {
-            for (let i = 0; i < data.length; i++) {
-              var userConnectedActivitiesIndex = doc
-                .data()
-                .connected_activities.findIndex(
-                  (x) => x === data[i].activity_id
-                );
+          if (
+            doc.data() != null &&
+            doc.data() != undefined &&
+            doc.data().length != 0
+          ) {
+            let data = doc.data().activities_and_accumulated_time;
+            if (data != null) {
+              for (let i = 0; i < data.length; i++) {
+                var userConnectedActivitiesIndex = doc
+                  .data()
+                  .connected_activities.findIndex(
+                    (x) => x === data[i].activity_id
+                  );
 
-              if (userConnectedActivitiesIndex != -1) {
-                let idAndTime = {
-                  accumulatedTime: data[i].accumulated_time,
-                  activityID: data[i].activity_id,
-                  adminID: doc.data().admin_id,
-                  connectedActivities: doc.data().connected_activities,
-                  paidTime: doc.data().total_confirmed_hours,
-                  timeForYear: doc.data().total_hours_year,
-                  currentForMonth: doc.data().total_hours_month,
-                };
-                temArray.push(idAndTime);
+                if (userConnectedActivitiesIndex != -1) {
+                  let idAndTime = {
+                    accumulatedTime: data[i].accumulated_time,
+                    activityID: data[i].activity_id,
+                    adminID: doc.data().admin_id,
+                    connectedActivities: doc.data().connected_activities,
+                    paidTime: doc.data().total_confirmed_hours,
+                    timeForYear: doc.data().total_hours_year,
+                    currentForMonth: doc.data().total_hours_month,
+                  };
+                  temArray.push(idAndTime);
+                }
+              }
+              setMyActivitiesIDandAccumTime(temArray);
+
+              if (startPointAfterScroll === undefined) {
+                setIsFinishedToLoadActivitiesID(true);
+              }
+
+              if (doc.data().connected_activities.length != 0) {
+                setIsFinishedToLoadMyEntries(true);
+              } else {
+                setActivitiesInformation([]);
               }
             }
-            setMyActivitiesIDandAccumTime(temArray);
 
-            if (startPointAfterScroll === undefined) {
-              setIsFinishedToLoadActivitiesID(true);
-            }
-
-            if (doc.data().connected_activities.length != 0) {
-              setIsFinishedToLoadMyEntries(true);
-            } else {
-              setActivitiesInformation([]);
-            }
+            temArray = [];
           }
-
-          temArray = [];
         },
         (error) => {
           console.log(error);

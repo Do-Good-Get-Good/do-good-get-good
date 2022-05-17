@@ -14,6 +14,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
+import { useNetInfo } from "@react-native-community/netinfo";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
@@ -24,6 +25,7 @@ const ConfirmActivities = () => {
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
   const changeUserInfoContext = useChangeUserInfoFunction();
+  const inetInfo = useNetInfo();
 
   useEffect(() => {
     return firestore()
@@ -192,24 +194,26 @@ const ConfirmActivities = () => {
 
   const confirmSelectedActivities = () => {
     // Filters out all selected users and saves them to a new array
-    let selectedUsers = myUsers.filter((user) => {
-      if (user.checked) {
-        return user;
-      }
-    });
+    if (inetInfo.isConnected) {
+      let selectedUsers = myUsers.filter((user) => {
+        if (user.checked) {
+          return user;
+        }
+      });
 
-    // For every user in 'selectedUsers' call 'confirmActivity'
-    let timeEntryIdsToSendToMyUsers = [];
-    for (let i = 0; i < selectedUsers.length; i++) {
-      timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
-      confirmActivity(selectedUsers[i].timeEntryId);
-      addTotalConfirmedHours(selectedUsers[i]);
-      if (i === selectedUsers.length - 1) {
-        setChecked(false);
+      // For every user in 'selectedUsers' call 'confirmActivity'
+      let timeEntryIdsToSendToMyUsers = [];
+      for (let i = 0; i < selectedUsers.length; i++) {
+        timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
+        confirmActivity(selectedUsers[i].timeEntryId);
+        addTotalConfirmedHours(selectedUsers[i]);
+        if (i === selectedUsers.length - 1) {
+          setChecked(false);
+        }
       }
+      setUsersId(timeEntryIdsToSendToMyUsers);
+      setReloadOneUserData(true);
     }
-    setUsersId(timeEntryIdsToSendToMyUsers);
-    setReloadOneUserData(true);
   };
 
   const addAccumulatedTime = (user) => {

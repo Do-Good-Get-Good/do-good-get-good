@@ -60,7 +60,11 @@ exports.createUser = functions.https.onCall(async (data, context) => {
 
     const callerUserRecord = await admin.auth().getUser(callerUid);
 
-    if (!callerUserRecord.customClaims.admin) {
+    if (
+      (!callerUserRecord.customClaims.admin &&
+        !callerUserRecord.customClaims.superadmin) ||
+      callerUserRecord.customClaims.user
+    ) {
       throw new NotAnAdminError("Only Admin users can create new users.");
     }
 
@@ -188,13 +192,13 @@ exports.updateYear = functions.pubsub
     return console.log("Successful reset of time for year");
   });
 
-// exports.assignAdminClaim = functions.firestore
-//   .document("tempoAssignClaim/{tempoId}")
-//   .onCreate((snap, context) => {
-//     const claims = {};
-//     claims["admin"] = true;
+exports.assignAdminClaim = functions.firestore
+  .document("tempoAssignClaim/{tempoId}")
+  .onCreate((snap, context) => {
+    const claims = {};
+    claims["superadmin"] = true;
 
-//     return admin
-//       .auth()
-//       .setCustomUserClaims("VZyL8bD0RxXp5UVFpSubX8r4a2x1", claims);
-//   });
+    return admin
+      .auth()
+      .setCustomUserClaims("PMbJpkHVeySsdpV5m4pIGArx62E3", claims);
+  });

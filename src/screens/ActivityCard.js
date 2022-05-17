@@ -16,6 +16,7 @@ import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { AdminHomePageProvider } from "../context/AdminHomePageContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -25,6 +26,7 @@ import ManageUsers from "../components/ManageUsers";
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
+  const adminGalleryContext = useAdminGalleryFunction();
 
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
@@ -67,6 +69,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertArchiveQuestion);
     setAlertClarification(alertArchiveClarification);
+    adminGalleryContext.setCleanUpSearchBarComponent(true);
   };
 
   const alertToTakeAwayFromArchiveActivity = () => {
@@ -76,6 +79,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertQuestionToTakeAwayFromArchive);
     setAlertClarification(alertClarificationToTakeAwayFromArchive);
+    adminGalleryContext.setCleanUpSearchBarComponent(true);
   };
 
   const alertToDeleteActivity = () => {

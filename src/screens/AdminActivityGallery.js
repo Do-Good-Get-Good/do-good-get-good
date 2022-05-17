@@ -13,6 +13,7 @@ import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import BottomLogo from "../components/BottomLogo";
 
 export function AdminActivityGallery({ navigation }) {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -63,6 +64,10 @@ export function AdminActivityGallery({ navigation }) {
               ...prev,
               createActivityContext.changedActivity,
             ]);
+            createActivityContext.setAllActiveActvivitiesFB((prev) => [
+              ...prev,
+              createActivityContext.changedActivity,
+            ]);
           }
 
           var arrayInactive = inactiveActivities;
@@ -91,6 +96,10 @@ export function AdminActivityGallery({ navigation }) {
             createActivityContext.changedActivity.id != ""
           ) {
             setInactiveActivities((prev) => [
+              ...prev,
+              createActivityContext.changedActivity,
+            ]);
+            adminGalleryContext.setInactiveActivitiesGallery((prev) => [
               ...prev,
               createActivityContext.changedActivity,
             ]);
@@ -169,6 +178,7 @@ export function AdminActivityGallery({ navigation }) {
           inactiveActivities={inactiveActivities}
           adminGallery={arrayOfActiveActivities}
         />
+        <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );

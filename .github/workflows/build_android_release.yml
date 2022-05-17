@@ -44,32 +44,13 @@ jobs:
           echo "${{ secrets.DGGG_RELEASE_KEYSTORE }}" > dggg_release.keystore.asc
           gpg -d --passphrase "${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}" --batch dggg_release.keystore.asc > android/app/dggg_key.keystore
           cd android && ./gradlew assembleRelease -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
+          ./gradlew bundle -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
         working-directory: src/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
           name: artifact
-          path: src/android/app/build/outputs/apk/release/app-release.apk
-
-  upload-android-release:
-    needs: build-android-adhoc
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/setup-node@v2
-        with:
-          node-version: "17"
-      - name: Install Firebase-cli
-        run: |
-          npm install -g firebase-cli 
-      - name: Download artifact
-        uses: actions/download-artifact@v2
-        with:
-          name: artifact
-      - name: Upload Android APK
-        env:
-          FIREBASE_TOKEN: ${{secrets.FIREBASE_CI_KEY}}
-        run: |
-          firebase appdistribution:distribute app-release.apk --app ${{secrets.FIREBASE_APP_ID_ANDROID}} --token ${{ secrets.FIREBASE_CI_KEY }}
+          path: src/android/app/build/outputs/
 
   # upload-android:
   #   needs: build-android-adhoc

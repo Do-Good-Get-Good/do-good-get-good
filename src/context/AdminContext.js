@@ -19,12 +19,16 @@ export const AdminProvider = ({ children }) => {
           .doc(auth().currentUser.uid)
           .get()
           .then((response) => {
-            if (response.data().role === "admin") {
-              setUserLevel("admin");
-            } else if (response.data().role === "superadmin") {
-              setUserLevel("superadmin");
-            } else {
-              setUserLevel("user");
+            switch (response.data().role) {
+              case "user":
+                setUserLevel("user");
+                break;
+              case "admin":
+                setUserLevel("admin");
+                break;
+              case "superadmin":
+                setUserLevel("superadmin");
+                break;
             }
           })
           .catch((error) => {

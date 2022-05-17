@@ -7,11 +7,15 @@ import {
   Alert,
   TouchableOpacity,
 } from "react-native";
-import tw from "tailwind-react-native-classnames";
+
 import inputStyles from "../styles/inputStyle";
+
 import { Icon, Overlay } from "react-native-elements";
+
 import auth from "@react-native-firebase/auth";
+
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const ResetPassModal = ({ isModalOpen, openModal }) => {
   const [email, setEmail] = React.useState("");
@@ -51,19 +55,19 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
   return (
     <Overlay
       isVisible={isModalOpen}
-      onBackdropPress={openModal}
-      overlayStyle={{
-        backgroundColor: colors.light,
-        width: "90%",
-        borderRadius: 5,
+      onBackdropPress={() => {
+        setEmail(null);
+        setError(null);
+        openModal(false);
       }}
+      overlayStyle={styles.overlayStyle}
       animationType="fade"
     >
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
           <TouchableOpacity
             testID="resetPassModal.closeBtn"
-            style={{ position: "absolute", right: -18, top: -18 }}
+            style={styles.closeButtonStyle}
             onPress={() => {
               setEmail(null);
               setError(null);
@@ -74,17 +78,17 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
               name="close"
               type="material"
               size={30}
-              style={tw`bg-white rounded-full`}
+              style={styles.closeIconStyle}
             />
           </TouchableOpacity>
-          <View style={tw`mt-0`}>
-            <Text
-              testID="resetPassModal.forgotPass"
-              style={tw`text-lg font-bold`}
-            >
+          <View style={styles.modalViewWrapper}>
+            <Text testID="resetPassModal.forgotPass" style={styles.titleText}>
               Glömt ditt lösenord?
             </Text>
-            <Text testID="resetPassModal.forgotPassDesc">
+            <Text
+              testID="resetPassModal.forgotPassDesc"
+              style={styles.infoText}
+            >
               Inga problem! Skriv in din mail nedan, så skickar vi en länk för
               att återställa lösenordet.
             </Text>
@@ -92,7 +96,7 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
               testID="resetPassModal.emailInput"
               style={[
                 inputStyles.textInput,
-                tw`mt-5 mb-2`,
+                { marginTop: 12, marginBottom: 10 },
                 error != null ? inputStyles.textInputInvalid : null,
               ]}
               placeholder="E-post"
@@ -101,26 +105,26 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
               onChangeText={(text) => setEmail(text)}
             />
             {error != null ? (
-              <View style={tw.style("mb-2 pl-2")}>
+              <View style={{ marginBottom: 4 }}>
                 <Text
                   testID="resetPassModal.errorText"
-                  style={{ color: "#C62F25" }}
+                  style={{ color: colors.error }}
                 >{`* ${error}`}</Text>
               </View>
             ) : null}
-            <TouchableOpacity
-              style={styles.sendBtn}
-              onPress={() => {
-                if (email === null || email === "") {
-                  setError("Du måste fylla i en e-post");
-                } else {
-                  resetPass();
-                }
-              }}
-            >
-              <Text style={tw`text-center text-lg`}>Skicka</Text>
-            </TouchableOpacity>
           </View>
+          <TouchableOpacity
+            style={styles.sendBtn}
+            onPress={() => {
+              if (email === null || email === "") {
+                setError("Du måste fylla i en e-post");
+              } else {
+                resetPass();
+              }
+            }}
+          >
+            <Text style={styles.sendBtnText}>Skicka</Text>
+          </TouchableOpacity>
         </View>
       </View>
     </Overlay>
@@ -130,6 +134,33 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
 export default ResetPassModal;
 
 const styles = StyleSheet.create({
+  overlayStyle: {
+    backgroundColor: colors.light,
+    width: "90%",
+    borderRadius: 5,
+  },
+  closeButtonStyle: {
+    position: "absolute",
+    right: -18,
+    top: -18,
+  },
+  closeIconStyle: {
+    backgroundColor: colors.background,
+    borderRadius: 25,
+  },
+  modalViewWrapper: {
+    paddingTop: 6,
+    paddingHorizontal: 8,
+    paddingBottom: 6,
+  },
+  titleText: {
+    fontFamily: typography.title.fontFamily,
+    fontSize: typography.title.fontSize,
+    marginBottom: 6,
+  },
+  infoText: {
+    ...typography.b2,
+  },
   sendBtn: {
     backgroundColor: colors.primary,
     height: 55,
@@ -139,5 +170,9 @@ const styles = StyleSheet.create({
     marginLeft: -10,
     marginRight: -10,
     marginBottom: -10,
+  },
+  sendBtnText: {
+    ...typography.button.lg,
+    alignSelf: "center",
   },
 });
