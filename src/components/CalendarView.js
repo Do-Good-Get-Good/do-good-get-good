@@ -5,22 +5,31 @@ import {
   Text,
   TouchableOpacity,
   View,
+  Platform,
+  ScrollView,
 } from "react-native";
-import { Overlay } from "react-native-elements";
-import { Calendar } from "react-native-calendars";
-import { LocaleConfig } from "react-native-calendars";
-import { Icon } from "react-native-elements";
-import tw from "tailwind-react-native-classnames";
+
+import { Overlay, Icon } from "react-native-elements";
+
+import { Calendar, LocaleConfig } from "react-native-calendars";
+
 import { format } from "date-fns";
 import toDate from "date-fns/toDate";
 import { sv } from "date-fns/locale";
-import { ScrollView } from "react-native";
-import { Platform } from "react-native";
-import firestore from "@react-native-firebase/firestore";
+
 import auth from "@react-native-firebase/auth";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import errorMessage from "../assets/recyclingStyles/errorMessage";
+
+import { deleteTimeEntry } from "../customFirebaseHooks/deleteFunctions";
+import { updateTimeEntry } from "../customFirebaseHooks/updateFunctions";
+import { addTimeEntry } from "../customFirebaseHooks/addFunctions";
+import {
+  incrementTotalHoursForUser,
+  decrementTotalHoursForUser,
+} from "../customFirebaseHooks/updateFunctions";
 
 const CalendarView = ({
   visible,
@@ -78,6 +87,8 @@ const CalendarView = ({
   const [todaySelected, setTodaySelected] = useState(null);
   const [error, setError] = useState(null);
 
+  const uid = auth().currentUser.uid;
+
   //If the calendar view (modal) is visible it gets the current date and selects it
   //If a user edits an activity the activity date gets selected and the activity time (in hours) is shown
   //If the calendar is not visible it sets all values to null
@@ -110,129 +121,68 @@ const CalendarView = ({
     }
   }, [selectedDate]);
 
-  const addTotalHoursMonth = (hours) => {
-    try {
-      firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .update({
-          total_hours_month: firestore.FieldValue.increment(hours),
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
-        });
-    } catch (error) {
-      console.log("errorMessage ", error);
-    }
-  };
-  const removeTotalHoursMonth = (hours) => {
-    try {
-      firestore()
-        .collection("Users")
-        .doc(auth().currentUser.uid)
-        .update({
-          total_hours_month: firestore.FieldValue.increment(-hours),
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
-        });
-    } catch (error) {
-      console.log("errorMessage ", error);
-    }
-  };
-
-  //Registers a users activity (saving to Firebase Firestore)
+  //Registers a users activity
   const registerTimeEntry = () => {
     let date = toDate(new Date(selectedDate));
+    let timeEntry = {
+      activity_id: activity.id,
+      user_id: uid,
+      date: date,
+      status_confirmed: false,
+      time: hours,
+      admin_id: adminID,
+      activity_title: activity.title,
+    };
 
-    firestore()
-      .collection("timeentries")
-      .add({
-        activity_id: activity.id,
-        user_id: auth().currentUser.uid,
-        date: date,
-        status_confirmed: false,
-        time: hours,
-        admin_id: adminID,
-        activity_title: activity.title,
-      })
-      .then(() => {
-        console.log("it went good ");
-      })
-      .catch((error) => {
-        setError("Sorry, something went wrong");
-      });
-
-    addTotalHoursMonth(hours);
-    toggleVisibility();
+    addTimeEntry(timeEntry).then((res) => {
+      if (res.success) {
+        incrementTotalHoursForUser(uid, hours);
+        toggleVisibility();
+      } else {
+        setError(res.error.message);
+      }
+    });
   };
 
-  //Change activity date and time (hours) - (Saving to Firebase Firestore)
-  const changeTimeEntry = () => {
+  //Change activity date and time (hours)
+  const changeTimeEntry = (timeEntryID) => {
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
     let date = toDate(new Date(selectedDate));
 
-    try {
-      firestore()
-        .collection("timeentries")
-        .doc(activity.timeEntryID)
-        .set(
-          {
-            date: date,
-            time: hours,
-          },
-          { merge: true }
-        )
-        .then(() => {
-          console.log("it went good change time entry");
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
-          setError("Sorry, something went wrong");
-        });
-    } catch (error) {
-      console.log("errorMessage ", error);
-      setError("Sorry, something went wrong");
-    }
-
-    if (
-      currentMonth === new Date(selectedDate).getMonth() &&
-      currentYear === new Date(selectedDate).getFullYear()
-    ) {
-      if (activity.time < hours) {
-        let newTime = hours - activity.time;
-        addTotalHoursMonth(newTime);
-      } else if (activity.time > hours) {
-        let newTime = activity.time - hours;
-        removeTotalHoursMonth(newTime);
+    updateTimeEntry(timeEntryID, date, hours).then((res) => {
+      if (res.success) {
+        if (
+          currentMonth === new Date(selectedDate).getMonth() &&
+          currentYear === new Date(selectedDate).getFullYear()
+        ) {
+          if (activity.time < hours) {
+            let newTime = hours - activity.time;
+            incrementTotalHoursForUser(uid, newTime);
+          } else if (activity.time > hours) {
+            let newTime = activity.time - hours;
+            decrementTotalHoursForUser(uid, newTime);
+          }
+        }
+        toggleVisibility();
+      } else {
+        setError(res.error.message);
       }
-    }
-    toggleVisibility();
+    });
   };
 
-  //Removes a users time entry from the database (Firebase Firestore)
-  const deleteTimeEntry = () => {
-
-    try {
-      firestore()
-        .collection("timeentries")
-        .doc(activity.timeEntryID)
-        .delete()
-        .then(() => {
-          console.log("it went good to delete ");
-        })
-        .catch((error) => {
-          console.log("errorMessage ", error);
-          setError("Sorry, something went wrong");
-        });
-    } catch (error) {
-      console.log("errorMessage ", error);
-      setError("Sorry, something went wrong");
-    }
-    removeTotalHoursMonth(hours);
-    toggleVisibility();
+  //Removes a users time entry from the database
+  const removeTimeEntry = (timeEntryID) => {
+    deleteTimeEntry(timeEntryID).then((res) => {
+      if (res.success) {
+        decrementTotalHoursForUser(uid, hours);
+        toggleVisibility();
+      } else {
+        console.log(res.error);
+        setError(res.error.message);
+      }
+    });
   };
 
   return (
@@ -258,7 +208,7 @@ const CalendarView = ({
           name="close"
           type="material"
           size={35}
-          style={tw`bg-white rounded-full`}
+          style={{ backgroundColor: colors.background, borderRadius: 25 }}
         />
       </Pressable>
       <ScrollView
@@ -400,7 +350,7 @@ const CalendarView = ({
               hours === 0 && { backgroundColor: colors.disabled },
             ]}
             onPress={() => {
-              changeTimeEntry();
+              changeTimeEntry(activity.timeEntryID);
             }}
             disabled={hours === 0 ? true : false}
           >
@@ -409,7 +359,7 @@ const CalendarView = ({
           <TouchableOpacity
             style={[styles.sendBtn, styles.deleteBtn]}
             onPress={() => {
-              deleteTimeEntry();
+              removeTimeEntry(activity.timeEntryID);
             }}
           >
             <Text style={styles.sendBtnText}>Ta bort tid</Text>
