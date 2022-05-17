@@ -32,6 +32,9 @@ jest.mock("@react-native-firebase/auth", () => {
   const auth = jest.requireActual("@react-native-firebase/auth");
   return () => ({
     ...auth,
+    currentUser: {
+      email: "test@test.com",
+    },
     signOut: mockAuthSignOut,
   });
 });
@@ -66,9 +69,13 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
-    const adminLink = queryByText("Aktiviteter");
-    expect(adminLink).toBeNull();
     expect(getAllByText("Min tid").length).toBe(1);
+    const activitiesLink = queryByText("Aktiviteter");
+    const adminPageLink = queryByText("Admin");
+    const superAdminPageLink = queryByText("Super admin");
+    expect(activitiesLink).toBeNull();
+    expect(adminPageLink).toBeNull();
+    expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
@@ -82,9 +89,26 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
+    expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
-    const userLink = queryByText("Min tid");
-    expect(userLink).toBeNull();
+    expect(getAllByText("Admin").length).toBe(1);
+    const superAdminPageLink = queryByText("Super admin");
+    expect(superAdminPageLink).toBeNull();
+    expect(getAllByText("Om konceptet").length).toBe(1);
+    expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Logga ut").length).toBe(1);
+  });
+
+  it("Are the superadmin-menu buttons visible", () => {
+    useAdminCheckFunction.mockReturnValueOnce("superadmin");
+    const { getAllByText } = render(<MenuOverlay isVisible={true} />);
+    expect(getAllByText("Stäng").length).toBe(1);
+    expect(getAllByText("Byt språk").length).toBe(1);
+    expect(getAllByText("Hem").length).toBe(1);
+    expect(getAllByText("Min tid").length).toBe(1);
+    expect(getAllByText("Aktiviteter").length).toBe(1);
+    expect(getAllByText("Admin").length).toBe(1);
+    expect(getAllByText("Super admin").length).toBe(1);
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
@@ -137,6 +161,32 @@ describe("Testing MenuOverlay", () => {
       );
 
       expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
+    });
+
+    it("Admin button", () => {
+      useAdminCheckFunction.mockReturnValueOnce("admin");
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const adminButton = getByTestId("menuOverlay.adminButton");
+      fireEvent.press(adminButton);
+
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage");
+    });
+
+    it("Super admin button", () => {
+      useAdminCheckFunction.mockReturnValueOnce("superadmin");
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />
+      );
+
+      const superAdminButton = getByTestId("menuOverlay.superAdminButton");
+      fireEvent.press(superAdminButton);
+
+      expect(mockedNavigate).toHaveBeenCalledWith("SuperAdminPage");
     });
 
     it("My time button", () => {

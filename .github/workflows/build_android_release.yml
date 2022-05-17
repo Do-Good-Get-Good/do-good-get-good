@@ -44,6 +44,7 @@ jobs:
           echo "${{ secrets.DGGG_RELEASE_KEYSTORE }}" > dggg_release.keystore.asc
           gpg -d --passphrase "${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}" --batch dggg_release.keystore.asc > android/app/dggg_key.keystore
           cd android && ./gradlew assembleRelease -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
+          ./gradlew bundle -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
         working-directory: src/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
