@@ -12,10 +12,19 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "react-native-elements";
+import DatePicker from "../components/DatePicker";
+import { subYears, format } from "date-fns";
 
 const DownloadUserData = () => {
+  const date = new Date();
   const [choseDate, setChoseDate] = useState(null);
   const [openDropDown, setOpenDropDown] = useState(false);
+  const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
+  const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
+
+  const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
+  const today = format(date, "yyyy-MM-dd");
+  const rollingYear = `${oneYearBack} - ${today}`;
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -74,18 +83,18 @@ const DownloadUserData = () => {
             <View style={styles.pickDateViewStyle}>
               <View>
                 <Text>Startdatum</Text>
-                <TextInput style={styles.datePicker} />
+                <DatePicker date={startDate} setDate={setStartDate} />
               </View>
               <View>
-                <Text>Startdatum</Text>
-                <TextInput style={styles.datePicker} />
+                <Text>Slutdatum</Text>
+                <DatePicker date={endDate} setDate={setEndDate} />
               </View>
             </View>
           )}
           {choseDate === false && (
             <View style={styles.continuousDateStyle}>
               <Text>Kommer att ladda ned data mellan följade datum</Text>
-              <Text>2021-05-09 - 2022-05-09</Text>
+              <Text>{rollingYear}</Text>
             </View>
           )}
         </View>

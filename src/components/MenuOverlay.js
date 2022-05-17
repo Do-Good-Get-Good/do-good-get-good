@@ -163,7 +163,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
           {userLevel === "superadmin" && (
-            <Pressable
+            <TouchableOpacity
               testID="menuOverlay.activitiesButton"
               style={styles.menuOverlayLinkStyling}
               onPress={() => {
@@ -172,7 +172,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               }}
             >
               <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
-            </Pressable>
+            </TouchableOpacity>
           )}
         </View>
 
