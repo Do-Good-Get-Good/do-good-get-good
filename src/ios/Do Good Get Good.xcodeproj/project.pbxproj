@@ -11,14 +11,14 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1531913A5FF424C702349407 /* libPods-DGGG iPhone Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C9AFCCCA75B09F4D4C9225 /* libPods-DGGG iPhone Dev.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		61E4CC5B2FE34473B5CD4884 /* libPods-src Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 945F7DDDFF0545DDD3325F62 /* libPods-src Dev.a */; };
+		57412E5E6BADC65EA0A81EC6 /* libPods-DGGG iPhone.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 41E90DD2675EA2AE9B5DD128 /* libPods-DGGG iPhone.a */; };
 		6429243827D61A4B0072327F /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 74BAF7A5151144D7A8022EEE /* DIN-Regular.otf */; };
 		6429243A27D61A690072327F /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E923E1D089E436D8F21A207 /* DIN-Bold.otf */; };
 		6429243B27D61A690072327F /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 19850C17A7C8426EBB63ADD3 /* DIN-Light.otf */; };
 		6429243C27D61A690072327F /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D6CCEF25D2A54B9483F6C668 /* DIN-Medium.ttf */; };
 		7DD05B8126F4E98700E363EB /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 7DD05B8026F4E98600E363EB /* GoogleService-Info.plist */; };
-		96905EF65AED1B983A6B3ABC /* libPods-src.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-src.a */; };
 		BB2F792D24A3F905000567C9 /* Expo.plist in Resources */ = {isa = PBXBuildFile; fileRef = BB2F792C24A3F905000567C9 /* Expo.plist */; };
 		BF7DC1812821635F00048E60 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = BF7DC1802821635F00048E60 /* GoogleService-Info.plist */; };
 		BF7DC9E3282133A7001EECD7 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.m */; };
@@ -31,7 +31,6 @@
 		BF7DC9ED282133A7001EECD7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		BF7DC9EF282133A7001EECD7 /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		BF7DC9F0282133A7001EECD7 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
-		E482D14BB0400354E945FF09 /* libPods-src.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 58EEBF8E8E6FB1BC6CAF49B5 /* libPods-src.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -50,10 +49,13 @@
 		1E5D80636FF449888ADF5B50 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2ECD4E2D811B49538512DEAF /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		3601E06A07964289A008802E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		3B27EB0B19F3E633FECB88FD /* Pods-DGGG iPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone.release.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone.release.xcconfig"; sourceTree = "<group>"; };
 		3C52886A5A67C0E07BCB65CF /* Pods-src.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src.release.xcconfig"; path = "Target Support Files/Pods-src/Pods-src.release.xcconfig"; sourceTree = "<group>"; };
+		41E90DD2675EA2AE9B5DD128 /* libPods-DGGG iPhone.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DGGG iPhone.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		43E369920A06E3E73E26A4F0 /* Pods-DGGG iPhone Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone Dev.debug.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone Dev/Pods-DGGG iPhone Dev.debug.xcconfig"; sourceTree = "<group>"; };
 		4A67ACB06C6C4A0C89246F06 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
 		536EAFA1CEC048C6A0F0B0A9 /* FontAwesome.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome.ttf"; sourceTree = "<group>"; };
-		58EEBF8E8E6FB1BC6CAF49B5 /* libPods-src.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-src.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		5875F43819D010B36AB50BB7 /* Pods-DGGG iPhone Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone Dev.release.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone Dev/Pods-DGGG iPhone Dev.release.xcconfig"; sourceTree = "<group>"; };
 		74BAF7A5151144D7A8022EEE /* DIN-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; name = "DIN-Regular.otf"; path = "../assets/fonts/DIN-Regular.otf"; sourceTree = "<group>"; };
 		76C53DE3A42A4EB5953B93F5 /* Foundation.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Foundation.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Foundation.ttf"; sourceTree = "<group>"; };
 		779E4CAB65E7435F9546DD67 /* Zocial.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Zocial.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Zocial.ttf"; sourceTree = "<group>"; };
@@ -61,7 +63,7 @@
 		7FE41FF616D14BC29133CB5D /* Fontisto.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Fontisto.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Fontisto.ttf"; sourceTree = "<group>"; };
 		853F0F9E28E14E73AB2F6E83 /* Octicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Octicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Octicons.ttf"; sourceTree = "<group>"; };
 		8E81D94C12181AD3E3D566F7 /* Pods-src Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src Dev.debug.xcconfig"; path = "Target Support Files/Pods-src Dev/Pods-src Dev.debug.xcconfig"; sourceTree = "<group>"; };
-		945F7DDDFF0545DDD3325F62 /* libPods-src Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-src Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		90703E635E5146C2C755A36F /* Pods-DGGG iPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone.debug.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone.debug.xcconfig"; sourceTree = "<group>"; };
 		9E923E1D089E436D8F21A207 /* DIN-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; name = "DIN-Bold.otf"; path = "../assets/fonts/DIN-Bold.otf"; sourceTree = "<group>"; };
 		9F6AB8318ACCDBB69CE23E60 /* Pods-src Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src Dev.release.xcconfig"; path = "Target Support Files/Pods-src Dev/Pods-src Dev.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = SplashScreen.storyboard; path = src/SplashScreen.storyboard; sourceTree = "<group>"; };
@@ -73,6 +75,7 @@
 		BF7DC9F8282133A7001EECD7 /* DGGG iPhone Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DGGG iPhone Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		BF7DC9F9282133A7001EECD7 /* src copy-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "src copy-Info.plist"; path = "/Users/jimmy/Documents/Technogarden/do-good-get-good/src/ios/src copy-Info.plist"; sourceTree = "<absolute>"; };
 		C06A84A640654379BB99EE18 /* FontAwesome5_Regular.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Regular.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Regular.ttf"; sourceTree = "<group>"; };
+		C8C9AFCCCA75B09F4D4C9225 /* libPods-DGGG iPhone Dev.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-DGGG iPhone Dev.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		D6CCEF25D2A54B9483F6C668 /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = file; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
@@ -84,8 +87,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				96905EF65AED1B983A6B3ABC /* libPods-src.a in Frameworks */,
-				E482D14BB0400354E945FF09 /* libPods-src.a in Frameworks */,
+				57412E5E6BADC65EA0A81EC6 /* libPods-DGGG iPhone.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -93,7 +95,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				61E4CC5B2FE34473B5CD4884 /* libPods-src Dev.a in Frameworks */,
+				1531913A5FF424C702349407 /* libPods-DGGG iPhone Dev.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -122,8 +124,8 @@
 			children = (
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
-				58EEBF8E8E6FB1BC6CAF49B5 /* libPods-src.a */,
-				945F7DDDFF0545DDD3325F62 /* libPods-src Dev.a */,
+				41E90DD2675EA2AE9B5DD128 /* libPods-DGGG iPhone.a */,
+				C8C9AFCCCA75B09F4D4C9225 /* libPods-DGGG iPhone Dev.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -228,6 +230,10 @@
 				3C52886A5A67C0E07BCB65CF /* Pods-src.release.xcconfig */,
 				8E81D94C12181AD3E3D566F7 /* Pods-src Dev.debug.xcconfig */,
 				9F6AB8318ACCDBB69CE23E60 /* Pods-src Dev.release.xcconfig */,
+				90703E635E5146C2C755A36F /* Pods-DGGG iPhone.debug.xcconfig */,
+				3B27EB0B19F3E633FECB88FD /* Pods-DGGG iPhone.release.xcconfig */,
+				43E369920A06E3E73E26A4F0 /* Pods-DGGG iPhone Dev.debug.xcconfig */,
+				5875F43819D010B36AB50BB7 /* Pods-DGGG iPhone Dev.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -379,7 +385,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-src-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DGGG iPhone-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -401,7 +407,7 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-src Dev-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DGGG iPhone Dev-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
@@ -428,15 +434,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-src Dev/Pods-src Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone Dev/Pods-DGGG iPhone Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-src Dev/Pods-src Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone Dev/Pods-DGGG iPhone Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-src Dev/Pods-src Dev-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone Dev/Pods-DGGG iPhone Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		75B6EF5ADE7C157EB1CC203E /* [CP-User] [RNFB] Core Configuration */ = {
@@ -458,15 +464,15 @@
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-src/Pods-src-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-src/Pods-src-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-src/Pods-src-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		99D4407925C49C88EA49E7CA /* [CP-User] [RNFB] Core Configuration */ = {
@@ -586,7 +592,7 @@
 /* Begin XCBuildConfiguration section */
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = B7E8C7F46FA11293F053A190 /* Pods-src.debug.xcconfig */;
+			baseConfigurationReference = 90703E635E5146C2C755A36F /* Pods-DGGG iPhone.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -618,7 +624,7 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 3C52886A5A67C0E07BCB65CF /* Pods-src.release.xcconfig */;
+			baseConfigurationReference = 3B27EB0B19F3E633FECB88FD /* Pods-DGGG iPhone.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -755,7 +761,7 @@
 		};
 		BF7DC9F6282133A7001EECD7 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8E81D94C12181AD3E3D566F7 /* Pods-src Dev.debug.xcconfig */;
+			baseConfigurationReference = 43E369920A06E3E73E26A4F0 /* Pods-DGGG iPhone Dev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
@@ -787,7 +793,7 @@
 		};
 		BF7DC9F7282133A7001EECD7 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9F6AB8318ACCDBB69CE23E60 /* Pods-src Dev.release.xcconfig */;
+			baseConfigurationReference = 5875F43819D010B36AB50BB7 /* Pods-DGGG iPhone Dev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
