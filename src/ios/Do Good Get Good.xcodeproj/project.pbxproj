@@ -11,6 +11,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		1531913A5FF424C702349407 /* libPods-DGGG iPhone Dev.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C8C9AFCCCA75B09F4D4C9225 /* libPods-DGGG iPhone Dev.a */; };
 		3E461D99554A48A4959DE609 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* SplashScreen.storyboard */; };
 		6429243827D61A4B0072327F /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 74BAF7A5151144D7A8022EEE /* DIN-Regular.otf */; };
 		6429243A27D61A690072327F /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = 9E923E1D089E436D8F21A207 /* DIN-Bold.otf */; };
@@ -51,6 +52,7 @@
 		1E5D80636FF449888ADF5B50 /* MaterialCommunityIcons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = MaterialCommunityIcons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/MaterialCommunityIcons.ttf"; sourceTree = "<group>"; };
 		2ECD4E2D811B49538512DEAF /* FontAwesome5_Solid.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = FontAwesome5_Solid.ttf; path = "../node_modules/react-native-vector-icons/Fonts/FontAwesome5_Solid.ttf"; sourceTree = "<group>"; };
 		3601E06A07964289A008802E /* AntDesign.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = AntDesign.ttf; path = "../node_modules/react-native-vector-icons/Fonts/AntDesign.ttf"; sourceTree = "<group>"; };
+		3B27EB0B19F3E633FECB88FD /* Pods-DGGG iPhone.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone.release.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone.release.xcconfig"; sourceTree = "<group>"; };
 		3C52886A5A67C0E07BCB65CF /* Pods-src.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-src.release.xcconfig"; path = "Target Support Files/Pods-src/Pods-src.release.xcconfig"; sourceTree = "<group>"; };
 		3EADD408F454B426C47C506D /* Pods-DGGG iPhone.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DGGG iPhone.debug.xcconfig"; path = "Target Support Files/Pods-DGGG iPhone/Pods-DGGG iPhone.debug.xcconfig"; sourceTree = "<group>"; };
 		4A67ACB06C6C4A0C89246F06 /* Ionicons.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = Ionicons.ttf; path = "../node_modules/react-native-vector-icons/Fonts/Ionicons.ttf"; sourceTree = "<group>"; };
