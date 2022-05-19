@@ -29,24 +29,16 @@ export function ChangeRolesAndConnection({ user, adminName }) {
       </View>
       <View style={styles.containerTextButton}>
         <TouchableOpacity>
-          <Text style={[styles.textForRoleAndAdminTitle, styles.textAsButton]}>
-            Ändra nivå
-          </Text>
+          <Text style={styles.textAsButton}>Ändra nivå</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={[styles.textForRoleAndAdminTitle, styles.textAsButton]}>
-            Ändra admin
-          </Text>
+          <Text style={styles.textAsButton}>Ändra admin</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={[styles.textForRoleAndAdminTitle, styles.textAsButton]}>
-            Ändra användare
-          </Text>
+          <Text style={styles.textAsButton}>Ändra användare</Text>
         </TouchableOpacity>
         <TouchableOpacity>
-          <Text style={[styles.textForRoleAndAdminTitle, styles.textAsButton]}>
-            Inaktivera
-          </Text>
+          <Text style={styles.textAsButton}>Inaktivera</Text>
         </TouchableOpacity>
       </View>
     </View>
@@ -72,11 +64,14 @@ const styles = StyleSheet.create({
   },
   containerTextButton: {
     marginTop: 40,
+    marginLeft: 2,
   },
   textForRoleAndAdmin: {
     padding: 10,
   },
   textAsButton: {
     textDecorationLine: "underline",
+    fontWeight: "700",
+    paddingVertical: 10,
   },
 });
