@@ -6,20 +6,37 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon, Overlay } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import PopupWithRadioButtons from "./PopupWithRadioButtons";
 
 export function ConnectedUsersDropDown({
   usersConnectedToTheAdmin,
   adminName,
 }) {
   const [userArray, setUserArray] = useState(usersConnectedToTheAdmin);
+  const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
+    useState(true);
+
   //console.log("userArray   ", userArray);
 
+  const allAdmins = () => {
+    let adminArray = [];
+    for (let i = 0; i < userArray.length; i++) {
+      if (
+        userArray[i].user.role === "admin" ||
+        userArray[i].user.role === "superadmin"
+      ) {
+        adminArray.push(userArray[i].user);
+      }
+    }
+    return adminArray;
+  };
+
   const clickOnPencilIcon = (user) => {
-    console.log("Pencil");
+    setShowPopupWithRadioButtons(true);
   };
 
   function changeSelectedForDropDown(index) {
@@ -74,6 +91,25 @@ export function ConnectedUsersDropDown({
             </View>
           </View>
         )}
+        <Overlay
+          isVisible={showPopupWithRadioButtons}
+          animationType="fade"
+          overlayStyle={{
+            backgroundColor: colors.light,
+            width: "90%",
+            height: "30%",
+            borderRadius: 5,
+          }}
+          onBackdropPress={() => setShowPopupWithRadioButtons(false)}
+        >
+          <PopupWithRadioButtons
+            titleText={"Ändra admin"}
+            arrayList={allAdmins()}
+          />
+          <TouchableOpacity style={styles.okButton}>
+            <Text>Ok</Text>
+          </TouchableOpacity>
+        </Overlay>
       </View>
     );
   };
@@ -112,5 +148,12 @@ const styles = StyleSheet.create({
     paddingRight: 3,
     justifyContent: "space-between",
     flex: 1,
+  },
+  okButton: {
+    ...typography.lg,
+    fontWeight: "500",
+    backgroundColor: colors.primary,
+    borderRadius: 5,
+    paddingVertical: 17,
   },
 });
