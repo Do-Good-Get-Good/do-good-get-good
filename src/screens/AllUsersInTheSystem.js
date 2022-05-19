@@ -9,7 +9,7 @@ function AllUsersInTheSystem({ navigation }) {
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView>
-        <ListOfAllUsers />
+        <ListOfAllUsers navigation={navigation} />
       </ScrollView>
     </SafeAreaView>
   );

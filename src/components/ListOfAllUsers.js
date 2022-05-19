@@ -11,11 +11,32 @@ import typography from "../assets/theme/typography";
 import { Icon } from "react-native-elements";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
-function ListOfAllUsers() {
+function ListOfAllUsers({ navigation }) {
   const superAdminContext = useSuperAdminFunction();
 
-  function changingUserData(user) {
-    console.log("user  ", user);
+  function findNameOfUserAdmin(adminId) {
+    let adminName = "";
+
+    let index = superAdminContext.allUsersInSystem.findIndex(
+      (x) => x.doc_id === adminId
+    );
+
+    if (index != -1) {
+      adminName =
+        superAdminContext.allUsersInSystem[index].first_name +
+        " " +
+        superAdminContext.allUsersInSystem[index].last_name;
+    }
+    return adminName;
+  }
+
+  function changingUserData(chooseUser) {
+    let userAdminName = findNameOfUserAdmin(chooseUser.admin_id);
+    console.log("userAdminName  ", userAdminName);
+    navigation.navigate("RolesAndConnection", {
+      user: chooseUser,
+      adminName: userAdminName,
+    });
   }
 
   return (
