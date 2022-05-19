@@ -30,12 +30,38 @@ function ListOfAllUsers({ navigation }) {
     return adminName;
   }
 
+  function findAllUsersConnectedToTheAdmin(userId) {
+    let usersArray = [];
+
+    for (
+      let index = 0;
+      index < superAdminContext.allUsersInSystem.length;
+      index++
+    ) {
+      if (superAdminContext.allUsersInSystem[index].admin_id === userId) {
+        let tempObject = {
+          user: superAdminContext.allUsersInSystem[index],
+          selectedForDropDown: false,
+        };
+        usersArray.push(tempObject);
+      }
+    }
+
+    return usersArray;
+  }
+
   function changingUserData(chooseUser) {
     let userAdminName = findNameOfUserAdmin(chooseUser.admin_id);
-    console.log("userAdminName  ", userAdminName);
+    let arrayOfUsers = [];
+
+    if (chooseUser.role === "admin" || chooseUser.role === "superadmin") {
+      arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.doc_id);
+    }
+
     navigation.navigate("RolesAndConnection", {
       user: chooseUser,
       adminName: userAdminName,
+      arrayOfUsersIfAdmin: arrayOfUsers,
     });
   }
 

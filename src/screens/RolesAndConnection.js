@@ -9,20 +9,13 @@ import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 
 import Menu from "../components/Menu";
-import FloatingActionButton from "../components/FloatingActionButton";
 import ChangeRolesAndConnection from "../components/ChangeRoleAndConnection";
 import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 
 //screen
 export function RolesAndConnection({ navigation, route }) {
-  const { user, adminName } = route.params;
+  const { user, adminName, arrayOfUsersIfAdmin } = route.params;
 
-  function findAllUsersConnectedToTheAdmin() {
-    let usersArray = [];
-    return usersArray;
-  }
-
-  console.log("adminName  ", adminName);
   return (
     <SafeAreaView>
       <Menu />
@@ -41,7 +34,10 @@ export function RolesAndConnection({ navigation, route }) {
         </TouchableOpacity>
         <ChangeRolesAndConnection user={user} adminName={adminName} />
         {user.role === "admin" || user.role === "superadmin" ? (
-          <ConnectedUsersDropDown usersConnectedToTheAdmin={"j"} />
+          <ConnectedUsersDropDown
+            usersConnectedToTheAdmin={arrayOfUsersIfAdmin}
+            adminName={adminName}
+          />
         ) : null}
       </ScrollView>
     </SafeAreaView>

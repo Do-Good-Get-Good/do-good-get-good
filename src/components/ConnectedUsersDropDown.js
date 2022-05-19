@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -11,35 +11,58 @@ import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-export function ConnectedUsersDropDown({ usersConnectedToTheAdmin }) {
-  console.log("usersConnectedToTheAdmin   ", usersConnectedToTheAdmin);
-  const [openDropDown, setOpenDropDown] = useState(false);
+export function ConnectedUsersDropDown({
+  usersConnectedToTheAdmin,
+  adminName,
+}) {
+  const [userArray, setUserArray] = useState(usersConnectedToTheAdmin);
+  //console.log("userArray   ", userArray);
 
-  const clickOnPencilIcon = () => {
+  const clickOnPencilIcon = (user) => {
     console.log("Pencil");
   };
 
-  const whatTextToShow = (text) => {
-    let icon = "";
-    if (openDropDown) {
-      icon = "arrow-drop-up";
+  function changeSelectedForDropDown(index) {
+    let tempArray = userArray;
+    let selected = tempArray[index].selectedForDropDown;
+    tempArray[index].selectedForDropDown = !selected;
+    setUserArray(tempArray);
+  }
+
+  const dropDownOpen = useCallback((selected) => {
+    // console.log("selected  ", selected);
+    let arrow = "";
+    if (selected) {
+      arrow = "arrow-drop-up";
+    } else {
+      arrow = "arrow-drop-down";
     }
-    {
-      icon = "arrow-drop-down";
-    }
+    return arrow;
+  }, []);
+
+  const whatTextToShow = (user, index) => {
     return (
-      <View style={styles.container}>
-        <View style={styles.containerForTextAndIcon}>
-          <Text style={styles.userAndAdminNames}>{text}</Text>
-          <TouchableOpacity onPress={() => setOpenDropDown(!openDropDown)}>
-            <Icon color={colors.secondary} name={icon} size={25} />
-          </TouchableOpacity>
-        </View>
-        {openDropDown && (
+      <View key={user.user.doc_id} style={styles.container}>
+        <TouchableOpacity
+          style={styles.containerForTextAndIcon}
+          onPress={() => changeSelectedForDropDown(index)}
+        >
+          <Text style={styles.userAndAdminNames}>
+            {user.user.first_name + " " + user.user.last_name}
+          </Text>
+
+          <Icon
+            color={colors.secondary}
+            name={dropDownOpen(user.selectedForDropDown)}
+            size={25}
+          />
+        </TouchableOpacity>
+
+        {user.selectedForDropDown && (
           <View style={styles.containerAdminName}>
             <Text style={styles.adminText}>Admin:</Text>
             <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
-              <Text style={styles.userAndAdminNames}>{text}</Text>
+              <Text style={styles.userAndAdminNames}>{adminName}</Text>
               <TouchableOpacity onPress={() => clickOnPencilIcon()}>
                 <Icon
                   color={colors.secondary}
@@ -55,7 +78,9 @@ export function ConnectedUsersDropDown({ usersConnectedToTheAdmin }) {
     );
   };
 
-  return <View>{whatTextToShow("Sven Swensson")}</View>;
+  return (
+    <View>{userArray.map((user, index) => whatTextToShow(user, index))}</View>
+  );
 }
 export default ConnectedUsersDropDown;
 const styles = StyleSheet.create({
@@ -73,17 +98,18 @@ const styles = StyleSheet.create({
   },
   adminText: {
     fontWeight: "500",
-    ...typography.b1,
+    ...typography.b2,
   },
   containerAdminName: {
     flexDirection: "row",
     marginBottom: 7,
   },
   userAndAdminNames: {
-    ...typography.b1,
+    ...typography.b2,
   },
   adminNameAndIcon: {
     paddingLeft: 10,
+    paddingRight: 3,
     justifyContent: "space-between",
     flex: 1,
   },
