@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   Text,
@@ -11,13 +11,36 @@ import {
 import { Overlay, Icon } from "react-native-elements";
 import { Calendar } from "react-native-calendars";
 
+import { format } from "date-fns";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 const DatePicker = ({ date, setDate }) => {
   const [visible, setVisible] = useState(false);
   const [selectedDate, setSelectedDate] = useState(null);
+  const [today, setToday] = useState(null);
   const [todaySelected, setTodaySelected] = useState(null);
+
+  useEffect(() => {
+    if (visible) {
+      setToday(format(new Date(), "yyyy-MM-dd"));
+      setSelectedDate(format(new Date(), "yyyy-MM-dd"));
+    } else {
+      setToday(null);
+      setSelectedDate(null);
+    }
+  }, [visible]);
+
+  //Checks if the selected date is todays date
+  //Updates every time the selectedDate value changes
+  useEffect(() => {
+    if (selectedDate === today) {
+      setTodaySelected(selectedDate);
+    } else {
+      setTodaySelected(null);
+    }
+  }, [selectedDate]);
 
   return (
     <>
@@ -33,8 +56,6 @@ const DatePicker = ({ date, setDate }) => {
         visible={visible}
         onBackdropPress={() => setVisible(!visible)}
         overlayStyle={styles.overlayStyle}
-        backdropStyle={styles.backdropStyle}
-        style={styles.style}
       >
         <Pressable
           style={{ position: "absolute", right: -10, top: -10, zIndex: 1 }}
@@ -65,7 +86,7 @@ const DatePicker = ({ date, setDate }) => {
           }}
           markingType={"custom"}
           markedDates={{
-            [date]: {
+            [today]: {
               customStyles: {
                 container: {
                   backgroundColor: "#84BD0040",
@@ -104,7 +125,7 @@ const DatePicker = ({ date, setDate }) => {
           <View
             style={[styles.buttonView, { backgroundColor: colors.primary }]}
           >
-            <Text>Välj datum</Text>
+            <Text style={{ ...typography.button.lg }}>Välj datum</Text>
           </View>
         </TouchableOpacity>
       </Overlay>

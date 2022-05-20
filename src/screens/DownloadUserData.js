@@ -33,7 +33,7 @@ const DownloadUserData = () => {
       <View style={styles.container}>
         <View style={styles.userChoiceWrapper}>
           <Text style={styles.headerText}>Exportera data</Text>
-          <View style={{ marginBottom: 16, minWidth: 200 }}>
+          <View style={{ marginBottom: 16, minWidth: 200, zIndex: 1 }}>
             <TouchableOpacity
               onPress={() => setOpenDropDown(!openDropDown)}
               style={styles.dropdownStyle(openDropDown)}
