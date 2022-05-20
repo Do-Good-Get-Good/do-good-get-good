@@ -202,3 +202,113 @@ exports.assignAdminClaim = functions.firestore
       .auth()
       .setCustomUserClaims("PMbJpkHVeySsdpV5m4pIGArx62E3", claims);
   });
+
+async function getAllDatabaseData() {
+  let users;
+  let activities;
+  let timeEntries;
+
+  await admin
+    .firestore()
+    .collection("Activities")
+    .get()
+    .then((res) => {
+      activities = res.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    });
+
+  await admin
+    .firestore()
+    .collection("Users")
+    .get()
+    .then((res) => {
+      users = res.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    });
+
+  await admin
+    .firestore()
+    .collection("timeentries")
+    .get()
+    .then((res) => {
+      timeEntries = res.docs.map((doc) => ({
+        id: doc.id,
+        ...doc.data(),
+      }));
+    });
+
+  return {
+    activities: activities,
+    timeEntries: timeEntries,
+    users: users,
+  };
+}
+
+exports.downloadData = functions.https.onCall(async (data, context) => {
+  try {
+    //Checking that the user calling the Cloud Function is authenticated
+    if (!context.auth) {
+      throw new UnauthenticatedError(
+        "The user is not authenticated. Only authenticated Super Admin users can call this function."
+      );
+    }
+
+    //Checking that the user calling the Cloud Function is an Admin user
+    const callerUid = context.auth.uid; //uid of the user calling the Cloud Function
+
+    const callerUserRecord = await admin.auth().getUser(callerUid);
+
+    if (
+      !callerUserRecord.customClaims.superadmin ||
+      callerUserRecord.customClaims.admin ||
+      callerUserRecord.customClaims.user
+    ) {
+      throw new NotAnAdminError(
+        "Only Super Admin users can call this function."
+      );
+    }
+
+    let { activities, timeEntries, users } = await getAllDatabaseData();
+
+    let usersWithTimeEntries = [];
+
+    users.map((user) => {
+      let timeEntryArray = [];
+
+      timeEntries.map((timeEntry) => {
+        if (user.id === timeEntry.user_id) {
+          timeEntryArray.push(timeEntry);
+        }
+      });
+
+      usersWithTimeEntries.push({
+        ...user,
+        timeEntries: timeEntryArray,
+      });
+    });
+
+    return {
+      result: usersWithTimeEntries,
+      message:
+        "All user data for the specified date period has been successfully downloaded.",
+    };
+  } catch (error) {
+    if (error.type === "UnauthenticatedError") {
+      throw new functions.https.HttpsError("unauthenticated", error.message);
+    } else if (
+      error.type === "NotAnAdminError" ||
+      error.type === "InvalidRoleError"
+    ) {
+      throw new functions.https.HttpsError(
+        "failed-precondition",
+        error.message
+      );
+    } else {
+      throw new functions.https.HttpsError("internal", error.message);
+    }
+  }
+});

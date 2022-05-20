@@ -2,8 +2,6 @@ import {
   Platform,
   StyleSheet,
   Text,
-  TextInput,
-  TouchableNativeFeedback,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -15,6 +13,8 @@ import typography from "../assets/theme/typography";
 import { Icon } from "react-native-elements";
 import DatePicker from "../components/DatePicker";
 import { subYears, format } from "date-fns";
+
+import functions from "@react-native-firebase/functions";
 
 const DownloadUserData = () => {
   const date = new Date();
@@ -97,7 +97,15 @@ const DownloadUserData = () => {
           )}
         </View>
         <View style={styles.downloadButtonWrapper}>
-          <TouchableOpacity disabled={choseDate === null ? true : false}>
+          <TouchableOpacity
+            disabled={choseDate === null ? true : false}
+            onPress={async () => {
+              let downloadData = functions().httpsCallable("downloadData");
+              await downloadData().then((res) => {
+                console.log(res.data);
+              });
+            }}
+          >
             <View style={styles.downloadButton(choseDate)}>
               <Text style={{ ...typography.button.lg }}>Exportera data</Text>
             </View>
