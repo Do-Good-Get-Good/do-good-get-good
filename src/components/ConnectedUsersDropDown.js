@@ -10,30 +10,17 @@ import { Icon, Overlay } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import PopupWithRadioButtons from "./PopupWithRadioButtons";
 
-export function ConnectedUsersDropDown({
-  usersConnectedToTheAdmin,
-  adminName,
-}) {
-  const [userArray, setUserArray] = useState(usersConnectedToTheAdmin);
+export function ConnectedUsersDropDown({}) {
+  const superAdminContext = useSuperAdminFunction();
+  const [userArray, setUserArray] = useState(
+    superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
+  );
   const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
     useState(true);
-
-  //console.log("userArray   ", userArray);
-
-  const allAdmins = () => {
-    let adminArray = [];
-    for (let i = 0; i < userArray.length; i++) {
-      if (
-        userArray[i].user.role === "admin" ||
-        userArray[i].user.role === "superadmin"
-      ) {
-        adminArray.push(userArray[i].user);
-      }
-    }
-    return adminArray;
-  };
 
   const clickOnPencilIcon = (user) => {
     setShowPopupWithRadioButtons(true);
@@ -45,6 +32,12 @@ export function ConnectedUsersDropDown({
     tempArray[index].selectedForDropDown = !selected;
     setUserArray(tempArray);
   }
+
+  useEffect(() => {
+    if (superAdminContext.buttonToSaveChanhgesPressed) {
+      setShowPopupWithRadioButtons(false);
+    }
+  }, [superAdminContext.buttonToSaveChanhgesPressed]);
 
   const dropDownOpen = useCallback((selected) => {
     // console.log("selected  ", selected);
@@ -79,7 +72,9 @@ export function ConnectedUsersDropDown({
           <View style={styles.containerAdminName}>
             <Text style={styles.adminText}>Admin:</Text>
             <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
-              <Text style={styles.userAndAdminNames}>{adminName}</Text>
+              <Text style={styles.userAndAdminNames}>
+                {superAdminContext.makeChangesForSelectedUser.adminName}
+              </Text>
               <TouchableOpacity onPress={() => clickOnPencilIcon()}>
                 <Icon
                   color={colors.secondary}
@@ -104,11 +99,10 @@ export function ConnectedUsersDropDown({
         >
           <PopupWithRadioButtons
             titleText={"Ändra admin"}
-            arrayList={allAdmins()}
+            showPopup={(showPopupWithRadioButtons) =>
+              setShowPopupWithRadioButtons(showPopupWithRadioButtons)
+            }
           />
-          <TouchableOpacity style={styles.okButton}>
-            <Text>Ok</Text>
-          </TouchableOpacity>
         </Overlay>
       </View>
     );
@@ -148,12 +142,5 @@ const styles = StyleSheet.create({
     paddingRight: 3,
     justifyContent: "space-between",
     flex: 1,
-  },
-  okButton: {
-    ...typography.lg,
-    fontWeight: "500",
-    backgroundColor: colors.primary,
-    borderRadius: 5,
-    paddingVertical: 17,
   },
 });

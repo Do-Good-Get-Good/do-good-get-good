@@ -1,22 +1,42 @@
-import { StyleSheet, ScrollView, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 //component
-export function ChangeRolesAndConnection({ user, adminName }) {
-  const [selectedUser, setSelectedUser] = useState(user);
+export function ChangeRolesAndConnection({}) {
+  const superAdminContext = useSuperAdminFunction();
   const [role, setRole] = useState(null);
+  const [user, setUser] = useState(
+    superAdminContext.makeChangesForSelectedUser.user
+  );
+  const [adminName, serAdminName] = useState(
+    superAdminContext.makeChangesForSelectedUser.adminName
+  );
 
   useEffect(() => {
-    if (user.role === "user") setRole("User");
-    else if (user.role === "admin") {
+    setUser(superAdminContext.makeChangesForSelectedUser.user);
+  }, [superAdminContext.makeChangesForSelectedUser.user]);
+
+  useEffect(() => {
+    serAdminName(superAdminContext.makeChangesForSelectedUser.adminName);
+  }, [superAdminContext.makeChangesForSelectedUser.adminName]);
+
+  useEffect(() => {
+    if (superAdminContext.makeChangesForSelectedUser.user.role === "user")
+      setRole("User");
+    else if (
+      superAdminContext.makeChangesForSelectedUser.user.role === "admin"
+    ) {
       setRole("Admin");
-    } else if (user.role === "superadmin") {
+    } else if (
+      superAdminContext.makeChangesForSelectedUser.user.role === "superadmin"
+    ) {
       setRole("Super admin");
     }
-  }, [user]);
+  }, [superAdminContext.makeChangesForSelectedUser.user.role]);
 
   return (
     <View>

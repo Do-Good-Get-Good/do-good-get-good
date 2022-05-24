@@ -8,13 +8,15 @@ import colors from "../assets/theme/colors";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Icon } from "react-native-elements";
 
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import Menu from "../components/Menu";
+
 import ChangeRolesAndConnection from "../components/ChangeRoleAndConnection";
 import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 
 //screen
 export function RolesAndConnection({ navigation, route }) {
-  const { user, adminName, arrayOfUsersIfAdmin } = route.params;
+  const superAdminContext = useSuperAdminFunction();
 
   return (
     <SafeAreaView>
@@ -32,13 +34,19 @@ export function RolesAndConnection({ navigation, route }) {
           />
           <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
         </TouchableOpacity>
-        <ChangeRolesAndConnection user={user} adminName={adminName} />
-        {user.role === "admin" || user.role === "superadmin" ? (
-          <ConnectedUsersDropDown
-            usersConnectedToTheAdmin={arrayOfUsersIfAdmin}
-            adminName={adminName}
-          />
+        <ChangeRolesAndConnection />
+        {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
+        superAdminContext.makeChangesForSelectedUser.user.role ===
+          "superadmin" ? (
+          <ConnectedUsersDropDown />
         ) : null}
+        <TouchableOpacity
+          onPress={() => superAdminContext.setButtonToSaveChanhgesPressed(true)}
+          style={styles.saveButton}
+        >
+          <Text style={styles.saveButtonText}>Spara</Text>
+        </TouchableOpacity>
+        <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );
@@ -54,5 +62,17 @@ const styles = StyleSheet.create({
     textDecorationLine: "underline",
     fontWeight: "500",
     ...typography.b2,
+  },
+  saveButton: {
+    borderRadius: 5,
+    backgroundColor: colors.primary,
+    height: 50,
+    marginBottom: 10,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  saveButtonText: {
+    ...typography.button.lg,
+    fontWeight: "500",
   },
 });

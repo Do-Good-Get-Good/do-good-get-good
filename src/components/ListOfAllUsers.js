@@ -58,11 +58,18 @@ function ListOfAllUsers({ navigation }) {
       arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.doc_id);
     }
 
-    navigation.navigate("RolesAndConnection", {
+    superAdminContext.setMakeChangesForSelectedUser({
       user: chooseUser,
       adminName: userAdminName,
       arrayOfUsersIfAdmin: arrayOfUsers,
     });
+    navigation.navigate("RolesAndConnection");
+    // navigation.navigate("RolesAndConnection", {
+    //   user: chooseUser,
+    //   adminName: userAdminName,
+
+    //   arrayOfUsersIfAdmin: arrayOfUsers,
+    // });
   }
 
   return (
