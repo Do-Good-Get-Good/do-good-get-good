@@ -138,6 +138,23 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
+  function alertUser(message) {
+    Alert.alert(
+      "Skapa användare",
+      message,
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            createActivityContext.chooseInDropDown(null);
+            navigation.navigate("AdminPage");
+          },
+        },
+      ]
+    );
+
+  }
+
   async function linkChoosenActivityToNewUser() {
     if (createNewUser != null) {
       var createUser = functions().httpsCallable("createUser");
@@ -150,6 +167,7 @@ export function CreateActivity({ route, navigation }) {
         activityId: activityFromSelectionInDropDown[0].id,
       }).then((res) => {
         let newUser = res.data.createdUser;
+        console.log(res)
 
         // Save new user locally
         setUserData((prev) => [...prev, newUser]);
@@ -157,22 +175,18 @@ export function CreateActivity({ route, navigation }) {
 
         setLoading(false);
 
-        Alert.alert(
-          "Skapa användare",
-          `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
-          [
-            {
-              text: "OK",
-              onPress: () => {
-                createActivityContext.chooseInDropDown(null);
-                navigation.navigate("HomePage");
-              },
-            },
-          ]
-        );
+        alertUser(`Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`);
+      }).catch(error => {
+        message = "Error"
+        setLoading(false);
+        if (error === 'auth/email-already-exists') {
+          message = `Användaren '${createNewUser.email}' kunde inte skapas, en användare med den adressen finns redan`
+        }
+        else {
+          message = `Kunde inte skapa användare med epost '${createNewUser.email}', error '${error.message}'`
+        }
+        alertUser(message);
       });
-    } else {
-      console.log("ingen ny användare");
     }
   }
 
@@ -291,7 +305,7 @@ export function CreateActivity({ route, navigation }) {
               setLoading(true);
               if (
                 createActivityContext.sendChoiceFromDropDown !=
-                  "Skapa ny aktivitet" &&
+                "Skapa ny aktivitet" &&
                 whileCreatingNewUser === true
               ) {
                 linkChoosenActivityToNewUser();
