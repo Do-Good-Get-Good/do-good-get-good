@@ -14,6 +14,7 @@ var serviceAccount = require("./ServiceAccount/devServiceAccount.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
+  storageBucket: "dev-do-good-get-good.appspot.com",
 });
 
 class UnauthenticatedError extends Error {
@@ -248,6 +249,51 @@ async function getAllDatabaseData() {
   };
 }
 
+function createExcelFile() {
+  const Excel = require("exceljs");
+
+  var workbook = new Excel.Workbook();
+  const worksheet = workbook.addWorksheet("Icke godkända");
+
+  worksheet.columns = [
+    { header: "Id", key: "id", width: 10 },
+    { header: "Name", key: "name", width: 32 },
+    { header: "D.O.B.", key: "dob", width: 15 },
+  ];
+
+  worksheet.addRow({ id: 1, name: "John Doe", dob: new Date(1970, 1, 1) });
+  worksheet.addRow({ id: 2, name: "Jane Doe", dob: new Date(1965, 1, 7) });
+
+  return workbook;
+}
+
+async function saveExcelFileToCloudStorage(path, filename, excelWorkbook) {
+  const moment = require("moment");
+  // Save excel file to firebase cloud storage
+  const storage = admin.storage();
+  const bucket = storage.bucket();
+  const storageFile = bucket.file(`${path}/${filename}`);
+  const blobStream = storageFile.createWriteStream({
+    contentType: "application/ms-excel",
+  });
+
+  await excelWorkbook.xlsx.write(blobStream);
+
+  blobStream.end();
+
+  const config = {
+    action: "read",
+    expires: moment().add(30, "minutes").format(),
+  };
+
+  return await storageFile.getSignedUrl(config);
+}
+
+async function createAndSaveExcelFile() {
+  var excelWorkbook = createExcelFile();
+  return await saveExcelFileToCloudStorage("excel", "test.xlsx", excelWorkbook);
+}
+
 exports.downloadData = functions.https.onCall(async (data, context) => {
   try {
     //Checking that the user calling the Cloud Function is authenticated
@@ -291,7 +337,13 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       });
     });
 
+    let excelTestResponse;
+    await createAndSaveExcelFile().then((res) => {
+      excelTestResponse = res;
+    });
+
     return {
+      excel: excelTestResponse,
       result: usersWithTimeEntries,
       message:
         "All user data for the specified date period has been successfully downloaded.",
