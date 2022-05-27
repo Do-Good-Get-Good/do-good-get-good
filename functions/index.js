@@ -1,6 +1,7 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
+const dateFns = require("date-fns");
 
 // var serviceAccount = require("./ServiceAccount/serviceAccount.json");
 
@@ -249,26 +250,76 @@ async function getAllDatabaseData() {
   };
 }
 
-function createExcelFile() {
-  const Excel = require("exceljs");
+function getMonthNames() {
+  return [
+    "Januari",
+    "Februari",
+    "Mars",
+    "April",
+    "Maj",
+    "Juni",
+    "Juli",
+    "Augusti",
+    "September",
+    "Oktober",
+    "November",
+    "December",
+  ];
+}
 
-  var workbook = new Excel.Workbook();
+function createNotConfirmedWorksheet(workbook, excelData) {
+  let { activities, timeEntries, users } = excelData;
+
   const worksheet = workbook.addWorksheet("Icke godkända");
 
   worksheet.columns = [
-    { header: "Id", key: "id", width: 10 },
-    { header: "Name", key: "name", width: 32 },
-    { header: "D.O.B.", key: "dob", width: 15 },
+    { header: "Månad", key: "month", width: 10 },
+    { header: "Admin", key: "admin", width: 20 },
+    { header: "Användare", key: "user", width: 20 },
+    { header: "Aktivitet", key: "activity", width: 20 },
+    { header: "Stad", key: "city", width: 15 },
+    { header: "Datum", key: "date", width: 15 },
+    { header: "Tid (h)", key: "time", width: 10 },
   ];
 
-  worksheet.addRow({ id: 1, name: "John Doe", dob: new Date(1970, 1, 1) });
-  worksheet.addRow({ id: 2, name: "Jane Doe", dob: new Date(1965, 1, 7) });
+  users.map((user) => {
+    timeEntries.map((timeEntry) => {
+      if (user.id === timeEntry.user_id) {
+        let admin = users.filter((admin) => {
+          if (admin.id === timeEntry.admin_id) {
+            return admin;
+          }
+        });
+        let activity = activities.filter((activity) => {
+          if (activity.id === timeEntry.activity_id) {
+            return activity;
+          }
+        });
+        const months = getMonthNames();
+        worksheet.addRow({
+          month: months[dateFns.getMonth(timeEntry.date.toDate())],
+          admin: `${admin[0].first_name} ${admin[0].last_name}`,
+          user: `${user.first_name} ${user.last_name}`,
+          activity: activity[0].activity_title,
+          city: activity[0].activity_city,
+          date: dateFns.format(timeEntry.date.toDate(), "yyyy-MM-dd"),
+          time: timeEntry.time,
+        });
+      }
+    });
+  });
+}
+
+function createExcelFile(excelData) {
+  const Excel = require("exceljs");
+
+  var workbook = new Excel.Workbook();
+  createNotConfirmedWorksheet(workbook, excelData);
 
   return workbook;
 }
 
 async function saveExcelFileToCloudStorage(path, filename, excelWorkbook) {
-  const moment = require("moment");
   // Save excel file to firebase cloud storage
   const storage = admin.storage();
   const bucket = storage.bucket();
@@ -283,15 +334,16 @@ async function saveExcelFileToCloudStorage(path, filename, excelWorkbook) {
 
   const config = {
     action: "read",
-    expires: moment().add(30, "minutes").format(),
+    expires: new Date(new Date().getTime() + 30 * 60000),
   };
 
   return await storageFile.getSignedUrl(config);
 }
 
-async function createAndSaveExcelFile() {
-  var excelWorkbook = createExcelFile();
-  return await saveExcelFileToCloudStorage("excel", "test.xlsx", excelWorkbook);
+async function createAndSaveExcelFile(excelData) {
+  var excelWorkbook = createExcelFile(excelData);
+  const fileName = `DGGG-statistik-${dateFns.format(new Date(), "yyyy-MM-dd")}`;
+  return await saveExcelFileToCloudStorage("excel", fileName, excelWorkbook);
 }
 
 exports.downloadData = functions.https.onCall(async (data, context) => {
@@ -320,31 +372,19 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
 
     let { activities, timeEntries, users } = await getAllDatabaseData();
 
-    let usersWithTimeEntries = [];
-
-    users.map((user) => {
-      let timeEntryArray = [];
-
-      timeEntries.map((timeEntry) => {
-        if (user.id === timeEntry.user_id) {
-          timeEntryArray.push(timeEntry);
-        }
-      });
-
-      usersWithTimeEntries.push({
-        ...user,
-        timeEntries: timeEntryArray,
-      });
-    });
+    let excelData = {
+      activities: activities,
+      timeEntries: timeEntries,
+      users: users,
+    };
 
     let excelTestResponse;
-    await createAndSaveExcelFile().then((res) => {
+    await createAndSaveExcelFile(excelData).then((res) => {
       excelTestResponse = res;
     });
 
     return {
       excel: excelTestResponse,
-      result: usersWithTimeEntries,
       message:
         "All user data for the specified date period has been successfully downloaded.",
     };

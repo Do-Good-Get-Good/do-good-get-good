@@ -1,20 +1,23 @@
+import React, { useState } from "react";
 import {
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  Linking,
 } from "react-native";
-import React, { useState } from "react";
-import Menu from "../components/Menu";
+
 import { SafeAreaView } from "react-native-safe-area-context";
+import { subYears, format } from "date-fns";
+import { Icon, Dialog } from "react-native-elements";
+import functions from "@react-native-firebase/functions";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon } from "react-native-elements";
-import DatePicker from "../components/DatePicker";
-import { subYears, format } from "date-fns";
 
-import functions from "@react-native-firebase/functions";
+import Menu from "../components/Menu";
+import DatePicker from "../components/DatePicker";
 
 const DownloadUserData = () => {
   const date = new Date();
@@ -22,6 +25,8 @@ const DownloadUserData = () => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
   const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
+  const [dataDownloaded, setDataDownloaded] = useState(false);
+  const [excelDownloadURL, setExcelDownloadURL] = useState(null);
 
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
@@ -97,19 +102,44 @@ const DownloadUserData = () => {
           )}
         </View>
         <View style={styles.downloadButtonWrapper}>
-          <TouchableOpacity
-            disabled={choseDate === null ? true : false}
-            onPress={async () => {
-              let downloadData = functions().httpsCallable("downloadData");
-              await downloadData().then((res) => {
-                console.log(res.data);
-              });
-            }}
-          >
-            <View style={styles.downloadButton(choseDate)}>
-              <Text style={{ ...typography.button.lg }}>Exportera data</Text>
-            </View>
-          </TouchableOpacity>
+          {!dataDownloaded && (
+            <TouchableOpacity
+              disabled={choseDate === null ? true : false}
+              onPress={async () => {
+                setDataDownloaded(true);
+                let downloadData = functions().httpsCallable("downloadData");
+                await downloadData().then((res) => {
+                  setExcelDownloadURL(res.data.excel[0]);
+                });
+              }}
+            >
+              <View style={styles.downloadButton(choseDate)}>
+                <Text style={{ ...typography.button.lg }}>Exportera data</Text>
+              </View>
+            </TouchableOpacity>
+          )}
+          {dataDownloaded && (
+            <TouchableOpacity
+              onPress={() => {
+                Linking.openURL(excelDownloadURL);
+              }}
+            >
+              <View style={styles.downloadButton(choseDate)}>
+                {excelDownloadURL === null ? (
+                  <Dialog.Loading
+                    loadingProps={{
+                      color: colors.secondary,
+                      style: { padding: 0, margin: 0 },
+                    }}
+                  />
+                ) : (
+                  <Text style={{ ...typography.button.lg }}>
+                    Ladda ned excel-fil
+                  </Text>
+                )}
+              </View>
+            </TouchableOpacity>
+          )}
         </View>
       </View>
     </SafeAreaView>
