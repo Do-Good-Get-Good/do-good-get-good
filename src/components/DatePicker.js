@@ -49,7 +49,7 @@ const DatePicker = ({ date, setDate }) => {
         onPress={() => setVisible(true)}
       >
         <View style={styles.buttonView}>
-          <Text>{date}</Text>
+          <Text style={typography.b2}>{date}</Text>
         </View>
       </TouchableOpacity>
       <Overlay

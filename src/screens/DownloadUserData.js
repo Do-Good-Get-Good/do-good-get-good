@@ -9,7 +9,7 @@ import {
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
-import { subYears, format } from "date-fns";
+import { subYears, format, toDate, parseISO } from "date-fns";
 import { Icon, Dialog } from "react-native-elements";
 import functions from "@react-native-firebase/functions";
 
@@ -31,6 +31,16 @@ const DownloadUserData = () => {
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
+
+  const IsDatePeriodValid = () => {
+    if (toDate(parseISO(endDate)) < toDate(parseISO(startDate))) {
+      return false;
+    }
+    if (toDate(parseISO(endDate)) === toDate(parseISO(startDate))) {
+      return true;
+    }
+    return true;
+  };
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -83,16 +93,29 @@ const DownloadUserData = () => {
           </View>
 
           {choseDate && (
-            <View style={styles.pickDateViewStyle}>
-              <View>
-                <Text>Startdatum</Text>
-                <DatePicker date={startDate} setDate={setStartDate} />
+            <>
+              <View style={styles.pickDateViewStyle}>
+                <View>
+                  <Text style={{ ...typography.b2 }}>Startdatum</Text>
+                  <DatePicker date={startDate} setDate={setStartDate} />
+                </View>
+                <View>
+                  <Text style={{ ...typography.b2 }}>Slutdatum</Text>
+                  <DatePicker date={endDate} setDate={setEndDate} />
+                </View>
               </View>
-              <View>
-                <Text>Slutdatum</Text>
-                <DatePicker date={endDate} setDate={setEndDate} />
-              </View>
-            </View>
+              {IsDatePeriodValid() === false && (
+                <Text
+                  style={{
+                    ...typography.b2,
+                    marginTop: 8,
+                    color: colors.error,
+                  }}
+                >
+                  Slutdatum kan inte vara tidigare än startdatum!
+                </Text>
+              )}
+            </>
           )}
           {choseDate === false && (
             <View style={styles.continuousDateStyle}>
@@ -104,22 +127,39 @@ const DownloadUserData = () => {
         <View style={styles.downloadButtonWrapper}>
           {!dataDownloaded && (
             <TouchableOpacity
-              disabled={choseDate === null ? true : false}
+              disabled={
+                choseDate === null ||
+                (choseDate == true && IsDatePeriodValid() === false)
+                  ? true
+                  : false
+              }
               onPress={async () => {
                 setDataDownloaded(true);
                 let downloadData = functions().httpsCallable("downloadData");
                 await downloadData().then((res) => {
-                  setExcelDownloadURL(res.data.excel[0]);
+                  setExcelDownloadURL(res.data.downloadURL);
                 });
               }}
             >
-              <View style={styles.downloadButton(choseDate)}>
+              <View
+                style={[
+                  styles.downloadButton(choseDate),
+                  {
+                    backgroundColor:
+                      choseDate === null ||
+                      (choseDate == true && IsDatePeriodValid() === false)
+                        ? colors.disabled
+                        : colors.primary,
+                  },
+                ]}
+              >
                 <Text style={{ ...typography.button.lg }}>Exportera data</Text>
               </View>
             </TouchableOpacity>
           )}
           {dataDownloaded && (
             <TouchableOpacity
+              disabled={excelDownloadURL === null ? true : false}
               onPress={() => {
                 Linking.openURL(excelDownloadURL);
               }}

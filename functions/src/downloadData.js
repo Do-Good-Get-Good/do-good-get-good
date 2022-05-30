@@ -18,43 +18,20 @@ class NotAnAdminError extends Error {
   }
 }
 
+async function getAllDataFromCollection(collectionName) {
+  const res = await admin.firestore().collection(collectionName).get();
+  if (!res.empty) {
+    return res.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  }
+}
+
 async function getAllDatabaseData() {
-  let users;
-  let activities;
-  let timeEntries;
-
-  await admin
-    .firestore()
-    .collection("Activities")
-    .get()
-    .then((res) => {
-      activities = res.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-    });
-
-  await admin
-    .firestore()
-    .collection("Users")
-    .get()
-    .then((res) => {
-      users = res.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-    });
-
-  await admin
-    .firestore()
-    .collection("timeentries")
-    .get()
-    .then((res) => {
-      timeEntries = res.docs.map((doc) => ({
-        id: doc.id,
-        ...doc.data(),
-      }));
-    });
+  let users = await getAllDataFromCollection("Users");
+  let activities = await getAllDataFromCollection("Activities");
+  let timeEntries = await getAllDataFromCollection("timeentries");
 
   return {
     activities: activities,
@@ -155,7 +132,10 @@ async function saveExcelFileToCloudStorage(path, filename, excelWorkbook) {
 
 async function createAndSaveExcelFile(excelData) {
   var excelWorkbook = createExcelFile(excelData);
-  const fileName = `DGGG-statistik-${dateFns.format(new Date(), "yyyy-MM-dd")}`;
+  const fileName = `DGGG-statistik-${dateFns.format(
+    new Date(),
+    "yyyy-MM-dd"
+  )}.xlsx`;
   return await saveExcelFileToCloudStorage("excel", fileName, excelWorkbook);
 }
 
@@ -183,21 +163,15 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       );
     }
 
-    let { activities, timeEntries, users } = await getAllDatabaseData();
+    let excelData = await getAllDatabaseData();
 
-    let excelData = {
-      activities: activities,
-      timeEntries: timeEntries,
-      users: users,
-    };
-
-    let excelTestResponse;
+    let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {
-      excelTestResponse = res;
+      excelDownloadURL = res[0];
     });
 
     return {
-      excel: excelTestResponse,
+      downloadURL: excelDownloadURL,
       message:
         "All user data for the specified date period has been successfully downloaded.",
     };
