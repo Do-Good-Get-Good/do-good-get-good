@@ -25,7 +25,7 @@ const DatePicker = ({ date, setDate }) => {
   useEffect(() => {
     if (visible) {
       setToday(format(new Date(), "yyyy-MM-dd"));
-      setSelectedDate(format(new Date(), "yyyy-MM-dd"));
+      setSelectedDate(format(new Date(date), "yyyy-MM-dd"));
     } else {
       setToday(null);
       setSelectedDate(null);
