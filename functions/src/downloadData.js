@@ -18,8 +18,22 @@ class NotAnAdminError extends Error {
   }
 }
 
-async function getAllDataFromCollection(collectionName) {
-  const res = await admin.firestore().collection(collectionName).get();
+async function getAllDataFromCollection(collectionName, datePeriod) {
+  let res;
+
+  if (datePeriod != null || datePeriod != undefined) {
+    const { startDate, endDate } = datePeriod;
+
+    res = await admin
+      .firestore()
+      .collection(collectionName)
+      .orderBy("date", "asc")
+      .startAt(startDate)
+      .endAt(endDate)
+      .get();
+  } else {
+    res = await admin.firestore().collection(collectionName).get();
+  }
   if (!res.empty) {
     return res.docs.map((doc) => ({
       id: doc.id,
@@ -28,10 +42,10 @@ async function getAllDataFromCollection(collectionName) {
   }
 }
 
-async function getAllDatabaseData() {
+async function getAllDatabaseData(datePeriod) {
   let users = await getAllDataFromCollection("Users");
   let activities = await getAllDataFromCollection("Activities");
-  let timeEntries = await getAllDataFromCollection("timeentries");
+  let timeEntries = await getAllDataFromCollection("timeentries", datePeriod);
 
   return {
     activities: activities,
@@ -72,26 +86,41 @@ function createNotConfirmedWorksheet(workbook, excelData) {
     { header: "Tid (h)", key: "time", width: 10 },
   ];
 
+  worksheet.getCell("A1").font = { bold: true };
+  worksheet.getCell("B1").font = { bold: true };
+  worksheet.getCell("C1").font = { bold: true };
+  worksheet.getCell("D1").font = { bold: true };
+  worksheet.getCell("E1").font = { bold: true };
+  worksheet.getCell("F1").font = { bold: true };
+  worksheet.getCell("G1").font = { bold: true };
+
+  let unconfirmedTimeEntries = timeEntries.filter((timeEntry) => {
+    if (!timeEntry.status_confirmed) return timeEntry;
+  });
+
   users.map((user) => {
-    timeEntries.map((timeEntry) => {
+    unconfirmedTimeEntries.map((timeEntry) => {
       if (user.id === timeEntry.user_id) {
-        let admin = users.filter((admin) => {
+        let admin = users.find((admin) => {
           if (admin.id === timeEntry.admin_id) {
             return admin;
           }
         });
-        let activity = activities.filter((activity) => {
+
+        let activity = activities.find((activity) => {
           if (activity.id === timeEntry.activity_id) {
             return activity;
           }
         });
+
         const months = getMonthNames();
+
         worksheet.addRow({
           month: months[dateFns.getMonth(timeEntry.date.toDate())],
-          admin: `${admin[0].first_name} ${admin[0].last_name}`,
+          admin: `${admin.first_name} ${admin.last_name}`,
           user: `${user.first_name} ${user.last_name}`,
-          activity: activity[0].activity_title,
-          city: activity[0].activity_city,
+          activity: activity.activity_title,
+          city: activity.activity_city,
           date: dateFns.format(timeEntry.date.toDate(), "yyyy-MM-dd"),
           time: timeEntry.time,
         });
@@ -163,7 +192,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       );
     }
 
-    let excelData = await getAllDatabaseData();
+    let excelData = await getAllDatabaseData(data.datePeriod);
 
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {

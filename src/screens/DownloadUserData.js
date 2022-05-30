@@ -119,7 +119,9 @@ const DownloadUserData = () => {
           )}
           {choseDate === false && (
             <View style={styles.continuousDateStyle}>
-              <Text>Kommer att ladda ned data mellan följade datum</Text>
+              <Text style={{ ...typography.b2 }}>
+                Kommer att ladda ned data mellan följade datum
+              </Text>
               <Text>{rollingYear}</Text>
             </View>
           )}
@@ -134,9 +136,25 @@ const DownloadUserData = () => {
                   : false
               }
               onPress={async () => {
+                let datePeriod;
+                if (!choseDate) {
+                  datePeriod = {
+                    startDate: new Date(oneYearBack),
+                    endDate: new Date(today),
+                  };
+                } else {
+                  datePeriod = {
+                    startDate: new Date(startDate),
+                    endDate: new Date(endDate),
+                  };
+                }
+
+                console.log(datePeriod);
+
                 setDataDownloaded(true);
                 let downloadData = functions().httpsCallable("downloadData");
-                await downloadData().then((res) => {
+                await downloadData(datePeriod).then((res) => {
+                  console.log(res.data.downloadURL);
                   setExcelDownloadURL(res.data.downloadURL);
                 });
               }}
@@ -284,9 +302,9 @@ const styles = StyleSheet.create({
     }),
   },
   continuousDateStyle: {
-    ...typography.b2,
     flexDirection: "column",
     alignItems: "center",
+    marginHorizontal: 16,
   },
   downloadButtonWrapper: {
     width: "100%",
