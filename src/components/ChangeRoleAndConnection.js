@@ -9,12 +9,8 @@ import { useSuperAdminFunction } from "../context/SuperAdminContext";
 export function ChangeRolesAndConnection({}) {
   const superAdminContext = useSuperAdminFunction();
   const [role, setRole] = useState(null);
-  const [user, setUser] = useState(
-    superAdminContext.makeChangesForSelectedUser.user
-  );
-  const [adminName, serAdminName] = useState(
-    superAdminContext.makeChangesForSelectedUser.adminName
-  );
+  const [user, setUser] = useState({ firstName: "", lastName: "" });
+  const [adminName, serAdminName] = useState("");
 
   useEffect(() => {
     setUser(superAdminContext.makeChangesForSelectedUser.user);
@@ -40,7 +36,7 @@ export function ChangeRolesAndConnection({}) {
 
   return (
     <View>
-      <Text style={styles.title}>{user.first_name + " " + user.last_name}</Text>
+      <Text style={styles.title}>{user.firstName + " " + user.lastName}</Text>
       <View style={styles.containerForRoleAndAdminText}>
         <Text style={styles.textForRoleAndAdminTitle}>Nivå</Text>
         <Text style={styles.textForRoleAndAdmin}>{role}</Text>

@@ -17,13 +17,18 @@ export const SuperAdminProvider = ({ children }) => {
   );
   const [buttonToSaveChanhgesPressed, setButtonToSaveChanhgesPressed] =
     useState(false);
+  const [userIDToConnectAnotherAdmin, setUserIDToConnectAnotherAdmin] =
+    useState("");
   const [
     makeChangesForSelectedUserFromPopup,
     setMakeChangesForSelectedUserFromPopup,
   ] = useState({});
+  const [arrayOfIdOfChangedUserInfo, setArrayOfIdOfChangedUserInfo] = useState(
+    []
+  );
 
   useEffect(() => {
-    if (getAllUsers && userLevel === "superadmin") {
+    if (getAllUsers === true && userLevel === "superadmin") {
       const getAllUsersThatExistInTheSystem = async () => {
         try {
           await firestore()
@@ -31,12 +36,29 @@ export const SuperAdminProvider = ({ children }) => {
             .get()
             .then((response) => {
               let allUsers = [];
-              response.forEach((doc) =>
-                allUsers.push({ ...doc.data(), doc_id: doc.id })
+              response.forEach(
+                (doc) =>
+                  allUsers.push({
+                    activitiesAndAccumulatedTime:
+                      doc.data().activities_and_accumulated_time,
+                    adminId: doc.data().admin_id,
+                    connectedActivities: doc.data().connected_activities,
+                    docId: doc.id,
+                    firstName: doc.data().first_name,
+                    lastName: doc.data().last_name,
+                    role: doc.data().role,
+                    statusActive: doc.data().status_active,
+                    totalConfirmedHours: doc.data().total_confirmed_hours,
+                    totalHoursMonth: doc.data().total_hours_month,
+                    totalHoursYear: doc.data().total_hours_year,
+                  })
+
+                // allUsers.push({ ...doc.data(), doc_id: doc.id })
               );
 
               setAllUsersInSystem(allUsers);
               findAdminsAndSuperAdmins(allUsers);
+              // setGetAllUsers(false);
             })
             .catch((error) => {
               console.log("errorMessage ", error);
@@ -45,9 +67,13 @@ export const SuperAdminProvider = ({ children }) => {
           console.log("SuperAdminContext errorMessage ", error);
         }
       };
+
       getAllUsersThatExistInTheSystem();
     }
   }, [getAllUsers]);
+
+  // console.log("====    ==     allUsersInSystem    ", allUsersInSystem);
+  console.log("userIDToConnectAnotherAdmin   ", userIDToConnectAnotherAdmin);
 
   useEffect(() => {
     if (buttonToSaveChanhgesPressed) {
@@ -74,18 +100,19 @@ export const SuperAdminProvider = ({ children }) => {
     setAllAdminsAnsSuperAdmins(adminArray);
   };
 
-  useEffect(() => {
-    setMakeChangesForSelectedUser(makeChangesForSelectedUserFromPopup);
-  }, [makeChangesForSelectedUserFromPopup]);
-
-  console.log("buttonToSaveChanhgesPressed  ", buttonToSaveChanhgesPressed);
-  console.log("makeChangesForSelectedUser  ", makeChangesForSelectedUser);
+  //
+  console.log(
+    "makeChangesForSelectedUser context   ",
+    makeChangesForSelectedUser
+  );
+  // console.log("userIDToConnectAnotherAdmin  ", userIDToConnectAnotherAdmin);
 
   return (
     <SuperAdminContext.Provider
       value={{
         allUsersInSystem: allUsersInSystem,
         setGetAllUsers: setGetAllUsers,
+        getAllUsers: getAllUsers,
         userLevel: setUserLevel,
         allAdminsAnsSuperAdmins: allAdminsAnsSuperAdmins,
         makeChangesForSelectedUser: makeChangesForSelectedUser,
@@ -94,6 +121,8 @@ export const SuperAdminProvider = ({ children }) => {
         setButtonToSaveChanhgesPressed: setButtonToSaveChanhgesPressed,
         setMakeChangesForSelectedUserFromPopup:
           setMakeChangesForSelectedUserFromPopup,
+        userIDToConnectAnotherAdmin: userIDToConnectAnotherAdmin,
+        setUserIDToConnectAnotherAdmin: setUserIDToConnectAnotherAdmin,
       }}
     >
       {children}

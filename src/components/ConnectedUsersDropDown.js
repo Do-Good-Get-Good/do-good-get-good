@@ -7,7 +7,7 @@ import {
   Platform,
 } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -16,22 +16,43 @@ import PopupWithRadioButtons from "./PopupWithRadioButtons";
 
 export function ConnectedUsersDropDown({}) {
   const superAdminContext = useSuperAdminFunction();
-  const [userArray, setUserArray] = useState(
-    superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
-  );
+  const [userArray, setUserArray] = useState([]);
   const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
-    useState(true);
+    useState(false);
 
   const clickOnPencilIcon = (user) => {
+    superAdminContext.setUserIDToConnectAnotherAdmin(user);
     setShowPopupWithRadioButtons(true);
   };
 
-  function changeSelectedForDropDown(index) {
-    let tempArray = userArray;
-    let selected = tempArray[index].selectedForDropDown;
-    tempArray[index].selectedForDropDown = !selected;
+  useEffect(() => {
+    // console.log(
+    //   "_____:::::_________superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin    ",
+    //   superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
+    // );
+    // console.log(
+    //   "_____:::::_________superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length    ",
+    //   superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length
+    // );
+
+    setUserArray(
+      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
+    );
+  }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
+
+  const changeSelectedForDropDown = (docId) => {
+    let tempArray = userArray.map((user) => {
+      return {
+        ...user,
+        selectedForDropDown:
+          user.user.docId === docId
+            ? !user.selectedForDropDown
+            : user.selectedForDropDown,
+      };
+    });
+
     setUserArray(tempArray);
-  }
+  };
 
   useEffect(() => {
     if (superAdminContext.buttonToSaveChanhgesPressed) {
@@ -40,7 +61,6 @@ export function ConnectedUsersDropDown({}) {
   }, [superAdminContext.buttonToSaveChanhgesPressed]);
 
   const dropDownOpen = useCallback((selected) => {
-    // console.log("selected  ", selected);
     let arrow = "";
     if (selected) {
       arrow = "arrow-drop-up";
@@ -50,15 +70,15 @@ export function ConnectedUsersDropDown({}) {
     return arrow;
   }, []);
 
-  const whatTextToShow = (user, index) => {
+  const whatTextToShow = (user) => {
     return (
-      <View key={user.user.doc_id} style={styles.container}>
+      <View key={user.user.docId} style={styles.container}>
         <TouchableOpacity
           style={styles.containerForTextAndIcon}
-          onPress={() => changeSelectedForDropDown(index)}
+          onPress={() => changeSelectedForDropDown(user.user.docId)}
         >
           <Text style={styles.userAndAdminNames}>
-            {user.user.first_name + " " + user.user.last_name}
+            {user.user.firstName + " " + user.user.lastName}
           </Text>
 
           <Icon
@@ -72,10 +92,10 @@ export function ConnectedUsersDropDown({}) {
           <View style={styles.containerAdminName}>
             <Text style={styles.adminText}>Admin:</Text>
             <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
-              <Text style={styles.userAndAdminNames}>
-                {superAdminContext.makeChangesForSelectedUser.adminName}
-              </Text>
-              <TouchableOpacity onPress={() => clickOnPencilIcon()}>
+              <Text style={styles.userAndAdminNames}>{user.adminName}</Text>
+              <TouchableOpacity
+                onPress={() => clickOnPencilIcon(user.user.docId)}
+              >
                 <Icon
                   color={colors.secondary}
                   type="material-community"
@@ -102,6 +122,7 @@ export function ConnectedUsersDropDown({}) {
             showPopup={(showPopupWithRadioButtons) =>
               setShowPopupWithRadioButtons(showPopupWithRadioButtons)
             }
+            arrayWithChangedAdmin={(userArray) => setUserArray(userArray)}
           />
         </Overlay>
       </View>

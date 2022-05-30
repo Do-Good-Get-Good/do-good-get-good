@@ -1,11 +1,17 @@
-import { StyleSheet, ScrollView, Text, View } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { TouchableOpacity } from "react-native-gesture-handler";
+
 import { Icon } from "react-native-elements";
 
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
@@ -14,13 +20,20 @@ import Menu from "../components/Menu";
 import ChangeRolesAndConnection from "../components/ChangeRoleAndConnection";
 import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 
+import Video from "react-native-video";
+
 //screen
 export function RolesAndConnection({ navigation, route }) {
   const superAdminContext = useSuperAdminFunction();
+  const [showVideo, setShowVideo] = useState(true);
+
+  //source={require("../animation/dggg.mp4")}
 
   return (
     <SafeAreaView>
       <Menu />
+      <View></View>
+
       <ScrollView style={styles.container}>
         <TouchableOpacity
           onPress={() => navigation.goBack()}
@@ -34,6 +47,16 @@ export function RolesAndConnection({ navigation, route }) {
           />
           <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
         </TouchableOpacity>
+        <View>
+          {showVideo && (
+            <Video
+              style={{ width: 400, height: 200 }}
+              paused={false}
+              source={require("../animation/dggg.mp4")}
+              onEnd={() => setShowVideo(false)}
+            />
+          )}
+        </View>
         <ChangeRolesAndConnection />
         {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
         superAdminContext.makeChangesForSelectedUser.user.role ===

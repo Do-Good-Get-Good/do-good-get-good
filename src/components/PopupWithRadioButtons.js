@@ -7,13 +7,17 @@ import {
   Platform,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { ScrollView } from "react-native-gesture-handler";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
-export function PopupWithRadioButtons({ titleText, showPopup }) {
+export function PopupWithRadioButtons({
+  titleText,
+  showPopup,
+  arrayWithChangedAdmin,
+}) {
   const [radioButtonPressed, setRadioButtonPressed] = useState(true);
   const superAdminContext = useSuperAdminFunction();
   const [connectedAdminID, setConnectedAdminID] = useState({
@@ -25,11 +29,22 @@ export function PopupWithRadioButtons({ titleText, showPopup }) {
   );
 
   useEffect(() => {
+    var indexOfUserWhosedminIDNeedsToBeChange =
+      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
+        (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+      );
+
     setConnectedAdminID({
-      adminName: superAdminContext.makeChangesForSelectedUser.adminName,
-      adminId: superAdminContext.makeChangesForSelectedUser.user.admin_id,
+      adminName:
+        superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
+          indexOfUserWhosedminIDNeedsToBeChange
+        ].adminName,
+      adminId:
+        superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
+          indexOfUserWhosedminIDNeedsToBeChange
+        ].user.adminId,
     });
-  }, [superAdminContext.makeChangesForSelectedUser.user.admin_id]);
+  }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
 
   useEffect(() => {
     setAllAdminsAnsSuperAdmin(superAdminContext.allAdminsAnsSuperAdmins);
@@ -38,20 +53,25 @@ export function PopupWithRadioButtons({ titleText, showPopup }) {
   ///if ok then it should be sent to context to firebase
 
   function changeConnectedAdmin() {
-    let userObject = superAdminContext.makeChangesForSelectedUser;
-    if (
-      connectedAdminID.adminId !=
-        superAdminContext.makeChangesForSelectedUser.user.doc_id &&
-      connectedAdminID.adminId != ""
-    ) {
-      userObject.adminName = connectedAdminID.adminName;
-      userObject.user.admin_id = connectedAdminID.adminId;
+    let changeAdminObject = superAdminContext.makeChangesForSelectedUser;
 
-      // chooseNewAdmin(userObject);
+    var indexOfUserWhosedminIDNeedsToBeChange =
+      changeAdminObject.arrayOfUsersIfAdmin.findIndex(
+        (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+      );
+    changeAdminObject.arrayOfUsersIfAdmin[
+      indexOfUserWhosedminIDNeedsToBeChange
+    ].user.adminId = connectedAdminID.adminId;
 
-      superAdminContext.setMakeChangesForSelectedUserFromPopup(userObject);
-      showPopup(false);
-    }
+    changeAdminObject.arrayOfUsersIfAdmin[
+      indexOfUserWhosedminIDNeedsToBeChange
+    ].adminName = connectedAdminID.adminName;
+
+    //superAdminContext.setMakeChangesForSelectedUserFromPopup(changeAdminObject);
+    arrayWithChangedAdmin(changeAdminObject.arrayOfUsersIfAdmin);
+
+    showPopup(false);
+    // }
   }
 
   console.log("connectedAdminID,  ", connectedAdminID);
@@ -61,13 +81,13 @@ export function PopupWithRadioButtons({ titleText, showPopup }) {
         <Text style={styles.textTitle}>{titleText}</Text>
         <View style={{ backgroundColor: colors.background }}>
           {allAdminsAnsSuperAdmin.map((user, index) => (
-            <View style={styles.containerTextAndRadioButtins} key={user.doc_id}>
-              <Text>{user.first_name + " " + user.last_name}</Text>
+            <View style={styles.containerTextAndRadioButtins} key={user.docId}>
+              <Text>{user.firstName + " " + user.lastName}</Text>
               <TouchableOpacity
                 onPress={() =>
                   setConnectedAdminID({
-                    adminName: user.first_name + " " + user.last_name,
-                    adminId: user.doc_id,
+                    adminName: user.firstName + " " + user.lastName,
+                    adminId: user.docId,
                   })
                 }
                 style={styles.radioButtons}
@@ -78,14 +98,14 @@ export function PopupWithRadioButtons({ titleText, showPopup }) {
                     height: 20,
                     borderRadius: 20 / 2,
                     backgroundColor:
-                      user.doc_id === connectedAdminID.adminId
+                      user.docId === connectedAdminID.adminId
                         ? colors.primary
                         : colors.background,
                     borderColor: colors.dark,
                     borderWidth: 1,
                   }}
                 >
-                  {user.doc_id === connectedAdminID.adminId ? (
+                  {user.docId === connectedAdminID.adminId ? (
                     <View style={styles.smallCircul}></View>
                   ) : null}
                 </View>
@@ -105,6 +125,7 @@ export function PopupWithRadioButtons({ titleText, showPopup }) {
 }
 
 export default PopupWithRadioButtons;
+
 const styles = StyleSheet.create({
   containerTextAndRadioButtins: {
     flexDirection: "row",

@@ -58,13 +58,13 @@ export const superAdminUpdatesUserInfo = async (newChangesInUserInfo) => {
   console.log("newChangesInUserInfo  ", newChangesInUserInfo);
   await firestore()
     .collection("Users")
-    .doc(newChangesInUserInfo.doc_id)
+    .doc(newChangesInUserInfo.docId)
     .update({
-      first_name: newChangesInUserInfo.first_name,
-      last_name: newChangesInUserInfo.last_name,
-      status_active: newChangesInUserInfo.status_active,
+      first_name: newChangesInUserInfo.firstName,
+      last_name: newChangesInUserInfo.lastName,
+      status_active: newChangesInUserInfo.statusActive,
       role: newChangesInUserInfo.role,
-      admin_id: newChangesInUserInfo.admin_id,
+      admin_id: newChangesInUserInfo.adminId,
     })
     .then(() => {
       success = true;

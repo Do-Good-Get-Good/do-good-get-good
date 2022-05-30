@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+
 import {
   StyleSheet,
   View,
@@ -11,36 +12,42 @@ import typography from "../assets/theme/typography";
 import { Icon } from "react-native-elements";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
-function ListOfAllUsers({ navigation }) {
+export function ListOfAllUsers({ navigation }) {
   const superAdminContext = useSuperAdminFunction();
+  const [arrayOfAllUsersInSystem, setArrayOfAllUsersInSystem] = useState([]);
+
+  useEffect(() => {
+    if (
+      superAdminContext.getAllUsers === true &&
+      superAdminContext.allUsersInSystem.length != 0
+    ) {
+      setArrayOfAllUsersInSystem(superAdminContext.allUsersInSystem);
+      superAdminContext.setGetAllUsers(false);
+    }
+  }, [superAdminContext.allUsersInSystem]);
 
   function findNameOfUserAdmin(adminId) {
     let adminName = "";
-
-    let index = superAdminContext.allUsersInSystem.findIndex(
-      (x) => x.doc_id === adminId
-    );
+    let index = arrayOfAllUsersInSystem.findIndex((x) => x.docId === adminId);
 
     if (index != -1) {
       adminName =
-        superAdminContext.allUsersInSystem[index].first_name +
+        arrayOfAllUsersInSystem[index].firstName +
         " " +
-        superAdminContext.allUsersInSystem[index].last_name;
+        arrayOfAllUsersInSystem[index].lastName;
     }
     return adminName;
   }
 
   function findAllUsersConnectedToTheAdmin(userId) {
     let usersArray = [];
+    let adminName = findNameOfUserAdmin(userId);
 
-    for (
-      let index = 0;
-      index < superAdminContext.allUsersInSystem.length;
-      index++
-    ) {
-      if (superAdminContext.allUsersInSystem[index].admin_id === userId) {
+    for (let index = 0; index < arrayOfAllUsersInSystem.length; index++) {
+      if (arrayOfAllUsersInSystem[index].adminId === userId) {
         let tempObject = {
-          user: superAdminContext.allUsersInSystem[index],
+          user: arrayOfAllUsersInSystem[index],
+          adminName: adminName,
           selectedForDropDown: false,
         };
         usersArray.push(tempObject);
@@ -51,11 +58,10 @@ function ListOfAllUsers({ navigation }) {
   }
 
   function changingUserData(chooseUser) {
-    let userAdminName = findNameOfUserAdmin(chooseUser.admin_id);
+    let userAdminName = findNameOfUserAdmin(chooseUser.adminId);
     let arrayOfUsers = [];
-
     if (chooseUser.role === "admin" || chooseUser.role === "superadmin") {
-      arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.doc_id);
+      arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.docId);
     }
 
     superAdminContext.setMakeChangesForSelectedUser({
@@ -63,32 +69,28 @@ function ListOfAllUsers({ navigation }) {
       adminName: userAdminName,
       arrayOfUsersIfAdmin: arrayOfUsers,
     });
-    navigation.navigate("RolesAndConnection");
-    // navigation.navigate("RolesAndConnection", {
-    //   user: chooseUser,
-    //   adminName: userAdminName,
 
-    //   arrayOfUsersIfAdmin: arrayOfUsers,
-    // });
+    navigation.navigate("RolesAndConnection");
   }
 
   return (
     <View style={{ marginTop: 16 }}>
-      {superAdminContext.allUsersInSystem.map((user, index) => (
-        <View key={user.doc_id} style={styles.contrainer}>
-          <Text style={styles.firstAndLastNameText}>
-            {user.first_name + " " + user.last_name}
-          </Text>
-          <TouchableOpacity onPress={() => changingUserData(user)}>
-            <Icon
-              color={colors.dark}
-              name="pencil-outline"
-              type="material-community"
-              size={25}
-            />
-          </TouchableOpacity>
-        </View>
-      ))}
+      {arrayOfAllUsersInSystem.length != 0 &&
+        arrayOfAllUsersInSystem.map((user, index) => (
+          <View key={user.docId} style={styles.contrainer}>
+            <Text style={styles.firstAndLastNameText}>
+              {user.firstName + " " + user.lastName}
+            </Text>
+            <TouchableOpacity onPress={() => changingUserData(user)}>
+              <Icon
+                color={colors.dark}
+                name="pencil-outline"
+                type="material-community"
+                size={25}
+              />
+            </TouchableOpacity>
+          </View>
+        ))}
     </View>
   );
 }
