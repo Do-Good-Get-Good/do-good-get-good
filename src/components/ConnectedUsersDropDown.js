@@ -26,15 +26,6 @@ export function ConnectedUsersDropDown({}) {
   };
 
   useEffect(() => {
-    // console.log(
-    //   "_____:::::_________superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin    ",
-    //   superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
-    // );
-    // console.log(
-    //   "_____:::::_________superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length    ",
-    //   superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length
-    // );
-
     setUserArray(
       superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
     );
@@ -112,7 +103,7 @@ export function ConnectedUsersDropDown({}) {
           overlayStyle={{
             backgroundColor: colors.light,
             width: "90%",
-            height: "30%",
+            height: "35%",
             borderRadius: 5,
           }}
           onBackdropPress={() => setShowPopupWithRadioButtons(false)}

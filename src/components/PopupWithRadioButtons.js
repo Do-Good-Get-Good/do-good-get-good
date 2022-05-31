@@ -17,6 +17,7 @@ export function PopupWithRadioButtons({
   titleText,
   showPopup,
   arrayWithChangedAdmin,
+  listOfRoles,
 }) {
   const [radioButtonPressed, setRadioButtonPressed] = useState(true);
   const superAdminContext = useSuperAdminFunction();
@@ -28,22 +29,46 @@ export function PopupWithRadioButtons({
     superAdminContext.allAdminsAnsSuperAdmins
   );
 
-  useEffect(() => {
-    var indexOfUserWhosedminIDNeedsToBeChange =
-      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-        (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
-      );
+  const [selectedUserHasRole, setSelectedUserHasRole] = useState({});
 
-    setConnectedAdminID({
-      adminName:
-        superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
-          indexOfUserWhosedminIDNeedsToBeChange
-        ].adminName,
-      adminId:
-        superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
-          indexOfUserWhosedminIDNeedsToBeChange
-        ].user.adminId,
-    });
+  const [showRole, setShowRole] = useState(false);
+
+  useEffect(() => {
+    if (listOfRoles != undefined && listOfRoles.length != 0) {
+      setSelectedUserHasRole(superAdminContext.makeChangesForSelectedUser);
+      setShowRole(true);
+    }
+  }, [listOfRoles]);
+
+  function textToShowIfRole(role) {
+    var text = "";
+    if (role === "user") {
+      text = "User";
+    } else if (role === "admin") {
+      text = "Admin";
+    } else if (role === "superadmin") {
+      text = "Super admin";
+    }
+    return text;
+  }
+
+  useEffect(() => {
+    if (superAdminContext.userIDToConnectAnotherAdmin != "") {
+      var indexOfUserWhosedminIDNeedsToBeChange =
+        superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
+          (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+        );
+      setConnectedAdminID({
+        adminName:
+          superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
+            indexOfUserWhosedminIDNeedsToBeChange
+          ].user.adminName,
+        adminId:
+          superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
+            indexOfUserWhosedminIDNeedsToBeChange
+          ].user.adminId,
+      });
+    }
   }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
 
   useEffect(() => {
@@ -71,54 +96,103 @@ export function PopupWithRadioButtons({
     arrayWithChangedAdmin(changeAdminObject.arrayOfUsersIfAdmin);
 
     showPopup(false);
-    // }
+  }
+  const changeRoleOfTheSelectedUser = (userRole) => {
+    let temObject = selectedUserHasRole;
+    temObject.user.role = userRole;
+
+    setSelectedUserHasRole(temObject);
+  };
+
+  function ifChangeRole() {
+    return (
+      <View style={{ backgroundColor: colors.background }}>
+        {listOfRoles.map((role, index) => (
+          <View style={styles.containerTextAndRadioButtins} key={index}>
+            <Text>{textToShowIfRole(role)}</Text>
+            <TouchableOpacity
+              onPress={() => changeRoleOfTheSelectedUser(role)}
+              style={styles.radioButtons}
+            >
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20 / 2,
+                  backgroundColor:
+                    role === selectedUserHasRole.user.role
+                      ? colors.primary
+                      : colors.background,
+                  borderColor: colors.dark,
+                  borderWidth: 1,
+                }}
+              >
+                {role === selectedUserHasRole.user.role ? (
+                  <View style={styles.smallCircul}></View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+    );
+  }
+
+  function ifChangeAdmin() {
+    return (
+      <View style={{ backgroundColor: colors.background }}>
+        {allAdminsAnsSuperAdmin.map((user, index) => (
+          <View style={styles.containerTextAndRadioButtins} key={user.docId}>
+            <Text>{user.firstName + " " + user.lastName}</Text>
+            <TouchableOpacity
+              onPress={() =>
+                setConnectedAdminID({
+                  adminName: user.firstName + " " + user.lastName,
+                  adminId: user.docId,
+                })
+              }
+              style={styles.radioButtons}
+            >
+              <View
+                style={{
+                  width: 20,
+                  height: 20,
+                  borderRadius: 20 / 2,
+                  backgroundColor:
+                    user.docId === connectedAdminID.adminId
+                      ? colors.primary
+                      : colors.background,
+                  borderColor: colors.dark,
+                  borderWidth: 1,
+                }}
+              >
+                {user.docId === connectedAdminID.adminId ? (
+                  <View style={styles.smallCircul}></View>
+                ) : null}
+              </View>
+            </TouchableOpacity>
+          </View>
+        ))}
+      </View>
+    );
   }
 
   console.log("connectedAdminID,  ", connectedAdminID);
   return (
-    <View>
+    <View style={{ flex: 1 }}>
       <ScrollView>
         <Text style={styles.textTitle}>{titleText}</Text>
-        <View style={{ backgroundColor: colors.background }}>
-          {allAdminsAnsSuperAdmin.map((user, index) => (
-            <View style={styles.containerTextAndRadioButtins} key={user.docId}>
-              <Text>{user.firstName + " " + user.lastName}</Text>
-              <TouchableOpacity
-                onPress={() =>
-                  setConnectedAdminID({
-                    adminName: user.firstName + " " + user.lastName,
-                    adminId: user.docId,
-                  })
-                }
-                style={styles.radioButtons}
-              >
-                <View
-                  style={{
-                    width: 20,
-                    height: 20,
-                    borderRadius: 20 / 2,
-                    backgroundColor:
-                      user.docId === connectedAdminID.adminId
-                        ? colors.primary
-                        : colors.background,
-                    borderColor: colors.dark,
-                    borderWidth: 1,
-                  }}
-                >
-                  {user.docId === connectedAdminID.adminId ? (
-                    <View style={styles.smallCircul}></View>
-                  ) : null}
-                </View>
-              </TouchableOpacity>
-            </View>
-          ))}
-        </View>
+        {showRole ? ifChangeRole() : ifChangeAdmin()}
       </ScrollView>
       <TouchableOpacity
-        onPress={() => changeConnectedAdmin()}
+        // onPress={() => changeConnectedAdmin()}
         style={styles.okButton}
       >
-        <Text>Ok</Text>
+        <Text
+          style={{ textAlign: "center", fontWeight: "500", ...typography.lg }}
+        >
+          Ok
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -146,10 +220,9 @@ const styles = StyleSheet.create({
     backgroundColor: colors.dark,
   },
   okButton: {
-    ...typography.lg,
-    fontWeight: "500",
     backgroundColor: colors.primary,
     borderRadius: 5,
     paddingVertical: 17,
+    marginTop: 30,
   },
 });

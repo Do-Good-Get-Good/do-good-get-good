@@ -27,7 +27,18 @@ export function RolesAndConnection({ navigation, route }) {
   const superAdminContext = useSuperAdminFunction();
   const [showVideo, setShowVideo] = useState(true);
 
-  //source={require("../animation/dggg.mp4")}
+  //   <TouchableOpacity
+  //   onPress={() => navigation.goBack()}
+  //   style={{ flexDirection: "row" }}
+  // >
+  //   <Icon
+  //     color={colors.dark}
+  //     name="arrow-left"
+  //     type="material-community"
+  //     size={25}
+  //   />
+  //   <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
+  // </TouchableOpacity>
 
   return (
     <SafeAreaView>
@@ -35,18 +46,6 @@ export function RolesAndConnection({ navigation, route }) {
       <View></View>
 
       <ScrollView style={styles.container}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ flexDirection: "row" }}
-        >
-          <Icon
-            color={colors.dark}
-            name="arrow-left"
-            type="material-community"
-            size={25}
-          />
-          <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
-        </TouchableOpacity>
         <View>
           {showVideo && (
             <Video

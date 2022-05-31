@@ -2,6 +2,8 @@ import { StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { Overlay } from "react-native-elements";
+import PopupWithRadioButtons from "./PopupWithRadioButtons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
@@ -11,6 +13,9 @@ export function ChangeRolesAndConnection({}) {
   const [role, setRole] = useState(null);
   const [user, setUser] = useState({ firstName: "", lastName: "" });
   const [adminName, serAdminName] = useState("");
+  const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
+    useState(false);
+  const roleArray = ["user", "admin", "superadmin"];
 
   useEffect(() => {
     setUser(superAdminContext.makeChangesForSelectedUser.user);
@@ -44,7 +49,7 @@ export function ChangeRolesAndConnection({}) {
         <Text style={styles.textForRoleAndAdmin}>{adminName}</Text>
       </View>
       <View style={styles.containerTextButton}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => setShowPopupWithRadioButtons(true)}>
           <Text style={styles.textAsButton}>Ändra nivå</Text>
         </TouchableOpacity>
         <TouchableOpacity>
@@ -57,6 +62,25 @@ export function ChangeRolesAndConnection({}) {
           <Text style={styles.textAsButton}>Inaktivera</Text>
         </TouchableOpacity>
       </View>
+      <Overlay
+        isVisible={showPopupWithRadioButtons}
+        animationType="fade"
+        overlayStyle={{
+          backgroundColor: colors.light,
+          width: "90%",
+          height: "35%",
+          borderRadius: 5,
+        }}
+        onBackdropPress={() => setShowPopupWithRadioButtons(false)}
+      >
+        <PopupWithRadioButtons
+          titleText={"Ändra nivå"}
+          showPopup={(showPopupWithRadioButtons) =>
+            setShowPopupWithRadioButtons(showPopupWithRadioButtons)
+          }
+          listOfRoles={roleArray}
+        />
+      </Overlay>
     </View>
   );
 }

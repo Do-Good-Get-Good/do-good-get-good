@@ -115,12 +115,16 @@ export const SuperAdminProvider = ({ children }) => {
         getAllUsers: getAllUsers,
         userLevel: setUserLevel,
         allAdminsAnsSuperAdmins: allAdminsAnsSuperAdmins,
+
         makeChangesForSelectedUser: makeChangesForSelectedUser,
         setMakeChangesForSelectedUser: setMakeChangesForSelectedUser,
+
         buttonToSaveChanhgesPressed: buttonToSaveChanhgesPressed,
         setButtonToSaveChanhgesPressed: setButtonToSaveChanhgesPressed,
-        setMakeChangesForSelectedUserFromPopup:
-          setMakeChangesForSelectedUserFromPopup,
+
+        // setMakeChangesForSelectedUserFromPopup:
+        //   setMakeChangesForSelectedUserFromPopup,
+
         userIDToConnectAnotherAdmin: userIDToConnectAnotherAdmin,
         setUserIDToConnectAnotherAdmin: setUserIDToConnectAnotherAdmin,
       }}

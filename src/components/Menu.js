@@ -36,11 +36,11 @@ const Menu = () => {
   };
 
   const devRelease = () => {
-    // return (
-    //   <View style={{ alignSelf: "center" }}>
-    //     <Text style={{ fontSize: 16 }}>Utvecklarmiljö</Text>
-    //   </View>
-    // );
+    return (
+      <View style={{ alignSelf: "center" }}>
+        <Text style={{ fontSize: 16 }}>Utvecklarmiljö</Text>
+      </View>
+    );
   };
 
   return (
