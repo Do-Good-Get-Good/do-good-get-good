@@ -1,7 +1,10 @@
 const functions = require("firebase-functions");
 const admin = require("firebase-admin");
 const dateFns = require("date-fns");
-const { createNotConfirmedWorksheet } = require("./worksheetFunctions");
+const {
+  createNotConfirmedWorksheet,
+  createConfirmedWorksheet,
+} = require("./worksheetFunctions");
 
 class UnauthenticatedError extends Error {
   constructor(message) {
@@ -60,6 +63,7 @@ function createExcelFile(excelData) {
 
   var workbook = new Excel.Workbook();
   createNotConfirmedWorksheet(workbook, excelData);
+  createConfirmedWorksheet(workbook, excelData, "YEAR");
 
   return workbook;
 }
