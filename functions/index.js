@@ -5,7 +5,7 @@ const deleteUser = require("./src/deleteUser");
 const updateMonth = require("./src/updateMonth");
 const updateYear = require("./src/updateYear");
 const assignAdminClaim = require("./src/assignAdminClaim");
-const downloadData = require("./src/downloadData");
+const downloadData = require("./src/downloadData/downloadData");
 
 /* ---------------- For production database (Firebase) -------------------- */
 // var serviceAccount = require("./ServiceAccount/serviceAccount.json");
