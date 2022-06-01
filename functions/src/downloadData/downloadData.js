@@ -5,6 +5,7 @@ const {
   createNotConfirmedWorksheet,
   createConfirmedWorksheet,
 } = require("./worksheetFunctions");
+const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 
 class UnauthenticatedError extends Error {
   constructor(message) {
@@ -98,6 +99,28 @@ async function createAndSaveExcelFile(excelData) {
   return await saveExcelFileToCloudStorage("excel", fileName, excelWorkbook);
 }
 
+function sendEmail(downloadURL, email) {
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(SENDGRID_API_KEY);
+
+  const msg = {
+    to: "mattias470@gmail.com",
+    from: "no-reply@dogoodgetgood.techogarden.se",
+    subject: `TEST - ${email}`,
+    text: downloadURL,
+    html: "<strong>testing using cloud functions</strong</>",
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 exports.downloadData = functions.https.onCall(async (data, context) => {
   try {
     //Checking that the user calling the Cloud Function is authenticated
@@ -127,6 +150,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {
       excelDownloadURL = res[0];
+      sendEmail(excelDownloadURL, callerUserRecord.email);
     });
 
     return {
