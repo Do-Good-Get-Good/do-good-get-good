@@ -83,6 +83,7 @@ const DatePicker = ({ date, setDate }) => {
             dayTextColor: colors.dark,
             textDayFontFamily: typography.b2.fontFamily,
             arrowColor: colors.dark,
+            textDisabledColor: "#33333360",
           }}
           markingType={"custom"}
           markedDates={{
