@@ -38,7 +38,7 @@ export function PopupWithRadioButtons({
       setSelectedUserHasRole(superAdminContext.makeChangesForSelectedUser);
       setShowRole(true);
     }
-  }, [listOfRoles]);
+  }, [listOfRoles, superAdminContext.makeChangesForSelectedUser]);
 
   function textToShowIfRole(role) {
     var text = "";
@@ -77,32 +77,125 @@ export function PopupWithRadioButtons({
 
   ///if ok then it should be sent to context to firebase
 
-  function changeConnectedAdmin() {
-    let changeAdminObject = superAdminContext.makeChangesForSelectedUser;
+  function changeConnectedAdminWithPressingOkButton() {
+    let changeAdminObject =
+      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin;
 
-    var indexOfUserWhosedminIDNeedsToBeChange =
-      changeAdminObject.arrayOfUsersIfAdmin.findIndex(
-        (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
-      );
-    changeAdminObject.arrayOfUsersIfAdmin[
-      indexOfUserWhosedminIDNeedsToBeChange
-    ].user.adminId = connectedAdminID.adminId;
+    var indexOfUserWhosedminIDNeedsToBeChange = changeAdminObject.findIndex(
+      (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+    );
 
-    changeAdminObject.arrayOfUsersIfAdmin[
-      indexOfUserWhosedminIDNeedsToBeChange
-    ].adminName = connectedAdminID.adminName;
+    let tempObjectOfUserThatConnectedToAdmin = {
+      adminName: connectedAdminID.adminName,
+      selectedForDropDown:
+        changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange]
+          .selectedForDropDown,
+      user: {
+        activitiesAndAccumulatedTime:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .activitiesAndAccumulatedTime,
+        adminId: connectedAdminID.adminId,
+        connectedActivities:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .connectedActivities,
+        docId:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user.docId,
+        firstName:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .firstName,
+        lastName:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .lastName,
+        role: changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+          .role,
+        statusActive:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .statusActive,
+        totalConfirmedHours:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .totalConfirmedHours,
+        totalHoursMonth:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .totalHoursMonth,
+        totalHoursYear:
+          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+            .totalHoursYear,
+      },
+    };
 
-    //superAdminContext.setMakeChangesForSelectedUserFromPopup(changeAdminObject);
-    arrayWithChangedAdmin(changeAdminObject.arrayOfUsersIfAdmin);
+    changeAdminObject.splice(
+      indexOfUserWhosedminIDNeedsToBeChange,
+      1,
+      tempObjectOfUserThatConnectedToAdmin
+    );
+
+    let wholeSelectedUser = {
+      user: superAdminContext.makeChangesForSelectedUser.user,
+      adminName: superAdminContext.makeChangesForSelectedUser.adminName,
+      arrayOfUsersIfAdmin: changeAdminObject,
+    };
+
+    superAdminContext.setMakeChangesForSelectedUser(wholeSelectedUser);
+
+    var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
+      (x) => x === tempObjectOfUserThatConnectedToAdmin.user.docId
+    );
+    if (index === -1) {
+      superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [
+        ...prev,
+        tempObjectOfUserThatConnectedToAdmin.user.docId,
+      ]);
+    }
+
+    arrayWithChangedAdmin(changeAdminObject);
 
     showPopup(false);
   }
-  const changeRoleOfTheSelectedUser = (userRole) => {
-    let temObject = selectedUserHasRole;
-    temObject.user.role = userRole;
 
-    setSelectedUserHasRole(temObject);
-  };
+  function changeRoleWithPressingOkButton() {
+    superAdminContext.setMakeChangesForSelectedUser(selectedUserHasRole);
+    var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
+      (x) => x === selectedUserHasRole.user.docId
+    );
+    if (index === -1) {
+      superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [
+        ...prev,
+        selectedUserHasRole.user.docId,
+      ]);
+    }
+
+    showPopup(false);
+    setShowRole(false);
+  }
+
+  function changeRoleOfTheSelectedUser(userRole) {
+    let tempObject = {
+      adminName: selectedUserHasRole.adminName,
+      arrayOfUsersIfAdmin: selectedUserHasRole.arrayOfUsersIfAdmin,
+      user: {
+        activitiesAndAccumulatedTime:
+          selectedUserHasRole.user.activitiesAndAccumulatedTime,
+        adminId: selectedUserHasRole.user.adminId,
+        connectedActivities: selectedUserHasRole.user.connectedActivities,
+        docId: selectedUserHasRole.user.docId,
+        firstName: selectedUserHasRole.user.firstName,
+        lastName: selectedUserHasRole.user.lastName,
+        role: userRole,
+        statusActive: selectedUserHasRole.user.statusActive,
+        totalConfirmedHours: selectedUserHasRole.user.totalConfirmedHours,
+        totalHoursMonth: selectedUserHasRole.user.totalHoursMonth,
+        totalHoursYear: selectedUserHasRole.user.totalHoursYear,
+      },
+    };
+    setSelectedUserHasRole(tempObject);
+    // setSelectedUserHasRole((prev) => ({
+    //   ...prev,
+    //   user: {
+    //     ...prev,
+    //     role: userRole,
+    //   },
+    // }));
+  }
 
   function ifChangeRole() {
     return (
@@ -146,6 +239,7 @@ export function PopupWithRadioButtons({
             <Text>{user.firstName + " " + user.lastName}</Text>
             <TouchableOpacity
               onPress={() =>
+                user.docId != superAdminContext.userIDToConnectAnotherAdmin &&
                 setConnectedAdminID({
                   adminName: user.firstName + " " + user.lastName,
                   adminId: user.docId,
@@ -177,7 +271,6 @@ export function PopupWithRadioButtons({
     );
   }
 
-  console.log("connectedAdminID,  ", connectedAdminID);
   return (
     <View style={{ flex: 1 }}>
       <ScrollView>
@@ -185,7 +278,11 @@ export function PopupWithRadioButtons({
         {showRole ? ifChangeRole() : ifChangeAdmin()}
       </ScrollView>
       <TouchableOpacity
-        // onPress={() => changeConnectedAdmin()}
+        onPress={() =>
+          showRole
+            ? changeRoleWithPressingOkButton()
+            : changeConnectedAdminWithPressingOkButton()
+        }
         style={styles.okButton}
       >
         <Text

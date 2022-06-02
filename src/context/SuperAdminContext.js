@@ -19,16 +19,14 @@ export const SuperAdminProvider = ({ children }) => {
     useState(false);
   const [userIDToConnectAnotherAdmin, setUserIDToConnectAnotherAdmin] =
     useState("");
-  const [
-    makeChangesForSelectedUserFromPopup,
-    setMakeChangesForSelectedUserFromPopup,
-  ] = useState({});
+
   const [arrayOfIdOfChangedUserInfo, setArrayOfIdOfChangedUserInfo] = useState(
     []
   );
 
   useEffect(() => {
-    if (getAllUsers === true && userLevel === "superadmin") {
+    // if (getAllUsers === true && userLevel === "superadmin") {
+    if (getAllUsers === true) {
       const getAllUsersThatExistInTheSystem = async () => {
         try {
           await firestore()
@@ -72,20 +70,37 @@ export const SuperAdminProvider = ({ children }) => {
     }
   }, [getAllUsers]);
 
-  // console.log("====    ==     allUsersInSystem    ", allUsersInSystem);
-  console.log("userIDToConnectAnotherAdmin   ", userIDToConnectAnotherAdmin);
-
   useEffect(() => {
     if (buttonToSaveChanhgesPressed) {
       const changeUserData = () => {
-        superAdminUpdatesUserInfo(makeChangesForSelectedUser.user).then(
-          (res) => {
-            if (res.success) {
-              //After User name, status active, .... need to find this object in array and made changes there as well
-            }
+        for (let i = 0; i < arrayOfIdOfChangedUserInfo.length; i++) {
+          let user = null;
+
+          var index = makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
+            (x) => x.user.docId === arrayOfIdOfChangedUserInfo[i]
+          );
+
+          if (
+            makeChangesForSelectedUser.user.docId ===
+            arrayOfIdOfChangedUserInfo[i]
+          ) {
+            user = makeChangesForSelectedUser.user;
+          } else if (index != -1) {
+            user = makeChangesForSelectedUser.arrayOfUsersIfAdmin[index].user;
+            console.log(" user  ", user);
           }
-        );
+
+          if (user != null) {
+            superAdminUpdatesUserInfo(user).then((res) => {
+              if (res.success) {
+                //After User name, status active, .... need to find this object in array and made changes there as well
+              }
+            });
+          }
+          setButtonToSaveChanhgesPressed(false);
+        }
       };
+
       changeUserData();
     }
   }, [buttonToSaveChanhgesPressed]);
@@ -99,13 +114,6 @@ export const SuperAdminProvider = ({ children }) => {
     }
     setAllAdminsAnsSuperAdmins(adminArray);
   };
-
-  //
-  console.log(
-    "makeChangesForSelectedUser context   ",
-    makeChangesForSelectedUser
-  );
-  // console.log("userIDToConnectAnotherAdmin  ", userIDToConnectAnotherAdmin);
 
   return (
     <SuperAdminContext.Provider
@@ -122,11 +130,11 @@ export const SuperAdminProvider = ({ children }) => {
         buttonToSaveChanhgesPressed: buttonToSaveChanhgesPressed,
         setButtonToSaveChanhgesPressed: setButtonToSaveChanhgesPressed,
 
-        // setMakeChangesForSelectedUserFromPopup:
-        //   setMakeChangesForSelectedUserFromPopup,
-
         userIDToConnectAnotherAdmin: userIDToConnectAnotherAdmin,
         setUserIDToConnectAnotherAdmin: setUserIDToConnectAnotherAdmin,
+
+        arrayOfIdOfChangedUserInfo: arrayOfIdOfChangedUserInfo,
+        setArrayOfIdOfChangedUserInfo: setArrayOfIdOfChangedUserInfo,
       }}
     >
       {children}
