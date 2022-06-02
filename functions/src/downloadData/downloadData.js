@@ -84,7 +84,7 @@ async function saveExcelFileToCloudStorage(path, filename, excelWorkbook) {
 
   const config = {
     action: "read",
-    expires: new Date(new Date().getTime() + 30 * 60000),
+    expires: new Date(new Date().getTime() + 1440 * 60000),
   };
 
   return await storageFile.getSignedUrl(config);
