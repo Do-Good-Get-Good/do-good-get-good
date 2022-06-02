@@ -99,16 +99,18 @@ async function createAndSaveExcelFile(excelData) {
   return await saveExcelFileToCloudStorage("excel", fileName, excelWorkbook);
 }
 
-function sendEmail(downloadURL, email) {
+function sendEmail(downloadURL, callerData) {
   const sgMail = require("@sendgrid/mail");
   sgMail.setApiKey(SENDGRID_API_KEY);
 
   const msg = {
     to: "mattias470@gmail.com",
-    from: "no-reply@dogoodgetgood.techogarden.se",
-    subject: `TEST - ${email}`,
-    text: downloadURL,
-    html: "<strong>testing using cloud functions</strong</>",
+    from: "niklas.asp@technogarden.se",
+    templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
+    dynamicTemplateData: {
+      username: callerData.name,
+      downloadURL: downloadURL,
+    },
   };
 
   sgMail
@@ -145,12 +147,26 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       );
     }
 
+    let callerName = await admin
+      .firestore()
+      .collection("Users")
+      .doc(callerUid)
+      .get()
+      .then((res) => {
+        return `${res.data().first_name} ${res.data().last_name}`;
+      });
+
+    let callerData = {
+      name: callerName,
+      email: callerUserRecord.email,
+    };
+
     let excelData = await getAllDatabaseData(data.datePeriod);
 
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {
       excelDownloadURL = res[0];
-      sendEmail(excelDownloadURL, callerUserRecord.email);
+      sendEmail(excelDownloadURL, callerData);
     });
 
     return {

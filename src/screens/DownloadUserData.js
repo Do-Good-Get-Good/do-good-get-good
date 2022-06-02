@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   View,
   Linking,
+  Alert,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -19,7 +20,7 @@ import typography from "../assets/theme/typography";
 import Menu from "../components/Menu";
 import DatePicker from "../components/DatePicker";
 
-const DownloadUserData = () => {
+const DownloadUserData = ({ navigation }) => {
   const date = new Date();
   const [choseDate, setChoseDate] = useState(null);
   const [openDropDown, setOpenDropDown] = useState(false);
@@ -41,6 +42,47 @@ const DownloadUserData = () => {
     }
     return true;
   };
+
+  const exportData = () => {
+    alertPopUp();
+    let datePeriod;
+    if (!choseDate) {
+      datePeriod = {
+        startDate: new Date(oneYearBack),
+        endDate: new Date(today),
+      };
+    } else {
+      datePeriod = {
+        startDate: new Date(startDate),
+        endDate: new Date(endDate),
+      };
+    }
+
+    console.log(datePeriod);
+
+    setDataDownloaded(true);
+    let downloadData = functions().httpsCallable("downloadData");
+    downloadData(datePeriod).then((res) => {
+      console.log(res.data.downloadURL);
+      setExcelDownloadURL(res.data.downloadURL);
+    });
+  };
+
+  function alertPopUp() {
+    let alertTitle = "Exportera data";
+    let alertMessage =
+      "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
+      "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
+      "När allt är klart får du ett mail.";
+
+    Alert.alert(alertTitle, alertMessage, [
+      { text: "Vänta kvar" },
+      {
+        text: "Gå till startsidan",
+        onPress: () => navigation.navigate("HomePage"),
+      },
+    ]);
+  }
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -135,29 +177,7 @@ const DownloadUserData = () => {
                   ? true
                   : false
               }
-              onPress={async () => {
-                let datePeriod;
-                if (!choseDate) {
-                  datePeriod = {
-                    startDate: new Date(oneYearBack),
-                    endDate: new Date(today),
-                  };
-                } else {
-                  datePeriod = {
-                    startDate: new Date(startDate),
-                    endDate: new Date(endDate),
-                  };
-                }
-
-                console.log(datePeriod);
-
-                setDataDownloaded(true);
-                let downloadData = functions().httpsCallable("downloadData");
-                await downloadData(datePeriod).then((res) => {
-                  console.log(res.data.downloadURL);
-                  setExcelDownloadURL(res.data.downloadURL);
-                });
-              }}
+              onPress={() => exportData()}
             >
               <View
                 style={[
