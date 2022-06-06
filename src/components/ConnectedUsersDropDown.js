@@ -1,11 +1,5 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon, Overlay } from "react-native-elements";
 
 import typography from "../assets/theme/typography";

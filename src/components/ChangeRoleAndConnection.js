@@ -7,7 +7,6 @@ import PopupWithRadioButtons from "./PopupWithRadioButtons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
-//component
 export function ChangeRolesAndConnection({}) {
   const superAdminContext = useSuperAdminFunction();
   const [role, setRole] = useState(null);

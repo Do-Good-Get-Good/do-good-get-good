@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { Icon } from "react-native-elements";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -46,7 +45,10 @@ export function PopupWithRadioButtons({
   }
 
   useEffect(() => {
-    if (superAdminContext.userIDToConnectAnotherAdmin != "") {
+    if (
+      superAdminContext.userIDToConnectAnotherAdmin != "" &&
+      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length
+    ) {
       var indexOfUserWhosedminIDNeedsToBeChange =
         superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
           (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
@@ -120,13 +122,13 @@ export function PopupWithRadioButtons({
       tempObjectOfUserThatConnectedToAdmin
     );
 
-    let wholeSelectedUser = {
+    let allSelectedUser = {
       user: superAdminContext.makeChangesForSelectedUser.user,
       adminName: superAdminContext.makeChangesForSelectedUser.adminName,
       arrayOfUsersIfAdmin: changeAdminObject,
     };
 
-    superAdminContext.setMakeChangesForSelectedUser(wholeSelectedUser);
+    superAdminContext.setMakeChangesForSelectedUser(allSelectedUser);
 
     var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
       (x) => x === tempObjectOfUserThatConnectedToAdmin.user.docId
@@ -160,25 +162,32 @@ export function PopupWithRadioButtons({
   }
 
   function changeRoleOfTheSelectedUser(userRole) {
-    let tempObject = {
-      adminName: selectedUserHasRole.adminName,
-      arrayOfUsersIfAdmin: selectedUserHasRole.arrayOfUsersIfAdmin,
-      user: {
-        activitiesAndAccumulatedTime:
-          selectedUserHasRole.user.activitiesAndAccumulatedTime,
-        adminId: selectedUserHasRole.user.adminId,
-        connectedActivities: selectedUserHasRole.user.connectedActivities,
-        docId: selectedUserHasRole.user.docId,
-        firstName: selectedUserHasRole.user.firstName,
-        lastName: selectedUserHasRole.user.lastName,
-        role: userRole,
-        statusActive: selectedUserHasRole.user.statusActive,
-        totalConfirmedHours: selectedUserHasRole.user.totalConfirmedHours,
-        totalHoursMonth: selectedUserHasRole.user.totalHoursMonth,
-        totalHoursYear: selectedUserHasRole.user.totalHoursYear,
-      },
-    };
-    setSelectedUserHasRole(tempObject);
+    if (
+      (userRole === "user" &&
+        selectedUserHasRole.arrayOfUsersIfAdmin.length === 0) ||
+      userRole === "admin" ||
+      userRole === "superadmin"
+    ) {
+      let tempObject = {
+        adminName: selectedUserHasRole.adminName,
+        arrayOfUsersIfAdmin: selectedUserHasRole.arrayOfUsersIfAdmin,
+        user: {
+          activitiesAndAccumulatedTime:
+            selectedUserHasRole.user.activitiesAndAccumulatedTime,
+          adminId: selectedUserHasRole.user.adminId,
+          connectedActivities: selectedUserHasRole.user.connectedActivities,
+          docId: selectedUserHasRole.user.docId,
+          firstName: selectedUserHasRole.user.firstName,
+          lastName: selectedUserHasRole.user.lastName,
+          role: userRole,
+          statusActive: selectedUserHasRole.user.statusActive,
+          totalConfirmedHours: selectedUserHasRole.user.totalConfirmedHours,
+          totalHoursMonth: selectedUserHasRole.user.totalHoursMonth,
+          totalHoursYear: selectedUserHasRole.user.totalHoursYear,
+        },
+      };
+      setSelectedUserHasRole(tempObject);
+    }
   }
 
   function ifChangeRole() {
