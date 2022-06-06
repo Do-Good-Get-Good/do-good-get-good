@@ -22,7 +22,6 @@ import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 
 import Video from "react-native-video";
 
-//screen
 export function RolesAndConnection({ navigation, route }) {
   const superAdminContext = useSuperAdminFunction();
   const [showVideo, setShowVideo] = useState(true);
@@ -30,44 +29,49 @@ export function RolesAndConnection({ navigation, route }) {
   return (
     <SafeAreaView>
       <Menu />
-      <View></View>
 
-      <ScrollView style={styles.container}>
-        <TouchableOpacity
-          onPress={() => navigation.goBack()}
-          style={{ flexDirection: "row" }}
-        >
-          <Icon
-            color={colors.dark}
-            name="arrow-left"
-            type="material-community"
-            size={25}
-          />
-          <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
-        </TouchableOpacity>
-        <View>
-          {showVideo && (
-            <Video
-              style={{ width: 400, height: 200 }}
-              paused={false}
-              source={require("../animation/dggg.mp4")}
-              onEnd={() => setShowVideo(false)}
+      <ScrollView>
+        <View style={styles.container}>
+          <TouchableOpacity
+            onPress={() => navigation.goBack()}
+            style={{ flexDirection: "row" }}
+          >
+            <Icon
+              color={colors.dark}
+              name="arrow-left"
+              type="material-community"
+              size={25}
             />
-          )}
+            <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
+          </TouchableOpacity>
+          <View>
+            {showVideo && (
+              <Video
+                style={{ width: 400, height: 200 }}
+                paused={false}
+                source={require("../animation/dggg.mp4")}
+                onEnd={() => setShowVideo(false)}
+              />
+            )}
+          </View>
+          <ChangeRolesAndConnection />
+          {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
+          superAdminContext.makeChangesForSelectedUser.user.role ===
+            "superadmin" ? (
+            <ConnectedUsersDropDown />
+          ) : null}
+          <TouchableOpacity
+            onPress={() =>
+              superAdminContext.setButtonToSaveChanhgesPressed(true)
+            }
+            style={styles.saveButton}
+          >
+            <Text style={styles.saveButtonText}>Spara</Text>
+          </TouchableOpacity>
+          <View style={styles.logoStyle}>
+            <BottomLogo />
+          </View>
         </View>
-        <ChangeRolesAndConnection />
-        {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
-        superAdminContext.makeChangesForSelectedUser.user.role ===
-          "superadmin" ? (
-          <ConnectedUsersDropDown />
-        ) : null}
-        <TouchableOpacity
-          onPress={() => superAdminContext.setButtonToSaveChanhgesPressed(true)}
-          style={styles.saveButton}
-        >
-          <Text style={styles.saveButtonText}>Spara</Text>
-        </TouchableOpacity>
-        <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );
@@ -76,6 +80,7 @@ export default RolesAndConnection;
 const styles = StyleSheet.create({
   container: {
     margin: 16,
+    paddingBottom: 40,
   },
   textGoBackButton: {
     marginLeft: 10,
@@ -91,9 +96,14 @@ const styles = StyleSheet.create({
     marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 50,
+    marginBottom: 134,
   },
   saveButtonText: {
     ...typography.button.lg,
     fontWeight: "500",
+  },
+  logoStyle: {
+    marginBottom: 7,
   },
 });

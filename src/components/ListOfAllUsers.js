@@ -26,6 +26,11 @@ export function ListOfAllUsers({ navigation }) {
     }
   }, [superAdminContext.allUsersInSystem]);
 
+  console.log(
+    " ListOfAllUsers   superAdminContext.allUsersInSystem   ",
+    superAdminContext.allUsersInSystem
+  );
+
   function findNameOfUserAdmin(adminId) {
     let adminName = "";
     let index = arrayOfAllUsersInSystem.findIndex((x) => x.docId === adminId);

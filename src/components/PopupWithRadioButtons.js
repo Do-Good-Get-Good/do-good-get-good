@@ -1,11 +1,5 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "react-native-elements";
 
 import typography from "../assets/theme/typography";
@@ -19,7 +13,6 @@ export function PopupWithRadioButtons({
   arrayWithChangedAdmin,
   listOfRoles,
 }) {
-  const [radioButtonPressed, setRadioButtonPressed] = useState(true);
   const superAdminContext = useSuperAdminFunction();
   const [connectedAdminID, setConnectedAdminID] = useState({
     adminName: "",
@@ -74,8 +67,6 @@ export function PopupWithRadioButtons({
   useEffect(() => {
     setAllAdminsAnsSuperAdmin(superAdminContext.allAdminsAnsSuperAdmins);
   }, [superAdminContext.allAdminsAnsSuperAdmins]);
-
-  ///if ok then it should be sent to context to firebase
 
   function changeConnectedAdminWithPressingOkButton() {
     let changeAdminObject =
@@ -188,13 +179,6 @@ export function PopupWithRadioButtons({
       },
     };
     setSelectedUserHasRole(tempObject);
-    // setSelectedUserHasRole((prev) => ({
-    //   ...prev,
-    //   user: {
-    //     ...prev,
-    //     role: userRole,
-    //   },
-    // }));
   }
 
   function ifChangeRole() {
