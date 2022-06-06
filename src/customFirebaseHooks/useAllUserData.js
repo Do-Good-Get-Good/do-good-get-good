@@ -5,7 +5,6 @@ export const useAllUserData = async (adminId) => {
   await firestore()
     .collection("Users")
     .where("admin_id", "==", adminId)
-    .where("role", "!=", "admin")
     .get()
     .then((data) => {
       userData = data.docs.map((doc) => ({

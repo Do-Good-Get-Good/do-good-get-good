@@ -74,9 +74,16 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     if (!roleIsValid(role)) {
       throw new InvalidRoleError('The "' + role + '" role is not a valid role');
     }
+    const loggingData = {
+      activityId: data.activityId,
+      email: data.email,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      role: data.role
+    }
 
     const userCreationRequest = {
-      userDetails: data,
+      userDetails: loggingData,
       status: "Pending",
       createdBy: callerUid,
       createdOn: FieldValue.serverTimestamp(),
