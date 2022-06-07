@@ -175,7 +175,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             </TouchableOpacity>
           )}
         </View>
-
         {loggedInUser()}
         <TouchableOpacity
           testID="menuOverlay.logoutButton"
