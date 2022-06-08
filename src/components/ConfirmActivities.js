@@ -218,8 +218,7 @@ const ConfirmActivities = () => {
 
   const addAccumulatedTime = (user) => {
     let timeArray = [];
-    console.log("user  ", user);
-    console.log("userData  ", userData);
+
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === user.userID) {
         timeArray = userData[i].activities_and_accumulated_time;
