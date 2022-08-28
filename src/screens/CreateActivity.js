@@ -152,7 +152,6 @@ export function CreateActivity({ route, navigation }) {
         },
       ]
     );
-
   }
 
   async function linkChoosenActivityToNewUser() {
