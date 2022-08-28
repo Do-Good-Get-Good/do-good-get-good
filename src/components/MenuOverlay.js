@@ -162,8 +162,19 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
+          {userLevel === "superadmin" && (
+            <TouchableOpacity
+              testID="menuOverlay.activitiesButton"
+              style={styles.menuOverlayLinkStyling}
+              onPress={() => {
+                openOverlay();
+                navigation.navigate("DownloadUserData");
+              }}
+            >
+              <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
+            </TouchableOpacity>
+          )}
         </View>
-
         {loggedInUser()}
         <TouchableOpacity
           testID="menuOverlay.logoutButton"
