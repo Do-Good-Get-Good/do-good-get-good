@@ -44,19 +44,10 @@ export function RolesAndConnection({ navigation, route }) {
             />
             <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
           </TouchableOpacity>
-          <View>
-            {showVideo && (
-              <Video
-                style={{ width: 400, height: 200 }}
-                paused={false}
-                source={require("../animation/dggg.mp4")}
-                onEnd={() => setShowVideo(false)}
-              />
-            )}
-          </View>
+
           <ChangeRolesAndConnection />
           {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
-          superAdminContext.makeChangesForSelectedUser.user.role ===
+            superAdminContext.makeChangesForSelectedUser.user.role ===
             "superadmin" ? (
             <ConnectedUsersDropDown />
           ) : null}
