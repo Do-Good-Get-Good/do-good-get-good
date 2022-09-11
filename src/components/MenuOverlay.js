@@ -18,6 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
@@ -25,6 +27,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const userLevel = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
+  const superAdminContext = useSuperAdminFunction();
 
   function signOutFunction() {
     auth()
@@ -130,16 +133,29 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           )}
 
           {userLevel === "superadmin" && (
-            <TouchableOpacity
-              testID="menuOverlay.superAdminButton"
-              style={styles.menuOverlayLinkStyling}
-              onPress={() => {
-                openOverlay();
-                navigation.navigate("SuperAdminPage");
-              }}
-            >
-              <Text style={styles.menuOverlayLinkText}>Super admin</Text>
-            </TouchableOpacity>
+            <>
+              <TouchableOpacity
+                testID="menuOverlay.superAdminButton"
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("SuperAdminPage");
+                }}
+              >
+                <Text style={styles.menuOverlayLinkText}>Super admin</Text>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("AllUsersInTheSystem");
+                  superAdminContext.setGetAllUsers(true);
+                  superAdminContext.userLevel(userLevel);
+                }}
+              >
+                <Text style={styles.menuOverlayLinkText}>Alla användare</Text>
+              </TouchableOpacity>
+            </>
           )}
 
           <TouchableOpacity

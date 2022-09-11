@@ -218,12 +218,14 @@ const ConfirmActivities = () => {
 
   const addAccumulatedTime = (user) => {
     let timeArray = [];
+
     for (let i = 0; i < userData.length; i++) {
       if (userData[i].id === user.userID) {
         timeArray = userData[i].activities_and_accumulated_time;
         const objNum = timeArray.findIndex(
           (obj) => obj.activity_id === user.activityID
         );
+
         timeArray[objNum].accumulated_time += user.timeEntryHours;
       }
     }

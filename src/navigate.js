@@ -9,6 +9,8 @@ import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
 import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
+import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
+import RolesAndConnection from "./screens/RolesAndConnection";
 
 import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
@@ -44,6 +46,14 @@ export const Mystack = () => {
         <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
         <Stack.Screen name="DownloadUserData" component={DownloadUserData} />
+        <Stack.Screen
+          name="AllUsersInTheSystem"
+          component={AllUsersInTheSystem}
+        />
+        <Stack.Screen
+          name="RolesAndConnection"
+          component={RolesAndConnection}
+        />
       </Stack.Navigator>
     </NavigationContainer>
   );
