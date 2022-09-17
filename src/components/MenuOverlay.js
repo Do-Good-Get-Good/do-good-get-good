@@ -134,7 +134,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
 
           {userLevel === "superadmin" && (
             <>
-              <TouchableOpacity
+              {/* <TouchableOpacity
                 testID="menuOverlay.superAdminButton"
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
@@ -143,7 +143,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
                 }}
               >
                 <Text style={styles.menuOverlayLinkText}>Super admin</Text>
-              </TouchableOpacity>
+              </TouchableOpacity > */}
               <TouchableOpacity
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
