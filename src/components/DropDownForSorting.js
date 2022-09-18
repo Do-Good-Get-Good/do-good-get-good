@@ -83,7 +83,7 @@ export function DropDownForSorting({ choice }) {
   };
 
   return (
-    <>
+    <View>
       <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
         <View style={styleForDropDownInsideConrainer}>
           <Text style={styles.sortText}>{sortBy}</Text>
@@ -112,7 +112,7 @@ export function DropDownForSorting({ choice }) {
           ))}
         </View>
       )}
-    </>
+    </View>
   );
 }
 

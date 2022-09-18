@@ -37,7 +37,25 @@ The app is a cross platform application built in react native. Development focus
 
 #### **Note that you need to have an Android emulator running before you run the _Android_ start command** ####
 
+# Bundling / Compiling the app for Release
 
+## Android
+
+### To get and AAB file
+
+Go to `src/` and run `npm install`
+Go to `src/Android`
+Run `./gradlew bundleProd`
+Output will be in `src\android\app\build\outputs\bundle\prodRelease`
+
+### To get an APK file
+
+Go to `src/` and run `npm install`
+Go to `src/Android`
+Run `./gradlew assembleProd`
+Output will be in `src\android\app\build\outputs\apk\prod\release`
+
+### To
 
 Firebase emulator
 =====

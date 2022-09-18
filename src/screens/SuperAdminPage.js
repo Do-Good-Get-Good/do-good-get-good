@@ -15,7 +15,7 @@ const AdminPage = () => {
       <ScrollView style={styles.container}>
         <View style={{ alignItems: "center" }}>
           <Text style={{ ...typography.title, marginTop: 16 }}>
-            SuperAdminPage
+            Super Admin
           </Text>
           <BottomLogo />
         </View>

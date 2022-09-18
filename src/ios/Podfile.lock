@@ -1012,6 +1012,11 @@ PODS:
     - React-Core
   - react-native-safe-area-context (3.2.0):
     - React-Core
+  - react-native-video (5.2.0):
+    - React-Core
+    - react-native-video/Video (= 5.2.0)
+  - react-native-video/Video (5.2.0):
+    - React-Core
   - React-perflogger (0.68.1)
   - React-RCTActionSheet (0.68.1):
     - React-Core/RCTActionSheetHeaders (= 0.68.1)
@@ -1181,6 +1186,7 @@ DEPENDENCIES:
   - react-native-config (from `../node_modules/react-native-config`)
   - "react-native-netinfo (from `../node_modules/@react-native-community/netinfo`)"
   - react-native-safe-area-context (from `../node_modules/react-native-safe-area-context`)
+  - react-native-video (from `../node_modules/react-native-video`)
   - React-perflogger (from `../node_modules/react-native/ReactCommon/reactperflogger`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
@@ -1301,6 +1307,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/@react-native-community/netinfo"
   react-native-safe-area-context:
     :path: "../node_modules/react-native-safe-area-context"
+  react-native-video:
+    :path: "../node_modules/react-native-video"
   React-perflogger:
     :path: "../node_modules/react-native/ReactCommon/reactperflogger"
   React-RCTActionSheet:
@@ -1411,6 +1419,7 @@ SPEC CHECKSUMS:
   react-native-config: 6502b1879f97ed5ac570a029961fc35ea606cd14
   react-native-netinfo: e922cb2e3eaf9ccdf16b8d4744a89657377aa4a1
   react-native-safe-area-context: f0906bf8bc9835ac9a9d3f97e8bde2a997d8da79
+  react-native-video: a4c2635d0802f983594b7057e1bce8f442f0ad28
   React-perflogger: 30ab8d6db10e175626069e742eead3ebe8f24fd5
   React-RCTActionSheet: 4b45da334a175b24dabe75f856b98fed3dfd6201
   React-RCTAnimation: d6237386cb04500889877845b3e9e9291146bc2e
@@ -1441,4 +1450,4 @@ SPEC CHECKSUMS:
 
 PODFILE CHECKSUM: fb6c5d8c1993d94d8a42a5bb590c14b6ff83c85c
 
-COCOAPODS: 1.11.3
+COCOAPODS: 1.11.2

@@ -18,6 +18,8 @@ import { useNavigation } from "@react-navigation/native";
 import { useAdminCheckFunction } from "../context/AdminContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
@@ -25,11 +27,12 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const userLevel = useAdminCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
+  const superAdminContext = useSuperAdminFunction();
 
   function signOutFunction() {
     auth()
       .signOut()
-      .then(() => {})
+      .then(() => { })
       .catch((error) => {
         console.log("Enable in your firebase console.");
 
@@ -40,7 +43,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   const loggedInUser = () => {
     return (
       <View style={styles.menuOverlayLoggedInAccount}>
-        <Text style={{ ...typography.b2 }}>Inloggad på: </Text>
+        <Text style={{ ...typography.b2 }}>Inloggad som: </Text>
         <Text style={{ textDecorationLine: "underline", ...typography.b2 }}>
           {auth().currentUser.email}
         </Text>
@@ -130,16 +133,29 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           )}
 
           {userLevel === "superadmin" && (
-            <TouchableOpacity
-              testID="menuOverlay.superAdminButton"
-              style={styles.menuOverlayLinkStyling}
-              onPress={() => {
-                openOverlay();
-                navigation.navigate("SuperAdminPage");
-              }}
-            >
-              <Text style={styles.menuOverlayLinkText}>Super admin</Text>
-            </TouchableOpacity>
+            <>
+              {/* <TouchableOpacity
+                testID="menuOverlay.superAdminButton"
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("SuperAdminPage");
+                }}
+              >
+                <Text style={styles.menuOverlayLinkText}>Super admin</Text>
+              </TouchableOpacity > */}
+              <TouchableOpacity
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("AllUsersInTheSystem");
+                  superAdminContext.setGetAllUsers(true);
+                  superAdminContext.userLevel(userLevel);
+                }}
+              >
+                <Text style={styles.menuOverlayLinkText}>Alla användare</Text>
+              </TouchableOpacity>
+            </>
           )}
 
           <TouchableOpacity
@@ -162,8 +178,19 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
+          {userLevel === "superadmin" && (
+            <TouchableOpacity
+              testID="menuOverlay.activitiesButton"
+              style={styles.menuOverlayLinkStyling}
+              onPress={() => {
+                openOverlay();
+                navigation.navigate("DownloadUserData");
+              }}
+            >
+              <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
+            </TouchableOpacity>
+          )}
         </View>
-
         {loggedInUser()}
         <TouchableOpacity
           testID="menuOverlay.logoutButton"
