@@ -131,7 +131,7 @@ def jscFlavor = 'org.webkit:android-jsc:+'
  * on project.ext.react, JavaScript will not be compiled to Hermes Bytecode
  * and the benefits of using Hermes will therefore be sharply reduced.
  */
-def enableHermes = project.ext.react.get("enableHermes", false);
+def enableHermes = project.ext.react.get("enableHermes", false)
 
 android {
     compileSdkVersion rootProject.ext.compileSdkVersion
@@ -146,8 +146,8 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         multiDexEnabled true
-        versionCode 4
-        versionName "0.1"
+        versionCode 5
+        versionName "0.2"
     }
 
     flavorDimensions "default"
@@ -182,10 +182,11 @@ android {
             keyPassword 'android'
         }
         release {
-            storeFile file('dggg_key.keystore')
-            storePassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
-            keyAlias System.getenv("KEYSTORE_ALIAS")
-            keyPassword System.getenv("KEYSTORE_ALIAS_PASSPHRASE")
+            if(project.hasProperty('DO_GOOD_GET_GOOD_STORE_FILE'))
+            storeFile file(DO_GOOD_GET_GOOD_STORE_FILE)
+            storePassword DO_GOOD_GET_GOOD_STORE_PASSWORD
+            keyAlias DO_GOOD_GET_GOOD_KEY_ALIAS
+            keyPassword DO_GOOD_GET_GOOD_KEY_PASSWORD
         }
     }
     buildTypes {
@@ -226,7 +227,7 @@ dependencies {
     //noinspection GradleDynamicVersion
     implementation "com.facebook.react:react-native:+"  // From node_modules
     implementation 'androidx.multidex:multidex:2.0.1'
-    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.0.0"
+    implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
     debugImplementation("com.facebook.flipper:flipper:${FLIPPER_VERSION}") {
       exclude group:'com.facebook.fbjni'
     }
@@ -240,7 +241,7 @@ dependencies {
     addUnimodulesDependencies()
 
     if (enableHermes) {
-        def hermesPath = "../../node_modules/hermes-engine/android/";
+        def hermesPath = "../../node_modules/hermes-engine/android/"
         debugImplementation files(hermesPath + "hermes-debug.aar")
         releaseImplementation files(hermesPath + "hermes-release.aar")
     } else {
