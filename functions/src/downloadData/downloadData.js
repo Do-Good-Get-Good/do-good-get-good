@@ -104,8 +104,8 @@ function sendEmail(downloadURL, callerData) {
   sgMail.setApiKey(SENDGRID_API_KEY);
 
   const msg = {
-    to: "mattias470@gmail.com",
-    from: "niklas.asp@technogarden.se",
+    to: `${callerData.email}`,
+    from: "dggg@technogarden.se",
     templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
     dynamicTemplateData: {
       username: callerData.name,
