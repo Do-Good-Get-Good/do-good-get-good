@@ -14,14 +14,22 @@ import {
   Dimensions,
   TouchableWithoutFeedback,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
-import inputStyles from "../styles/inputStyle";
-import auth from "@react-native-firebase/auth";
-import ResetPassModal from "./ResetPassModal";
+
 import { Icon } from "react-native-elements";
+
+import { SafeAreaView } from "react-native-safe-area-context";
+
+import Config from "react-native-config";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+
+import inputStyles from "../styles/inputStyle";
+import ResetPassModal from "./ResetPassModal";
 import BottomLogo from "./BottomLogo";
+import DevRelease from "./DevRelease";
+
+import auth from "@react-native-firebase/auth";
 import crashlytics from "@react-native-firebase/crashlytics";
 
 export default function Login() {
@@ -118,6 +126,8 @@ export default function Login() {
     >
       <SafeAreaView style={styles.wrapper}>
         <StatusBar style="auto" />
+
+        {Config.NODE_ENV === "dev" && <DevRelease />}
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <KeyboardAvoidingView
