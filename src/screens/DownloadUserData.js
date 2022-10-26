@@ -28,6 +28,7 @@ const DownloadUserData = ({ navigation }) => {
   const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
   const [dataDownloaded, setDataDownloaded] = useState(false);
   const [excelDownloadURL, setExcelDownloadURL] = useState(null);
+  const [waiting, setWaiting] = useState(true);
 
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
@@ -48,13 +49,13 @@ const DownloadUserData = ({ navigation }) => {
     let datePeriod;
     if (!choseDate) {
       datePeriod = {
-        startDate: new Date(oneYearBack),
-        endDate: new Date(today),
+        startDate: oneYearBack,
+        endDate: today,
       };
     } else {
       datePeriod = {
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
+        startDate: startDate,
+        endDate: endDate,
       };
     }
 
@@ -79,7 +80,10 @@ const DownloadUserData = ({ navigation }) => {
       { text: "Vänta kvar" },
       {
         text: "Gå till startsidan",
-        onPress: () => navigation.navigate("HomePage"),
+        onPress: () => {
+          setWaiting(false);
+          navigation.navigate("HomePage");
+        },
       },
     ]);
   }

@@ -23,22 +23,33 @@ class NotAnAdminError extends Error {
   }
 }
 
-async function getAllDataFromCollection(collectionName, datePeriod) {
-  let res;
-
-  if (datePeriod != null || datePeriod != undefined) {
-    const { startDate, endDate } = datePeriod;
-
-    res = await admin
-      .firestore()
-      .collection(collectionName)
-      .orderBy("date", "asc")
-      .startAt(startDate)
-      .endAt(endDate)
-      .get();
-  } else {
-    res = await admin.firestore().collection(collectionName).get();
+async function getAllDataFromCollection(collectionName) {
+  let res = await admin.firestore().collection(collectionName).get();
+  if (!res.empty) {
+    return res.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
   }
+}
+
+async function getAllDataFromCollectionByDate(collectionName, datePeriod) {
+  const { startDate, endDate } = datePeriod;
+
+  const date1 = new Date(startDate);
+  const date2 = new Date(endDate);
+
+  const start = admin.firestore.Timestamp.fromDate(date1);
+  const end = admin.firestore.Timestamp.fromDate(date2);
+
+  let res = await admin
+    .firestore()
+    .collection(collectionName)
+    .orderBy("date", "asc")
+    .where("date", ">=", start)
+    .where("date", "<=", end)
+    .get();
+
   if (!res.empty) {
     return res.docs.map((doc) => ({
       id: doc.id,
@@ -50,7 +61,10 @@ async function getAllDataFromCollection(collectionName, datePeriod) {
 async function getAllDatabaseData(datePeriod) {
   let users = await getAllDataFromCollection("Users");
   let activities = await getAllDataFromCollection("Activities");
-  let timeEntries = await getAllDataFromCollection("timeentries", datePeriod);
+  let timeEntries = await getAllDataFromCollectionByDate(
+    "timeentries",
+    datePeriod
+  );
 
   return {
     activities: activities,
@@ -161,7 +175,10 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       email: callerUserRecord.email,
     };
 
-    let excelData = await getAllDatabaseData(data.datePeriod);
+    console.error("Data sent from app: ");
+    console.error("Data: " + data);
+
+    let excelData = await getAllDatabaseData(data);
 
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {

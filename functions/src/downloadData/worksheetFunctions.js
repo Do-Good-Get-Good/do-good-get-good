@@ -30,6 +30,12 @@ function sortArrayByDate(a, b) {
   }
 }
 
+function filterTimeEntries(timeEntryArr, status) {
+  return timeEntryArr.filter((entry) => {
+    if (entry.status_confirmed === status) return entry;
+  });
+}
+
 exports.createNotConfirmedWorksheet = (workbook, excelData) => {
   let { activities, timeEntries, users } = excelData;
 
@@ -53,9 +59,7 @@ exports.createNotConfirmedWorksheet = (workbook, excelData) => {
   worksheet.getCell("F1").font = { bold: true };
   worksheet.getCell("G1").font = { bold: true };
 
-  let unconfirmedTimeEntries = timeEntries.filter((timeEntry) => {
-    if (!timeEntry.status_confirmed) return timeEntry;
-  });
+  let unconfirmedTimeEntries = filterTimeEntries(timeEntries, false);
 
   let excelArray = [];
 
@@ -105,11 +109,10 @@ exports.createNotConfirmedWorksheet = (workbook, excelData) => {
 function populateExcelSheetWithYearData(excelData, worksheet) {
   let { activities, timeEntries, users } = excelData;
 
-  let confirmedTimeEntries = timeEntries.filter((timeEntry) => {
-    if (timeEntry.status_confirmed) return timeEntry;
-  });
+  let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
   users.map((user) => {
+    let userTimeEntries = [];
     confirmedTimeEntries.map((timeEntry) => {
       if (user.id === timeEntry.user_id) {
         let activity = activities.find((activity) => {
@@ -118,14 +121,45 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
           }
         });
 
-        worksheet.addRow({
-          year: "2022",
+        const date = timeEntry.date.toDate();
+
+        const entry = {
+          activityId: timeEntry.activity_id,
+          year: `${date.getFullYear()}`,
           user: `${user.first_name} ${user.last_name}`,
           activity: activity.activity_title,
-          city: activity.city,
+          city: activity.activity_city,
           time: timeEntry.time,
+        };
+
+        userTimeEntries.push(entry);
+      }
+    });
+
+    let sortedUserTimeEntries = [];
+
+    userTimeEntries.map((data) => {
+      if (sortedUserTimeEntries.length === 0) {
+        sortedUserTimeEntries.push(data);
+      } else {
+        sortedUserTimeEntries.map((obj) => {
+          if (obj.activityId !== data.activityId)
+            sortedUserTimeEntries.push(data);
+          else {
+            obj.time += data.time;
+          }
         });
       }
+    });
+    sortedUserTimeEntries.map((entry) => {
+      let wsData = {
+        year: entry.year,
+        user: entry.user,
+        activity: entry.activity,
+        city: entry.city,
+        time: entry.time,
+      };
+      worksheet.addRow(wsData);
     });
   });
 }
@@ -147,7 +181,7 @@ exports.createConfirmedWorksheet = (workbook, excelData, yearOrMonth) => {
       { header: "Användare", key: "user", width: 20 },
       { header: "Aktivitet", key: "activity", width: 20 },
       { header: "Stad", key: "city", width: 15 },
-      { header: "Total tid (h)", key: "time", width: 10 },
+      { header: "Total tid (h)", key: "time", width: 12 },
     ];
     makeWorksheetHeaderBold(worksheet);
     populateExcelSheetWithYearData(excelData, worksheet);
