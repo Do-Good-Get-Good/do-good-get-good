@@ -30,6 +30,16 @@ function sortArrayByDate(a, b) {
   }
 }
 
+function sortArrayByYear(a, b) {
+  if (a.year < b.year) {
+    return -1;
+  } else if (a.year == b.year) {
+    return 0;
+  } else {
+    return 1;
+  }
+}
+
 function filterTimeEntries(timeEntryArr, status) {
   return timeEntryArr.filter((entry) => {
     if (entry.status_confirmed === status) return entry;
@@ -112,7 +122,7 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
   users.map((user) => {
-    let userTimeEntries = [];
+    let entries = [];
     confirmedTimeEntries.map((timeEntry) => {
       if (user.id === timeEntry.user_id) {
         let activity = activities.find((activity) => {
@@ -123,7 +133,7 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
 
         const date = timeEntry.date.toDate();
 
-        const entry = {
+        const entryData = {
           activityId: timeEntry.activity_id,
           year: `${date.getFullYear()}`,
           user: `${user.first_name} ${user.last_name}`,
@@ -132,26 +142,27 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
           time: timeEntry.time,
         };
 
-        userTimeEntries.push(entry);
+        entries.push(entryData);
       }
     });
 
-    let sortedUserTimeEntries = [];
+    let userTimeEntries = [];
 
-    userTimeEntries.map((data) => {
-      if (sortedUserTimeEntries.length === 0) {
-        sortedUserTimeEntries.push(data);
+    entries.map((data) => {
+      if (userTimeEntries.length === 0) {
+        userTimeEntries.push(data);
       } else {
-        sortedUserTimeEntries.map((obj) => {
-          if (obj.activityId !== data.activityId)
-            sortedUserTimeEntries.push(data);
+        userTimeEntries.map((obj) => {
+          if (obj.activityId !== data.activityId) userTimeEntries.push(data);
           else {
             obj.time += data.time;
           }
         });
       }
     });
-    sortedUserTimeEntries.map((entry) => {
+    userTimeEntries.sort(sortArrayByYear);
+
+    userTimeEntries.map((entry) => {
       let wsData = {
         year: entry.year,
         user: entry.user,

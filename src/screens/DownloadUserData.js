@@ -28,7 +28,6 @@ const DownloadUserData = ({ navigation }) => {
   const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
   const [dataDownloaded, setDataDownloaded] = useState(false);
   const [excelDownloadURL, setExcelDownloadURL] = useState(null);
-  const [waiting, setWaiting] = useState(true);
 
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
@@ -45,7 +44,6 @@ const DownloadUserData = ({ navigation }) => {
   };
 
   const exportData = () => {
-    alertPopUp();
     let datePeriod;
     if (!choseDate) {
       datePeriod = {
@@ -58,18 +56,15 @@ const DownloadUserData = ({ navigation }) => {
         endDate: endDate,
       };
     }
-
-    console.log(datePeriod);
-
     setDataDownloaded(true);
-    let downloadData = functions().httpsCallable("downloadData");
-    downloadData(datePeriod).then((res) => {
-      console.log(res.data.downloadURL);
-      setExcelDownloadURL(res.data.downloadURL);
-    });
+    alertPopUp(datePeriod);
   };
 
-  function alertPopUp() {
+  function alertPopUp(datePeriod) {
+    console.log(datePeriod);
+
+    let downloadData = functions().httpsCallable("downloadData");
+
     let alertTitle = "Exportera data";
     let alertMessage =
       "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
@@ -77,11 +72,19 @@ const DownloadUserData = ({ navigation }) => {
       "När allt är klart får du ett mail.";
 
     Alert.alert(alertTitle, alertMessage, [
-      { text: "Vänta kvar" },
+      {
+        text: "Vänta kvar",
+        onPress: () => {
+          downloadData(datePeriod).then((res) => {
+            console.log(res.data.downloadURL);
+            setExcelDownloadURL(res.data.downloadURL);
+          });
+        },
+      },
       {
         text: "Gå till startsidan",
         onPress: () => {
-          setWaiting(false);
+          downloadData(datePeriod);
           navigation.navigate("HomePage");
         },
       },
