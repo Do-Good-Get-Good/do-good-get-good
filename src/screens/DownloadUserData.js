@@ -169,7 +169,7 @@ const DownloadUserData = ({ navigation }) => {
           {choseDate === false && (
             <View style={styles.continuousDateStyle}>
               <Text style={{ ...typography.b2 }}>
-                Kommer att ladda ned data mellan följade datum
+                Kommer att exportera data mellan följade datum
               </Text>
               <Text>{rollingYear}</Text>
             </View>

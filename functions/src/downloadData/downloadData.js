@@ -78,7 +78,7 @@ function createExcelFile(excelData) {
 
   var workbook = new Excel.Workbook();
   createNotConfirmedWorksheet(workbook, excelData);
-  createConfirmedWorksheet(workbook, excelData, "YEAR");
+  createConfirmedWorksheet(workbook, excelData);
 
   return workbook;
 }
@@ -174,9 +174,6 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       name: callerName,
       email: callerUserRecord.email,
     };
-
-    console.error("Data sent from app: ");
-    console.error("Data: " + data);
 
     let excelData = await getAllDatabaseData(data);
 
