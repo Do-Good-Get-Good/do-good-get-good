@@ -13,7 +13,7 @@ const downloadData = require("./src/downloadData/downloadData");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
 //   databaseURL:
-//   "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
+//     "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
 // });
 
 /* ---------------- For development database (Firebase) -------------------- */
