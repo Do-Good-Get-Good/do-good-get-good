@@ -107,9 +107,9 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
 
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
-  users.map((user) => {
-    let entries = [];
-    confirmedTimeEntries.map((timeEntry) => {
+  let entries = [];
+  confirmedTimeEntries.map((timeEntry) => {
+    users.map((user) => {
       if (user.id === timeEntry.user_id) {
         let activity = activities.find((activity) => {
           if (activity.id === timeEntry.activity_id) {
@@ -131,34 +131,33 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
         entries.push(entryData);
       }
     });
+  });
+  const arrayHashmap = entries.reduce((obj, item) => {
+    const objName = `${item.user}${item.activityId}${item.year}`;
 
-    const arrayHashmap = entries.reduce((obj, item) => {
-      const objName = `${item.activityId}${item.year}`;
+    if (obj[objName]) {
+      obj[objName].time += item.time;
+    } else {
+      obj[objName] = { ...item };
+    }
 
-      if (obj[objName]) {
-        obj[objName].time += item.time;
-      } else {
-        obj[objName] = { ...item };
-      }
+    return obj;
+  }, {});
 
-      return obj;
-    }, {});
+  const userTimeEntries = Object.values(arrayHashmap);
 
-    const userTimeEntries = Object.values(arrayHashmap);
+  // Sort array by year
+  userTimeEntries.sort((a, b) => sortArray(a.year, b.year));
 
-    // Sort array by year
-    userTimeEntries.sort((a, b) => sortArray(a.year, b.year));
-
-    userTimeEntries.map((entry) => {
-      let wsData = {
-        date: entry.year,
-        user: entry.user,
-        activity: entry.activity,
-        city: entry.city,
-        time: entry.time,
-      };
-      worksheet.addRow(wsData);
-    });
+  userTimeEntries.map((entry) => {
+    let wsData = {
+      date: entry.year,
+      user: entry.user,
+      activity: entry.activity,
+      city: entry.city,
+      time: entry.time,
+    };
+    worksheet.addRow(wsData);
   });
 }
 
@@ -175,9 +174,9 @@ function populateExcelSheetWithMonthData(excelData, worksheet) {
 
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
-  users.map((user) => {
-    let entries = [];
-    confirmedTimeEntries.map((timeEntry) => {
+  let entries = [];
+  confirmedTimeEntries.map((timeEntry) => {
+    users.map((user) => {
       if (user.id === timeEntry.user_id) {
         let activity = activities.find((activity) => {
           if (activity.id === timeEntry.activity_id) {
@@ -190,7 +189,7 @@ function populateExcelSheetWithMonthData(excelData, worksheet) {
         const entryData = {
           activityId: timeEntry.activity_id,
           year: date.getFullYear(),
-          month: date.getMonth(),
+          month: months[date.getMonth()],
           user: `${user.first_name} ${user.last_name}`,
           activity: activity.activity_title,
           city: activity.activity_city,
@@ -200,34 +199,38 @@ function populateExcelSheetWithMonthData(excelData, worksheet) {
         entries.push(entryData);
       }
     });
+  });
 
-    const arrayHashmap = entries.reduce((obj, item) => {
-      const objName = `${item.activityId}${item.month}`;
+  const arrayHashmap = entries.reduce((obj, item) => {
+    const objName = `${item.activityId}${item.month}`;
 
-      if (obj[objName]) {
-        obj[objName].time += item.time;
-      } else {
-        obj[objName] = { ...item };
-      }
+    if (obj[objName]) {
+      obj[objName].time += item.time;
+    } else {
+      obj[objName] = { ...item };
+    }
 
-      return obj;
-    }, {});
+    return obj;
+  }, {});
 
-    const userTimeEntries = Object.values(arrayHashmap);
+  const userTimeEntries = Object.values(arrayHashmap);
 
-    // Sort array by month
-    userTimeEntries.sort((a, b) => sortArray(a.month, b.month));
+  // Sort array by month
+  userTimeEntries.sort((a, b) => {
+    a.year !== b.year
+      ? a.year - b.year
+      : months.indexOf(a.month) - months.indexOf(b.month);
+  });
 
-    userTimeEntries.map((entry) => {
-      let wsData = {
-        date: `${entry.year} - ${months[entry.month]}`,
-        user: entry.user,
-        activity: entry.activity,
-        city: entry.city,
-        time: entry.time,
-      };
-      worksheet.addRow(wsData);
-    });
+  userTimeEntries.map((entry) => {
+    let wsData = {
+      date: `${entry.year} - ${entry.month}`,
+      user: entry.user,
+      activity: entry.activity,
+      city: entry.city,
+      time: entry.time,
+    };
+    worksheet.addRow(wsData);
   });
 }
 
