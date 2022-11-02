@@ -4,6 +4,7 @@ const dateFns = require("date-fns");
 const {
   createNotConfirmedWorksheet,
   createConfirmedWorksheet,
+  createRegionWorksheet,
 } = require("./worksheetFunctions");
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 
@@ -79,6 +80,7 @@ function createExcelFile(excelData) {
   var workbook = new Excel.Workbook();
   createNotConfirmedWorksheet(workbook, excelData);
   createConfirmedWorksheet(workbook, excelData);
+  createRegionWorksheet(workbook, excelData);
 
   return workbook;
 }
