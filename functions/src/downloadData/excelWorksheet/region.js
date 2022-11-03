@@ -1,6 +1,4 @@
-const dateFns = require("date-fns");
-
-const { filterTimeEntries, sortArray } = require("./helpers/functions");
+const { filterTimeEntries } = require("./helpers/functions");
 const { months } = require("./helpers/data");
 
 function populateExcelSheetWithRegionData(worksheet, excelData) {
@@ -42,36 +40,93 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
   const userTimeEntries = Object.values(arrayHashmap);
 
-  userTimeEntries.sort((a, b) => {
-    a.year !== b.year
-      ? a.year - b.year
-      : months.indexOf(a.month) - months.indexOf(b.month);
-  });
+  if (userTimeEntries.length > 1) {
+    userTimeEntries.sort((a, b) => {
+      a.year !== b.year
+        ? a.year - b.year
+        : months.indexOf(a.month) - months.indexOf(b.month);
+    });
+  }
 
   const columns = [];
 
-  columns.push({ header: "Region", key: "region", width: 15 });
+  columns.push({
+    header: "Datum",
+    key: "date",
+    width: 13,
+    style: {
+      font: {
+        bold: true,
+      },
+    },
+  });
 
-  userTimeEntries.map((entry, i) => {
+  const prevCities = [];
+  userTimeEntries.map((entry) => {
+    if (prevCities.includes(entry.city)) return;
+
+    prevCities.push(entry.city);
     columns.push({
-      header: `${entry.year} - ${entry.month} tid(h)`,
-      key: `${entry.year}${entry.month}`,
+      header: `${entry.city} tid(h)`,
+      key: `${entry.city}`,
       width: 15,
+      style: {
+        font: {
+          bold: true,
+        },
+      },
     });
   });
 
   worksheet.columns = columns;
 
-  userTimeEntries.map((entry) => {
-    let wsData = {
-      region: entry.city,
-      [`${entry.year}${entry.month}`]: entry.time,
+  const worksheetRows = [];
+  userTimeEntries.map((entr) => {
+    let month = shortenMonth(entr.month);
+    let date = `${entr.year} - ${month}`;
+
+    wsObj = {
+      date: date,
+      [`${entr.city}`]: entr.time,
     };
-    worksheet.addRow(wsData);
+    worksheetRows.push(wsObj);
+  });
+
+  let rowData = {};
+  worksheetRows.forEach(
+    (row) => (rowData[row.date] = { ...rowData[row.date], ...row })
+  );
+  rowData = Object.values(rowData);
+
+  rowData.map((data) => {
+    worksheet.addRow(data);
   });
 }
+
+function shortenMonth(month) {
+  let shortMonth = "";
+  if (month !== "September") shortMonth = month.substring(0, 3);
+  else shortMonth = month.substring(0, 4);
+
+  return shortMonth;
+}
+
+const autoWidth = (worksheet, minimalWidth = 10) => {
+  worksheet.columns.forEach((column) => {
+    let maxColumnLength = 0;
+    column.eachCell({ includeEmpty: true }, (cell) => {
+      maxColumnLength = Math.max(
+        maxColumnLength,
+        minimalWidth,
+        cell.value ? cell.value.toString().length : 0
+      );
+    });
+    column.width = maxColumnLength + 1;
+  });
+};
 
 exports.createWorksheet = (workbook, excelData) => {
   const worksheet = workbook.addWorksheet("Tid per region");
   populateExcelSheetWithRegionData(worksheet, excelData);
+  autoWidth(worksheet);
 };
