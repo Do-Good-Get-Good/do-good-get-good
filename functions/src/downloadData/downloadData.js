@@ -42,7 +42,22 @@ async function getAllDataFromCollection(collectionName) {
   }
 }
 
-async function getAllDataFromCollectionByDate(collectionName, datePeriod) {
+async function getAllTimeEntries() {
+  let res = await admin
+    .firestore()
+    .collection("timeentries")
+    .orderBy("date", "asc")
+    .get();
+
+  if (!res.empty) {
+    return res.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  }
+}
+
+async function getAllTimeEntriesByDate(datePeriod) {
   const { startDate, endDate } = datePeriod;
 
   const date1 = new Date(startDate);
@@ -53,7 +68,7 @@ async function getAllDataFromCollectionByDate(collectionName, datePeriod) {
 
   let res = await admin
     .firestore()
-    .collection(collectionName)
+    .collection("timeentries")
     .orderBy("date", "asc")
     .where("date", ">=", start)
     .where("date", "<=", end)
@@ -70,10 +85,13 @@ async function getAllDataFromCollectionByDate(collectionName, datePeriod) {
 async function getAllDatabaseData(datePeriod) {
   let users = await getAllDataFromCollection("Users");
   let activities = await getAllDataFromCollection("Activities");
-  let timeEntries = await getAllDataFromCollectionByDate(
-    "timeentries",
-    datePeriod
-  );
+
+  let timeEntries = [];
+  if (datePeriod === undefined || datePeriod === null) {
+    timeEntries = await getAllTimeEntries();
+  } else {
+    timeEntries = await getAllTimeEntriesByDate(datePeriod);
+  }
 
   return {
     activities: activities,
@@ -189,7 +207,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
 
     if (excelData.timeEntries === null || excelData.timeEntries === undefined) {
       throw new NoTimeEntriesFound(
-        "Inga tidregistreringar hittades inom det valda tidspannet."
+        "Inga tidregistreringar hittades inom det valda tidspannet.\nVänligen försök igen senare!"
       );
     }
 
