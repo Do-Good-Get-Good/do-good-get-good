@@ -1,4 +1,4 @@
-const { filterTimeEntries } = require("./helpers/functions");
+const { filterTimeEntries, autoWidth } = require("./helpers/functions");
 const { months } = require("./helpers/data");
 
 function populateExcelSheetWithRegionData(worksheet, excelData) {
@@ -6,101 +6,109 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
-  let entries = [];
-  confirmedTimeEntries.map((timeEntry) => {
-    let activity = activities.find((activity) => {
-      if (activity.id === timeEntry.activity_id) {
-        return activity;
-      }
-    });
-
-    const date = timeEntry.date.toDate();
-
-    const entryData = {
-      year: date.getFullYear(),
-      month: months[date.getMonth()],
-      city: activity.activity_city,
-      time: timeEntry.time,
-    };
-
-    entries.push(entryData);
-  });
-
-  const arrayHashmap = entries.reduce((obj, item) => {
-    const objName = `${item.city}${item.year}${item.month}`;
-
-    if (obj[objName]) {
-      obj[objName].time += item.time;
-    } else {
-      obj[objName] = { ...item };
-    }
-
-    return obj;
-  }, {});
-
-  const userTimeEntries = Object.values(arrayHashmap);
-
-  if (userTimeEntries.length > 1) {
-    userTimeEntries.sort((a, b) => {
-      a.year !== b.year
-        ? a.year - b.year
-        : months.indexOf(a.month) - months.indexOf(b.month);
-    });
-  }
-
-  const columns = [];
-
-  columns.push({
-    header: "Datum",
-    key: "date",
-    width: 13,
-    style: {
-      font: {
-        bold: true,
-      },
-    },
-  });
-
-  const prevCities = [];
-  userTimeEntries.map((entry) => {
-    if (prevCities.includes(entry.city)) return;
-
-    prevCities.push(entry.city);
-    columns.push({
-      header: `${entry.city} tid(h)`,
-      key: `${entry.city}`,
-      width: 15,
-      style: {
-        font: {
-          bold: true,
+  if (confirmedTimeEntries.length === 0) {
+    worksheet.columns = [
+      {
+        header: "Meddelande",
+        key: "msg",
+        width: 10,
+        style: {
+          font: {
+            bold: true,
+          },
         },
       },
+    ];
+    worksheet.addRow({
+      msg: "Finns inga godkända tidregistreringar för det valda tidsspannet!",
     });
-  });
+  } else {
+    let entries = [];
+    confirmedTimeEntries.map((timeEntry) => {
+      let activity = activities.find((activity) => {
+        if (activity.id === timeEntry.activity_id) {
+          return activity;
+        }
+      });
 
-  worksheet.columns = columns;
+      const date = timeEntry.date.toDate();
 
-  const worksheetRows = [];
-  userTimeEntries.map((entr) => {
-    let month = shortenMonth(entr.month);
-    let date = `${entr.year} - ${month}`;
+      const entryData = {
+        year: date.getFullYear(),
+        month: months[date.getMonth()],
+        city: activity.activity_city,
+        time: timeEntry.time,
+      };
 
-    wsObj = {
-      date: date,
-      [`${entr.city}`]: entr.time,
-    };
-    worksheetRows.push(wsObj);
-  });
+      entries.push(entryData);
+    });
 
-  let rowData = {};
-  worksheetRows.forEach(
-    (row) => (rowData[row.date] = { ...rowData[row.date], ...row })
-  );
-  rowData = Object.values(rowData);
+    const arrayHashmap = entries.reduce((obj, item) => {
+      const objName = `${item.city}${item.year}${item.month}`;
 
-  rowData.map((data) => {
-    worksheet.addRow(data);
-  });
+      if (obj[objName]) {
+        obj[objName].time += item.time;
+      } else {
+        obj[objName] = { ...item };
+      }
+
+      return obj;
+    }, {});
+
+    const userTimeEntries = Object.values(arrayHashmap);
+
+    if (userTimeEntries.length > 1) {
+      userTimeEntries.sort((a, b) => {
+        a.year !== b.year
+          ? a.year - b.year
+          : months.indexOf(a.month) - months.indexOf(b.month);
+      });
+    }
+
+    const columns = [];
+
+    columns.push({
+      header: "Datum",
+      key: "date",
+      width: 13,
+    });
+
+    const prevCities = [];
+    userTimeEntries.map((entry) => {
+      if (prevCities.includes(entry.city)) return;
+
+      prevCities.push(entry.city);
+      columns.push({
+        header: `${entry.city} tid(h)`,
+        key: `${entry.city}`,
+        width: 15,
+      });
+    });
+
+    worksheet.columns = columns;
+
+    const worksheetRows = [];
+    userTimeEntries.map((entr) => {
+      let month = shortenMonth(entr.month);
+      let date = `${entr.year} - ${month}`;
+
+      wsObj = {
+        date: date,
+        [`${entr.city}`]: entr.time,
+      };
+      worksheetRows.push(wsObj);
+    });
+
+    let rowData = {};
+    worksheetRows.forEach(
+      (row) => (rowData[row.date] = { ...rowData[row.date], ...row })
+    );
+    rowData = Object.values(rowData);
+
+    rowData.map((data) => {
+      worksheet.addRow(data);
+    });
+  }
 }
 
 function shortenMonth(month) {
@@ -110,20 +118,6 @@ function shortenMonth(month) {
 
   return shortMonth;
 }
-
-const autoWidth = (worksheet, minimalWidth = 10) => {
-  worksheet.columns.forEach((column) => {
-    let maxColumnLength = 0;
-    column.eachCell({ includeEmpty: true }, (cell) => {
-      maxColumnLength = Math.max(
-        maxColumnLength,
-        minimalWidth,
-        cell.value ? cell.value.toString().length : 0
-      );
-    });
-    column.width = maxColumnLength + 1;
-  });
-};
 
 exports.createWorksheet = (workbook, excelData) => {
   const worksheet = workbook.addWorksheet("Tid per region");

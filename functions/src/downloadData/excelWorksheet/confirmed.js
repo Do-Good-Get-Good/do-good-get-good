@@ -1,10 +1,16 @@
-const { filterTimeEntries, sortArray } = require("./helpers/functions");
+const {
+  filterTimeEntries,
+  sortArray,
+  autoWidth,
+} = require("./helpers/functions");
 const { months } = require("./helpers/data");
 
-function populateExcelSheetWithYearData(excelData, worksheet) {
-  let { activities, timeEntries, users } = excelData;
-
-  let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
+function populateExcelSheetWithYearData(
+  excelData,
+  worksheet,
+  confirmedTimeEntries
+) {
+  let { activities, users } = excelData;
 
   let entries = [];
   confirmedTimeEntries.map((timeEntry) => {
@@ -60,10 +66,12 @@ function populateExcelSheetWithYearData(excelData, worksheet) {
   });
 }
 
-function populateExcelSheetWithMonthData(excelData, worksheet) {
-  let { activities, timeEntries, users } = excelData;
-
-  let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
+function populateExcelSheetWithMonthData(
+  excelData,
+  worksheet,
+  confirmedTimeEntries
+) {
+  let { activities, users } = excelData;
 
   let entries = [];
   confirmedTimeEntries.map((timeEntry) => {
@@ -125,46 +133,72 @@ function populateExcelSheetWithMonthData(excelData, worksheet) {
   });
 }
 
-function makeWorksheetHeaderBold(worksheet) {
-  //   worksheet.getCell("A1").font = { bold: true };
-  worksheet.getCell("B1").font = { bold: true };
-  worksheet.getCell("C1").font = { bold: true };
-  worksheet.getCell("D1").font = { bold: true };
-  worksheet.getCell("E1").font = { bold: true };
+function makeWorksheetHeaderBold(worksheet, rowCount = 0) {
+  if (rowCount === 0) {
+    worksheet.getCell("A1").font = { bold: true };
+    worksheet.getCell("B1").font = { bold: true };
+    worksheet.getCell("C1").font = { bold: true };
+    worksheet.getCell("D1").font = { bold: true };
+    worksheet.getCell("E1").font = { bold: true };
+  } else {
+    const cell1 = worksheet.getCell(`A${rowCount + 2}`);
+    const cell2 = worksheet.getCell(`B${rowCount + 2}`);
+    const cell3 = worksheet.getCell(`C${rowCount + 2}`);
+    const cell4 = worksheet.getCell(`D${rowCount + 2}`);
+    const cell5 = worksheet.getCell(`E${rowCount + 2}`);
+    const cellArr = [cell1, cell2, cell3, cell4, cell5];
+
+    cellArr.map((cell, index) => {
+      if (index === 0) cell.value = "Månad";
+      else cell.value = worksheet.columns[index].header;
+      cell.font = { bold: true };
+    });
+  }
 }
 
 exports.createWorksheet = (workbook, excelData) => {
   const worksheet = workbook.addWorksheet("Godkända");
 
-  worksheet.columns = [
-    { header: "År", key: "date", width: 16, font: { bold: true } },
-    { header: "Användare", key: "user", width: 20 },
-    { header: "Aktivitet", key: "activity", width: 20 },
-    { header: "Stad", key: "city", width: 15 },
-    { header: "Total tid (h)", key: "time", width: 12 },
-  ];
+  const { timeEntries } = excelData;
 
-  makeWorksheetHeaderBold(worksheet);
-  populateExcelSheetWithYearData(excelData, worksheet);
+  let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
-  for (let i = 0; i < 2; i++) {
-    worksheet.addRow();
+  if (confirmedTimeEntries.length === 0) {
+    worksheet.columns = [
+      {
+        header: "Meddelande",
+        key: "msg",
+        width: 10,
+        style: {
+          font: {
+            bold: true,
+          },
+        },
+      },
+    ];
+    worksheet.addRow({
+      msg: "Finns inga icke godkända tidregistreringar för det valda tidsspannet!",
+    });
+  } else {
+    worksheet.columns = [
+      { header: "År", key: "date", width: 16 },
+      { header: "Användare", key: "user", width: 20 },
+      { header: "Aktivitet", key: "activity", width: 20 },
+      { header: "Stad", key: "city", width: 15 },
+      { header: "Total tid (h)", key: "time", width: 12 },
+    ];
+
+    makeWorksheetHeaderBold(worksheet);
+    populateExcelSheetWithYearData(excelData, worksheet, confirmedTimeEntries);
+
+    for (let i = 0; i < 2; i++) {
+      worksheet.addRow();
+    }
+
+    const rowCount = worksheet.rowCount;
+
+    makeWorksheetHeaderBold(worksheet, rowCount);
+    populateExcelSheetWithMonthData(excelData, worksheet, confirmedTimeEntries);
   }
-
-  const rowCount = worksheet.rowCount;
-
-  const cell1 = worksheet.getCell(`A${rowCount + 2}`);
-  const cell2 = worksheet.getCell(`B${rowCount + 2}`);
-  const cell3 = worksheet.getCell(`C${rowCount + 2}`);
-  const cell4 = worksheet.getCell(`D${rowCount + 2}`);
-  const cell5 = worksheet.getCell(`E${rowCount + 2}`);
-  const cellArr = [cell1, cell2, cell3, cell4, cell5];
-
-  cellArr.map((cell, index) => {
-    if (index === 0) cell.value = "Månad";
-    else cell.value = worksheet.columns[index].header;
-    cell.font = { bold: true };
-  });
-
-  populateExcelSheetWithMonthData(excelData, worksheet);
+  autoWidth(worksheet);
 };

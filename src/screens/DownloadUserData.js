@@ -26,12 +26,13 @@ const DownloadUserData = ({ navigation }) => {
   const [openDropDown, setOpenDropDown] = useState(false);
   const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
   const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
-  const [dataDownloaded, setDataDownloaded] = useState(false);
+  const [downloadingData, setDownloadingData] = useState(false);
   const [excelDownloadURL, setExcelDownloadURL] = useState(null);
 
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
+  const downloadData = functions().httpsCallable("downloadData");
 
   const IsDatePeriodValid = () => {
     if (toDate(parseISO(endDate)) < toDate(parseISO(startDate))) {
@@ -56,14 +57,27 @@ const DownloadUserData = ({ navigation }) => {
         endDate: endDate,
       };
     }
-    setDataDownloaded(true);
     alertPopUp(datePeriod);
+    setDownloadingData(true);
   };
+
+  function stayInAppAndExportData(datePeriod) {
+    downloadData(datePeriod)
+      .then((res) => {
+        console.log(res.data.downloadURL);
+        setExcelDownloadURL(res.data.downloadURL);
+      })
+      .catch((error) => {
+        setDownloadingData(false);
+        Alert.alert(
+          "Ett fel har inträffat!",
+          `${error.message} \nVänligen försök igen senare!`
+        );
+      });
+  }
 
   function alertPopUp(datePeriod) {
     console.log(datePeriod);
-
-    let downloadData = functions().httpsCallable("downloadData");
 
     let alertTitle = "Exportera data";
     let alertMessage =
@@ -75,10 +89,7 @@ const DownloadUserData = ({ navigation }) => {
       {
         text: "Vänta kvar",
         onPress: () => {
-          downloadData(datePeriod).then((res) => {
-            console.log(res.data.downloadURL);
-            setExcelDownloadURL(res.data.downloadURL);
-          });
+          stayInAppAndExportData(datePeriod);
         },
       },
       {
@@ -176,11 +187,11 @@ const DownloadUserData = ({ navigation }) => {
           )}
         </View>
         <View style={styles.downloadButtonWrapper}>
-          {!dataDownloaded && (
+          {!downloadingData && (
             <TouchableOpacity
               disabled={
                 choseDate === null ||
-                (choseDate == true && IsDatePeriodValid() === false)
+                (choseDate === true && IsDatePeriodValid() === false)
                   ? true
                   : false
               }
@@ -202,7 +213,7 @@ const DownloadUserData = ({ navigation }) => {
               </View>
             </TouchableOpacity>
           )}
-          {dataDownloaded && (
+          {downloadingData && (
             <TouchableOpacity
               disabled={excelDownloadURL === null ? true : false}
               onPress={() => {

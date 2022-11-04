@@ -24,6 +24,14 @@ class NotAnAdminError extends Error {
   }
 }
 
+class NoTimeEntriesFound extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.type = "NoTimeEntriesFound";
+  }
+}
+
 async function getAllDataFromCollection(collectionName) {
   let res = await admin.firestore().collection(collectionName).get();
   if (!res.empty) {
@@ -179,6 +187,12 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
 
     let excelData = await getAllDatabaseData(data);
 
+    if (excelData.timeEntries === null || excelData.timeEntries === undefined) {
+      throw new NoTimeEntriesFound(
+        "Inga tidregistreringar hittades inom det valda tidspannet."
+      );
+    }
+
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {
       excelDownloadURL = res[0];
@@ -195,7 +209,8 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       throw new functions.https.HttpsError("unauthenticated", error.message);
     } else if (
       error.type === "NotAnAdminError" ||
-      error.type === "InvalidRoleError"
+      error.type === "InvalidRoleError" ||
+      error.type === "NoTimeEntriesFound"
     ) {
       throw new functions.https.HttpsError(
         "failed-precondition",
