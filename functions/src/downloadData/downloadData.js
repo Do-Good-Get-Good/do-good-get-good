@@ -5,6 +5,7 @@ const {
   createNotConfirmedWorksheet,
   createConfirmedWorksheet,
   createRegionWorksheet,
+  createActivityWorksheet,
 } = require("./worksheetFunctions");
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 
@@ -107,6 +108,7 @@ function createExcelFile(excelData) {
   createNotConfirmedWorksheet(workbook, excelData);
   createConfirmedWorksheet(workbook, excelData);
   createRegionWorksheet(workbook, excelData);
+  createActivityWorksheet(workbook, excelData);
 
   return workbook;
 }
