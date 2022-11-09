@@ -1,9 +1,78 @@
-const {
-  filterTimeEntries,
-  autoWidth,
-  sortArray,
-} = require("./helpers/functions");
+const { filterTimeEntries, autoWidth } = require("./helpers/functions");
 const { months } = require("./helpers/data");
+
+function groupByYear(arr) {
+  return arr.reduce((prev, current) => {
+    let currentYear = new Date(current["date"].toDate()).getFullYear();
+
+    if (!prev[currentYear]) {
+      prev[currentYear] = [];
+    }
+    prev[currentYear].push(current);
+    return prev;
+  }, {});
+}
+
+function perYearView(worksheet, activities, users, timeEntries) {
+  let yearArr = Object.keys(timeEntries);
+  yearArr.map((year, index) => {
+    if (index === 0) {
+      const columns = [
+        { header: `Aktivitet - ${yearArr[index]}`, key: "activity" },
+      ];
+
+      months.map((month) => {
+        const column = {
+          header: month,
+          key: month,
+        };
+        columns.push(column);
+      });
+
+      worksheet.columns = columns;
+    } else {
+      worksheet.addRow();
+      worksheet.addRow();
+      const row = { activity: `Aktivitet - ${yearArr[index]}` };
+      months.map((month) => {
+        row[month] = month;
+      });
+      worksheet.addRow(row).font = { bold: true };
+    }
+
+    activities.map((activity) => {
+      let wsObj = {};
+
+      months.map((month) => {
+        wsObj[month] = 0;
+      });
+
+      users.map((user) => {
+        let prevMonth = "";
+        timeEntries[year].map((timeEntry) => {
+          if (user.id === timeEntry.user_id) {
+            if (activity.id === timeEntry.activity_id) {
+              const date = timeEntry.date.toDate();
+              const month = months[date.getMonth()];
+
+              if (prevMonth === month) return;
+              prevMonth = month;
+
+              if (timeEntry.status_confirmed) {
+                wsObj[month]++;
+              }
+            }
+          }
+        });
+      });
+      const wsRow = {
+        activity: activity.activity_title,
+        ...wsObj,
+      };
+      worksheet.addRow(wsRow);
+    });
+  });
+}
 
 function populateExcelSheetWithActivityData(worksheet, excelData) {
   let { activities, timeEntries, users } = excelData;
@@ -39,52 +108,11 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
         : months.indexOf(a.month) - months.indexOf(b.month);
     });
 
-    const columns = [{ header: "Aktivitet", key: "activity" }];
+    let timeEntriesSortedByYear = groupByYear(confirmedTimeEntries);
 
-    months.map((month) => {
-      const column = {
-        header: month,
-        key: month,
-      };
-      columns.push(column);
-    });
-
-    worksheet.columns = columns;
-
-    activeActivities.map((activity, index) => {
-      let wsObj = {};
-
-      months.map((month) => {
-        wsObj[month] = 0;
-      });
-
-      users.map((user) => {
-        let prevMonth = "";
-        confirmedTimeEntries.map((timeEntry) => {
-          if (user.id === timeEntry.user_id) {
-            if (activity.id === timeEntry.activity_id) {
-              const date = timeEntry.date.toDate();
-              const month = months[date.getMonth()];
-
-              if (prevMonth === month) return;
-              prevMonth = month;
-
-              if (timeEntry.status_confirmed) {
-                wsObj[month]++;
-              }
-            }
-          }
-        });
-      });
-      const wsRow = {
-        activity: activity.activity_title,
-        ...wsObj,
-      };
-      worksheet.addRow(wsRow);
-    });
+    perYearView(worksheet, activeActivities, users, timeEntriesSortedByYear);
   }
 }
-
 function makeHeaderBold(worksheet) {
   worksheet.getCell("A1").font = { bold: true };
   worksheet.getCell("B1").font = { bold: true };
@@ -102,7 +130,7 @@ function makeHeaderBold(worksheet) {
 }
 
 exports.createWorksheet = (workbook, excelData) => {
-  const worksheet = workbook.addWorksheet("Aktivitet");
+  const worksheet = workbook.addWorksheet("Personer per aktivitet");
   populateExcelSheetWithActivityData(worksheet, excelData);
   makeHeaderBold(worksheet);
   autoWidth(worksheet, 8);
