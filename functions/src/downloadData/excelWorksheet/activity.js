@@ -53,25 +53,24 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
 
     activeActivities.map((activity, index) => {
       let wsObj = {};
+
       months.map((month) => {
         wsObj[month] = 0;
       });
 
       users.map((user) => {
         let prevMonth = "";
-
         confirmedTimeEntries.map((timeEntry) => {
-          const date = timeEntry.date.toDate();
-          const month = months[date.getMonth()];
-
-          if (prevMonth !== month) {
-            prevMonth = month;
-
+          if (user.id === timeEntry.user_id) {
             if (activity.id === timeEntry.activity_id) {
-              if (user.id === timeEntry.user_id) {
-                if (timeEntry.status_confirmed) {
-                  wsObj[month] = wsObj[month] + 1;
-                }
+              const date = timeEntry.date.toDate();
+              const month = months[date.getMonth()];
+
+              if (prevMonth === month) return;
+              prevMonth = month;
+
+              if (timeEntry.status_confirmed) {
+                wsObj[month]++;
               }
             }
           }
