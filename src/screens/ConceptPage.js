@@ -38,43 +38,47 @@ const ConceptPage = () => {
         }
       });
 
-      if (response.size === 0) {
+      if (response === undefined || response.size === 0) {
         setLoadingUserData(false);
         setNoData("Det finns för tillfället inga godkända aktiviteter");
-      }
-
-      response.forEach(async (timeEntry) => {
-        let activity = await getActivitiesMatchTimeEntries(timeEntry).catch(
-          (error) => {
-            if (error === "no-data") {
-              setError("Sorry, something went wrong");
+        return;
+      } else {
+        response.forEach(async (timeEntry) => {
+          let activity = await getActivitiesMatchTimeEntries(timeEntry).catch(
+            (error) => {
+              if (error === "no-data") {
+                setError("Sorry, something went wrong");
+              }
             }
+          );
+
+          let fullName;
+          let userInfo = await useUserData(timeEntry.data().user_id);
+          fullName = `${userInfo.first_name} ${userInfo.last_name}`;
+
+          if (activity.exists) {
+            const userData = {
+              id: id,
+              userID: userInfo.id,
+              fullName: fullName,
+              activityName: activity.data().activity_title,
+              activityPhoto: activity.data().activity_photo,
+              activityCity: activity.data().activity_city,
+              timeEntryDate: format(
+                timeEntry.data().date.toDate(),
+                "yyyy-MM-dd"
+              ),
+            };
+            setAllUsers((prev) => [...prev, userData]);
           }
-        );
+          id++;
 
-        let fullName;
-        let userInfo = await useUserData(timeEntry.data().user_id);
-        fullName = `${userInfo.first_name} ${userInfo.last_name}`;
-
-        if (activity.exists) {
-          const userData = {
-            id: id,
-            userID: userInfo.id,
-            fullName: fullName,
-            activityName: activity.data().activity_title,
-            activityPhoto: activity.data().activity_photo,
-            activityCity: activity.data().activity_city,
-            timeEntryDate: format(timeEntry.data().date.toDate(), "yyyy-MM-dd"),
-          };
-          setAllUsers((prev) => [...prev, userData]);
-        }
-        id++;
-
-        usersFetched++;
-        if (usersFetched === response.size) {
-          setLoadingUserData(false);
-        }
-      });
+          usersFetched++;
+          if (usersFetched === response.size) {
+            setLoadingUserData(false);
+          }
+        });
+      }
     };
     fetchData();
     return () => {

@@ -31,14 +31,12 @@ export const getAllActiveActivities = async () => {
 };
 
 export const getFaq = async () => {
-  let response = null;
-  await firestore()
-    .collection("faq")
-    .get()
-    .then((querySnapshot) => {
-      response = querySnapshot;
-    });
-  return response;
+  try {
+    const querySnapshot = await firestore().collection("faq").get();
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const getActivitiesMatchTimeEntries = async (timeEntry) => {
