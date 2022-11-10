@@ -7,6 +7,7 @@ import {
   View,
   Platform,
   ScrollView,
+  Alert,
 } from "react-native";
 
 import { Overlay, Icon } from "react-native-elements";
@@ -134,14 +135,18 @@ const CalendarView = ({
       activity_title: activity.title,
     };
 
-    addTimeEntry(timeEntry).then((res) => {
-      if (res.success) {
+    addTimeEntry(timeEntry)
+      .then(() => {
         incrementTotalHoursForUser(uid, hours);
         toggleVisibility();
-      } else {
-        setError(res.error.message);
-      }
-    });
+      })
+      .catch((error) => {
+        console.log(error.message);
+        setError("Ett fel uppstod, vänligen försök igen.");
+        setTimeout(() => {
+          setError(null);
+        }, 3500);
+      });
   };
 
   //Change activity date and time (hours)
@@ -216,11 +221,6 @@ const CalendarView = ({
           paddingHorizontal: 16,
         }}
       >
-        {error != null && (
-          <Text testID="errorTextId" style={errorMessage}>
-            {error}
-          </Text>
-        )}
         <Text testID="calendarView.headerText" style={styles.activityTitle}>
           {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
@@ -325,6 +325,15 @@ const CalendarView = ({
             `, ${hours}h`}
         </Text>
       </ScrollView>
+
+      {error != null && (
+        <Text
+          testID="errorTextId"
+          style={{ alignSelf: "center", marginBottom: 5, ...errorMessage }}
+        >
+          {error}
+        </Text>
+      )}
 
       {!isEditing ? (
         <TouchableOpacity

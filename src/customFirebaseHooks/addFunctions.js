@@ -12,25 +12,10 @@ export const addActivities = async (newFirebaseActivity) => {
 };
 
 export const addTimeEntry = async (timeEntry) => {
-  let success;
-  let error;
-
-  await firestore()
-    .collection("timeentries")
-    .add(timeEntry)
-    .then(() => {
-      success = true;
-    })
-    .catch((error) => {
-      success = false;
-      error = {
-        firebaseError: error,
-        message: "Sorry, something went wrong",
-      };
-    });
-
-  return {
-    success: success,
-    error: error,
-  };
+  try {
+    const res = await firestore().collection("timeentries").add(timeEntry);
+    return Promise.resolve(res);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
