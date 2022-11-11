@@ -83,7 +83,6 @@ export default function App() {
     );
   } else if (userClaims.admin) {
     // Render admin content
-  } else if (userClaims.user) {
     return (
       <SafeAreaProvider>
         <ChangeUserInfoProvider>
@@ -92,13 +91,31 @@ export default function App() {
               <CreateActivityProvider>
                 <AdminProvider>
                   <ActivityProvider>
-                    <Mystack />
+                    <AdminHomePageProvider>
+                      <Mystack />
+                    </AdminHomePageProvider>
                   </ActivityProvider>
                 </AdminProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
         </ChangeUserInfoProvider>
+      </SafeAreaProvider>
+    );
+  } else if (userClaims.user) {
+    return (
+      <SafeAreaProvider>
+        <ActivityCardProvider>
+          <AdminGalleryProvider>
+            <CreateActivityProvider>
+              <AdminProvider>
+                <ActivityProvider>
+                  <Mystack />
+                </ActivityProvider>
+              </AdminProvider>
+            </CreateActivityProvider>
+          </AdminGalleryProvider>
+        </ActivityCardProvider>
       </SafeAreaProvider>
     );
   } else {

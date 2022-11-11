@@ -179,15 +179,15 @@ const CalendarView = ({
 
   //Removes a users time entry from the database
   const removeTimeEntry = (timeEntryID) => {
-    deleteTimeEntry(timeEntryID).then((res) => {
-      if (res.success) {
+    deleteTimeEntry(timeEntryID)
+      .then(() => {
         decrementTotalHoursForUser(uid, hours);
         toggleVisibility();
-      } else {
-        console.log(res.error);
-        setError(res.error.message);
-      }
-    });
+      })
+      .catch((error) => {
+        console.log(error);
+        setError(error.message);
+      });
   };
 
   return (
