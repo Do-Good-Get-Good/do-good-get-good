@@ -1,19 +1,26 @@
 import React, { useState, useEffect } from "react";
-import { Mystack } from "./navigate";
-import auth from "@react-native-firebase/auth";
-import Login from "./components/Login";
-import { AdminGalleryProvider } from "./context/AdminGalleryContext";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ActivityProvider } from "./context/ActivityContext";
-import { CreateActivityProvider } from "./context/CreateActivityContext";
-import { ActivityCardProvider } from "./context/ActivityCardContext";
+
+import auth from "@react-native-firebase/auth";
+
 import { AdminProvider } from "./context/AdminContext";
-import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
-import { AdminHomePageProvider } from "./context/AdminHomePageContext";
+import { ActivityProvider } from "./context/ActivityContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
-import { View, Text } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { AdminGalleryProvider } from "./context/AdminGalleryContext";
+import { ActivityCardProvider } from "./context/ActivityCardContext";
+import { AdminHomePageProvider } from "./context/AdminHomePageContext";
+import { CreateActivityProvider } from "./context/CreateActivityContext";
+import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
+
+import { Mystack } from "./navigate";
+
+import Login from "./components/Login";
+import BottomLogo from "./components/BottomLogo";
+
 import typography from "./assets/theme/typography";
+import colors from "./assets/theme/colors";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -98,33 +105,45 @@ export default function App() {
     return (
       <View
         style={{
+          backgroundColor: colors.background,
           flex: 1,
           width: "100%",
           alignItems: "center",
           justifyContent: "center",
         }}
       >
-        <View>
-          <Text>
-            Något är fel med din användare, kontakta dggg@technogarden.se
+        <View style={{ width: "80%" }}>
+          <Text style={{ ...typography.b2, textAlign: "center" }}>
+            Något är fel med din användare, vänligen kontakta
+            dggg@technogarden.se
           </Text>
           <TouchableOpacity
             style={{
+              marginTop: 10,
               height: 50,
-              width: "100%",
-              backgroundColor: "green",
+              backgroundColor: colors.primary,
               alignItems: "center",
               justifyContent: "center",
               borderRadius: 5,
             }}
             onPress={() => auth().signOut()}
           >
-            <Text style={{ color: "#FFFFFF", ...typography.button.lg }}>
+            <Text
+              style={{
+                color: "#FFFFFF",
+                ...typography.button.lg,
+              }}
+            >
               Logga ut
             </Text>
           </TouchableOpacity>
+        </View>
+        <View style={{ position: "absolute", bottom: 0 }}>
+          <BottomLogo />
         </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({});
