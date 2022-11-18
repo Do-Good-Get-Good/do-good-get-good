@@ -69,15 +69,15 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         backgroundColor: colors.primary,
       }}
     >
-      <SafeAreaView style={styles.menuOverlay}>
-        <TouchableOpacity
-          testID="menuOverlay.closeButton"
-          style={styles.menuOverlayCloseButton}
-          onPress={openOverlay}
-        >
-          <Icon name="close" size={25} />
-          <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
-        </TouchableOpacity>
+      <TouchableOpacity
+        testID="menuOverlay.closeButton"
+        style={styles.menuOverlayCloseButton}
+        onPress={openOverlay}
+      >
+        <Icon name="close" size={25} />
+        <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
+      </TouchableOpacity>
+      <View style={styles.menuOverlay}>
         <TouchableOpacity
           testID="menuOverlay.languageButton"
           style={styles.menuOverlayChangeLangButton}
@@ -188,7 +188,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
           )}
         </View>
         {menuFooter()}
-      </SafeAreaView>
+      </View>
     </Overlay>
   );
 };
@@ -198,7 +198,7 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
-    paddingHorizontal: 50,
+    paddingHorizontal: 70,
     justifyContent: "space-between",
     ...Platform.select({
       ios: {
@@ -211,7 +211,7 @@ const styles = StyleSheet.create({
   },
   menuOverlayCloseButton: {
     alignItems: "flex-start",
-    position: "absolute",
+    alignSelf: "flex-end",
     top: 2,
     right: 4,
   },
@@ -231,7 +231,7 @@ const styles = StyleSheet.create({
   },
   menuOverlayItemStyling: {
     flex: 1,
-    justifyContent: "center",
+    marginTop: 40,
   },
   menuOverlayLinkStyling: {
     marginBottom: 6,
@@ -240,7 +240,7 @@ const styles = StyleSheet.create({
     ...typography.title,
   },
   menuOverlayFooter: {
-    marginBottom: 35,
+    marginBottom: 25,
   },
   menuOverlayLoggedInAccount: {
     flexDirection: "row",
