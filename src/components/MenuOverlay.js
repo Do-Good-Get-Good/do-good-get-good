@@ -32,7 +32,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
   function signOutFunction() {
     auth()
       .signOut()
-      .then(() => { })
+      .then(() => {})
       .catch((error) => {
         console.log("Enable in your firebase console.");
 
@@ -40,13 +40,22 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       });
   }
 
-  const loggedInUser = () => {
+  const menuFooter = () => {
     return (
-      <View style={styles.menuOverlayLoggedInAccount}>
-        <Text style={{ ...typography.b2 }}>Inloggad som: </Text>
-        <Text style={{ textDecorationLine: "underline", ...typography.b2 }}>
-          {auth().currentUser.email}
-        </Text>
+      <View style={styles.menuOverlayFooter}>
+        <View style={styles.menuOverlayLoggedInAccount}>
+          <Text style={{ ...typography.b2 }}>Inloggad som: </Text>
+          <Text style={{ textDecorationLine: "underline", ...typography.b2 }}>
+            {auth().currentUser.email}
+          </Text>
+        </View>
+        <TouchableOpacity
+          testID="menuOverlay.logoutButton"
+          style={styles.menuOverlayLogOutButton}
+          onPress={() => signOutFunction()}
+        >
+          <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
+        </TouchableOpacity>
       </View>
     );
   };
@@ -61,27 +70,25 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
       }}
     >
       <SafeAreaView style={styles.menuOverlay}>
-        <View style={styles.menuOverlayHeader}>
-          <TouchableOpacity
-            testID="menuOverlay.closeButton"
-            style={styles.menuOverlayCloseButton}
-            onPress={openOverlay}
-          >
-            <Icon name="close" size={25} />
-            <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
-          </TouchableOpacity>
-        </View>
+        <TouchableOpacity
+          testID="menuOverlay.closeButton"
+          style={styles.menuOverlayCloseButton}
+          onPress={openOverlay}
+        >
+          <Icon name="close" size={25} />
+          <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          testID="menuOverlay.languageButton"
+          style={styles.menuOverlayChangeLangButton}
+          onPress={() => {
+            // openOverlay();
+            // changeLanguage();
+          }}
+        >
+          <Text style={styles.menuOverlayChangeLangText}>Byt språk</Text>
+        </TouchableOpacity>
         <View style={styles.menuOverlayItemStyling}>
-          <TouchableOpacity
-            testID="menuOverlay.languageButton"
-            style={styles.menuOverlayChangeLangButton}
-            onPress={() => {
-              // openOverlay();
-              // changeLanguage();
-            }}
-          >
-            <Text style={styles.menuOverlayChangeLangText}>Byt språk</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             testID="menuOverlay.homeButton"
             style={styles.menuOverlayLinkStyling}
@@ -102,6 +109,27 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             }}
           >
             <Text style={styles.menuOverlayLinkText}>Min tid</Text>
+          </TouchableOpacity>
+
+          <TouchableOpacity
+            testID="menuOverlay.aboutButton"
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              openOverlay();
+              navigation.navigate("ConceptPage");
+            }}
+          >
+            <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            testID="menuOverlay.faqButton"
+            style={styles.menuOverlayLinkStyling}
+            onPress={() => {
+              openOverlay();
+              navigation.navigate("Faq");
+            }}
+          >
+            <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
 
           {(userLevel === "admin" || userLevel === "superadmin") && (
@@ -134,17 +162,8 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
 
           {userLevel === "superadmin" && (
             <>
-              {/* <TouchableOpacity
-                testID="menuOverlay.superAdminButton"
-                style={styles.menuOverlayLinkStyling}
-                onPress={() => {
-                  openOverlay();
-                  navigation.navigate("SuperAdminPage");
-                }}
-              >
-                <Text style={styles.menuOverlayLinkText}>Super admin</Text>
-              </TouchableOpacity > */}
               <TouchableOpacity
+                testID="menuOverlay.allUsersInTheSystem"
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
                   openOverlay();
@@ -155,50 +174,20 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               >
                 <Text style={styles.menuOverlayLinkText}>Alla användare</Text>
               </TouchableOpacity>
+              <TouchableOpacity
+                testID="menuOverlay.activitiesButton"
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("DownloadUserData");
+                }}
+              >
+                <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
+              </TouchableOpacity>
             </>
           )}
-
-          <TouchableOpacity
-            testID="menuOverlay.aboutButton"
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              openOverlay();
-              navigation.navigate("ConceptPage");
-            }}
-          >
-            <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            testID="menuOverlay.faqButton"
-            style={styles.menuOverlayLinkStyling}
-            onPress={() => {
-              openOverlay();
-              navigation.navigate("Faq");
-            }}
-          >
-            <Text style={styles.menuOverlayLinkText}>FAQ</Text>
-          </TouchableOpacity>
-          {userLevel === "superadmin" && (
-            <TouchableOpacity
-              testID="menuOverlay.activitiesButton"
-              style={styles.menuOverlayLinkStyling}
-              onPress={() => {
-                openOverlay();
-                navigation.navigate("DownloadUserData");
-              }}
-            >
-              <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
-            </TouchableOpacity>
-          )}
         </View>
-        {loggedInUser()}
-        <TouchableOpacity
-          testID="menuOverlay.logoutButton"
-          style={styles.menuOverlayLogOutButton}
-          onPress={() => signOutFunction()}
-        >
-          <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
-        </TouchableOpacity>
+        {menuFooter()}
       </SafeAreaView>
     </Overlay>
   );
@@ -209,6 +198,8 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
+    paddingHorizontal: 50,
+    justifyContent: "space-between",
     ...Platform.select({
       ios: {
         paddingTop: 12,
@@ -218,12 +209,11 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  menuOverlayHeader: {
-    alignSelf: "flex-end",
-    paddingRight: 4,
-  },
   menuOverlayCloseButton: {
     alignItems: "flex-start",
+    position: "absolute",
+    top: 2,
+    right: 4,
   },
   menuOverlayCloseButtonText: {
     textTransform: "uppercase",
@@ -231,15 +221,17 @@ const styles = StyleSheet.create({
     fontSize: typography.b2.fontSize,
     marginTop: -3,
   },
-  menuOverlayItemStyling: {
-    paddingLeft: 75,
-  },
   menuOverlayChangeLangButton: {
-    marginBottom: 48,
-    marginTop: 16,
+    justifyContent: "center",
+    width: 100,
+    height: 40,
   },
   menuOverlayChangeLangText: {
     ...typography.b1,
+  },
+  menuOverlayItemStyling: {
+    flex: 1,
+    justifyContent: "center",
   },
   menuOverlayLinkStyling: {
     marginBottom: 6,
@@ -247,16 +239,17 @@ const styles = StyleSheet.create({
   menuOverlayLinkText: {
     ...typography.title,
   },
+  menuOverlayFooter: {
+    marginBottom: 35,
+  },
   menuOverlayLoggedInAccount: {
-    position: "absolute",
-    bottom: 75,
-    paddingLeft: 75,
     flexDirection: "row",
+    flexWrap: "wrap",
   },
   menuOverlayLogOutButton: {
-    position: "absolute",
-    bottom: 40,
-    paddingLeft: 75,
+    width: 100,
+    marginTop: 10,
+    paddingVertical: 5,
   },
   menuOverlayLogOutButtonText: {
     ...typography.b1,
