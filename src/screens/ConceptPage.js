@@ -11,7 +11,7 @@ import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
 
 import { format } from "date-fns";
-import { useUserData } from "../customFirebaseHooks/useUserData";
+import { getUserData } from "../customFirebaseHooks/getFunctions.js";
 import {
   getActivitiesMatchTimeEntries,
   getConcept,
@@ -53,7 +53,7 @@ const ConceptPage = () => {
           );
 
           let fullName;
-          let userInfo = await useUserData(timeEntry.data().user_id);
+          let userInfo = await getUserData(timeEntry.data().user_id);
           fullName = `${userInfo.first_name} ${userInfo.last_name}`;
 
           if (activity.exists) {

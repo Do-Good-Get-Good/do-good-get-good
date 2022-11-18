@@ -156,8 +156,8 @@ const CalendarView = ({
     let currentMonth = today.getMonth();
     let date = toDate(new Date(selectedDate));
 
-    updateTimeEntry(timeEntryID, date, hours).then((res) => {
-      if (res.success) {
+    updateTimeEntry(timeEntryID, date, hours)
+      .then(() => {
         if (
           currentMonth === new Date(selectedDate).getMonth() &&
           currentYear === new Date(selectedDate).getFullYear()
@@ -171,10 +171,10 @@ const CalendarView = ({
           }
         }
         toggleVisibility();
-      } else {
-        setError(res.error.message);
-      }
-    });
+      })
+      .catch((error) => {
+        setError(error);
+      });
   };
 
   //Removes a users time entry from the database

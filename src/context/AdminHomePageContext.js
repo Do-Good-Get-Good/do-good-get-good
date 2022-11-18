@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-import { useAllUserData } from "../customFirebaseHooks/useAllUserData";
+import { getAllUserData } from "../customFirebaseHooks/getFunctions.js";
 
 const AdminHomePageContext = React.createContext();
 
@@ -19,8 +19,13 @@ export const AdminHomePageProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      let data = await useAllUserData(auth().currentUser.uid);
-      setUserData(data);
+      getAllUserData(auth().currentUser.uid).then((querySnapshot) => {
+        let data = querySnapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...doc.data(),
+        }));
+        setUserData(data);
+      });
     };
     fetchUserData();
   }, []);

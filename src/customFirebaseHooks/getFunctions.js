@@ -1,33 +1,50 @@
 import firestore from "@react-native-firebase/firestore";
 
+export const getUserData = async (userId) => {
+  try {
+    let data = await firestore().collection("Users").doc(userId).get();
+    return Promise.resolve(data.data());
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getAllUserData = async (adminId) => {
+  try {
+    let userData = await firestore()
+      .collection("Users")
+      .where("admin_id", "==", adminId)
+      .get();
+    return Promise.resolve(userData);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getAllInactiveActivities = async () => {
-  let activities = null;
-  await firestore()
-    .collection("Activities")
-    .where("active_status", "==", false)
-    .get()
-    .then((res) => {
-      activities = res;
-    })
-    .catch((error) => {
-      console.log("errorMessage ", error);
-    });
-  return activities;
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .where("active_status", "==", false)
+      .get();
+
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const getAllActiveActivities = async () => {
-  let activities = null;
-  await firestore()
-    .collection("Activities")
-    .where("active_status", "==", true)
-    .get()
-    .then((res) => {
-      activities = res;
-    })
-    .catch((error) => {
-      console.log("errorMessage ", error);
-    });
-  return activities;
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .where("active_status", "==", true)
+      .get();
+
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const getFaq = async () => {
@@ -40,36 +57,51 @@ export const getFaq = async () => {
 };
 
 export const getActivitiesMatchTimeEntries = async (timeEntry) => {
-  let response = await firestore()
-    .collection("Activities")
-    .doc(timeEntry.data().activity_id)
-    .get()
-    .catch((error) => {
-      console.log("errorMessage ", error);
-    });
-  return response;
+  try {
+    let documentSnapshot = await firestore()
+      .collection("Activities")
+      .doc(timeEntry.data().activity_id)
+      .get();
+    return Promise.resolve(documentSnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const getTenLastConfirmedTimeEntries = async () => {
-  let response = await firestore()
-    .collection("timeentries")
-    .orderBy("date", "desc")
-    .where("status_confirmed", "==", true)
-    .limit(10)
-    .get()
-    .catch((error) => {
-      console.log("errorMessage ", error);
-    });
-  return response;
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .orderBy("date", "desc")
+      .where("status_confirmed", "==", true)
+      .limit(10)
+      .get();
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const getConcept = async () => {
-  let response = null;
-  await firestore()
-    .collection("concept")
-    .get()
-    .then((querySnapshot) => {
-      response = querySnapshot;
-    });
-  return response;
+  try {
+    let querySnapshot = await firestore().collection("concept").get();
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", uid)
+      .orderBy("date", "desc")
+      .startAfter(startPoint)
+      .limit(20)
+      .get();
+    return Promise.resolve(querySnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
