@@ -45,6 +45,7 @@ const DownloadUserData = ({ navigation }) => {
   };
 
   const exportData = () => {
+    setExcelDownloadURL(null);
     let datePeriod;
     switch (exportType) {
       case "rolling-year": {
