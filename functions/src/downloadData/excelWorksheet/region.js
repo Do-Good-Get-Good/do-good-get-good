@@ -92,20 +92,18 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
       let month = shortenMonth(entr.month);
       let date = `${entr.year} - ${month}`;
 
-      wsObj = {
+      let wsObj = {
         date: date,
-        [`${entr.city}`]: entr.time,
       };
+
+      prevCities.map((city) => {
+        if (city === entr.city) wsObj[city] = entr.time;
+        else wsObj[city] = 0;
+      });
       worksheetRows.push(wsObj);
     });
 
-    let rowData = {};
-    worksheetRows.forEach(
-      (row) => (rowData[row.date] = { ...rowData[row.date], ...row })
-    );
-    rowData = Object.values(rowData);
-
-    rowData.map((data) => {
+    worksheetRows.map((data) => {
       worksheet.addRow(data);
     });
   }

@@ -177,7 +177,7 @@ exports.createWorksheet = (workbook, excelData) => {
       },
     ];
     worksheet.addRow({
-      msg: "Finns inga icke godkända tidregistreringar för det valda tidsspannet!",
+      msg: "Finns inga godkända tidregistreringar för det valda tidsspannet!",
     });
   } else {
     worksheet.columns = [
