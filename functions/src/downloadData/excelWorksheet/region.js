@@ -87,6 +87,13 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
     worksheet.columns = columns;
 
+    let row = worksheet.getRow(1);
+    for (let i = 1; i <= columns.length; i++) {
+      row.getCell(i).font = {
+        bold: true,
+      };
+    }
+
     const worksheetRows = [];
     userTimeEntries.map((entr) => {
       let month = shortenMonth(entr.month);
