@@ -1,4 +1,8 @@
-const { autoWidth } = require("./utilities/worksheetUtilities");
+const {
+  autoWidth,
+  makeRowTextBold,
+  printNoDataFound,
+} = require("./utilities/worksheetUtilities");
 const { months, filterTimeEntries } = require("./utilities/dataUtilities");
 
 function populateExcelSheetWithRegionData(worksheet, excelData) {
@@ -7,21 +11,10 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
   if (confirmedTimeEntries.length === 0) {
-    worksheet.columns = [
-      {
-        header: "Meddelande",
-        key: "msg",
-        width: 10,
-        style: {
-          font: {
-            bold: true,
-          },
-        },
-      },
-    ];
-    worksheet.addRow({
-      msg: "Finns inga godkända tidregistreringar för det valda tidsspannet!",
-    });
+    printNoDataFound(
+      "Finns inga godkända tidregistreringar för det valda tidsspannet!",
+      worksheet
+    );
   } else {
     let entries = [];
     confirmedTimeEntries.map((timeEntry) => {
@@ -87,12 +80,7 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
     worksheet.columns = columns;
 
-    let row = worksheet.getRow(1);
-    for (let i = 1; i <= columns.length; i++) {
-      row.getCell(i).font = {
-        bold: true,
-      };
-    }
+    makeRowTextBold(worksheet, 1);
 
     const worksheetRows = [];
     userTimeEntries.map((entr) => {

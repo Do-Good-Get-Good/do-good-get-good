@@ -1,4 +1,8 @@
-const { autoWidth } = require("./utilities/worksheetUtilities");
+const {
+  autoWidth,
+  printNoDataFound,
+  makeRowTextBold,
+} = require("./utilities/worksheetUtilities");
 const { months, filterTimeEntries } = require("./utilities/dataUtilities");
 
 function groupByYear(arr) {
@@ -30,6 +34,7 @@ function perYearView(worksheet, activities, users, timeEntries) {
       });
 
       worksheet.columns = columns;
+      makeRowTextBold(worksheet, 1);
     } else {
       worksheet.addRow();
       worksheet.addRow();
@@ -80,21 +85,10 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
   if (confirmedTimeEntries.length === 0) {
-    worksheet.columns = [
-      {
-        header: "Meddelande",
-        key: "msg",
-        width: 10,
-        style: {
-          font: {
-            bold: true,
-          },
-        },
-      },
-    ];
-    worksheet.addRow({
-      msg: "Finns inga godkända tidregistreringar för det valda tidsspannet!",
-    });
+    printNoDataFound(
+      "Finns inga godkända tidregistreringar för det valda tidsspannet!",
+      worksheet
+    );
   } else {
     // Filter out inactive activities
     let activeActivities = activities.filter((activity) => {
@@ -113,25 +107,9 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
     perYearView(worksheet, activeActivities, users, timeEntriesSortedByYear);
   }
 }
-function makeHeaderBold(worksheet) {
-  worksheet.getCell("A1").font = { bold: true };
-  worksheet.getCell("B1").font = { bold: true };
-  worksheet.getCell("C1").font = { bold: true };
-  worksheet.getCell("D1").font = { bold: true };
-  worksheet.getCell("E1").font = { bold: true };
-  worksheet.getCell("F1").font = { bold: true };
-  worksheet.getCell("G1").font = { bold: true };
-  worksheet.getCell("H1").font = { bold: true };
-  worksheet.getCell("I1").font = { bold: true };
-  worksheet.getCell("J1").font = { bold: true };
-  worksheet.getCell("K1").font = { bold: true };
-  worksheet.getCell("L1").font = { bold: true };
-  worksheet.getCell("M1").font = { bold: true };
-}
 
 exports.createWorksheet = (workbook, excelData) => {
   const worksheet = workbook.addWorksheet("Personer per aktivitet");
   populateExcelSheetWithActivityData(worksheet, excelData);
-  makeHeaderBold(worksheet);
   autoWidth(worksheet, 8);
 };

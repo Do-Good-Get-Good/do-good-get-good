@@ -1,6 +1,10 @@
 const dateFns = require("date-fns");
 
-const { autoWidth } = require("./utilities/worksheetUtilities");
+const {
+  autoWidth,
+  printNoDataFound,
+  makeRowTextBold,
+} = require("./utilities/worksheetUtilities");
 const {
   months,
   filterTimeEntries,
@@ -15,21 +19,10 @@ exports.createWorksheet = (workbook, excelData) => {
   let unconfirmedTimeEntries = filterTimeEntries(timeEntries, false);
 
   if (unconfirmedTimeEntries.length === 0) {
-    worksheet.columns = [
-      {
-        header: "Meddelande",
-        key: "msg",
-        width: 10,
-        style: {
-          font: {
-            bold: true,
-          },
-        },
-      },
-    ];
-    worksheet.addRow({
-      msg: "Finns inga icke godkända tidregistreringar för det valda tidsspannet!",
-    });
+    printNoDataFound(
+      "Finns inga icke godkända tidregistreringar för det valda tidsspannet!",
+      worksheet
+    );
   } else {
     worksheet.columns = [
       { header: "Månad", key: "month", width: 10 },
@@ -41,15 +34,9 @@ exports.createWorksheet = (workbook, excelData) => {
       { header: "Tid (h)", key: "time", width: 10 },
     ];
 
-    worksheet.getCell("A1").font = { bold: true };
-    worksheet.getCell("B1").font = { bold: true };
-    worksheet.getCell("C1").font = { bold: true };
-    worksheet.getCell("D1").font = { bold: true };
-    worksheet.getCell("E1").font = { bold: true };
-    worksheet.getCell("F1").font = { bold: true };
-    worksheet.getCell("G1").font = { bold: true };
-    let excelArray = [];
+    makeRowTextBold(worksheet, 1);
 
+    let excelArray = [];
     users.map((user) => {
       unconfirmedTimeEntries.map((timeEntry) => {
         if (user.id === timeEntry.user_id) {

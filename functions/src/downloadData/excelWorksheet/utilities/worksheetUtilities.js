@@ -12,4 +12,34 @@ const autoWidth = (worksheet, minimalWidth = 10) => {
   });
 };
 
+const printNoDataFound = (msgString, worksheet) => {
+  worksheet.columns = [
+    {
+      header: "Meddelande",
+      key: "msg",
+      width: 10,
+      style: {
+        font: {
+          bold: true,
+        },
+      },
+    },
+  ];
+  worksheet.addRow({
+    msg: msgString,
+  });
+};
+
+const makeRowTextBold = (worksheet, rowNumber) => {
+  let columns = worksheet.columns;
+  let row = worksheet.getRow(rowNumber);
+  for (let i = 1; i <= columns.length; i++) {
+    row.getCell(i).font = {
+      bold: true,
+    };
+  }
+};
+
 exports.autoWidth = autoWidth;
+exports.printNoDataFound = printNoDataFound;
+exports.makeRowTextBold = makeRowTextBold;
