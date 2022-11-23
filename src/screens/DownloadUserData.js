@@ -62,6 +62,12 @@ const DownloadUserData = ({ navigation }) => {
         };
         break;
       }
+      case "all-data": {
+        datePeriod = {
+          startDate: "1970-01-01",
+          endDate: today,
+        };
+      }
       default:
         break;
     }

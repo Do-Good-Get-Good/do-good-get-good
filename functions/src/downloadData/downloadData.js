@@ -33,23 +33,16 @@ class NoTimeEntriesFound extends Error {
   }
 }
 
-async function getAllDataFromCollection(collectionName) {
-  let res = await admin.firestore().collection(collectionName).get();
-  if (!res.empty) {
-    return res.docs.map((doc) => ({
-      id: doc.id,
-      ...doc.data(),
-    }));
+class UndefinedDatePeriod extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.type = "UndefinedDatePeriod";
   }
 }
 
-async function getAllTimeEntries() {
-  let res = await admin
-    .firestore()
-    .collection("timeentries")
-    .orderBy("date", "asc")
-    .get();
-
+async function getAllDataFromCollection(collectionName) {
+  let res = await admin.firestore().collection(collectionName).get();
   if (!res.empty) {
     return res.docs.map((doc) => ({
       id: doc.id,
@@ -84,15 +77,12 @@ async function getAllTimeEntriesByDate(datePeriod) {
 }
 
 async function getAllDatabaseData(datePeriod) {
+  if (!datePeriod)
+    throw new UndefinedDatePeriod("Tidsperioden som angetts stöds ej!");
+
   let users = await getAllDataFromCollection("Users");
   let activities = await getAllDataFromCollection("Activities");
-
-  let timeEntries = [];
-  if (datePeriod === undefined || datePeriod === null) {
-    timeEntries = await getAllTimeEntries();
-  } else {
-    timeEntries = await getAllTimeEntriesByDate(datePeriod);
-  }
+  let timeEntries = await getAllTimeEntriesByDate(datePeriod);
 
   return {
     activities: activities,
@@ -230,7 +220,8 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
     } else if (
       error.type === "NotAnAdminError" ||
       error.type === "InvalidRoleError" ||
-      error.type === "NoTimeEntriesFound"
+      error.type === "NoTimeEntriesFound" ||
+      error.type === "UndefinedDatePeriod"
     ) {
       throw new functions.https.HttpsError(
         "failed-precondition",
