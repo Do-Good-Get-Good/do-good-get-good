@@ -37,33 +37,23 @@ exports.createWorksheet = (workbook, excelData) => {
     makeRowTextBold(worksheet, 1);
 
     let excelArray = [];
-    users.map((user) => {
-      unconfirmedTimeEntries.map((timeEntry) => {
-        if (user.id === timeEntry.user_id) {
-          let admin = users.find((admin) => {
-            if (admin.id === timeEntry.admin_id) {
-              return admin;
-            }
-          });
+    unconfirmedTimeEntries.map((timeEntry) => {
+      let user = users.find((user) => user.id === timeEntry.user_id);
+      let admin = users.find((admin) => admin.id === timeEntry.admin_id);
+      let activity = activities.find(
+        (activity) => activity.id === timeEntry.activity_id
+      );
 
-          let activity = activities.find((activity) => {
-            if (activity.id === timeEntry.activity_id) {
-              return activity;
-            }
-          });
+      const date = timeEntry.date.toDate();
 
-          const date = timeEntry.date.toDate();
-
-          excelArray.push({
-            month: months.long[date.getMonth()],
-            admin: `${admin.first_name} ${admin.last_name}`,
-            user: `${user.first_name} ${user.last_name}`,
-            activity: activity.activity_title,
-            city: activity.activity_city,
-            date: dateFns.format(date, "yyyy-MM-dd"),
-            time: timeEntry.time,
-          });
-        }
+      excelArray.push({
+        month: months.long[date.getMonth()],
+        admin: `${admin.first_name} ${admin.last_name}`,
+        user: `${user.first_name} ${user.last_name}`,
+        activity: activity.activity_title,
+        city: activity.activity_city,
+        date: dateFns.format(date, "yyyy-MM-dd"),
+        time: timeEntry.time,
       });
     });
 

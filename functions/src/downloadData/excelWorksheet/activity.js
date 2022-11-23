@@ -9,7 +9,7 @@ const {
   sortArrayByDate,
 } = require("./utilities/dataUtilities");
 
-function groupByYear(arr) {
+function groupTimeEntriesByYear(arr) {
   return arr.reduce((prev, current) => {
     let currentYear = new Date(current["date"].toDate()).getFullYear();
 
@@ -21,7 +21,7 @@ function groupByYear(arr) {
   }, {});
 }
 
-function perYearView(worksheet, activities, users, timeEntries) {
+function perYearExcelView(worksheet, activities, users, timeEntries) {
   let yearArr = Object.keys(timeEntries);
   yearArr.map((year, index) => {
     if (index === 0) {
@@ -94,16 +94,15 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
       worksheet
     );
   } else {
-    // Filter out inactive activities
     let activeActivities = activities.filter((activity) => {
       if (activity.active_status === true) return activity;
     });
 
     sortArrayByDate(confirmedTimeEntries, "long");
 
-    let timeEntriesSortedByYear = groupByYear(confirmedTimeEntries);
+    let timeEntryArr = groupTimeEntriesByYear(confirmedTimeEntries);
 
-    perYearView(worksheet, activeActivities, users, timeEntriesSortedByYear);
+    perYearExcelView(worksheet, activeActivities, users, timeEntryArr);
   }
 }
 
