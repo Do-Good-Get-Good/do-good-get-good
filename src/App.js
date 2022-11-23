@@ -120,42 +120,20 @@ export default function App() {
     );
   } else {
     return (
-      <View
-        style={{
-          backgroundColor: colors.background,
-          flex: 1,
-          width: "100%",
-          alignItems: "center",
-          justifyContent: "center",
-        }}
-      >
-        <View style={{ width: "80%" }}>
-          <Text style={{ ...typography.b2, textAlign: "center" }}>
+      <View style={styles.wrapper}>
+        <View style={styles.innerWrapper}>
+          <Text style={styles.infoText}>
             Något är fel med din användare, vänligen kontakta
             dggg@technogarden.se
           </Text>
           <TouchableOpacity
-            style={{
-              marginTop: 10,
-              height: 50,
-              backgroundColor: colors.primary,
-              alignItems: "center",
-              justifyContent: "center",
-              borderRadius: 5,
-            }}
+            style={styles.logOutBtn}
             onPress={() => auth().signOut()}
           >
-            <Text
-              style={{
-                color: "#FFFFFF",
-                ...typography.button.lg,
-              }}
-            >
-              Logga ut
-            </Text>
+            <Text style={styles.logOutBtnText}>Logga ut</Text>
           </TouchableOpacity>
         </View>
-        <View style={{ position: "absolute", bottom: 0 }}>
+        <View style={styles.bottonLogoView}>
           <BottomLogo />
         </View>
       </View>
@@ -163,4 +141,35 @@ export default function App() {
   }
 }
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: colors.background,
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerWrapper: {
+    width: "80%",
+  },
+  infoText: {
+    ...typography.b2,
+    textAlign: "center",
+  },
+  logOutBtn: {
+    marginTop: 10,
+    height: 50,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+  },
+  logOutBtnText: {
+    color: "#FFFFFF",
+    ...typography.button.lg,
+  },
+  bottonLogoView: {
+    position: "absolute",
+    bottom: 0,
+  },
+});
