@@ -3,7 +3,11 @@ const {
   printNoDataFound,
   makeRowTextBold,
 } = require("./utilities/worksheetUtilities");
-const { months, filterTimeEntries } = require("./utilities/dataUtilities");
+const {
+  months,
+  filterTimeEntries,
+  sortArrayByDate,
+} = require("./utilities/dataUtilities");
 
 function groupByYear(arr) {
   return arr.reduce((prev, current) => {
@@ -95,12 +99,7 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
       if (activity.active_status === true) return activity;
     });
 
-    // Sort array by month
-    confirmedTimeEntries.sort((a, b) => {
-      a.year !== b.year
-        ? a.year - b.year
-        : months.long.indexOf(a.month) - months.long.indexOf(b.month);
-    });
+    sortArrayByDate(confirmedTimeEntries, "long");
 
     let timeEntriesSortedByYear = groupByYear(confirmedTimeEntries);
 

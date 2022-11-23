@@ -3,7 +3,12 @@ const {
   makeRowTextBold,
   printNoDataFound,
 } = require("./utilities/worksheetUtilities");
-const { months, filterTimeEntries } = require("./utilities/dataUtilities");
+const {
+  months,
+  filterTimeEntries,
+  sumTimeEntryTime,
+  sortArrayByDate,
+} = require("./utilities/dataUtilities");
 
 function populateExcelSheetWithRegionData(worksheet, excelData) {
   let { activities, timeEntries } = excelData;
@@ -37,25 +42,15 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
     });
 
     const arrayHashmap = entries.reduce((obj, item) => {
-      const objName = `${item.city}${item.year}${item.month}`;
+      const key = `${item.city}${item.year}${item.month}`;
 
-      if (obj[objName]) {
-        obj[objName].time += item.time;
-      } else {
-        obj[objName] = { ...item };
-      }
-
-      return obj;
+      return sumTimeEntryTime(obj, key, item);
     }, {});
 
     const userTimeEntries = Object.values(arrayHashmap);
 
     if (userTimeEntries.length > 1) {
-      userTimeEntries.sort((a, b) => {
-        a.year !== b.year
-          ? a.year - b.year
-          : months.short.indexOf(a.month) - months.short.indexOf(b.month);
-      });
+      sortArrayByDate(userTimeEntries, "short");
     }
 
     const columns = [];

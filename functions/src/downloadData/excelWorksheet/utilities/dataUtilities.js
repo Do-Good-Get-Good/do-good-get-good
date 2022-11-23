@@ -45,6 +45,25 @@ function sortArray(a, b) {
   }
 }
 
+function sortArrayByDate(arr, monthType) {
+  arr.sort((a, b) => {
+    a.year !== b.year
+      ? a.year - b.year
+      : months[monthType].indexOf(a.month) - months[monthType].indexOf(b.month);
+  });
+}
+
+function sumTimeEntryTime(obj, key, item) {
+  if (obj[key]) {
+    obj[key].time += item.time;
+  } else {
+    obj[key] = { ...item };
+  }
+  return obj;
+}
+
 exports.months = months;
 exports.filterTimeEntries = filterTimeEntries;
 exports.sortArray = sortArray;
+exports.sortArrayByDate = sortArrayByDate;
+exports.sumTimeEntryTime = sumTimeEntryTime;
