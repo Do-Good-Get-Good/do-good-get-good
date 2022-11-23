@@ -1,9 +1,9 @@
+const { autoWidth } = require("./utilities/worksheetUtilities");
 const {
+  months,
   filterTimeEntries,
   sortArray,
-  autoWidth,
-} = require("./helpers/functions");
-const { months } = require("./helpers/data");
+} = require("./utilities/dataUtilities");
 
 function populateExcelSheetWithYearData(
   excelData,
@@ -88,7 +88,7 @@ function populateExcelSheetWithMonthData(
         const entryData = {
           activityId: timeEntry.activity_id,
           year: date.getFullYear(),
-          month: months[date.getMonth()],
+          month: months.short[date.getMonth()],
           user: `${user.first_name} ${user.last_name}`,
           activity: activity.activity_title,
           city: activity.activity_city,
@@ -118,7 +118,7 @@ function populateExcelSheetWithMonthData(
   userTimeEntries.sort((a, b) => {
     a.year !== b.year
       ? a.year - b.year
-      : months.indexOf(a.month) - months.indexOf(b.month);
+      : months.short.indexOf(a.month) - months.short.indexOf(b.month);
   });
 
   userTimeEntries.map((entry) => {

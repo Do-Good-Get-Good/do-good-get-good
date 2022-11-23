@@ -1,5 +1,5 @@
-const { filterTimeEntries, autoWidth } = require("./helpers/functions");
-const { months } = require("./helpers/data");
+const { autoWidth } = require("./utilities/worksheetUtilities");
+const { months, filterTimeEntries } = require("./utilities/dataUtilities");
 
 function populateExcelSheetWithRegionData(worksheet, excelData) {
   let { activities, timeEntries } = excelData;
@@ -35,7 +35,7 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
       const entryData = {
         year: date.getFullYear(),
-        month: months[date.getMonth()],
+        month: months.short[date.getMonth()],
         city: activity.activity_city,
         time: timeEntry.time,
       };
@@ -61,7 +61,7 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
       userTimeEntries.sort((a, b) => {
         a.year !== b.year
           ? a.year - b.year
-          : months.indexOf(a.month) - months.indexOf(b.month);
+          : months.short.indexOf(a.month) - months.short.indexOf(b.month);
       });
     }
 
@@ -96,8 +96,7 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
 
     const worksheetRows = [];
     userTimeEntries.map((entr) => {
-      let month = shortenMonth(entr.month);
-      let date = `${entr.year} - ${month}`;
+      let date = `${entr.year} - ${entr.month}`;
 
       let wsObj = {
         date: date,
@@ -114,14 +113,6 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
       worksheet.addRow(data);
     });
   }
-}
-
-function shortenMonth(month) {
-  let shortMonth = "";
-  if (month !== "September") shortMonth = month.substring(0, 3);
-  else shortMonth = month.substring(0, 4);
-
-  return shortMonth;
 }
 
 exports.createWorksheet = (workbook, excelData) => {

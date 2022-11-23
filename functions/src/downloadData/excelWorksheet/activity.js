@@ -1,5 +1,5 @@
-const { filterTimeEntries, autoWidth } = require("./helpers/functions");
-const { months } = require("./helpers/data");
+const { autoWidth } = require("./utilities/worksheetUtilities");
+const { months, filterTimeEntries } = require("./utilities/dataUtilities");
 
 function groupByYear(arr) {
   return arr.reduce((prev, current) => {
@@ -21,7 +21,7 @@ function perYearView(worksheet, activities, users, timeEntries) {
         { header: `Aktivitet - ${yearArr[index]}`, key: "activity" },
       ];
 
-      months.map((month) => {
+      months.long.map((month) => {
         const column = {
           header: month,
           key: month,
@@ -34,7 +34,7 @@ function perYearView(worksheet, activities, users, timeEntries) {
       worksheet.addRow();
       worksheet.addRow();
       const row = { activity: `Aktivitet - ${yearArr[index]}` };
-      months.map((month) => {
+      months.long.map((month) => {
         row[month] = month;
       });
       worksheet.addRow(row).font = { bold: true };
@@ -43,7 +43,7 @@ function perYearView(worksheet, activities, users, timeEntries) {
     activities.map((activity) => {
       let wsObj = {};
 
-      months.map((month) => {
+      months.long.map((month) => {
         wsObj[month] = 0;
       });
 
@@ -53,7 +53,7 @@ function perYearView(worksheet, activities, users, timeEntries) {
           if (user.id === timeEntry.user_id) {
             if (activity.id === timeEntry.activity_id) {
               const date = timeEntry.date.toDate();
-              const month = months[date.getMonth()];
+              const month = months.long[date.getMonth()];
 
               if (prevMonth === month) return;
               prevMonth = month;
@@ -105,7 +105,7 @@ function populateExcelSheetWithActivityData(worksheet, excelData) {
     confirmedTimeEntries.sort((a, b) => {
       a.year !== b.year
         ? a.year - b.year
-        : months.indexOf(a.month) - months.indexOf(b.month);
+        : months.long.indexOf(a.month) - months.long.indexOf(b.month);
     });
 
     let timeEntriesSortedByYear = groupByYear(confirmedTimeEntries);

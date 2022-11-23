@@ -1,11 +1,11 @@
 const dateFns = require("date-fns");
 
+const { autoWidth } = require("./utilities/worksheetUtilities");
 const {
+  months,
   filterTimeEntries,
   sortArray,
-  autoWidth,
-} = require("./helpers/functions");
-const { months } = require("./helpers/data");
+} = require("./utilities/dataUtilities");
 
 exports.createWorksheet = (workbook, excelData) => {
   let { activities, timeEntries, users } = excelData;
@@ -68,7 +68,7 @@ exports.createWorksheet = (workbook, excelData) => {
           const date = timeEntry.date.toDate();
 
           excelArray.push({
-            month: months[date.getMonth()],
+            month: months.long[date.getMonth()],
             admin: `${admin.first_name} ${admin.last_name}`,
             user: `${user.first_name} ${user.last_name}`,
             activity: activity.activity_title,
