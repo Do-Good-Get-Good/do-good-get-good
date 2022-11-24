@@ -20,11 +20,8 @@ import Menu from "../components/Menu";
 import ChangeRolesAndConnection from "../components/ChangeRoleAndConnection";
 import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 
-import Video from "react-native-video";
-
 export function RolesAndConnection({ navigation, route }) {
   const superAdminContext = useSuperAdminFunction();
-  const [showVideo, setShowVideo] = useState(true);
 
   return (
     <SafeAreaView>
@@ -47,7 +44,7 @@ export function RolesAndConnection({ navigation, route }) {
 
           <ChangeRolesAndConnection />
           {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
-            superAdminContext.makeChangesForSelectedUser.user.role ===
+          superAdminContext.makeChangesForSelectedUser.user.role ===
             "superadmin" ? (
             <ConnectedUsersDropDown />
           ) : null}
