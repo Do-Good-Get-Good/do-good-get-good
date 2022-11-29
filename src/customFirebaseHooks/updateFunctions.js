@@ -96,6 +96,18 @@ export const updateUsersActivitiesAndAccumulatedTime = (
   }
 };
 
+export const updateUserInfoFromAdminScreen = (data) => {
+  try {
+    firestore().collection("Users").doc(data.userID).update({
+      first_name: data.userFirstName,
+      last_name: data.userLastName,
+      status_active: data.statusActive,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
 export const superAdminUpdatesUserInfo = async (newChangesInUserInfo) => {
   try {
     console.log("newChangesInUserInfo  ", newChangesInUserInfo);
