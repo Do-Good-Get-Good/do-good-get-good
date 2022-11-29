@@ -8,6 +8,7 @@ const {
   createActivityWorksheet,
 } = require("./worksheetFunctions");
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
+const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
 
 const PRECONDITION_ERROR_TYPE = [
   "NotAnAdminError",
@@ -146,7 +147,7 @@ function sendEmail(downloadURL, callerData) {
 
   const msg = {
     to: callerData.email,
-    from: "dggg@technogarden.se",
+    from: SENDGRID_FROM_EMAIL,
     templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
     dynamicTemplateData: {
       username: callerData.name,
