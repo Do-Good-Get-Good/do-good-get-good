@@ -9,6 +9,13 @@ const {
 } = require("./worksheetFunctions");
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
 
+const PRECONDITION_ERROR_TYPE = [
+  "NotAnAdminError",
+  "InvalidRoleError",
+  "NoTimeEntriesFound",
+  "UndefinedDatePeriod",
+];
+
 class UnauthenticatedError extends Error {
   constructor(message) {
     super(message);
@@ -199,7 +206,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
 
     if (excelData.timeEntries === null || excelData.timeEntries === undefined) {
       throw new NoTimeEntriesFound(
-        "Inga tidregistreringar hittades inom det valda tidspannet.\nVänligen försök igen senare!"
+        "Inga tidregistreringar hittades inom det valda tidspannet."
       );
     }
 
@@ -217,12 +224,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
   } catch (error) {
     if (error.type === "UnauthenticatedError") {
       throw new functions.https.HttpsError("unauthenticated", error.message);
-    } else if (
-      error.type === "NotAnAdminError" ||
-      error.type === "InvalidRoleError" ||
-      error.type === "NoTimeEntriesFound" ||
-      error.type === "UndefinedDatePeriod"
-    ) {
+    } else if (PRECONDITION_ERROR_TYPE.includes(error.type)) {
       throw new functions.https.HttpsError(
         "failed-precondition",
         error.message
