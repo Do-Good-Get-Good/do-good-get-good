@@ -5,7 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import auth from "@react-native-firebase/auth";
 
-import { AdminProvider } from "./context/AdminContext";
+import { UserLevelProvider } from "./context/UserLevelContext";
 import { ActivityProvider } from "./context/ActivityContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
 import { AdminGalleryProvider } from "./context/AdminGalleryContext";
@@ -66,7 +66,7 @@ export default function App() {
           <ActivityCardProvider>
             <AdminGalleryProvider>
               <CreateActivityProvider>
-                <AdminProvider>
+                <UserLevelProvider>
                   <ActivityProvider>
                     <SuperAdminProvider>
                       <AdminHomePageProvider>
@@ -74,7 +74,7 @@ export default function App() {
                       </AdminHomePageProvider>
                     </SuperAdminProvider>
                   </ActivityProvider>
-                </AdminProvider>
+                </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
@@ -89,13 +89,13 @@ export default function App() {
           <ActivityCardProvider>
             <AdminGalleryProvider>
               <CreateActivityProvider>
-                <AdminProvider>
+                <UserLevelProvider>
                   <ActivityProvider>
                     <AdminHomePageProvider>
                       <Mystack />
                     </AdminHomePageProvider>
                   </ActivityProvider>
-                </AdminProvider>
+                </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
@@ -108,11 +108,11 @@ export default function App() {
         <ActivityCardProvider>
           <AdminGalleryProvider>
             <CreateActivityProvider>
-              <AdminProvider>
+              <UserLevelProvider>
                 <ActivityProvider>
                   <Mystack />
                 </ActivityProvider>
-              </AdminProvider>
+              </UserLevelProvider>
             </CreateActivityProvider>
           </AdminGalleryProvider>
         </ActivityCardProvider>

@@ -2,13 +2,13 @@ import React, { useState, useContext, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-const AdminContext = React.createContext();
+const UserLevelContext = React.createContext();
 
-export const useAdminCheckFunction = () => {
-  return useContext(AdminContext);
+export const useUserLevelCheckFunction = () => {
+  return useContext(UserLevelContext);
 };
 
-export const AdminProvider = ({ children }) => {
+export const UserLevelProvider = ({ children }) => {
   const [userLevel, setUserLevel] = useState(null);
 
   useEffect(() => {
@@ -42,6 +42,8 @@ export const AdminProvider = ({ children }) => {
   }, []);
 
   return (
-    <AdminContext.Provider value={userLevel}>{children}</AdminContext.Provider>
+    <UserLevelContext.Provider value={userLevel}>
+      {children}
+    </UserLevelContext.Provider>
   );
 };
