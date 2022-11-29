@@ -1,6 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 
 import {
   getAllUserData,
