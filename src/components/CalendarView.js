@@ -28,8 +28,8 @@ import { deleteTimeEntry } from "../customFirebaseHooks/deleteFunctions";
 import { updateTimeEntry } from "../customFirebaseHooks/updateFunctions";
 import { addTimeEntry } from "../customFirebaseHooks/addFunctions";
 import {
-  incrementTotalHoursForUser,
-  decrementTotalHoursForUser,
+  incrementTotalHoursMonthForUser,
+  decrementTotalHoursMonthForUser,
 } from "../customFirebaseHooks/updateFunctions";
 
 const CalendarView = ({
@@ -109,6 +109,7 @@ const CalendarView = ({
       setDate(null);
       setSelectedDate(null);
       setHours(null);
+      setError(null);
     }
   }, [visible]);
 
@@ -137,7 +138,7 @@ const CalendarView = ({
 
     addTimeEntry(timeEntry)
       .then(() => {
-        incrementTotalHoursForUser(uid, hours);
+        incrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
       .catch((error) => {
@@ -164,10 +165,10 @@ const CalendarView = ({
         ) {
           if (activity.time < hours) {
             let newTime = hours - activity.time;
-            incrementTotalHoursForUser(uid, newTime);
+            incrementTotalHoursMonthForUser(uid, newTime);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
-            decrementTotalHoursForUser(uid, newTime);
+            decrementTotalHoursMonthForUser(uid, newTime);
           }
         }
         toggleVisibility();
@@ -181,7 +182,7 @@ const CalendarView = ({
   const removeTimeEntry = (timeEntryID) => {
     deleteTimeEntry(timeEntryID)
       .then(() => {
-        decrementTotalHoursForUser(uid, hours);
+        decrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
       .catch((error) => {

@@ -15,6 +15,13 @@ import colors from "../assets/theme/colors";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useNetInfo } from "@react-native-community/netinfo";
+import {
+  confirmTimeEntry,
+  incrementTotalConfirmedHoursForUser,
+  incrementYearlyTotalHoursForUser,
+  updateUsersActivitiesAndAccumulatedTime,
+} from "../customFirebaseHooks/updateFunctions";
+import { streamTimeEntriesForAdmin } from "../customFirebaseHooks/snapshotFunction";
 
 const ConfirmActivities = () => {
   const [checkAll, setCheckAll] = useState(false);
@@ -28,22 +35,17 @@ const ConfirmActivities = () => {
   const inetInfo = useNetInfo();
 
   useEffect(() => {
-    return firestore()
-      .collection("timeentries")
-      .where("admin_id", "==", auth().currentUser.uid)
-      .where("status_confirmed", "==", false)
-      .orderBy("date", "desc")
-      .onSnapshot(
-        (snapshot) => {
-          setSnapshot(null);
-          setCheckAll(false);
-          setChecked(false);
-          setSnapshot(snapshot);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
+    return streamTimeEntriesForAdmin(auth().currentUser.uid).onSnapshot(
+      (snapshot) => {
+        setSnapshot(null);
+        setCheckAll(false);
+        setChecked(false);
+        setSnapshot(snapshot);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }, []);
 
   useEffect(() => {
@@ -205,7 +207,7 @@ const ConfirmActivities = () => {
       let timeEntryIdsToSendToMyUsers = [];
       for (let i = 0; i < selectedUsers.length; i++) {
         timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
-        confirmActivity(selectedUsers[i].timeEntryId);
+        confirmTimeEntry(selectedUsers[i].timeEntryId);
         addTotalConfirmedHours(selectedUsers[i]);
         if (i === selectedUsers.length - 1) {
           setChecked(false);
@@ -242,25 +244,9 @@ const ConfirmActivities = () => {
       currentMonth === new Date(user.timeEntryDate).getMonth() &&
       currentYear === new Date(user.timeEntryDate).getFullYear()
     ) {
-      try {
-        firestore()
-          .collection("Users")
-          .doc(user.userID)
-          .update({
-            total_confirmed_hours: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            total_hours_year: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            activities_and_accumulated_time: accumulatedTime,
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("errorMessage ", error);
-      }
+      incrementTotalConfirmedHoursForUser(user.userID, user.timeEntryHours);
+      incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+      updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
     } else if (
       currentMonth != new Date(user.timeEntryDate).getMonth() &&
       currentYear === new Date(user.timeEntryDate).getFullYear()
@@ -282,22 +268,6 @@ const ConfirmActivities = () => {
         console.log("errorMessage ", error);
       }
     }
-  };
-
-  // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
-  const confirmActivity = (timeEntryID) => {
-    firestore()
-      .collection("timeentries")
-      .doc(timeEntryID)
-      .update({
-        status_confirmed: true,
-      })
-      .then(() => {
-        console.log("ConfirmActivities. It went good to update timeentries ");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   return (
