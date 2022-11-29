@@ -2,7 +2,10 @@ import React, { useContext, useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 
-import { getAllUserData } from "../customFirebaseHooks/getFunctions.js";
+import {
+  getAllUserData,
+  getUsersFiveNewestTimeEntries,
+} from "../customFirebaseHooks/getFunctions.js";
 
 const AdminHomePageContext = React.createContext();
 
@@ -19,13 +22,8 @@ export const AdminHomePageProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      getAllUserData(auth().currentUser.uid).then((querySnapshot) => {
-        let data = querySnapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...doc.data(),
-        }));
-        setUserData(data);
-      });
+      let userData = await getAllUserData(auth().currentUser.uid);
+      setUserData(userData);
     };
     fetchUserData();
   }, []);
@@ -36,17 +34,8 @@ export const AdminHomePageProvider = ({ children }) => {
         let timeEntryData = [];
         for (let i = 0; i < usersId.length; i++) {
           try {
-            await firestore()
-              .collection("timeentries")
-              .where("user_id", "==", usersId[i])
-              .where("status_confirmed", "==", true)
-              .orderBy("date", "desc")
-              .limit(5)
-              .get()
-              .then((response) => {
-                timeEntryData.push(response.docs.map((doc) => doc.data()));
-              })
-              .catch((error) => console.log(error));
+            let response = await getUsersFiveNewestTimeEntries(usersId[i]);
+            timeEntryData.push(response);
           } catch (error) {
             console.log(error);
           }

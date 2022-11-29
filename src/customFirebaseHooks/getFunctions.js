@@ -24,7 +24,15 @@ export const getAllUserData = async (adminId) => {
       .collection("Users")
       .where("admin_id", "==", adminId)
       .get();
-    return Promise.resolve(userData);
+
+    if (userData.empty)
+      throw new Error("There was an error fetching all user data");
+
+    let data = userData.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+    return Promise.resolve(data);
   } catch (error) {
     return Promise.reject(error);
   }
@@ -72,6 +80,27 @@ export const getActivitiesMatchTimeEntries = async (timeEntry) => {
       .doc(timeEntry.data().activity_id)
       .get();
     return Promise.resolve(documentSnapshot);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getUsersFiveNewestTimeEntries = async (userId) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", userId)
+      .where("status_confirmed", "==", true)
+      .orderBy("date", "desc")
+      .limit(5)
+      .get();
+
+    if (querySnapshot.empty)
+      throw new Error("There was an error fetching time entries.");
+
+    let timeEntryData = querySnapshot.docs.map((doc) => doc.data());
+
+    return Promise.resolve(timeEntryData);
   } catch (error) {
     return Promise.reject(error);
   }
