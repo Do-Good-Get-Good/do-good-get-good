@@ -7,7 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 import { format } from "date-fns";
 import typography from "../assets/theme/typography";
@@ -240,33 +239,19 @@ const ConfirmActivities = () => {
     let currentMonth = today.getMonth();
     let accumulatedTime = addAccumulatedTime(user);
 
-    if (
-      currentMonth === new Date(user.timeEntryDate).getMonth() &&
-      currentYear === new Date(user.timeEntryDate).getFullYear()
-    ) {
+    let timeEntryMonth = new Date(user.timeEntryDate).getMonth();
+    let timeEntryYear = new Date(user.timeEntryDate).getFullYear();
+
+    if (currentMonth === timeEntryMonth && currentYear === timeEntryYear) {
       incrementTotalConfirmedHoursForUser(user.userID, user.timeEntryHours);
       incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
       updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
     } else if (
-      currentMonth != new Date(user.timeEntryDate).getMonth() &&
-      currentYear === new Date(user.timeEntryDate).getFullYear()
+      currentMonth != timeEntryMonth &&
+      currentYear === timeEntryYear
     ) {
-      try {
-        firestore()
-          .collection("Users")
-          .doc(user.userID)
-          .update({
-            total_hours_year: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            activities_and_accumulated_time: accumulatedTime,
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("errorMessage ", error);
-      }
+      incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+      updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
     }
   };
 
