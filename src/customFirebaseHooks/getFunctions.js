@@ -1,5 +1,14 @@
 import firestore from "@react-native-firebase/firestore";
 
+export const getUserLevel = async (userId) => {
+  try {
+    let response = await firestore().collection("Users").doc(userId).get();
+    return Promise.resolve(response.data().role);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getUserData = async (userId) => {
   try {
     let data = await firestore().collection("Users").doc(userId).get();

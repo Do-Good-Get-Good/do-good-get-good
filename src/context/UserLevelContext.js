@@ -1,6 +1,6 @@
 import React, { useState, useContext, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
+import { getUserLevel } from "../customFirebaseHooks/getFunctions";
 
 const UserLevelContext = React.createContext();
 
@@ -11,34 +11,24 @@ export const useUserLevelCheckFunction = () => {
 export const UserLevelProvider = ({ children }) => {
   const [userLevel, setUserLevel] = useState(null);
 
+  const fetchUserLevel = async () => {
+    const response = await getUserLevel(auth().currentUser.uid);
+
+    switch (response) {
+      case "user":
+        setUserLevel("user");
+        break;
+      case "admin":
+        setUserLevel("admin");
+        break;
+      case "superadmin":
+        setUserLevel("superadmin");
+        break;
+    }
+  };
+
   useEffect(() => {
-    const checkIfUserIsAdmin = async () => {
-      try {
-        await firestore()
-          .collection("Users")
-          .doc(auth().currentUser.uid)
-          .get()
-          .then((response) => {
-            switch (response.data().role) {
-              case "user":
-                setUserLevel("user");
-                break;
-              case "admin":
-                setUserLevel("admin");
-                break;
-              case "superadmin":
-                setUserLevel("superadmin");
-                break;
-            }
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("AdminContex errorMessage ", error);
-      }
-    };
-    checkIfUserIsAdmin();
+    fetchUserLevel();
   }, []);
 
   return (
