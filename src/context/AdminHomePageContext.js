@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 
 import {
-  getAllUserData,
+  getAllUsersConnectedToAdmin,
   getUsersFiveNewestTimeEntries,
 } from "../customFirebaseHooks/getFunctions.js";
 
@@ -21,7 +21,7 @@ export const AdminHomePageProvider = ({ children }) => {
 
   useEffect(() => {
     const fetchUserData = async () => {
-      let userData = await getAllUserData(auth().currentUser.uid);
+      let userData = await getAllUsersConnectedToAdmin(auth().currentUser.uid);
       setUserData(userData);
     };
     fetchUserData();

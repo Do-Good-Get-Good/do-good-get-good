@@ -18,7 +18,7 @@ export const getUserData = async (userId) => {
   }
 };
 
-export const getAllUserData = async (adminId) => {
+export const getAllUsersConnectedToAdmin = async (adminId) => {
   try {
     let userData = await firestore()
       .collection("Users")
