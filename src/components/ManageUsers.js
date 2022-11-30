@@ -10,13 +10,18 @@ import React, { useEffect, useState } from "react";
 
 import { CheckBox, Overlay, Icon } from "react-native-elements";
 
-import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+
+import {
+  connectNewActivityToUser,
+  removeActivityFromUser,
+} from "../customFirebaseHooks/updateFunctions";
+import { getAllUsersNotConnectedToAdmin } from "../customFirebaseHooks/getFunctions";
 
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
@@ -57,25 +62,11 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
 
   const fetchAllOtherUsers = async () => {
     try {
-      await firestore()
-        .collection("Users")
-        .where("admin_id", "!=", auth().currentUser.uid)
-        .where(
-          "connected_activities",
-          "array-contains",
-          currentActivityId.toString()
-        )
-        .get()
-        .then((otherUsersRes) => {
-          if (otherUsersRes.docs.length != 0) {
-            otherUsersRes.docs.map((doc) => {
-              let users = {
-                fullName: `${doc.data().first_name} ${doc.data().last_name}`,
-              };
-              setOtherUsers((prev) => [...prev, users]);
-            });
-          }
-        });
+      let otherUsers = await getAllUsersNotConnectedToAdmin(
+        auth().currentUser.uid,
+        currentActivityId.toString()
+      );
+      setOtherUsers(otherUsers);
     } catch (error) {
       console.log(error);
     }
@@ -84,53 +75,10 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const updateUsers = () => {
     myUsers.map((user) => {
       if (user.checked) {
-        connectNewActivityToUser(user);
-      } else removeActivityFromUser(user);
+        connectNewActivityToUser(user.userID, currentActivityId.toString());
+      } else removeActivityFromUser(user.userID, currentActivityId.toString());
     });
     closeModal();
-  };
-
-  const connectNewActivityToUser = async (user) => {
-    let userToUpdate = firestore().collection("Users").doc(user.userID);
-
-    let newActivity = {
-      accumulated_time: 0,
-      activity_id: currentActivityId,
-    };
-
-    await userToUpdate
-      .update({
-        activities_and_accumulated_time:
-          firestore.FieldValue.arrayUnion(newActivity),
-        connected_activities:
-          firestore.FieldValue.arrayUnion(currentActivityId),
-      })
-      .then(() => {
-        console.log(
-          `User '${user.userID}', was CONNECTED to activity: '${currentActivityId}'`
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  };
-
-  const removeActivityFromUser = async (user) => {
-    let userToUpdate = firestore().collection("Users").doc(user.userID);
-
-    await userToUpdate
-      .update({
-        connected_activities:
-          firestore.FieldValue.arrayRemove(currentActivityId),
-      })
-      .then(() => {
-        console.log(
-          `User '${user.userID}', was REMOVED from activity: '${currentActivityId}'`
-        );
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const checkOrUncheckUser = (pressedUser) => {

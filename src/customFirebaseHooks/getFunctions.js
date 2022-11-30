@@ -38,6 +38,26 @@ export const getAllUsersConnectedToAdmin = async (adminId) => {
   }
 };
 
+export const getAllUsersNotConnectedToAdmin = async (adminId, activityId) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Users")
+      .where("admin_id", "!=", adminId)
+      .where("connected_activities", "array-contains", activityId)
+      .get();
+
+    let otherUsers = querySnapshot.docs.map((doc) => {
+      return {
+        fullName: `${doc.data().first_name} ${doc.data().last_name}`,
+      };
+    });
+
+    return Promise.resolve(otherUsers);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getAllUsersData = async () => {
   try {
     let querySnapshot = await firestore().collection("Users").get();

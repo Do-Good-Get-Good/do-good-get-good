@@ -159,3 +159,34 @@ export const updateActivityInfo = (newData) => {
     console.log(error);
   }
 };
+
+export const connectNewActivityToUser = async (userId, activityId) => {
+  try {
+    let userToUpdate = firestore().collection("Users").doc(userId);
+
+    let newActivity = {
+      accumulated_time: 0,
+      activity_id: activityId,
+    };
+
+    await userToUpdate.update({
+      activities_and_accumulated_time:
+        firestore.FieldValue.arrayUnion(newActivity),
+      connected_activities: firestore.FieldValue.arrayUnion(activityId),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const removeActivityFromUser = async (userId, activityId) => {
+  try {
+    let userToUpdate = firestore().collection("Users").doc(userId);
+
+    await userToUpdate.update({
+      connected_activities: firestore.FieldValue.arrayRemove(activityId),
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
