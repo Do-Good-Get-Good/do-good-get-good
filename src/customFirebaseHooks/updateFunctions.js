@@ -123,3 +123,39 @@ export const superAdminUpdatesUserInfo = async (newChangesInUserInfo) => {
     console.log(error);
   }
 };
+
+export const updateActivityFavoriteStatus = (activityId, status) => {
+  try {
+    firestore().collection("Activities").doc(activityId).update({
+      tg_favorite: status,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateActivityActiveStatus = (activityId, status) => {
+  try {
+    firestore().collection("Activities").doc(activityId).update({
+      active_status: status,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateActivityInfo = (newData) => {
+  try {
+    firestore().collection("Activities").doc(newData.id).update({
+      active_status: newData.active,
+      activity_city: newData.city,
+      activity_description: newData.description,
+      activity_photo: newData.photo,
+      activity_place: newData.place,
+      activity_title: newData.title,
+      tg_favorite: newData.popular,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
