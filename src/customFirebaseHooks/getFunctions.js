@@ -96,7 +96,7 @@ export const getUsersFiveNewestTimeEntries = async (userId) => {
       .get();
 
     if (querySnapshot.empty)
-      throw new Error("There was an error fetching time entries.");
+      console.log(`User '${userId}' has no confirmed time entries.`);
 
     let timeEntryData = querySnapshot.docs.map((doc) => doc.data());
 

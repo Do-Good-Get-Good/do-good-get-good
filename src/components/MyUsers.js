@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Dialog } from "react-native-elements";
-import firestore from "@react-native-firebase/firestore";
 
-import { format, set } from "date-fns";
+import { format } from "date-fns";
 import { Icon } from "react-native-elements";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
+import { getUsersFiveNewestTimeEntries } from "../customFirebaseHooks/getFunctions";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
@@ -102,35 +102,26 @@ const MyUsers = ({ navigation }) => {
     }
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
-  const fetchUserTimeEntries = async () => {
+  const fetchUserTimeEntries = () => {
     if (userData.length != 0 && userData != null && allUsers.length === 0) {
-      for (let i = 0; i < userData.length; i++) {
+      userData.map(async (user) => {
         try {
-          await firestore()
-            .collection("timeentries")
-            .where("user_id", "==", userData[i].id)
-            .where("status_confirmed", "==", true)
-            .orderBy("date", "desc")
-            .limit(5)
-            .get()
-            .then((response) => {
-              let userInfo = {
-                firstName: userData[i].first_name,
-                lastName: userData[i].last_name,
-                timeEntries: response.docs.map((doc) => doc.data()),
-                isOpen: false,
-                statusActive: userData[i].status_active,
-                userID: userData[i].id,
-              };
+          let response = await getUsersFiveNewestTimeEntries(user.id);
+          let userInfo = {
+            firstName: user.first_name,
+            lastName: user.last_name,
+            timeEntries: response,
+            isOpen: false,
+            statusActive: user.status_active,
+            userID: user.id,
+          };
 
-              setAllUsers((prev) => [...prev, userInfo]);
-              setLoadingData(true);
-            })
-            .catch((error) => console.log("MyUsers ", error));
+          setAllUsers((prev) => [...prev, userInfo]);
+          setLoadingData(true);
         } catch (error) {
           console.log("MyUsers ", error);
         }
-      }
+      });
 
       setMyUsersLoading(false);
       setLoadingData(false);
