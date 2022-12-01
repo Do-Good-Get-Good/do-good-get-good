@@ -16,8 +16,6 @@ export const CreateActivityProvider = ({ children }) => {
     setAnswerFromDropDownInCreateActivity,
   ] = useState("");
 
-  const [showAllActiveActivities, setShowAllActiveActivities] = useState(true);
-
   const [allActiveActvivitiesFB, setAllActiveActvivitiesFB] = useState([]);
   const [updateActivityGallery, setUpdateActivityGallery] = useState(false);
   const [searchWordHasNoMatch, setSearchWordHasNoMatch] = useState(false);
@@ -50,17 +48,15 @@ export const CreateActivityProvider = ({ children }) => {
   const [onlyActivityCreated, setOnlyActivityCreated] = useState(null);
 
   useEffect(() => {
-    if (showAllActiveActivities === true) {
-      const getActiveActivities = async () => {
-        try {
-          let activities = await getAllActivitiesWithStatus(true);
-          setAllActiveActvivitiesFB(activities);
-        } catch (error) {
-          console.log("CreateActivityContext errorMessage ", error);
-        }
-      };
-      getActiveActivities();
-    }
+    const getActiveActivities = async () => {
+      try {
+        let activities = await getAllActivitiesWithStatus(true);
+        setAllActiveActvivitiesFB(activities);
+      } catch (error) {
+        console.log("CreateActivityContext errorMessage ", error);
+      }
+    };
+    getActiveActivities();
   }, []);
 
   const createActivityAndLinkNewUser = async (newActivityAndUser) => {
@@ -167,7 +163,6 @@ export const CreateActivityProvider = ({ children }) => {
       value={{
         chooseInDropDown: setAnswerFromDropDownInCreateActivity,
         sendChoiceFromDropDown: answerFromDropDownInCreateActivity,
-        sendFechToFBToGetActiveActivities: setShowAllActiveActivities,
         activeActivities: allActiveActvivitiesFB,
         setAllActiveActvivitiesFB: setAllActiveActvivitiesFB,
 
