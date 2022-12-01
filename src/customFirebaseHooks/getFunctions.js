@@ -90,14 +90,14 @@ export const getAllUsersData = async () => {
   }
 };
 
-export const getAllInactiveActivities = async () => {
+export const getAllActivitiesWithStatus = async (status) => {
   try {
     let querySnapshot = await firestore()
       .collection("Activities")
-      .where("active_status", "==", false)
+      .where("active_status", "==", status)
       .get();
 
-    let inactiveActivities = querySnapshot.docs.map((doc) => {
+    let activities = querySnapshot.docs.map((doc) => {
       return {
         id: doc.id,
         title: doc.data().activity_title,
@@ -110,20 +110,7 @@ export const getAllInactiveActivities = async () => {
       };
     });
 
-    return Promise.resolve(inactiveActivities);
-  } catch (error) {
-    return Promise.reject(error);
-  }
-};
-
-export const getAllActiveActivities = async () => {
-  try {
-    let querySnapshot = await firestore()
-      .collection("Activities")
-      .where("active_status", "==", true)
-      .get();
-
-    return Promise.resolve(querySnapshot);
+    return Promise.resolve(activities);
   } catch (error) {
     return Promise.reject(error);
   }

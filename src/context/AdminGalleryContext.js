@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { getAllInactiveActivities } from "../customFirebaseHooks/getFunctions";
+import { getAllActivitiesWithStatus } from "../customFirebaseHooks/getFunctions";
 const AdminGalleryContext = React.createContext();
 
 export const useAdminGalleryFunction = () => {
@@ -20,7 +20,7 @@ export const AdminGalleryProvider = ({ children }) => {
   useEffect(() => {
     const setInactive = async () => {
       try {
-        let inactiveActivities = await getAllInactiveActivities();
+        let inactiveActivities = await getAllActivitiesWithStatus(false);
         setInactiveActivitiesGallery(inactiveActivities);
       } catch (error) {
         console.log("AdminContex errorMessage ", error);
