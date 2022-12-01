@@ -1,11 +1,12 @@
 import firestore from "@react-native-firebase/firestore";
 
-export const addActivities = async (newFirebaseActivity) => {
+export const addActivity = async (activity) => {
   try {
-    const res = await firestore()
+    const newActivity = await firestore()
       .collection("Activities")
-      .add(newFirebaseActivity);
-    return Promise.resolve(res);
+      .add(activity);
+
+    return Promise.resolve(newActivity.id);
   } catch (error) {
     return Promise.reject(error);
   }
