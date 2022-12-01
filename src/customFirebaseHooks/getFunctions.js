@@ -116,6 +116,31 @@ export const getAllActiveActivities = async () => {
   }
 };
 
+export const getAllFavoriteActivities = async () => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .where("tg_favorite", "==", true)
+      .get();
+
+    let favoriteActivities = querySnapshot.docs.map((doc) => {
+      return {
+        id: doc.id,
+        title: doc.data().activity_title,
+        city: doc.data().activity_city,
+        place: doc.data().activity_place,
+        description: doc.data().activity_description,
+        photo: doc.data().activity_photo,
+        popular: doc.data().tg_favorite,
+      };
+    });
+
+    return Promise.resolve(favoriteActivities);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getFaq = async () => {
   try {
     const querySnapshot = await firestore().collection("faq").get();
