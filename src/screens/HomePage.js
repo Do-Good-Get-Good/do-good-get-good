@@ -1,5 +1,7 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, Text, View } from "react-native";
+import { StyleSheet, ScrollView, Text, TouchableOpacity } from "react-native";
+
+import LinearGradient from "react-native-linear-gradient";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -16,8 +18,16 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
+import useTimeEntries from "../customFirebaseHooks/useTimeEntries";
+import TimeEntry from "../components/TimeEntry";
+
 export const HomePage = ({ navigation }) => {
   const activity = useActivityFunction();
+  const { timeEntries, isLoading, error } = useTimeEntries(5);
+
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
 
   return (
     <SafeAreaView style={styles.view}>
@@ -25,12 +35,31 @@ export const HomePage = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <TimeStatistics />
         {activity.myActivities.length != 0 && (
+          <MyActivities
+            myAccumulatedTime={activity.activitiesIDandAccumTime}
+            myActivities={activity.myActivities}
+          />
+        )}
+
+        {timeEntries.length !== 0 && !isLoading && (
           <>
-            <MyActivities
-              myAccumulatedTime={activity.activitiesIDandAccumTime}
-              myActivities={activity.myActivities}
-            />
-            <MyActivityAsAList navigation={navigation} />
+            {timeEntries.map((entry) => (
+              <TimeEntry entry={entry} key={entry.id} index={0} />
+            ))}
+            <TouchableOpacity
+              style={{ width: "50%", height: 55, marginTop: 12 }}
+              testID="showAllButton"
+              onPress={() => navigation.navigate("MyTimePage")}
+            >
+              <LinearGradient
+                colors={[colors.primary, colors.secondary]}
+                start={{ x: 0, y: 0 }}
+                end={{ x: 1, y: 1 }}
+                style={styles.buttonBorderStyle}
+              >
+                <Text style={styles.textVissaAll}>Visa allt</Text>
+              </LinearGradient>
+            </TouchableOpacity>
           </>
         )}
 
@@ -60,6 +89,24 @@ const styles = StyleSheet.create({
   myActivities: {
     flex: 1,
     marginTop: 20,
+  },
+  buttonBorderStyle: {
+    borderRadius: 5,
+    height: "100%",
+    width: "100%",
+    padding: 1,
+  },
+  textVissaAll: {
+    letterSpacing: 1,
+    backgroundColor: colors.light,
+    width: "100%",
+    height: "100%",
+    borderRadius: 5,
+    ...typography.button.lg,
+    fontWeight: "500",
+    color: colors.dark,
+    textAlign: "center",
+    textAlignVertical: "center",
   },
   suggestionHeader: {
     ...typography.title,
