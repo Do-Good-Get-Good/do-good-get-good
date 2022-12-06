@@ -1,5 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, ScrollView, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 
 import LinearGradient from "react-native-linear-gradient";
 
@@ -43,8 +49,10 @@ export const HomePage = ({ navigation }) => {
 
         {timeEntries.length !== 0 && !isLoading && (
           <>
-            {timeEntries.map((entry) => (
-              <TimeEntry entry={entry} key={entry.id} index={0} />
+            {timeEntries.map((entry, index) => (
+              <View key={index}>
+                <TimeEntry entry={entry} key={entry.id} index={index} />
+              </View>
             ))}
             <TouchableOpacity
               style={{ width: "50%", height: 55, marginTop: 12 }}
@@ -57,7 +65,9 @@ export const HomePage = ({ navigation }) => {
                 end={{ x: 1, y: 1 }}
                 style={styles.buttonBorderStyle}
               >
-                <Text style={styles.textVissaAll}>Visa allt</Text>
+                <View style={styles.viewAll}>
+                  <Text style={styles.viewAllText}>Visa allt</Text>
+                </View>
               </LinearGradient>
             </TouchableOpacity>
           </>
@@ -80,14 +90,11 @@ export const HomePage = ({ navigation }) => {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: colors.light,
   },
   container: {
     paddingHorizontal: 16,
-    flex: 1,
   },
   myActivities: {
-    flex: 1,
     marginTop: 20,
   },
   buttonBorderStyle: {
@@ -96,17 +103,20 @@ const styles = StyleSheet.create({
     width: "100%",
     padding: 1,
   },
-  textVissaAll: {
+  viewAll: {
     letterSpacing: 1,
     backgroundColor: colors.light,
     width: "100%",
     height: "100%",
     borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    overflow: "hidden",
+  },
+  viewAllText: {
     ...typography.button.lg,
     fontWeight: "500",
     color: colors.dark,
-    textAlign: "center",
-    textAlignVertical: "center",
   },
   suggestionHeader: {
     ...typography.title,

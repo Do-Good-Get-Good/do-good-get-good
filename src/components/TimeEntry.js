@@ -8,9 +8,9 @@ import { format } from "date-fns";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
-const TimeEntry = ({ entry, key, index }) => {
+const TimeEntry = ({ entry, index }) => {
   return (
-    <View index={index} key={key} style={styles.entryIside}>
+    <View index={index} style={styles.entryIside}>
       <Text
         style={{
           fontWeight: !entry.status_confirmed ? "bold" : "normal",
