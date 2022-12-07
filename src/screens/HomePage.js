@@ -16,7 +16,7 @@ import { SuggestionProvider } from "../context/SuggestionContext";
 
 import Menu from "../components/Menu";
 import { MyActivities } from "../components/MyActivities";
-import MyActivityAsAList from "../components/MyActivityAsAList";
+import MyTimeEntries from "../components/MyTimeEntries";
 import { Suggestions } from "../components/Suggestions";
 import TimeStatistics from "../components/TimeStatistics";
 import BottomLogo from "../components/BottomLogo";
@@ -41,35 +41,32 @@ export const HomePage = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <TimeStatistics />
         {activity.myActivities.length != 0 && (
-          <MyActivities
-            myAccumulatedTime={activity.activitiesIDandAccumTime}
-            myActivities={activity.myActivities}
-          />
-        )}
-
-        {timeEntries.length !== 0 && !isLoading && (
           <>
-            {timeEntries.map((entry, index) => (
-              <View key={index}>
-                <TimeEntry entry={entry} key={entry.id} index={index} />
-              </View>
-            ))}
-            <TouchableOpacity
-              style={{ width: "50%", height: 55, marginTop: 12 }}
-              testID="showAllButton"
-              onPress={() => navigation.navigate("MyTimePage")}
-            >
-              <LinearGradient
-                colors={[colors.primary, colors.secondary]}
-                start={{ x: 0, y: 0 }}
-                end={{ x: 1, y: 1 }}
-                style={styles.buttonBorderStyle}
-              >
-                <View style={styles.viewAll}>
-                  <Text style={styles.viewAllText}>Visa allt</Text>
-                </View>
-              </LinearGradient>
-            </TouchableOpacity>
+            <MyActivities
+              myAccumulatedTime={activity.activitiesIDandAccumTime}
+              myActivities={activity.myActivities}
+            />
+            {timeEntries.length !== 0 && !isLoading && (
+              <>
+                <MyTimeEntries navigation={navigation} />
+                <TouchableOpacity
+                  style={{ width: "50%", height: 55, marginTop: 12 }}
+                  testID="showAllButton"
+                  onPress={() => navigation.navigate("MyTimePage")}
+                >
+                  <LinearGradient
+                    colors={[colors.primary, colors.secondary]}
+                    start={{ x: 0, y: 0 }}
+                    end={{ x: 1, y: 1 }}
+                    style={styles.buttonBorderStyle}
+                  >
+                    <View style={styles.viewAll}>
+                      <Text style={styles.viewAllText}>Visa allt</Text>
+                    </View>
+                  </LinearGradient>
+                </TouchableOpacity>
+              </>
+            )}
           </>
         )}
 
@@ -78,8 +75,8 @@ export const HomePage = ({ navigation }) => {
           <Suggestions navigation={navigation} />
         </SuggestionProvider>
 
-        {activity.myActivities.length === 0 && (
-          <MyActivityAsAList navigation={navigation} />
+        {activity.myActivities.length !== 0 && (
+          <MyTimeEntries navigation={navigation} />
         )}
 
         <BottomLogo />

@@ -7,7 +7,6 @@ import {
   Platform,
   FlatList,
 } from "react-native";
-import LinearGradient from "react-native-linear-gradient";
 import { Icon, Overlay } from "react-native-elements";
 import { useRoute } from "@react-navigation/native";
 import CalendarView from "./CalendarView";
@@ -17,7 +16,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import DropDownForSorting from "./DropDownForSorting";
 
-function MyActivityAsAList({ navigation }) {
+function MyTimeEntries() {
   const entryTime = useActivityFunction();
   const rout = useRoute();
   const [visible, setVisible] = useState(false);
@@ -98,10 +97,6 @@ function MyActivityAsAList({ navigation }) {
 
     return activityAndTimeEntryArray;
   }
-
-  const pressedButtonShowAll = () => {
-    navigation.navigate("MyTimePage");
-  };
 
   function counter(arrayOnSnapShot, arrayWithOldTimeEntries, amount) {
     let count = 0;
@@ -262,22 +257,6 @@ function MyActivityAsAList({ navigation }) {
             </View>
           )}
         </View>
-        {rout.name === "HomePage" ? (
-          <TouchableOpacity
-            style={{ marginLeft: 16 }}
-            testID="showAllButton"
-            onPress={() => pressedButtonShowAll()}
-          >
-            <LinearGradient
-              colors={[colors.primary, colors.secondary]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyle}
-            >
-              <Text style={styles.textVissaAll}>Visa allt</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        ) : null}
         <CalendarView
           visible={visible}
           toggleVisibility={toggleOverlay}
@@ -318,7 +297,7 @@ function MyActivityAsAList({ navigation }) {
     </View>
   );
 }
-export default MyActivityAsAList;
+export default MyTimeEntries;
 
 const styles = StyleSheet.create({
   containerForTheWholeComponent: {

@@ -2,10 +2,10 @@ import React, { useContext, useEffect, useState } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-const ActivitynContext = React.createContext();
+const ActivityContext = React.createContext();
 
 export const useActivityFunction = () => {
-  return useContext(ActivitynContext);
+  return useContext(ActivityContext);
 };
 
 export const ActivityProvider = ({ children }) => {
@@ -314,7 +314,7 @@ export const ActivityProvider = ({ children }) => {
   }, [isFinishedToLoadMyEntries]);
 
   return (
-    <ActivitynContext.Provider
+    <ActivityContext.Provider
       value={{
         lastFiveTimeEntries: lastFiveTimeEntries,
         myActivities: activitiesInformation,
@@ -331,6 +331,6 @@ export const ActivityProvider = ({ children }) => {
       }}
     >
       {children}
-    </ActivitynContext.Provider>
+    </ActivityContext.Provider>
   );
 };

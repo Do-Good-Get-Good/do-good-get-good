@@ -3,7 +3,7 @@ import { View, StyleSheet } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import MyActivityAsAList from "../components/MyActivityAsAList";
+import MyTimeEntries from "../components/MyTimeEntries";
 
 import BottomLogo from "../components/BottomLogo";
 import Menu from "../components/Menu";
@@ -14,7 +14,7 @@ export const MyTimePage = () => {
       <Menu />
 
       <View style={styles.container}>
-        <MyActivityAsAList />
+        <MyTimeEntries />
         <BottomLogo />
       </View>
     </SafeAreaView>

@@ -1,7 +1,7 @@
 import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
-import MyActivityAsAList from "../components/MyActivityAsAList";
+import MyTimeEntries from "../components/MyTimeEntries";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -80,12 +80,12 @@ jest.mock("../context/ActivityContext", () => {
   };
 });
 
-describe("Testing MyActivityAsAList", () => {
+describe("Testing MyTimeEntries", () => {
   it("can find the text Min tid", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
-    const { getAllByText } = render(<MyActivityAsAList />);
+    const { getAllByText } = render(<MyTimeEntries />);
     expect(getAllByText("Mina aktiviteter").length).toBe(1);
   });
 
@@ -93,7 +93,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
-    const { getAllByText } = render(<MyActivityAsAList />);
+    const { getAllByText } = render(<MyTimeEntries />);
     expect(getAllByText("Missing people").length).toBe(2);
   });
 
@@ -101,7 +101,7 @@ describe("Testing MyActivityAsAList", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
       name: "HomePage",
     });
-    const { getAllByText } = render(<MyActivityAsAList />);
+    const { getAllByText } = render(<MyTimeEntries />);
     expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(2);
   });
 
@@ -110,7 +110,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const { getAllByText } = render(<MyActivityAsAList />);
+    const { getAllByText } = render(<MyTimeEntries />);
     expect(getAllByText("1.5 tim").length).toBe(2);
   });
 
@@ -119,7 +119,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const { getAllByTestId } = render(<MyActivityAsAList />);
+    const { getAllByTestId } = render(<MyTimeEntries />);
     const button = getAllByTestId("editButton")[0];
     fireEvent.press(button);
     expect(button).toBeTruthy();
@@ -130,7 +130,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "HomePage",
     });
 
-    const { queryByTestId } = render(<MyActivityAsAList />);
+    const { queryByTestId } = render(<MyTimeEntries />);
     queryByTestId("icon");
   });
 
@@ -142,7 +142,7 @@ describe("Testing MyActivityAsAList", () => {
     const navigate = jest.fn();
 
     const { getAllByText, getByTestId } = render(
-      <MyActivityAsAList navigation={{ navigate }} />
+      <MyTimeEntries navigation={{ navigate }} />
     );
     expect(getAllByText("Visa allt").length).toBe(1);
     const button = getByTestId("showAllButton");
@@ -156,7 +156,7 @@ describe("Testing MyActivityAsAList", () => {
       name: "MyTimePage",
     });
 
-    const { queryByText } = render(<MyActivityAsAList />);
+    const { queryByText } = render(<MyTimeEntries />);
     expect(queryByText("Visa allt")).toBeNull();
   });
 });
