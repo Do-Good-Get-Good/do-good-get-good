@@ -8,32 +8,32 @@ import { format } from "date-fns";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
-const TimeEntry = ({ entry, index }) => {
+const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
   return (
-    <View index={index} style={styles.entryIside}>
+    <View style={styles.entryIside}>
       <Text
         style={{
-          fontWeight: !entry.status_confirmed ? "bold" : "normal",
-          color: !entry.status_confirmed ? colors.dark : colors.secondary,
+          fontWeight: !entry.statusConfirmed ? "bold" : "normal",
+          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
           flex: 1,
           ...typography.b2,
         }}
       >
-        {entry.activity_title}
+        {entry.title}
       </Text>
       <Text
         style={{
-          color: !entry.status_confirmed ? colors.dark : colors.secondary,
+          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
           flex: 1,
           ...typography.b2,
           textAlign: "center",
         }}
       >
-        {format(entry.date.toDate(), "yyyy-MM-dd")}
+        {format(entry.date, "yyyy-MM-dd")}
       </Text>
       <Text
         style={{
-          color: !entry.status_confirmed ? colors.dark : colors.secondary,
+          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
           flex: 0.6,
           ...typography.b2,
           textAlign: "center",
@@ -42,8 +42,14 @@ const TimeEntry = ({ entry, index }) => {
       >
         {entry.time} tim
       </Text>
-      {!entry.status_confirmed ? (
-        <TouchableOpacity testID="editButton">
+      {!entry.statusConfirmed ? (
+        <TouchableOpacity
+          testID="editButton"
+          onPress={() => {
+            setActivity(entry);
+            toggleOverlay();
+          }}
+        >
           <Icon
             testID="icon"
             color={colors.dark}
@@ -68,6 +74,5 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingVertical: 2.5,
     paddingHorizontal: 8,
-    // marginHorizontal: 8,
   },
 });

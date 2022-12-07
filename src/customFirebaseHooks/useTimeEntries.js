@@ -20,8 +20,13 @@ const useTimeEntries = (limit) => {
           setTimeEntries(
             snapshot.docs.map((doc) => {
               return {
-                ...doc.data(),
-                docId: doc.id,
+                adminID: doc.data().admin_id,
+                timeEntryID: doc.id,
+                date: doc.data().date.toDate(),
+                statusConfirmed: doc.data().status_confirmed,
+                time: doc.data().time,
+                title: doc.data().activity_title,
+                activityID: doc.data().activity_id,
               };
             })
           );
