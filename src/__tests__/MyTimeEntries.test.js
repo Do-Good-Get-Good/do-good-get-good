@@ -133,30 +133,4 @@ describe("Testing MyTimeEntries", () => {
     const { queryByTestId } = render(<MyTimeEntries />);
     queryByTestId("icon");
   });
-
-  it("can press on the button Visa allt in HomePage screen", () => {
-    require("@react-navigation/native").useRoute.mockReturnValue({
-      name: "HomePage",
-    });
-
-    const navigate = jest.fn();
-
-    const { getAllByText, getByTestId } = render(
-      <MyTimeEntries navigation={{ navigate }} />
-    );
-    expect(getAllByText("Visa allt").length).toBe(1);
-    const button = getByTestId("showAllButton");
-    fireEvent.press(button);
-
-    expect(navigate).toHaveBeenCalledWith("MyTimePage");
-  });
-
-  it("hide button Visa allt in MyTimePage screen", () => {
-    require("@react-navigation/native").useRoute.mockReturnValue({
-      name: "MyTimePage",
-    });
-
-    const { queryByText } = render(<MyTimeEntries />);
-    expect(queryByText("Visa allt")).toBeNull();
-  });
 });
