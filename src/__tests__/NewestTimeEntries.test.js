@@ -15,7 +15,7 @@ jest.mock("../components/CalendarView", () => () => {
   return <></>;
 });
 
-jest.mock("../customFirebaseHooks/useTimeEntries", () => () => {
+jest.mock("../customFirebaseHooks/useTimeEntriesWithLimit", () => () => {
   return {
     timeEntries: [
       {

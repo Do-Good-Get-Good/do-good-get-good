@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import useTimeEntries from "../customFirebaseHooks/useTimeEntries";
+import useTimeEntriesWithLimit from "../customFirebaseHooks/useTimeEntriesWithLimit";
 
 import TimeEntry from "./TimeEntry";
 import CalendarView from "./CalendarView";
@@ -10,7 +10,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 const NewestTimeEntries = ({ navigation }) => {
-  const { timeEntries, isLoading, error } = useTimeEntries(5);
+  const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(5);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
 
@@ -30,7 +30,7 @@ const NewestTimeEntries = ({ navigation }) => {
       )}
       {timeEntries.map((entry) => (
         <TimeEntry
-          key={entry.id}
+          key={entry.timeEntryID}
           entry={entry}
           setActivity={setActivity}
           toggleOverlay={toggleOverlay}

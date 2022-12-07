@@ -215,7 +215,21 @@ export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
       .startAfter(startPoint)
       .limit(20)
       .get();
-    return Promise.resolve(querySnapshot);
+
+    if (querySnapshot.empty) throw new Error("No more data found!");
+
+    let data = querySnapshot.docs.map((doc) => {
+      return {
+        adminID: doc.data().admin_id,
+        timeEntryID: doc.id,
+        date: doc.data().date.toDate(),
+        statusConfirmed: doc.data().status_confirmed,
+        time: doc.data().time,
+        title: doc.data().activity_title,
+        activityID: doc.data().activity_id,
+      };
+    });
+    return Promise.resolve(data);
   } catch (error) {
     return Promise.reject(error);
   }

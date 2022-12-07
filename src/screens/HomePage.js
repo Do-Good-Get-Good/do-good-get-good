@@ -40,9 +40,9 @@ export const HomePage = ({ navigation }) => {
               myAccumulatedTime={activity.activitiesIDandAccumTime}
               myActivities={activity.myActivities}
             />
-            <NewestTimeEntries navigation={navigation} />
           </>
         )}
+        <NewestTimeEntries navigation={navigation} />
 
         <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
         <SuggestionProvider>

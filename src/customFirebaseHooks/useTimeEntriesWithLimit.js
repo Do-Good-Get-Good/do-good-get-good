@@ -2,12 +2,13 @@ import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
 
-const useTimeEntries = (limit) => {
+const useTimeEntriesWithLimit = (limit) => {
   const [timeEntries, setTimeEntries] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
 
   useEffect(() => {
+    setIsLoading(true);
     return firestore()
       .collection("timeentries")
       .where("user_id", "==", auth().currentUser.uid)
@@ -16,7 +17,6 @@ const useTimeEntries = (limit) => {
       .onSnapshot(
         (snapshot) => {
           setTimeEntries([]);
-          setIsLoading(true);
           setTimeEntries(
             snapshot.docs.map((doc) => {
               return {
@@ -37,9 +37,9 @@ const useTimeEntries = (limit) => {
           setError(error);
         }
       );
-  }, []);
+  }, [limit]);
 
   return { timeEntries, isLoading, error };
 };
 
-export default useTimeEntries;
+export default useTimeEntriesWithLimit;

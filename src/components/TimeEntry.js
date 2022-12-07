@@ -9,6 +9,20 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
+  const isTimeEntryTwoMonthsOld = (entryDate) => {
+    const now = new Date();
+
+    const sixtyDaysInMs = 60 * 24 * 60 * 60 * 1000;
+
+    const timeDiffInMs = now.getTime() - entryDate.getTime();
+
+    if (timeDiffInMs >= sixtyDaysInMs) {
+      return true;
+    } else {
+      return false;
+    }
+  };
+
   return (
     <View style={styles.entryIside}>
       <Text
@@ -44,6 +58,7 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
       </Text>
       {!entry.statusConfirmed ? (
         <TouchableOpacity
+          disabled={isTimeEntryTwoMonthsOld(entry.date)}
           testID="editButton"
           onPress={() => {
             setActivity(entry);
@@ -52,7 +67,9 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
         >
           <Icon
             testID="icon"
-            color={colors.dark}
+            color={
+              isTimeEntryTwoMonthsOld(entry.date) ? "#00000050" : colors.dark
+            }
             name="pencil-outline"
             type="material-community"
             size={25}
