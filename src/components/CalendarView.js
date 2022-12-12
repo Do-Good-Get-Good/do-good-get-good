@@ -38,6 +38,7 @@ const CalendarView = ({
   activity,
   isEditing,
   adminID,
+  removeFirstStaticTimeEntry,
 }) => {
   LocaleConfig.locales["sv"] = {
     monthNames: [
@@ -180,6 +181,9 @@ const CalendarView = ({
 
   //Removes a users time entry from the database
   const removeTimeEntry = (timeEntryID) => {
+    if (removeFirstStaticTimeEntry !== undefined)
+      removeFirstStaticTimeEntry(timeEntryID);
+
     deleteTimeEntry(timeEntryID)
       .then(() => {
         decrementTotalHoursMonthForUser(uid, hours);

@@ -11,7 +11,7 @@ import { getUserTimeEntriesOrderByDate } from "../customFirebaseHooks/getFunctio
 import auth from "@react-native-firebase/auth";
 
 function MyTimeEntries() {
-  const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(20);
+  const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(30);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
   const [sortOption, setSortOption] = useState(null);
@@ -55,7 +55,8 @@ function MyTimeEntries() {
           auth().currentUser.uid,
           startPoint
         );
-        setDataAfterScroll(data);
+        let entries = [...dataAfterScroll, ...data];
+        setDataAfterScroll(entries);
         setStartPoint(data[data.length - 1].date);
       } catch (error) {
         console.log(error);
@@ -81,6 +82,10 @@ function MyTimeEntries() {
     setData(newArr);
   };
 
+  const removeFirstStaticTimeEntry = () => {
+    setDataAfterScroll(dataAfterScroll.slice(1));
+  };
+
   return (
     <View style={styles.containerForTheWholeComponent}>
       <View style={styles.containerForTitleAndDropDown}>
@@ -103,7 +108,7 @@ function MyTimeEntries() {
             style={{ height: "100%" }}
             data={data}
             onEndReached={() => loadMoreEntries()}
-            onEndReachedThreshold={0.1}
+            onEndReachedThreshold={0.25}
             keyExtractor={(item) => item.timeEntryID}
             renderItem={({ item }) => (
               <TimeEntry
@@ -121,6 +126,7 @@ function MyTimeEntries() {
         activity={activity}
         adminID={activity.adminID}
         isEditing={true}
+        removeFirstStaticTimeEntry={removeFirstStaticTimeEntry}
       />
     </View>
   );

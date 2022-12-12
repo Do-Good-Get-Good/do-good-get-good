@@ -9,12 +9,12 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
-  const isTimeEntryTwoMonthsOld = (entryDate) => {
+  const isTimeEntryTwoMonthsOld = () => {
     const now = new Date();
 
     const sixtyDaysInMs = 60 * 24 * 60 * 60 * 1000;
 
-    const timeDiffInMs = now.getTime() - entryDate.getTime();
+    const timeDiffInMs = now.getTime() - entry.date.getTime();
 
     if (timeDiffInMs >= sixtyDaysInMs) {
       return true;
@@ -27,8 +27,14 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
     <View style={styles.entryIside}>
       <Text
         style={{
-          fontWeight: !entry.statusConfirmed ? "bold" : "normal",
-          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
+          fontWeight:
+            !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
+              ? "bold"
+              : "normal",
+          color:
+            !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
+              ? colors.dark
+              : colors.secondary,
           flex: 1,
           ...typography.b2,
         }}
@@ -37,7 +43,10 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
       </Text>
       <Text
         style={{
-          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
+          color:
+            !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
+              ? colors.dark
+              : colors.secondary,
           flex: 1,
           ...typography.b2,
           textAlign: "center",
@@ -47,7 +56,10 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
       </Text>
       <Text
         style={{
-          color: !entry.statusConfirmed ? colors.dark : colors.secondary,
+          color:
+            !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
+              ? colors.dark
+              : colors.secondary,
           flex: 0.6,
           ...typography.b2,
           textAlign: "center",
@@ -58,7 +70,7 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
       </Text>
       {!entry.statusConfirmed ? (
         <TouchableOpacity
-          disabled={isTimeEntryTwoMonthsOld(entry.date)}
+          disabled={isTimeEntryTwoMonthsOld()}
           testID="editButton"
           onPress={() => {
             setActivity(entry);
@@ -67,9 +79,7 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
         >
           <Icon
             testID="icon"
-            color={
-              isTimeEntryTwoMonthsOld(entry.date) ? "#00000050" : colors.dark
-            }
+            color={isTimeEntryTwoMonthsOld() ? colors.secondary : colors.dark}
             name="pencil-outline"
             type="material-community"
             size={25}

@@ -213,7 +213,7 @@ export const getUserTimeEntriesOrderByDate = async (uid, startPoint) => {
       .where("user_id", "==", uid)
       .orderBy("date", "desc")
       .startAfter(startPoint)
-      .limit(20)
+      .limit(10)
       .get();
 
     if (querySnapshot.empty) throw new Error("No more data found!");
