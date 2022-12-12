@@ -1,14 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  Platform,
-  FlatList,
-  Alert,
-} from "react-native";
+import { Text, StyleSheet, View, Platform, FlatList } from "react-native";
 import CalendarView from "./CalendarView";
-import { useActivityFunction } from "../context/ActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import DropDownForSorting from "./DropDownForSorting";
@@ -19,24 +11,25 @@ import { getUserTimeEntriesOrderByDate } from "../customFirebaseHooks/getFunctio
 import auth from "@react-native-firebase/auth";
 
 function MyTimeEntries() {
-  // const entryTime = useActivityFunction();
   const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(20);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState([]);
   const [sortOption, setSortOption] = useState(null);
   const [data, setData] = useState([]);
-  const [dataAfterScroll, setDataAfterScroll] = useState([]);
-  const [allData, setAllData] = useState([]);
   const [startPoint, setStartPoint] = useState(timeEntries.length);
-  const [loadMore, setLoadMore] = useState(false);
+  const [loadMore, setLoadMore] = useState(true);
+  const [dataAfterScroll, setDataAfterScroll] = useState([]);
 
   useEffect(() => {
-    if (!isLoading) {
-      setAllData(timeEntries);
-      setData(timeEntries);
-      setStartPoint(timeEntries[timeEntries.length - 1].date);
+    if (timeEntries.length !== 0) {
+      if (dataAfterScroll.length === 0)
+        setStartPoint(timeEntries[timeEntries.length - 1].date);
     }
-  }, [isLoading, timeEntries]);
+    return () => {
+      setData([]);
+      setStartPoint({});
+    };
+  }, [timeEntries]);
 
   useEffect(() => {
     switch (sortOption) {
@@ -53,18 +46,22 @@ function MyTimeEntries() {
         break;
       }
     }
-  }, [sortOption]);
+  }, [timeEntries, dataAfterScroll, sortOption]);
 
   const loadMoreEntries = async () => {
-    let data = await getUserTimeEntriesOrderByDate(
-      auth().currentUser.uid,
-      startPoint
-    );
-    console.log(data[0]);
-    setAllData((prev) => [...prev, ...data]);
-    setDataAfterScroll(data);
-    setStartPoint(data[data.length - 1].date);
-    setLoadMore(false);
+    if (loadMore) {
+      try {
+        let data = await getUserTimeEntriesOrderByDate(
+          auth().currentUser.uid,
+          startPoint
+        );
+        setDataAfterScroll(data);
+        setStartPoint(data[data.length - 1].date);
+      } catch (error) {
+        console.log(error);
+        setLoadMore(false);
+      }
+    }
   };
 
   const toggleOverlay = () => {
@@ -72,11 +69,11 @@ function MyTimeEntries() {
   };
 
   const showAllTimeEntries = () => {
-    setData(allData);
+    setData([...timeEntries, ...dataAfterScroll]);
   };
 
   const showTimeEntriesByStatus = (status) => {
-    const newArr = allData.filter((d) => {
+    const newArr = [...timeEntries, ...dataAfterScroll].filter((d) => {
       if (d.statusConfirmed === status) {
         return { ...d };
       }
@@ -95,7 +92,7 @@ function MyTimeEntries() {
         />
       </View>
 
-      {timeEntries.length === 0 && (
+      {data.length === 0 && (
         <Text style={{ ...typography.b2 }}>
           Du har inte loggat någon tid ännu!
         </Text>
@@ -103,10 +100,10 @@ function MyTimeEntries() {
       {data.length !== 0 && (
         <View style={{ flex: 1 }}>
           <FlatList
-            // style={{ flex: 1 }}
-            data={[...data, ...dataAfterScroll]}
+            style={{ height: "100%" }}
+            data={data}
             onEndReached={() => loadMoreEntries()}
-            onEndReachedThreshold={0.2}
+            onEndReachedThreshold={0.1}
             keyExtractor={(item) => item.timeEntryID}
             renderItem={({ item }) => (
               <TimeEntry

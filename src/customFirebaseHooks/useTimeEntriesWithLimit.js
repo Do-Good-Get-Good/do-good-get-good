@@ -33,8 +33,9 @@ const useTimeEntriesWithLimit = (limit) => {
           setIsLoading(false);
         },
         (error) => {
-          console.log(error);
+          setIsLoading(false);
           setError(error);
+          console.log(error);
         }
       );
   }, [limit]);
