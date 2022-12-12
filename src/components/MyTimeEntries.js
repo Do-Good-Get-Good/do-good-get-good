@@ -16,7 +16,7 @@ function MyTimeEntries() {
   const [activity, setActivity] = useState([]);
   const [sortOption, setSortOption] = useState(null);
   const [data, setData] = useState([]);
-  const [startPoint, setStartPoint] = useState(timeEntries.length);
+  const [startPoint, setStartPoint] = useState(null);
   const [loadMore, setLoadMore] = useState(true);
   const [dataAfterScroll, setDataAfterScroll] = useState([]);
 
