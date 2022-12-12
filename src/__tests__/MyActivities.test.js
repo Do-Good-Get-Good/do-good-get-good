@@ -13,113 +13,77 @@ jest.mock("../components/CalendarView", () => () => {
   return <fakeCalenderView />;
 });
 
-const myActivities = [
+const activities = [
   {
-    id: "asd",
+    id: "123",
     title: "Studiehjälp för lågstadiebarn",
     city: "Gbg",
     photo: "symbol_earth",
+    time: 0,
+    adminId: "321",
   },
-];
-const myAccumulatedTime = [
   {
-    accumulatedTime: 0,
-    activityID: "asd",
-  },
-];
-
-const myActivities2 = [
-  {
-    id: "abc",
+    id: "123",
     title: "Missing people",
     city: "Gbg",
-    photo: "symbol_earth",
-  },
-];
-const myAccumulatedTime2 = [
-  {
-    accumulatedTime: 0,
-    activityID: "abc",
+    photo: "symbol_hands_heart-DEFAULT",
+    time: 0,
+    adminId: "321",
   },
 ];
 
 describe("Testing MyActivities", () => {
   it("can find the activity title", () => {
-    const { getAllByText } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
-    );
+    const { getAllByText } = render(<MyActivities activities={activities} />);
     expect(getAllByText("Studiehjälp för lågstadiebarn").length).toBe(1);
+    expect(getAllByText("Missing people").length).toBe(1);
   });
 
   it("can find the city for the activity", () => {
-    const { getAllByText } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
-    );
-    expect(getAllByText("Gbg").length).toBe(1);
+    const { getAllByText } = render(<MyActivities activities={activities} />);
+    expect(getAllByText("Gbg").length).toBe(2);
   });
 
   it("can find the time for the activity", () => {
-    const { getAllByText } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
-    );
-    expect(getAllByText("0 tim").length).toBe(1);
+    const { getAllByText } = render(<MyActivities activities={activities} />);
+    expect(getAllByText("0 tim").length).toBe(2);
   });
 
   it("can find the image for the activity", () => {
-    const { getByTestId } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
-    );
-    expect(getByTestId("imageId"));
-    const image = getByTestId("imageId");
-    expect(image.props.source).toEqual({
+    const { getAllByTestId } = render(<MyActivities activities={activities} />);
+    const image = getAllByTestId("imageId");
+    expect(image[0].props.source).toEqual({
       testUri: "../../../img/activities_images/symbol_earth.png",
+    });
+    expect(image[1].props.source).toEqual({
+      testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
     });
   });
 
   it("can click on the Logga tid button", () => {
-    const { getAllByText, getByTestId } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
+    const { getAllByText, getAllByTestId } = render(
+      <MyActivities activities={activities} />
     );
-    expect(getAllByText("Logga tid").length).toBe(1);
-    const button = getByTestId("logTimeButton");
-    fireEvent.press(button);
+    expect(getAllByText("Logga tid").length).toBe(2);
+    const button = getAllByTestId("logTimeButton");
+    fireEvent.press(button[0]);
+    fireEvent.press(button[1]);
   });
 
   it("More padding between title and city if title.length <= 16", () => {
-    const { getAllByText, getByTestId } = render(
-      <MyActivities
-        myActivities={myActivities2}
-        myAccumulatedTime={myAccumulatedTime2}
-      />
+    const { getAllByText, getAllByTestId } = render(
+      <MyActivities activities={activities} />
     );
-    const view = getByTestId("viewId");
-    expect(view.props.style.paddingTop).toEqual(25);
+    const view = getAllByTestId("viewId");
+    expect(view[1].props.style.paddingTop).toEqual(25);
     expect(getAllByText("Missing people").length).toBe(1);
   });
   it("Less padding between title and city if title.length > 16", () => {
-    const { getAllByText, getByTestId } = render(
-      <MyActivities
-        myActivities={myActivities}
-        myAccumulatedTime={myAccumulatedTime}
-      />
+    const { getAllByText, getAllByTestId } = render(
+      <MyActivities activities={activities} />
     );
-    const view = getByTestId("viewId");
-    expect(view.props.style.paddingTop).toEqual(5);
+    const view = getAllByTestId("viewId");
+    expect(view[0].props.style.paddingTop).toEqual(5);
     expect(getAllByText("Studiehjälp för lågstadiebarn").length).toBe(1);
   });
 });
