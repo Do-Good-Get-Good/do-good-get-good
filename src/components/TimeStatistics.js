@@ -40,7 +40,7 @@ export function TimeStatistics({ timeObject }) {
       <View>
         <View style={styles.containerTextTimeForYearPopUp}>
           <Text testID="timeForYear">
-            Totalt antal timmar i år: {timeForYear}
+            {`Totalt antal timmar i år: ${timeForYear}`}
           </Text>
           <InfoModal screen="homepage" tooltipWidth={250} />
         </View>
