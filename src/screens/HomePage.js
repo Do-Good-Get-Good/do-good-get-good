@@ -1,54 +1,39 @@
-import React, { useState } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-
-import LinearGradient from "react-native-linear-gradient";
+import React, { useEffect } from "react";
+import { StyleSheet, ScrollView, Text } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useActivityFunction } from "../context/ActivityContext";
 import { SuggestionProvider } from "../context/SuggestionContext";
 
 import Menu from "../components/Menu";
-import { MyActivities } from "../components/MyActivities";
-import MyTimeEntries from "../components/MyTimeEntries";
-import { Suggestions } from "../components/Suggestions";
 import TimeStatistics from "../components/TimeStatistics";
+import { MyActivities } from "../components/MyActivities";
+import NewestTimeEntries from "../components/NewestTimeEntries";
+import { Suggestions } from "../components/Suggestions";
 import BottomLogo from "../components/BottomLogo";
 
 import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
 
-import NewestTimeEntries from "../components/NewestTimeEntries";
+import useLinkedActivities from "../customFirebaseHooks/useLinkedActivities";
 
 export const HomePage = ({ navigation }) => {
-  const activity = useActivityFunction();
+  const { timeObject, activities } = useLinkedActivities();
 
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
-        <TimeStatistics />
-        {activity.myActivities.length !== 0 && (
+        {activities.length !== 0 && timeObject.length !== 0 && (
           <>
-            <MyActivities
-              myAccumulatedTime={activity.activitiesIDandAccumTime}
-              myActivities={activity.myActivities}
-            />
+            <TimeStatistics timeObject={timeObject} />
+            <MyActivities activities={activities} />
           </>
         )}
         <NewestTimeEntries navigation={navigation} />
-
         <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
         <SuggestionProvider>
           <Suggestions navigation={navigation} />
         </SuggestionProvider>
-
         <BottomLogo />
       </ScrollView>
     </SafeAreaView>

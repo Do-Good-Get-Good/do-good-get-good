@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   Text,
@@ -15,43 +15,13 @@ import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
-  const [timeObject, setTimeObject] = useState([
-    { accumulatedTime: 0, activityID: " ", adminID: " " },
-  ]);
+export const MyActivities = ({ activities }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
-  const [myActivitiesArray, setMyActivitiesArray] = useState([]);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
-  useEffect(() => {
-    if (myAccumulatedTime.adminID != " " && myAccumulatedTime.length != 0) {
-      setTimeObject(myAccumulatedTime);
-    }
-  }, [myAccumulatedTime]);
-
-  useEffect(() => {
-    let activitiAndTimeArray = [];
-
-    for (let i = 0; i < myActivities.length; i++) {
-      for (let j = 0; j < myAccumulatedTime.length; j++) {
-        if (myActivities[i].id === myAccumulatedTime[j].activityID) {
-          const setAllInformation = {
-            title: myActivities[i].title,
-            city: myActivities[i].city,
-            time: myAccumulatedTime[j].accumulatedTime,
-            id: myActivities[i].id,
-            photo: myActivities[i].photo,
-          };
-          activitiAndTimeArray.push(setAllInformation);
-        }
-      }
-    }
-    setMyActivitiesArray(activitiAndTimeArray);
-  }, [myAccumulatedTime, myActivities]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -62,9 +32,9 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   }
 
   return (
-    <View>
+    <>
       <View style={styles.activityContainer}>
-        {myActivitiesArray.map((myActivity, index) => (
+        {activities.map((myActivity, index) => (
           <View
             index={index}
             key={index}
@@ -124,10 +94,10 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
         visible={visible}
         toggleVisibility={toggleOverlay}
         activity={activity}
-        adminID={timeObject[0].adminID}
+        adminID={activities[0].adminId}
         isEditing={false}
       />
-    </View>
+    </>
   );
 };
 

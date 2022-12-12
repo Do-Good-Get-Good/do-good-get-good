@@ -4,23 +4,18 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 
-import { useActivityFunction } from "../context/ActivityContext";
-
-export function TimeStatistics({}) {
+export function TimeStatistics({ timeObject }) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
-  const activityFunction = useActivityFunction();
 
   useEffect(() => {
-    if (activityFunction.activitiesIDandAccumTime.length != 0) {
-      setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
-      setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
-      setCurrentForMonth(
-        activityFunction.activitiesIDandAccumTime[0].currentForMonth
-      );
+    if (timeObject.length != 0) {
+      setPaidTime(timeObject[0].paidTime);
+      setTimeForYear(timeObject[0].timeForYear);
+      setCurrentForMonth(timeObject[0].currentForMonth);
     }
-  }, [activityFunction.activitiesIDandAccumTime]);
+  }, [timeObject]);
 
   return (
     <View style={styles.containerForAll}>

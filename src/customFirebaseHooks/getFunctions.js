@@ -90,6 +90,26 @@ export const getAllUsersData = async () => {
   }
 };
 
+export const getActivityInformation = async (activityId) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .doc(activityId)
+      .get();
+
+    let activity = {
+      id: activityId,
+      title: querySnapshot.data().activity_title,
+      city: querySnapshot.data().activity_city,
+      photo: querySnapshot.data().activity_photo,
+    };
+
+    return Promise.resolve(activity);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getAllActivitiesWithStatus = async (status) => {
   try {
     let querySnapshot = await firestore()
