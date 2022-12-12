@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { subYears, format, toDate, parseISO } from "date-fns";
 import { Icon, Dialog } from "react-native-elements";
 import functions from "@react-native-firebase/functions";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -82,8 +83,12 @@ const DownloadUserData = ({ navigation }) => {
         setExcelDownloadURL(res.data.downloadURL);
       })
       .catch((error) => {
+        crashlytics().log(error);
         setDownloadingData(false);
-        Alert.alert("Ett fel har inträffat!", error.message);
+        Alert.alert(
+          "Ett fel har inträffat!",
+          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
+        );
       });
   }
 
