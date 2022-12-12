@@ -5,7 +5,6 @@ import { render, fireEvent } from "@testing-library/react-native";
 import MenuOverlay from "../components/MenuOverlay";
 
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
-import { useActivityFunction } from "../context/ActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -41,13 +40,6 @@ jest.mock("@react-native-firebase/auth", () => {
 
 jest.mock("../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
-}));
-
-jest.mock("../context/ActivityContext", () => ({
-  useActivityFunction: () => ({
-    getIfoFromActivitiesList: jest.fn(),
-    setLimitAmountForTimeEntries: jest.fn(),
-  }),
 }));
 
 jest.mock("../context/AdminGalleryContext", () => ({
@@ -204,7 +196,6 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuOverlay.myTimeButton");
       fireEvent.press(myTimeButton);
-      useActivityFunction().setLimitAmountForTimeEntries.mockReturnValue(20);
       expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
     });
 
