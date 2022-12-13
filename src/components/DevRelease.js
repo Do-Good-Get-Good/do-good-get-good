@@ -1,4 +1,4 @@
-import { Text, View } from "react-native";
+import { Platform, Text, View } from "react-native";
 import React from "react";
 
 const DevRelease = () => {
@@ -6,10 +6,12 @@ const DevRelease = () => {
     <View
       style={{
         justifyContent: "center",
-        alignItems: "center",
+        alignSelf: "center",
         position: "absolute",
-        width: "100%",
         height: 65,
+        ...Platform.select({
+          ios: { top: 60 },
+        }),
       }}
     >
       <Text

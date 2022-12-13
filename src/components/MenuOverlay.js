@@ -202,7 +202,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     ...Platform.select({
       ios: {
-        paddingTop: 12,
+        paddingTop: 60,
       },
       android: {
         paddingTop: 2,
@@ -212,8 +212,17 @@ const styles = StyleSheet.create({
   menuOverlayCloseButton: {
     alignItems: "flex-start",
     alignSelf: "flex-end",
-    top: 2,
-    right: 4,
+    ...Platform.select({
+      ios: {
+        top: 60,
+        right: 4,
+        zIndex: 1,
+      },
+      android: {
+        top: 2,
+        right: 4,
+      },
+    }),
   },
   menuOverlayCloseButtonText: {
     textTransform: "uppercase",
