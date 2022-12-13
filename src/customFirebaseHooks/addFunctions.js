@@ -1,36 +1,21 @@
 import firestore from "@react-native-firebase/firestore";
 
 export const addActivities = async (newFirebaseActivity) => {
-  let activity = null;
-  await firestore()
-    .collection("Activities")
-    .add(newFirebaseActivity)
-    .then((newActivity) => {
-      activity = newActivity;
-    });
-  return activity;
+  try {
+    const res = await firestore()
+      .collection("Activities")
+      .add(newFirebaseActivity);
+    return Promise.resolve(res);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };
 
 export const addTimeEntry = async (timeEntry) => {
-  let success;
-  let error;
-
-  await firestore()
-    .collection("timeentries")
-    .add(timeEntry)
-    .then(() => {
-      success = true;
-    })
-    .catch((error) => {
-      success = false;
-      error = {
-        firebaseError: error,
-        message: "Sorry, something went wrong",
-      };
-    });
-
-  return {
-    success: success,
-    error: error,
-  };
+  try {
+    const res = await firestore().collection("timeentries").add(timeEntry);
+    return Promise.resolve(res);
+  } catch (error) {
+    return Promise.reject(error);
+  }
 };

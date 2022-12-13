@@ -8,13 +8,16 @@ import {
   StatusBar,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import MenuOverlay from "./MenuOverlay";
-import typography from "../assets/theme/typography";
 import { useNetInfo } from "@react-native-community/netinfo";
-import colors from "../assets/theme/colors";
 import { useNavigation } from "@react-navigation/native";
 
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+
 import Config from "react-native-config";
+
+import MenuOverlay from "./MenuOverlay";
+import DevRelease from "./DevRelease";
 
 const Menu = () => {
   const navigation = useNavigation();
@@ -31,14 +34,6 @@ const Menu = () => {
     return (
       <View>
         <Text style={styles.ifNoInternet}>{noInternetText}</Text>
-      </View>
-    );
-  };
-
-  const devRelease = () => {
-    return (
-      <View style={{ alignSelf: "center" }}>
-        <Text style={{ fontSize: 16 }}>Utvecklarmiljö</Text>
       </View>
     );
   };
@@ -81,7 +76,7 @@ const Menu = () => {
         </Pressable>
       </View>
       {inetInfo.isConnected === false && ifNoInternetConnection()}
-      {Config.NODE_ENV === "dev" && devRelease()}
+      {Config.NODE_ENV === "dev" && <DevRelease />}
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
     </>
   );

@@ -4,8 +4,18 @@ const dateFns = require("date-fns");
 const {
   createNotConfirmedWorksheet,
   createConfirmedWorksheet,
+  createRegionWorksheet,
+  createActivityWorksheet,
 } = require("./worksheetFunctions");
 const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
+const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+
+const PRECONDITION_ERROR_TYPE = [
+  "NotAnAdminError",
+  "InvalidRoleError",
+  "NoTimeEntriesFound",
+  "UndefinedDatePeriod",
+];
 
 class UnauthenticatedError extends Error {
   constructor(message) {
@@ -23,22 +33,49 @@ class NotAnAdminError extends Error {
   }
 }
 
-async function getAllDataFromCollection(collectionName, datePeriod) {
-  let res;
-
-  if (datePeriod != null || datePeriod != undefined) {
-    const { startDate, endDate } = datePeriod;
-
-    res = await admin
-      .firestore()
-      .collection(collectionName)
-      .orderBy("date", "asc")
-      .startAt(startDate)
-      .endAt(endDate)
-      .get();
-  } else {
-    res = await admin.firestore().collection(collectionName).get();
+class NoTimeEntriesFound extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.type = "NoTimeEntriesFound";
   }
+}
+
+class UndefinedDatePeriod extends Error {
+  constructor(message) {
+    super(message);
+    this.message = message;
+    this.type = "UndefinedDatePeriod";
+  }
+}
+
+async function getAllDataFromCollection(collectionName) {
+  let res = await admin.firestore().collection(collectionName).get();
+  if (!res.empty) {
+    return res.docs.map((doc) => ({
+      id: doc.id,
+      ...doc.data(),
+    }));
+  }
+}
+
+async function getAllTimeEntriesByDate(datePeriod) {
+  const { startDate, endDate } = datePeriod;
+
+  const date1 = new Date(startDate);
+  const date2 = new Date(endDate);
+
+  const start = admin.firestore.Timestamp.fromDate(date1);
+  const end = admin.firestore.Timestamp.fromDate(date2);
+
+  let res = await admin
+    .firestore()
+    .collection("timeentries")
+    .orderBy("date", "asc")
+    .where("date", ">=", start)
+    .where("date", "<=", end)
+    .get();
+
   if (!res.empty) {
     return res.docs.map((doc) => ({
       id: doc.id,
@@ -48,9 +85,12 @@ async function getAllDataFromCollection(collectionName, datePeriod) {
 }
 
 async function getAllDatabaseData(datePeriod) {
+  if (!datePeriod)
+    throw new UndefinedDatePeriod("Tidsperioden som angetts stöds ej!");
+
   let users = await getAllDataFromCollection("Users");
   let activities = await getAllDataFromCollection("Activities");
-  let timeEntries = await getAllDataFromCollection("timeentries", datePeriod);
+  let timeEntries = await getAllTimeEntriesByDate(datePeriod);
 
   return {
     activities: activities,
@@ -64,7 +104,9 @@ function createExcelFile(excelData) {
 
   var workbook = new Excel.Workbook();
   createNotConfirmedWorksheet(workbook, excelData);
-  createConfirmedWorksheet(workbook, excelData, "YEAR");
+  createConfirmedWorksheet(workbook, excelData);
+  createRegionWorksheet(workbook, excelData);
+  createActivityWorksheet(workbook, excelData);
 
   return workbook;
 }
@@ -104,8 +146,8 @@ function sendEmail(downloadURL, callerData) {
   sgMail.setApiKey(SENDGRID_API_KEY);
 
   const msg = {
-    to: "mattias470@gmail.com",
-    from: "niklas.asp@technogarden.se",
+    to: callerData.email,
+    from: SENDGRID_FROM_EMAIL,
     templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
     dynamicTemplateData: {
       username: callerData.name,
@@ -161,7 +203,13 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
       email: callerUserRecord.email,
     };
 
-    let excelData = await getAllDatabaseData(data.datePeriod);
+    let excelData = await getAllDatabaseData(data);
+
+    if (excelData.timeEntries === null || excelData.timeEntries === undefined) {
+      throw new NoTimeEntriesFound(
+        "Inga tidregistreringar hittades inom det valda tidspannet."
+      );
+    }
 
     let excelDownloadURL;
     await createAndSaveExcelFile(excelData).then((res) => {
@@ -177,10 +225,7 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
   } catch (error) {
     if (error.type === "UnauthenticatedError") {
       throw new functions.https.HttpsError("unauthenticated", error.message);
-    } else if (
-      error.type === "NotAnAdminError" ||
-      error.type === "InvalidRoleError"
-    ) {
+    } else if (PRECONDITION_ERROR_TYPE.includes(error.type)) {
       throw new functions.https.HttpsError(
         "failed-precondition",
         error.message

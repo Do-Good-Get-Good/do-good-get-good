@@ -2,6 +2,7 @@ import React, { useContext, useState, useEffect } from "react";
 import functions from "@react-native-firebase/functions";
 import { getAllActiveActivities } from "../customFirebaseHooks/getFunctions";
 import { addActivities } from "../customFirebaseHooks/addFunctions";
+import { Alert } from "react-native";
 
 const CreateActivityContext = React.createContext();
 
@@ -94,40 +95,42 @@ export const CreateActivityProvider = ({ children }) => {
       activity_title: newActivityAndUser.activity_title,
       tg_favorite: newActivityAndUser.tg_favorite,
     };
-    addActivities(newFirebaseActivity).then(async (newActivity) => {
-      let newActivityToAddLocally = {
-        id: newActivity.id,
-        title: newActivityAndUser.activity_title,
-        active: newActivityAndUser.active_status,
-        city: newActivityAndUser.activity_city,
-        place: newActivityAndUser.activity_place,
-        description: newActivityAndUser.activity_description,
-        photo: newActivityAndUser.activity_photo,
-        popular: newActivityAndUser.tg_favorite,
-      };
-      setAllActiveActvivitiesFB((prev) => [...prev, newActivityToAddLocally]);
-      if (
-        newActivityAndUser.newUserInfo != null ||
-        newActivityAndUser.newUserInfo != undefined
-      ) {
-        var createUser = functions().httpsCallable("createUser");
-        await createUser({
-          firstName: newActivityAndUser.newUserInfo.firstName,
-          lastName: newActivityAndUser.newUserInfo.lastName,
-          email: newActivityAndUser.newUserInfo.email,
-          password: newActivityAndUser.newUserInfo.password,
-          role: "user",
-          activityId: newActivity.id,
-        })
-          .then((res) => {
-            let newUser = res.data.createdUser;
-            setNewUserInfo(newUser);
+    addActivities(newFirebaseActivity)
+      .then(async (newActivity) => {
+        let newActivityToAddLocally = {
+          id: newActivity.id,
+          title: newActivityAndUser.activity_title,
+          active: newActivityAndUser.active_status,
+          city: newActivityAndUser.activity_city,
+          place: newActivityAndUser.activity_place,
+          description: newActivityAndUser.activity_description,
+          photo: newActivityAndUser.activity_photo,
+          popular: newActivityAndUser.tg_favorite,
+        };
+        setAllActiveActvivitiesFB((prev) => [...prev, newActivityToAddLocally]);
+        if (
+          newActivityAndUser.newUserInfo != null ||
+          newActivityAndUser.newUserInfo != undefined
+        ) {
+          var createUser = functions().httpsCallable("createUser");
+          await createUser({
+            firstName: newActivityAndUser.newUserInfo.firstName,
+            lastName: newActivityAndUser.newUserInfo.lastName,
+            email: newActivityAndUser.newUserInfo.email,
+            password: newActivityAndUser.newUserInfo.password,
+            role: "user",
+            activityId: newActivity.id,
           })
-          .catch((error) => console.log(error));
-      } else {
-        setOnlyActivityCreated(true);
-      }
-    });
+            .then((res) => {
+              let newUser = res.data.createdUser;
+              setNewUserInfo(newUser);
+            })
+            .catch((error) => console.log(error));
+        } else {
+          setOnlyActivityCreated(true);
+        }
+      })
+      .catch((error) => Alert.alert("Ett fel uppstod.", error.message));
   };
 
   useEffect(() => {

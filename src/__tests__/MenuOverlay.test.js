@@ -57,6 +57,13 @@ jest.mock("../context/AdminGalleryContext", () => ({
   }),
 }));
 
+jest.mock("../context/SuperAdminContext", () => ({
+  useSuperAdminFunction: () => ({
+    setGetAllUsers: jest.fn(),
+    userLevel: jest.fn(),
+  }),
+}));
+
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -72,7 +79,7 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Min tid").length).toBe(1);
     const activitiesLink = queryByText("Aktiviteter");
     const adminPageLink = queryByText("Admin");
-    const superAdminPageLink = queryByText("Super admin");
+    const superAdminPageLink = queryByText("Alla användare");
     expect(activitiesLink).toBeNull();
     expect(adminPageLink).toBeNull();
     expect(superAdminPageLink).toBeNull();
@@ -92,7 +99,7 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
     expect(getAllByText("Admin").length).toBe(1);
-    const superAdminPageLink = queryByText("Super admin");
+    const superAdminPageLink = queryByText("Alla användare");
     expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
@@ -108,7 +115,7 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
     expect(getAllByText("Admin").length).toBe(1);
-    expect(getAllByText("Super admin").length).toBe(1);
+    expect(getAllByText("Alla användare").length).toBe(1);
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
@@ -183,10 +190,10 @@ describe("Testing MenuOverlay", () => {
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
       );
 
-      const superAdminButton = getByTestId("menuOverlay.superAdminButton");
+      const superAdminButton = getByTestId("menuOverlay.allUsersInTheSystem");
       fireEvent.press(superAdminButton);
 
-      expect(mockedNavigate).toHaveBeenCalledWith("SuperAdminPage");
+      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem");
     });
 
     it("My time button", () => {

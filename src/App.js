@@ -1,26 +1,45 @@
 import React, { useState, useEffect } from "react";
-import { Mystack } from "./navigate";
-import auth from "@react-native-firebase/auth";
-import Login from "./components/Login";
-import { AdminGalleryProvider } from "./context/AdminGalleryContext";
+import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+
 import { SafeAreaProvider } from "react-native-safe-area-context";
-import { ActivityProvider } from "./context/ActivityContext";
-import { CreateActivityProvider } from "./context/CreateActivityContext";
-import { ActivityCardProvider } from "./context/ActivityCardContext";
+
+import auth from "@react-native-firebase/auth";
+
 import { AdminProvider } from "./context/AdminContext";
-import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
-import { AdminHomePageProvider } from "./context/AdminHomePageContext";
+import { ActivityProvider } from "./context/ActivityContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
+import { AdminGalleryProvider } from "./context/AdminGalleryContext";
+import { ActivityCardProvider } from "./context/ActivityCardContext";
+import { AdminHomePageProvider } from "./context/AdminHomePageContext";
+import { CreateActivityProvider } from "./context/CreateActivityContext";
+import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
+
+import { Mystack } from "./navigate";
+
+import Login from "./components/Login";
+import BottomLogo from "./components/BottomLogo";
+
+import typography from "./assets/theme/typography";
+import colors from "./assets/theme/colors";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
 
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
+  const [userClaims, setUserClaims] = useState();
 
   // Handle user state changes
   function onAuthStateChanged(user) {
     setUser(user);
+    if (user) {
+      user
+        .getIdTokenResult()
+        .then((res) => {
+          setUserClaims(res.claims);
+        })
+        .catch((error) => console.log(error));
+    }
     if (initializing) setInitializing(false);
   }
 
@@ -35,25 +54,122 @@ export default function App() {
     return <Login />;
   }
 
-  return (
-    <SafeAreaProvider>
-      <ChangeUserInfoProvider>
+  if (!userClaims) {
+    return <Login />;
+  }
+
+  if (userClaims.superadmin) {
+    // Render superadmin content
+    return (
+      <SafeAreaProvider>
+        <ChangeUserInfoProvider>
+          <ActivityCardProvider>
+            <AdminGalleryProvider>
+              <CreateActivityProvider>
+                <AdminProvider>
+                  <ActivityProvider>
+                    <SuperAdminProvider>
+                      <AdminHomePageProvider>
+                        <Mystack />
+                      </AdminHomePageProvider>
+                    </SuperAdminProvider>
+                  </ActivityProvider>
+                </AdminProvider>
+              </CreateActivityProvider>
+            </AdminGalleryProvider>
+          </ActivityCardProvider>
+        </ChangeUserInfoProvider>
+      </SafeAreaProvider>
+    );
+  } else if (userClaims.admin) {
+    // Render admin content
+    return (
+      <SafeAreaProvider>
+        <ChangeUserInfoProvider>
+          <ActivityCardProvider>
+            <AdminGalleryProvider>
+              <CreateActivityProvider>
+                <AdminProvider>
+                  <ActivityProvider>
+                    <AdminHomePageProvider>
+                      <Mystack />
+                    </AdminHomePageProvider>
+                  </ActivityProvider>
+                </AdminProvider>
+              </CreateActivityProvider>
+            </AdminGalleryProvider>
+          </ActivityCardProvider>
+        </ChangeUserInfoProvider>
+      </SafeAreaProvider>
+    );
+  } else if (userClaims.user) {
+    return (
+      <SafeAreaProvider>
         <ActivityCardProvider>
           <AdminGalleryProvider>
             <CreateActivityProvider>
               <AdminProvider>
                 <ActivityProvider>
-                  <SuperAdminProvider>
-                    <AdminHomePageProvider>
-                      <Mystack />
-                    </AdminHomePageProvider>
-                  </SuperAdminProvider>
+                  <Mystack />
                 </ActivityProvider>
               </AdminProvider>
             </CreateActivityProvider>
           </AdminGalleryProvider>
         </ActivityCardProvider>
-      </ChangeUserInfoProvider>
-    </SafeAreaProvider>
-  );
+      </SafeAreaProvider>
+    );
+  } else {
+    return (
+      <View style={styles.wrapper}>
+        <View style={styles.innerWrapper}>
+          <Text style={styles.infoText}>
+            Något är fel med din användare, vänligen kontakta
+            dggg@technogarden.se
+          </Text>
+          <TouchableOpacity
+            style={styles.logOutBtn}
+            onPress={() => auth().signOut()}
+          >
+            <Text style={styles.logOutBtnText}>Logga ut</Text>
+          </TouchableOpacity>
+        </View>
+        <View style={styles.bottonLogoView}>
+          <BottomLogo />
+        </View>
+      </View>
+    );
+  }
 }
+
+const styles = StyleSheet.create({
+  wrapper: {
+    backgroundColor: colors.background,
+    flex: 1,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  innerWrapper: {
+    width: "80%",
+  },
+  infoText: {
+    ...typography.b2,
+    textAlign: "center",
+  },
+  logOutBtn: {
+    marginTop: 10,
+    height: 50,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 5,
+  },
+  logOutBtnText: {
+    color: "#FFFFFF",
+    ...typography.button.lg,
+  },
+  bottonLogoView: {
+    position: "absolute",
+    bottom: 0,
+  },
+});

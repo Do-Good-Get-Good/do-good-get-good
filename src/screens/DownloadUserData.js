@@ -13,6 +13,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { subYears, format, toDate, parseISO } from "date-fns";
 import { Icon, Dialog } from "react-native-elements";
 import functions from "@react-native-firebase/functions";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -22,16 +23,17 @@ import DatePicker from "../components/DatePicker";
 
 const DownloadUserData = ({ navigation }) => {
   const date = new Date();
-  const [choseDate, setChoseDate] = useState(null);
+  const [exportType, setExportType] = useState(null);
   const [openDropDown, setOpenDropDown] = useState(false);
   const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
   const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
-  const [dataDownloaded, setDataDownloaded] = useState(false);
+  const [downloadingData, setDownloadingData] = useState(false);
   const [excelDownloadURL, setExcelDownloadURL] = useState(null);
 
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
+  const downloadData = functions().httpsCallable("downloadData");
 
   const IsDatePeriodValid = () => {
     if (toDate(parseISO(endDate)) < toDate(parseISO(startDate))) {
@@ -44,31 +46,55 @@ const DownloadUserData = ({ navigation }) => {
   };
 
   const exportData = () => {
-    alertPopUp();
+    setExcelDownloadURL(null);
     let datePeriod;
-    if (!choseDate) {
-      datePeriod = {
-        startDate: new Date(oneYearBack),
-        endDate: new Date(today),
-      };
-    } else {
-      datePeriod = {
-        startDate: new Date(startDate),
-        endDate: new Date(endDate),
-      };
+    switch (exportType) {
+      case "rolling-year": {
+        datePeriod = {
+          startDate: oneYearBack,
+          endDate: today,
+        };
+        break;
+      }
+      case "date-period": {
+        datePeriod = {
+          startDate: startDate,
+          endDate: endDate,
+        };
+        break;
+      }
+      case "all-data": {
+        datePeriod = {
+          startDate: "1970-01-01",
+          endDate: today,
+        };
+      }
+      default:
+        break;
     }
-
-    console.log(datePeriod);
-
-    setDataDownloaded(true);
-    let downloadData = functions().httpsCallable("downloadData");
-    downloadData(datePeriod).then((res) => {
-      console.log(res.data.downloadURL);
-      setExcelDownloadURL(res.data.downloadURL);
-    });
+    alertPopUp(datePeriod);
+    setDownloadingData(true);
   };
 
-  function alertPopUp() {
+  function stayInAppAndExportData(datePeriod) {
+    downloadData(datePeriod)
+      .then((res) => {
+        console.log(res.data.downloadURL);
+        setExcelDownloadURL(res.data.downloadURL);
+      })
+      .catch((error) => {
+        crashlytics().log(error);
+        setDownloadingData(false);
+        Alert.alert(
+          "Ett fel har inträffat!",
+          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
+        );
+      });
+  }
+
+  function alertPopUp(datePeriod) {
+    console.log(datePeriod);
+
     let alertTitle = "Exportera data";
     let alertMessage =
       "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
@@ -76,12 +102,27 @@ const DownloadUserData = ({ navigation }) => {
       "När allt är klart får du ett mail.";
 
     Alert.alert(alertTitle, alertMessage, [
-      { text: "Vänta kvar" },
+      {
+        text: "Vänta kvar",
+        onPress: () => {
+          stayInAppAndExportData(datePeriod);
+        },
+      },
       {
         text: "Gå till startsidan",
-        onPress: () => navigation.navigate("HomePage"),
+        onPress: () => {
+          downloadData(datePeriod);
+          navigation.navigate("HomePage");
+        },
       },
     ]);
+  }
+
+  function closeDropDown(value) {
+    setOpenDropDown(false);
+    setExportType(value);
+    setDownloadingData(false);
+    setExcelDownloadURL(null);
   }
 
   return (
@@ -96,9 +137,10 @@ const DownloadUserData = ({ navigation }) => {
               style={styles.dropdownStyle(openDropDown)}
             >
               <Text style={{ ...typography.button.lg }}>
-                {choseDate === null && "Välj typ av nedladdning"}
-                {choseDate && choseDate != null && "Välj datum"}
-                {!choseDate && choseDate != null && "Löpande 12 månader"}
+                {exportType === null && "Välj typ av exportering"}
+                {exportType === "all-data" && "All data"}
+                {exportType === "date-period" && "Välj datum"}
+                {exportType === "rolling-year" && "Löpande 12 månader"}
               </Text>
               <Icon
                 color={colors.dark}
@@ -111,10 +153,13 @@ const DownloadUserData = ({ navigation }) => {
             {openDropDown && (
               <View style={styles.dropdownItemBackground}>
                 <TouchableOpacity
-                  onPress={() => {
-                    setOpenDropDown(false);
-                    setChoseDate(false);
-                  }}
+                  onPress={() => closeDropDown("all-data")}
+                  style={styles.dropdownItemStyle}
+                >
+                  <Text style={{ ...typography.button.sm }}>All data</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => closeDropDown("rolling-year")}
                   style={styles.dropdownItemStyle}
                 >
                   <Text style={{ ...typography.button.sm }}>
@@ -122,10 +167,7 @@ const DownloadUserData = ({ navigation }) => {
                   </Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => {
-                    setOpenDropDown(false);
-                    setChoseDate(true);
-                  }}
+                  onPress={() => closeDropDown("date-period")}
                   style={styles.dropdownItemStyle}
                 >
                   <Text style={{ ...typography.button.sm }}>Välj datum</Text>
@@ -133,8 +175,7 @@ const DownloadUserData = ({ navigation }) => {
               </View>
             )}
           </View>
-
-          {choseDate && (
+          {exportType === "date-period" && (
             <>
               <View style={styles.pickDateViewStyle}>
                 <View>
@@ -159,65 +200,72 @@ const DownloadUserData = ({ navigation }) => {
               )}
             </>
           )}
-          {choseDate === false && (
+          {exportType === "rolling-year" && (
             <View style={styles.continuousDateStyle}>
               <Text style={{ ...typography.b2 }}>
-                Kommer att ladda ned data mellan följade datum
+                Exportering av data kommer att ske mellan följade datum.
               </Text>
               <Text>{rollingYear}</Text>
             </View>
           )}
+          {exportType === "all-data" && (
+            <View style={styles.continuousDateStyle}>
+              <Text style={{ ...typography.b2 }}>
+                All data kommer att exporteras
+              </Text>
+            </View>
+          )}
         </View>
         <View style={styles.downloadButtonWrapper}>
-          {!dataDownloaded && (
-            <TouchableOpacity
-              disabled={
-                choseDate === null ||
-                (choseDate == true && IsDatePeriodValid() === false)
-                  ? true
-                  : false
-              }
-              onPress={() => exportData()}
-            >
-              <View
-                style={[
-                  styles.downloadButton(choseDate),
-                  {
-                    backgroundColor:
-                      choseDate === null ||
-                      (choseDate == true && IsDatePeriodValid() === false)
-                        ? colors.disabled
-                        : colors.primary,
-                  },
-                ]}
-              >
-                <Text style={{ ...typography.button.lg }}>Exportera data</Text>
-              </View>
-            </TouchableOpacity>
-          )}
-          {dataDownloaded && (
+          {excelDownloadURL !== null && (
             <TouchableOpacity
               disabled={excelDownloadURL === null ? true : false}
               onPress={() => {
                 Linking.openURL(excelDownloadURL);
               }}
+              style={{ marginBottom: 6 }}
             >
-              <View style={styles.downloadButton(choseDate)}>
-                {excelDownloadURL === null ? (
-                  <Dialog.Loading
-                    loadingProps={{
-                      color: colors.secondary,
-                      style: { padding: 0, margin: 0 },
-                    }}
-                  />
-                ) : (
-                  <Text style={{ ...typography.button.lg }}>
-                    Ladda ned excel-fil
-                  </Text>
-                )}
+              <View style={styles.downloadButton(exportType)}>
+                <Text style={{ ...typography.button.lg }}>
+                  Ladda ned excel-fil
+                </Text>
               </View>
             </TouchableOpacity>
           )}
+          <TouchableOpacity
+            disabled={
+              exportType === null ||
+              (exportType === "date-period" && IsDatePeriodValid() === false)
+                ? true
+                : false
+            }
+            onPress={() => exportData()}
+          >
+            <View
+              style={[
+                styles.downloadButton(exportType),
+                {
+                  backgroundColor:
+                    exportType === null ||
+                    (exportType === "date-period" &&
+                      IsDatePeriodValid() === false)
+                      ? colors.disabled
+                      : colors.primary,
+                },
+              ]}
+            >
+              {downloadingData && excelDownloadURL === null ? (
+                <Dialog.Loading
+                  loadingProps={{
+                    color: colors.secondary,
+                    style: { padding: 0, margin: 0 },
+                  }}
+                />
+              ) : (
+                <Text style={{ ...typography.button.lg }}>Exportera data</Text>
+              )}
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </SafeAreaView>
@@ -323,17 +371,17 @@ const styles = StyleSheet.create({
   },
   continuousDateStyle: {
     flexDirection: "column",
-    alignItems: "center",
-    marginHorizontal: 16,
+    // alignItems: "center",
+    marginHorizontal: 20,
   },
   downloadButtonWrapper: {
     width: "100%",
     paddingBottom: 16,
     paddingHorizontal: 16,
   },
-  downloadButton: (chooseDate) => ({
+  downloadButton: (exportType) => ({
     height: 50,
-    backgroundColor: chooseDate != null ? colors.primary : colors.disabled,
+    backgroundColor: exportType !== null ? colors.primary : colors.disabled,
     borderRadius: 5,
     alignItems: "center",
     justifyContent: "center",
