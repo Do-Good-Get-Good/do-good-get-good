@@ -13,7 +13,8 @@ const downloadData = require("./src/downloadData/downloadData");
 // admin.initializeApp({
 //   credential: admin.credential.cert(serviceAccount),
 //   databaseURL:
-//   "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
+//     "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
+//   storageBucket: "do-good-get-good-2f6cc.appspot.com",
 // });
 
 /* ---------------- For development database (Firebase) -------------------- */
@@ -29,5 +30,5 @@ exports.createUser = createUser.createUser;
 exports.deleteUser = deleteUser.deleteUser;
 exports.updateMonth = updateMonth.updateMonth;
 exports.updateYear = updateYear.updateYear;
-exports.assignAdminClaim = assignAdminClaim.assignAdminClaim;
+// exports.assignAdminClaim = assignAdminClaim.assignAdminClaim;
 exports.downloadData = downloadData.downloadData;
