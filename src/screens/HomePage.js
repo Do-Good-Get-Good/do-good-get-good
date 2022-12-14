@@ -3,8 +3,6 @@ import { StyleSheet, ScrollView, Text, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { SuggestionProvider } from "../context/SuggestionContext";
-
 import Menu from "../components/Menu";
 import TimeStatistics from "../components/TimeStatistics";
 import { MyActivities } from "../components/MyActivities";
@@ -15,10 +13,12 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 
 import useLinkedActivities from "../customFirebaseHooks/useLinkedActivities";
+import { useSuggestions } from "../customFirebaseHooks/useSuggestions";
 import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
+  const { suggestions, loading } = useSuggestions();
 
   return (
     <SafeAreaView style={styles.view}>
@@ -31,11 +31,19 @@ export const HomePage = ({ navigation }) => {
             <MyActivities activities={activities} />
           </>
         )}
+
         <NewestTimeEntries navigation={navigation} />
+
         <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
-        <SuggestionProvider>
-          <Suggestions navigation={navigation} />
-        </SuggestionProvider>
+        {loading && (
+          <ActivityIndicator
+            size={30}
+            color={colors.primary}
+            style={{ marginTop: 10 }}
+          />
+        )}
+        <Suggestions suggestions={suggestions} navigation={navigation} />
+
         <BottomLogo />
       </ScrollView>
     </SafeAreaView>

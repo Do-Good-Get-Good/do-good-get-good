@@ -14,19 +14,18 @@ import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 export function Suggestions({
   navigation,
+  suggestions,
   adminGallery,
   inactiveActivities,
   choiceFromDropDown,
 }) {
   const rout = useRoute();
-  const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
 
@@ -41,7 +40,7 @@ export function Suggestions({
 
   useEffect(() => {
     if (rout.name === "HomePage") {
-      setShowArray(sortingByTitle(userSuggestionsContext.popularActivities));
+      setShowArray(sortingByTitle(suggestions));
     } else if (
       rout.name === "AdminActivityGallery" &&
       showActiveArray === false
@@ -55,13 +54,7 @@ export function Suggestions({
     } else {
       console.log("Nothing to show in AdminGallery");
     }
-  }, [
-    userSuggestionsContext,
-    adminGallery,
-    rout,
-    inactiveActivities,
-    showActiveArray,
-  ]);
+  }, [suggestions, adminGallery, rout, inactiveActivities, showActiveArray]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -216,15 +209,13 @@ export function Suggestions({
   }
 
   return (
-    <View>
-      <View>
-        {(useCreateActivityContext.searchWordHasNoMatch ||
-          adminGalleryContext.searchWordHasNoMatch) && (
-          <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
-        )}
-      </View>
+    <>
+      {(useCreateActivityContext.searchWordHasNoMatch ||
+        adminGalleryContext.searchWordHasNoMatch) && (
+        <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
+      )}
       {whichArrayToShow()}
-    </View>
+    </>
   );
 }
 export default Suggestions;
@@ -245,7 +236,8 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 5,
-    marginBottom: 15,
+    alignSelf: "center",
+    width: "99%",
   },
   insideActivityContainer: {
     flex: 1,
@@ -262,10 +254,10 @@ const styles = StyleSheet.create({
           hight: 2,
         },
         shadowOpacity: 0.5,
-        shadowRadius: 5,
+        shadowRadius: 2,
       },
       android: {
-        elevation: 3,
+        elevation: 2,
       },
     }),
   },
