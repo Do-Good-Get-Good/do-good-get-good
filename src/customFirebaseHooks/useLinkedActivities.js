@@ -6,6 +6,7 @@ import { getActivityInformation } from "./getFunctions";
 const useLinkedActivities = () => {
   const [activityInfo, setActivityInfo] = useState([]);
   const [activityIdAndAccumTime, setActivityIdAndAccumTime] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     return firestore()
@@ -13,6 +14,7 @@ const useLinkedActivities = () => {
       .doc(auth().currentUser.uid)
       .onSnapshot(
         (snapshot) => {
+          setLoading(true);
           let tempArr = [];
           let activityIdAndTime =
             snapshot.data().activities_and_accumulated_time;
@@ -65,6 +67,7 @@ const useLinkedActivities = () => {
           }
         }
         setActivityInfo(activityArr);
+        setLoading(false);
       };
 
       getActivitiesInformation();
@@ -74,6 +77,7 @@ const useLinkedActivities = () => {
   return {
     timeObject: activityIdAndAccumTime,
     activities: activityInfo,
+    isLoading: loading,
   };
 };
 

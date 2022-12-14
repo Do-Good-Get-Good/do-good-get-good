@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, ScrollView, Text } from "react-native";
+import { StyleSheet, ScrollView, Text, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -15,14 +15,16 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 
 import useLinkedActivities from "../customFirebaseHooks/useLinkedActivities";
+import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
-  const { timeObject, activities } = useLinkedActivities();
+  const { timeObject, activities, isLoading } = useLinkedActivities();
 
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
+        {isLoading && <ActivityIndicator size={30} color={colors.primary} />}
         {activities.length !== 0 && timeObject.length !== 0 && (
           <>
             <TimeStatistics timeObject={timeObject} />
