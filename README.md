@@ -48,6 +48,9 @@ Go to `src/Android`
 Run `./gradlew bundleProd`
 Output will be in `src\android\app\build\outputs\bundle\prodRelease`
 
+Alternative way:
+`react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/`
+
 ### To get an APK file
 
 Go to `src/` and run `npm install`
