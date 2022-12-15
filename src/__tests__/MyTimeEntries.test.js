@@ -25,25 +25,6 @@ jest.mock("@react-navigation/native");
 
 jest.mock("../customFirebaseHooks/useTimeEntriesWithLimit");
 
-// ({
-//   __esModule: true,
-//   useTimeEntriesWithLimit: () => ({
-//     timeEntries: [
-//       {
-//         adminID: "123",
-//         timeEntryID: "123",
-//         date: new Date(),
-//         statusConfirmed: false,
-//         time: 2,
-//         title: "title",
-//         activityID: "123",
-//       },
-//     ],
-//     isLoading: false,
-//     error: null,
-//   }),
-// });
-
 describe("Testing MyTimeEntries", () => {
   beforeAll(() => {
     useTimeEntriesWithLimit.mockReturnValue({
