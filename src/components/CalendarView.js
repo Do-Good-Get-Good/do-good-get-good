@@ -452,8 +452,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.primary,
-    // marginLeft: -10,
-    // marginRight: -10,
     marginBottom: -10,
     ...Platform.select({
       ios: {
