@@ -144,46 +144,46 @@ export function Suggestions({
           onPress={() =>
             lookDetails(suggestion, suggestion.active, suggestion.popular)
           }
+          style={styles.insideActivityContainer}
+          activeOpacity={0.4}
         >
-          <View style={styles.insideActivityContainer}>
-            <View style={styles.photoAndText}>
-              <View style={styles.textTitleCityDescriptipn}>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                  <View style={{ flex: 1 }}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {suggestion.title}
-                    </Text>
-
-                    <View style={styles.iconsAndTextCityContainer}>
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
-                      />
-
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
-                    </View>
-                  </View>
-                  <Image
-                    testID="photo"
-                    style={styles.image}
-                    source={setTheRightPhoto(suggestion.photo)}
-                  />
-                </View>
-
-                <View style={styles.iconsAndTextDescriptionContainer}>
-                  <Icon
-                    type="material-community"
-                    name="information-outline"
-                    color={colors.dark}
-                    size={25}
-                    style={styles.iconDescription}
-                  />
-                  <Text numberOfLines={2} style={styles.textDescription}>
-                    {suggestion.description}
+          <View style={styles.photoAndText}>
+            <View style={styles.textTitleCityDescriptipn}>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                  <Text numberOfLines={2} style={styles.textTitle}>
+                    {suggestion.title}
                   </Text>
+
+                  <View style={styles.iconsAndTextCityContainer}>
+                    <Icon
+                      type="material-community"
+                      name="map-marker-outline"
+                      color={colors.dark}
+                      size={25}
+                    />
+
+                    <Text style={styles.textCity}>{suggestion.city}</Text>
+                  </View>
                 </View>
+                <Image
+                  testID="photo"
+                  style={styles.image}
+                  source={setTheRightPhoto(suggestion.photo)}
+                />
+              </View>
+
+              <View style={styles.iconsAndTextDescriptionContainer}>
+                <Icon
+                  type="material-community"
+                  name="information-outline"
+                  color={colors.dark}
+                  size={25}
+                  style={styles.iconDescription}
+                />
+                <Text numberOfLines={2} style={styles.textDescription}>
+                  {suggestion.description}
+                </Text>
               </View>
             </View>
           </View>
@@ -245,7 +245,7 @@ const styles = StyleSheet.create({
     marginVertical: 7,
     backgroundColor: colors.background,
     flexWrap: "wrap",
-    borderRadius: 2,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
     ...Platform.select({
