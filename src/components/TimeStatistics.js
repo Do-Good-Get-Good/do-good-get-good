@@ -18,7 +18,7 @@ export function TimeStatistics({ timeObject }) {
   }, [timeObject]);
 
   return (
-    <View style={styles.containerForAll}>
+    <>
       <Text style={styles.mainText}>Utförda timmar</Text>
       <View style={styles.containerMonthAndPaidTime}>
         <View style={styles.containerTimeAndTextUndre}>
@@ -27,7 +27,7 @@ export function TimeStatistics({ timeObject }) {
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
         </View>
-        <Text style={styles.lineBetween}></Text>
+        <View style={styles.lineBetween} />
         <View style={styles.containerTimeAndTextUndre}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
             {paidTime}
@@ -37,31 +37,25 @@ export function TimeStatistics({ timeObject }) {
           </Text>
         </View>
       </View>
-      <View>
-        <View style={styles.containerTextTimeForYearPopUp}>
-          <Text testID="timeForYear">
-            {`Totalt antal timmar i år: ${timeForYear}`}
-          </Text>
-          <InfoModal screen="homepage" tooltipWidth={250} />
-        </View>
+      <View style={styles.containerTextTimeForYearPopUp}>
+        <Text testID="timeForYear">
+          {`Totalt antal timmar i år: ${timeForYear}`}
+        </Text>
+        <InfoModal screen="homepage" tooltipWidth={250} />
       </View>
-    </View>
+    </>
   );
 }
 export default TimeStatistics;
 const styles = StyleSheet.create({
-  containerForAll: {
-    flex: 1,
-    color: colors.dark,
-  },
   mainText: {
     ...typography.title,
   },
   containerMonthAndPaidTime: {
     backgroundColor: colors.background,
     flexDirection: "row",
-    paddingTop: 19,
-    paddingBottom: 16,
+    paddingTop: 20,
+    paddingBottom: 20,
     justifyContent: "space-evenly",
   },
   textH2ForTime: {
@@ -74,15 +68,18 @@ const styles = StyleSheet.create({
   },
   lineBetween: {
     backgroundColor: colors.primary,
-    paddingHorizontal: 1.3,
+    width: 2.5,
+    height: "100%",
   },
   containerTextTimeForYearPopUp: {
-    marginTop: 13,
+    marginTop: 10,
     ...typography.b2,
+    alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: colors.background,
     flexDirection: "row",
-    paddingLeft: 13,
-    paddingRight: 3,
+    paddingLeft: 10,
+    paddingRight: 5,
+    paddingVertical: 5,
   },
 });

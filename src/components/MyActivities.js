@@ -33,63 +33,57 @@ export const MyActivities = ({ activities }) => {
 
   return (
     <>
-      <View style={styles.activityContainer}>
-        {activities.map((myActivity, index) => (
-          <View
-            index={index}
-            key={index}
-            style={styles.insideActivityContainer}
-          >
-            <View style={styles.photoAndText}>
-              <View style={styles.textTitleCityTime}>
-                <Text numberOfLines={2} style={styles.textTitle}>
-                  {myActivity.title}
-                </Text>
+      {activities.map((myActivity, index) => (
+        <View key={index} style={styles.activityContainer}>
+          <View style={styles.photoAndText}>
+            <View style={styles.textTitleCityTime}>
+              <Text numberOfLines={2} style={styles.textTitle}>
+                {myActivity.title}
+              </Text>
 
-                <View
-                  testID="viewId"
-                  style={styles.mapIconAndCityText(myActivity)}
-                >
-                  <Icon
-                    type="material-community"
-                    name="map-marker-outline"
-                    color={colors.dark}
-                    size={25}
-                  />
-                  <Text style={styles.textCity}>{myActivity.city}</Text>
-                </View>
-
-                <View style={styles.iconsAndTextTimeContainer}>
-                  <Icon
-                    type="material-community"
-                    name="clock-time-four-outline"
-                    color={colors.dark}
-                    size={25}
-                  />
-                  <Text style={styles.textTime}>{myActivity.time} tim</Text>
-                </View>
+              <View
+                testID="viewId"
+                style={styles.mapIconAndCityText(myActivity)}
+              >
+                <Icon
+                  type="material-community"
+                  name="map-marker-outline"
+                  color={colors.dark}
+                  size={25}
+                />
+                <Text style={styles.textCity}>{myActivity.city}</Text>
               </View>
-              <Image
-                testID="imageId"
-                style={styles.image}
-                source={setTheRightPhoto(myActivity.photo)}
-              />
-            </View>
 
-            <TouchableOpacity
-              testID="logTimeButton"
-              onPress={() => {
-                setActivity(myActivity);
-                toggleOverlay();
-              }}
-              activeOpacity={0.5}
-              style={styles.shedowForButton}
-            >
-              <Text style={styles.läggTid}>Logga tid</Text>
-            </TouchableOpacity>
+              <View style={styles.iconsAndTextTimeContainer}>
+                <Icon
+                  type="material-community"
+                  name="clock-time-four-outline"
+                  color={colors.dark}
+                  size={25}
+                />
+                <Text style={styles.textTime}>{myActivity.time} tim</Text>
+              </View>
+            </View>
+            <Image
+              testID="imageId"
+              style={styles.image}
+              source={setTheRightPhoto(myActivity.photo)}
+            />
           </View>
-        ))}
-      </View>
+
+          <TouchableOpacity
+            testID="logTimeButton"
+            onPress={() => {
+              setActivity(myActivity);
+              toggleOverlay();
+            }}
+            activeOpacity={0.5}
+            style={styles.shedowForButton}
+          >
+            <Text style={styles.läggTid}>Logga tid</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
       <CalendarView
         visible={visible}
         toggleVisibility={toggleOverlay}
@@ -104,17 +98,9 @@ export const MyActivities = ({ activities }) => {
 const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
-    marginTop: 20,
-  },
-  insideActivityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    marginVertical: 7,
+    marginTop: 10,
     backgroundColor: colors.background,
-    flexWrap: "wrap",
     borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.background,
   },
   image: {
     flex: 1,

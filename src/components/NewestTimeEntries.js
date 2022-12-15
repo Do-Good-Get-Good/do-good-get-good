@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   title: {
     ...typography.title,
     color: colors.dark,
+    marginTop: 16,
   },
   buttonBorderStyle: {
     borderRadius: 5,
