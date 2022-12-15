@@ -19,18 +19,22 @@ export function TimeStatistics({ timeObject }) {
 
   return (
     <>
-      <Text style={styles.mainText}>Utförda timmar</Text>
+      <Text style={styles.header}>Utförda timmar</Text>
       <View style={styles.containerMonthAndPaidTime}>
-        <View style={styles.containerTimeAndTextUndre}>
+        <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
         </View>
-        <View style={styles.lineBetween} />
-        <View style={styles.containerTimeAndTextUndre}>
+
+        <View style={styles.lineWrapper}>
+          <View style={styles.line} />
+        </View>
+
+        <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {paidTime}
+            {paidTime} / 8
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>
             Ersatta timmar
@@ -48,28 +52,37 @@ export function TimeStatistics({ timeObject }) {
 }
 export default TimeStatistics;
 const styles = StyleSheet.create({
-  mainText: {
+  header: {
     ...typography.title,
   },
   containerMonthAndPaidTime: {
     backgroundColor: colors.background,
     flexDirection: "row",
-    paddingTop: 20,
-    paddingBottom: 20,
+    paddingVertical: 20,
     justifyContent: "space-evenly",
+    position: "relative",
+  },
+  innerContainerWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textH2ForTime: {
     ...typography.h2,
-    alignSelf: "center",
-    justifyContent: "center",
   },
-  containerTimeAndTextUndre: {
-    justifyContent: "center",
+  lineWrapper: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    paddingVertical: 20,
   },
-  lineBetween: {
-    backgroundColor: colors.primary,
+  line: {
     width: 2.5,
+    alignSelf: "center",
     height: "100%",
+    backgroundColor: colors.primary,
   },
   containerTextTimeForYearPopUp: {
     marginTop: 10,
