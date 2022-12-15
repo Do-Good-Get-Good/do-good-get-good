@@ -13,7 +13,7 @@ const InfoModal = ({ screen, tooltipWidth }) => {
     switch (screen) {
       case "homepage":
         setInfoText(
-          "Du får betalt för halva dina utförda timmar och du kan max få beltalt för 10 timmar"
+          "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år"
         );
         break;
       case "imageGallery":
