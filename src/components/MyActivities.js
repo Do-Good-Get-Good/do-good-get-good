@@ -82,10 +82,10 @@ export const MyActivities = ({ activities }) => {
                 setActivity(myActivity);
                 toggleOverlay();
               }}
+              activeOpacity={0.5}
+              style={styles.shedowForButton}
             >
-              <View style={styles.shedowForButton}>
-                <Text style={styles.läggTid}>Logga tid</Text>
-              </View>
+              <Text style={styles.läggTid}>Logga tid</Text>
             </TouchableOpacity>
           </View>
         ))}
@@ -162,18 +162,7 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   läggTid: {
-    flex: 1,
-    borderRadius: 5,
-    borderWidth: 1,
-    marginVertical: 10,
-    marginHorizontal: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
     fontSize: typography.button.lg.fontSize,
-    textAlign: "center",
-    overflow: "hidden",
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
     color: colors.dark,
     fontWeight: "500",
   },
@@ -184,13 +173,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   shedowForButton: {
+    borderRadius: 5,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
     ...Platform.select({
       ios: {
         shadowOffset: {
-          height: 2,
+          height: 1,
+          width: 1,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
       },
       android: {
         elevation: 2,
