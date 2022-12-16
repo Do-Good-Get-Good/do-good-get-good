@@ -7,8 +7,6 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import auth from "@react-native-firebase/auth";
-import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
@@ -20,48 +18,19 @@ import {
   incrementYearlyTotalHoursForUser,
   updateUsersActivitiesAndAccumulatedTime,
 } from "../customFirebaseHooks/updateFunctions";
-import { streamTimeEntriesForAdmin } from "../customFirebaseHooks/snapshotFunction";
+import useTimeEntriesForAdmin from "../customFirebaseHooks/useTimeEntriesForAdmin";
 
 const ConfirmActivities = () => {
-  const [checkAll, setCheckAll] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [myUsers, setMyUsers] = useState([]);
-  const [snapshot, setSnapshot] = useState(null);
   let userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+
+  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(userData);
+
+  const [checkAll, setCheckAll] = useState(false);
+  const [checked, setChecked] = useState(false);
   const changeUserInfoContext = useChangeUserInfoFunction();
   const inetInfo = useNetInfo();
-
-  useEffect(() => {
-    return streamTimeEntriesForAdmin(auth().currentUser.uid).onSnapshot(
-      (snapshot) => {
-        setSnapshot(null);
-        setCheckAll(false);
-        setChecked(false);
-        setSnapshot(snapshot);
-      },
-      (error) => {
-        console.log(error);
-      }
-    );
-  }, []);
-
-  useEffect(() => {
-    if (snapshot != null && userData.length != 0) {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          addTimeEntry(change);
-        }
-        if (change.type === "modified") {
-          updateTimeEntry(change);
-        }
-        if (change.type === "removed") {
-          removeTimeEntry(change);
-        }
-      });
-    }
-  }, [userData, snapshot]);
 
   useEffect(() => {
     if (
@@ -79,59 +48,6 @@ const ConfirmActivities = () => {
       setMyUsers(newArr);
     }
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
-
-  const addTimeEntry = async (change) => {
-    let fullName;
-
-    for (let i = 0; i < userData.length; i++) {
-      if (userData[i].id === change.doc.data().user_id) {
-        fullName = `${userData[i].first_name} ${userData[i].last_name}`;
-      }
-    }
-
-    var cheackIfThisTimeEntriesAlreadyExist = myUsers.findIndex(
-      (x) => x.timeEntryId === change.doc.id
-    );
-    if (cheackIfThisTimeEntriesAlreadyExist === -1) {
-      const timeEntryData = {
-        userID: change.doc.data().user_id,
-        fullName: fullName,
-        activityID: change.doc.data().activity_id,
-        activityName: change.doc.data().activity_title,
-        timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
-        timeEntryHours: change.doc.data().time,
-        timeEntryId: change.doc.id,
-        checked: false,
-        isOpen: false,
-      };
-
-      setMyUsers((prev) => [...prev, timeEntryData]);
-    }
-  };
-
-  const updateTimeEntry = (change) => {
-    let modifiedMyUsersArray = myUsers.map((user) => {
-      if (user.timeEntryId === change.doc.id) {
-        return {
-          ...user,
-          timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
-          timeEntryHours: change.doc.data().time,
-        };
-      } else {
-        return user;
-      }
-    });
-    setMyUsers(modifiedMyUsersArray);
-  };
-
-  const removeTimeEntry = (change) => {
-    let newUserTimeEntryArray = myUsers.filter((timeEntry) => {
-      if (timeEntry.timeEntryId != change.doc.id) {
-        return timeEntry;
-      }
-    });
-    setMyUsers(newUserTimeEntryArray);
-  };
 
   // Check/uncheck the selected users checkbox
   const markSelected = (selectedUser) => {
