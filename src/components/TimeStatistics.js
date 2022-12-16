@@ -34,7 +34,7 @@ export function TimeStatistics({ timeObject }) {
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {paidTime} / 8
+            {paidTime}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>
             Ersatta timmar
