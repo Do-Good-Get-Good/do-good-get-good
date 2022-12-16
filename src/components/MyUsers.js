@@ -129,10 +129,9 @@ const MyUsers = ({ navigation }) => {
   };
 
   const openSelectedUser = (pressedUser) => {
-    let pressedUserFullName =
-      pressedUser.firstName + " " + pressedUser.lastName;
+    let pressedUserFullName = `${pressedUser.firstName} ${pressedUser.lastName}`;
     const newUsersArr = myUsers.map((user) => {
-      let fullName = user.firstName + " " + user.lastName;
+      let fullName = `${user.firstName} ${user.lastName}`;
       return {
         ...user,
         isOpen: fullName === pressedUserFullName ? !user.isOpen : user.isOpen,
@@ -155,21 +154,22 @@ const MyUsers = ({ navigation }) => {
     }
   };
 
+  const filterUsers = (status) => {
+    return allUsers.filter((user) => {
+      if (user.statusActive === status) {
+        return user;
+      }
+    });
+  };
+
   useEffect(() => {
     if (loadingData) {
-      let arrayWithActiveUsers = allUsers.filter((user) => {
-        if (user.statusActive) {
-          return user;
-        }
-      });
+      let arrayWithActiveUsers = filterUsers(true);
       setActiveUsers(arrayWithActiveUsers);
 
-      let arrayWithInactiveUsers = allUsers.filter((user) => {
-        if (!user.statusActive) {
-          return user;
-        }
-      });
+      let arrayWithInactiveUsers = filterUsers(false);
       setInactiveUsers(arrayWithInactiveUsers);
+
       setLoadingData(false);
     }
   }, [allUsers, loadingData]);
