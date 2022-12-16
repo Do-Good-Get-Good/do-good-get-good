@@ -68,17 +68,15 @@ const ConfirmActivities = () => {
       changeUserInfoContext.reloadAfterUserNameChanged &&
       changeUserInfoContext.newChangesInUserInfo.userID != 0
     ) {
-      let oldArray = myUsers;
-      var index = oldArray.findIndex(
-        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
-      );
-      if (index != -1) {
-        oldArray[index].fullName =
-          changeUserInfoContext.newChangesInUserInfo.userFirstName +
-          " " +
-          changeUserInfoContext.newChangesInUserInfo.userLastName;
-      }
-      setMyUsers(oldArray);
+      const updatedUser = changeUserInfoContext.newChangesInUserInfo;
+      let newArr = myUsers.map((user) => {
+        if (user.userID !== updatedUser.userID) return user;
+        return {
+          ...user,
+          fullName: `${updatedUser.userFirstName} ${updatedUser.userLastName}`,
+        };
+      });
+      setMyUsers(newArr);
     }
   }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
