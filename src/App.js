@@ -13,7 +13,7 @@ import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
 
-import { Mystack } from "./navigate";
+import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 
 import Login from "./components/Login";
 import BottomLogo from "./components/BottomLogo";
@@ -68,7 +68,7 @@ export default function App() {
                 <UserLevelProvider>
                   <SuperAdminProvider>
                     <AdminHomePageProvider>
-                      <Mystack />
+                      <SuperAdminStack />
                     </AdminHomePageProvider>
                   </SuperAdminProvider>
                 </UserLevelProvider>
@@ -88,7 +88,7 @@ export default function App() {
               <CreateActivityProvider>
                 <UserLevelProvider>
                   <AdminHomePageProvider>
-                    <Mystack />
+                    <AdminStack />
                   </AdminHomePageProvider>
                 </UserLevelProvider>
               </CreateActivityProvider>
@@ -100,15 +100,9 @@ export default function App() {
   } else if (userClaims.user) {
     return (
       <SafeAreaProvider>
-        <ActivityCardProvider>
-          <AdminGalleryProvider>
-            <CreateActivityProvider>
-              <UserLevelProvider>
-                <Mystack />
-              </UserLevelProvider>
-            </CreateActivityProvider>
-          </AdminGalleryProvider>
-        </ActivityCardProvider>
+        <UserLevelProvider>
+          <UserStack />
+        </UserLevelProvider>
       </SafeAreaProvider>
     );
   } else {
