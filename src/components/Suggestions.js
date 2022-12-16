@@ -202,12 +202,6 @@ export function Suggestions({
 export default Suggestions;
 
 const styles = StyleSheet.create({
-  topH1: {
-    ...typography.title,
-    flex: 1,
-    color: colors.dark,
-    marginTop: 10,
-  },
   testNoMatchInSearBar: {
     ...typography.b2,
     textAlign: "center",

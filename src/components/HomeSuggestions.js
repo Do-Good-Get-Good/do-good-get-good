@@ -99,18 +99,6 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
 export default HomeSuggestions;
 
 const styles = StyleSheet.create({
-  topH1: {
-    ...typography.title,
-    flex: 1,
-    color: colors.dark,
-    marginTop: 10,
-  },
-  testNoMatchInSearBar: {
-    ...typography.b2,
-    textAlign: "center",
-    marginTop: 20,
-    color: colors.dark,
-  },
   activityContainer: {
     flex: 1,
     marginTop: 5,
