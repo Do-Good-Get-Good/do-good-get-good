@@ -191,7 +191,9 @@ export function Suggestions({
     <>
       {(useCreateActivityContext.searchWordHasNoMatch ||
         adminGalleryContext.searchWordHasNoMatch) && (
-        <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
+        <Text style={styles.testNoMatchInSearBar}>
+          Din sökning gav inga resultat.
+        </Text>
       )}
       {whichArrayToShow()}
     </>
@@ -209,7 +211,7 @@ const styles = StyleSheet.create({
   testNoMatchInSearBar: {
     ...typography.b2,
     textAlign: "center",
-    marginTop: 20,
+    marginVertical: 20,
     color: colors.dark,
   },
   activityContainer: {
