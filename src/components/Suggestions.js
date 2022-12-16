@@ -9,7 +9,6 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -20,18 +19,15 @@ import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 export function Suggestions({
   navigation,
-  suggestions,
   adminGallery,
   inactiveActivities,
   choiceFromDropDown,
 }) {
-  const rout = useRoute();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
-
   const adminGalleryContext = useAdminGalleryFunction();
-  const [showArray, setShowArray] = useState([]);
 
+  const [showArray, setShowArray] = useState([]);
   const [showActiveArray, setShowActiveArray] = useState(true);
 
   useEffect(() => {
@@ -39,22 +35,12 @@ export function Suggestions({
   }, [adminGalleryContext.activeOrInactiveActivity]);
 
   useEffect(() => {
-    if (rout.name === "HomePage") {
-      setShowArray(sortingByTitle(suggestions));
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      showActiveArray === false
-    ) {
+    if (showActiveArray === false) {
       setShowArray(sortingByTitle(inactiveActivities));
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      showActiveArray === true
-    ) {
+    } else if (showActiveArray === true) {
       setShowArray(sortingByTitle(adminGallery));
-    } else {
-      console.log("Nothing to show in AdminGallery");
     }
-  }, [suggestions, adminGallery, rout, inactiveActivities, showActiveArray]);
+  }, [adminGallery, inactiveActivities, showActiveArray]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -66,19 +52,12 @@ export function Suggestions({
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
-    rout.name === "HomePage"
-      ? navigation.navigate("ActivityCard", {
-          admin: false,
-          activityInfo: activety,
-          active: statusActive,
-          tgPopular: statusPopular,
-        })
-      : navigation.navigate("ActivityCard", {
-          admin: true,
-          activityInfo: activety,
-          active: statusActive,
-          tgPopular: statusPopular,
-        });
+    navigation.navigate("ActivityCard", {
+      admin: true,
+      activityInfo: activety,
+      active: statusActive,
+      tgPopular: statusPopular,
+    });
   }
 
   useEffect(() => {

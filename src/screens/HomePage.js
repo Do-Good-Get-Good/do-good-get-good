@@ -7,7 +7,7 @@ import Menu from "../components/Menu";
 import TimeStatistics from "../components/TimeStatistics";
 import { MyActivities } from "../components/MyActivities";
 import NewestTimeEntries from "../components/NewestTimeEntries";
-import { Suggestions } from "../components/Suggestions";
+import HomeSuggestions from "../components/HomeSuggestions";
 import BottomLogo from "../components/BottomLogo";
 
 import typography from "../assets/theme/typography";
@@ -42,7 +42,7 @@ export const HomePage = ({ navigation }) => {
             style={{ marginTop: 10 }}
           />
         )}
-        <Suggestions suggestions={suggestions} navigation={navigation} />
+        <HomeSuggestions suggestions={suggestions} navigation={navigation} />
 
         <BottomLogo />
       </ScrollView>
