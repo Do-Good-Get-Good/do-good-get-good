@@ -204,6 +204,6 @@ describe("Testing Suggestions", () => {
         choiceFromDropDown={"Namn"}
       />
     );
-    expect(getAllByText("Inga resultat").length).toBe(1);
+    expect(getAllByText("Din sökning gav inga resultat.").length).toBe(1);
   });
 });
