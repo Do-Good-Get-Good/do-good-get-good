@@ -7,7 +7,7 @@ import { AdminActivityGallery } from "./screens/AdminActivityGallery";
 import { CreateActivity } from "./screens/CreateActivity";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
-import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
+import CreateUser from "./screens/CreateUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
 import RolesAndConnection from "./screens/RolesAndConnection";
@@ -38,10 +38,7 @@ export const SuperAdminStack = () => {
         <Stack.Screen name="CreateActivity" component={CreateActivity} />
         <Stack.Screen name="ActivityCard" component={ActivityCard} />
         <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
-        <Stack.Screen
-          name="CreateOrChangeUser"
-          component={CreateOrChangeUser}
-        />
+        <Stack.Screen name="CreateUser" component={CreateUser} />
         <Stack.Screen name="Faq" component={Faq} />
         <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />

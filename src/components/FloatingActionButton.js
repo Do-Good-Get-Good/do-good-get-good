@@ -42,9 +42,7 @@ const FloatingActionButton = ({}) => {
               style={styles.buttonStyle}
               onPress={() => {
                 setIsOpen(false);
-                navigation.navigate("CreateOrChangeUser", {
-                  createNewUser: true,
-                });
+                navigation.navigate("CreateUser");
               }}
             >
               <Text style={styles.buttonText}>Lägg till användare</Text>
