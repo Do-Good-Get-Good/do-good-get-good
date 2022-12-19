@@ -15,27 +15,14 @@ import colors from "../assets/theme/colors";
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
 
-const UserForm = ({
-  userLevel,
-  name,
-  setName,
-  surname,
-  setSurname,
-  email,
-  setEmail,
-  password,
-  setPassword,
-  role,
-  setRole,
-  nextPage,
-}) => {
+const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   const navigation = useNavigation();
 
   const [expanded, setExpanded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [placeholder, setPlaceholder] = useState(
-    role === null ? "Behörighet" : role
+    user.role === null ? "Behörighet" : user.role
   );
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [passwordFilledUp, setPasswordFilledUp] = useState(null);
@@ -49,57 +36,57 @@ const UserForm = ({
   const ref_input3 = useRef();
 
   useEffect(() => {
-    if (name != null) {
-      if (name != "" && name.trim()) {
+    if (user.name != null) {
+      if (user.name != "" && user.name.trim()) {
         setNameFilledUp(true);
       } else {
         setNameFilledUp(false);
       }
     }
-  }, [name]);
+  }, [user.name]);
 
   useEffect(() => {
-    if (surname != null) {
-      if (surname != "" && surname.trim()) {
+    if (user.surname != null) {
+      if (user.surname != "" && user.surname.trim()) {
         setSurnameFilledUp(true);
       } else {
         setSurnameFilledUp(false);
       }
     }
-  }, [surname]);
+  }, [user.surname]);
 
   useEffect(() => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
-    if (email != null) {
-      if (email != "" && email.trim()) {
+    if (user.email != null) {
+      if (user.email != "" && user.email.trim()) {
         setEmailFilledUp(true);
       } else {
         setEmailFilledUp(false);
       }
 
-      if (reg.test(email) === false) {
+      if (reg.test(user.email) === false) {
         setInvalidEmail(true);
       } else {
         setInvalidEmail(false);
       }
     }
-  }, [email]);
+  }, [user.email]);
 
   useEffect(() => {
-    if (password != null) {
-      if (password.length < 6) {
+    if (user.password != null) {
+      if (user.password.length < 6) {
         setInvalidPassword(true);
       } else {
         setInvalidPassword(false);
       }
-      if (password != "" && password.trim()) {
+      if (user.password != "" && user.password.trim()) {
         setPasswordFilledUp(true);
       } else {
         setPasswordFilledUp(false);
       }
     }
-  }, [password]);
+  }, [user.password]);
 
   useEffect(() => {
     if (userLevel === "admin") {
@@ -127,10 +114,10 @@ const UserForm = ({
     ) {
       return true;
     } else {
-      if (name === null) setNameFilledUp(false);
-      if (surname === null) setSurnameFilledUp(false);
-      if (email === null) setEmailFilledUp(false);
-      if (password === null) setPasswordFilledUp(false);
+      if (user.name === null) setNameFilledUp(false);
+      if (user.surname === null) setSurnameFilledUp(false);
+      if (user.email === null) setEmailFilledUp(false);
+      if (user.password === null) setPasswordFilledUp(false);
       if (placeholder === "Behörighet") setPlaceholderFilledUp(false);
       return false;
     }
@@ -146,8 +133,8 @@ const UserForm = ({
         <TextInput
           style={[styles.input, styles.dropdownShadow]}
           maxLength={30}
-          onChangeText={setName}
-          value={name}
+          onChangeText={(text) => setUser({ ...user, name: text })}
+          value={user.name}
           placeholder="Förnamn"
           placeholderTextColor={colors.dark}
           returnKeyType="next"
@@ -159,8 +146,8 @@ const UserForm = ({
         <TextInput
           style={[styles.input, styles.dropdownShadow]}
           maxLength={30}
-          onChangeText={setSurname}
-          value={surname}
+          onChangeText={(text) => setUser({ ...user, surname: text })}
+          value={user.surname}
           placeholder="Efternamn"
           placeholderTextColor={colors.dark}
           ref={ref_input1}
@@ -175,8 +162,8 @@ const UserForm = ({
           textContentType={"emailAddress"}
           keyboardType={"email-address"}
           maxLength={100}
-          onChangeText={setEmail}
-          value={email}
+          onChangeText={(text) => setUser({ ...user, email: text })}
+          value={user.email}
           placeholder="E-mail"
           placeholderTextColor={colors.dark}
           ref={ref_input2}
@@ -197,8 +184,8 @@ const UserForm = ({
           <TextInput
             style={[styles.input, styles.dropdownShadow]}
             maxLength={30}
-            onChangeText={setPassword}
-            value={password}
+            onChangeText={(text) => setUser({ ...user, password: text })}
+            value={user.password}
             placeholder="Lösenord"
             placeholderTextColor={colors.dark}
             ref={ref_input3}
@@ -256,7 +243,10 @@ const UserForm = ({
                     key={index}
                     onPress={() => {
                       setPlaceholder(role);
-                      setRole(role.toLowerCase().replace(" ", ""));
+                      setUser({
+                        ...user,
+                        role: role.toLowerCase().replace(" ", ""),
+                      });
                       setExpanded(false);
                     }}
                   >

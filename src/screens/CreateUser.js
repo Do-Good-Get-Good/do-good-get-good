@@ -20,11 +20,13 @@ const CreateUser = ({ route, navigation }) => {
   const createActivityContext = useCreateActivityFunction();
 
   // Step 1
-  const [name, setName] = useState(null);
-  const [surname, setSurname] = useState(null);
-  const [email, setEmail] = useState(null);
-  const [password, setPassword] = useState(null);
-  const [role, setRole] = useState(null);
+  const [user, setUser] = useState({
+    name: null,
+    surname: null,
+    email: null,
+    password: null,
+    role: null,
+  });
 
   // Step 2
   const [title, setTitle] = useState("");
@@ -39,16 +41,8 @@ const CreateUser = ({ route, navigation }) => {
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
     <UserForm
       userLevel={userLevel}
-      name={name}
-      setName={setName}
-      surname={surname}
-      setSurname={setSurname}
-      email={email}
-      setEmail={setEmail}
-      password={password}
-      setPassword={setPassword}
-      role={role}
-      setRole={setRole}
+      user={user}
+      setUser={setUser}
       nextPage={handleNextPage}
     />,
     <CreateActivity
@@ -103,11 +97,11 @@ const CreateUser = ({ route, navigation }) => {
         activity_title: title,
         tg_favorite: checkBoxPressed,
         newUserInfo: {
-          firstName: name,
-          lastName: surname,
-          email: email,
-          password: password,
-          role: role,
+          firstName: user.name,
+          lastName: user.surname,
+          email: user.email,
+          password: user.password,
+          role: user.role,
         },
       };
       createActivityContext.createNewActivityAndUser(newActivityAndUser);
@@ -118,11 +112,11 @@ const CreateUser = ({ route, navigation }) => {
     var createUser = functions().httpsCallable("createUser");
     try {
       let res = await createUser({
-        firstName: name,
-        lastName: surname,
-        email: email,
-        password: password,
-        role: role,
+        firstName: user.name,
+        lastName: user.surname,
+        email: user.email,
+        password: user.password,
+        role: user.role,
         activityId: selectedActivity.id,
       });
 
