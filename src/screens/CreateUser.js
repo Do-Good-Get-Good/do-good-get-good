@@ -1,32 +1,40 @@
-import React, { useState } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  ScrollView,
-  TouchableOpacity,
-} from "react-native";
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, View } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
+import UserForm from "../components/UserForm";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import { useMultistepPage } from "../hooks/useMultistepPage";
-import UserForm from "../components/UserForm";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
-import typography from "../assets/theme/typography";
-import BottomNavButtons from "../components/BottomNavButtons";
+import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
-const CreateUser = ({ navigation }) => {
+import { useMultistepPage } from "../hooks/useMultistepPage";
+
+import typography from "../assets/theme/typography";
+import CreateActivity from "../components/CreateActivity";
+
+const CreateUser = ({ route, navigation }) => {
   const userLevel = useUserLevelCheckFunction();
   const createActivityContext = useCreateActivityFunction();
 
+  // Step 1
   const [name, setName] = useState(null);
   const [surname, setSurname] = useState(null);
   const [email, setEmail] = useState(null);
   const [password, setPassword] = useState(null);
   const [role, setRole] = useState(null);
+
+  // Step 2
+  const [title, setTitle] = useState("");
+  const [place, setPlace] = useState("");
+  const [city, setCity] = useState("");
+  const [description, setDescription] = useState("");
+  const [checkBoxPressed, setCheckBoxPressed] = useState(false);
+  const [selectedImage, setSelectedImage] = useState();
+  const [selectedActivity, setSelectedActivity] = useState(null);
+  const setUserData = useAdminHomePageFunction().setUserData;
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
     <UserForm
@@ -43,18 +51,31 @@ const CreateUser = ({ navigation }) => {
       setRole={setRole}
       nextPage={handleNextPage}
     />,
-    <View style={{ flex: 1 }}>
-      <View style={{ flex: 1 }} />
-      <BottomNavButtons
-        primaryText="Spara"
-        secondaryText="Tillbaka"
-        primaryFunc={() => {}}
-        secondaryFunc={() => {
-          handleGoBack();
-        }}
-      />
-    </View>,
+    <CreateActivity
+      title={title}
+      setTitle={setTitle}
+      place={place}
+      setPlace={setPlace}
+      city={city}
+      setCity={setCity}
+      description={description}
+      setDescription={setDescription}
+      checkBoxPressed={checkBoxPressed}
+      setCheckBoxPressed={setCheckBoxPressed}
+      selectedImage={selectedImage}
+      selectedActivity={selectedActivity}
+      setSelectedActivity={setSelectedActivity}
+      goBack={handleGoBack}
+    />,
   ]);
+
+  useEffect(() => {
+    if (route.params?.imageForActivity === undefined) {
+      setSelectedImage("symbol_hands_heart-DEFAULT");
+    } else {
+      setSelectedImage(route.params?.imageForActivity);
+    }
+  }, [route.params?.imageForActivity]);
 
   function handleNextPage() {
     next();
@@ -64,13 +85,128 @@ const CreateUser = ({ navigation }) => {
     back();
   }
 
+  function createUserAndNewActivity() {
+    if (
+      title != " " &&
+      city != " " &&
+      place != " " &&
+      title.trim() &&
+      city.trim() &&
+      place.trim()
+    ) {
+      let newActivityAndUser = {
+        active_status: true,
+        activity_city: city,
+        activity_description: description,
+        activity_photo: selectedImage,
+        activity_place: place,
+        activity_title: title,
+        tg_favorite: checkBoxPressed,
+        newUserInfo: {
+          firstName: name,
+          lastName: surname,
+          email: email,
+          password: password,
+          role: role,
+        },
+      };
+      createActivityContext.createNewActivityAndUser(newActivityAndUser);
+    }
+  }
+
+  async function createUserAndLinkSelectedActivity() {
+    var createUser = functions().httpsCallable("createUser");
+    try {
+      let res = await createUser({
+        firstName: name,
+        lastName: surname,
+        email: email,
+        password: password,
+        role: role,
+        activityId: selectedActivity.id,
+      });
+
+      let newUser = res.data.createdUser;
+      console.log(res);
+
+      // Save new user locally
+      setUserData((prev) => [...prev, newUser]);
+
+      setLoading(false);
+
+      alertUser(
+        `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`
+      );
+    } catch (error) {
+      let message = "Error";
+      setLoading(false);
+      if (error === "auth/email-already-exists") {
+        message = `Användaren '${email}' kunde inte skapas, en användare med den adressen finns redan`;
+      } else {
+        message = `Kunde inte skapa användare med epost '${email}', error '${error.message}'`;
+      }
+      alertUser(message);
+    } finally {
+    }
+  }
+
+  function alertUser(message) {
+    Alert.alert("Skapa användare", message, [
+      {
+        text: "OK",
+        onPress: () => {
+          navigation.navigate("AdminPage");
+        },
+      },
+    ]);
+  }
+
+  function alertPopUp(onlyActivityCreated, newUser) {
+    let alertTitle = "";
+    let alertMessage = "";
+
+    if (onlyActivityCreated) {
+      alertTitle = "Skapa aktivitet";
+      alertMessage = `Aktiviteten '${title}' har skapats!`;
+    } else {
+      alertTitle = "Skapa aktivitet och användare";
+      alertMessage = `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`;
+    }
+
+    Alert.alert(alertTitle, alertMessage, [
+      {
+        text: "OK",
+        onPress: () => {
+          setTitle("");
+          setPlace("");
+          setCity("");
+          setDescription("");
+          setCheckBoxPressed(false);
+          navigation.navigate("HomePage");
+        },
+      },
+    ]);
+  }
+
+  function headerTitle() {
+    switch (currentStepIndex) {
+      case 0:
+        return "Skapa användare";
+      case 1:
+        return "Koppla aktivitet till användaren";
+    }
+  }
+
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <View style={styles.headerWrapper}>
-        <Text style={styles.header}>Skapa användare</Text>
-        <Text style={styles.pageNumber}>
-          {currentStepIndex + 1}/{steps.length}
+        <Text style={styles.header}>
+          {headerTitle()}
+          <Text style={styles.pageNumber}>
+            {"  "}
+            {currentStepIndex + 1}/{steps.length}
+          </Text>
         </Text>
       </View>
       {step}
@@ -83,18 +219,19 @@ export default CreateUser;
 const styles = StyleSheet.create({
   headerWrapper: {
     flexDirection: "row",
+    flexWrap: "wrap",
     alignItems: "baseline",
     marginVertical: 16,
     marginHorizontal: 16,
   },
   header: {
-    fontFamily: typography.title.fontFamily,
-    fontSize: typography.title.fontSize,
+    fontFamily: typography.h2.fontFamily,
+    fontSize: typography.h2.fontSize,
+    lineHeight: 35,
   },
   pageNumber: {
-    marginLeft: 10,
     fontFamily: typography.b1.fontFamily,
-    fontSize: typography.b1.fontSize,
+    fontSize: typography.b1.fontSize + 1,
   },
   contentWrapper: {
     marginHorizontal: 16,

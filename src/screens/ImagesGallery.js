@@ -53,7 +53,7 @@ export function ImagesGallery({ navigation, route }) {
 
   const buttonSavePressed = () => {
     if (route.params?.cameFrom === "CreateActivity") {
-      navigation.navigate("CreateActivity", {
+      navigation.navigate("CreateUser", {
         imageForActivity: imageName,
       });
     }
