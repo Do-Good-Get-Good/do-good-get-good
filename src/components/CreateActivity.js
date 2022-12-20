@@ -22,17 +22,8 @@ import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
 
 export function CreateActivity({
-  title,
-  setTitle,
-  place,
-  setPlace,
-  city,
-  setCity,
-  description,
-  setDescription,
-  checkBoxPressed,
-  setCheckBoxPressed,
-  selectedImage,
+  activity,
+  setActivity,
   selectedActivity,
   setSelectedActivity,
   goBack,
@@ -42,14 +33,13 @@ export function CreateActivity({
   const { activeActivities } = createActivityContext;
 
   const [expanded, setExpanded] = useState(false);
-
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
 
   function setImageForNewActivity() {
     for (let index = 0; index < Images.length; index++) {
-      if (selectedImage === Images[index].name) {
+      if (activity.image === Images[index].name) {
         return Images[index].image;
       }
     }
@@ -64,19 +54,19 @@ export function CreateActivity({
   }
 
   function validateInputs() {
-    if (title != " " && title.trim()) {
+    if (activity.title != " " && activity.title.trim()) {
       setTitleFilledUp(true);
     } else {
       setTitleFilledUp(false);
     }
 
-    if (city != " " && city.trim()) {
+    if (activity.city != " " && activity.city.trim()) {
       setCityFilledUp(true);
     } else {
       setCityFilledUp(false);
     }
 
-    if (place != " " && place.trim()) {
+    if (activity.place != " " && activity.place.trim()) {
       setPlaceFilledUp(true);
     } else {
       setPlaceFilledUp(false);
@@ -119,14 +109,14 @@ export function CreateActivity({
     };
   };
 
-  const CreateNewActivity = () => {
+  const createNewActivity = () => {
     return (
       <>
         <TextInput
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
-          onChangeText={setTitle}
-          value={title}
+          onChangeText={(text) => setActivity({ ...activity, title: text })}
+          value={activity.title}
           placeholder="Aktivitet"
           placeholderTextColor={colors.dark}
         />
@@ -134,33 +124,35 @@ export function CreateActivity({
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
         ) : null}
         <TextInput
-          style={[titleCityPlaceStyle(), placeBorderStyle()]}
-          maxLength={30}
-          onChangeText={setCity}
-          value={city}
-          placeholder="Var"
-          placeholderTextColor={colors.dark}
-        />
-        {placeFilledUp === false ? (
-          <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
-        <TextInput
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
-          onChangeText={setPlace}
-          value={place}
-          placeholder="Aktör"
+          onChangeText={(text) => setActivity({ ...activity, city: text })}
+          value={activity.city}
+          placeholder="Var"
           placeholderTextColor={colors.dark}
         />
         {cityFilledUp === false ? (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
         ) : null}
         <TextInput
+          style={[titleCityPlaceStyle(), placeBorderStyle()]}
+          maxLength={30}
+          onChangeText={(text) => setActivity({ ...activity, place: text })}
+          value={activity.place}
+          placeholder="Aktör"
+          placeholderTextColor={colors.dark}
+        />
+        {placeFilledUp === false ? (
+          <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+        ) : null}
+        <TextInput
           style={[styles.textInputDescription, styles.shadow]}
           numberOfLines={5}
           multiline={true}
-          onChangeText={setDescription}
-          value={description}
+          onChangeText={(text) =>
+            setActivity({ ...activity, description: text })
+          }
+          value={activity.description}
           placeholder="Vad"
           placeholderTextColor={colors.dark}
         />
@@ -193,9 +185,11 @@ export function CreateActivity({
           <Text style={styles.textNearCheckBox}>Lägg till som TG-favorit</Text>
           <TouchableOpacity
             testID="buttonSomTGFavorit"
-            onPress={() => setCheckBoxPressed(!checkBoxPressed)}
+            onPress={() =>
+              setActivity({ ...activity, favorite: !activity.favorite })
+            }
           >
-            {checkBoxPressed ? (
+            {activity.favorite ? (
               <View style={styles.checkBoxTrue}>
                 <Icon name="done" size={20}></Icon>
               </View>
@@ -306,7 +300,7 @@ export function CreateActivity({
       >
         <DropDown />
 
-        {selectedActivity === "create-new" && <CreateNewActivity />}
+        {selectedActivity === "create-new" && createNewActivity()}
 
         {selectedActivity !== "create-new" && selectedActivity !== null && (
           <AddExistingActivity />
@@ -316,7 +310,7 @@ export function CreateActivity({
         primaryText="Spara"
         secondaryText="Tillbaka"
         primaryFunc={() => {
-          // validateInputs();
+          validateInputs();
         }}
         secondaryFunc={() => {
           goBack();

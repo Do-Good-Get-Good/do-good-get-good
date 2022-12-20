@@ -29,12 +29,14 @@ const CreateUser = ({ route, navigation }) => {
   });
 
   // Step 2
-  const [title, setTitle] = useState("");
-  const [place, setPlace] = useState("");
-  const [city, setCity] = useState("");
-  const [description, setDescription] = useState("");
-  const [checkBoxPressed, setCheckBoxPressed] = useState(false);
-  const [selectedImage, setSelectedImage] = useState();
+  const [activity, setActivity] = useState({
+    title: null,
+    place: null,
+    city: null,
+    description: null,
+    favorite: false,
+    image: null,
+  });
   const [selectedActivity, setSelectedActivity] = useState(null);
   const setUserData = useAdminHomePageFunction().setUserData;
 
@@ -46,17 +48,8 @@ const CreateUser = ({ route, navigation }) => {
       nextPage={handleNextPage}
     />,
     <CreateActivity
-      title={title}
-      setTitle={setTitle}
-      place={place}
-      setPlace={setPlace}
-      city={city}
-      setCity={setCity}
-      description={description}
-      setDescription={setDescription}
-      checkBoxPressed={checkBoxPressed}
-      setCheckBoxPressed={setCheckBoxPressed}
-      selectedImage={selectedImage}
+      activity={activity}
+      setActivity={setActivity}
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
       goBack={handleGoBack}
@@ -65,9 +58,9 @@ const CreateUser = ({ route, navigation }) => {
 
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
-      setSelectedImage("symbol_hands_heart-DEFAULT");
+      setActivity({ ...activity, image: "symbol_hands_heart-DEFAULT" });
     } else {
-      setSelectedImage(route.params?.imageForActivity);
+      setActivity({ ...activity, image: route.params?.imageForActivity });
     }
   }, [route.params?.imageForActivity]);
 
