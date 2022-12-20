@@ -308,8 +308,7 @@ const MyUsers = ({ navigation }) => {
                             size={25}
                             containerStyle={styles.editUserIcon}
                             onPress={() =>
-                              navigation.navigate("CreateOrChangeUser", {
-                                createNewUser: false,
+                              navigation.navigate("ChangeUser", {
                                 userName: user.firstName,
                                 userSurname: user.lastName,
                                 statusActive: user.statusActive,
