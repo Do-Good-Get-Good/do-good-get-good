@@ -51,9 +51,9 @@ export const ChangeUser = ({ route, navigation }) => {
 
   nameSurnameStyle = function () {
     return {
-      paddingVertical: 13,
-      paddingLeft: 11,
-      marginTop: 9,
+      paddingVertical: 16,
+      paddingLeft: 12,
+      marginTop: 10,
       width: "100%",
       fontSize: typography.b1.fontSize,
       fontFamily: typography.b1.fontFamily,
@@ -68,7 +68,7 @@ export const ChangeUser = ({ route, navigation }) => {
           shadowRadius: 1,
         },
         android: {
-          elevation: 1,
+          elevation: 2,
         },
       }),
     };
@@ -108,51 +108,51 @@ export const ChangeUser = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <View style={{ flex: 1 }}>
-        <View style={styles.container}>
-          <View style={styles.titleContainer}>
-            <Text style={styles.textMainTitle}>Ändra användare</Text>
-          </View>
+      <View style={styles.container}>
+        <Text style={styles.textMainTitle}>Ändra användare</Text>
 
-          <TextInput
-            style={[nameSurnameStyle(), nameBorderStyle()]}
-            maxLength={30}
-            onChangeText={setName}
-            value={name}
-            placeholder="Förnamn"
-            placeholderTextColor={colors.dark}
-            returnKeyType="next"
-            onSubmitEditing={() => ref_input1.current.focus()}
-          />
-          {nameFilledUp === false && (
-            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-          )}
-          <TextInput
-            style={[nameSurnameStyle(), surnameBorderStyle()]}
-            maxLength={30}
-            onChangeText={setSurname}
-            value={surname}
-            placeholder="Efternamn"
-            placeholderTextColor={colors.dark}
-            ref={ref_input1}
-            returnKeyType={"send"}
-            onSubmitEditing={() => {
-              buttonSavePressed();
-            }}
-          />
-          {surnameFilledUp === false && (
-            <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-          )}
-          <TouchableOpacity
-            style={{ marginTop: 10 }}
-            onPress={() => setUserStatusActive(!userStatusActive)}
-          >
-            <Text style={styles.textChangeStatusActive}>
-              {userStatusActive ? "Inaktivera användare" : "Aktivera användare"}
-            </Text>
-          </TouchableOpacity>
-        </View>
+        <TextInput
+          style={[nameSurnameStyle(), nameBorderStyle()]}
+          maxLength={30}
+          onChangeText={setName}
+          value={name}
+          placeholder="Förnamn"
+          placeholderTextColor={colors.dark}
+          returnKeyType="next"
+          onSubmitEditing={() => ref_input1.current.focus()}
+        />
+        {nameFilledUp === false && (
+          <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+        )}
+        <TextInput
+          style={[nameSurnameStyle(), surnameBorderStyle()]}
+          maxLength={30}
+          onChangeText={setSurname}
+          value={surname}
+          placeholder="Efternamn"
+          placeholderTextColor={colors.dark}
+          ref={ref_input1}
+          returnKeyType={"send"}
+          onSubmitEditing={() => {
+            buttonSavePressed();
+          }}
+        />
+        {surnameFilledUp === false && (
+          <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
+        )}
+        <TouchableOpacity
+          style={{
+            marginTop: 10,
+            alignSelf: "flex-start",
+          }}
+          onPress={() => setUserStatusActive(!userStatusActive)}
+        >
+          <Text style={styles.textChangeStatusActive}>
+            {userStatusActive ? "Inaktivera användare" : "Aktivera användare"}
+          </Text>
+        </TouchableOpacity>
       </View>
+
       <BottomNavButtons
         primaryText="Spara"
         secondaryText="Avbryt"
@@ -167,6 +167,7 @@ export default ChangeUser;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     paddingHorizontal: 16,
     paddingTop: 16,
   },
@@ -175,9 +176,11 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     marginBottom: 10,
     color: colors.dark,
-  },
-  titleContainer: {
-    flexDirection: "row",
+    ...Platform.select({
+      ios: {
+        paddingTop: 12,
+      },
+    }),
   },
   warningAboutRequired: {
     color: colors.error,
