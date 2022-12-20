@@ -1,12 +1,11 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, Dimensions } from "react-native";
+import { Text, StyleSheet, View } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Dialog } from "react-native-elements";
-
 import Menu from "../components/Menu";
 import UserForm from "../components/UserForm";
+import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
@@ -16,7 +15,6 @@ import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useMultistepPage } from "../hooks/useMultistepPage";
 
 import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
 
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
@@ -142,11 +140,7 @@ const CreateUser = ({ route, navigation }) => {
         </Text>
       </View>
       {step}
-      {loading && (
-        <View style={styles.loadingOverlay}>
-          <Dialog.Loading loadingProps={{ color: colors.primary }} />
-        </View>
-      )}
+      {loading && <LoadingOverlay />}
     </SafeAreaView>
   );
 };
@@ -172,14 +166,5 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     marginHorizontal: 16,
-  },
-  loadingOverlay: {
-    position: "absolute",
-    height: Dimensions.get("screen").height,
-    width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#000000",
-    opacity: 0.6,
   },
 });
