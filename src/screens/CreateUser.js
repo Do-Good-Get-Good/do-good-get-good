@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View } from "react-native";
+import { Text, StyleSheet, View, Dimensions } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import { Dialog } from "react-native-elements";
+
 import Menu from "../components/Menu";
 import UserForm from "../components/UserForm";
+import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
@@ -13,11 +16,17 @@ import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useMultistepPage } from "../hooks/useMultistepPage";
 
 import typography from "../assets/theme/typography";
-import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
+import colors from "../assets/theme/colors";
+
+import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
+import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 
 const CreateUser = ({ route, navigation }) => {
   const userLevel = useUserLevelCheckFunction();
-  const createActivityContext = useCreateActivityFunction();
+  const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
+  const { setUserData, setNewUser } = useAdminHomePageFunction();
+
+  const [loading, setLoading] = useState(false);
 
   // Step 1
   const [user, setUser] = useState({
@@ -30,15 +39,14 @@ const CreateUser = ({ route, navigation }) => {
 
   // Step 2
   const [activity, setActivity] = useState({
-    title: null,
-    place: null,
-    city: null,
-    description: null,
+    title: "",
+    place: "",
+    city: "",
+    description: "",
     favorite: false,
-    image: null,
+    image: "",
   });
   const [selectedActivity, setSelectedActivity] = useState(null);
-  const setUserData = useAdminHomePageFunction().setUserData;
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
     <UserForm
@@ -53,6 +61,8 @@ const CreateUser = ({ route, navigation }) => {
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
       goBack={handleGoBack}
+      createUserAndNewActivity={handleCreateUserAndNewActivity}
+      createUserAndLinkSelectedActivity={handleCreateUser}
     />,
   ]);
 
@@ -72,107 +82,42 @@ const CreateUser = ({ route, navigation }) => {
     back();
   }
 
-  function createUserAndNewActivity() {
-    if (
-      title != " " &&
-      city != " " &&
-      place != " " &&
-      title.trim() &&
-      city.trim() &&
-      place.trim()
-    ) {
-      let newActivityAndUser = {
-        active_status: true,
-        activity_city: city,
-        activity_description: description,
-        activity_photo: selectedImage,
-        activity_place: place,
-        activity_title: title,
-        tg_favorite: checkBoxPressed,
-        newUserInfo: {
-          firstName: user.name,
-          lastName: user.surname,
-          email: user.email,
-          password: user.password,
-          role: user.role,
-        },
-      };
-      createActivityContext.createNewActivityAndUser(newActivityAndUser);
-    }
+  function handleCreateUser() {
+    createUserAndLinkSelectedActivity(
+      user,
+      selectedActivity,
+      setLoading,
+      setUserData,
+      setNewUser
+    );
   }
 
-  async function createUserAndLinkSelectedActivity() {
-    var createUser = functions().httpsCallable("createUser");
-    try {
-      let res = await createUser({
-        firstName: user.name,
-        lastName: user.surname,
-        email: user.email,
-        password: user.password,
-        role: user.role,
-        activityId: selectedActivity.id,
-      });
-
-      let newUser = res.data.createdUser;
-      console.log(res);
-
-      // Save new user locally
-      setUserData((prev) => [...prev, newUser]);
-
-      setLoading(false);
-
-      alertUser(
-        `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`
-      );
-    } catch (error) {
-      let message = "Error";
-      setLoading(false);
-      if (error === "auth/email-already-exists") {
-        message = `Användaren '${email}' kunde inte skapas, en användare med den adressen finns redan`;
-      } else {
-        message = `Kunde inte skapa användare med epost '${email}', error '${error.message}'`;
-      }
-      alertUser(message);
-    } finally {
-    }
-  }
-
-  function alertUser(message) {
-    Alert.alert("Skapa användare", message, [
-      {
-        text: "OK",
-        onPress: () => {
-          navigation.navigate("AdminPage");
-        },
-      },
-    ]);
-  }
-
-  function alertPopUp(onlyActivityCreated, newUser) {
-    let alertTitle = "";
-    let alertMessage = "";
-
-    if (onlyActivityCreated) {
-      alertTitle = "Skapa aktivitet";
-      alertMessage = `Aktiviteten '${title}' har skapats!`;
-    } else {
-      alertTitle = "Skapa aktivitet och användare";
-      alertMessage = `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`;
-    }
-
-    Alert.alert(alertTitle, alertMessage, [
-      {
-        text: "OK",
-        onPress: () => {
-          setTitle("");
-          setPlace("");
-          setCity("");
-          setDescription("");
-          setCheckBoxPressed(false);
-          navigation.navigate("HomePage");
-        },
-      },
-    ]);
+  function handleCreateUserAndNewActivity() {
+    const newActivity = {
+      active_status: true,
+      activity_city: activity.city,
+      activity_description: activity.description,
+      activity_photo: activity.image,
+      activity_place: activity.place,
+      activity_title: activity.title,
+      tg_favorite: activity.favorite,
+    };
+    const newUser = {
+      firstName: user.name,
+      lastName: user.surname,
+      email: user.email,
+      password: user.password,
+      role: user.role,
+    };
+    createUserAndNewActivity(
+      newActivity,
+      newUser,
+      setAllActiveActvivitiesFB,
+      setLoading,
+      setUserData,
+      setNewUser,
+      navigation
+    );
   }
 
   function headerTitle() {
@@ -197,6 +142,11 @@ const CreateUser = ({ route, navigation }) => {
         </Text>
       </View>
       {step}
+      {loading && (
+        <View style={styles.loadingOverlay}>
+          <Dialog.Loading loadingProps={{ color: colors.primary }} />
+        </View>
+      )}
     </SafeAreaView>
   );
 };
@@ -222,5 +172,14 @@ const styles = StyleSheet.create({
   },
   contentWrapper: {
     marginHorizontal: 16,
+  },
+  loadingOverlay: {
+    position: "absolute",
+    height: Dimensions.get("screen").height,
+    width: "100%",
+    alignItems: "center",
+    justifyContent: "center",
+    backgroundColor: "#000000",
+    opacity: 0.6,
   },
 });

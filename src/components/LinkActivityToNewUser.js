@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -9,17 +9,21 @@ import {
   ScrollView,
   TextInput,
 } from "react-native";
+
 import LinearGradient from "react-native-linear-gradient";
 
-import { Icon, Dialog } from "react-native-elements";
-import Images from "../Images";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
+import { useNavigation } from "@react-navigation/native";
+
+import { Icon } from "react-native-elements";
 
 import BottomNavButtons from "./BottomNavButtons";
 
-import { useNavigation } from "@react-navigation/native";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+
+import Images from "../Images";
 
 export function LinkActivityToNewUser({
   activity,
@@ -27,6 +31,8 @@ export function LinkActivityToNewUser({
   selectedActivity,
   setSelectedActivity,
   goBack,
+  createUserAndNewActivity,
+  createUserAndLinkSelectedActivity,
 }) {
   const navigation = useNavigation();
   const createActivityContext = useCreateActivityFunction();
@@ -53,24 +59,33 @@ export function LinkActivityToNewUser({
     }
   }
 
-  function validateInputs() {
-    if (activity.title != " " && activity.title.trim()) {
-      setTitleFilledUp(true);
-    } else {
+  useEffect(() => {
+    if (activity.title.trim() === "") {
       setTitleFilledUp(false);
-    }
-
-    if (activity.city != " " && activity.city.trim()) {
-      setCityFilledUp(true);
     } else {
+      setTitleFilledUp(true);
+    }
+  }, [activity.title]);
+
+  useEffect(() => {
+    if (activity.city.trim() === "") {
       setCityFilledUp(false);
-    }
-
-    if (activity.place != " " && activity.place.trim()) {
-      setPlaceFilledUp(true);
     } else {
-      setPlaceFilledUp(false);
+      setCityFilledUp(true);
     }
+  }, [activity.city]);
+
+  useEffect(() => {
+    if (activity.place.trim() === "") {
+      setPlaceFilledUp(false);
+    } else {
+      setPlaceFilledUp(true);
+    }
+  }, [activity.place]);
+
+  function validateInputs() {
+    if (titleFilledUp && cityFilledUp && placeFilledUp) return true;
+    else return false;
   }
 
   titleCityPlaceStyle = function () {
@@ -116,41 +131,65 @@ export function LinkActivityToNewUser({
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={(text) => setActivity({ ...activity, title: text })}
+          onEndEditing={() =>
+            setActivity({
+              ...activity,
+              title: activity.title.trim(),
+            })
+          }
           value={activity.title}
           placeholder="Aktivitet"
           placeholderTextColor={colors.dark}
         />
-        {titleFilledUp === false ? (
+        {!titleFilledUp && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
           onChangeText={(text) => setActivity({ ...activity, city: text })}
+          onEndEditing={() =>
+            setActivity({
+              ...activity,
+              city: activity.city.trim(),
+            })
+          }
           value={activity.city}
           placeholder="Var"
           placeholderTextColor={colors.dark}
         />
-        {cityFilledUp === false ? (
+        {!cityFilledUp && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
           style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
           onChangeText={(text) => setActivity({ ...activity, place: text })}
+          onEndEditing={() =>
+            setActivity({
+              ...activity,
+              place: activity.place.trim(),
+            })
+          }
           value={activity.place}
           placeholder="Aktör"
           placeholderTextColor={colors.dark}
         />
-        {placeFilledUp === false ? (
+        {!placeFilledUp && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
           style={[styles.textInputDescription, styles.shadow]}
           numberOfLines={5}
           multiline={true}
           onChangeText={(text) =>
             setActivity({ ...activity, description: text })
+          }
+          onEndEditing={() =>
+            setActivity({
+              ...activity,
+              description: activity.description.trim(),
+            })
           }
           value={activity.description}
           placeholder="Vad"
@@ -291,6 +330,10 @@ export function LinkActivityToNewUser({
     );
   };
 
+  function existingActivity() {
+    return selectedActivity !== "create-new" && selectedActivity !== null;
+  }
+
   return (
     <>
       <ScrollView
@@ -299,18 +342,17 @@ export function LinkActivityToNewUser({
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
         <DropDown />
-
         {selectedActivity === "create-new" && createNewActivity()}
-
-        {selectedActivity !== "create-new" && selectedActivity !== null && (
-          <AddExistingActivity />
-        )}
+        {existingActivity() && <AddExistingActivity />}
       </ScrollView>
       <BottomNavButtons
         primaryText="Spara"
         secondaryText="Tillbaka"
         primaryFunc={() => {
-          validateInputs();
+          if (existingActivity()) createUserAndLinkSelectedActivity();
+          else {
+            if (validateInputs()) createUserAndNewActivity();
+          }
         }}
         secondaryFunc={() => {
           goBack();
