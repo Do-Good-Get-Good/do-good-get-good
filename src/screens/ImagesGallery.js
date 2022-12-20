@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -20,39 +20,45 @@ import InfoModal from "../components/InfoModal";
 
 export function ImagesGallery({ navigation, route }) {
   const [imagesArray, setImagesArray] = useState(Images);
-  const [imageName, setImageName] = useState("symbol_hands_heart-DEFAULT");
+  const [imageName, setImageName] = useState(route.params.selectedImage);
 
-  function changeBorderStyle(index, name) {
-    let arrayForSelection = imagesArray;
-    for (let i = 0; i < arrayForSelection.length; i++) {
-      arrayForSelection[i].selected = false;
-    }
-    arrayForSelection[index].selected = true;
-    setImagesArray(arrayForSelection);
-    setImageName(name);
+  useEffect(() => {
+    changeBorderStyle(imageName);
+  }, [imageName]);
+
+  function changeBorderStyle(imageName) {
+    let newArr = imagesArray.map((image) => {
+      if (image.name !== imageName) return { ...image, selected: false };
+
+      return { ...image, selected: true };
+    });
+    setImagesArray(newArr);
   }
-  const imageStyle = useCallback(
-    (selected) => {
-      return {
-        flex: 1,
-        flexDirection: "row",
-        resizeMode: "contain",
-        backgroundColor: colors.background,
-        alignItems: "center",
-        borderRadius: 5,
-        height: 150,
-        width: 150,
-        marginHorizontal: 5,
-        borderRadius: 3,
-        borderWidth: selected === true ? 7 : 1,
-        borderColor: colors.primary,
-      };
-    },
-    [imageName]
-  );
+
+  const imageStyle = (selected) => {
+    return {
+      flex: 1,
+      flexDirection: "row",
+      resizeMode: "contain",
+      backgroundColor: colors.background,
+      alignItems: "center",
+      borderRadius: 5,
+      height: 150,
+      width: 150,
+      marginHorizontal: 5,
+      borderRadius: 3,
+      borderWidth: selected === true ? 7 : 1,
+      borderColor: colors.primary,
+    };
+  };
 
   const buttonSavePressed = () => {
     if (route.params?.cameFrom === "CreateActivity") {
+      navigation.navigate("CreateActivity", {
+        imageForActivity: imageName,
+      });
+    }
+    if (route.params?.cameFrom === "CreateUser") {
       navigation.navigate("CreateUser", {
         imageForActivity: imageName,
       });
@@ -79,10 +85,10 @@ export function ImagesGallery({ navigation, route }) {
           columnWrapperStyle={{ marginBottom: 10 }}
           data={imagesArray}
           numColumns={2}
-          renderItem={({ item, index }) => (
+          renderItem={({ item }) => (
             <TouchableOpacity
               testID="pressOnImage"
-              onPress={() => changeBorderStyle(index, item.name)}
+              onPress={() => setImageName(item.name)}
               style={{
                 flex: 0.5,
                 flexDirection: "row",

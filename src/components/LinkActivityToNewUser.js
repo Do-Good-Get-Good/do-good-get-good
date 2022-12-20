@@ -206,7 +206,8 @@ export function LinkActivityToNewUser({
             testID="navigateToImagesGallery"
             onPress={() =>
               navigation.navigate("ImagesGallery", {
-                cameFrom: "CreateActivity",
+                cameFrom: "CreateUser",
+                selectedImage: activity.image,
               })
             }
           >
