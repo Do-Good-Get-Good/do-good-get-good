@@ -76,17 +76,3 @@ function alertPopUp(title, user, navigation) {
     },
   ]);
 }
-
-// function alertPopUp(title) {
-//   let alertTitle = "Skapa aktivitet";
-//   let alertMessage = `Aktiviteten '${title}' har skapats!`;
-
-//   Alert.alert(alertTitle, alertMessage, [
-//     {
-//       text: "OK",
-//       onPress: () => {
-//         navigation.navigate("HomePage");
-//       },
-//     },
-//   ]);
-// }
