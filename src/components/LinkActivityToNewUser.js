@@ -21,7 +21,7 @@ import BottomNavButtons from "./BottomNavButtons";
 
 import { useNavigation } from "@react-navigation/native";
 
-export function CreateActivity({
+export function LinkActivityToNewUser({
   activity,
   setActivity,
   selectedActivity,
@@ -319,7 +319,7 @@ export function CreateActivity({
     </>
   );
 }
-export default CreateActivity;
+export default LinkActivityToNewUser;
 
 const styles = StyleSheet.create({
   dropdown: {

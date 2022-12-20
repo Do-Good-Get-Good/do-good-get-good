@@ -13,7 +13,7 @@ import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useMultistepPage } from "../hooks/useMultistepPage";
 
 import typography from "../assets/theme/typography";
-import CreateActivity from "../components/CreateActivity";
+import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 const CreateUser = ({ route, navigation }) => {
   const userLevel = useUserLevelCheckFunction();
@@ -47,7 +47,7 @@ const CreateUser = ({ route, navigation }) => {
       setUser={setUser}
       nextPage={handleNextPage}
     />,
-    <CreateActivity
+    <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
       selectedActivity={selectedActivity}
