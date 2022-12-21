@@ -2,9 +2,9 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableNativeFeedback,
   View,
   Pressable,
+  TouchableOpacity,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
@@ -172,11 +172,9 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           </View>
         )}
       </ScrollView>
-      <TouchableNativeFeedback onPress={() => updateUsers()}>
-        <View style={styles.saveButton}>
-          <Text style={styles.saveButtonText}>Spara</Text>
-        </View>
-      </TouchableNativeFeedback>
+      <TouchableOpacity style={styles.saveButton} onPress={() => updateUsers()}>
+        <Text style={styles.saveButtonText}>Spara</Text>
+      </TouchableOpacity>
     </Overlay>
   );
 };
@@ -187,7 +185,7 @@ const styles = StyleSheet.create({
   overlayStyle: {
     backgroundColor: colors.light,
     width: "90%",
-    height: "70%",
+    maxHeight: "75%",
     borderRadius: 5,
     margin: 0,
     padding: 0,
@@ -216,13 +214,14 @@ const styles = StyleSheet.create({
   contentScrollView: {
     backgroundColor: colors.background,
     margin: 22,
-    padding: 16,
+    paddingHorizontal: 16,
     borderRadius: 2,
   },
   contentScrollViewHeader1: {
     fontWeight: "bold",
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
+    marginTop: 14,
     marginBottom: 8,
   },
   contentScrollViewHeader2: {
