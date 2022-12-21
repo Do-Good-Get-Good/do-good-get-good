@@ -50,13 +50,13 @@ export function ActivityCard({ route, navigation }) {
   const alertQuestionToTakeAwayFromArchive =
     "Vill du flytta denna aktivitet från arkiv";
   const alertClarificationToTakeAwayFromArchive =
-    "[Aktiviteten kommer att flyttas från icke-aktiv till aktiv, i biblioteket]";
+    "Aktiviteten kommer att flyttas från icke-aktiv till aktiv, i biblioteket";
   const alertArchiveQuestion = "Vill du arkivera denna aktivitet?";
   const alertArchiveClarification =
-    "[Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet]";
+    "Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet";
   const alertDeleteQuestion = "Vill du slänga denna aktivitet?";
   const alertDeleteClarification =
-    "[Aktiviteten kommer att försvinna för alltid]";
+    "Aktiviteten kommer att försvinna för alltid";
   const [alertQuestion, setAlertQuestion] = useState("");
   const [alertClarification, setAlertClarification] = useState("");
   const [pressedToArchive, setPressedToArchive] = useState(false);
@@ -152,11 +152,17 @@ export function ActivityCard({ route, navigation }) {
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
-          <TouchableOpacity onPress={() => setVisible(!visible)}>
-            <Text style={styles.buttonAlertNo}>Nej</Text>
+          <TouchableOpacity
+            style={[styles.alertButton, { backgroundColor: colors.light }]}
+            onPress={() => setVisible(!visible)}
+          >
+            <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
-          <TouchableOpacity onPress={() => buttonYesPressed()}>
-            <Text style={styles.buttonAlertYes}>Ja</Text>
+          <TouchableOpacity
+            style={[styles.alertButton, { backgroundColor: colors.primary }]}
+            onPress={() => buttonYesPressed()}
+          >
+            <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
         </View>
       </Overlay>
@@ -599,41 +605,30 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     borderRadius: 5,
     width: "90%",
-    paddingBottom: 15,
   },
   textQuestionAlert: {
     color: colors.dark,
     fontSize: 24,
-    marginTop: 23,
+    margin: 8,
   },
   textUnderQuestionAlert: {
     color: colors.dark,
     fontSize: 16,
+    marginHorizontal: 8,
   },
   containerButtonsAlert: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginTop: 20,
   },
-  buttonAlertNo: {
-    fontSize: 20,
-    backgroundColor: "yellow",
+  alertButton: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
+    paddingVertical: 12,
     borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.light,
-    backgroundColor: colors.light,
-    paddingHorizontal: 70,
-    paddingVertical: 13,
-    overflow: "hidden",
   },
-  buttonAlertYes: {
-    fontSize: 20,
-    paddingHorizontal: 70,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.primary,
-    overflow: "hidden",
-    paddingVertical: 13,
+  buttonAlertText: {
+    ...typography.button.lg,
   },
 });
