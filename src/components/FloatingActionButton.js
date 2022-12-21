@@ -35,7 +35,7 @@ const FloatingActionButton = ({}) => {
               <Text style={styles.buttonText}>Lägg till aktivitet</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              testID="CreateOrChangeUser.button"
+              testID="CreateUser.button"
               style={styles.buttonStyle}
               onPress={() => {
                 setIsOpen(false);
