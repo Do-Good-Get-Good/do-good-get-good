@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
   StyleSheet,
@@ -8,16 +7,22 @@ import {
   Platform,
   ScrollView,
   TextInput,
-  Dimensions,
   Image,
+  KeyboardAvoidingView,
 } from "react-native";
-import Menu from "../components/Menu";
+
+import LinearGradient from "react-native-linear-gradient";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
+import Menu from "../components/Menu";
+import BottomNavButtons from "../components/BottomNavButtons";
+
 import Images from "../Images";
+
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -31,29 +36,11 @@ export function ChangeActivity({ route, navigation }) {
   const [description, setDescription] = useState(activity.description);
   const [photo, setPhoto] = useState(activity.photo);
 
-  const MENU_HEIGHT = 65;
-
   useEffect(() => {
     if (route.params?.imageForActivity != undefined) {
       setPhoto(route.params?.imageForActivity);
     }
   }, [route.params?.imageForActivity]);
-
-  function calculateBottomButtonHeight() {
-    let saveButtonHeight = styles.saveButton.height;
-    let cancelButtonHeight = styles.cancelButton.height;
-    let saveButtonMarginBottom = styles.saveButton.marginBottom;
-    let bottomButtonContainerMarginBottom =
-      styles.containerForTwoBottomButtons.marginBottom;
-
-    let sum =
-      saveButtonHeight +
-      cancelButtonHeight +
-      saveButtonMarginBottom +
-      bottomButtonContainerMarginBottom;
-
-    return sum;
-  }
 
   function buttonSavePressed() {
     let changedObject = {
@@ -94,58 +81,35 @@ export function ChangeActivity({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={styles.container}>
-        <View
-          style={{
-            minHeight:
-              Dimensions.get("window").height -
-              MENU_HEIGHT -
-              calculateBottomButtonHeight(),
-          }}
-        >
-          <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
+      <Text style={styles.textMainTitle}>Ändra aktivitet</Text>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={{ flex: 1 }}
+      >
+        <ScrollView style={styles.container}>
           <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textTitleField,
-              ...styles.textForTitlePlaceCityInput,
-            }}
-            numberOfLines={2}
-            multiline={true}
+            style={styles.textInput}
             onChangeText={setTitle}
             value={title}
             placeholder={activity.title}
             placeholderTextColor={colors.dark}
           />
           <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textForTitlePlaceCityInput,
-            }}
-            numberOfLines={2}
-            multiline={true}
+            style={styles.textInput}
             onChangeText={setCity}
             value={city}
             placeholder={activity.city}
             placeholderTextColor={colors.dark}
           />
           <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textForTitlePlaceCityInput,
-            }}
-            numberOfLines={2}
-            multiline={true}
+            style={styles.textInput}
             onChangeText={setPlace}
             value={place}
             placeholder={activity.place}
             placeholderTextColor={colors.dark}
           />
           <TextInput
-            style={{
-              ...styles.textInputs,
-              ...styles.textDescriptionField,
-            }}
+            style={[styles.textInput, styles.textDescriptionField]}
             numberOfLines={5}
             multiline={true}
             onChangeText={setDescription}
@@ -176,33 +140,14 @@ export function ChangeActivity({ route, navigation }) {
               </LinearGradient>
             </TouchableOpacity>
           </View>
-        </View>
-
-        <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity
-            testID="saveButton"
-            onPress={() => buttonSavePressed()}
-            style={styles.saveButton}
-          >
-            <Text style={styles.saveButtonText}>Spara</Text>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            testID="backButton"
-            onPress={() => navigation.goBack()}
-            style={styles.cancelButton}
-          >
-            <LinearGradient
-              colors={[colors.primary, colors.secondary]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.cancelButtonBorder}
-            >
-              <Text style={styles.cancelButtonText}>Avbryt</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      </ScrollView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+      <BottomNavButtons
+        primaryText="Spara"
+        secondaryText="Avbryt"
+        primaryFunc={() => buttonSavePressed()}
+        secondaryFunc={() => navigation.goBack()}
+      />
     </SafeAreaView>
   );
 }
@@ -210,7 +155,6 @@ export default ChangeActivity;
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     paddingHorizontal: 16,
   },
   textMainTitle: {
@@ -218,12 +162,13 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     paddingTop: 5,
     color: colors.dark,
-    marginRight: 10,
+    marginVertical: 12,
+    marginHorizontal: 16,
   },
-  textForTitlePlaceCityInput: {},
-  textInputs: {
-    paddingLeft: 10,
+  textInput: {
     ...typography.b1,
+    paddingVertical: 16,
+    paddingHorizontal: 12,
     color: colors.dark,
     marginBottom: 10,
     backgroundColor: colors.background,
@@ -243,13 +188,10 @@ const styles = StyleSheet.create({
       },
     }),
   },
-  textTitleField: {
-    marginTop: 18,
-  },
   textDescriptionField: {
-    marginTop: 18,
+    marginTop: 5,
     textAlignVertical: "top",
-    paddingTop: 13,
+    paddingTop: 12,
     height: 130,
   },
   containerImageAndInsertButton: {
@@ -289,42 +231,5 @@ const styles = StyleSheet.create({
     height: 55,
     width: 200,
     alignItems: "center",
-  },
-  containerForTwoBottomButtons: {
-    marginBottom: 16,
-  },
-  saveButton: {
-    borderRadius: 5,
-    backgroundColor: colors.primary,
-    height: 50,
-    marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  saveButtonText: {
-    ...typography.button.lg,
-    fontWeight: "500",
-  },
-  cancelButton: {
-    borderRadius: 5,
-    backgroundColor: colors.light,
-    height: 50,
-  },
-  cancelButtonText: {
-    ...typography.button.lg,
-    backgroundColor: colors.light,
-    borderRadius: 5,
-    height: "100%",
-    width: "100%",
-    textAlign: "center",
-    textAlignVertical: "center",
-    overflow: "hidden",
-    fontWeight: "500",
-    paddingTop: Platform.OS === "ios" ? 12 : null,
-  },
-  cancelButtonBorder: {
-    paddingVertical: 1,
-    paddingHorizontal: 1,
-    borderRadius: 5,
   },
 });
