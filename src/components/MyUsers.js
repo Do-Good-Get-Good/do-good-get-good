@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Dialog } from "react-native-elements";
 
 import { format } from "date-fns";
@@ -28,12 +22,14 @@ const MyUsers = ({ navigation }) => {
   const [loadingData, setLoadingData] = useState(true);
   const [myUsersLoading, setMyUsersLoading] = useState(true);
 
-  let userData = useAdminHomePageFunction().userData;
-  const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
-  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
-  const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
-  const newUser = useAdminHomePageFunction().newUser;
-  const setNewUser = useAdminHomePageFunction().setNewUser;
+  let {
+    userData,
+    confirmedTimeEntries,
+    setReloadOneUserData,
+    reloadOneUserData,
+    newUser,
+    setNewUser,
+  } = useAdminHomePageFunction();
 
   const changeUserInfoContext = useChangeUserInfoFunction();
 
@@ -204,12 +200,11 @@ const MyUsers = ({ navigation }) => {
         {expanded === true ? (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
-              <TouchableNativeFeedback
+              <TouchableOpacity
                 testID={`insideSmallDropdown ${index}`}
                 key={index}
                 onPress={() => {
                   setSortBy(option);
-
                   sortUsers(option);
                   setExpanded(false);
                 }}
@@ -219,7 +214,7 @@ const MyUsers = ({ navigation }) => {
                     {option}
                   </Text>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchableOpacity>
             ))}
           </View>
         ) : null}
