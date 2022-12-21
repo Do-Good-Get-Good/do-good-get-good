@@ -193,7 +193,9 @@ export function CreateActivity({ route, navigation }) {
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
-          onEndEditing={() => setTitle(title.trim())}
+          onEndEditing={() => {
+            title !== null && setTitle(title.trim());
+          }}
           value={title}
           placeholder="Aktivitet"
           placeholderTextColor={colors.dark}
@@ -205,7 +207,9 @@ export function CreateActivity({ route, navigation }) {
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
           onChangeText={setCity}
-          onEndEditing={() => setCity(city.trim())}
+          onEndEditing={() => {
+            city !== null && setCity(city.trim());
+          }}
           value={city}
           placeholder="Var"
           placeholderTextColor={colors.dark}
@@ -217,7 +221,9 @@ export function CreateActivity({ route, navigation }) {
           style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
           onChangeText={setPlace}
-          onEndEditing={() => setPlace(place.trim())}
+          onEndEditing={() => {
+            place !== null && setPlace(place.trim());
+          }}
           value={place}
           placeholder="Aktör"
           placeholderTextColor={colors.dark}
