@@ -24,13 +24,13 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import errorMessage from "../assets/recyclingStyles/errorMessage";
 
-import { deleteTimeEntry } from "../customFirebaseHooks/deleteFunctions";
-import { updateTimeEntry } from "../customFirebaseHooks/updateFunctions";
-import { addTimeEntry } from "../customFirebaseHooks/addFunctions";
+import { deleteTimeEntry } from "../firebase-functions/delete";
+import { updateTimeEntry } from "../firebase-functions/update";
+import { addTimeEntry } from "../firebase-functions/add";
 import {
   incrementTotalHoursMonthForUser,
   decrementTotalHoursMonthForUser,
-} from "../customFirebaseHooks/updateFunctions";
+} from "../firebase-functions/update";
 
 const CalendarView = ({
   visible,

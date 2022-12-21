@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
-import { getActivityInformation } from "./getFunctions";
+import { getActivityInformation } from "../firebase-functions/get";
 
 const useLinkedActivities = () => {
   const [activityInfo, setActivityInfo] = useState([]);

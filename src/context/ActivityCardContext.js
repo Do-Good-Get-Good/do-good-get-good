@@ -3,8 +3,8 @@ import {
   updateActivityActiveStatus,
   updateActivityFavoriteStatus,
   updateActivityInfo,
-} from "../customFirebaseHooks/updateFunctions";
-import { deleteActivity } from "../customFirebaseHooks/deleteFunctions";
+} from "../firebase-functions/update";
+import { deleteActivity } from "../firebase-functions/delete";
 
 const ActivityCardContext = React.createContext();
 

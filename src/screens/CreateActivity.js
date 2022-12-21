@@ -21,7 +21,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import BottomNavButtons from "../components/BottomNavButtons";
-import { addActivity } from "../customFirebaseHooks/addFunctions";
+import { addActivity } from "../firebase-functions/add";
 import LoadingOverlay from "../components/LoadingOverlay";
 
 export function CreateActivity({ route, navigation }) {

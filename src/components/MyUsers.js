@@ -9,7 +9,7 @@ import colors from "../assets/theme/colors";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-import { getUsersFiveNewestTimeEntries } from "../customFirebaseHooks/getFunctions";
+import { getUsersFiveNewestTimeEntries } from "../firebase-functions/get";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);

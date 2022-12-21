@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { getAllActivitiesWithStatus } from "../customFirebaseHooks/getFunctions";
+import { getAllActivitiesWithStatus } from "../firebase-functions/get";
 
 const CreateActivityContext = React.createContext();
 

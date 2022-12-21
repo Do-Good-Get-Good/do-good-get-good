@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import MyTimeEntries from "../components/MyTimeEntries";
-import useTimeEntriesWithLimit from "../customFirebaseHooks/useTimeEntriesWithLimit";
+import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -23,7 +23,7 @@ jest.mock("../components/DropDownForSorting", () => () => {
 
 jest.mock("@react-navigation/native");
 
-jest.mock("../customFirebaseHooks/useTimeEntriesWithLimit");
+jest.mock("../hooks/useTimeEntriesWithLimit");
 
 describe("Testing MyTimeEntries", () => {
   beforeAll(() => {

@@ -1,6 +1,6 @@
 import { Alert } from "react-native";
 import functions from "@react-native-firebase/functions";
-import { addActivity } from "../customFirebaseHooks/addFunctions";
+import { addActivity } from "../firebase-functions/add";
 
 export async function createUserAndNewActivity(
   newActivity,

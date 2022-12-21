@@ -11,12 +11,12 @@ import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
 
 import { format } from "date-fns";
-import { getUserData } from "../customFirebaseHooks/getFunctions.js";
 import {
+  getUserData,
   getActivitiesMatchTimeEntries,
   getConcept,
   getTenLastConfirmedTimeEntries,
-} from "../customFirebaseHooks/getFunctions";
+} from "../firebase-functions/get";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);

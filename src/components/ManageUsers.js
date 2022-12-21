@@ -20,8 +20,8 @@ import typography from "../assets/theme/typography";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
-} from "../customFirebaseHooks/updateFunctions";
-import { getAllUsersNotConnectedToAdmin } from "../customFirebaseHooks/getFunctions";
+} from "../firebase-functions/update";
+import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);

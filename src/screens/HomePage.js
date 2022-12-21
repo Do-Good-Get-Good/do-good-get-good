@@ -12,8 +12,8 @@ import BottomLogo from "../components/BottomLogo";
 
 import typography from "../assets/theme/typography";
 
-import useLinkedActivities from "../customFirebaseHooks/useLinkedActivities";
-import { useSuggestions } from "../customFirebaseHooks/useSuggestions";
+import useLinkedActivities from "../hooks/useLinkedActivities";
+import { useSuggestions } from "../hooks/useSuggestions";
 import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {

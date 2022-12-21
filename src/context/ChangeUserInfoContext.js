@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { updateUserInfoFromAdminScreen } from "../customFirebaseHooks/updateFunctions";
+import { updateUserInfoFromAdminScreen } from "../firebase-functions/update";
 
 const ChangeUserInfoContext = React.createContext();
 
