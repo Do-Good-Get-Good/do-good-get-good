@@ -6,7 +6,8 @@ export async function createUserAndLinkSelectedActivity(
   selectedActivity,
   setLoading,
   setUserData,
-  setNewUser
+  setNewUser,
+  navigation
 ) {
   try {
     setLoading(true);
@@ -31,7 +32,8 @@ export async function createUserAndLinkSelectedActivity(
 
     alertUser(
       `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
-      false
+      false,
+      navigation
     );
   } catch (error) {
     let message = "Error";
@@ -39,18 +41,18 @@ export async function createUserAndLinkSelectedActivity(
     if (error === "auth/email-already-exists") {
       message = `Användaren '${user.email}' kunde inte skapas, en användare med den adressen finns redan`;
     } else {
-      message = `Kunde inte skapa användare med epost '${user.email}', error '${error.message}'`;
+      message = `Kunde inte skapa användare med epost '${user.email}'. \nError: '${error.message}'`;
     }
-    alertUser(message, true);
+    alertUser(message, true, navigation);
   }
 }
 
-function alertUser(message, error) {
+function alertUser(message, error, navigation) {
   Alert.alert("Skapa användare", message, [
     {
       text: "OK",
       onPress: () => {
-        !error && navigation.navigate("AdminPage");
+        error === false && navigation.navigate("AdminPage");
       },
     },
   ]);

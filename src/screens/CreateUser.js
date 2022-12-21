@@ -86,7 +86,8 @@ const CreateUser = ({ route, navigation }) => {
       selectedActivity,
       setLoading,
       setUserData,
-      setNewUser
+      setNewUser,
+      navigation
     );
   }
 

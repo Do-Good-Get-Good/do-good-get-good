@@ -161,6 +161,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
           style={[styles.input, styles.dropdownShadow]}
           textContentType={"emailAddress"}
           keyboardType={"email-address"}
+          autoCapitalize="none"
           maxLength={100}
           onChangeText={(text) => setUser({ ...user, email: text })}
           value={user.email}
