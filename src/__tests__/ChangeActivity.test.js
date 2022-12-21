@@ -59,7 +59,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(getAllByText("Ändra aktivitet").length).toBe(1);
   });
 
-  it("Placeholder with title exists and possible to wtire", () => {
+  it("Title placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -68,7 +68,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or title");
   });
 
-  it("Placeholder with city exists and possible to wtire", () => {
+  it("City placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -77,7 +77,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or city");
   });
 
-  it("Placeholder with place exists and possible to wtire", () => {
+  it("Place placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -85,7 +85,7 @@ describe("Testing ChangeActivity screen", () => {
     fireEvent.changeText(input, "activity name or place");
     expect(input.props.value).toEqual("activity name or place");
   });
-  it("Placeholder with description exists and possible to wtire", () => {
+  it("Description placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -94,7 +94,7 @@ describe("Testing ChangeActivity screen", () => {
     expect(input.props.value).toEqual("activity name or description");
   });
 
-  it("Change image button exists and navigate to ImagesGalley when pressed", () => {
+  it("Change image button exists and navigate to ImagesGallery when pressed", () => {
     const { getByTestId } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
@@ -112,13 +112,14 @@ describe("Testing ChangeActivity screen", () => {
     });
   });
 
-  it("Button 'Save' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+  it("Button 'Save' exist and updates ActivityCard when pressed", () => {
+    const { getByText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
 
-    expect(getAllByText("Spara").length).toBe(1);
-    const saveButton = getByTestId("saveButton");
+    const saveButton = getByText("Spara");
+    expect(saveButton);
+
     fireEvent.press(saveButton);
     let changedObject = {
       active: route.params.activity.active,
@@ -130,30 +131,23 @@ describe("Testing ChangeActivity screen", () => {
       popular: route.params.tgPopular,
       title: "title",
     };
-    useActivityCardContext().changeActivityCard.mockReturnValue(true);
+
     expect(navigation.navigate).toHaveBeenCalledWith("ActivityCard", {
       activityInfo: changedObject,
       admin: true,
       active: true,
       tgPopular: route.params.tgPopular,
     });
-
-    useCreateActivityFunction().activityHasChangedID.mockReturnValue({
-      activityInfo: changedObject,
-      popular: route.params.tgPopular,
-      statusActive: true,
-    });
-    useCreateActivityFunction().activityHasChanged.mockReturnValue(true);
   });
 
-  it("Button 'Back' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+  it("Button 'Back' exist and navigate back when pressed", () => {
+    const { getByText } = render(
       <ChangeActivity navigation={navigation} route={route} />
     );
-    expect(getAllByText("Avbryt").length).toBe(1);
-    const backButton = getByTestId("backButton");
-    fireEvent.press(backButton);
 
+    const cancelButton = getByText("Avbryt");
+    expect(cancelButton);
+    fireEvent.press(cancelButton);
     expect(navigation.goBack).toHaveBeenCalled();
   });
 });
