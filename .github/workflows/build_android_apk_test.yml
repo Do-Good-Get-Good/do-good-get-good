@@ -9,11 +9,10 @@ jobs:
       - uses: actions/checkout@v2
       
       - name: Install dependencies
-        working-directory: src/
-        run: npm install
+        run: cd src/ && npm install
       
       - name: Build Android APK
-        run: cd android && ./gradlew assembleRelease
+        run: cd src/ && cd android && ./gradlew assembleRelease
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
