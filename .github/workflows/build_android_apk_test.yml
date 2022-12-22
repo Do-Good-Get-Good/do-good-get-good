@@ -8,7 +8,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       
-      - name: set up JDK 1.8
+      - name: set up JDK 11
         uses: actions/setup-java@v1
         with:
           java-version: 11
@@ -16,22 +16,26 @@ jobs:
       - name: Set Secret Properties
         env:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
-        run: echo "$LOCAL_PROPERTIES" > src/android/app/local.properties
+        run: echo "$LOCAL_PROPERTIES" > local.properties
+        working-directory: ./src/android/app
     
       - name: Prepare release keystore
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > dggg_key.keystore.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch dggg_key.keystore.asc > src/android/app/dggg_key.keystore
+          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch dggg_key.keystore.asc > dggg_key.keystore
+        working-directory: ./src/android/app
       
       - name: Install dependencies
-        run: cd src/ && npm install
+        run: npm install
+        working-directory: ./src
       
       - name: Build Android APK
-        run: cd src/ && cd android && ./gradlew assembleRelease
+        run: ./gradlew assembleRelease
+        working-directory: ./src/android
         
       - name: Upload Artifact
         uses: actions/upload-artifact@v1
         with:
-          working-directory: src/
+          working-directory: ./src/
           name: release
           path: android/app/build/outputs/apk/release/app-release.apk
