@@ -7,6 +7,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      
+      - name: Set Secret Properties
+        env:
+          LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
+        run: echo "$LOCAL_PROPERTIES" > src/android/app/local.properties
+    
+      - name: Prepare release keystore
       - run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > dggg_key.keystore.asc
           gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch dggg_key.keystore.asc > src/android/app/dggg_key.keystore
