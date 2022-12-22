@@ -7,8 +7,6 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
-      - name: Decrypt signing config
       - run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > dggg_key.keystore.asc
           gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch dggg_key.keystore.asc > src/android/app/dggg_key.keystore
