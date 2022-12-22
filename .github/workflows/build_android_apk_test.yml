@@ -16,7 +16,7 @@ jobs:
       - name: Set Secret Properties
         env:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
-        run: echo "$LOCAL_PROPERTIES" > local.properties
+        run: echo "$LOCAL_PROPERTIES" > gradle.properties
         working-directory: ./src/android/app
     
       - name: Prepare release keystore
