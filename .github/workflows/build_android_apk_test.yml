@@ -29,8 +29,8 @@ jobs:
         run: npm install
         working-directory: ./src
       
-      - name: Build Android APK
-        run: ./gradlew assembleRelease
+      - name: Build Android AAB
+        run: ./gradlew bundleRelease
         working-directory: ./src/android
         
       - name: Upload Artifact
