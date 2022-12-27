@@ -1,3 +1,4 @@
+name: Build Android AAB
 on: 
   workflow_dispatch:
   
