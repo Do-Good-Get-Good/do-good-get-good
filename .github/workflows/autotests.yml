@@ -12,6 +12,9 @@ on:
 
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+  # Allows this workflow to be called from other workflows
+  workflow_call:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -40,9 +43,9 @@ jobs:
         run: npm test --ci
         working-directory: src/
 
-      - uses: IgnusG/jest-report-action@v2.3.3
-        if: always() # Or use "continue-on-error: true" in previous test step
+      - name: Collect code coverage
+        uses: romeovs/lcov-reporter-action@v0.3.1
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          working-directory: "./src/"
-          junit-file: "reports/JEST-tests.xml"
+          title: Code coverage
+          lcov-file: ./src/reports/coverage/lcov.info
+          github-token: ${{ github.token }}
