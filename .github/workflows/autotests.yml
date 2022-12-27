@@ -43,9 +43,9 @@ jobs:
         run: npm test --ci
         working-directory: src/
 
-      - uses: IgnusG/jest-report-action@v2.3.3
-        if: always() # Or use "continue-on-error: true" in previous test step
+      - name: Collect code coverage
+      - uses: romeovs/lcov-reporter-action@v0.2.16
         with:
-          access-token: ${{ secrets.GITHUB_TOKEN }}
-          working-directory: "./src/"
-          junit-file: "reports/JEST-tests.xml"
+          title: Code coverage
+          lcov-file: ./src/reports/coverage/lcov.info
+          github-token: ${{ github.token }}
