@@ -3,7 +3,13 @@ on:
   workflow_dispatch:
   
 jobs: 
-  build:    
+  tests: 
+    uses: ./.github/workflows/autotests.yml
+    
+  build:
+    name: Run tests
+    needs: [tests]
+    
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
