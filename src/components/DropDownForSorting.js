@@ -80,7 +80,9 @@ export function DropDownForSorting({ choice }) {
     <View>
       <TouchableOpacity onPress={pressDropDawn} testID="dropDownPressed">
         <View style={styleForDropDownInsideConrainer}>
-          <Text style={styles.sortText}>{sortBy}</Text>
+          <Text testID="sortByText" style={styles.sortText}>
+            {sortBy}
+          </Text>
           <Icon
             color={colors.secondary}
             style={styles.sortIcon}
@@ -96,7 +98,7 @@ export function DropDownForSorting({ choice }) {
               index={index}
               key={index}
               style={styles.insideSortBox}
-              testID="insideDropDownPressed"
+              testID={`dropdownItem${index}`}
               onPress={() => {
                 pressSelectionInsideDropDown(sort.title);
               }}
