@@ -1,10 +1,28 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import { render, fireEvent } from "@testing-library/react-native";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 
 import CalendarView from "../components/CalendarView";
+
+jest.mock("../firebase-functions/delete", () => ({
+  deleteTimeEntry: jest.fn(() => {
+    return Promise.resolve();
+  }),
+}));
+
+jest.mock("../firebase-functions/add", () => ({
+  addTimeEntry: jest.fn(),
+}));
+
+jest.mock("../firebase-functions/update", () => ({
+  incrementTotalHoursMonthForUser: jest.fn(),
+  decrementTotalHoursMonthForUser: jest.fn(),
+  updateTimeEntry: jest.fn(() => {
+    return Promise.resolve();
+  }),
+}));
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -12,18 +30,6 @@ jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
-});
-
-jest.mock("@react-native-firebase/firestore", () => {
-  return () => ({
-    collection: jest.fn(() => ({
-      add: jest.fn(),
-      doc: jest.fn(() => ({
-        set: jest.fn(),
-        delete: jest.fn(),
-      })),
-    })),
-  });
 });
 
 jest.mock("@react-native-firebase/auth", () => () => ({
