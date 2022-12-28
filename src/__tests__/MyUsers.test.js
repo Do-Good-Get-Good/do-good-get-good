@@ -25,13 +25,13 @@ jest.mock("../firebase-functions/get", () => ({
   getUsersFiveNewestTimeEntries: jest.fn(() => {
     return [
       {
-        adminID: 234,
-        timeEntryID: 345,
-        date: new Date("2022-12-28"),
-        statusConfirmed: true,
+        admin_id: 234,
+        id: 345,
+        date: { toDate: () => new Date("2022-12-28") },
+        status_confirmed: true,
         time: 2,
-        title: "title",
-        activityID: 567,
+        activity_title: "title",
+        activity_id: 567,
       },
     ];
   }),
@@ -82,6 +82,10 @@ jest.mock("../context/ChangeUserInfoContext", () => ({
     setNewChangesInUserInfo: jest.fn(),
   }),
 }));
+
+const mockNavigation = {
+  navigate: jest.fn(),
+};
 
 describe("Testing MyUsers component", () => {
   describe("Header view", () => {
@@ -167,6 +171,128 @@ describe("Testing MyUsers component", () => {
 
         const userButton = getByText("test2 test2");
         expect(userButton);
+      });
+    });
+
+    it("Can view active user timeentries", async () => {
+      const { getByTestId } = render(
+        <AdminHomePageProvider>
+          <MyUsers />
+        </AdminHomePageProvider>
+      );
+
+      await waitFor(async () => {
+        expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
+
+        const userButton = getByTestId(`userDropdown 0`);
+
+        act(() => {
+          fireEvent.press(userButton);
+        });
+
+        const userTimeEntryTitle = getByTestId(`user timeEntry 0 title`);
+        const userTimeEntryDate = getByTestId(`user timeEntry 0 date`);
+        const userTimeEntryTime = getByTestId(`user timeEntry 0 time`);
+
+        expect(userTimeEntryTitle.children[0]).toEqual("title");
+        expect(userTimeEntryDate.children[0]).toEqual("2022-12-28");
+        expect(userTimeEntryTime.children[0]).toEqual("2 tim");
+      });
+    });
+
+    it("Can view inactive user timeentries", async () => {
+      const { getByTestId } = render(
+        <AdminHomePageProvider>
+          <MyUsers />
+        </AdminHomePageProvider>
+      );
+
+      await waitFor(async () => {
+        const button = getByTestId("smallDropdown");
+        fireEvent.press(button);
+
+        const button3 = getByTestId("insideSmallDropdown 1");
+        act(() => {
+          fireEvent.press(button3);
+        });
+        expect(getByTestId("dropdownText").props.children).toEqual("Inaktiva");
+
+        const userButton = getByTestId(`userDropdown 0`);
+
+        act(() => {
+          fireEvent.press(userButton);
+        });
+
+        const userTimeEntryTitle = getByTestId(`user timeEntry 0 title`);
+        const userTimeEntryDate = getByTestId(`user timeEntry 0 date`);
+        const userTimeEntryTime = getByTestId(`user timeEntry 0 time`);
+
+        expect(userTimeEntryTitle.children[0]).toEqual("title");
+        expect(userTimeEntryDate.children[0]).toEqual("2022-12-28");
+        expect(userTimeEntryTime.children[0]).toEqual("2 tim");
+      });
+    });
+
+    it("Can press edit icon on active users", async () => {
+      const { getByTestId } = render(
+        <AdminHomePageProvider>
+          <MyUsers navigation={mockNavigation} />
+        </AdminHomePageProvider>
+      );
+
+      await waitFor(async () => {
+        expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
+
+        const userButton = getByTestId(`userDropdown 0`);
+
+        act(() => {
+          fireEvent.press(userButton);
+        });
+
+        const editIcon = getByTestId("editIcon");
+        fireEvent.press(editIcon);
+
+        expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
+          statusActive: true,
+          userID: "qwe",
+          userName: "test",
+          userSurname: "test",
+        });
+      });
+    });
+
+    it("Can press edit icon on inactive users", async () => {
+      const { getByTestId } = render(
+        <AdminHomePageProvider>
+          <MyUsers navigation={mockNavigation} />
+        </AdminHomePageProvider>
+      );
+
+      await waitFor(async () => {
+        const button = getByTestId("smallDropdown");
+        fireEvent.press(button);
+
+        const button3 = getByTestId("insideSmallDropdown 1");
+        act(() => {
+          fireEvent.press(button3);
+        });
+        expect(getByTestId("dropdownText").props.children).toEqual("Inaktiva");
+
+        const userButton = getByTestId(`userDropdown 0`);
+
+        act(() => {
+          fireEvent.press(userButton);
+        });
+
+        const editIcon = getByTestId("editIcon");
+        fireEvent.press(editIcon);
+
+        expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
+          statusActive: true,
+          userID: "qwe",
+          userName: "test",
+          userSurname: "test",
+        });
       });
     });
   });

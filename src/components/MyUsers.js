@@ -111,7 +111,6 @@ const MyUsers = ({ navigation }) => {
             statusActive: user.status_active,
             userID: user.id,
           };
-
           setAllUsers((prev) => [...prev, userInfo]);
           setLoadingData(true);
         } catch (error) {
@@ -197,7 +196,7 @@ const MyUsers = ({ navigation }) => {
           </View>
         </TouchableOpacity>
 
-        {expanded === true ? (
+        {expanded && (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
               <TouchableOpacity
@@ -217,7 +216,7 @@ const MyUsers = ({ navigation }) => {
               </TouchableOpacity>
             ))}
           </View>
-        ) : null}
+        )}
       </View>
 
       <View testID="contentViewId" style={styles.content}>
@@ -260,7 +259,7 @@ const MyUsers = ({ navigation }) => {
                       <View>
                         {user.timeEntries.map((timeEntry, index) => (
                           <View key={index}>
-                            {timeEntry !== "NO DATA" ? (
+                            {timeEntry !== "NO DATA" && (
                               <View
                                 key={index}
                                 style={styles.listItemContentStyle}
@@ -286,22 +285,19 @@ const MyUsers = ({ navigation }) => {
                                 </View>
                                 <View style={styles.listItemContentHourView}>
                                   <Text
-                                    testID={`user timeEntry ${index} title`}
+                                    testID={`user timeEntry ${index} time`}
                                     style={styles.listItemContentHourStyle}
                                   >
-                                    {timeEntry.time} tim
+                                    {`${timeEntry.time} tim`}
                                   </Text>
                                 </View>
                               </View>
-                            ) : null}
+                            )}
                           </View>
                         ))}
                         <View style={styles.editUserIconView}>
-                          <Icon
-                            name="pencil-outline"
-                            type="material-community"
-                            size={25}
-                            containerStyle={styles.editUserIcon}
+                          <TouchableOpacity
+                            testID="editIcon"
                             onPress={() =>
                               navigation.navigate("ChangeUser", {
                                 userName: user.firstName,
@@ -310,7 +306,15 @@ const MyUsers = ({ navigation }) => {
                                 userID: user.userID,
                               })
                             }
-                          />
+                          >
+                            <Icon
+                              testID="editIcon"
+                              name="pencil-outline"
+                              type="material-community"
+                              size={25}
+                              containerStyle={styles.editUserIcon}
+                            />
+                          </TouchableOpacity>
                         </View>
                       </View>
                     )}
