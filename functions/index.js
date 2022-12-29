@@ -7,28 +7,20 @@ const updateYear = require("./src/updateYear");
 const assignAdminClaim = require("./src/assignAdminClaim");
 const downloadData = require("./src/downloadData/downloadData");
 
-/* ---------------- For production database (Firebase) -------------------- */
-// var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+var devServiceAccount = require("./ServiceAccount/devServiceAccount.json");
+const { production, development } = require("./config");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL:
-//     "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
-//   storageBucket: "do-good-get-good-2f6cc.appspot.com",
-// });
-
-/* ---------------- For development database (Firebase) -------------------- */
-var serviceAccount = require("./ServiceAccount/devServiceAccount.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "dev-do-good-get-good.appspot.com",
-});
+if (process.env.NODE_ENV === "prod") {
+  admin.initializeApp(production(admin, serviceAccount));
+} else {
+  admin.initializeApp(development(admin, devServiceAccount));
+}
 
 // Cloud functions
 exports.createUser = createUser.createUser;
 exports.deleteUser = deleteUser.deleteUser;
 exports.updateMonth = updateMonth.updateMonth;
 exports.updateYear = updateYear.updateYear;
-// exports.assignAdminClaim = assignAdminClaim.assignAdminClaim;
+exports.assignAdminClaim = assignAdminClaim.assignAdminClaim;
 exports.downloadData = downloadData.downloadData;
