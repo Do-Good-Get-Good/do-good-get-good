@@ -25,7 +25,7 @@ export const ActivityCardProvider = ({ children }) => {
   const [activityWithChangedInfor, setActivityWithChangedInfor] = useState({});
 
   useEffect(() => {
-    if (activityID != "" && changeStatusPopular != null) {
+    if (activityID !== "" && changeStatusPopular !== null) {
       updateActivityFavoriteStatus(activityID, changeStatusPopular);
       setChangeStatusPopular(null);
       setStatusPopularHasBeenChanged(true);
@@ -33,13 +33,13 @@ export const ActivityCardProvider = ({ children }) => {
   }, [changeStatusPopular, activityID]);
 
   useEffect(() => {
-    if (activityID != "" && changeStatusActive != null) {
-      if (changeStatusActive === false) {
-        updateActivityActiveStatus(activityID, false);
+    if (activityID != "" && changeStatusActive !== null) {
+      if (changeStatusActive) {
+        updateActivityActiveStatus(activityID, true);
         setChangeStatusActive(null);
         setStatusActiveHasBeenChanged(true);
-      } else if (changeStatusActive === true) {
-        updateActivityActiveStatus(activityID, true);
+      } else {
+        updateActivityActiveStatus(activityID, false);
         setChangeStatusActive(null);
         setStatusActiveHasBeenChanged(true);
       }
@@ -47,7 +47,7 @@ export const ActivityCardProvider = ({ children }) => {
   }, [changeStatusActive, activityID]);
 
   useEffect(() => {
-    if (confirmToDelete === true && activityID != "") {
+    if (confirmToDelete === true && activityID !== "") {
       deleteActivity(activityID)
         .then(() => {
           console.log("Activity deleted");
@@ -57,7 +57,7 @@ export const ActivityCardProvider = ({ children }) => {
   }, [confirmToDelete]);
 
   useEffect(() => {
-    if (activityWithChangedInfor.id != "" && changeActivityToTrue === true) {
+    if (activityWithChangedInfor.id !== "" && changeActivityToTrue === true) {
       updateActivityInfo(activityWithChangedInfor);
       setChangeActivityToTrue(false);
     }
