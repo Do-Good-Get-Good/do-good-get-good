@@ -17,7 +17,6 @@ import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
 import AdminPage from "./screens/AdminPage";
-import SuperAdminPage from "./screens/SuperAdminPage";
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -30,7 +29,6 @@ export const SuperAdminStack = () => {
       >
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="AdminPage" component={AdminPage} />
-        <Stack.Screen name="SuperAdminPage" component={SuperAdminPage} />
         <Stack.Screen name="MyTimePage" component={MyTimePage} />
         <Stack.Screen
           name="AdminActivityGallery"
