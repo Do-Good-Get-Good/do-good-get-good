@@ -59,7 +59,6 @@
     "collectCoverageFrom": [
       "./screens/**",
       "./components/**",
-      "index.js",
       "App.js",
       "./context/**"
     ],

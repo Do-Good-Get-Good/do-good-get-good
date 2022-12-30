@@ -112,6 +112,7 @@ function MyTimeEntries() {
             keyExtractor={(item) => item.timeEntryID}
             renderItem={({ item }) => (
               <TimeEntry
+                key={item.timeEntryID}
                 entry={item}
                 setActivity={setActivity}
                 toggleOverlay={toggleOverlay}

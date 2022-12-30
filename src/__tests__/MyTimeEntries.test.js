@@ -7,14 +7,14 @@ import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
-  return <fakeIcon />;
+  return <></>;
 });
 jest.mock("../components/Menu", () => () => {
-  return <mockDropDownForSorting />;
+  return <></>;
 });
 
 jest.mock("../components/CalendarView", () => () => {
-  return <fakeCalenderView />;
+  return <></>;
 });
 
 jest.mock("../components/DropDownForSorting", () => () => {
@@ -25,54 +25,72 @@ jest.mock("@react-navigation/native");
 
 jest.mock("../hooks/useTimeEntriesWithLimit");
 
+const timeEntryMock = {
+  timeEntries: [
+    {
+      adminID: "123",
+      timeEntryID: "123",
+      date: new Date("2022-12-30"),
+      statusConfirmed: false,
+      time: 2,
+      title: "Missing people",
+      activityID: "123",
+    },
+    {
+      adminID: "123",
+      timeEntryID: "1234",
+      date: new Date("2022-12-30"),
+      statusConfirmed: true,
+      time: 2,
+      title: "Missing people",
+      activityID: "123",
+    },
+  ],
+  isLoading: false,
+  error: null,
+};
+
+const emptyTimeEntryMock = {
+  timeEntries: [],
+  isLoading: false,
+  error: null,
+};
+
 describe("Testing MyTimeEntries", () => {
-  beforeAll(() => {
-    useTimeEntriesWithLimit.mockReturnValue({
-      timeEntries: [
-        {
-          adminID: "123",
-          timeEntryID: "123",
-          date: new Date(),
-          statusConfirmed: false,
-          time: 2,
-          title: "Missing people",
-          activityID: "123",
-        },
-      ],
-      isLoading: false,
-      error: null,
-    });
+  afterEach(() => {
+    jest.resetAllMocks();
   });
 
-  it("can find the text Min tid", () => {
-    const { getAllByText } = render(<MyTimeEntries />);
-    expect(getAllByText("Mina aktiviteter").length).toBe(1);
+  it("Renders the page correctly", () => {
+    useTimeEntriesWithLimit.mockReturnValue(timeEntryMock);
+    const { getByText, getAllByText } = render(<MyTimeEntries />);
+    expect(getByText("Mina aktiviteter"));
+    expect(getAllByText("Missing people").length).toBe(2);
+    expect(getAllByText("2022-12-30").length).toBe(2);
+    expect(getAllByText("2 tim").length).toBe(2);
   });
 
-  it("can find the activity title", () => {
-    const { getAllByText } = render(<MyTimeEntries />);
-    expect(getAllByText("Missing people").length).toBe(1);
-  });
-
-  it("can find the activity date", () => {
-    const { getAllByText } = render(<MyTimeEntries />);
-    expect(getAllByText(new Date().toISOString().slice(0, 10)).length).toBe(1);
-  });
-
-  it("can find the activity time", () => {
-    const { getAllByText } = render(<MyTimeEntries />);
-    expect(getAllByText("2 tim").length).toBe(1);
-  });
-
-  it("can press the edit button if statusConfirmed is false", () => {
+  it("Can press the edit button if statusConfirmed = false", () => {
+    useTimeEntriesWithLimit.mockReturnValue(timeEntryMock);
     const { getAllByTestId } = render(<MyTimeEntries />);
-    const button = getAllByTestId("editButton")[0];
+    const editButtons = getAllByTestId("editButton");
+    expect(editButtons.length).toBe(1);
+
+    const button = editButtons[0];
     fireEvent.press(button);
-    expect(button).toBeTruthy();
   });
 
-  it("the edit button is unabled when statusConfirmed is true", () => {
-    const { queryByTestId } = render(<MyTimeEntries />);
-    queryByTestId("icon");
+  it("If statusConfirmed = true a 'done' icon should be visible instead of an edit button", () => {
+    useTimeEntriesWithLimit.mockReturnValue(timeEntryMock);
+    const { getAllByTestId } = render(<MyTimeEntries />);
+    const doneIcons = getAllByTestId("doneIcon");
+    expect(doneIcons.length).toBe(1);
+  });
+
+  it("If no time entries exist, a text indicating that should be visible", () => {
+    useTimeEntriesWithLimit.mockReturnValue(emptyTimeEntryMock);
+    const { getByText } = render(<MyTimeEntries />);
+    const text = getByText("Du har inte loggat någon tid ännu!");
+    expect(text).toBeTruthy();
   });
 });
