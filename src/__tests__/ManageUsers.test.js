@@ -1,6 +1,11 @@
 import "react-native";
 import React from "react";
-import { render, waitFor, cleanup } from "@testing-library/react-native";
+import {
+  render,
+  waitFor,
+  cleanup,
+  fireEvent,
+} from "@testing-library/react-native";
 import ManageUsers from "../components/ManageUsers";
 
 jest.useFakeTimers();
@@ -8,11 +13,11 @@ jest.useFakeTimers();
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
-  return <fakeIcon />;
+  return <></>;
 });
 
 jest.mock("react-native-elements/dist/checkbox/CheckBox", () => () => {
-  return <fakeCheckbox />;
+  return <></>;
 });
 
 jest.mock("../context/AdminHomePageContext", () => ({
@@ -121,5 +126,20 @@ describe("Testing ManageUsers component", () => {
     expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
       "Inga andra användare är kopplade till den här aktiviteten!"
     );
+  });
+
+  it("Can press on save button", () => {
+    const { getByText } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"activity_id"}
+      />
+    );
+
+    const saveButton = getByText("Spara");
+    expect(saveButton);
+
+    fireEvent.press(saveButton);
   });
 });
