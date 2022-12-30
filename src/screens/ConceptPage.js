@@ -41,7 +41,7 @@ const ConceptPage = () => {
           return;
         }
 
-        response.forEach(async (timeEntry) => {
+        response.docs.map(async (timeEntry) => {
           try {
             let activity = await getActivitiesMatchTimeEntries(timeEntry);
             let userInfo = await getUserData(timeEntry.data().user_id);
@@ -183,6 +183,7 @@ const ConceptPage = () => {
                       </View>
                     </View>
                     <Image
+                      testID="image"
                       style={styles.image}
                       source={setTheRightPhoto(activity.activityPhoto)}
                     />
