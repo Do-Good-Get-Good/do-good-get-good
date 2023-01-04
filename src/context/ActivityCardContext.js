@@ -33,21 +33,19 @@ export const ActivityCardProvider = ({ children }) => {
   }, [changeStatusPopular, activityID]);
 
   useEffect(() => {
-    if (activityID != "" && changeStatusActive !== null) {
+    if (activityID !== "" && changeStatusActive !== null) {
       if (changeStatusActive) {
         updateActivityActiveStatus(activityID, true);
-        setChangeStatusActive(null);
-        setStatusActiveHasBeenChanged(true);
       } else {
         updateActivityActiveStatus(activityID, false);
-        setChangeStatusActive(null);
-        setStatusActiveHasBeenChanged(true);
       }
+      setChangeStatusActive(null);
+      setStatusActiveHasBeenChanged(true);
     }
   }, [changeStatusActive, activityID]);
 
   useEffect(() => {
-    if (confirmToDelete === true && activityID !== "") {
+    if (confirmToDelete && activityID !== "") {
       deleteActivity(activityID)
         .then(() => {
           console.log("Activity deleted");
@@ -57,7 +55,7 @@ export const ActivityCardProvider = ({ children }) => {
   }, [confirmToDelete]);
 
   useEffect(() => {
-    if (activityWithChangedInfor.id !== "" && changeActivityToTrue === true) {
+    if (activityWithChangedInfor.id !== "" && changeActivityToTrue) {
       updateActivityInfo(activityWithChangedInfor);
       setChangeActivityToTrue(false);
     }
