@@ -1,13 +1,12 @@
+const functions = require("firebase-functions");
 const { cert } = require("firebase-admin/app");
 
-const serviceAccount = require("./ServiceAccount/serviceAccount.json");
-const devServiceAccount = require("./ServiceAccount/devServiceAccount.json");
+const SERVICE_ACCOUNT_FILE_PATH = functions.config().service_acc.file_path;
+const STORAGE_BUCKET = functions.config().storage.bucket;
 
-console.log(process.env.ENV === "prod" ? serviceAccount : devServiceAccount);
+const serviceAccount = require(SERVICE_ACCOUNT_FILE_PATH);
 
 exports.firebaseConfig = {
-  credential: cert(
-    process.env.ENV === "prod" ? serviceAccount : devServiceAccount
-  ),
-  storageBucket: process.env.STORAGE_BUCKET,
+  credential: cert(serviceAccount),
+  storageBucket: STORAGE_BUCKET,
 };
