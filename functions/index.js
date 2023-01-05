@@ -7,14 +7,9 @@ const updateYear = require("./src/updateYear");
 const assignAdminClaim = require("./src/assignAdminClaim");
 const downloadData = require("./src/downloadData/downloadData");
 
-const { firebase } = require("./config");
+const { firebaseConfig } = require("./config");
 
-// if (process.env.NODE_ENV === "prod") {
-// admin.initializeApp(production(admin, serviceAccount));
-// } else {
-admin.initializeApp(firebase(admin));
-admin.credential.cert();
-// }
+admin.initializeApp(firebaseConfig);
 
 // Cloud functions
 exports.createUser = createUser.createUser;
