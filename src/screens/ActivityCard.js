@@ -23,6 +23,7 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
+import { UserLevels } from "../userlevels";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
@@ -452,7 +453,7 @@ export function ActivityCard({ route, navigation }) {
         </View>
         <BottomLogo />
       </ScrollView>
-      {userLevel !== "user" && (
+      {[UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel) && (
         <AdminHomePageProvider>
           <ManageUsers
             visible={isManageUsersOpen}
