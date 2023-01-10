@@ -4,16 +4,29 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 
+import firestore from "@react-native-firebase/firestore";
+
 export function TimeStatistics({ timeObject }) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
+  const [max, setMax] = useState(0);
+
+  const getMaxConfirmedHours = async () => {
+    let res = await firestore()
+      .collection("timeStatistics")
+      .doc("settings")
+      .get();
+
+    setMax(res.data().max_confirmed_hours);
+  };
 
   useEffect(() => {
     if (timeObject.length != 0) {
       setPaidTime(timeObject[0].paidTime);
       setTimeForYear(timeObject[0].timeForYear);
       setCurrentForMonth(timeObject[0].currentForMonth);
+      getMaxConfirmedHours();
     }
   }, [timeObject]);
 
@@ -25,16 +38,25 @@ export function TimeStatistics({ timeObject }) {
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>
+            Registrerad tid
+          </Text>
         </View>
 
-        <View style={styles.lineWrapper}>
-          <View style={styles.line} />
-        </View>
+        <View style={styles.line} />
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
             {paidTime}
+          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Godkänd tid</Text>
+        </View>
+
+        <View style={styles.line} />
+
+        <View style={styles.innerContainerWrapper}>
+          <Text testID="paidTime" style={styles.textH2ForTime}>
+            {paidTime} / {max}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>
             Ersatta timmar
@@ -59,6 +81,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     flexDirection: "row",
     paddingVertical: 20,
+    paddingHorizontal: 5,
+    height: 100,
     justifyContent: "space-evenly",
     position: "relative",
   },
@@ -69,14 +93,6 @@ const styles = StyleSheet.create({
   },
   textH2ForTime: {
     ...typography.h2,
-  },
-  lineWrapper: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    paddingVertical: 20,
   },
   line: {
     width: 2.5,
