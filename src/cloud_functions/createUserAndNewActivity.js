@@ -1,5 +1,6 @@
 import { Alert } from "react-native";
 import functions from "@react-native-firebase/functions";
+import craschlytics from "@react-native-firebase/crashlytics";
 import { addActivity } from "../firebase-functions/add";
 
 export async function createUserAndNewActivity(
@@ -48,6 +49,10 @@ export async function createUserAndNewActivity(
       setLoading(false);
       alertPopUp(newActivity.activity_title, createdUser, navigation);
     } catch (error) {
+      craschlytics().log(
+        "Creating activity was successful, but creating user caused an error"
+      );
+      craschlytics().recordError(error);
       setLoading(false);
       Alert.alert(
         "Ett fel uppstod! Det gick inte att skapa användaren",
@@ -55,6 +60,8 @@ export async function createUserAndNewActivity(
       );
     }
   } catch (error) {
+    craschlytics().log("Error creating activity");
+    craschlytics().recordError(error);
     setLoading(false);
     Alert.alert(
       "Ett fel uppstod! Det gick inte att skapa aktiviteten",
