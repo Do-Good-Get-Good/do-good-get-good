@@ -1,4 +1,5 @@
 import functions from "@react-native-firebase/functions";
+import craschlytics from "@react-native-firebase/crashlytics";
 import { Alert } from "react-native";
 
 export async function createUserAndLinkSelectedActivity(
@@ -36,13 +37,15 @@ export async function createUserAndLinkSelectedActivity(
       navigation
     );
   } catch (error) {
-    let message = "Error";
-    setLoading(false);
+    let message;
     if (error === "auth/email-already-exists") {
-      message = `Användaren '${user.email}' kunde inte skapas, en användare med den adressen finns redan`;
+      message = `En användare med e-post '${user.email}' existerar redan`;
     } else {
       message = `Kunde inte skapa användare med epost '${user.email}'. \nError: '${error.message}'`;
+      craschlytics().log("Error creating account and linking activity");
+      craschlytics().recordError(error);
     }
+    setLoading(false);
     alertUser(message, true, navigation);
   }
 }
