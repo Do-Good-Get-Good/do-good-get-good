@@ -9,12 +9,10 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "react-native-elements";
-import { useRoute } from "@react-navigation/native";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useSuggestionFunction } from "../context/SuggestionContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -25,14 +23,11 @@ export function Suggestions({
   inactiveActivities,
   choiceFromDropDown,
 }) {
-  const rout = useRoute();
-  const userSuggestionsContext = useSuggestionFunction();
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
-
   const adminGalleryContext = useAdminGalleryFunction();
-  const [showArray, setShowArray] = useState([]);
 
+  const [showArray, setShowArray] = useState([]);
   const [showActiveArray, setShowActiveArray] = useState(true);
 
   useEffect(() => {
@@ -40,28 +35,12 @@ export function Suggestions({
   }, [adminGalleryContext.activeOrInactiveActivity]);
 
   useEffect(() => {
-    if (rout.name === "HomePage") {
-      setShowArray(sortingByTitle(userSuggestionsContext.popularActivities));
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      showActiveArray === false
-    ) {
+    if (showActiveArray === false) {
       setShowArray(sortingByTitle(inactiveActivities));
-    } else if (
-      rout.name === "AdminActivityGallery" &&
-      showActiveArray === true
-    ) {
+    } else if (showActiveArray === true) {
       setShowArray(sortingByTitle(adminGallery));
-    } else {
-      console.log("Nothing to show in AdminGallery");
     }
-  }, [
-    userSuggestionsContext,
-    adminGallery,
-    rout,
-    inactiveActivities,
-    showActiveArray,
-  ]);
+  }, [adminGallery, inactiveActivities, showActiveArray]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -73,19 +52,12 @@ export function Suggestions({
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
-    rout.name === "HomePage"
-      ? navigation.navigate("ActivityCard", {
-          admin: false,
-          activityInfo: activety,
-          active: statusActive,
-          tgPopular: statusPopular,
-        })
-      : navigation.navigate("ActivityCard", {
-          admin: true,
-          activityInfo: activety,
-          active: statusActive,
-          tgPopular: statusPopular,
-        });
+    navigation.navigate("ActivityCard", {
+      admin: true,
+      activityInfo: activety,
+      active: statusActive,
+      tgPopular: statusPopular,
+    });
   }
 
   useEffect(() => {
@@ -151,46 +123,46 @@ export function Suggestions({
           onPress={() =>
             lookDetails(suggestion, suggestion.active, suggestion.popular)
           }
+          style={styles.insideActivityContainer}
+          activeOpacity={0.4}
         >
-          <View style={styles.insideActivityContainer}>
-            <View style={styles.photoAndText}>
-              <View style={styles.textTitleCityDescriptipn}>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                  <View style={{ flex: 1 }}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {suggestion.title}
-                    </Text>
-
-                    <View style={styles.iconsAndTextCityContainer}>
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
-                      />
-
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
-                    </View>
-                  </View>
-                  <Image
-                    testID="photo"
-                    style={styles.image}
-                    source={setTheRightPhoto(suggestion.photo)}
-                  />
-                </View>
-
-                <View style={styles.iconsAndTextDescriptionContainer}>
-                  <Icon
-                    type="material-community"
-                    name="information-outline"
-                    color={colors.dark}
-                    size={25}
-                    style={styles.iconDescription}
-                  />
-                  <Text numberOfLines={2} style={styles.textDescription}>
-                    {suggestion.description}
+          <View style={styles.photoAndText}>
+            <View style={styles.textTitleCityDescriptipn}>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
+                  <Text numberOfLines={2} style={styles.textTitle}>
+                    {suggestion.title}
                   </Text>
+
+                  <View style={styles.iconsAndTextCityContainer}>
+                    <Icon
+                      type="material-community"
+                      name="map-marker-outline"
+                      color={colors.dark}
+                      size={25}
+                    />
+
+                    <Text style={styles.textCity}>{suggestion.city}</Text>
+                  </View>
                 </View>
+                <Image
+                  testID="photo"
+                  style={styles.image}
+                  source={setTheRightPhoto(suggestion.photo)}
+                />
+              </View>
+
+              <View style={styles.iconsAndTextDescriptionContainer}>
+                <Icon
+                  type="material-community"
+                  name="information-outline"
+                  color={colors.dark}
+                  size={25}
+                  style={styles.iconDescription}
+                />
+                <Text numberOfLines={2} style={styles.textDescription}>
+                  {suggestion.description}
+                </Text>
               </View>
             </View>
           </View>
@@ -216,36 +188,31 @@ export function Suggestions({
   }
 
   return (
-    <View>
-      <View>
-        {(useCreateActivityContext.searchWordHasNoMatch ||
-          adminGalleryContext.searchWordHasNoMatch) && (
-          <Text style={styles.testNoMatchInSearBar}>Inga resultat</Text>
-        )}
-      </View>
+    <>
+      {(useCreateActivityContext.searchWordHasNoMatch ||
+        adminGalleryContext.searchWordHasNoMatch) && (
+        <Text style={styles.testNoMatchInSearBar}>
+          Din sökning gav inga resultat.
+        </Text>
+      )}
       {whichArrayToShow()}
-    </View>
+    </>
   );
 }
 export default Suggestions;
 
 const styles = StyleSheet.create({
-  topH1: {
-    ...typography.title,
-    flex: 1,
-    color: colors.dark,
-    marginTop: 10,
-  },
   testNoMatchInSearBar: {
     ...typography.b2,
     textAlign: "center",
-    marginTop: 20,
+    marginVertical: 20,
     color: colors.dark,
   },
   activityContainer: {
     flex: 1,
     marginTop: 5,
-    marginBottom: 15,
+    alignSelf: "center",
+    width: "99%",
   },
   insideActivityContainer: {
     flex: 1,
@@ -253,7 +220,7 @@ const styles = StyleSheet.create({
     marginVertical: 7,
     backgroundColor: colors.background,
     flexWrap: "wrap",
-    borderRadius: 2,
+    borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
     ...Platform.select({
@@ -262,10 +229,10 @@ const styles = StyleSheet.create({
           hight: 2,
         },
         shadowOpacity: 0.5,
-        shadowRadius: 5,
+        shadowRadius: 2,
       },
       android: {
-        elevation: 3,
+        elevation: 2,
       },
     }),
   },

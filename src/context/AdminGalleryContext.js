@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { getAllInactiveActivities } from "../customFirebaseHooks/getFunctions";
+import { getAllActivitiesWithStatus } from "../customFirebaseHooks/getFunctions";
 const AdminGalleryContext = React.createContext();
 
 export const useAdminGalleryFunction = () => {
@@ -8,7 +8,6 @@ export const useAdminGalleryFunction = () => {
 
 export const AdminGalleryProvider = ({ children }) => {
   const [chooseInactive, setchooseInactive] = useState(true);
-  const [activitiesGallery, setActivitiesGallery] = useState([]);
   const [inactiveActivitiesGallery, setInactiveActivitiesGallery] = useState(
     []
   );
@@ -19,35 +18,10 @@ export const AdminGalleryProvider = ({ children }) => {
   const [searchingWord, setSearchingWord] = useState("");
 
   useEffect(() => {
-    let inactiveArray = [];
     const setInactive = async () => {
       try {
-        getAllInactiveActivities().then((allInactiveActivities) => {
-          let activities = allInactiveActivities.docs.map((doc) => doc.data());
-          let docId = allInactiveActivities.docs.map((doc) => doc.id);
-
-          if (
-            activities != null &&
-            activities.length > activitiesGallery.length
-          ) {
-            for (let i = 0; i < activities.length; i++) {
-              const dataInfo = {
-                id: docId[i],
-                title: activities[i].activity_title,
-                active: activities[i].active_status,
-                city: activities[i].activity_city,
-                place: activities[i].activity_place,
-                description: activities[i].activity_description,
-                photo: activities[i].activity_photo,
-                popular: activities[i].tg_favorite,
-              };
-              inactiveArray.push(dataInfo);
-
-              setInactiveActivitiesGallery(inactiveArray);
-            }
-            console.log("ActivityGaleryContext inactive activity in useEffect");
-          }
-        });
+        let inactiveActivities = await getAllActivitiesWithStatus(false);
+        setInactiveActivitiesGallery(inactiveActivities);
       } catch (error) {
         console.log("AdminContex errorMessage ", error);
       }

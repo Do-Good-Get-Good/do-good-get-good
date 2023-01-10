@@ -19,7 +19,7 @@ import AdminPage from "./screens/AdminPage";
 import SuperAdminPage from "./screens/SuperAdminPage";
 
 const Stack = createNativeStackNavigator();
-export const Mystack = () => {
+export const SuperAdminStack = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -54,6 +54,54 @@ export const Mystack = () => {
           name="RolesAndConnection"
           component={RolesAndConnection}
         />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export const AdminStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="AdminPage" component={AdminPage} />
+        <Stack.Screen name="MyTimePage" component={MyTimePage} />
+        <Stack.Screen
+          name="AdminActivityGallery"
+          component={AdminActivityGallery}
+        />
+        <Stack.Screen name="CreateActivity" component={CreateActivity} />
+        <Stack.Screen name="ActivityCard" component={ActivityCard} />
+        <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
+        <Stack.Screen
+          name="CreateOrChangeUser"
+          component={CreateOrChangeUser}
+        />
+        <Stack.Screen name="Faq" component={Faq} />
+        <Stack.Screen name="ConceptPage" component={ConceptPage} />
+        <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+};
+
+export const UserStack = () => {
+  return (
+    <NavigationContainer>
+      <Stack.Navigator
+        screenOptions={{
+          headerShown: false,
+        }}
+      >
+        <Stack.Screen name="HomePage" component={HomePage} />
+        <Stack.Screen name="MyTimePage" component={MyTimePage} />
+        <Stack.Screen name="ActivityCard" component={ActivityCard} />
+        <Stack.Screen name="Faq" component={Faq} />
+        <Stack.Screen name="ConceptPage" component={ConceptPage} />
       </Stack.Navigator>
     </NavigationContainer>
   );

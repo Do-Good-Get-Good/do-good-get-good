@@ -15,7 +15,7 @@ import auth from "@react-native-firebase/auth";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { useAdminCheckFunction } from "../context/AdminContext";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
@@ -25,7 +25,7 @@ import typography from "../assets/theme/typography";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
-  const userLevel = useAdminCheckFunction();
+  const userLevel = useUserLevelCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   const superAdminContext = useSuperAdminFunction();
 

@@ -5,8 +5,7 @@ import { SafeAreaProvider } from "react-native-safe-area-context";
 
 import auth from "@react-native-firebase/auth";
 
-import { AdminProvider } from "./context/AdminContext";
-import { ActivityProvider } from "./context/ActivityContext";
+import { UserLevelProvider } from "./context/UserLevelContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
 import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
@@ -14,7 +13,7 @@ import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
 
-import { Mystack } from "./navigate";
+import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 
 import Login from "./components/Login";
 import BottomLogo from "./components/BottomLogo";
@@ -66,15 +65,13 @@ export default function App() {
           <ActivityCardProvider>
             <AdminGalleryProvider>
               <CreateActivityProvider>
-                <AdminProvider>
-                  <ActivityProvider>
-                    <SuperAdminProvider>
-                      <AdminHomePageProvider>
-                        <Mystack />
-                      </AdminHomePageProvider>
-                    </SuperAdminProvider>
-                  </ActivityProvider>
-                </AdminProvider>
+                <UserLevelProvider>
+                  <SuperAdminProvider>
+                    <AdminHomePageProvider>
+                      <SuperAdminStack />
+                    </AdminHomePageProvider>
+                  </SuperAdminProvider>
+                </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
@@ -89,13 +86,11 @@ export default function App() {
           <ActivityCardProvider>
             <AdminGalleryProvider>
               <CreateActivityProvider>
-                <AdminProvider>
-                  <ActivityProvider>
-                    <AdminHomePageProvider>
-                      <Mystack />
-                    </AdminHomePageProvider>
-                  </ActivityProvider>
-                </AdminProvider>
+                <UserLevelProvider>
+                  <AdminHomePageProvider>
+                    <AdminStack />
+                  </AdminHomePageProvider>
+                </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
@@ -105,17 +100,9 @@ export default function App() {
   } else if (userClaims.user) {
     return (
       <SafeAreaProvider>
-        <ActivityCardProvider>
-          <AdminGalleryProvider>
-            <CreateActivityProvider>
-              <AdminProvider>
-                <ActivityProvider>
-                  <Mystack />
-                </ActivityProvider>
-              </AdminProvider>
-            </CreateActivityProvider>
-          </AdminGalleryProvider>
-        </ActivityCardProvider>
+        <UserLevelProvider>
+          <UserStack />
+        </UserLevelProvider>
       </SafeAreaProvider>
     );
   } else {

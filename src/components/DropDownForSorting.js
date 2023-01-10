@@ -39,13 +39,7 @@ export function DropDownForSorting({ choice }) {
     setOpenDropDown(false);
     setSortBy(selection);
     if (rout.name === "MyTimePage") {
-      if (selection === "Godkända") {
-        choice(true);
-      } else if (selection === "Inte godkända") {
-        choice(false);
-      } else {
-        choice(null);
-      }
+      choice(selection);
     } else if (rout.name === "AdminActivityGallery") {
       if (selection === "Favoriter" || "Namn" || "Plats") {
         choice(selection);

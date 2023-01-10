@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
+import { updateUserInfoFromAdminScreen } from "../customFirebaseHooks/updateFunctions";
 
 const ChangeUserInfoContext = React.createContext();
 
@@ -19,25 +19,8 @@ export const ChangeUserInfoProvider = ({ children }) => {
 
   useEffect(() => {
     if (newChangesInUserInfo.userID != " ") {
-      try {
-        firestore()
-          .collection("Users")
-          .doc(newChangesInUserInfo.userID)
-          .update({
-            first_name: newChangesInUserInfo.userFirstName,
-            last_name: newChangesInUserInfo.userLastName,
-            status_active: newChangesInUserInfo.statusActive,
-          })
-          .then(() => {
-            console.log("User first name has been changed");
-            setReloadAfterUserNameChanged(true);
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("errorMessage ", error);
-      }
+      updateUserInfoFromAdminScreen(newChangesInUserInfo);
+      setReloadAfterUserNameChanged(true);
     }
   }, [newChangesInUserInfo]);
 

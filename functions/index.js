@@ -7,22 +7,9 @@ const updateYear = require("./src/updateYear");
 const assignAdminClaim = require("./src/assignAdminClaim");
 const downloadData = require("./src/downloadData/downloadData");
 
-/* ---------------- For production database (Firebase) -------------------- */
-// var serviceAccount = require("./ServiceAccount/serviceAccount.json");
+const { firebaseConfig } = require("./config");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL:
-//   "https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app",
-// });
-
-/* ---------------- For development database (Firebase) -------------------- */
-var serviceAccount = require("./ServiceAccount/devServiceAccount.json");
-
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  storageBucket: "dev-do-good-get-good.appspot.com",
-});
+admin.initializeApp(firebaseConfig);
 
 // Cloud functions
 exports.createUser = createUser.createUser;

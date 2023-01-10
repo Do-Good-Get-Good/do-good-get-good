@@ -7,132 +7,47 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
-import firestore from "@react-native-firebase/firestore";
-import auth from "@react-native-firebase/auth";
-import { format } from "date-fns";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useNetInfo } from "@react-native-community/netinfo";
+import {
+  confirmTimeEntry,
+  incrementTotalConfirmedHoursForUser,
+  incrementYearlyTotalHoursForUser,
+  updateUsersActivitiesAndAccumulatedTime,
+} from "../customFirebaseHooks/updateFunctions";
+import useTimeEntriesForAdmin from "../customFirebaseHooks/useTimeEntriesForAdmin";
 
 const ConfirmActivities = () => {
-  const [checkAll, setCheckAll] = useState(false);
-  const [checked, setChecked] = useState(false);
-  const [myUsers, setMyUsers] = useState([]);
-  const [snapshot, setSnapshot] = useState(null);
   let userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+
+  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(userData);
+
+  const [checkAll, setCheckAll] = useState(false);
+  const [checked, setChecked] = useState(false);
   const changeUserInfoContext = useChangeUserInfoFunction();
   const inetInfo = useNetInfo();
-
-  useEffect(() => {
-    return firestore()
-      .collection("timeentries")
-      .where("admin_id", "==", auth().currentUser.uid)
-      .where("status_confirmed", "==", false)
-      .orderBy("date", "desc")
-      .onSnapshot(
-        (snapshot) => {
-          setSnapshot(null);
-          setCheckAll(false);
-          setChecked(false);
-          setSnapshot(snapshot);
-        },
-        (error) => {
-          console.log(error);
-        }
-      );
-  }, []);
-
-  useEffect(() => {
-    if (snapshot != null && userData.length != 0) {
-      snapshot.docChanges().forEach((change) => {
-        if (change.type === "added") {
-          addTimeEntry(change);
-        }
-        if (change.type === "modified") {
-          updateTimeEntry(change);
-        }
-        if (change.type === "removed") {
-          removeTimeEntry(change);
-        }
-      });
-    }
-  }, [userData, snapshot]);
 
   useEffect(() => {
     if (
       changeUserInfoContext.reloadAfterUserNameChanged &&
       changeUserInfoContext.newChangesInUserInfo.userID != 0
     ) {
-      let oldArray = myUsers;
-      var index = oldArray.findIndex(
-        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
-      );
-      if (index != -1) {
-        oldArray[index].fullName =
-          changeUserInfoContext.newChangesInUserInfo.userFirstName +
-          " " +
-          changeUserInfoContext.newChangesInUserInfo.userLastName;
-      }
-      setMyUsers(oldArray);
-    }
-  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
-
-  const addTimeEntry = async (change) => {
-    let fullName;
-
-    for (let i = 0; i < userData.length; i++) {
-      if (userData[i].id === change.doc.data().user_id) {
-        fullName = `${userData[i].first_name} ${userData[i].last_name}`;
-      }
-    }
-
-    var cheackIfThisTimeEntriesAlreadyExist = myUsers.findIndex(
-      (x) => x.timeEntryId === change.doc.id
-    );
-    if (cheackIfThisTimeEntriesAlreadyExist === -1) {
-      const timeEntryData = {
-        userID: change.doc.data().user_id,
-        fullName: fullName,
-        activityID: change.doc.data().activity_id,
-        activityName: change.doc.data().activity_title,
-        timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
-        timeEntryHours: change.doc.data().time,
-        timeEntryId: change.doc.id,
-        checked: false,
-        isOpen: false,
-      };
-
-      setMyUsers((prev) => [...prev, timeEntryData]);
-    }
-  };
-
-  const updateTimeEntry = (change) => {
-    let modifiedMyUsersArray = myUsers.map((user) => {
-      if (user.timeEntryId === change.doc.id) {
+      const updatedUser = changeUserInfoContext.newChangesInUserInfo;
+      let newArr = myUsers.map((user) => {
+        if (user.userID !== updatedUser.userID) return user;
         return {
           ...user,
-          timeEntryDate: format(change.doc.data().date.toDate(), "yyyy-MM-dd"),
-          timeEntryHours: change.doc.data().time,
+          fullName: `${updatedUser.userFirstName} ${updatedUser.userLastName}`,
         };
-      } else {
-        return user;
-      }
-    });
-    setMyUsers(modifiedMyUsersArray);
-  };
-
-  const removeTimeEntry = (change) => {
-    let newUserTimeEntryArray = myUsers.filter((timeEntry) => {
-      if (timeEntry.timeEntryId != change.doc.id) {
-        return timeEntry;
-      }
-    });
-    setMyUsers(newUserTimeEntryArray);
-  };
+      });
+      setMyUsers(newArr);
+    }
+  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   // Check/uncheck the selected users checkbox
   const markSelected = (selectedUser) => {
@@ -205,7 +120,7 @@ const ConfirmActivities = () => {
       let timeEntryIdsToSendToMyUsers = [];
       for (let i = 0; i < selectedUsers.length; i++) {
         timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
-        confirmActivity(selectedUsers[i].timeEntryId);
+        confirmTimeEntry(selectedUsers[i].timeEntryId);
         addTotalConfirmedHours(selectedUsers[i]);
         if (i === selectedUsers.length - 1) {
           setChecked(false);
@@ -238,66 +153,20 @@ const ConfirmActivities = () => {
     let currentMonth = today.getMonth();
     let accumulatedTime = addAccumulatedTime(user);
 
-    if (
-      currentMonth === new Date(user.timeEntryDate).getMonth() &&
-      currentYear === new Date(user.timeEntryDate).getFullYear()
-    ) {
-      try {
-        firestore()
-          .collection("Users")
-          .doc(user.userID)
-          .update({
-            total_confirmed_hours: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            total_hours_year: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            activities_and_accumulated_time: accumulatedTime,
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("errorMessage ", error);
-      }
-    } else if (
-      currentMonth != new Date(user.timeEntryDate).getMonth() &&
-      currentYear === new Date(user.timeEntryDate).getFullYear()
-    ) {
-      try {
-        firestore()
-          .collection("Users")
-          .doc(user.userID)
-          .update({
-            total_hours_year: firestore.FieldValue.increment(
-              user.timeEntryHours
-            ),
-            activities_and_accumulated_time: accumulatedTime,
-          })
-          .catch((error) => {
-            console.log("errorMessage ", error);
-          });
-      } catch (error) {
-        console.log("errorMessage ", error);
-      }
-    }
-  };
+    let timeEntryMonth = new Date(user.timeEntryDate).getMonth();
+    let timeEntryYear = new Date(user.timeEntryDate).getFullYear();
 
-  // Confirms the selected users activity (updates 'status_confirmed to 'true' in firebase firestore)
-  const confirmActivity = (timeEntryID) => {
-    firestore()
-      .collection("timeentries")
-      .doc(timeEntryID)
-      .update({
-        status_confirmed: true,
-      })
-      .then(() => {
-        console.log("ConfirmActivities. It went good to update timeentries ");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    if (currentMonth === timeEntryMonth && currentYear === timeEntryYear) {
+      incrementTotalConfirmedHoursForUser(user.userID, user.timeEntryHours);
+      incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+      updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
+    } else if (
+      currentMonth != timeEntryMonth &&
+      currentYear === timeEntryYear
+    ) {
+      incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+      updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
+    }
   };
 
   return (

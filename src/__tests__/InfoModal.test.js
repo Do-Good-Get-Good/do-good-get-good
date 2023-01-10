@@ -9,7 +9,7 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 });
 
 const homepageInfoText =
-  "Du får betalt för halva dina utförda timmar och du kan max få beltalt för 10 timmar";
+  "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år";
 const imageGalleryInfoText =
   "Välj en bild som bäst representerar aktiviteten som den ska tillhöra.";
 

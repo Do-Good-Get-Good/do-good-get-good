@@ -69,7 +69,6 @@ export default SearchBarComponent;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginVertical: 16,
     backgroundColor: colors.background,
     borderRadius: 5,
     height: 55,
@@ -77,8 +76,9 @@ const styles = StyleSheet.create({
       ios: {
         shadowOffset: {
           height: 2,
+          width: 1,
         },
-        shadowOpacity: 0.3,
+        shadowOpacity: 0.2,
         shadowRadius: 1,
       },
       android: {

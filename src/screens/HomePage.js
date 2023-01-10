@@ -1,47 +1,48 @@
-import React, { useState } from "react";
-import { StyleSheet, ScrollView, Text, View } from "react-native";
+import React from "react";
+import { StyleSheet, ScrollView, Text, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { useActivityFunction } from "../context/ActivityContext";
-import { SuggestionProvider } from "../context/SuggestionContext";
-
 import Menu from "../components/Menu";
-import { MyActivities } from "../components/MyActivities";
-import MyActivityAsAList from "../components/MyActivityAsAList";
-import { Suggestions } from "../components/Suggestions";
 import TimeStatistics from "../components/TimeStatistics";
+import { MyActivities } from "../components/MyActivities";
+import NewestTimeEntries from "../components/NewestTimeEntries";
+import HomeSuggestions from "../components/HomeSuggestions";
 import BottomLogo from "../components/BottomLogo";
 
 import typography from "../assets/theme/typography";
+
+import useLinkedActivities from "../customFirebaseHooks/useLinkedActivities";
+import { useSuggestions } from "../customFirebaseHooks/useSuggestions";
 import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
-  const activity = useActivityFunction();
+  const { timeObject, activities, isLoading } = useLinkedActivities();
+  const { suggestions, loading } = useSuggestions();
 
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
-        <TimeStatistics />
-        {activity.myActivities.length != 0 && (
+        {isLoading && <ActivityIndicator size={30} color={colors.primary} />}
+        {activities.length !== 0 && timeObject.length !== 0 && (
           <>
-            <MyActivities
-              myAccumulatedTime={activity.activitiesIDandAccumTime}
-              myActivities={activity.myActivities}
-            />
-            <MyActivityAsAList navigation={navigation} />
+            <TimeStatistics timeObject={timeObject} />
+            <MyActivities activities={activities} />
           </>
         )}
 
-        <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
-        <SuggestionProvider>
-          <Suggestions navigation={navigation} />
-        </SuggestionProvider>
+        <NewestTimeEntries navigation={navigation} />
 
-        {activity.myActivities.length === 0 && (
-          <MyActivityAsAList navigation={navigation} />
+        <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
+        {loading && (
+          <ActivityIndicator
+            size={30}
+            color={colors.primary}
+            style={{ marginTop: 10 }}
+          />
         )}
+        <HomeSuggestions suggestions={suggestions} navigation={navigation} />
 
         <BottomLogo />
       </ScrollView>
@@ -51,14 +52,11 @@ export const HomePage = ({ navigation }) => {
 const styles = StyleSheet.create({
   view: {
     flex: 1,
-    backgroundColor: colors.light,
   },
   container: {
     paddingHorizontal: 16,
-    flex: 1,
   },
   myActivities: {
-    flex: 1,
     marginTop: 20,
   },
   suggestionHeader: {

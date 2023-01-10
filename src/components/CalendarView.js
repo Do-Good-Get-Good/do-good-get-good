@@ -28,8 +28,8 @@ import { deleteTimeEntry } from "../customFirebaseHooks/deleteFunctions";
 import { updateTimeEntry } from "../customFirebaseHooks/updateFunctions";
 import { addTimeEntry } from "../customFirebaseHooks/addFunctions";
 import {
-  incrementTotalHoursForUser,
-  decrementTotalHoursForUser,
+  incrementTotalHoursMonthForUser,
+  decrementTotalHoursMonthForUser,
 } from "../customFirebaseHooks/updateFunctions";
 
 const CalendarView = ({
@@ -38,6 +38,7 @@ const CalendarView = ({
   activity,
   isEditing,
   adminID,
+  removeFirstStaticTimeEntry,
 }) => {
   LocaleConfig.locales["sv"] = {
     monthNames: [
@@ -109,6 +110,7 @@ const CalendarView = ({
       setDate(null);
       setSelectedDate(null);
       setHours(null);
+      setError(null);
     }
   }, [visible]);
 
@@ -137,7 +139,7 @@ const CalendarView = ({
 
     addTimeEntry(timeEntry)
       .then(() => {
-        incrementTotalHoursForUser(uid, hours);
+        incrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
       .catch((error) => {
@@ -164,10 +166,10 @@ const CalendarView = ({
         ) {
           if (activity.time < hours) {
             let newTime = hours - activity.time;
-            incrementTotalHoursForUser(uid, newTime);
+            incrementTotalHoursMonthForUser(uid, newTime);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
-            decrementTotalHoursForUser(uid, newTime);
+            decrementTotalHoursMonthForUser(uid, newTime);
           }
         }
         toggleVisibility();
@@ -179,9 +181,12 @@ const CalendarView = ({
 
   //Removes a users time entry from the database
   const removeTimeEntry = (timeEntryID) => {
+    if (removeFirstStaticTimeEntry !== undefined)
+      removeFirstStaticTimeEntry(timeEntryID);
+
     deleteTimeEntry(timeEntryID)
       .then(() => {
-        decrementTotalHoursForUser(uid, hours);
+        decrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
       .catch((error) => {
@@ -197,16 +202,17 @@ const CalendarView = ({
       overlayStyle={{
         backgroundColor: colors.light,
         borderRadius: 5,
-        paddingTop: 32,
+        paddingTop: 14,
+        paddingHorizontal: 0,
         width: "90%",
-        height: "85%",
+        maxHeight: "85%",
         flexDirection: "column",
         justifyContent: "space-between",
       }}
       animationType="fade"
     >
       <Pressable
-        style={{ position: "absolute", right: -10, top: -10 }}
+        style={{ position: "absolute", right: -10, top: -10, zIndex: 2 }}
         onPress={toggleVisibility}
       >
         <Icon
@@ -216,15 +222,17 @@ const CalendarView = ({
           style={{ backgroundColor: colors.background, borderRadius: 25 }}
         />
       </Pressable>
+      <View style={{ paddingHorizontal: 16 }}>
+        <Text testID="calendarView.headerText" style={styles.activityTitle}>
+          {isEditing ? activity.title : activity.title + " - " + activity.city}
+        </Text>
+        <Text style={styles.chooseDateText}>Välj datum</Text>
+      </View>
       <ScrollView
         style={{
           paddingHorizontal: 16,
         }}
       >
-        <Text testID="calendarView.headerText" style={styles.activityTitle}>
-          {isEditing ? activity.title : activity.title + " - " + activity.city}
-        </Text>
-        <Text style={styles.chooseDateText}>Välj datum</Text>
         <View style={styles.calendarAndHourView}>
           <Calendar
             onDayPress={(day) => {
@@ -249,8 +257,11 @@ const CalendarView = ({
               [date]: {
                 customStyles: {
                   container: {
-                    backgroundColor: "#84BD0040",
+                    backgroundColor: `${colors.primary}40`,
                     borderRadius: 0,
+                  },
+                  text: {
+                    color: colors.dark,
                   },
                 },
               },
@@ -261,15 +272,21 @@ const CalendarView = ({
                     borderColor: colors.primary,
                     borderRadius: 0,
                   },
+                  text: {
+                    color: colors.dark,
+                  },
                 },
               },
               [todaySelected]: {
                 customStyles: {
                   container: {
-                    backgroundColor: "#84BD0040",
+                    backgroundColor: `${colors.primary}40`,
                     borderWidth: 1,
                     borderColor: colors.primary,
                     borderRadius: 0,
+                  },
+                  text: {
+                    color: colors.dark,
                   },
                 },
               },
@@ -335,7 +352,7 @@ const CalendarView = ({
         </Text>
       )}
 
-      {!isEditing ? (
+      {!isEditing && (
         <TouchableOpacity
           style={[
             styles.sendBtn,
@@ -348,9 +365,9 @@ const CalendarView = ({
         >
           <Text style={styles.sendBtnText}>Logga tid</Text>
         </TouchableOpacity>
-      ) : null}
+      )}
 
-      {isEditing ? (
+      {isEditing && (
         <>
           <TouchableOpacity
             style={[
@@ -374,7 +391,7 @@ const CalendarView = ({
             <Text style={styles.sendBtnText}>Ta bort tid</Text>
           </TouchableOpacity>
         </>
-      ) : null}
+      )}
     </Overlay>
   );
 };
@@ -383,7 +400,8 @@ export default CalendarView;
 
 const styles = StyleSheet.create({
   activityTitle: {
-    ...typography.b1,
+    fontSize: typography.b1.fontSize,
+    fontFamily: typography.b1.fontFamily,
     fontWeight: "700",
   },
   chooseDateText: {
@@ -434,8 +452,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: colors.primary,
-    marginLeft: -10,
-    marginRight: -10,
     marginBottom: -10,
     ...Platform.select({
       ios: {

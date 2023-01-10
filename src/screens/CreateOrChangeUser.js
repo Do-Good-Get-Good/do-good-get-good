@@ -20,14 +20,14 @@ import { Icon } from "react-native-elements";
 import Menu from "../components/Menu";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
-import { useAdminCheckFunction } from "../context/AdminContext";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
 export const CreateOrChangeUser = ({ route, navigation }) => {
-  const userLevel = useAdminCheckFunction();
+  const userLevel = useUserLevelCheckFunction();
   const changeUserInfoContext = useChangeUserInfoFunction();
   const createActivityContext = useCreateActivityFunction();
   const {

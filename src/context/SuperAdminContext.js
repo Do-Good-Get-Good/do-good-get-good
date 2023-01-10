@@ -1,6 +1,7 @@
 import React, { useContext, useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
 import { superAdminUpdatesUserInfo } from "../customFirebaseHooks/updateFunctions";
+import { getAllUsersData } from "../customFirebaseHooks/getFunctions";
+
 const SuperAdminContext = React.createContext();
 
 export const useSuperAdminFunction = () => {
@@ -28,34 +29,9 @@ export const SuperAdminProvider = ({ children }) => {
     if (getAllUsers === true && userLevel === "superadmin") {
       const getAllUsersThatExistInTheSystem = async () => {
         try {
-          await firestore()
-            .collection("Users")
-            .get()
-            .then((response) => {
-              let allUsers = [];
-              response.forEach((doc) =>
-                allUsers.push({
-                  activitiesAndAccumulatedTime:
-                    doc.data().activities_and_accumulated_time,
-                  adminId: doc.data().admin_id,
-                  connectedActivities: doc.data().connected_activities,
-                  docId: doc.id,
-                  firstName: doc.data().first_name,
-                  lastName: doc.data().last_name,
-                  role: doc.data().role,
-                  statusActive: doc.data().status_active,
-                  totalConfirmedHours: doc.data().total_confirmed_hours,
-                  totalHoursMonth: doc.data().total_hours_month,
-                  totalHoursYear: doc.data().total_hours_year,
-                })
-              );
-
-              setAllUsersInSystem(allUsers);
-              findAdminsAndSuperAdmins(allUsers);
-            })
-            .catch((error) => {
-              console.log("errorMessage ", error);
-            });
+          let allUsers = await getAllUsersData();
+          setAllUsersInSystem(allUsers);
+          findAdminsAndSuperAdmins(allUsers);
         } catch (error) {
           console.log("SuperAdminContext errorMessage ", error);
         }

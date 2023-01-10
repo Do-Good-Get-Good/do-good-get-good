@@ -4,8 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 
 import MenuOverlay from "../components/MenuOverlay";
 
-import { useAdminCheckFunction } from "../context/AdminContext";
-import { useActivityFunction } from "../context/ActivityContext";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -39,15 +38,8 @@ jest.mock("@react-native-firebase/auth", () => {
   });
 });
 
-jest.mock("../context/AdminContext", () => ({
-  useAdminCheckFunction: jest.fn(),
-}));
-
-jest.mock("../context/ActivityContext", () => ({
-  useActivityFunction: () => ({
-    getIfoFromActivitiesList: jest.fn(),
-    setLimitAmountForTimeEntries: jest.fn(),
-  }),
+jest.mock("../context/UserLevelContext", () => ({
+  useUserLevelCheckFunction: jest.fn(),
 }));
 
 jest.mock("../context/AdminGalleryContext", () => ({
@@ -89,7 +81,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the admin-menu buttons visible", () => {
-    useAdminCheckFunction.mockReturnValueOnce("admin");
+    useUserLevelCheckFunction.mockReturnValueOnce("admin");
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />
     );
@@ -107,7 +99,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the superadmin-menu buttons visible", () => {
-    useAdminCheckFunction.mockReturnValueOnce("superadmin");
+    useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
     const { getAllByText } = render(<MenuOverlay isVisible={true} />);
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Byt språk").length).toBe(1);
@@ -154,7 +146,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Activities button", () => {
-      useAdminCheckFunction.mockReturnValueOnce("admin");
+      useUserLevelCheckFunction.mockReturnValueOnce("admin");
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
@@ -171,7 +163,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Admin button", () => {
-      useAdminCheckFunction.mockReturnValueOnce("admin");
+      useUserLevelCheckFunction.mockReturnValueOnce("admin");
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
@@ -184,7 +176,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Super admin button", () => {
-      useAdminCheckFunction.mockReturnValueOnce("superadmin");
+      useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />
@@ -204,7 +196,6 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuOverlay.myTimeButton");
       fireEvent.press(myTimeButton);
-      useActivityFunction().setLimitAmountForTimeEntries.mockReturnValue(20);
       expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
     });
 

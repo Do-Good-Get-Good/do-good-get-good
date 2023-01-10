@@ -12,12 +12,6 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
   return <fakeIcon />;
 });
 
-jest.mock("../context/SuggestionContext", () => ({
-  useSuggestionFunction: () => ({
-    popularActivities: jest.fn(),
-  }),
-}));
-
 jest.mock("../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,
@@ -25,8 +19,8 @@ jest.mock("../context/AdminGalleryContext", () => ({
   }),
 }));
 
-jest.mock("../context/AdminContext", () => ({
-  useAdminCheckFunction: jest.fn(),
+jest.mock("../context/UserLevelContext", () => ({
+  useUserLevelCheckFunction: jest.fn(),
 }));
 
 jest.mock("../context/CreateActivityContext", () => ({
@@ -210,6 +204,6 @@ describe("Testing Suggestions", () => {
         choiceFromDropDown={"Namn"}
       />
     );
-    expect(getAllByText("Inga resultat").length).toBe(1);
+    expect(getAllByText("Din sökning gav inga resultat.").length).toBe(1);
   });
 });

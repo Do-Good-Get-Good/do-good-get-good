@@ -17,16 +17,19 @@ import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
+import { UserLevels } from "../userlevels";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const adminGalleryContext = useAdminGalleryFunction();
+  const userLevel = useUserLevelCheckFunction();
 
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
@@ -235,7 +238,7 @@ export function ActivityCard({ route, navigation }) {
   }
 
   function toArchiveOrToTakeAwayFromArchive() {
-    if (activeActivities === false) {
+    if (!activeActivities) {
       return (
         <View style={styles.containerIconArchiveArrowAndText}>
           <TouchableOpacity>
@@ -257,7 +260,7 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
         </View>
       );
-    } else if (activeActivities === true) {
+    } else {
       return (
         <View style={styles.containerIconArchiveArrowAndText}>
           <TouchableOpacity>
@@ -277,8 +280,6 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
         </View>
       );
-    } else {
-      console.log("Something went wrong with toArchiveOrToTakeAwayFromArchive");
     }
   }
 
@@ -446,13 +447,15 @@ export function ActivityCard({ route, navigation }) {
         </View>
         <BottomLogo />
       </ScrollView>
-      <AdminHomePageProvider>
-        <ManageUsers
-          visible={isManageUsersOpen}
-          closeModal={closeManageUsers}
-          currentActivityId={activityInfo.id}
-        />
-      </AdminHomePageProvider>
+      {[UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel) && (
+        <AdminHomePageProvider>
+          <ManageUsers
+            visible={isManageUsersOpen}
+            closeModal={closeManageUsers}
+            currentActivityId={activityInfo.id}
+          />
+        </AdminHomePageProvider>
+      )}
     </SafeAreaView>
   );
 }

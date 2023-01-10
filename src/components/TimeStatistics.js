@@ -4,36 +4,35 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 
-import { useActivityFunction } from "../context/ActivityContext";
-
-export function TimeStatistics({}) {
+export function TimeStatistics({ timeObject }) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
-  const activityFunction = useActivityFunction();
 
   useEffect(() => {
-    if (activityFunction.activitiesIDandAccumTime.length != 0) {
-      setPaidTime(activityFunction.activitiesIDandAccumTime[0].paidTime);
-      setTimeForYear(activityFunction.activitiesIDandAccumTime[0].timeForYear);
-      setCurrentForMonth(
-        activityFunction.activitiesIDandAccumTime[0].currentForMonth
-      );
+    if (timeObject.length != 0) {
+      setPaidTime(timeObject[0].paidTime);
+      setTimeForYear(timeObject[0].timeForYear);
+      setCurrentForMonth(timeObject[0].currentForMonth);
     }
-  }, [activityFunction.activitiesIDandAccumTime]);
+  }, [timeObject]);
 
   return (
-    <View style={styles.containerForAll}>
-      <Text style={styles.mainText}>Utförda timmar</Text>
+    <>
+      <Text style={styles.header}>Utförda timmar</Text>
       <View style={styles.containerMonthAndPaidTime}>
-        <View style={styles.containerTimeAndTextUndre}>
+        <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
         </View>
-        <Text style={styles.lineBetween}></Text>
-        <View style={styles.containerTimeAndTextUndre}>
+
+        <View style={styles.lineWrapper}>
+          <View style={styles.line} />
+        </View>
+
+        <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
             {paidTime}
           </Text>
@@ -42,52 +41,58 @@ export function TimeStatistics({}) {
           </Text>
         </View>
       </View>
-      <View>
-        <View style={styles.containerTextTimeForYearPopUp}>
-          <Text testID="timeForYear">
-            Totalt antal timmar i år: {timeForYear}
-          </Text>
-          <InfoModal screen="homepage" tooltipWidth={250} />
-        </View>
+      <View style={styles.containerTextTimeForYearPopUp}>
+        <Text testID="timeForYear">
+          {`Totalt antal timmar i år: ${timeForYear}`}
+        </Text>
+        <InfoModal screen="homepage" tooltipWidth={250} />
       </View>
-    </View>
+    </>
   );
 }
 export default TimeStatistics;
 const styles = StyleSheet.create({
-  containerForAll: {
-    flex: 1,
-    color: colors.dark,
-  },
-  mainText: {
+  header: {
     ...typography.title,
   },
   containerMonthAndPaidTime: {
     backgroundColor: colors.background,
     flexDirection: "row",
-    paddingTop: 19,
-    paddingBottom: 16,
+    paddingVertical: 20,
     justifyContent: "space-evenly",
+    position: "relative",
+  },
+  innerContainerWrapper: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   textH2ForTime: {
     ...typography.h2,
+  },
+  lineWrapper: {
+    position: "absolute",
+    left: 0,
+    top: 0,
+    right: 0,
+    bottom: 0,
+    paddingVertical: 20,
+  },
+  line: {
+    width: 2.5,
     alignSelf: "center",
-    justifyContent: "center",
-  },
-  containerTimeAndTextUndre: {
-    justifyContent: "center",
-  },
-  lineBetween: {
+    height: "100%",
     backgroundColor: colors.primary,
-    paddingHorizontal: 1.3,
   },
   containerTextTimeForYearPopUp: {
-    marginTop: 13,
+    marginTop: 10,
     ...typography.b2,
+    alignItems: "center",
     justifyContent: "space-between",
     backgroundColor: colors.background,
     flexDirection: "row",
-    paddingLeft: 13,
-    paddingRight: 3,
+    paddingLeft: 10,
+    paddingRight: 5,
+    paddingVertical: 5,
   },
 });

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 
 import {
   Text,
@@ -15,43 +15,13 @@ import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
-  const [timeObject, setTimeObject] = useState([
-    { accumulatedTime: 0, activityID: " ", adminID: " " },
-  ]);
+export const MyActivities = ({ activities }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
-  const [myActivitiesArray, setMyActivitiesArray] = useState([]);
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
-  useEffect(() => {
-    if (myAccumulatedTime.adminID != " " && myAccumulatedTime.length != 0) {
-      setTimeObject(myAccumulatedTime);
-    }
-  }, [myAccumulatedTime]);
-
-  useEffect(() => {
-    let activitiAndTimeArray = [];
-
-    for (let i = 0; i < myActivities.length; i++) {
-      for (let j = 0; j < myAccumulatedTime.length; j++) {
-        if (myActivities[i].id === myAccumulatedTime[j].activityID) {
-          const setAllInformation = {
-            title: myActivities[i].title,
-            city: myActivities[i].city,
-            time: myAccumulatedTime[j].accumulatedTime,
-            id: myActivities[i].id,
-            photo: myActivities[i].photo,
-          };
-          activitiAndTimeArray.push(setAllInformation);
-        }
-      }
-    }
-    setMyActivitiesArray(activitiAndTimeArray);
-  }, [myAccumulatedTime, myActivities]);
 
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
@@ -62,89 +32,75 @@ export const MyActivities = ({ myActivities, myAccumulatedTime }) => {
   }
 
   return (
-    <View>
-      <View style={styles.activityContainer}>
-        {myActivitiesArray.map((myActivity, index) => (
-          <View
-            index={index}
-            key={index}
-            style={styles.insideActivityContainer}
-          >
-            <View style={styles.photoAndText}>
-              <View style={styles.textTitleCityTime}>
-                <Text numberOfLines={2} style={styles.textTitle}>
-                  {myActivity.title}
-                </Text>
+    <>
+      {activities.map((myActivity, index) => (
+        <View key={index} style={styles.activityContainer}>
+          <View style={styles.photoAndText}>
+            <View style={styles.textTitleCityTime}>
+              <Text numberOfLines={2} style={styles.textTitle}>
+                {myActivity.title}
+              </Text>
 
-                <View
-                  testID="viewId"
-                  style={styles.mapIconAndCityText(myActivity)}
-                >
-                  <Icon
-                    type="material-community"
-                    name="map-marker-outline"
-                    color={colors.dark}
-                    size={25}
-                  />
-                  <Text style={styles.textCity}>{myActivity.city}</Text>
-                </View>
-
-                <View style={styles.iconsAndTextTimeContainer}>
-                  <Icon
-                    type="material-community"
-                    name="clock-time-four-outline"
-                    color={colors.dark}
-                    size={25}
-                  />
-                  <Text style={styles.textTime}>{myActivity.time} tim</Text>
-                </View>
+              <View
+                testID="viewId"
+                style={styles.mapIconAndCityText(myActivity)}
+              >
+                <Icon
+                  type="material-community"
+                  name="map-marker-outline"
+                  color={colors.dark}
+                  size={25}
+                />
+                <Text style={styles.textCity}>{myActivity.city}</Text>
               </View>
-              <Image
-                testID="imageId"
-                style={styles.image}
-                source={setTheRightPhoto(myActivity.photo)}
-              />
+
+              <View style={styles.iconsAndTextTimeContainer}>
+                <Icon
+                  type="material-community"
+                  name="clock-time-four-outline"
+                  color={colors.dark}
+                  size={25}
+                />
+                <Text style={styles.textTime}>{myActivity.time} tim</Text>
+              </View>
             </View>
-
-            <TouchableOpacity
-              testID="logTimeButton"
-              onPress={() => {
-                setActivity(myActivity);
-                toggleOverlay();
-              }}
-            >
-              <View style={styles.shedowForButton}>
-                <Text style={styles.läggTid}>Logga tid</Text>
-              </View>
-            </TouchableOpacity>
+            <Image
+              testID="imageId"
+              style={styles.image}
+              source={setTheRightPhoto(myActivity.photo)}
+            />
           </View>
-        ))}
-      </View>
+
+          <TouchableOpacity
+            testID="logTimeButton"
+            onPress={() => {
+              setActivity(myActivity);
+              toggleOverlay();
+            }}
+            activeOpacity={0.5}
+            style={styles.shedowForButton}
+          >
+            <Text style={styles.läggTid}>Logga tid</Text>
+          </TouchableOpacity>
+        </View>
+      ))}
       <CalendarView
         visible={visible}
         toggleVisibility={toggleOverlay}
         activity={activity}
-        adminID={timeObject[0].adminID}
+        adminID={activities[0].adminId}
         isEditing={false}
       />
-    </View>
+    </>
   );
 };
 
 const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
-    marginTop: 20,
-  },
-  insideActivityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    marginVertical: 7,
+    marginTop: 10,
     backgroundColor: colors.background,
-    flexWrap: "wrap",
     borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.background,
   },
   image: {
     flex: 1,
@@ -192,18 +148,7 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   läggTid: {
-    flex: 1,
-    borderRadius: 5,
-    borderWidth: 1,
-    marginVertical: 10,
-    marginHorizontal: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
     fontSize: typography.button.lg.fontSize,
-    textAlign: "center",
-    overflow: "hidden",
-    backgroundColor: colors.primary,
-    borderColor: colors.primary,
     color: colors.dark,
     fontWeight: "500",
   },
@@ -214,13 +159,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   shedowForButton: {
+    borderRadius: 5,
+    marginVertical: 10,
+    marginHorizontal: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
     ...Platform.select({
       ios: {
         shadowOffset: {
-          height: 3,
+          height: 1,
+          width: 1,
         },
-        shadowOpacity: 0.5,
-        shadowRadius: 3,
+        shadowOpacity: 0.3,
+        shadowRadius: 2,
       },
       android: {
         elevation: 2,
