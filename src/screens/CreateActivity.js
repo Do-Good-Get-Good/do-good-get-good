@@ -311,7 +311,14 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     color: colors.dark,
     marginHorizontal: 16,
-    marginTop: 16,
+    ...Platform.select({
+      ios: {
+        paddingTop: 16,
+      },
+      android: {
+        paddingTop: 8,
+      },
+    }),
   },
   shadow: {
     ...Platform.select({

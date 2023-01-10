@@ -2,10 +2,10 @@ import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   StyleSheet,
-  View,
   TouchableOpacity,
   Platform,
   TextInput,
+  ScrollView,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -108,9 +108,8 @@ export const ChangeUser = ({ route, navigation }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <View style={styles.container}>
-        <Text style={styles.textMainTitle}>Ändra användare</Text>
-
+      <Text style={styles.textMainTitle}>Ändra användare</Text>
+      <ScrollView style={styles.container}>
         <TextInput
           style={[nameSurnameStyle(), nameBorderStyle()]}
           maxLength={30}
@@ -151,7 +150,7 @@ export const ChangeUser = ({ route, navigation }) => {
             {userStatusActive ? "Inaktivera användare" : "Aktivera användare"}
           </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
 
       <BottomNavButtons
         primaryText="Spara"
@@ -169,7 +168,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingHorizontal: 16,
-    paddingTop: 16,
   },
   textMainTitle: {
     ...typography.h2,
@@ -178,9 +176,13 @@ const styles = StyleSheet.create({
     color: colors.dark,
     ...Platform.select({
       ios: {
-        paddingTop: 12,
+        paddingTop: 16,
+      },
+      android: {
+        paddingTop: 8,
       },
     }),
+    paddingHorizontal: 16,
   },
   warningAboutRequired: {
     color: colors.error,
