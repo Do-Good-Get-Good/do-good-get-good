@@ -36,8 +36,8 @@ jest.mock("../hooks/useLinkedActivities", () => () => {
   };
 });
 
-jest.mock("../hooks/useSuggestions", () => ({
-  useSuggestions: () => {
+jest.mock("../hooks/useActivitySuggestions", () => ({
+  useActivitySuggestions: () => {
     return {
       suggestions: jest.fn(),
       loading: jest.fn(),

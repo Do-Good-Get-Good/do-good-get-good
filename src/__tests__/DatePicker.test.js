@@ -11,21 +11,26 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 
 describe("Testing DatePicker", () => {
   it("Can open calendar overlay and select a date", () => {
-    let date = format(new Date("2022-12-28"), "yyyy-MM-dd");
+    let date = format(new Date(), "yyyy-MM-dd");
 
     function setDate(value) {
       date = value;
     }
 
+    const year = new Date().getFullYear();
+    const month = (new Date().getMonth() + 1).toString().padStart(2, "0");
+    const day = "14";
+
     const { getByText } = render(<DatePicker date={date} setDate={setDate} />);
 
-    const datePickerButton = getByText("2022-12-28");
+    const datePickerButton = getByText(date);
     expect(datePickerButton);
     fireEvent.press(datePickerButton);
 
-    expect(getByText("December 2022"));
+    // Month year (ex. April 2023)
+    expect(getByText(format(new Date(), "MMMM yyyy")));
 
-    const calendarDayButton = getByText("14");
+    const calendarDayButton = getByText(day);
     expect(calendarDayButton);
     fireEvent.press(calendarDayButton);
 
@@ -33,6 +38,6 @@ describe("Testing DatePicker", () => {
     expect(saveButton);
     fireEvent.press(saveButton);
 
-    expect(date).toEqual("2022-12-14");
+    expect(date).toEqual(`${year}-${month}-${day}`);
   });
 });
