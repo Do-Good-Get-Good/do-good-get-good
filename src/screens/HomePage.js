@@ -13,12 +13,12 @@ import BottomLogo from "../components/BottomLogo";
 import typography from "../assets/theme/typography";
 
 import useLinkedActivities from "../hooks/useLinkedActivities";
-import { useSuggestions } from "../hooks/useSuggestions";
+import { useActivitySuggestions } from "../hooks/useActivitySuggestions";
 import colors from "../assets/theme/colors";
 
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
-  const { suggestions, loading } = useSuggestions();
+  const { suggestions, loading } = useActivitySuggestions();
 
   return (
     <SafeAreaView style={styles.view}>

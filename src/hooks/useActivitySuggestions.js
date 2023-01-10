@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { getAllFavoriteActivities } from "../firebase-functions/get";
 
-export const useSuggestions = () => {
+export const useActivitySuggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
 
