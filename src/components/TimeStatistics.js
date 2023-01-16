@@ -3,44 +3,44 @@ import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
-
-import firestore from "@react-native-firebase/firestore";
+import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
+import { format } from "date-fns";
+import { sv } from "date-fns/locale";
 
 export function TimeStatistics({ timeObject }) {
+  const { maxConfirmedHours } = useTimeStatisticSettings();
+
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
-  const [max, setMax] = useState(0);
+  const [max, setMax] = useState(maxConfirmedHours);
 
-  const getMaxConfirmedHours = async () => {
-    let res = await firestore()
-      .collection("timeStatistics")
-      .doc("settings")
-      .get();
-
-    setMax(res.data().max_confirmed_hours);
-  };
+  const month = format(new Date(), "MMMM", {
+    locale: sv,
+  });
 
   useEffect(() => {
     if (timeObject.length != 0) {
       setPaidTime(timeObject[0].paidTime);
       setTimeForYear(timeObject[0].timeForYear);
       setCurrentForMonth(timeObject[0].currentForMonth);
-      getMaxConfirmedHours();
     }
   }, [timeObject]);
 
+  const compensatedTime = () => {
+    if (paidTime * 0.5 > max) return 8;
+    return paidTime * 0.5;
+  };
+
   return (
     <>
-      <Text style={styles.header}>Utförda timmar</Text>
+      <Text style={styles.header}>{`Timmar ${month}`}</Text>
       <View style={styles.containerMonthAndPaidTime}>
         <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>
-            Registrerad tid
-          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Registrerade</Text>
         </View>
 
         <View style={styles.line} />
@@ -49,23 +49,21 @@ export function TimeStatistics({ timeObject }) {
           <Text testID="paidTime" style={styles.textH2ForTime}>
             {paidTime}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>Godkänd tid</Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Godkända</Text>
         </View>
 
         <View style={styles.line} />
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {paidTime} / {max}
+            {compensatedTime()} / {max}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>
-            Ersatta timmar
-          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
         </View>
       </View>
       <View style={styles.containerTextTimeForYearPopUp}>
         <Text testID="timeForYear">
-          {`Totalt antal timmar i år: ${timeForYear}`}
+          {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}
         </Text>
         <InfoModal screen="homepage" tooltipWidth={250} />
       </View>
@@ -92,7 +90,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textH2ForTime: {
-    ...typography.h2,
+    ...typography.h3,
+    transform: [{ scale: 0.95 }],
   },
   line: {
     width: 2.5,
