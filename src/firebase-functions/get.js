@@ -1,5 +1,18 @@
 import firestore from "@react-native-firebase/firestore";
 
+export const getMaxConfirmedHours = async () => {
+  try {
+    let res = await firestore()
+      .collection("timeStatistics")
+      .doc("settings")
+      .get();
+
+    return Promise.resolve(res.data().max_confirmed_hours);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getUserLevel = async (userId) => {
   try {
     let response = await firestore().collection("Users").doc(userId).get();
