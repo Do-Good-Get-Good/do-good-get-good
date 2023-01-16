@@ -7,6 +7,10 @@ const typography = {
     fontSize: 34,
     fontFamily: "DIN-Medium",
   },
+  h3: {
+    fontSize: 30,
+    fontFamily: "DIN-Medium",
+  },
   title: {
     fontSize: 24,
     paddingVertical: 8,
