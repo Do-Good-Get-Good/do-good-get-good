@@ -19,6 +19,7 @@ import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
+import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
 
 import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 
@@ -77,11 +78,13 @@ export default function App() {
             <AdminGalleryProvider>
               <CreateActivityProvider>
                 <UserLevelProvider>
-                  <SuperAdminProvider>
-                    <AdminHomePageProvider>
-                      <SuperAdminStack />
-                    </AdminHomePageProvider>
-                  </SuperAdminProvider>
+                  <TimeStatisticsProvider>
+                    <SuperAdminProvider>
+                      <AdminHomePageProvider>
+                        <SuperAdminStack />
+                      </AdminHomePageProvider>
+                    </SuperAdminProvider>
+                  </TimeStatisticsProvider>
                 </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
@@ -98,9 +101,11 @@ export default function App() {
             <AdminGalleryProvider>
               <CreateActivityProvider>
                 <UserLevelProvider>
-                  <AdminHomePageProvider>
-                    <AdminStack />
-                  </AdminHomePageProvider>
+                  <TimeStatisticsProvider>
+                    <AdminHomePageProvider>
+                      <AdminStack />
+                    </AdminHomePageProvider>
+                  </TimeStatisticsProvider>
                 </UserLevelProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
@@ -112,7 +117,9 @@ export default function App() {
     return (
       <SafeAreaProvider>
         <UserLevelProvider>
-          <UserStack />
+          <TimeStatisticsProvider>
+            <UserStack />
+          </TimeStatisticsProvider>
         </UserLevelProvider>
       </SafeAreaProvider>
     );
