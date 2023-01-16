@@ -10,6 +10,7 @@ import colors from "../assets/theme/colors";
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { getUsersFiveNewestTimeEntries } from "../firebase-functions/get";
+import TimeStatistics from "./TimeStatistics";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
@@ -110,6 +111,11 @@ const MyUsers = ({ navigation }) => {
             isOpen: false,
             statusActive: user.status_active,
             userID: user.id,
+            timeObject: {
+              paidTime: user.total_confirmed_hours,
+              timeForYear: user.total_hours_year,
+              currentForMonth: user.total_hours_month,
+            },
           };
           setAllUsers((prev) => [...prev, userInfo]);
           setLoadingData(true);
@@ -239,7 +245,14 @@ const MyUsers = ({ navigation }) => {
                       <View style={styles.listItemStyle}>
                         <Text
                           testID={`user ${index} name`}
-                          style={styles.listItemNameStyle}
+                          style={[
+                            styles.listItemNameStyle,
+                            {
+                              textDecorationLine: user.isOpen
+                                ? "underline"
+                                : "none",
+                            },
+                          ]}
                         >
                           {user.firstName + " " + user.lastName}
                         </Text>
@@ -257,42 +270,41 @@ const MyUsers = ({ navigation }) => {
                     </TouchableOpacity>
                     {user.isOpen && (
                       <View>
+                        <TimeStatistics timeObject={[user.timeObject]} />
                         {user.timeEntries.map((timeEntry, index) => (
                           <View key={index}>
-                            {timeEntry !== "NO DATA" && (
-                              <View
-                                key={index}
-                                style={styles.listItemContentStyle}
-                              >
-                                <View style={styles.listItemContentNameView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} title`}
-                                    style={styles.listItemContentNameStyle}
-                                  >
-                                    {timeEntry.activity_title}
-                                  </Text>
-                                </View>
-                                <View style={styles.listItemContentDateView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} date`}
-                                    style={styles.listItemContentDateStyle}
-                                  >
-                                    {format(
-                                      timeEntry.date.toDate(),
-                                      "yyyy-MM-dd"
-                                    )}
-                                  </Text>
-                                </View>
-                                <View style={styles.listItemContentHourView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} time`}
-                                    style={styles.listItemContentHourStyle}
-                                  >
-                                    {`${timeEntry.time} tim`}
-                                  </Text>
-                                </View>
+                            <View
+                              key={index}
+                              style={styles.listItemContentStyle}
+                            >
+                              <View style={styles.listItemContentNameView}>
+                                <Text
+                                  testID={`user timeEntry ${index} title`}
+                                  style={styles.listItemContentNameStyle}
+                                >
+                                  {timeEntry.activity_title}
+                                </Text>
                               </View>
-                            )}
+                              <View style={styles.listItemContentDateView}>
+                                <Text
+                                  testID={`user timeEntry ${index} date`}
+                                  style={styles.listItemContentDateStyle}
+                                >
+                                  {format(
+                                    timeEntry.date.toDate(),
+                                    "yyyy-MM-dd"
+                                  )}
+                                </Text>
+                              </View>
+                              <View style={styles.listItemContentHourView}>
+                                <Text
+                                  testID={`user timeEntry ${index} time`}
+                                  style={styles.listItemContentHourStyle}
+                                >
+                                  {`${timeEntry.time} tim`}
+                                </Text>
+                              </View>
+                            </View>
                           </View>
                         ))}
                         <View style={styles.editUserIconView}>
@@ -386,7 +398,7 @@ const styles = StyleSheet.create({
   },
   listItemContainerStyle: {
     padding: 10,
-    marginBottom: 10,
+    // marginBottom: 10,
     backgroundColor: "#FFFFFF",
   },
   listItemStyle: {

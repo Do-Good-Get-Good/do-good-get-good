@@ -6,10 +6,11 @@ import InfoModal from "../components/InfoModal";
 import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import { useRoute } from "@react-navigation/native";
 
 export function TimeStatistics({ timeObject }) {
   const { maxConfirmedHours } = useTimeStatisticSettings();
-
+  const route = useRoute();
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
@@ -34,7 +35,14 @@ export function TimeStatistics({ timeObject }) {
 
   return (
     <>
-      <Text style={styles.header}>{`Timmar ${month}`}</Text>
+      {route.name === "AdminPage" && (
+        <Text style={{ ...typography.b1, paddingLeft: 10 }}>
+          {`Timmar ${month}`}
+        </Text>
+      )}
+      {route.name === "HomePage" && (
+        <Text style={styles.header}>{`Timmar ${month}`}</Text>
+      )}
       <View style={styles.containerMonthAndPaidTime}>
         <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
@@ -61,12 +69,14 @@ export function TimeStatistics({ timeObject }) {
           <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
         </View>
       </View>
-      <View style={styles.containerTextTimeForYearPopUp}>
-        <Text testID="timeForYear">
-          {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}
-        </Text>
-        <InfoModal screen="homepage" tooltipWidth={250} />
-      </View>
+      {route.name === "HomePage" && (
+        <View style={styles.containerTextTimeForYearPopUp}>
+          <Text testID="timeForYear">
+            {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}
+          </Text>
+          <InfoModal screen="homepage" tooltipWidth={250} />
+        </View>
+      )}
     </>
   );
 }
