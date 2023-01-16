@@ -1,5 +1,5 @@
 import { StyleSheet, ScrollView } from "react-native";
-import React from "react";
+import React, { useEffect } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
@@ -8,8 +8,13 @@ import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import colors from "../assets/theme/colors";
+import adminStore from "../store/adminStore";
 
 const AdminPage = ({ navigation }) => {
+  useEffect(() => {
+    adminStore.fetchAllUsers();
+  }, []);
+
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
