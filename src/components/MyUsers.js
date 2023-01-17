@@ -15,7 +15,7 @@ import { Observer } from "mobx-react-lite";
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const sortOptions = ["A - Ö", "Inaktiva"];
-  const [sortBy, setSortBy] = useState("A - Ö");
+  const [sortBy, setSortBy] = useState(sortOptions[0]);
 
   // useEffect(() => {
   //   if (newUser != null) {
@@ -228,13 +228,11 @@ const MyUsers = ({ navigation }) => {
                   )}
                 </View>
               ))}
-              <View>
-                {adminStore.users.length === 0 && (
-                  <Text style={styles.noInactiveUsers}>
-                    Du har inga inaktiva användare
-                  </Text>
-                )}
-              </View>
+              {adminStore.users.length === 0 && (
+                <Text style={styles.noInactiveUsers}>
+                  Du har inga inaktiva användare
+                </Text>
+              )}
             </>
           )}
         </Observer>

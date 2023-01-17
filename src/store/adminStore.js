@@ -51,14 +51,12 @@ class AdminStore {
             currentForMonth: user.total_hours_month,
           },
         };
-        runInAction(() => {
-          this.addNewUser(userInfo);
-        });
+        this.addNewUser(userInfo);
+        this.showActiveUsers();
       } catch (error) {
         console.log("MyUsers ", error);
       }
     });
-
     this.fetchUsers = false;
   }
 
