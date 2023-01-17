@@ -18,7 +18,6 @@ import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
-import { ChangeUserInfoProvider } from "./context/ChangeUserInfoContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
 
 import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
@@ -73,44 +72,40 @@ export default function App() {
     // Render superadmin content
     return (
       <SafeAreaProvider>
-        <ChangeUserInfoProvider>
-          <ActivityCardProvider>
-            <AdminGalleryProvider>
-              <CreateActivityProvider>
-                <UserLevelProvider>
-                  <TimeStatisticsProvider>
-                    <SuperAdminProvider>
-                      <AdminHomePageProvider>
-                        <SuperAdminStack />
-                      </AdminHomePageProvider>
-                    </SuperAdminProvider>
-                  </TimeStatisticsProvider>
-                </UserLevelProvider>
-              </CreateActivityProvider>
-            </AdminGalleryProvider>
-          </ActivityCardProvider>
-        </ChangeUserInfoProvider>
+        <ActivityCardProvider>
+          <AdminGalleryProvider>
+            <CreateActivityProvider>
+              <UserLevelProvider>
+                <TimeStatisticsProvider>
+                  <SuperAdminProvider>
+                    <AdminHomePageProvider>
+                      <SuperAdminStack />
+                    </AdminHomePageProvider>
+                  </SuperAdminProvider>
+                </TimeStatisticsProvider>
+              </UserLevelProvider>
+            </CreateActivityProvider>
+          </AdminGalleryProvider>
+        </ActivityCardProvider>
       </SafeAreaProvider>
     );
   } else if (userClaims.admin) {
     // Render admin content
     return (
       <SafeAreaProvider>
-        <ChangeUserInfoProvider>
-          <ActivityCardProvider>
-            <AdminGalleryProvider>
-              <CreateActivityProvider>
-                <UserLevelProvider>
-                  <TimeStatisticsProvider>
-                    <AdminHomePageProvider>
-                      <AdminStack />
-                    </AdminHomePageProvider>
-                  </TimeStatisticsProvider>
-                </UserLevelProvider>
-              </CreateActivityProvider>
-            </AdminGalleryProvider>
-          </ActivityCardProvider>
-        </ChangeUserInfoProvider>
+        <ActivityCardProvider>
+          <AdminGalleryProvider>
+            <CreateActivityProvider>
+              <UserLevelProvider>
+                <TimeStatisticsProvider>
+                  <AdminHomePageProvider>
+                    <AdminStack />
+                  </AdminHomePageProvider>
+                </TimeStatisticsProvider>
+              </UserLevelProvider>
+            </CreateActivityProvider>
+          </AdminGalleryProvider>
+        </ActivityCardProvider>
       </SafeAreaProvider>
     );
   } else if (userClaims.user) {
