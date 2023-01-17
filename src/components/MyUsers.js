@@ -18,22 +18,6 @@ const MyUsers = ({ navigation }) => {
   const [sortBy, setSortBy] = useState(sortOptions[0]);
 
   // useEffect(() => {
-  //   if (newUser != null) {
-  //     setLoadingData(true);
-  //     let userInfo = {
-  //       firstName: newUser.first_name,
-  //       lastName: newUser.last_name,
-  //       timeEntries: [],
-  //       isOpen: false,
-  //       statusActive: newUser.status_active,
-  //       userID: newUser.id,
-  //     };
-  //     setAllUsers((prev) => [...prev, userInfo]);
-  //     setNewUser(null);
-  //   }
-  // }, [newUser]);
-
-  // useEffect(() => {
   //   if (confirmedTimeEntries.length != 0) {
   //     let oldArray = allUsers;
   //     for (let j = 0; j < confirmedTimeEntries.length; j++) {
