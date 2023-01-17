@@ -35,11 +35,6 @@ export function TimeStatistics({ timeObject }) {
 
   return (
     <>
-      {route.name === "AdminPage" && (
-        <Text style={{ ...typography.b1, paddingLeft: 10 }}>
-          {`Timmar ${month}`}
-        </Text>
-      )}
       {route.name === "HomePage" && (
         <Text style={styles.header}>{`Timmar ${month}`}</Text>
       )}

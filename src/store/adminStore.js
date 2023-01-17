@@ -37,6 +37,17 @@ const updateUser = (users, newInfo) => {
   });
 };
 
+const updateUserTimeEntries = (users, userId, timeEntries) => {
+  return users.map((user) => {
+    if (user.userID !== userId) return user;
+
+    return {
+      ...user,
+      timeEntries,
+    };
+  });
+};
+
 class AdminStore {
   constructor() {
     this.allUsers = [];
@@ -56,8 +67,12 @@ class AdminStore {
       try {
         let response = await getUsersFiveNewestTimeEntries(user.id);
         let userInfo = {
+          activitiesAndAccumulatedTime: user.activities_and_accumulated_time,
+          adminID: user.admin_id,
+          connectedActivities: user.connected_activities,
           firstName: user.first_name,
           lastName: user.last_name,
+          role: user.role,
           timeEntries: response,
           isOpen: false,
           statusActive: user.status_active,
@@ -99,6 +114,24 @@ class AdminStore {
     this.allUsers = updateUser(this.allUsers, newInfo);
     this.users = updateUser(this.users, newInfo);
     this.updatedUserInfo = newInfo;
+  }
+
+  updateUserTimeEntries(userIds) {
+    userIds.map(async (userId) => {
+      try {
+        let timeEntryData = await getUsersFiveNewestTimeEntries(userId);
+        runInAction(() => {
+          this.allUsers = updateUserTimeEntries(
+            this.allUsers,
+            userId,
+            timeEntryData
+          );
+          this.users = updateUserTimeEntries(this.users, userId, timeEntryData);
+        });
+      } catch (error) {
+        console.log(error);
+      }
+    });
   }
 }
 

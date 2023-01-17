@@ -9,7 +9,6 @@ import {
 import { CheckBox, Icon } from "react-native-elements";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import { useNetInfo } from "@react-native-community/netinfo";
 import {
   confirmTimeEntry,
@@ -25,10 +24,9 @@ import { Observer } from "mobx-react-lite";
 import { autorun } from "mobx";
 
 const ConfirmActivities = () => {
-  const setUsersId = useAdminHomePageFunction().setUsersId;
-  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
+  let userData = adminStore.allUsers;
 
-  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(adminStore.allUsers);
+  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(userData);
 
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -118,33 +116,31 @@ const ConfirmActivities = () => {
       });
 
       // For every user in 'selectedUsers' call 'confirmActivity'
-      let timeEntryIdsToSendToMyUsers = [];
+      let userIds = [];
       for (let i = 0; i < selectedUsers.length; i++) {
-        timeEntryIdsToSendToMyUsers.push(selectedUsers[i].userID);
+        userIds.push(selectedUsers[i].userID);
         confirmTimeEntry(selectedUsers[i].timeEntryId);
         addTotalConfirmedHours(selectedUsers[i]);
         if (i === selectedUsers.length - 1) {
           setChecked(false);
         }
       }
-      setUsersId(timeEntryIdsToSendToMyUsers);
-      setReloadOneUserData(true);
+      adminStore.updateUserTimeEntries(userIds);
     }
   };
 
   const addAccumulatedTime = (user) => {
-    let timeArray = [];
-
+    let timeArray;
     for (let i = 0; i < userData.length; i++) {
-      if (userData[i].id === user.userID) {
-        timeArray = userData[i].activities_and_accumulated_time;
+      if (userData[i].userID === user.userID) {
+        timeArray = userData[i].activitiesAndAccumulatedTime;
         const objNum = timeArray.findIndex(
           (obj) => obj.activity_id === user.activityID
         );
-
         timeArray[objNum].accumulated_time += user.timeEntryHours;
       }
     }
+    console.log(...timeArray);
     return timeArray;
   };
 
@@ -162,7 +158,7 @@ const ConfirmActivities = () => {
       incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
       updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
     } else if (
-      currentMonth != timeEntryMonth &&
+      currentMonth !== timeEntryMonth &&
       currentYear === timeEntryYear
     ) {
       incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
