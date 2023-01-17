@@ -10,7 +10,6 @@ import { CheckBox, Icon } from "react-native-elements";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useNetInfo } from "@react-native-community/netinfo";
 import {
   confirmTimeEntry,
@@ -20,34 +19,36 @@ import {
 } from "../firebase-functions/update";
 import useTimeEntriesForAdmin from "../hooks/useTimeEntriesForAdmin";
 
+import adminStore from "../store/adminStore";
+
+import { Observer } from "mobx-react-lite";
+import { autorun } from "mobx";
+
 const ConfirmActivities = () => {
-  let userData = useAdminHomePageFunction().userData;
   const setUsersId = useAdminHomePageFunction().setUsersId;
   const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
 
-  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(userData);
+  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(adminStore.allUsers);
 
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
-  const changeUserInfoContext = useChangeUserInfoFunction();
   const inetInfo = useNetInfo();
 
   useEffect(() => {
-    if (
-      changeUserInfoContext.reloadAfterUserNameChanged &&
-      changeUserInfoContext.newChangesInUserInfo.userID != 0
-    ) {
-      const updatedUser = changeUserInfoContext.newChangesInUserInfo;
-      let newArr = myUsers.map((user) => {
-        if (user.userID !== updatedUser.userID) return user;
-        return {
-          ...user,
-          fullName: `${updatedUser.userFirstName} ${updatedUser.userLastName}`,
-        };
-      });
-      setMyUsers(newArr);
-    }
-  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
+    return autorun(() => {
+      if (adminStore.updatedUser) {
+        const updatedUser = adminStore.updatedUserInfo;
+        let newArr = myUsers.map((user) => {
+          if (user.userID !== updatedUser.userID) return user;
+          return {
+            ...user,
+            fullName: `${updatedUser.userFirstName} ${updatedUser.userLastName}`,
+          };
+        });
+        setMyUsers(newArr);
+      }
+    });
+  }, [adminStore.updatedUser]);
 
   // Check/uncheck the selected users checkbox
   const markSelected = (selectedUser) => {
@@ -187,70 +188,76 @@ const ConfirmActivities = () => {
         />
       </View>
       <View style={styles.content}>
-        {myUsers.length > 0
-          ? myUsers.map((user, index) => (
-              <View key={index} testID="confirmActivities.timeEntryView">
-                <TouchableOpacity
-                  style={styles.listItemStyle}
-                  onPress={() => {
-                    openSelectedUser(user);
-                  }}
-                >
-                  <View style={styles.viewForListItemName}>
-                    <Text style={styles.listItemNameStyle}>
-                      {user.fullName}
-                    </Text>
-                  </View>
-                  <View style={styles.viewForIconAndCheckbox}>
-                    <Icon
-                      style={styles.icon}
-                      color={colors.secondary}
-                      name={
-                        user.isOpen === true
-                          ? "arrow-drop-up"
-                          : "arrow-drop-down"
-                      }
-                      size={30}
-                    />
-                    <CheckBox
-                      iconRight
-                      containerStyle={styles.listItemCheckBoxStyle}
-                      checked={user.checked}
-                      checkedColor={colors.primary}
+        <Observer>
+          {() => (
+            <>
+              {myUsers.length !== 0 &&
+                myUsers.map((user, index) => (
+                  <View key={index} testID="confirmActivities.timeEntryView">
+                    <TouchableOpacity
+                      style={styles.listItemStyle}
                       onPress={() => {
-                        markSelected(user);
+                        openSelectedUser(user);
                       }}
-                    />
+                    >
+                      <View style={styles.viewForListItemName}>
+                        <Text style={styles.listItemNameStyle}>
+                          {user.fullName}
+                        </Text>
+                      </View>
+                      <View style={styles.viewForIconAndCheckbox}>
+                        <Icon
+                          style={styles.icon}
+                          color={colors.secondary}
+                          name={
+                            user.isOpen === true
+                              ? "arrow-drop-up"
+                              : "arrow-drop-down"
+                          }
+                          size={30}
+                        />
+                        <CheckBox
+                          iconRight
+                          containerStyle={styles.listItemCheckBoxStyle}
+                          checked={user.checked}
+                          checkedColor={colors.primary}
+                          onPress={() => {
+                            markSelected(user);
+                          }}
+                        />
+                      </View>
+                    </TouchableOpacity>
+                    {user.isOpen && (
+                      <View style={styles.listItemContentStyle}>
+                        <View style={styles.listItemContentNameView}>
+                          <Text style={styles.listItemContentNameStyle}>
+                            {user.activityName}
+                          </Text>
+                        </View>
+                        <View style={styles.listItemContentDateView}>
+                          <Text style={styles.listItemContentDateStyle}>
+                            {user.timeEntryDate}
+                          </Text>
+                        </View>
+                        <View style={styles.listItemContentHourView}>
+                          <Text style={styles.listItemContentHourStyle}>
+                            {user.timeEntryHours}h
+                          </Text>
+                        </View>
+                      </View>
+                    )}
                   </View>
-                </TouchableOpacity>
-                {user.isOpen && (
-                  <View style={styles.listItemContentStyle}>
-                    <View style={styles.listItemContentNameView}>
-                      <Text style={styles.listItemContentNameStyle}>
-                        {user.activityName}
-                      </Text>
-                    </View>
-                    <View style={styles.listItemContentDateView}>
-                      <Text style={styles.listItemContentDateStyle}>
-                        {user.timeEntryDate}
-                      </Text>
-                    </View>
-                    <View style={styles.listItemContentHourView}>
-                      <Text style={styles.listItemContentHourStyle}>
-                        {user.timeEntryHours}h
-                      </Text>
-                    </View>
-                  </View>
-                )}
-              </View>
-            ))
-          : myUsers.length < 1 && (
-              <View style={styles.viewAllConfirmed}>
-                <Text style={{ ...typography.b2 }}>
-                  Du har godkänt alla konsulters tider, kolla igen senare!!
-                </Text>
-              </View>
-            )}
+                ))}
+              {myUsers.length === 0 && (
+                <View style={styles.viewAllConfirmed}>
+                  <Text style={{ ...typography.b2 }}>
+                    Du har godkänt alla konsulters tider, kolla igen senare!!
+                  </Text>
+                </View>
+              )}
+            </>
+          )}
+        </Observer>
       </View>
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
