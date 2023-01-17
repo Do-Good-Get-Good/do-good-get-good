@@ -10,7 +10,6 @@ import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
-import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
 
@@ -22,7 +21,6 @@ import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewAct
 const CreateUser = ({ route, navigation }) => {
   const userLevel = useUserLevelCheckFunction();
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
-  const { setUserData, setNewUser } = useAdminHomePageFunction();
 
   const [loading, setLoading] = useState(false);
 
@@ -85,8 +83,6 @@ const CreateUser = ({ route, navigation }) => {
       user,
       selectedActivity,
       setLoading,
-      setUserData,
-      setNewUser,
       navigation
     );
   }
@@ -113,8 +109,6 @@ const CreateUser = ({ route, navigation }) => {
       newUser,
       setAllActiveActvivitiesFB,
       setLoading,
-      setUserData,
-      setNewUser,
       navigation
     );
   }
