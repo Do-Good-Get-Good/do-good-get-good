@@ -19,7 +19,7 @@ import BottomNavButtons from "../components/BottomNavButtons";
 import adminStore from "../store/adminStore";
 
 export const ChangeUser = ({ route, navigation }) => {
-  const { userName, userSurname, statusActive, userID } = route.params;
+  const { userName, userSurname, statusActive, userID, sortBy } = route.params;
 
   const [name, setName] = useState(userName);
   const [surname, setSurname] = useState(userSurname);
@@ -100,6 +100,8 @@ export const ChangeUser = ({ route, navigation }) => {
         userLastName: surname,
         statusActive: userStatusActive,
       });
+      if (sortBy === "A - Ö") adminStore.filterUsers(true);
+      else adminStore.filterUsers(false);
     }
     navigation.goBack();
   }

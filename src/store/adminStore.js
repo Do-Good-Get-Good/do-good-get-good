@@ -69,7 +69,7 @@ class AdminStore {
           },
         };
         this.addNewUser(userInfo);
-        this.showActiveUsers();
+        this.filterUsers(true);
         runInAction(() => {
           if (this.allUsers.length === userArr.length) this.loading = false;
         });
@@ -84,12 +84,9 @@ class AdminStore {
     this.allUsers.push(user);
   }
 
-  showInactiveUsers() {
-    this.users = filterUsersByActiveStatus(this.allUsers, false);
-  }
-
-  showActiveUsers() {
-    this.users = filterUsersByActiveStatus(this.allUsers, true);
+  filterUsers(bool) {
+    this.users = filterUsersByActiveStatus(this.allUsers, bool);
+    this.users.sort((a, b) => a.firstName.localeCompare(b.firstName));
   }
 
   openSelectedUser(pressedUser) {
@@ -101,11 +98,6 @@ class AdminStore {
     this.allUsers = updateUser(this.allUsers, newInfo);
     this.users = updateUser(this.users, newInfo);
     this.updatedUserInfo = newInfo;
-    this.userUpdated(true);
-  }
-
-  userUpdated(bool) {
-    this.updatedUser = bool;
   }
 }
 

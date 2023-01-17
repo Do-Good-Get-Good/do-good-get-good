@@ -49,37 +49,14 @@ const MyUsers = ({ navigation }) => {
   //     setReloadOneUserData(false);
   //   }
   // }, [confirmedTimeEntries]);
-  // useEffect(() => {
-  //   if (
-  //     changeUserInfoContext.reloadAfterUserNameChanged &&
-  //     changeUserInfoContext.newChangesInUserInfo.userID != 0
-  //   ) {
-  //     let oldArray = allUsers;
-  //     var index = oldArray.findIndex(
-  //       (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
-  //     );
-  //     if (index != -1) {
-  //       oldArray[index].firstName =
-  //         changeUserInfoContext.newChangesInUserInfo.userFirstName;
-  //       oldArray[index].lastName =
-  //         changeUserInfoContext.newChangesInUserInfo.userLastName;
-  //       oldArray[index].statusActive =
-  //         changeUserInfoContext.newChangesInUserInfo.statusActive;
-  //     }
-  //     setAllUsers(oldArray);
-  //     setLoadingData(true);
-  //     changeUserInfoContext.setReloadAfterUserNameChanged(false);
-  //   }
-  // }, [changeUserInfoContext.reloadAfterUserNameChanged]);
 
   const sortUsers = (sortOption) => {
     if (sortOption === "A - Ö") {
-      adminStore.showActiveUsers();
+      adminStore.filterUsers(true);
     }
     if (sortOption === "Inaktiva") {
-      adminStore.showInactiveUsers();
+      adminStore.filterUsers(false);
     }
-    adminStore.users.sort((a, b) => a.firstName.localeCompare(b.firstName));
   };
 
   useEffect(() => {
@@ -214,6 +191,7 @@ const MyUsers = ({ navigation }) => {
                               userSurname: user.lastName,
                               statusActive: user.statusActive,
                               userID: user.userID,
+                              sortBy,
                             })
                           }
                         >
