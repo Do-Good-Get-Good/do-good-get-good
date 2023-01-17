@@ -117,30 +117,29 @@ const ConfirmActivities = () => {
 
       // For every user in 'selectedUsers' call 'confirmActivity'
       let userIds = [];
-      for (let i = 0; i < selectedUsers.length; i++) {
-        userIds.push(selectedUsers[i].userID);
-        confirmTimeEntry(selectedUsers[i].timeEntryId);
-        addTotalConfirmedHours(selectedUsers[i]);
+      selectedUsers.map((selectedUser, i) => {
+        userIds.push(selectedUser.userID);
+        confirmTimeEntry(selectedUser.timeEntryId);
+        addTotalConfirmedHours(selectedUser);
         if (i === selectedUsers.length - 1) {
           setChecked(false);
         }
-      }
+      });
       adminStore.updateUserTimeEntries(userIds);
     }
   };
 
-  const addAccumulatedTime = (user) => {
+  const addAccumulatedTime = (selectedUser) => {
     let timeArray;
-    for (let i = 0; i < userData.length; i++) {
-      if (userData[i].userID === user.userID) {
-        timeArray = userData[i].activitiesAndAccumulatedTime;
+    userData.map((user) => {
+      if (user.userID === selectedUser.userID) {
+        timeArray = user.activitiesAndAccumulatedTime;
         const objNum = timeArray.findIndex(
-          (obj) => obj.activity_id === user.activityID
+          (obj) => obj.activity_id === selectedUser.activityID
         );
-        timeArray[objNum].accumulated_time += user.timeEntryHours;
+        timeArray[objNum].accumulated_time += selectedUser.timeEntryHours;
       }
-    }
-    console.log(...timeArray);
+    });
     return timeArray;
   };
 
