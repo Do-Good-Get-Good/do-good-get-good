@@ -17,23 +17,6 @@ const MyUsers = ({ navigation }) => {
   const sortOptions = ["A - Ö", "Inaktiva"];
   const [sortBy, setSortBy] = useState(sortOptions[0]);
 
-  // useEffect(() => {
-  //   if (confirmedTimeEntries.length != 0) {
-  //     let oldArray = allUsers;
-  //     for (let j = 0; j < confirmedTimeEntries.length; j++) {
-  //       var index = oldArray.findIndex(
-  //         (x) => x.userID === confirmedTimeEntries[j][0].user_id
-  //       );
-  //       if (index != -1) {
-  //         oldArray[index].timeEntries = confirmedTimeEntries[j];
-  //       }
-  //     }
-  //     setAllUsers(oldArray);
-  //     setLoadingData(true);
-  //     setReloadOneUserData(false);
-  //   }
-  // }, [confirmedTimeEntries]);
-
   const sortUsers = (sortOption) => {
     if (sortOption === "A - Ö") {
       adminStore.filterUsers(true);
