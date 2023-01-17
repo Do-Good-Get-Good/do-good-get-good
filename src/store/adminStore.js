@@ -82,6 +82,7 @@ class AdminStore {
 
   addNewUser(user) {
     this.allUsers.push(user);
+    this.filterUsers(true);
   }
 
   filterUsers(bool) {
