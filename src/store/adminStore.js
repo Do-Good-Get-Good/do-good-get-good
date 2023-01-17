@@ -6,6 +6,7 @@ import {
   getAllUsersConnectedToAdmin,
   getUsersFiveNewestTimeEntries,
 } from "../firebase-functions/get";
+import { updateUserInfoFromAdminScreen } from "../firebase-functions/update";
 
 const filterUsersByActiveStatus = (users, status) => {
   return users.filter((user) => user.statusActive === status);
@@ -23,12 +24,27 @@ const openSelectedUser = (users, pressedUser) => {
   });
 };
 
+const updateUser = (users, newInfo) => {
+  return users.map((user) => {
+    if (user.userID !== newInfo.userID) return user;
+
+    return {
+      ...user,
+      firstName: newInfo.userFirstName,
+      lastName: newInfo.userLastName,
+      statusActive: newInfo.statusActive,
+    };
+  });
+};
+
 class AdminStore {
   constructor() {
     this.allUsers = [];
     this.users = [];
     this.fetchUsers = true;
     this.loading = true;
+    this.updatedUser = false;
+    this.updatedUserInfo = {};
     makeAutoObservable(this);
   }
 
@@ -78,6 +94,18 @@ class AdminStore {
 
   openSelectedUser(pressedUser) {
     this.users = openSelectedUser(this.users, pressedUser);
+  }
+
+  updateUser(newInfo) {
+    updateUserInfoFromAdminScreen(newInfo);
+    this.allUsers = updateUser(this.allUsers, newInfo);
+    this.users = updateUser(this.users, newInfo);
+    this.updatedUserInfo = newInfo;
+    this.userUpdated(true);
+  }
+
+  userUpdated(bool) {
+    this.updatedUser = bool;
   }
 }
 
