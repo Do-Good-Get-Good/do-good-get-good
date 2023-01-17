@@ -28,6 +28,7 @@ class AdminStore {
     this.allUsers = [];
     this.users = [];
     this.fetchUsers = true;
+    this.loading = true;
     makeAutoObservable(this);
   }
 
@@ -35,7 +36,7 @@ class AdminStore {
     if (!this.fetchUsers) return;
     console.log("FETCHING");
     let userArr = await getAllUsersConnectedToAdmin(auth().currentUser.uid);
-    userArr.map(async (user) => {
+    userArr.map(async (user, index) => {
       try {
         let response = await getUsersFiveNewestTimeEntries(user.id);
         let userInfo = {
@@ -53,6 +54,9 @@ class AdminStore {
         };
         this.addNewUser(userInfo);
         this.showActiveUsers();
+        runInAction(() => {
+          if (this.allUsers.length === userArr.length) this.loading = false;
+        });
       } catch (error) {
         console.log("MyUsers ", error);
       }
