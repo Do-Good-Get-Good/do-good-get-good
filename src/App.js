@@ -16,7 +16,6 @@ import { UserLevelProvider } from "./context/UserLevelContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
 import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
-import { AdminHomePageProvider } from "./context/AdminHomePageContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
 
@@ -78,9 +77,7 @@ export default function App() {
               <UserLevelProvider>
                 <TimeStatisticsProvider>
                   <SuperAdminProvider>
-                    <AdminHomePageProvider>
-                      <SuperAdminStack />
-                    </AdminHomePageProvider>
+                    <SuperAdminStack />
                   </SuperAdminProvider>
                 </TimeStatisticsProvider>
               </UserLevelProvider>
@@ -98,9 +95,7 @@ export default function App() {
             <CreateActivityProvider>
               <UserLevelProvider>
                 <TimeStatisticsProvider>
-                  <AdminHomePageProvider>
-                    <AdminStack />
-                  </AdminHomePageProvider>
+                  <AdminStack />
                 </TimeStatisticsProvider>
               </UserLevelProvider>
             </CreateActivityProvider>

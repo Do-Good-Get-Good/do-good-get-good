@@ -12,8 +12,6 @@ import { CheckBox, Overlay, Icon } from "react-native-elements";
 
 import auth from "@react-native-firebase/auth";
 
-import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
@@ -23,13 +21,16 @@ import {
 } from "../firebase-functions/update";
 import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 
+import adminStore from "../store/adminStore";
+
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
-  const userData = useAdminHomePageFunction().userData;
+  const userData = adminStore.allUsers;
 
   useEffect(() => {
     if (visible) {
+      adminStore.sortUsersAlphabetically(userData);
       fetchAllMyUsers();
       fetchAllOtherUsers();
     }
@@ -42,11 +43,11 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const fetchAllMyUsers = () => {
     if (myUsers.length === 0) {
       let users = userData.map((user) => {
-        let connectedActivitiesArray = user.connected_activities;
+        let connectedActivitiesArray = user.connectedActivities;
 
         let userInfo = {
-          userID: user.id,
-          fullName: `${user.first_name} ${user.last_name}`,
+          userID: user.userID,
+          fullName: `${user.firstName} ${user.lastName}`,
           checked: false,
         };
         for (let i = 0; i < connectedActivitiesArray.length; i++) {
@@ -75,8 +76,18 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const updateUsers = () => {
     myUsers.map((user) => {
       if (user.checked) {
-        connectNewActivityToUser(user.userID, currentActivityId.toString());
-      } else removeActivityFromUser(user.userID, currentActivityId.toString());
+        connectNewActivityToUser(user, currentActivityId.toString());
+        adminStore.addNewActivityToUser(
+          user.userID,
+          currentActivityId.toString()
+        );
+      } else {
+        removeActivityFromUser(user.userID, currentActivityId.toString());
+        adminStore.removeActivityFromUser(
+          user.userID,
+          currentActivityId.toString()
+        );
+      }
     });
     closeModal();
   };

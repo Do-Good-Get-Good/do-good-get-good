@@ -15,7 +15,6 @@ import { Icon, Overlay } from "react-native-elements";
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import { AdminHomePageProvider } from "../context/AdminHomePageContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
@@ -454,13 +453,11 @@ export function ActivityCard({ route, navigation }) {
         <BottomLogo />
       </ScrollView>
       {[UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel) && (
-        <AdminHomePageProvider>
-          <ManageUsers
-            visible={isManageUsersOpen}
-            closeModal={closeManageUsers}
-            currentActivityId={activityInfo.id}
-          />
-        </AdminHomePageProvider>
+        <ManageUsers
+          visible={isManageUsersOpen}
+          closeModal={closeManageUsers}
+          currentActivityId={activityInfo.id}
+        />
       )}
     </SafeAreaView>
   );
