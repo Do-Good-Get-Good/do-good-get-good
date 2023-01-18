@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { StyleSheet, ScrollView, Text, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,10 +15,20 @@ import typography from "../assets/theme/typography";
 import useLinkedActivities from "../hooks/useLinkedActivities";
 import { useActivitySuggestions } from "../hooks/useActivitySuggestions";
 import colors from "../assets/theme/colors";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
+import { UserLevels } from "../userlevels";
+import adminStore from "../store/adminStore";
 
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
+  const userLevel = useUserLevelCheckFunction();
+
+  useEffect(() => {
+    if (userLevel === UserLevels.SuperAdmin || userLevel === UserLevels.Admin) {
+      adminStore.fetchAllUsers();
+    }
+  }, [userLevel]);
 
   return (
     <SafeAreaView style={styles.view}>
