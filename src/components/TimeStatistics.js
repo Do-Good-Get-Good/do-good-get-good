@@ -14,7 +14,9 @@ export function TimeStatistics({ timeObject }) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
-  const [max, setMax] = useState(maxConfirmedHours);
+  const [max, setMax] = useState(
+    route.name === "HomePage" ? maxConfirmedHours : maxConfirmedHours * 12
+  );
 
   const month = format(new Date(), "MMMM", {
     locale: sv,
@@ -29,7 +31,7 @@ export function TimeStatistics({ timeObject }) {
   }, [timeObject]);
 
   const compensatedTime = () => {
-    if (paidTime * 0.5 > max) return 8;
+    if (paidTime * 0.5 > max) return max;
     return paidTime * 0.5;
   };
 
