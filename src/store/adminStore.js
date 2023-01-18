@@ -48,6 +48,37 @@ const updateUserTimeEntries = (users, userId, timeEntries) => {
   });
 };
 
+const addNewActivityToUser = (users, userId, activityId) => {
+  return users.map((user) => {
+    if (user.userID !== userId) return user;
+
+    let newActivity = {
+      accumulated_time: 0,
+      activity_id: activityId,
+    };
+
+    let newActivitiesArr = [...user.activitiesAndAccumulatedTime, newActivity];
+    let newConnectedActivitiesArr = [...user.connectedActivities, activityId];
+    return {
+      ...user,
+      activitiesAndAccumulatedTime: newActivitiesArr,
+      connectedActivities: newConnectedActivitiesArr,
+    };
+  });
+};
+
+const removeActivityFromUser = (users, userId, activityId) => {
+  return users.map((user) => {
+    if (user.userID !== userId) return user;
+
+    let newArr = user.connectedActivities.filter((id) => id !== activityId);
+    return {
+      ...user,
+      connectedActivities: newArr,
+    };
+  });
+};
+
 class AdminStore {
   constructor() {
     this.allUsers = [];
@@ -84,7 +115,6 @@ class AdminStore {
           },
         };
         this.addNewUser(userInfo);
-        this.filterUsers(true);
         runInAction(() => {
           if (this.allUsers.length === userArr.length) this.loading = false;
         });
@@ -102,7 +132,11 @@ class AdminStore {
 
   filterUsers(bool) {
     this.users = filterUsersByActiveStatus(this.allUsers, bool);
-    this.users.sort((a, b) => a.firstName.localeCompare(b.firstName));
+    this.sortUsersAlphabetically(this.users);
+  }
+
+  sortUsersAlphabetically(userArray) {
+    userArray.sort((a, b) => a.firstName.localeCompare(b.firstName));
   }
 
   openSelectedUser(pressedUser) {
@@ -132,6 +166,14 @@ class AdminStore {
         console.log(error);
       }
     });
+  }
+
+  addNewActivityToUser(userId, activityId) {
+    this.allUsers = addNewActivityToUser(this.allUsers, userId, activityId);
+  }
+
+  removeActivityFromUser(userId, activityId) {
+    this.allUsers = removeActivityFromUser(this.allUsers, userId, activityId);
   }
 }
 
