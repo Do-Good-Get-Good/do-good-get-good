@@ -11,6 +11,7 @@ import TimeStatistics from "./TimeStatistics";
 import adminStore from "../store/adminStore";
 
 import { Observer } from "mobx-react-lite";
+import firestore from "@react-native-firebase/firestore";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
@@ -25,6 +26,34 @@ const MyUsers = ({ navigation }) => {
       adminStore.filterUsers(false);
     }
   };
+
+  useEffect(() => {
+    let unsubscribeArr = [];
+    const subscribeToUserTimeObjects = async () => {
+      adminStore.allUsers.map((user) => {
+        let unsubscribe = firestore()
+          .collection("Users")
+          .doc(user.userID)
+          .onSnapshot((snapshot) => {
+            let userId = snapshot.id;
+            let timeObject = {
+              paidTime: snapshot.data().total_confirmed_hours,
+              timeForYear: snapshot.data().total_hours_year,
+              currentForMonth: snapshot.data().total_hours_month,
+            };
+            // Push to adminStore
+            adminStore.updateUserTimeObject(userId, timeObject);
+          });
+        unsubscribeArr.push(unsubscribe);
+      });
+    };
+
+    subscribeToUserTimeObjects();
+
+    return () => {
+      unsubscribeArr.map((unsub) => unsub());
+    };
+  }, []);
 
   useEffect(() => {
     sortUsers(sortBy);

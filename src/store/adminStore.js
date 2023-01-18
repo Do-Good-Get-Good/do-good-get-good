@@ -9,7 +9,12 @@ import {
 import { updateUserInfoFromAdminScreen } from "../firebase-functions/update";
 
 const filterUsersByActiveStatus = (users, status) => {
-  return users.filter((user) => user.statusActive === status);
+  return users.filter((user) => {
+    if (user.statusActive === status)
+      return {
+        ...user,
+      };
+  });
 };
 
 const openSelectedUser = (users, pressedUser) => {
@@ -75,6 +80,17 @@ const removeActivityFromUser = (users, userId, activityId) => {
     return {
       ...user,
       connectedActivities: newArr,
+    };
+  });
+};
+
+const updateUserTimeObject = (users, userId, updatedTimeObject) => {
+  return users.map((user) => {
+    if (user.userID !== userId) return user;
+
+    return {
+      ...user,
+      timeObject: updatedTimeObject,
     };
   });
 };
@@ -166,6 +182,11 @@ class AdminStore {
         console.log(error);
       }
     });
+  }
+
+  updateUserTimeObject(userId, timeObject) {
+    this.allUsers = updateUserTimeObject(this.allUsers, userId, timeObject);
+    this.users = updateUserTimeObject(this.users, userId, timeObject);
   }
 
   addNewActivityToUser(userId, activityId) {
