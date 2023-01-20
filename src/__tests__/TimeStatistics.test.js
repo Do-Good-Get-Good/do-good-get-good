@@ -4,6 +4,9 @@ import { render } from "@testing-library/react-native";
 
 import TimeStatistics from "../components/TimeStatistics";
 
+import { format } from "date-fns";
+import { sv } from "date-fns/locale";
+
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native-elements/dist/icons/Icon", () => () => {
@@ -12,45 +15,68 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 
 const mockTimeObject = [
   {
-    accumulatedTime: 1,
-    activityID: "activityID",
-    adminID: "adminID",
-    connectedActivities: ["activityID"],
-    paidTime: 2,
-    timeForYear: 1,
-    currentForMonth: 1,
+    paidTime: 10,
+    timeForYear: 10,
+    currentForMonth: 5,
   },
 ];
 
-describe("Testing TimeStatistics ", () => {
-  it("TimeStatistics timeForYear text", () => {
+jest.mock("../context/TimeStatisticsContext", () => ({
+  useTimeStatisticSettings: () => ({
+    maxConfirmedHours: 8,
+  }),
+}));
+
+jest.mock("@react-navigation/native");
+
+describe("Testing TimeStatistics", () => {
+  require("@react-navigation/native").useRoute.mockReturnValue({
+    name: "HomePage",
+  });
+
+  it("timeForYear text exist", () => {
     const { getByTestId } = render(
       <TimeStatistics timeObject={mockTimeObject} />
     );
     const currentForYear = getByTestId("timeForYear");
-    expect(currentForYear.children[0]).toBe("Totalt antal timmar i år: 1");
+    expect(currentForYear.children[0]).toBe(
+      `Timmar ersatta ${new Date().getFullYear()}: 10`
+    );
   });
 
-  it("TimeStatistics text Utförda timmar exist on screen", () => {
+  it("Header text exist on screen", () => {
     const { getAllByText } = render(
       <TimeStatistics timeObject={mockTimeObject} />
     );
-    expect(getAllByText("Utförda timmar").length).toBe(1);
+    const month = format(new Date(), "MMMM", {
+      locale: sv,
+    });
+
+    expect(getAllByText(`Timmar ${month}`).length).toBe(1);
   });
 
-  it("TimeStatistics text Denna månad exist on screen", () => {
+  it("Text 'Registrerade' exist", () => {
     const { getAllByText, getByTestId } = render(
       <TimeStatistics timeObject={mockTimeObject} />
     );
 
-    expect(getByTestId("currentForMonth").children[0]).toBe("1");
-    expect(getAllByText("Denna månad").length).toBe(1);
+    expect(getByTestId("currentForMonth").children[0]).toBe("5");
+    expect(getAllByText("Registrerade").length).toBe(1);
   });
-  it("TimeStatistics text Ersatta timmar exist on screen", () => {
+
+  it("Text 'Godkända' exist", () => {
     const { getAllByText, getByTestId } = render(
       <TimeStatistics timeObject={mockTimeObject} />
     );
-    expect(getByTestId("paidTime").children[0]).toBe("2");
-    expect(getAllByText("Ersatta timmar").length).toBe(1);
+    expect(getByTestId("confirmedTime").children[0]).toEqual("10");
+    expect(getAllByText("Ersatta").length).toBe(1);
+  });
+
+  it("Text 'Ersatta' exist", () => {
+    const { getAllByText, getByTestId } = render(
+      <TimeStatistics timeObject={mockTimeObject} />
+    );
+    expect(getByTestId("paidTime").children[0]).toEqual("5 / 8");
+    expect(getAllByText("Ersatta").length).toBe(1);
   });
 });

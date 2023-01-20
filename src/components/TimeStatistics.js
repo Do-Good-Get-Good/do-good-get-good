@@ -55,16 +55,14 @@ export function TimeStatistics({ timeObject }) {
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Registrerade</Text>
           {route.name === "AdminPage" && (
-            <Text style={styles.textUnderForMonthAndPaidTime}>
-              {format(new Date(), "MMMM", { locale: sv })}
-            </Text>
+            <Text style={styles.textUnderForMonthAndPaidTime}>{month}</Text>
           )}
         </View>
 
         <View style={styles.line} />
 
         <View style={styles.innerContainerWrapper}>
-          <Text testID="paidTime" style={styles.textH2ForTime}>
+          <Text testID="confirmedTime" style={styles.textH2ForTime}>
             {paidTime}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Godkända</Text>
@@ -79,7 +77,7 @@ export function TimeStatistics({ timeObject }) {
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {compensatedTime()} / {max}
+            {`${compensatedTime()} / ${max}`}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
           {route.name === "AdminPage" && (
