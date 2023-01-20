@@ -43,12 +43,22 @@ export function TimeStatistics({ timeObject }) {
       {route.name === "HomePage" && (
         <Text style={styles.header}>{`Timmar ${month}`}</Text>
       )}
-      <View style={styles.containerMonthAndPaidTime}>
+      <View
+        style={[
+          styles.containerMonthAndPaidTime,
+          route.name === "AdminPage" && { height: 115 },
+        ]}
+      >
         <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Registrerade</Text>
+          {route.name === "AdminPage" && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>
+              {format(new Date(), "MMMM", { locale: sv })}
+            </Text>
+          )}
         </View>
 
         <View style={styles.line} />
@@ -58,6 +68,11 @@ export function TimeStatistics({ timeObject }) {
             {paidTime}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Godkända</Text>
+          {route.name === "AdminPage" && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>
+              {new Date().getFullYear()}
+            </Text>
+          )}
         </View>
 
         <View style={styles.line} />
@@ -67,6 +82,11 @@ export function TimeStatistics({ timeObject }) {
             {compensatedTime()} / {max}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
+          {route.name === "AdminPage" && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>
+              {new Date().getFullYear()}
+            </Text>
+          )}
         </View>
       </View>
       {route.name === "HomePage" && (
