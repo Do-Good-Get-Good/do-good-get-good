@@ -15,13 +15,18 @@ export const updateTimeEntry = async (timeEntryID, date, hours) => {
   }
 };
 
-export const confirmTimeEntry = (timeEntryID) => {
+export const confirmTimeEntry = async (timeEntryID) => {
   try {
-    firestore().collection("timeentries").doc(timeEntryID).update({
-      status_confirmed: true,
-    });
+    let response = await firestore()
+      .collection("timeentries")
+      .doc(timeEntryID)
+      .update({
+        status_confirmed: true,
+      });
+    return Promise.resolve(response);
   } catch (error) {
     console.log("There was an error confirming the timeentry");
+    return Promise.reject(error);
   }
 };
 

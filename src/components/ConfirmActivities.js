@@ -5,6 +5,7 @@ import {
   View,
   TouchableNativeFeedback,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { CheckBox, Icon } from "react-native-elements";
 import typography from "../assets/theme/typography";
@@ -114,18 +115,34 @@ const ConfirmActivities = () => {
           return user;
         }
       });
-
-      // For every user in 'selectedUsers' call 'confirmActivity'
-      let userIds = [];
-      selectedUsers.map((selectedUser, i) => {
-        userIds.push(selectedUser.userID);
-        confirmTimeEntry(selectedUser.timeEntryId);
-        addTotalConfirmedHours(selectedUser);
-        if (i === selectedUsers.length - 1) {
-          setChecked(false);
-        }
-      });
-      adminStore.updateUserTimeEntries(userIds);
+      Alert.alert(
+        "Godkänna aktiviteter",
+        `Är du säker på att du vill godkänna de markerade (${selectedUsers.length}) aktiviteterna?`,
+        [
+          {
+            text: "Nej",
+          },
+          {
+            text: "Ja",
+            onPress: () => {
+              let userIds = [];
+              selectedUsers.map(async (selectedUser, i) => {
+                userIds.push(selectedUser.userID);
+                try {
+                  await confirmTimeEntry(selectedUser.timeEntryId);
+                  addTotalConfirmedHours(selectedUser);
+                  if (i === selectedUsers.length - 1) {
+                    setChecked(false);
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              });
+              adminStore.updateUserTimeEntries(userIds);
+            },
+          },
+        ]
+      );
     }
   };
 
