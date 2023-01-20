@@ -37,8 +37,7 @@ const MyUsers = ({ navigation }) => {
           .onSnapshot((snapshot) => {
             let userId = snapshot.id;
             let timeObject = {
-              paidTime: snapshot.data().total_confirmed_hours,
-              timeForYear: snapshot.data().total_hours_year,
+              paidTime: snapshot.data().total_hours_year,
               currentForMonth: snapshot.data().total_hours_month,
             };
             // Push to adminStore

@@ -125,8 +125,7 @@ class AdminStore {
           statusActive: user.status_active,
           userID: user.id,
           timeObject: {
-            paidTime: user.total_confirmed_hours,
-            timeForYear: user.total_hours_year,
+            paidTime: user.total_hours_year,
             currentForMonth: user.total_hours_month,
           },
         };
