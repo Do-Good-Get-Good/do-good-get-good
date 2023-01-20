@@ -7,6 +7,7 @@ import {
   fireEvent,
 } from "@testing-library/react-native";
 import ManageUsers from "../components/ManageUsers";
+import adminStore from "../store/adminStore";
 
 jest.useFakeTimers();
 
@@ -19,43 +20,6 @@ jest.mock("react-native-elements/dist/icons/Icon", () => () => {
 jest.mock("react-native-elements/dist/checkbox/CheckBox", () => () => {
   return <></>;
 });
-
-jest.mock("../context/AdminHomePageContext", () => ({
-  useAdminHomePageFunction: () => ({
-    userData: [
-      {
-        activities_and_accumulated_time: [
-          {
-            accumulated_time: 2.5,
-            activity_id: "activity_id",
-          },
-        ],
-        connected_activities: ["activity_id"],
-        admin_id: "admin_id",
-        first_name: "Test",
-        last_name: "1",
-        id: "user_id",
-        role: "user",
-        status_active: true,
-      },
-      {
-        activities_and_accumulated_time: [
-          {
-            accumulated_time: 2.5,
-            activity_id: "activity_id",
-          },
-        ],
-        connected_activities: ["activity_id"],
-        admin_id: "admin_id2",
-        first_name: "Test",
-        last_name: "2",
-        id: "user_id2",
-        role: "user",
-        status_active: true,
-      },
-    ],
-  }),
-}));
 
 let mockOtherUserData = [
   {
@@ -96,6 +60,38 @@ afterEach(() => {
 });
 
 describe("Testing ManageUsers component", () => {
+  adminStore.addNewUser({
+    activitiesAndAccumulatedTime: [],
+    adminID: "123",
+    connectedActivities: ["1234"],
+    firstName: "Test1",
+    lastName: "Test1",
+    role: "user",
+    timeEntries: [],
+    isOpen: false,
+    statusActive: true,
+    userID: "012",
+    timeObject: {
+      paidTime: 0,
+      currentForMonth: 0,
+    },
+  });
+  adminStore.addNewUser({
+    activitiesAndAccumulatedTime: [],
+    adminID: "123",
+    connectedActivities: ["1234"],
+    firstName: "Test2",
+    lastName: "Test2",
+    role: "user",
+    timeEntries: [],
+    isOpen: false,
+    statusActive: true,
+    userID: "0124",
+    timeObject: {
+      paidTime: 0,
+      currentForMonth: 0,
+    },
+  });
   it("Can render users connected and correct other users when no other users are connected", () => {
     const { getByTestId, getAllByTestId } = render(
       <ManageUsers
@@ -114,8 +110,12 @@ describe("Testing ManageUsers component", () => {
     );
 
     expect(getAllByTestId("test.userView").length).toBe(2);
-    expect(getByTestId("test.userFullName0").children[0]).toEqual("Test 1");
-    expect(getByTestId("test.userFullName1").children[0]).toEqual("Test 2");
+    expect(getByTestId("test.userFullName0").children[0]).toEqual(
+      "Test1 Test1"
+    );
+    expect(getByTestId("test.userFullName1").children[0]).toEqual(
+      "Test2 Test2"
+    );
 
     expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
       "Andra användare"
