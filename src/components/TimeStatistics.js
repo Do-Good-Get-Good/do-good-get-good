@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -14,9 +14,12 @@ export function TimeStatistics({ timeObject }) {
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
-  const [max, setMax] = useState(
-    route.name === "HomePage" ? maxConfirmedHours : maxConfirmedHours * 12
-  );
+
+  const max = useMemo(() => {
+    return route.name === "HomePage"
+      ? maxConfirmedHours
+      : maxConfirmedHours * 12;
+  }, [maxConfirmedHours]);
 
   const month = format(new Date(), "MMMM", {
     locale: sv,
@@ -98,7 +101,7 @@ const styles = StyleSheet.create({
   },
   textH2ForTime: {
     ...typography.h3,
-    transform: [{ scale: 0.95 }],
+    transform: [{ scale: 0.8 }],
   },
   line: {
     width: 2.5,
