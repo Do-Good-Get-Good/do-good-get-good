@@ -14,6 +14,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
+import { UserLevels } from "../userlevels";
 
 const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   const navigation = useNavigation();
@@ -25,12 +26,12 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
     user.role === null ? "Behörighet" : user.role
   );
   const [invalidPassword, setInvalidPassword] = useState(false);
-  const [passwordFilledUp, setPasswordFilledUp] = useState(null);
-  const [nameFilledUp, setNameFilledUp] = useState(null);
-  const [surnameFilledUp, setSurnameFilledUp] = useState(null);
-  const [emailFilledUp, setEmailFilledUp] = useState(null);
-  const [placeholderFilledUp, setPlaceholderFilledUp] = useState(null);
-  const roles = ["user", "admin", "superadmin"];
+  const [passwordFilledUp, setPasswordFilledUp] = useState();
+  const [nameFilledUp, setNameFilledUp] = useState();
+  const [surnameFilledUp, setSurnameFilledUp] = useState();
+  const [emailFilledUp, setEmailFilledUp] = useState();
+  const [placeholderFilledUp, setPlaceholderFilledUp] = useState();
+  const roles = [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin];
   const ref_input1 = useRef();
   const ref_input2 = useRef();
   const ref_input3 = useRef();
@@ -89,11 +90,16 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   }, [user.password]);
 
   useEffect(() => {
-    if (userLevel === "admin") {
+    if (userLevel === UserLevels.Admin) {
       setPlaceholderFilledUp(true);
       setPlaceholder("");
     } else {
-      if (placeholder === "Admin" || "User" || "Super admin") {
+      if (placeholder === "Behörighet") return;
+      if (
+        [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin].includes(
+          placeholder
+        )
+      ) {
         setPlaceholderFilledUp(true);
       } else {
         setPlaceholderFilledUp(false);
@@ -110,7 +116,9 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
       !invalidEmail &&
       !invalidPassword &&
       placeholderFilledUp &&
-      placeholder != "Behörighet"
+      [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin].includes(
+        placeholder
+      )
     ) {
       return true;
     } else {
@@ -118,7 +126,13 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
       if (user.surname === null) setSurnameFilledUp(false);
       if (user.email === null) setEmailFilledUp(false);
       if (user.password === null) setPasswordFilledUp(false);
-      if (placeholder === "Behörighet") setPlaceholderFilledUp(false);
+      if (
+        placeholder === "Behörighet" ||
+        !placeholder ||
+        placeholder === null
+      ) {
+        setPlaceholderFilledUp(false);
+      }
       return false;
     }
   }

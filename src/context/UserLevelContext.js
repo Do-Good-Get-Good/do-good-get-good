@@ -1,6 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import { getUserLevel } from "../firebase-functions/get";
+import { UserLevels } from "../userlevels";
 
 const UserLevelContext = React.createContext();
 
@@ -15,14 +16,14 @@ export const UserLevelProvider = ({ children }) => {
     const response = await getUserLevel(auth().currentUser.uid);
 
     switch (response) {
-      case "user":
-        setUserLevel("user");
+      case UserLevels.User:
+        setUserLevel(UserLevels.User);
         break;
-      case "admin":
-        setUserLevel("admin");
+      case UserLevels.Admin:
+        setUserLevel(UserLevels.Admin);
         break;
-      case "superadmin":
-        setUserLevel("superadmin");
+      case UserLevels.SuperAdmin:
+        setUserLevel(UserLevels.SuperAdmin);
         break;
     }
   };
