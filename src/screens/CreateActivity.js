@@ -15,54 +15,28 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
-import { Icon, Dialog } from "react-native-elements";
-import DropDownSmall from "../components/DropDownSmall";
+import { Icon } from "react-native-elements";
 import Images from "../Images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import functions from "@react-native-firebase/functions";
+import BottomNavButtons from "../components/BottomNavButtons";
+import { addActivity } from "../firebase-functions/add";
+import LoadingOverlay from "../components/LoadingOverlay";
 
 export function CreateActivity({ route, navigation }) {
-  const createActivityContext = useCreateActivityFunction();
-  const { creatingNewUser, activityExist, newUserInfo } = route.params;
+  const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
 
-  const [whileCreatingNewUser, setWhileCreatingNewUser] =
-    useState(creatingNewUser);
-  const [existingActivity, setExistingActivity] = useState(activityExist);
   const [checkBoxPressed, setCheckBoxPressed] = useState(false);
-  const titleForNewActivity = "Lägg till aktivitet";
-  const titleForNewActivityWithCreateNewUser = "Skapa aktivitet";
-  const titleForExistingActivityWithCreateNewUser =
-    "Lägg till aktivitet för användare";
-  const [title, setTitle] = useState("");
-  const [place, setPlace] = useState("");
-  const [city, setCity] = useState("");
+  const [title, setTitle] = useState(null);
+  const [place, setPlace] = useState(null);
+  const [city, setCity] = useState(null);
+  const [description, setDescription] = useState("");
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-  const [description, setDescription] = useState("");
   const [newActivityImage, setNewActivityImage] = useState();
-  const [createNewUser, setCreatNewUser] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [activityFromSelectionInDropDown, setActivityFromSelectionInDropDown] =
-    useState([]);
-
-  const setUserData = useAdminHomePageFunction().setUserData;
-  const setNewUser = useAdminHomePageFunction().setNewUser;
-
-  useEffect(() => {
-    if (newUserInfo != null) {
-      setCreatNewUser({
-        firstName: newUserInfo.first_name,
-        lastName: newUserInfo.last_name,
-        email: newUserInfo.email,
-        password: newUserInfo.password,
-        role: newUserInfo.role,
-      });
-    }
-  }, [newUserInfo]);
 
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
@@ -72,6 +46,45 @@ export function CreateActivity({ route, navigation }) {
     }
   }, [route.params?.imageForActivity]);
 
+  useEffect(() => {
+    if (title !== null) {
+      if (title.trim() === "") {
+        setTitleFilledUp(false);
+      } else {
+        setTitleFilledUp(true);
+      }
+    }
+  }, [title]);
+
+  useEffect(() => {
+    if (city !== null) {
+      if (city.trim() === "") {
+        setCityFilledUp(false);
+      } else {
+        setCityFilledUp(true);
+      }
+    }
+  }, [city]);
+
+  useEffect(() => {
+    if (place !== null) {
+      if (place.trim() === "") {
+        setPlaceFilledUp(false);
+      } else {
+        setPlaceFilledUp(true);
+      }
+    }
+  }, [place]);
+
+  function validateInputs() {
+    if (titleFilledUp && placeFilledUp && cityFilledUp) return true;
+
+    if (titleFilledUp === null) setTitleFilledUp(false);
+    if (cityFilledUp === null) setCityFilledUp(false);
+    if (placeFilledUp === null) setPlaceFilledUp(false);
+    return false;
+  }
+
   function setImageForNewActivity() {
     for (let index = 0; index < Images.length; index++) {
       if (newActivityImage === Images[index].name) {
@@ -80,312 +93,68 @@ export function CreateActivity({ route, navigation }) {
     }
   }
 
-  useEffect(() => {
-    if (creatingNewUser === true) {
-      if (
-        createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet"
-      ) {
-        setExistingActivity(false);
-      } else if (
-        createActivityContext.sendChoiceFromDropDown != "Skapa ny aktivitet"
-      ) {
-        setExistingActivity(true);
-      } else {
-        console.log("Nothing selected in DropDown Menu");
-      }
-    }
-  }, [createActivityContext.sendChoiceFromDropDown]);
-
-  function chooseTitle() {
-    if (existingActivity === false && whileCreatingNewUser === false) {
-      return titleForNewActivity;
-    } else if (existingActivity === false && whileCreatingNewUser === true) {
-      return titleForNewActivityWithCreateNewUser;
-    } else {
-      return titleForExistingActivityWithCreateNewUser;
-    }
-  }
-
-  function showDropDownMenyOrNot() {
-    if (whileCreatingNewUser === true) {
-      return (
-        <View>
-          <View style={styles.dropDown}>
-            <DropDownSmall />
-          </View>
-        </View>
-      );
-    }
-  }
-  useEffect(() => {
-    if (createActivityContext.sendChoiceFromDropDown != "Skapa ny aktivitet") {
-      const searchingObjectWithSelectionFromDropDown =
-        createActivityContext.activeActivities.filter(
-          (object) =>
-            object.title === createActivityContext.sendChoiceFromDropDown
-        );
-      setActivityFromSelectionInDropDown(
-        searchingObjectWithSelectionFromDropDown
-      );
-    }
-  }, [createActivityContext.sendChoiceFromDropDown]);
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
-  function alertUser(message) {
-    Alert.alert(
-      "Skapa användare",
-      message,
-      [
+  async function createActivityAndAddLocally() {
+    setLoading(true);
+    const newActivity = {
+      active_status: true,
+      activity_city: city,
+      activity_description: description,
+      activity_photo: newActivityImage,
+      activity_place: place,
+      activity_title: title,
+      tg_favorite: checkBoxPressed,
+    };
+    try {
+      let createdActivityId = await addActivity(newActivity);
+      setAllActiveActvivitiesFB((prev) => [
+        ...prev,
         {
-          text: "OK",
-          onPress: () => {
-            createActivityContext.chooseInDropDown(null);
-            navigation.navigate("AdminPage");
-          },
+          id: createdActivityId,
+          active: newActivity.active_status,
+          title: newActivity.activity_title,
+          city: newActivity.activity_city,
+          place: newActivity.activity_place,
+          description: newActivity.activity_description,
+          photo: newActivity.activity_photo,
+          popular: newActivity.tg_favorite,
         },
-      ]
-    );
-  }
-
-  async function linkChoosenActivityToNewUser() {
-    if (createNewUser != null) {
-      var createUser = functions().httpsCallable("createUser");
-      await createUser({
-        firstName: createNewUser.firstName,
-        lastName: createNewUser.lastName,
-        email: createNewUser.email,
-        password: createNewUser.password,
-        role: createNewUser.role,
-        activityId: activityFromSelectionInDropDown[0].id,
-      }).then((res) => {
-        let newUser = res.data.createdUser;
-        console.log(res)
-
-        // Save new user locally
-        setUserData((prev) => [...prev, newUser]);
-        setNewUser(newUser);
-
-        setLoading(false);
-
-        alertUser(`Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`);
-      }).catch(error => {
-        message = "Error"
-        setLoading(false);
-        if (error === 'auth/email-already-exists') {
-          message = `Användaren '${createNewUser.email}' kunde inte skapas, en användare med den adressen finns redan`
-        }
-        else {
-          message = `Kunde inte skapa användare med epost '${createNewUser.email}', error '${error.message}'`
-        }
-        alertUser(message);
-      });
-    }
-  }
-
-  useEffect(() => {
-    let newUser = createActivityContext.newUserInfo;
-    if (newUser != null) {
-      // Save new user locally
-      setUserData((prev) => [...prev, newUser]);
-      setNewUser(newUser);
-
-      createActivityContext.setNewUserInfo(null);
-
+      ]);
       setLoading(false);
-
-      alertPopUp(false, newUser);
+      alertPopUp(newActivity.activity_title);
+    } catch (error) {
+      setLoading(false);
+      Alert.alert(
+        "Ett fel uppstod! Det gick inte att skapa aktiviteten",
+        error.message
+      );
     }
-  }, [createActivityContext.newUserInfo]);
+  }
 
-  useEffect(() => {
-    let onlyActivityCreated = createActivityContext.onlyActivityCreated;
-    if (onlyActivityCreated) {
-      alertPopUp(true);
-      createActivityContext.setOnlyActivityCreated(false);
-    }
-  }, [createActivityContext.onlyActivityCreated]);
-
-  function alertPopUp(onlyActivityCreated, newUser) {
-    let alertTitle = "";
-    let alertMessage = "";
-
-    if (onlyActivityCreated) {
-      alertTitle = "Skapa aktivitet";
-      alertMessage = `Aktiviteten '${title}' har skapats!`;
-    } else {
-      alertTitle = "Skapa aktivitet och användare";
-      alertMessage = `Aktiviteten '${title}' och användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`;
-    }
+  function alertPopUp(title) {
+    let alertTitle = "Skapa aktivitet";
+    let alertMessage = `Aktiviteten '${title}' har skapats!`;
 
     Alert.alert(alertTitle, alertMessage, [
       {
         text: "OK",
         onPress: () => {
-          setTitle("");
-          setPlace("");
-          setCity("");
-          setDescription("");
-          setCheckBoxPressed(false);
-          createActivityContext.chooseInDropDown(null);
-          navigation.navigate("HomePage");
+          navigation.navigate("AdminPage");
         },
       },
     ]);
   }
 
-  function sendNewActivityToCreateActivityContext() {
-    if (
-      title != " " &&
-      city != " " &&
-      place != " " &&
-      title.trim() &&
-      city.trim() &&
-      place.trim()
-    ) {
-      let newActivityAndUser;
-      if (createNewUser != null) {
-        newActivityAndUser = {
-          active_status: true,
-          activity_city: city,
-          activity_description: description,
-          activity_photo: newActivityImage,
-          activity_place: place,
-          activity_title: title,
-          tg_favorite: checkBoxPressed,
-          newUserInfo: createNewUser,
-        };
-      } else {
-        newActivityAndUser = {
-          active_status: true,
-          activity_city: city,
-          activity_description: description,
-          activity_photo: newActivityImage,
-          activity_place: place,
-          activity_title: title,
-          tg_favorite: checkBoxPressed,
-        };
-      }
-      createActivityContext.createNewActivityAndUser(newActivityAndUser);
-    }
-
-    if (title != " " && title.trim()) {
-      setTitleFilledUp(true);
-    } else {
-      setTitleFilledUp(false);
-    }
-
-    if (city != " " && city.trim()) {
-      setCityFilledUp(true);
-    } else {
-      setCityFilledUp(false);
-    }
-
-    if (place != " " && place.trim()) {
-      setPlaceFilledUp(true);
-    } else {
-      setPlaceFilledUp(false);
-    }
-  }
-
-  function twoBottomButtonsForAllViews() {
-    if (whileCreatingNewUser === true) {
-      return (
-        <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity
-            testID="sendNewActivityToCreateActivityContext"
-            onPress={() => {
-              setLoading(true);
-              if (
-                createActivityContext.sendChoiceFromDropDown !=
-                "Skapa ny aktivitet" &&
-                whileCreatingNewUser === true
-              ) {
-                linkChoosenActivityToNewUser();
-              } else sendNewActivityToCreateActivityContext();
-            }}
-          >
-            {loading ? (
-              <Dialog.Loading
-                loadingProps={{
-                  color: colors.secondary,
-                  style: [styles.buttonSave, { width: "100%" }],
-                }}
-              />
-            ) : (
-              <Text style={styles.buttonSave}>Spara</Text>
-            )}
-          </TouchableOpacity>
-          <TouchableOpacity
-            testID="goBackButton"
-            onPress={() => navigation.goBack()}
-          >
-            <LinearGradient
-              colors={[colors.primary, colors.secondary]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
-            >
-              <Text style={styles.buttonBack}>Tillbaka</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      );
-    } else if (whileCreatingNewUser === false) {
-      return (
-        <View style={styles.containerForTwoBottomButtons}>
-          <TouchableOpacity
-            testID="Save button"
-            onPress={() => sendNewActivityToCreateActivityContext()}
-          >
-            <Text style={styles.buttonSave}>Spara</Text>
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={{ flex: 1 }}
-            onPress={() => navigation.goBack()}
-          >
-            <LinearGradient
-              colors={[colors.primary, colors.secondary]}
-              start={{ x: 0, y: 0 }}
-              end={{ x: 1, y: 1 }}
-              style={styles.buttonBorderStyleButtonBackAndCancel}
-            >
-              <Text style={styles.buttonCancel}>Avbryt</Text>
-            </LinearGradient>
-          </TouchableOpacity>
-        </View>
-      );
-    }
-  }
-
   titleCityPlaceStyle = function () {
     return {
       flex: 1,
-      paddingVertical: 13,
-      paddingLeft: 11,
-      marginTop: 9,
+      paddingVertical: 16,
+      paddingLeft: 12,
+      marginTop: 10,
       fontFamily: typography.b1.fontFamily,
       fontSize: typography.b1.fontSize,
       color: colors.dark,
       backgroundColor: colors.background,
-      ...Platform.select({
-        ios: {
-          shadowOffset: {
-            height: 1,
-          },
-          shadowOpacity: 0.2,
-          shadowRadius: 1,
-        },
-        android: {
-          elevation: 1,
-        },
-      }),
+      ...styles.shadow,
     };
   };
 
@@ -411,47 +180,63 @@ export function CreateActivity({ route, navigation }) {
     };
   };
 
-  const viewCreateNewActivity = () => {
-    return (
-      <View style={styles.containerForAllInput}>
+  return (
+    <SafeAreaView style={{ flex: 1 }}>
+      {loading && <LoadingOverlay />}
+      <Menu />
+      <Text style={styles.textMainTitle}>Lägg till aktivitet</Text>
+      <ScrollView
+        keyboardDismissMode={"on-drag"}
+        contentContainerStyle={{ marginHorizontal: 16, paddingBottom: 16 }}
+      >
         <TextInput
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
           onChangeText={setTitle}
+          onEndEditing={() => {
+            title !== null && setTitle(title.trim());
+          }}
           value={title}
           placeholder="Aktivitet"
           placeholderTextColor={colors.dark}
         />
-        {titleFilledUp === false ? (
+        {titleFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
-          style={[titleCityPlaceStyle(), placeBorderStyle()]}
+          style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
           onChangeText={setCity}
+          onEndEditing={() => {
+            city !== null && setCity(city.trim());
+          }}
           value={city}
           placeholder="Var"
           placeholderTextColor={colors.dark}
         />
-        {placeFilledUp === false ? (
+        {cityFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
-          style={[titleCityPlaceStyle(), cityBorderStyle()]}
+          style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
           onChangeText={setPlace}
+          onEndEditing={() => {
+            place !== null && setPlace(place.trim());
+          }}
           value={place}
           placeholder="Aktör"
           placeholderTextColor={colors.dark}
         />
-        {cityFilledUp === false ? (
+        {placeFilledUp === false && (
           <Text style={styles.warningAboutRequired}>* Obligatorisk</Text>
-        ) : null}
+        )}
         <TextInput
-          style={styles.textInputDescription}
+          style={[styles.textInputDescription, styles.shadow]}
           numberOfLines={5}
           multiline={true}
           onChangeText={setDescription}
+          onEndEditing={() => setDescription(description.trim())}
           value={description}
           placeholder="Vad"
           placeholderTextColor={colors.dark}
@@ -468,6 +253,7 @@ export function CreateActivity({ route, navigation }) {
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateActivity",
+                selectedImage: newActivityImage,
               })
             }
           >
@@ -503,97 +289,38 @@ export function CreateActivity({ route, navigation }) {
         <Text style={styles.textUnderCheckBox}>
           TG-favoriter visas för alla användare
         </Text>
-        {twoBottomButtonsForAllViews()}
-      </View>
-    );
-  };
-
-  function viewAddExistingActivityToTheUser() {
-    if (activityFromSelectionInDropDown.length != 0) {
-      return (
-        <View style={styles.containerCityPlaceDescription}>
-          <Text style={styles.textCityPlace}>
-            {activityFromSelectionInDropDown[0].city}
-          </Text>
-          <Text style={styles.textCityPlace}>
-            {activityFromSelectionInDropDown[0].place}
-          </Text>
-          <Text style={styles.textDescription}>
-            {activityFromSelectionInDropDown[0].description}
-          </Text>
-          <View style={styles.containerImageAndInsertButton}>
-            <Image
-              style={styles.imageExistingActivity}
-              source={setTheRightPhoto(
-                activityFromSelectionInDropDown[0].photo
-              )}
-            ></Image>
-
-            <Text style={styles.textButtonChangeImage}>Byt bild</Text>
-          </View>
-          {twoBottomButtonsForAllViews()}
-        </View>
-      );
-    }
-  }
-
-  function gotChoiceFromDropDownOrCreateNewActivity() {
-    if (
-      (createActivityContext.sendChoiceFromDropDown === "Skapa ny aktivitet" &&
-        whileCreatingNewUser === true) ||
-      whileCreatingNewUser === false
-    ) {
-      return <>{viewCreateNewActivity()}</>;
-    } else if (
-      createActivityContext.sendChoiceFromDropDown != "Skapa ny aktivitet" &&
-      whileCreatingNewUser === true
-    ) {
-      return <>{viewAddExistingActivityToTheUser()}</>;
-    }
-  }
-
-  return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <Menu />
-      <ScrollView keyboardDismissMode={"on-drag"}>
-        <View style={styles.container}>
-          <Text style={styles.textMainTitle}>{chooseTitle()}</Text>
-          <Text style={styles.numbersNearTitle}>
-            {whileCreatingNewUser === true ? "2/2" : null}
-          </Text>
-        </View>
-
-        {showDropDownMenyOrNot()}
-
-        {gotChoiceFromDropDownOrCreateNewActivity()}
       </ScrollView>
+      <BottomNavButtons
+        primaryText="Spara"
+        secondaryText="Avbryt"
+        primaryFunc={() => {
+          if (validateInputs()) createActivityAndAddLocally();
+        }}
+        secondaryFunc={() => {
+          navigation.goBack();
+        }}
+      />
     </SafeAreaView>
   );
 }
 export default CreateActivity;
 
 const styles = StyleSheet.create({
-  container: {
-    marginHorizontal: 16,
-    marginVertical: 15,
-    flexDirection: "row",
-    alignItems: "flex-end",
-  },
   textMainTitle: {
     ...typography.h2,
     fontWeight: "500",
     color: colors.dark,
-    marginRight: 10,
+    marginHorizontal: 16,
+    ...Platform.select({
+      ios: {
+        paddingTop: 16,
+      },
+      android: {
+        paddingTop: 8,
+      },
+    }),
   },
-  numbersNearTitle: {
-    ...typography.b1,
-  },
-  dropDown: {
-    flex: 1,
-    marginRight: 16,
-    marginLeft: -3,
-    marginBottom: 1,
-
+  shadow: {
     ...Platform.select({
       ios: {
         shadowOffset: {
@@ -606,9 +333,6 @@ const styles = StyleSheet.create({
         elevation: 1,
       },
     }),
-  },
-  containerForAllInput: {
-    marginHorizontal: 16,
   },
   textInputDescription: {
     paddingLeft: 11,
@@ -624,18 +348,6 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
   },
   containerImageAndInsertButton: {
     flexDirection: "row",
@@ -704,125 +416,6 @@ const styles = StyleSheet.create({
   textUnderCheckBox: {
     fontSize: typography.b2.fontSize,
     fontFamily: typography.b2.fontFamily,
-  },
-  containerCityPlaceDescription: {
-    flex: 1,
-    marginHorizontal: 16,
-    marginTop: 12,
-  },
-  textCityPlace: {
-    flex: 1,
-    fontSize: typography.b1.fontSize,
-    fontFamily: typography.b1.fontFamily,
-    color: colors.dark,
-    backgroundColor: colors.disabled,
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    marginBottom: 13,
-    padding: 13,
-    overflow: "hidden",
-  },
-  textDescription: {
-    flex: 1,
-    fontSize: typography.b1.fontSize,
-    fontFamily: typography.b1.fontFamily,
-    fontWeight: "500",
-    color: colors.dark,
-    backgroundColor: colors.disabled,
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    marginBottom: 13,
-    padding: 13,
-    paddingBottom: 90,
-    overflow: "hidden",
-    marginTop: 20,
-  },
-  textButtonChangeImage: {
-    flex: 1.5,
-    ...typography.button.lg,
-    fontWeight: "500",
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.disabled,
-    textAlign: "center",
-    backgroundColor: colors.disabled,
-    color: colors.dark,
-    marginVertical: 30,
-    paddingTop: Platform.OS === "ios" ? 12 : null,
-    overflow: "hidden",
-    letterSpacing: 2,
-    height: 55,
-    width: 200,
-    textAlignVertical: "center",
-  },
-  imageExistingActivity: {
-    flex: 1,
-    resizeMode: "contain",
-    marginRight: 80,
-    marginTop: 10,
-    height: 98,
-    borderRadius: 3,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.background,
-  },
-  containerForTwoBottomButtons: {
-    marginTop: 30,
-    marginBottom: 16,
-  },
-  buttonSave: {
-    ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    textAlignVertical: "center",
-    letterSpacing: 2,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.primary,
-    overflow: "hidden",
-    height: 55,
-    paddingTop: Platform.OS === "ios" ? 12 : null,
-    color: colors.dark,
-  },
-
-  buttonBack: {
-    ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    textAlignVertical: "center",
-    letterSpacing: 2,
-    height: 55,
-    width: "100%",
-    backgroundColor: colors.light,
-    borderRadius: 5,
-    overflow: "hidden",
-    paddingTop: Platform.OS === "ios" ? 12 : null,
-    color: colors.dark,
-  },
-  buttonCancel: {
-    ...typography.button.lg,
-    fontWeight: "500",
-    textAlign: "center",
-    textAlignVertical: "center",
-    letterSpacing: 2,
-    height: 55,
-    width: "100%",
-    backgroundColor: colors.light,
-    borderRadius: 5,
-    overflow: "hidden",
-    paddingTop: Platform.OS === "ios" ? 12 : null,
-    color: colors.dark,
-  },
-  buttonBorderStyleButtonBackAndCancel: {
-    flex: 1,
-    marginTop: 10,
-    borderRadius: 5,
-    paddingVertical: 1,
-    paddingHorizontal: 1,
-    alignItems: "center",
   },
   warningAboutRequired: {
     color: colors.error,

@@ -5,8 +5,8 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import DropDownForSorting from "./DropDownForSorting";
 import TimeEntry from "./TimeEntry";
-import useTimeEntriesWithLimit from "../customFirebaseHooks/useTimeEntriesWithLimit";
-import { getUserTimeEntriesOrderByDate } from "../customFirebaseHooks/getFunctions";
+import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
+import { getUserTimeEntriesOrderByDate } from "../firebase-functions/get";
 
 import auth from "@react-native-firebase/auth";
 
@@ -112,6 +112,7 @@ function MyTimeEntries() {
             keyExtractor={(item) => item.timeEntryID}
             renderItem={({ item }) => (
               <TimeEntry
+                key={item.timeEntryID}
                 entry={item}
                 setActivity={setActivity}
                 toggleOverlay={toggleOverlay}

@@ -176,7 +176,14 @@ export const getActivitiesMatchTimeEntries = async (timeEntry) => {
       .collection("Activities")
       .doc(timeEntry.data().activity_id)
       .get();
-    return Promise.resolve(documentSnapshot);
+
+    let activity = {
+      title: documentSnapshot.data().activity_title,
+      photo: documentSnapshot.data().activity_photo,
+      city: documentSnapshot.data().activity_city,
+    };
+
+    return Promise.resolve(activity);
   } catch (error) {
     return Promise.reject(error);
   }
@@ -220,7 +227,14 @@ export const getTenLastConfirmedTimeEntries = async () => {
 export const getConcept = async () => {
   try {
     let querySnapshot = await firestore().collection("concept").get();
-    return Promise.resolve(querySnapshot);
+
+    let conceptData = querySnapshot.docs.map((doc) => ({
+      order_id: doc.data().order_id,
+      heading: doc.data().heading,
+      body: doc.data().body,
+    }));
+
+    return Promise.resolve(conceptData);
   } catch (error) {
     return Promise.reject(error);
   }

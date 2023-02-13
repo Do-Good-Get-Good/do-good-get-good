@@ -86,7 +86,9 @@ const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
           />
         </TouchableOpacity>
       ) : (
-        <Icon color={colors.secondary} name={"done"} size={25} />
+        <View testID="doneIcon">
+          <Icon color={colors.secondary} name={"done"} size={25} />
+        </View>
       )}
     </View>
   );

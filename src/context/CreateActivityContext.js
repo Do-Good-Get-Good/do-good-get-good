@@ -1,8 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import functions from "@react-native-firebase/functions";
-import { getAllActivitiesWithStatus } from "../customFirebaseHooks/getFunctions";
-import { addActivity } from "../customFirebaseHooks/addFunctions";
-import { Alert } from "react-native";
+import { getAllActivitiesWithStatus } from "../firebase-functions/get";
 
 const CreateActivityContext = React.createContext();
 
@@ -44,9 +41,6 @@ export const CreateActivityProvider = ({ children }) => {
     popular: "",
   });
 
-  const [newUserInfo, setNewUserInfo] = useState(null);
-  const [onlyActivityCreated, setOnlyActivityCreated] = useState(null);
-
   useEffect(() => {
     const getActiveActivities = async () => {
       try {
@@ -58,58 +52,6 @@ export const CreateActivityProvider = ({ children }) => {
     };
     getActiveActivities();
   }, []);
-
-  const createActivityAndLinkNewUser = async (newActivityAndUser) => {
-    let newActivity = {
-      active_status: newActivityAndUser.active_status,
-      activity_city: newActivityAndUser.activity_city,
-      activity_description: newActivityAndUser.activity_description,
-      activity_photo: newActivityAndUser.activity_photo,
-      activity_place: newActivityAndUser.activity_place,
-      activity_title: newActivityAndUser.activity_title,
-      tg_favorite: newActivityAndUser.tg_favorite,
-    };
-
-    try {
-      let createdActivityId = await addActivity(newActivity);
-      setAllActiveActvivitiesFB((prev) => [
-        ...prev,
-        { id: createdActivityId, ...newActivity },
-      ]);
-
-      if (
-        newActivityAndUser.newUserInfo != null ||
-        newActivityAndUser.newUserInfo != undefined
-      ) {
-        try {
-          var createUser = functions().httpsCallable("createUser");
-          let result = await createUser({
-            firstName: newActivityAndUser.newUserInfo.firstName,
-            lastName: newActivityAndUser.newUserInfo.lastName,
-            email: newActivityAndUser.newUserInfo.email,
-            password: newActivityAndUser.newUserInfo.password,
-            role: newActivityAndUser.newUserInfo.role,
-            activityId: createdActivityId,
-          });
-
-          let newUser = result.data.createdUser;
-          setNewUserInfo(newUser);
-        } catch (error) {
-          Alert.alert(
-            "Ett fel uppstod! Det gick inte att skapa användaren",
-            error.message
-          );
-        }
-      } else {
-        setOnlyActivityCreated(true);
-      }
-    } catch (error) {
-      Alert.alert(
-        "Ett fel uppstod! Det gick inte att skapa aktiviteten",
-        error.message
-      );
-    }
-  };
 
   useEffect(() => {
     if (changedOneActivity === true) {
@@ -170,8 +112,6 @@ export const CreateActivityProvider = ({ children }) => {
         activeActivities: allActiveActvivitiesFB,
         setAllActiveActvivitiesFB: setAllActiveActvivitiesFB,
 
-        createNewActivityAndUser: createActivityAndLinkNewUser,
-
         changedActivity: newChangeActivity,
         activityHasChanged: setChangedOneActivity,
 
@@ -183,12 +123,6 @@ export const CreateActivityProvider = ({ children }) => {
         setSearchWordHasNoMatch: setSearchWordHasNoMatch,
         word: setSearchingWord,
         showSearchObject: searchArray,
-
-        newUserInfo: newUserInfo,
-        setNewUserInfo: setNewUserInfo,
-
-        onlyActivityCreated: onlyActivityCreated,
-        setOnlyActivityCreated: setOnlyActivityCreated,
       }}
     >
       {children}

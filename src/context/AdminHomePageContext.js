@@ -4,7 +4,7 @@ import auth from "@react-native-firebase/auth";
 import {
   getAllUsersConnectedToAdmin,
   getUsersFiveNewestTimeEntries,
-} from "../customFirebaseHooks/getFunctions.js";
+} from "../firebase-functions/get";
 
 const AdminHomePageContext = React.createContext();
 

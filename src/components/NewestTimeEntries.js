@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import useTimeEntriesWithLimit from "../customFirebaseHooks/useTimeEntriesWithLimit";
+import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
 
 import TimeEntry from "./TimeEntry";
 import CalendarView from "./CalendarView";

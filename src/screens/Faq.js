@@ -17,7 +17,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
-import { getFaq } from "../customFirebaseHooks/getFunctions";
+import { getFaq } from "../firebase-functions/get";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);

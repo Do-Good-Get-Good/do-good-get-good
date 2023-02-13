@@ -17,8 +17,8 @@ import {
   incrementTotalConfirmedHoursForUser,
   incrementYearlyTotalHoursForUser,
   updateUsersActivitiesAndAccumulatedTime,
-} from "../customFirebaseHooks/updateFunctions";
-import useTimeEntriesForAdmin from "../customFirebaseHooks/useTimeEntriesForAdmin";
+} from "../firebase-functions/update";
+import useTimeEntriesForAdmin from "../hooks/useTimeEntriesForAdmin";
 
 const ConfirmActivities = () => {
   let userData = useAdminHomePageFunction().userData;

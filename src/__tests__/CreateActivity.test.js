@@ -3,7 +3,6 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import CreateActivity from "../screens/CreateActivity";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -15,123 +14,59 @@ jest.mock("../components/Menu", () => () => {
   return <fakeMenu />;
 });
 
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: () => ({
-    isConnected: true,
-  }),
-}));
-
-jest.mock("../components/DropDownSmall", () => () => {
-  return <mockDropDownSmall />;
-});
-
 jest.mock("@react-navigation/native");
-
-jest.mock("../context/AdminHomePageContext", () => ({
-  useAdminHomePageFunction: () => ({
-    setUserData: jest.fn(),
-    setNewUser: jest.fn(),
-  }),
-}));
 
 jest.mock("../context/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
-    changedActivity: jest.fn(),
-    setUpdateGallery: jest.fn(),
-    updateGallery: false,
-    activeActivities: [
-      {
-        id: "id",
-        title: "title",
-        active: true,
-        city: "city",
-        place: "place",
-        description: "description",
-        photo: "symbol_hands_heart-DEFAULT",
-        popular: true,
-      },
-    ],
-    setNewActivity: jest.fn(),
-    sendChoiceFromDropDown: "Skapa ny aktivitet",
+    setAllActiveActvivitiesFB: jest.fn(),
   }),
 }));
-
-const route = {
-  params: {
-    creatingNewUser: true,
-    activityExist: false,
-    newUserInfo: {
-      first_name: "first_name",
-      last_name: "last_name",
-      email: "email",
-      password: "password",
-    },
-  },
-};
 
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
 };
 
-const titleForNewActivity = "Lägg till aktivitet";
-const titleForNewActivityWithCreateNewUser = "Skapa aktivitet";
-const titleForExistingActivityWithCreateNewUser =
-  "Lägg till aktivitet för användare   2/2";
+const route = {
+  params: {
+    imageForActivity: "symbol_hands_heart-DEFAULT",
+  },
+};
 
-describe("Testing  CreateActivity ", () => {
-  it(" CreateActivity  screen if existingActivity === false && whileCreatingNewUser === false ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = false;
+describe("Testing CreateActivity ", () => {
+  it("Title exists", () => {
     const { getAllByText } = render(<CreateActivity route={route} />);
-    expect(getAllByText(titleForNewActivity).length).toBe(1);
+    expect(getAllByText("Lägg till aktivitet").length).toBe(1);
   });
 
-  it(" CreateActivity  screen if existingActivity === false && whileCreatingNewUser === true ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = true;
-
-    const { getAllByText } = render(<CreateActivity route={route} />);
-    expect(getAllByText(titleForNewActivityWithCreateNewUser).length).toBe(1);
-  });
-
-  it(" Choice from DropDown = Skapa ny aktivitet. Placeholder Aktivity title exist   ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = true;
+  it("Can update activity title", () => {
     const { getByPlaceholderText } = render(<CreateActivity route={route} />);
     fireEvent.changeText(getByPlaceholderText("Aktivitet"), "Aktivity title");
   });
 
-  it(" Choice from DropDown = Skapa ny aktivitet. Placeholder Place exist   ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = true;
+  it("Can update place", () => {
     const { getByPlaceholderText } = render(<CreateActivity route={route} />);
     fireEvent.changeText(getByPlaceholderText("Var"), "Aktivity place");
   });
 
-  it(" Choice from DropDown = Skapa ny aktivitet. Placeholder City exist   ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = true;
+  it("Can update city", () => {
     const { getByPlaceholderText } = render(<CreateActivity route={route} />);
     fireEvent.changeText(getByPlaceholderText("Aktör"), "Aktivity city");
   });
 
-  it(" Choice from DropDown = Skapa ny aktivitet. Placeholder Description exist   ", () => {
-    route.params.activityExist = false;
-    route.params.creatingNewUser = true;
+  it("Can update description", () => {
     const { getByPlaceholderText } = render(<CreateActivity route={route} />);
     fireEvent.changeText(getByPlaceholderText("Vad"), "Aktivity Description");
   });
 
   it("Photo exists in CreateActivity", () => {
     const { getByTestId } = render(<CreateActivity route={route} />);
-    expect(getByTestId("photo"));
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
       testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
     });
   });
-  it("ActivityCard. Navigation to ImagesGallery", () => {
+  it("Can navigate to ImagesGallery", () => {
     const { getByTestId } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
@@ -140,23 +75,24 @@ describe("Testing  CreateActivity ", () => {
     fireEvent.press(imagesGalleryButton);
     expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery", {
       cameFrom: "CreateActivity",
+      selectedImage: "symbol_hands_heart-DEFAULT",
     });
   });
 
-  it("ActivityCard. Text 'Infoga' exidst", () => {
+  it("Button with text 'Infoga' exist", () => {
     const { getAllByText } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("Infoga").length).toBe(1);
   });
-  it("ActivityCard. Text 'Lägg till somTG-favorit' exidst", () => {
+  it("Text 'Lägg till som TG-favorit' exist", () => {
     const { getAllByText } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("Lägg till som TG-favorit").length).toBe(1);
   });
 
-  it("ActivityCard. Button buttonSomTGFavorit", () => {
+  it("Can press TG-favorite button", () => {
     const { getByTestId } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
@@ -165,43 +101,12 @@ describe("Testing  CreateActivity ", () => {
     fireEvent.press(buttonSomTGFavorit);
   });
 
-  it("ActivityCard. Text '[TG-favoriter vissas för alla användare]' exidst", () => {
+  it("Text 'TG-favoriter visas för alla användare' exist", () => {
     const { getAllByText } = render(
       <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("TG-favoriter visas för alla användare").length).toBe(
       1
     );
-  });
-
-  it("ActivityCard. Button 'Spara' send new activity to createActivityContext", () => {
-    route.params.creatingNewUser = true;
-    const { getByTestId } = render(
-      <CreateActivity route={route} navigation={navigation} />
-    );
-
-    const sendNewActivityToCreateActivityContext = getByTestId(
-      "sendNewActivityToCreateActivityContext"
-    );
-    fireEvent.press(sendNewActivityToCreateActivityContext);
-    useCreateActivityFunction().setNewActivity.mockReturnValue({
-      active_status: true,
-      activity_city: "city",
-      activity_description: "description",
-      activity_photo: "newActivityImage",
-      activity_place: "place",
-      activity_title: "title",
-      tg_favorite: true,
-    });
-  });
-
-  it("ActivityCard. Button 'Spara' send new activity to createActivityContext", () => {
-    route.params.creatingNewUser = true;
-    const { getByTestId } = render(
-      <CreateActivity route={route} navigation={navigation} />
-    );
-    const goBackButton = getByTestId("goBackButton");
-    fireEvent.press(goBackButton);
-    expect(navigation.goBack).toHaveBeenCalled();
   });
 });

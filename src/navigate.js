@@ -7,7 +7,8 @@ import { AdminActivityGallery } from "./screens/AdminActivityGallery";
 import { CreateActivity } from "./screens/CreateActivity";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
-import { CreateOrChangeUser } from "./screens/CreateOrChangeUser";
+import CreateUser from "./screens/CreateUser";
+import ChangeUser from "./screens/ChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
 import RolesAndConnection from "./screens/RolesAndConnection";
@@ -16,7 +17,6 @@ import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
 import AdminPage from "./screens/AdminPage";
-import SuperAdminPage from "./screens/SuperAdminPage";
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -29,7 +29,6 @@ export const SuperAdminStack = () => {
       >
         <Stack.Screen name="HomePage" component={HomePage} />
         <Stack.Screen name="AdminPage" component={AdminPage} />
-        <Stack.Screen name="SuperAdminPage" component={SuperAdminPage} />
         <Stack.Screen name="MyTimePage" component={MyTimePage} />
         <Stack.Screen
           name="AdminActivityGallery"
@@ -38,10 +37,8 @@ export const SuperAdminStack = () => {
         <Stack.Screen name="CreateActivity" component={CreateActivity} />
         <Stack.Screen name="ActivityCard" component={ActivityCard} />
         <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
-        <Stack.Screen
-          name="CreateOrChangeUser"
-          component={CreateOrChangeUser}
-        />
+        <Stack.Screen name="CreateUser" component={CreateUser} />
+        <Stack.Screen name="ChangeUser" component={ChangeUser} />
         <Stack.Screen name="Faq" component={Faq} />
         <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />
@@ -77,10 +74,8 @@ export const AdminStack = () => {
         <Stack.Screen name="CreateActivity" component={CreateActivity} />
         <Stack.Screen name="ActivityCard" component={ActivityCard} />
         <Stack.Screen name="ImagesGallery" component={ImagesGallery} />
-        <Stack.Screen
-          name="CreateOrChangeUser"
-          component={CreateOrChangeUser}
-        />
+        <Stack.Screen name="CreateUser" component={CreateUser} />
+        <Stack.Screen name="ChangeUser" component={ChangeUser} />
         <Stack.Screen name="Faq" component={Faq} />
         <Stack.Screen name="ConceptPage" component={ConceptPage} />
         <Stack.Screen name="ChangeActivity" component={ChangeActivity} />

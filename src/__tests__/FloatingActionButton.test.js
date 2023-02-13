@@ -44,10 +44,7 @@ describe("Testing FloatingActionButton", () => {
     const activityButton = getByTestId("createActivity.button");
     fireEvent.press(activityButton);
 
-    expect(mockedNavigate).toHaveBeenCalledWith("CreateActivity", {
-      activityExist: false,
-      creatingNewUser: false,
-    });
+    expect(mockedNavigate).toHaveBeenCalledWith("CreateActivity");
   });
 
   it("can press the Create Or Change User button and see the navigation", () => {
@@ -55,12 +52,10 @@ describe("Testing FloatingActionButton", () => {
     const fabButton = getByTestId("open.button");
     fireEvent.press(fabButton);
 
-    const cocButton = getByTestId("CreateOrChangeUser.button");
+    const cocButton = getByTestId("CreateUser.button");
     fireEvent.press(cocButton);
 
-    expect(mockedNavigate).toHaveBeenCalledWith("CreateOrChangeUser", {
-      createNewUser: true,
-    });
+    expect(mockedNavigate).toHaveBeenCalledWith("CreateUser");
   });
 
   it("can press to close the action button", () => {

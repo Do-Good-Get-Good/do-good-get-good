@@ -1,11 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableNativeFeedback,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Dialog } from "react-native-elements";
 
 import { format } from "date-fns";
@@ -15,7 +9,7 @@ import colors from "../assets/theme/colors";
 
 import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
 import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-import { getUsersFiveNewestTimeEntries } from "../customFirebaseHooks/getFunctions";
+import { getUsersFiveNewestTimeEntries } from "../firebase-functions/get";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
@@ -28,12 +22,14 @@ const MyUsers = ({ navigation }) => {
   const [loadingData, setLoadingData] = useState(true);
   const [myUsersLoading, setMyUsersLoading] = useState(true);
 
-  let userData = useAdminHomePageFunction().userData;
-  const confirmedTimeEntries = useAdminHomePageFunction().confirmedTimeEntries;
-  const setReloadOneUserData = useAdminHomePageFunction().setReloadOneUserData;
-  const reloadOneUserData = useAdminHomePageFunction().reloadOneUserData;
-  const newUser = useAdminHomePageFunction().newUser;
-  const setNewUser = useAdminHomePageFunction().setNewUser;
+  let {
+    userData,
+    confirmedTimeEntries,
+    setReloadOneUserData,
+    reloadOneUserData,
+    newUser,
+    setNewUser,
+  } = useAdminHomePageFunction();
 
   const changeUserInfoContext = useChangeUserInfoFunction();
 
@@ -115,7 +111,6 @@ const MyUsers = ({ navigation }) => {
             statusActive: user.status_active,
             userID: user.id,
           };
-
           setAllUsers((prev) => [...prev, userInfo]);
           setLoadingData(true);
         } catch (error) {
@@ -201,15 +196,14 @@ const MyUsers = ({ navigation }) => {
           </View>
         </TouchableOpacity>
 
-        {expanded === true ? (
+        {expanded && (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
-              <TouchableNativeFeedback
+              <TouchableOpacity
                 testID={`insideSmallDropdown ${index}`}
                 key={index}
                 onPress={() => {
                   setSortBy(option);
-
                   sortUsers(option);
                   setExpanded(false);
                 }}
@@ -219,10 +213,10 @@ const MyUsers = ({ navigation }) => {
                     {option}
                   </Text>
                 </View>
-              </TouchableNativeFeedback>
+              </TouchableOpacity>
             ))}
           </View>
-        ) : null}
+        )}
       </View>
 
       <View testID="contentViewId" style={styles.content}>
@@ -265,7 +259,7 @@ const MyUsers = ({ navigation }) => {
                       <View>
                         {user.timeEntries.map((timeEntry, index) => (
                           <View key={index}>
-                            {timeEntry !== "NO DATA" ? (
+                            {timeEntry !== "NO DATA" && (
                               <View
                                 key={index}
                                 style={styles.listItemContentStyle}
@@ -291,32 +285,36 @@ const MyUsers = ({ navigation }) => {
                                 </View>
                                 <View style={styles.listItemContentHourView}>
                                   <Text
-                                    testID={`user timeEntry ${index} title`}
+                                    testID={`user timeEntry ${index} time`}
                                     style={styles.listItemContentHourStyle}
                                   >
-                                    {timeEntry.time} tim
+                                    {`${timeEntry.time} tim`}
                                   </Text>
                                 </View>
                               </View>
-                            ) : null}
+                            )}
                           </View>
                         ))}
                         <View style={styles.editUserIconView}>
-                          <Icon
-                            name="pencil-outline"
-                            type="material-community"
-                            size={25}
-                            containerStyle={styles.editUserIcon}
+                          <TouchableOpacity
+                            testID="editIcon"
                             onPress={() =>
-                              navigation.navigate("CreateOrChangeUser", {
-                                createNewUser: false,
+                              navigation.navigate("ChangeUser", {
                                 userName: user.firstName,
                                 userSurname: user.lastName,
                                 statusActive: user.statusActive,
                                 userID: user.userID,
                               })
                             }
-                          />
+                          >
+                            <Icon
+                              testID="editIcon"
+                              name="pencil-outline"
+                              type="material-community"
+                              size={25}
+                              containerStyle={styles.editUserIcon}
+                            />
+                          </TouchableOpacity>
                         </View>
                       </View>
                     )}

@@ -11,12 +11,12 @@ import Images from "../Images";
 import BottomLogo from "../components/BottomLogo";
 
 import { format } from "date-fns";
-import { getUserData } from "../customFirebaseHooks/getFunctions.js";
 import {
+  getUserData,
   getActivitiesMatchTimeEntries,
   getConcept,
   getTenLastConfirmedTimeEntries,
-} from "../customFirebaseHooks/getFunctions";
+} from "../firebase-functions/get";
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -30,54 +30,50 @@ const ConceptPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       setLoadingUserData(true);
-      let id = 0;
       let usersFetched = 0;
-      let response = await getTenLastConfirmedTimeEntries().catch((error) => {
-        if (error === "no-data") {
-          setError("Sorry, something went wrong");
+
+      try {
+        let response = await getTenLastConfirmedTimeEntries();
+
+        if (!response || response.size === 0) {
+          setLoadingUserData(false);
+          setNoData("Det finns för tillfället inga godkända aktiviteter");
+          return;
         }
-      });
 
-      if (response === undefined || response.size === 0) {
-        setLoadingUserData(false);
-        setNoData("Det finns för tillfället inga godkända aktiviteter");
-        return;
-      } else {
-        response.forEach(async (timeEntry) => {
-          let activity = await getActivitiesMatchTimeEntries(timeEntry).catch(
-            (error) => {
-              if (error === "no-data") {
-                setError("Sorry, something went wrong");
-              }
-            }
-          );
+        response.docs.map(async (timeEntry) => {
+          try {
+            let activity = await getActivitiesMatchTimeEntries(timeEntry);
+            let userInfo = await getUserData(timeEntry.data().user_id);
+            let fullName = `${userInfo.first_name} ${userInfo.last_name}`;
 
-          let fullName;
-          let userInfo = await getUserData(timeEntry.data().user_id);
-          fullName = `${userInfo.first_name} ${userInfo.last_name}`;
-
-          if (activity.exists) {
             const userData = {
-              id: id,
               userID: userInfo.id,
               fullName: fullName,
-              activityName: activity.data().activity_title,
-              activityPhoto: activity.data().activity_photo,
-              activityCity: activity.data().activity_city,
+              activityName: activity.title,
+              activityPhoto: activity.photo,
+              activityCity: activity.city,
               timeEntryDate: format(
                 timeEntry.data().date.toDate(),
                 "yyyy-MM-dd"
               ),
             };
             setAllUsers((prev) => [...prev, userData]);
-          }
-          id++;
 
-          usersFetched++;
-          if (usersFetched === response.size) {
-            setLoadingUserData(false);
+            usersFetched++;
+            if (usersFetched === response.size) {
+              setLoadingUserData(false);
+            }
+          } catch (error) {
+            if (error === "no-data") {
+              setError("Sorry, something went wrong");
+            }
           }
         });
+      } catch (error) {
+        if (error === "no-data") {
+          setError("Sorry, something went wrong");
+        }
       }
     };
     fetchData();
@@ -89,21 +85,15 @@ const ConceptPage = () => {
   useEffect(() => {
     const fetchConceptData = async () => {
       setLoadingConceptData(true);
-      const tempArray = [];
-      await getConcept()
-        .then((querySnapshot) => {
-          querySnapshot.forEach((doc) => {
-            tempArray.push({ ...doc.data() });
-          });
-        })
-        .catch((error) => {
-          if (error === "no-data") {
-            setError2("Sorry, something went wrong");
-          }
-        });
-
-      setConcept(tempArray.sort((a, b) => a.order_id - b.order_id));
-      setLoadingConceptData(false);
+      try {
+        let conceptData = await getConcept();
+        setConcept(conceptData.sort((a, b) => a.order_id - b.order_id));
+        setLoadingConceptData(false);
+      } catch (error) {
+        if (error === "no-data") {
+          setError2("Sorry, something went wrong");
+        }
+      }
     };
     fetchConceptData();
     return () => {
@@ -193,6 +183,7 @@ const ConceptPage = () => {
                       </View>
                     </View>
                     <Image
+                      testID="image"
                       style={styles.image}
                       source={setTheRightPhoto(activity.activityPhoto)}
                     />

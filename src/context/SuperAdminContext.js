@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from "react";
-import { superAdminUpdatesUserInfo } from "../customFirebaseHooks/updateFunctions";
-import { getAllUsersData } from "../customFirebaseHooks/getFunctions";
+import { superAdminUpdatesUserInfo } from "../firebase-functions/update";
+import { getAllUsersData } from "../firebase-functions/get";
 
 const SuperAdminContext = React.createContext();
 

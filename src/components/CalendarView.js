@@ -7,7 +7,6 @@ import {
   View,
   Platform,
   ScrollView,
-  Alert,
 } from "react-native";
 
 import { Overlay, Icon } from "react-native-elements";
@@ -24,13 +23,13 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import errorMessage from "../assets/recyclingStyles/errorMessage";
 
-import { deleteTimeEntry } from "../customFirebaseHooks/deleteFunctions";
-import { updateTimeEntry } from "../customFirebaseHooks/updateFunctions";
-import { addTimeEntry } from "../customFirebaseHooks/addFunctions";
+import { deleteTimeEntry } from "../firebase-functions/delete";
+import { addTimeEntry } from "../firebase-functions/add";
 import {
   incrementTotalHoursMonthForUser,
   decrementTotalHoursMonthForUser,
-} from "../customFirebaseHooks/updateFunctions";
+  updateTimeEntry,
+} from "../firebase-functions/update";
 
 const CalendarView = ({
   visible,

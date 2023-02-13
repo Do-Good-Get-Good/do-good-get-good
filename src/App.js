@@ -1,9 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Linking,
+} from "react-native";
 
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 
 import auth from "@react-native-firebase/auth";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 import { UserLevelProvider } from "./context/UserLevelContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
@@ -29,15 +36,19 @@ export default function App() {
   const [userClaims, setUserClaims] = useState();
 
   // Handle user state changes
-  function onAuthStateChanged(user) {
+  async function onAuthStateChanged(user) {
     setUser(user);
     if (user) {
-      user
-        .getIdTokenResult()
-        .then((res) => {
-          setUserClaims(res.claims);
-        })
-        .catch((error) => console.log(error));
+      try {
+        let userIdToken = await user.getIdTokenResult();
+        setUserClaims(userIdToken.claims);
+      } catch (error) {
+        crashlytics().log("There was an error getting the users ID Token");
+        crashlytics().recordError(error);
+        console.log(error);
+      }
+    } else {
+      setUserClaims(undefined);
     }
     if (initializing) setInitializing(false);
   }
@@ -107,11 +118,16 @@ export default function App() {
     );
   } else {
     return (
-      <View style={styles.wrapper}>
+      <SafeAreaView style={styles.wrapper}>
         <View style={styles.innerWrapper}>
           <Text style={styles.infoText}>
-            Något är fel med din användare, vänligen kontakta
-            dggg@technogarden.se
+            Något är fel med din användare, vänligen kontakta{" "}
+            <Text
+              style={{ textDecorationLine: "underline" }}
+              onPress={() => Linking.openURL("mailto:dggg@technogarden.se")}
+            >
+              dggg@technogarden.se
+            </Text>
           </Text>
           <TouchableOpacity
             style={styles.logOutBtn}
@@ -120,10 +136,8 @@ export default function App() {
             <Text style={styles.logOutBtnText}>Logga ut</Text>
           </TouchableOpacity>
         </View>
-        <View style={styles.bottonLogoView}>
-          <BottomLogo />
-        </View>
-      </View>
+        <BottomLogo />
+      </SafeAreaView>
     );
   }
 }
@@ -133,11 +147,12 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     flex: 1,
     width: "100%",
-    alignItems: "center",
-    justifyContent: "center",
   },
   innerWrapper: {
-    width: "80%",
+    alignItems: "center",
+    justifyContent: "center",
+    flex: 1,
+    marginHorizontal: 16,
   },
   infoText: {
     ...typography.b2,
@@ -146,17 +161,14 @@ const styles = StyleSheet.create({
   logOutBtn: {
     marginTop: 10,
     height: 50,
+    width: "100%",
     backgroundColor: colors.primary,
     alignItems: "center",
     justifyContent: "center",
     borderRadius: 5,
   },
   logOutBtnText: {
-    color: "#FFFFFF",
+    color: colors.dark,
     ...typography.button.lg,
-  },
-  bottonLogoView: {
-    position: "absolute",
-    bottom: 0,
   },
 });

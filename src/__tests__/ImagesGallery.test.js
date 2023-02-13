@@ -19,17 +19,20 @@ const navigation = {
 };
 
 const route = {
-  params: { cameFrom: "CreateActivity" },
+  params: {
+    cameFrom: "CreateActivity",
+    selectedImage: "symbol_hands_heart-DEFAULT",
+  },
 };
 
 describe("Testing ImagesGallery", () => {
   it("ImagesGallery exist ", () => {
-    const { getAllByText } = render(<ImagesGallery />);
+    const { getAllByText } = render(<ImagesGallery route={route} />);
     expect(getAllByText("Bildgalleri").length).toBe(1);
   });
 
   it("ImagesGallery. Images exist ", () => {
-    const { getAllByTestId } = render(<ImagesGallery />);
+    const { getAllByTestId } = render(<ImagesGallery route={route} />);
     const image = getAllByTestId("imageInImageGallery");
 
     expect(image[0].props.source).toEqual({
@@ -51,7 +54,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. Button 'Back' exist and navigate back  ", () => {
     const { getAllByText, getByTestId } = render(
-      <ImagesGallery navigation={navigation} />
+      <ImagesGallery navigation={navigation} route={route} />
     );
     expect(getAllByText("Avbryt").length).toBe(1);
     const backButton = getByTestId("backButton");
@@ -61,7 +64,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. When you press on image the border around image should become 7  ", () => {
     const { getAllByTestId } = render(
-      <ImagesGallery navigation={navigation} />
+      <ImagesGallery navigation={navigation} route={route} />
     );
     const pressOnImage = getAllByTestId("pressOnImage");
     const image = getAllByTestId("imageInImageGallery");
