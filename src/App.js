@@ -152,7 +152,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     flex: 1,
-    // width: "80%",
     marginHorizontal: 16,
   },
   infoText: {
