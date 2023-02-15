@@ -335,6 +335,13 @@ export function LinkActivityToNewUser({
     return selectedActivity !== "create-new" && selectedActivity !== null;
   }
 
+  function validate() {
+    if (existingActivity()) createUserAndLinkSelectedActivity();
+    else {
+      if (validateInputs()) createUserAndNewActivity();
+    }
+  }
+
   return (
     <>
       <ScrollView
@@ -349,15 +356,8 @@ export function LinkActivityToNewUser({
       <BottomNavButtons
         primaryText="Spara"
         secondaryText="Tillbaka"
-        primaryFunc={() => {
-          if (existingActivity()) createUserAndLinkSelectedActivity();
-          else {
-            if (validateInputs()) createUserAndNewActivity();
-          }
-        }}
-        secondaryFunc={() => {
-          goBack();
-        }}
+        primaryFunc={validate}
+        secondaryFunc={goBack}
       />
     </>
   );
