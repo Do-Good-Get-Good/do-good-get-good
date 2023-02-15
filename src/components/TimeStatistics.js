@@ -15,12 +15,6 @@ function TimeStatistics({ timeObject }) {
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
 
-  const max = useMemo(() => {
-    return route.name === "HomePage"
-      ? maxConfirmedHours
-      : maxConfirmedHours * 12;
-  }, [maxConfirmedHours]);
-
   const month = format(new Date(), "MMMM", {
     locale: sv,
   });
@@ -34,7 +28,7 @@ function TimeStatistics({ timeObject }) {
   }, [timeObject]);
 
   const compensatedTime = () => {
-    if (paidTime * 0.5 > max) return max;
+    if (paidTime * 0.5 > maxConfirmedHours) return maxConfirmedHours;
     return paidTime * 0.5;
   };
 
@@ -77,7 +71,7 @@ function TimeStatistics({ timeObject }) {
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {`${compensatedTime()} / ${max}`}
+            {`${compensatedTime()} / ${maxConfirmedHours}`}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
           {route.name === "AdminPage" && (
