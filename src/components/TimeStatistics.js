@@ -8,7 +8,7 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useRoute } from "@react-navigation/native";
 
-export function TimeStatistics({ timeObject }) {
+function TimeStatistics({ timeObject }) {
   const { maxConfirmedHours } = useTimeStatisticSettings();
   const route = useRoute();
   const [timeForYear, setTimeForYear] = useState(0.0);
@@ -99,6 +99,7 @@ export function TimeStatistics({ timeObject }) {
   );
 }
 export default TimeStatistics;
+
 const styles = StyleSheet.create({
   header: {
     ...typography.title,

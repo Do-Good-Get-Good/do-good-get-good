@@ -130,7 +130,7 @@ const MyUsers = ({ navigation }) => {
                           },
                         ]}
                       >
-                        {user.firstName + " " + user.lastName}
+                        {`${user.firstName} ${user.lastName}`}
                       </Text>
                       <Icon
                         color="#5B6770"
