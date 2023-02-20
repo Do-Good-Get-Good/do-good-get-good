@@ -33,8 +33,8 @@ const mockNavigation = {
 
 describe("Testing MyUsers component", () => {
   adminStore.addNewUser({
-    firstName: "Test",
-    lastName: "Test",
+    firstName: "Test1",
+    lastName: "Lastname1",
     timeEntries: [
       {
         admin_id: 234,
@@ -57,7 +57,7 @@ describe("Testing MyUsers component", () => {
   });
   adminStore.addNewUser({
     firstName: "Test2",
-    lastName: "Test2",
+    lastName: "Lastname2",
     timeEntries: [
       {
         admin_id: 234,
@@ -127,7 +127,7 @@ describe("Testing MyUsers component", () => {
       expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
 
       const userButton = getByTestId(`user 0 name`);
-      expect(userButton.children[0]).toEqual("Test Test");
+      expect(userButton.children[0]).toEqual("Test1 Lastname1");
     });
 
     it("can press on Inaktiva inside the small dropdown and see inactive users", async () => {
@@ -149,7 +149,7 @@ describe("Testing MyUsers component", () => {
       expect(getByTestId("dropdownText").props.children).toEqual("Inaktiva");
 
       const userButton = getByTestId(`user 0 name`);
-      expect(userButton.children[0]).toEqual("Test2 Test2");
+      expect(userButton.children[0]).toEqual("Test2 Lastname2");
     });
 
     it("Can view active user timeentries", async () => {
@@ -202,7 +202,9 @@ describe("Testing MyUsers component", () => {
     });
 
     it("Can press edit icon on active users", async () => {
-      const { getByTestId } = render(<MyUsers navigation={mockNavigation} />);
+      const { getByTestId, debug } = render(
+        <MyUsers navigation={mockNavigation} />
+      );
       await when(() => adminStore.allUsers.length === 2);
 
       expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
@@ -213,6 +215,7 @@ describe("Testing MyUsers component", () => {
         fireEvent.press(userButton);
       });
 
+      debug();
       const editIcon = getByTestId("editIcon");
       fireEvent.press(editIcon);
 
@@ -220,8 +223,8 @@ describe("Testing MyUsers component", () => {
         sortBy: "A - Ö",
         statusActive: true,
         userID: 123,
-        userName: "Test",
-        userSurname: "Test",
+        userName: "Test1",
+        userSurname: "Lastname1",
       });
     });
 
@@ -252,7 +255,7 @@ describe("Testing MyUsers component", () => {
         statusActive: false,
         userID: 1234,
         userName: "Test2",
-        userSurname: "Test2",
+        userSurname: "Lastname2",
       });
     });
   });

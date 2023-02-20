@@ -191,7 +191,6 @@ const MyUsers = ({ navigation }) => {
                           }
                         >
                           <Icon
-                            testID="editIcon"
                             name="pencil-outline"
                             type="material-community"
                             size={25}
