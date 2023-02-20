@@ -111,7 +111,7 @@ describe("Testing ManageUsers component", () => {
 
     expect(getAllByTestId("test.userView").length).toBe(2);
     expect(getByTestId("test.userFullName0").children[0]).toEqual(
-      "Test1 firstname1"
+      "Test1 lastname1"
     );
     expect(getByTestId("test.userFullName1").children[0]).toEqual(
       "Test2 lastname2"
