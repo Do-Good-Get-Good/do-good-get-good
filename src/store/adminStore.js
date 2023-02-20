@@ -17,40 +17,29 @@ const filterUsersByActiveStatus = (users, status) => {
   });
 };
 
-const openSelectedUser = (users, pressedUser) => {
-  return users.map((user) => {
-    let pressedUserFullName = `${pressedUser.firstName} ${pressedUser.lastName}`;
-    let fullName = `${user.firstName} ${user.lastName}`;
+const openSelectedUser = (users, selectedUser) => {
+  let userIndex = users.findIndex(
+    (user) => user.userID === selectedUser.userID
+  );
+  users[userIndex].isOpen = !users[userIndex].isOpen;
 
-    return {
-      ...user,
-      isOpen: fullName === pressedUserFullName ? !user.isOpen : user.isOpen,
-    };
-  });
+  return users;
 };
 
 const updateUser = (users, newInfo) => {
-  return users.map((user) => {
-    if (user.userID !== newInfo.userID) return user;
+  let userIndex = users.findIndex((user) => user.userID === newInfo.userID);
+  users[userIndex].firstName = newInfo.userFirstName;
+  users[userIndex].lastName = newInfo.userLastName;
+  users[userIndex].statusActive = newInfo.statusActive;
 
-    return {
-      ...user,
-      firstName: newInfo.userFirstName,
-      lastName: newInfo.userLastName,
-      statusActive: newInfo.statusActive,
-    };
-  });
+  return users;
 };
 
 const updateUserTimeEntries = (users, userId, timeEntries) => {
-  return users.map((user) => {
-    if (user.userID !== userId) return user;
+  let userIndex = users.findIndex((user) => user.userID === userId);
+  users[userIndex].timeEntries = timeEntries;
 
-    return {
-      ...user,
-      timeEntries,
-    };
-  });
+  return users;
 };
 
 const addNewActivityToUser = (users, userId, activityId) => {
@@ -154,8 +143,8 @@ class AdminStore {
     userArray.sort((a, b) => a.firstName.localeCompare(b.firstName));
   }
 
-  openSelectedUser(pressedUser) {
-    this.users = openSelectedUser(this.users, pressedUser);
+  openSelectedUser(user) {
+    this.users = openSelectedUser(this.users, user);
   }
 
   updateUser(newInfo) {
