@@ -65,7 +65,7 @@ describe("Testing ManageUsers component", () => {
     adminID: "123",
     connectedActivities: ["1234"],
     firstName: "Test1",
-    lastName: "Test1",
+    lastName: "lastname1",
     role: "user",
     timeEntries: [],
     isOpen: false,
@@ -81,7 +81,7 @@ describe("Testing ManageUsers component", () => {
     adminID: "123",
     connectedActivities: ["1234"],
     firstName: "Test2",
-    lastName: "Test2",
+    lastName: "lastname2",
     role: "user",
     timeEntries: [],
     isOpen: false,
@@ -111,10 +111,10 @@ describe("Testing ManageUsers component", () => {
 
     expect(getAllByTestId("test.userView").length).toBe(2);
     expect(getByTestId("test.userFullName0").children[0]).toEqual(
-      "Test1 Test1"
+      "Test1 firstname1"
     );
     expect(getByTestId("test.userFullName1").children[0]).toEqual(
-      "Test2 Test2"
+      "Test2 lastname2"
     );
 
     expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
