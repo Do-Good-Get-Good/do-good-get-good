@@ -132,8 +132,6 @@ const styles = StyleSheet.create({
     height: 100,
     resizeMode: "contain",
     alignItems: "center",
-    marginHorizontal: 1,
-    marginTop: 2,
     borderRadius: 5,
   },
   photoAndText: {
@@ -149,7 +147,8 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   textTitle: {
-    ...typography.title,
+    ...typography.cardTitle,
+    paddingTop: 3,
     color: colors.dark,
     height: 65,
   },

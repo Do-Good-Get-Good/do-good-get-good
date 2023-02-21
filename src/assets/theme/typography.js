@@ -16,6 +16,10 @@ const typography = {
     paddingVertical: 8,
     fontFamily: "DIN-Medium",
   },
+  cardTitle: {
+    fontSize: 20,
+    fontFamily: "DIN-Bold",
+  },
   b1: {
     fontSize: 18,
     paddingVertical: 3,
