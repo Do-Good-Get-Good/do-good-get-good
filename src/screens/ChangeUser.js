@@ -17,6 +17,7 @@ import colors from "../assets/theme/colors";
 import BottomNavButtons from "../components/BottomNavButtons";
 
 import adminStore from "../store/adminStore";
+import { Sort } from "../lib/enums/sort";
 
 export const ChangeUser = ({ route, navigation }) => {
   const { userName, userSurname, statusActive, userID, sortBy } = route.params;
@@ -100,7 +101,8 @@ export const ChangeUser = ({ route, navigation }) => {
         userLastName: surname,
         statusActive: userStatusActive,
       });
-      if (sortBy === "A - Ö") adminStore.filterUsersByActiveStatus(true);
+      if (sortBy === Sort.Alphabetically)
+        adminStore.filterUsersByActiveStatus(true);
       else adminStore.filterUsersByActiveStatus(false);
     }
     navigation.goBack();

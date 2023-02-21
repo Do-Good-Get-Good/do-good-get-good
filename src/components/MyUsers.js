@@ -12,18 +12,23 @@ import adminStore from "../store/adminStore";
 
 import { Observer } from "mobx-react-lite";
 import firestore from "@react-native-firebase/firestore";
+import { Sort } from "../lib/enums/sort";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
-  const sortOptions = ["A - Ö", "Inaktiva"];
+  const sortOptions = [Sort.Alphabetically, Sort.Inactive];
   const [sortBy, setSortBy] = useState(sortOptions[0]);
 
   const sortUsers = (sortOption) => {
-    if (sortOption === "A - Ö") {
-      adminStore.filterUsersByActiveStatus(true);
-    }
-    if (sortOption === "Inaktiva") {
-      adminStore.filterUsersByActiveStatus(false);
+    switch (sortOption) {
+      case Sort.Alphabetically:
+        adminStore.filterUsersByActiveStatus(true);
+        break;
+      case Sort.Inactive:
+        adminStore.filterUsersByActiveStatus(false);
+        break;
+      default:
+        break;
     }
   };
 
