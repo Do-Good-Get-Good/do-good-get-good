@@ -22,7 +22,7 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
-import { UserLevels } from "../userlevels";
+import { UserLevels } from "../lib/enums/userlevels";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();

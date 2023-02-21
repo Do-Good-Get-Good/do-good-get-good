@@ -1,7 +1,7 @@
 import React, { useState, useContext, useEffect } from "react";
 import auth from "@react-native-firebase/auth";
 import { getUserLevel } from "../firebase-functions/get";
-import { UserLevels } from "../userlevels";
+import { UserLevels } from "../lib/enums/userlevels";
 
 const UserLevelContext = React.createContext();
 

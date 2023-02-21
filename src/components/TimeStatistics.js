@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from "react";
+import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -7,6 +7,7 @@ import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import { useRoute } from "@react-navigation/native";
+import { Routes } from "../lib/enums/routes";
 
 function TimeStatistics({ timeObject }) {
   const { maxConfirmedHours } = useTimeStatisticSettings();
@@ -34,13 +35,13 @@ function TimeStatistics({ timeObject }) {
 
   return (
     <>
-      {route.name === "HomePage" && (
+      {route.name === Routes.HomePage && (
         <Text style={styles.header}>{`Timmar ${month}`}</Text>
       )}
       <View
         style={[
           styles.containerMonthAndPaidTime,
-          route.name === "AdminPage" && { height: 115 },
+          route.name === Routes.AdminPage && { height: 115 },
         ]}
       >
         <View style={styles.innerContainerWrapper}>
@@ -48,7 +49,7 @@ function TimeStatistics({ timeObject }) {
             {currentForMonth}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Registrerade</Text>
-          {route.name === "AdminPage" && (
+          {route.name === Routes.AdminPage && (
             <Text style={styles.textUnderForMonthAndPaidTime}>{month}</Text>
           )}
         </View>
@@ -60,7 +61,7 @@ function TimeStatistics({ timeObject }) {
             {paidTime}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Godkända</Text>
-          {route.name === "AdminPage" && (
+          {route.name === Routes.AdminPage && (
             <Text style={styles.textUnderForMonthAndPaidTime}>
               {new Date().getFullYear()}
             </Text>
@@ -74,14 +75,14 @@ function TimeStatistics({ timeObject }) {
             {`${compensatedTime()} / ${maxConfirmedHours}`}
           </Text>
           <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
-          {route.name === "AdminPage" && (
+          {route.name === Routes.AdminPage && (
             <Text style={styles.textUnderForMonthAndPaidTime}>
               {new Date().getFullYear()}
             </Text>
           )}
         </View>
       </View>
-      {route.name === "HomePage" && (
+      {route.name === Routes.HomePage && (
         <View style={styles.containerTextTimeForYearPopUp}>
           <Text testID="timeForYear">
             {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}

@@ -14,7 +14,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
-import { UserLevels } from "../userlevels";
+import { UserLevels } from "../lib/enums/userlevels";
 
 const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   const navigation = useNavigation();
