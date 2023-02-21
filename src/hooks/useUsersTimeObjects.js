@@ -25,7 +25,7 @@ export const useUsersTimeObjects = () => {
     subscribeToUserTimeObjects();
 
     return () => {
-      unsubscribeArr.map((unsub) => unsub());
+      unsubscribeArr.map((unsubscribe) => unsubscribe());
     };
   }, []);
 };
