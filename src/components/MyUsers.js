@@ -145,7 +145,7 @@ const MyUsers = ({ navigation }) => {
                     </View>
                   </TouchableOpacity>
                   {user.isOpen && (
-                    <View>
+                    <>
                       <TimeStatistics timeObject={[user.timeObject]} />
                       {user.timeEntries.map((timeEntry, index) => (
                         <View key={index}>
@@ -198,7 +198,7 @@ const MyUsers = ({ navigation }) => {
                           />
                         </TouchableOpacity>
                       </View>
-                    </View>
+                    </>
                   )}
                 </View>
               ))}
