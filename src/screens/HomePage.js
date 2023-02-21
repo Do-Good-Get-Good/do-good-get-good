@@ -25,7 +25,7 @@ export const HomePage = ({ navigation }) => {
   const userLevel = useUserLevelCheckFunction();
 
   useEffect(() => {
-    if (userLevel === UserLevels.SuperAdmin || userLevel === UserLevels.Admin) {
+    if ([UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel)) {
       adminStore.fetchAllUsers();
     }
   }, [userLevel]);
