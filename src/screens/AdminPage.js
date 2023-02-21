@@ -8,13 +8,14 @@ import ConfirmActivities from "../components/ConfirmActivities";
 import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import colors from "../assets/theme/colors";
+import { Observer } from "mobx-react-lite";
 
 const AdminPage = ({ navigation }) => {
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
-        <ConfirmActivities />
+        <Observer>{() => <ConfirmActivities />}</Observer>
         <MyUsers navigation={navigation} />
         <BottomLogo />
       </ScrollView>

@@ -27,7 +27,7 @@ const useTimeEntriesForAdmin = (userData) => {
   }, [userData]);
 
   useEffect(() => {
-    if (snapshot != null && userData.length != 0) {
+    if (snapshot != null && userData.length !== 0) {
       snapshot.docChanges().forEach((change) => {
         if (change.type === "added") {
           addTimeEntry(change);
@@ -46,8 +46,8 @@ const useTimeEntriesForAdmin = (userData) => {
     let fullName;
 
     for (let i = 0; i < userData.length; i++) {
-      if (userData[i].id === change.doc.data().user_id) {
-        fullName = `${userData[i].first_name} ${userData[i].last_name}`;
+      if (userData[i].userID === change.doc.data().user_id) {
+        fullName = `${userData[i].firstName} ${userData[i].lastName}`;
       }
     }
 

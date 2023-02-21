@@ -258,7 +258,8 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   textTitle: {
-    ...typography.title,
+    ...typography.cardTitle,
+    paddingTop: 3,
     color: colors.dark,
     height: 65,
   },

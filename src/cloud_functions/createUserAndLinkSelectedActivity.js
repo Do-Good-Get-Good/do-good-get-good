@@ -2,12 +2,12 @@ import functions from "@react-native-firebase/functions";
 import craschlytics from "@react-native-firebase/crashlytics";
 import { Alert } from "react-native";
 
+import adminStore from "../store/adminStore";
+
 export async function createUserAndLinkSelectedActivity(
   user,
   selectedActivity,
   setLoading,
-  setUserData,
-  setNewUser,
   navigation
 ) {
   try {
@@ -23,11 +23,24 @@ export async function createUserAndLinkSelectedActivity(
     });
 
     let newUser = res.data.createdUser;
+
+    let userInfo = {
+      firstName: newUser.first_name,
+      lastName: newUser.last_name,
+      timeEntries: [],
+      isOpen: false,
+      statusActive: newUser.status_active,
+      userID: newUser.id,
+      timeObject: {
+        paidTime: newUser.total_confirmed_hours,
+        timeForYear: newUser.total_hours_year,
+        currentForMonth: newUser.total_hours_month,
+      },
+    };
     console.log(res);
 
     // Save new user locally
-    setUserData((prev) => [...prev, newUser]);
-    setNewUser(newUser);
+    adminStore.addNewUser(userInfo);
 
     setLoading(false);
 

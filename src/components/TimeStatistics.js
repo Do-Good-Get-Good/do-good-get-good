@@ -3,11 +3,22 @@ import { Text, StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
+import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
+import { format } from "date-fns";
+import { sv } from "date-fns/locale";
+import { useRoute } from "@react-navigation/native";
+import { Routes } from "../lib/enums/routes";
 
-export function TimeStatistics({ timeObject }) {
+function TimeStatistics({ timeObject }) {
+  const { maxConfirmedHours } = useTimeStatisticSettings();
+  const route = useRoute();
   const [timeForYear, setTimeForYear] = useState(0.0);
   const [paidTime, setPaidTime] = useState(0.0);
   const [currentForMonth, setCurrentForMonth] = useState(0.0);
+
+  const month = format(new Date(), "MMMM", {
+    locale: sv,
+  });
 
   useEffect(() => {
     if (timeObject.length != 0) {
@@ -17,40 +28,73 @@ export function TimeStatistics({ timeObject }) {
     }
   }, [timeObject]);
 
+  const compensatedTime = () => {
+    if (paidTime * 0.5 > maxConfirmedHours) return maxConfirmedHours;
+    return paidTime * 0.5;
+  };
+
   return (
     <>
-      <Text style={styles.header}>Utförda timmar</Text>
-      <View style={styles.containerMonthAndPaidTime}>
+      {route.name === Routes.HomePage && (
+        <Text style={styles.header}>{`Timmar ${month}`}</Text>
+      )}
+      <View
+        style={[
+          styles.containerMonthAndPaidTime,
+          route.name === Routes.AdminPage && { height: 115 },
+        ]}
+      >
         <View style={styles.innerContainerWrapper}>
           <Text testID="currentForMonth" style={styles.textH2ForTime}>
             {currentForMonth}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>Denna månad</Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Registrerade</Text>
+          {route.name === Routes.AdminPage && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>{month}</Text>
+          )}
         </View>
 
-        <View style={styles.lineWrapper}>
-          <View style={styles.line} />
+        <View style={styles.line} />
+
+        <View style={styles.innerContainerWrapper}>
+          <Text testID="confirmedTime" style={styles.textH2ForTime}>
+            {paidTime}
+          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Godkända</Text>
+          {route.name === Routes.AdminPage && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>
+              {new Date().getFullYear()}
+            </Text>
+          )}
         </View>
+
+        <View style={styles.line} />
 
         <View style={styles.innerContainerWrapper}>
           <Text testID="paidTime" style={styles.textH2ForTime}>
-            {paidTime}
+            {`${compensatedTime()} / ${maxConfirmedHours}`}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>
-            Ersatta timmar
-          </Text>
+          <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
+          {route.name === Routes.AdminPage && (
+            <Text style={styles.textUnderForMonthAndPaidTime}>
+              {new Date().getFullYear()}
+            </Text>
+          )}
         </View>
       </View>
-      <View style={styles.containerTextTimeForYearPopUp}>
-        <Text testID="timeForYear">
-          {`Totalt antal timmar i år: ${timeForYear}`}
-        </Text>
-        <InfoModal screen="homepage" tooltipWidth={250} />
-      </View>
+      {route.name === Routes.HomePage && (
+        <View style={styles.containerTextTimeForYearPopUp}>
+          <Text testID="timeForYear">
+            {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}
+          </Text>
+          <InfoModal screen="homepage" tooltipWidth={250} />
+        </View>
+      )}
     </>
   );
 }
 export default TimeStatistics;
+
 const styles = StyleSheet.create({
   header: {
     ...typography.title,
@@ -59,6 +103,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     flexDirection: "row",
     paddingVertical: 20,
+    paddingHorizontal: 5,
+    height: 100,
     justifyContent: "space-evenly",
     position: "relative",
   },
@@ -68,15 +114,8 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   textH2ForTime: {
-    ...typography.h2,
-  },
-  lineWrapper: {
-    position: "absolute",
-    left: 0,
-    top: 0,
-    right: 0,
-    bottom: 0,
-    paddingVertical: 20,
+    ...typography.h3,
+    transform: [{ scale: 0.8 }],
   },
   line: {
     width: 2.5,

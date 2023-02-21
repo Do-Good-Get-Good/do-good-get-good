@@ -1,183 +1,46 @@
 import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import { Dialog } from "react-native-elements";
 
 import { format } from "date-fns";
-import { Icon } from "react-native-elements";
+import { Icon, Dialog } from "react-native-elements";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
-import { useAdminHomePageFunction } from "../context/AdminHomePageContext";
-import { getUsersFiveNewestTimeEntries } from "../firebase-functions/get";
+import TimeStatistics from "./TimeStatistics";
+
+import adminStore from "../store/adminStore";
+
+import { Observer } from "mobx-react-lite";
+import { Sort } from "../lib/enums/sort";
+import { useUsersTimeObjects } from "../hooks/useUsersTimeObjects";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
-  const [myUsers, setMyUsers] = useState([]);
-  const [activeUsers, setActiveUsers] = useState([]);
-  const [inactiveUsers, setInactiveUsers] = useState([]);
-  const [allUsers, setAllUsers] = useState([]);
-  const sortOptions = ["A - Ö", "Inaktiva"];
-  const [sortBy, setSortBy] = useState("A - Ö");
-  const [loadingData, setLoadingData] = useState(true);
-  const [myUsersLoading, setMyUsersLoading] = useState(true);
-
-  let {
-    userData,
-    confirmedTimeEntries,
-    setReloadOneUserData,
-    reloadOneUserData,
-    newUser,
-    setNewUser,
-  } = useAdminHomePageFunction();
-
-  const changeUserInfoContext = useChangeUserInfoFunction();
-
-  useEffect(() => {
-    if (!reloadOneUserData) {
-      fetchUserTimeEntries();
-    }
-  }, [userData]);
-
-  useEffect(() => {
-    if (newUser != null) {
-      setLoadingData(true);
-      let userInfo = {
-        firstName: newUser.first_name,
-        lastName: newUser.last_name,
-        timeEntries: [],
-        isOpen: false,
-        statusActive: newUser.status_active,
-        userID: newUser.id,
-      };
-      setAllUsers((prev) => [...prev, userInfo]);
-      setNewUser(null);
-    }
-  }, [newUser]);
-
-  useEffect(() => {
-    if (confirmedTimeEntries.length != 0) {
-      let oldArray = allUsers;
-      for (let j = 0; j < confirmedTimeEntries.length; j++) {
-        var index = oldArray.findIndex(
-          (x) => x.userID === confirmedTimeEntries[j][0].user_id
-        );
-        if (index != -1) {
-          oldArray[index].timeEntries = confirmedTimeEntries[j];
-        }
-      }
-
-      setAllUsers(oldArray);
-      setLoadingData(true);
-
-      setReloadOneUserData(false);
-    }
-  }, [confirmedTimeEntries]);
-
-  useEffect(() => {
-    if (
-      changeUserInfoContext.reloadAfterUserNameChanged &&
-      changeUserInfoContext.newChangesInUserInfo.userID != 0
-    ) {
-      let oldArray = allUsers;
-
-      var index = oldArray.findIndex(
-        (x) => x.userID === changeUserInfoContext.newChangesInUserInfo.userID
-      );
-      if (index != -1) {
-        oldArray[index].firstName =
-          changeUserInfoContext.newChangesInUserInfo.userFirstName;
-        oldArray[index].lastName =
-          changeUserInfoContext.newChangesInUserInfo.userLastName;
-        oldArray[index].statusActive =
-          changeUserInfoContext.newChangesInUserInfo.statusActive;
-      }
-      setAllUsers(oldArray);
-      setLoadingData(true);
-      changeUserInfoContext.setReloadAfterUserNameChanged(false);
-    }
-  }, [changeUserInfoContext.reloadAfterUserNameChanged]);
-
-  const fetchUserTimeEntries = () => {
-    if (userData.length != 0 && userData != null && allUsers.length === 0) {
-      userData.map(async (user) => {
-        try {
-          let response = await getUsersFiveNewestTimeEntries(user.id);
-          let userInfo = {
-            firstName: user.first_name,
-            lastName: user.last_name,
-            timeEntries: response,
-            isOpen: false,
-            statusActive: user.status_active,
-            userID: user.id,
-          };
-          setAllUsers((prev) => [...prev, userInfo]);
-          setLoadingData(true);
-        } catch (error) {
-          console.log("MyUsers ", error);
-        }
-      });
-
-      setMyUsersLoading(false);
-      setLoadingData(false);
-    }
-  };
-
-  const openSelectedUser = (pressedUser) => {
-    let pressedUserFullName = `${pressedUser.firstName} ${pressedUser.lastName}`;
-    const newUsersArr = myUsers.map((user) => {
-      let fullName = `${user.firstName} ${user.lastName}`;
-      return {
-        ...user,
-        isOpen: fullName === pressedUserFullName ? !user.isOpen : user.isOpen,
-      };
-    });
-    setMyUsers(newUsersArr);
-  };
+  const sortOptions = [Sort.Alphabetically, Sort.Inactive];
+  const [sortBy, setSortBy] = useState(sortOptions[0]);
+  useUsersTimeObjects();
 
   const sortUsers = (sortOption) => {
-    if (sortOption === "A - Ö") {
-      setMyUsers(
-        activeUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-      );
-    }
-
-    if (sortOption === "Inaktiva") {
-      setMyUsers(
-        inactiveUsers.sort((a, b) => a.firstName.localeCompare(b.firstName))
-      );
+    switch (sortOption) {
+      case Sort.Alphabetically:
+        adminStore.filterUsersByActiveStatus(true);
+        break;
+      case Sort.Inactive:
+        adminStore.filterUsersByActiveStatus(false);
+        break;
+      default:
+        break;
     }
   };
-
-  const filterUsers = (status) => {
-    return allUsers.filter((user) => {
-      if (user.statusActive === status) {
-        return user;
-      }
-    });
-  };
-
-  useEffect(() => {
-    if (loadingData) {
-      let arrayWithActiveUsers = filterUsers(true);
-      setActiveUsers(arrayWithActiveUsers);
-
-      let arrayWithInactiveUsers = filterUsers(false);
-      setInactiveUsers(arrayWithInactiveUsers);
-
-      setLoadingData(false);
-    }
-  }, [allUsers, loadingData]);
 
   useEffect(() => {
     sortUsers(sortBy);
-  }, [activeUsers, inactiveUsers]);
+  }, [sortBy]);
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.headerText}>Mina användare</Text>
-
         <TouchableOpacity
           testID="smallDropdown"
           style={styles.sortDropdownStyle}
@@ -195,7 +58,6 @@ const MyUsers = ({ navigation }) => {
             />
           </View>
         </TouchableOpacity>
-
         {expanded && (
           <View style={styles.dropdown}>
             {sortOptions.map((option, index) => (
@@ -204,7 +66,6 @@ const MyUsers = ({ navigation }) => {
                 key={index}
                 onPress={() => {
                   setSortBy(option);
-                  sortUsers(option);
                   setExpanded(false);
                 }}
               >
@@ -218,116 +79,116 @@ const MyUsers = ({ navigation }) => {
           </View>
         )}
       </View>
-
       <View testID="contentViewId" style={styles.content}>
-        {myUsersLoading && (
-          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
-        )}
-        {allUsers.length != 0 && (
-          <>
-            {myUsers.length != 0 ? (
-              <>
-                {myUsers.map((user, index) => (
-                  <View key={index}>
-                    <TouchableOpacity
-                      testID={`userDropdown ${index}`}
-                      style={styles.listItemContainerStyle}
-                      onPress={() => {
-                        openSelectedUser(user);
-                      }}
-                    >
-                      <View style={styles.listItemStyle}>
-                        <Text
-                          testID={`user ${index} name`}
-                          style={styles.listItemNameStyle}
-                        >
-                          {user.firstName + " " + user.lastName}
-                        </Text>
-                        <Icon
-                          color="#5B6770"
-                          style={styles.sortIcon}
-                          name={
-                            user.isOpen === true
-                              ? "arrow-drop-up"
-                              : "arrow-drop-down"
-                          }
-                          size={30}
-                        />
-                      </View>
-                    </TouchableOpacity>
-                    {user.isOpen && (
-                      <View>
-                        {user.timeEntries.map((timeEntry, index) => (
-                          <View key={index}>
-                            {timeEntry !== "NO DATA" && (
-                              <View
-                                key={index}
-                                style={styles.listItemContentStyle}
+        <Observer>
+          {() => (
+            <>
+              {adminStore.loading && (
+                <Dialog.Loading
+                  loadingProps={{ color: "#84BD00" }}
+                ></Dialog.Loading>
+              )}
+              {adminStore.users.map((user, index) => (
+                <View key={index}>
+                  <TouchableOpacity
+                    testID={`userDropdown ${index}`}
+                    style={styles.listItemContainerStyle}
+                    onPress={() => {
+                      adminStore.openSelectedUser(user);
+                    }}
+                  >
+                    <View style={styles.listItemStyle}>
+                      <Text
+                        testID={`user ${index} name`}
+                        style={[
+                          styles.listItemNameStyle,
+                          {
+                            textDecorationLine: user.isOpen
+                              ? "underline"
+                              : "none",
+                          },
+                        ]}
+                      >
+                        {`${user.firstName} ${user.lastName}`}
+                      </Text>
+                      <Icon
+                        color="#5B6770"
+                        style={styles.sortIcon}
+                        name={
+                          user.isOpen === true
+                            ? "arrow-drop-up"
+                            : "arrow-drop-down"
+                        }
+                        size={30}
+                      />
+                    </View>
+                  </TouchableOpacity>
+                  {user.isOpen && (
+                    <>
+                      <TimeStatistics timeObject={[user.timeObject]} />
+                      {user.timeEntries.map((timeEntry, index) => (
+                        <View key={index}>
+                          <View key={index} style={styles.listItemContentStyle}>
+                            <View style={styles.listItemContentNameView}>
+                              <Text
+                                testID={`user timeEntry ${index} title`}
+                                style={styles.listItemContentNameStyle}
                               >
-                                <View style={styles.listItemContentNameView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} title`}
-                                    style={styles.listItemContentNameStyle}
-                                  >
-                                    {timeEntry.activity_title}
-                                  </Text>
-                                </View>
-                                <View style={styles.listItemContentDateView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} date`}
-                                    style={styles.listItemContentDateStyle}
-                                  >
-                                    {format(
-                                      timeEntry.date.toDate(),
-                                      "yyyy-MM-dd"
-                                    )}
-                                  </Text>
-                                </View>
-                                <View style={styles.listItemContentHourView}>
-                                  <Text
-                                    testID={`user timeEntry ${index} time`}
-                                    style={styles.listItemContentHourStyle}
-                                  >
-                                    {`${timeEntry.time} tim`}
-                                  </Text>
-                                </View>
-                              </View>
-                            )}
+                                {timeEntry.activity_title}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentDateView}>
+                              <Text
+                                testID={`user timeEntry ${index} date`}
+                                style={styles.listItemContentDateStyle}
+                              >
+                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
+                              </Text>
+                            </View>
+                            <View style={styles.listItemContentHourView}>
+                              <Text
+                                testID={`user timeEntry ${index} time`}
+                                style={styles.listItemContentHourStyle}
+                              >
+                                {`${timeEntry.time} tim`}
+                              </Text>
+                            </View>
                           </View>
-                        ))}
-                        <View style={styles.editUserIconView}>
-                          <TouchableOpacity
-                            testID="editIcon"
-                            onPress={() =>
-                              navigation.navigate("ChangeUser", {
-                                userName: user.firstName,
-                                userSurname: user.lastName,
-                                statusActive: user.statusActive,
-                                userID: user.userID,
-                              })
-                            }
-                          >
-                            <Icon
-                              testID="editIcon"
-                              name="pencil-outline"
-                              type="material-community"
-                              size={25}
-                              containerStyle={styles.editUserIcon}
-                            />
-                          </TouchableOpacity>
                         </View>
+                      ))}
+                      <View style={styles.editUserIconView}>
+                        <TouchableOpacity
+                          testID="editIcon"
+                          onPress={() =>
+                            navigation.navigate("ChangeUser", {
+                              userName: user.firstName,
+                              userSurname: user.lastName,
+                              statusActive: user.statusActive,
+                              userID: user.userID,
+                              sortBy,
+                            })
+                          }
+                        >
+                          <Icon
+                            name="pencil-outline"
+                            type="material-community"
+                            size={25}
+                            containerStyle={styles.editUserIcon}
+                          />
+                        </TouchableOpacity>
                       </View>
-                    )}
-                  </View>
-                ))}
-              </>
-            ) : (
-              <Text style={styles.noInactiveUsers}>
-                Du har inga inaktiva användare
-              </Text>
-            )}
-          </>
-        )}
+                    </>
+                  )}
+                </View>
+              ))}
+              {adminStore.users.length === 0 && (
+                <Text style={styles.noInactiveUsers}>
+                  Du har inga inaktiva användare
+                </Text>
+              )}
+            </>
+          )}
+        </Observer>
       </View>
     </View>
   );

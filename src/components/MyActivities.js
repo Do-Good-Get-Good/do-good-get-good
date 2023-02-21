@@ -123,8 +123,7 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   textTitle: {
-    fontSize: 20,
-    fontWeight: "bold",
+    ...typography.cardTitle,
     color: colors.dark,
   },
   mapIconAndCityText(myActivity) {

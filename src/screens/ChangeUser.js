@@ -12,15 +12,15 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
 
-import { useChangeUserInfoFunction } from "../context/ChangeUserInfoContext";
-
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import BottomNavButtons from "../components/BottomNavButtons";
 
+import adminStore from "../store/adminStore";
+import { Sort } from "../lib/enums/sort";
+
 export const ChangeUser = ({ route, navigation }) => {
-  const changeUserInfoContext = useChangeUserInfoFunction();
-  const { userName, userSurname, statusActive, userID } = route.params;
+  const { userName, userSurname, statusActive, userID, sortBy } = route.params;
 
   const [name, setName] = useState(userName);
   const [surname, setSurname] = useState(userSurname);
@@ -95,12 +95,15 @@ export const ChangeUser = ({ route, navigation }) => {
       name != userName ||
       surname != userSurname
     ) {
-      changeUserInfoContext.setNewChangesInUserInfo({
+      adminStore.updateUser({
         userID: userID,
         userFirstName: name,
         userLastName: surname,
         statusActive: userStatusActive,
       });
+      if (sortBy === Sort.Alphabetically)
+        adminStore.filterUsersByActiveStatus(true);
+      else adminStore.filterUsersByActiveStatus(false);
     }
     navigation.goBack();
   }

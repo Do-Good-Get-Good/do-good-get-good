@@ -15,13 +15,18 @@ export const updateTimeEntry = async (timeEntryID, date, hours) => {
   }
 };
 
-export const confirmTimeEntry = (timeEntryID) => {
+export const confirmTimeEntry = async (timeEntryID) => {
   try {
-    firestore().collection("timeentries").doc(timeEntryID).update({
-      status_confirmed: true,
-    });
+    let response = await firestore()
+      .collection("timeentries")
+      .doc(timeEntryID)
+      .update({
+        status_confirmed: true,
+      });
+    return Promise.resolve(response);
   } catch (error) {
     console.log("There was an error confirming the timeentry");
+    return Promise.reject(error);
   }
 };
 
@@ -160,20 +165,34 @@ export const updateActivityInfo = (newData) => {
   }
 };
 
-export const connectNewActivityToUser = async (userId, activityId) => {
+export const connectNewActivityToUser = async (user, activityId) => {
   try {
-    let userToUpdate = firestore().collection("Users").doc(userId);
+    let userToUpdate = firestore().collection("Users").doc(user.userID);
+    let userActivitiesAndAccumulatedTime = (await userToUpdate.get()).data()
+      .activities_and_accumulated_time;
 
-    let newActivity = {
-      accumulated_time: 0,
-      activity_id: activityId,
-    };
+    let activityAlreadyExist = false;
 
-    await userToUpdate.update({
-      activities_and_accumulated_time:
-        firestore.FieldValue.arrayUnion(newActivity),
-      connected_activities: firestore.FieldValue.arrayUnion(activityId),
+    userActivitiesAndAccumulatedTime.map((activity) => {
+      if (activity.activity_id === activityId) activityAlreadyExist = true;
     });
+
+    if (activityAlreadyExist) {
+      await userToUpdate.update({
+        connected_activities: firestore.FieldValue.arrayUnion(activityId),
+      });
+    } else {
+      let newActivity = {
+        accumulated_time: 0,
+        activity_id: activityId,
+      };
+
+      await userToUpdate.update({
+        activities_and_accumulated_time:
+          firestore.FieldValue.arrayUnion(newActivity),
+        connected_activities: firestore.FieldValue.arrayUnion(activityId),
+      });
+    }
   } catch (error) {
     console.log(error);
   }
