@@ -42,7 +42,7 @@ const updateUserTimeEntries = (users, userId, timeEntries) => {
   return users;
 };
 
-const addNewActivityToUser = (users, userId, activityId) => {
+const connectActivityToUser = (users, userId, activityId) => {
   return users.map((user) => {
     if (user.userID !== userId) return user;
 
@@ -61,7 +61,7 @@ const addNewActivityToUser = (users, userId, activityId) => {
   });
 };
 
-const removeActivityFromUser = (users, userId, activityId) => {
+const disconnectActivityFromUser = (users, userId, activityId) => {
   return users.map((user) => {
     if (user.userID !== userId) return user;
 
@@ -177,12 +177,16 @@ class AdminStore {
     this.users = updateUserTimeObject(this.users, userId, timeObject);
   }
 
-  addNewActivityToUser(userId, activityId) {
-    this.allUsers = addNewActivityToUser(this.allUsers, userId, activityId);
+  connectActivityToUser(userId, activityId) {
+    this.allUsers = connectActivityToUser(this.allUsers, userId, activityId);
   }
 
-  removeActivityFromUser(userId, activityId) {
-    this.allUsers = removeActivityFromUser(this.allUsers, userId, activityId);
+  disconnectActivityFromUser(userId, activityId) {
+    this.allUsers = disconnectActivityFromUser(
+      this.allUsers,
+      userId,
+      activityId
+    );
   }
 }
 

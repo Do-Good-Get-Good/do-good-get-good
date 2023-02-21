@@ -77,13 +77,13 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     myUsers.map((user) => {
       if (user.checked) {
         connectNewActivityToUser(user, currentActivityId.toString());
-        adminStore.addNewActivityToUser(
+        adminStore.connectActivityToUser(
           user.userID,
           currentActivityId.toString()
         );
       } else {
         removeActivityFromUser(user.userID, currentActivityId.toString());
-        adminStore.removeActivityFromUser(
+        adminStore.disconnectActivityFromUser(
           user.userID,
           currentActivityId.toString()
         );
