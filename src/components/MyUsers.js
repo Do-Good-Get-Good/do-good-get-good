@@ -11,13 +11,14 @@ import TimeStatistics from "./TimeStatistics";
 import adminStore from "../store/adminStore";
 
 import { Observer } from "mobx-react-lite";
-import firestore from "@react-native-firebase/firestore";
 import { Sort } from "../lib/enums/sort";
+import { useUsersTimeObjects } from "../hooks/useUsersTimeObjects";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const sortOptions = [Sort.Alphabetically, Sort.Inactive];
   const [sortBy, setSortBy] = useState(sortOptions[0]);
+  useUsersTimeObjects();
 
   const sortUsers = (sortOption) => {
     switch (sortOption) {
@@ -31,33 +32,6 @@ const MyUsers = ({ navigation }) => {
         break;
     }
   };
-
-  useEffect(() => {
-    let unsubscribeArr = [];
-    const subscribeToUserTimeObjects = async () => {
-      adminStore.allUsers.map((user) => {
-        let unsubscribe = firestore()
-          .collection("Users")
-          .doc(user.userID)
-          .onSnapshot((snapshot) => {
-            let userId = snapshot.id;
-            let timeObject = {
-              paidTime: snapshot.data().total_hours_year,
-              currentForMonth: snapshot.data().total_hours_month,
-            };
-            // Push to adminStore
-            adminStore.updateUserTimeObject(userId, timeObject);
-          });
-        unsubscribeArr.push(unsubscribe);
-      });
-    };
-
-    subscribeToUserTimeObjects();
-
-    return () => {
-      unsubscribeArr.map((unsub) => unsub());
-    };
-  }, []);
 
   useEffect(() => {
     sortUsers(sortBy);
