@@ -100,8 +100,8 @@ export const ChangeUser = ({ route, navigation }) => {
         userLastName: surname,
         statusActive: userStatusActive,
       });
-      if (sortBy === "A - Ö") adminStore.filterUsers(true);
-      else adminStore.filterUsers(false);
+      if (sortBy === "A - Ö") adminStore.filterUsersByActiveStatus(true);
+      else adminStore.filterUsersByActiveStatus(false);
     }
     navigation.goBack();
   }

@@ -131,10 +131,10 @@ class AdminStore {
 
   addNewUser(user) {
     this.allUsers.push(user);
-    this.filterUsers(true);
+    this.filterUsersByActiveStatus(true);
   }
 
-  filterUsers(bool) {
+  filterUsersByActiveStatus(bool) {
     this.users = filterUsersByActiveStatus(this.allUsers, bool);
     this.sortUsersAlphabetically(this.users);
   }

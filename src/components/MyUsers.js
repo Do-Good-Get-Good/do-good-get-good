@@ -20,10 +20,10 @@ const MyUsers = ({ navigation }) => {
 
   const sortUsers = (sortOption) => {
     if (sortOption === "A - Ö") {
-      adminStore.filterUsers(true);
+      adminStore.filterUsersByActiveStatus(true);
     }
     if (sortOption === "Inaktiva") {
-      adminStore.filterUsers(false);
+      adminStore.filterUsersByActiveStatus(false);
     }
   };
 
