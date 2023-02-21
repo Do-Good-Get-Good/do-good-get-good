@@ -109,7 +109,7 @@ describe("Testing MyUsers component", () => {
     });
 
     it("can press on A - Ö inside the small dropdown and see active users", async () => {
-      const { getByTestId, getByText } = render(<MyUsers />);
+      const { getByTestId } = render(<MyUsers />);
       await when(() => adminStore.allUsers.length === 2);
 
       const button = getByTestId("smallDropdown");
@@ -131,7 +131,7 @@ describe("Testing MyUsers component", () => {
     });
 
     it("can press on Inaktiva inside the small dropdown and see inactive users", async () => {
-      const { getByTestId, getByText, debug } = render(<MyUsers />);
+      const { getByTestId } = render(<MyUsers />);
       await when(() => adminStore.allUsers.length === 2);
 
       const button = getByTestId("smallDropdown");
@@ -202,9 +202,7 @@ describe("Testing MyUsers component", () => {
     });
 
     it("Can press edit icon on active users", async () => {
-      const { getByTestId, debug } = render(
-        <MyUsers navigation={mockNavigation} />
-      );
+      const { getByTestId } = render(<MyUsers navigation={mockNavigation} />);
       await when(() => adminStore.allUsers.length === 2);
 
       expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
@@ -213,11 +211,9 @@ describe("Testing MyUsers component", () => {
 
       act(() => {
         fireEvent.press(userButton);
+        const editIcon = getByTestId("editIcon");
+        fireEvent.press(editIcon);
       });
-
-      debug();
-      const editIcon = getByTestId("editIcon");
-      fireEvent.press(editIcon);
 
       expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
         sortBy: "A - Ö",
@@ -245,10 +241,9 @@ describe("Testing MyUsers component", () => {
 
       act(() => {
         fireEvent.press(userButton);
+        const editIcon = getByTestId("editIcon");
+        fireEvent.press(editIcon);
       });
-
-      const editIcon = getByTestId("editIcon");
-      fireEvent.press(editIcon);
 
       expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
         sortBy: "Inaktiva",
