@@ -21,16 +21,25 @@ function TimeStatistics({ timeObject }) {
   });
 
   useEffect(() => {
-    if (timeObject.length != 0) {
+    if (timeObject.length !== 0) {
       setPaidTime(timeObject[0].paidTime);
       setTimeForYear(timeObject[0].timeForYear);
       setCurrentForMonth(timeObject[0].currentForMonth);
     }
   }, [timeObject]);
 
-  const compensatedTime = () => {
+  const compensatedTimeUser = () => {
+    if (timeForYear * 0.5 > maxConfirmedHours) return maxConfirmedHours;
+    return timeForYear * 0.5;
+  };
+  const compensatedTimeAdmin = () => {
     if (paidTime * 0.5 > maxConfirmedHours) return maxConfirmedHours;
     return paidTime * 0.5;
+  };
+
+  const compensatedTime = () => {
+    if (route.name === Routes.HomePage) return compensatedTimeUser();
+    else return compensatedTimeAdmin();
   };
 
   return (
@@ -74,18 +83,25 @@ function TimeStatistics({ timeObject }) {
           <Text testID="paidTime" style={styles.textH2ForTime}>
             {`${compensatedTime()} / ${maxConfirmedHours}`}
           </Text>
-          <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
-          {route.name === Routes.AdminPage && (
+          {route.name === Routes.HomePage && (
             <Text style={styles.textUnderForMonthAndPaidTime}>
-              {new Date().getFullYear()}
+              Ersatta {new Date().getFullYear()}
             </Text>
+          )}
+          {route.name === Routes.AdminPage && (
+            <>
+              <Text style={styles.textUnderForMonthAndPaidTime}>Ersatta</Text>
+              <Text style={styles.textUnderForMonthAndPaidTime}>
+                {new Date().getFullYear()}
+              </Text>
+            </>
           )}
         </View>
       </View>
       {route.name === Routes.HomePage && (
         <View style={styles.containerTextTimeForYearPopUp}>
           <Text testID="timeForYear">
-            {`Timmar ersatta ${new Date().getFullYear()}: ${timeForYear}`}
+            {`Timmar godkända ${new Date().getFullYear()}: ${timeForYear}`}
           </Text>
           <InfoModal screen="homepage" tooltipWidth={250} />
         </View>

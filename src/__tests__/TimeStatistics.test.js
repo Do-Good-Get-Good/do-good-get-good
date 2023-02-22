@@ -40,7 +40,7 @@ describe("Testing TimeStatistics", () => {
     );
     const currentForYear = getByTestId("timeForYear");
     expect(currentForYear.children[0]).toBe(
-      `Timmar ersatta ${new Date().getFullYear()}: 10`
+      `Timmar godkända ${new Date().getFullYear()}: 10`
     );
   });
 
@@ -69,14 +69,15 @@ describe("Testing TimeStatistics", () => {
       <TimeStatistics timeObject={mockTimeObject} />
     );
     expect(getByTestId("confirmedTime").children[0]).toEqual("10");
-    expect(getAllByText("Ersatta").length).toBe(1);
+    expect(getAllByText("Godkända").length).toBe(1);
   });
 
   it("Text 'Ersatta' exist", () => {
     const { getAllByText, getByTestId } = render(
       <TimeStatistics timeObject={mockTimeObject} />
     );
+    const year = new Date().getFullYear();
     expect(getByTestId("paidTime").children[0]).toEqual("5 / 8");
-    expect(getAllByText("Ersatta").length).toBe(1);
+    expect(getAllByText(`Ersatta ${year}`).length).toBe(1);
   });
 });
