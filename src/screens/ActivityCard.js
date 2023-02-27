@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,39 +6,39 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
-import {SafeAreaView} from 'react-native-safe-area-context';
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import Menu from '../components/Menu';
-import {Icon, Overlay} from '@rneui/base';
+import Menu from "../components/Menu";
+import { Icon, Overlay } from "@rneui/base";
 
-import Images from '../Images';
-import {useActivityCardContext} from '../context/ActivityCardContext';
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
-import {useAdminGalleryFunction} from '../context/AdminGalleryContext';
-import {useUserLevelCheckFunction} from '../context/UserLevelContext';
+import Images from "../Images";
+import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
-import BottomLogo from '../components/BottomLogo';
-import ManageUsers from '../components/ManageUsers';
-import {UserLevels} from '../lib/enums/userlevels';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import BottomLogo from "../components/BottomLogo";
+import ManageUsers from "../components/ManageUsers";
+import { UserLevels } from "../lib/enums/userlevels";
 
-export function ActivityCard({route, navigation}) {
+export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   const userLevel = useUserLevelCheckFunction();
 
-  const {admin, activityInfo, active, tgPopular} = route.params;
+  const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
-    active: '',
-    title: '',
-    photo: '',
-    city: '',
-    description: '',
-    place: '',
-    popular: '',
+    active: "",
+    title: "",
+    photo: "",
+    city: "",
+    description: "",
+    place: "",
+    popular: "",
   });
 
   const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
@@ -48,17 +48,17 @@ export function ActivityCard({route, navigation}) {
   const [isManageUsersOpen, setIsManageUsersOpen] = useState(false);
 
   const alertQuestionToTakeAwayFromArchive =
-    'Vill du flytta denna aktivitet från arkiv';
+    "Vill du flytta denna aktivitet från arkiv";
   const alertClarificationToTakeAwayFromArchive =
-    'Aktiviteten kommer att flyttas från icke-aktiv till aktiv, i biblioteket';
-  const alertArchiveQuestion = 'Vill du arkivera denna aktivitet?';
+    "Aktiviteten kommer att flyttas från icke-aktiv till aktiv, i biblioteket";
+  const alertArchiveQuestion = "Vill du arkivera denna aktivitet?";
   const alertArchiveClarification =
-    'Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet';
-  const alertDeleteQuestion = 'Vill du slänga denna aktivitet?';
+    "Aktiviteten kommer att sparas i en separat flik i menyn men kommer försvinna från galleriet";
+  const alertDeleteQuestion = "Vill du slänga denna aktivitet?";
   const alertDeleteClarification =
-    'Aktiviteten kommer att försvinna för alltid';
-  const [alertQuestion, setAlertQuestion] = useState('');
-  const [alertClarification, setAlertClarification] = useState('');
+    "Aktiviteten kommer att försvinna för alltid";
+  const [alertQuestion, setAlertQuestion] = useState("");
+  const [alertClarification, setAlertClarification] = useState("");
   const [pressedToArchive, setPressedToArchive] = useState(false);
   const [pressedToTakeAwayFromArchive, setPressedToTakeAwayFromArchive] =
     useState(false);
@@ -102,7 +102,7 @@ export function ActivityCard({route, navigation}) {
         setActiveActivities(false);
       } else {
         console.log(
-          'Something went wrong with YES button while trying to archive',
+          "Something went wrong with YES button while trying to archive",
         );
       }
       activityCardContext.idActivity(activityInfo.id);
@@ -120,7 +120,7 @@ export function ActivityCard({route, navigation}) {
         setActiveActivities(true);
       } else {
         console.log(
-          'Something went wrong with YES button while trying to take activity away from archive',
+          "Something went wrong with YES button while trying to take activity away from archive",
         );
       }
       activityCardContext.idActivity(activityInfo.id);
@@ -138,7 +138,7 @@ export function ActivityCard({route, navigation}) {
       setPressedToDelete(false);
       navigation.goBack();
     } else {
-      console.log('Something went wrong with pressing Yes button');
+      console.log("Something went wrong with pressing Yes button");
     }
   }
 
@@ -152,12 +152,12 @@ export function ActivityCard({route, navigation}) {
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
           <TouchableOpacity
-            style={[styles.alertButton, {backgroundColor: colors.light}]}
+            style={[styles.alertButton, { backgroundColor: colors.light }]}
             onPress={() => setVisible(!visible)}>
             <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
           <TouchableOpacity
-            style={[styles.alertButton, {backgroundColor: colors.primary}]}
+            style={[styles.alertButton, { backgroundColor: colors.primary }]}
             onPress={() => buttonYesPressed()}>
             <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
@@ -214,7 +214,7 @@ export function ActivityCard({route, navigation}) {
         statusActive: activityInfo.active,
       });
     } else {
-      console.log('Something went wrong with status popular');
+      console.log("Something went wrong with status popular");
     }
   }
 
@@ -347,7 +347,7 @@ export function ActivityCard({route, navigation}) {
           </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
-              navigation.navigate('ChangeActivity', {
+              navigation.navigate("ChangeActivity", {
                 activity: activityInfo,
                 tgPopular: popular,
               })
@@ -372,7 +372,7 @@ export function ActivityCard({route, navigation}) {
 
   function adminActionsForInactiveActivities() {
     return (
-      <View style={{marginTop: 15}}>
+      <View style={{ marginTop: 15 }}>
         {toArchiveOrToTakeAwayFromArchive()}
         {deleteActivity()}
       </View>
@@ -384,24 +384,26 @@ export function ActivityCard({route, navigation}) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <ScrollView style={styles.container}>
-        <View style={{flex: 1, marginBottom: 20}}>
+        <View style={{ flex: 1, marginBottom: 20 }}>
           <View style={styles.containerArrowAndText}>
             <TouchableOpacity
               testID="buttonGoBack"
               onPress={() => navigation.goBack()}
-              style={{flexDirection: 'row', alignItems: 'center'}}>
+              style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="arrow-back" color={colors.dark} size={25} />
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.textTitle}>{activity.title}</Text>
-          <Image
-            testID="photo"
-            style={styles.image}
-            source={setTheRightPhoto(activity.photo)}></Image>
+          {activity.photo !== "" && (
+            <Image
+              testID="photo"
+              style={styles.image}
+              source={setTheRightPhoto(activity.photo)}></Image>
+          )}
           <View style={styles.containerIconAndCity}>
             <Icon
               type="material-community"
@@ -459,15 +461,15 @@ const styles = StyleSheet.create({
     paddingHorizontal: 16,
   },
   containerArrowAndText: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginLeft: -5,
     marginTop: 30,
   },
   textNearArrow: {
     fontFamily: typography.button.sm.fontFamily,
     fontSize: typography.button.sm.fontSize,
-    fontWeight: '700',
-    textDecorationLine: 'underline',
+    fontWeight: "700",
+    textDecorationLine: "underline",
     color: colors.dark,
     marginLeft: 8,
   },
@@ -477,7 +479,7 @@ const styles = StyleSheet.create({
     marginTop: 32,
   },
   image: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginTop: 22,
     height: 98,
     width: 107,
@@ -493,8 +495,8 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   containerIconAndCity: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 40,
     color: colors.dark,
   },
@@ -505,34 +507,34 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   iconsAndTextTimeContainer: {
-    alignItems: 'flex-start',
-    flexDirection: 'row',
+    alignItems: "flex-start",
+    flexDirection: "row",
     marginTop: 6,
     color: colors.dark,
   },
   iconAndPlaceContainer: {
-    alignItems: 'center',
-    flexDirection: 'row',
+    alignItems: "center",
+    flexDirection: "row",
     marginTop: 6,
     color: colors.dark,
   },
   containerPancilAndText: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 30,
   },
   textNearPencil: {
     color: colors.dark,
     ...typography.button.sm,
-    textDecorationLine: 'underline',
-    fontWeight: '700',
+    textDecorationLine: "underline",
+    fontWeight: "700",
   },
   iconPencil: {
     marginRight: 7,
   },
   containerIconArchiveArrowAndText: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
   iconArchiveArrow: {
@@ -541,12 +543,12 @@ const styles = StyleSheet.create({
   textNearIconArchiveArrow: {
     color: colors.dark,
     ...typography.button.sm,
-    textDecorationLine: 'underline',
-    fontWeight: '700',
+    textDecorationLine: "underline",
+    fontWeight: "700",
   },
   containerDeleteAndText: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
   iconDelete: {
@@ -555,12 +557,12 @@ const styles = StyleSheet.create({
   textNearDelete: {
     color: colors.dark,
     ...typography.button.sm,
-    textDecorationLine: 'underline',
-    fontWeight: '700',
+    textDecorationLine: "underline",
+    fontWeight: "700",
   },
   containerIconStarAndText: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     marginTop: 23,
   },
   iconStar: {
@@ -569,28 +571,28 @@ const styles = StyleSheet.create({
   textNearIconStar: {
     color: colors.dark,
     ...typography.button.sm,
-    textDecorationLine: 'underline',
-    fontWeight: '700',
+    textDecorationLine: "underline",
+    fontWeight: "700",
   },
   buttonSeeAllUsers: {
     marginTop: 32,
     paddingVertical: 16,
     backgroundColor: colors.primary,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     borderRadius: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   buttonSeeAllUsersText: {
     ...typography.button.lg,
-    fontWeight: '500',
+    fontWeight: "500",
     letterSpacing: 2,
     color: colors.dark,
   },
   overlay: {
     backgroundColor: colors.light,
     borderRadius: 5,
-    width: '90%',
+    width: "90%",
   },
   textQuestionAlert: {
     color: colors.dark,
@@ -603,14 +605,14 @@ const styles = StyleSheet.create({
     marginHorizontal: 8,
   },
   containerButtonsAlert: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     marginTop: 20,
   },
   alertButton: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '50%',
+    alignItems: "center",
+    justifyContent: "center",
+    width: "50%",
     paddingVertical: 12,
     borderRadius: 5,
   },
