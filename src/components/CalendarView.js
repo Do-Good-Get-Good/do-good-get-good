@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Pressable,
   StyleSheet,
@@ -7,29 +7,29 @@ import {
   View,
   Platform,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 
-import {Overlay, Icon} from '@rneui/base';
+import { Overlay, Icon } from "@rneui/base";
 
-import {Calendar, LocaleConfig} from 'react-native-calendars';
+import { Calendar, LocaleConfig } from "react-native-calendars";
 
-import {format} from 'date-fns';
-import toDate from 'date-fns/toDate';
-import {sv} from 'date-fns/locale';
+import { format } from "date-fns";
+import toDate from "date-fns/toDate";
+import { sv } from "date-fns/locale";
 
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import errorMessage from '../assets/recyclingStyles/errorMessage';
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import errorMessage from "../assets/recyclingStyles/errorMessage";
 
-import {deleteTimeEntry} from '../firebase-functions/delete';
-import {addTimeEntry} from '../firebase-functions/add';
+import { deleteTimeEntry } from "../firebase-functions/delete";
+import { addTimeEntry } from "../firebase-functions/add";
 import {
   incrementTotalHoursMonthForUser,
   decrementTotalHoursMonthForUser,
   updateTimeEntry,
-} from '../firebase-functions/update';
+} from "../firebase-functions/update";
 
 const CalendarView = ({
   visible,
@@ -39,48 +39,48 @@ const CalendarView = ({
   adminID,
   removeFirstStaticTimeEntry,
 }) => {
-  LocaleConfig.locales['sv'] = {
+  LocaleConfig.locales["sv"] = {
     monthNames: [
-      'Januari',
-      'Februari',
-      'Mars',
-      'April',
-      'Maj',
-      'Juni',
-      'Juli',
-      'Augusti',
-      'September',
-      'Oktober',
-      'November',
-      'December',
+      "Januari",
+      "Februari",
+      "Mars",
+      "April",
+      "Maj",
+      "Juni",
+      "Juli",
+      "Augusti",
+      "September",
+      "Oktober",
+      "November",
+      "December",
     ],
     monthNamesShort: [
-      'Jan',
-      'Feb',
-      'Mars',
-      'Apr',
-      'Maj',
-      'Juni',
-      'Juli',
-      'Aug',
-      'Sept',
-      'Okt',
-      'Nov',
-      'Dec',
+      "Jan",
+      "Feb",
+      "Mars",
+      "Apr",
+      "Maj",
+      "Juni",
+      "Juli",
+      "Aug",
+      "Sept",
+      "Okt",
+      "Nov",
+      "Dec",
     ],
     dayNames: [
-      'Måndag',
-      'Tisdag',
-      'Onsdag',
-      'Torsdag',
-      'Fredag',
-      'Lördag',
-      'Söndag',
+      "Måndag",
+      "Tisdag",
+      "Onsdag",
+      "Torsdag",
+      "Fredag",
+      "Lördag",
+      "Söndag",
     ],
-    dayNamesShort: ['S', 'M', 'T', 'O', 'T', 'F', 'L'],
-    today: 'Idag',
+    dayNamesShort: ["S", "M", "T", "O", "T", "F", "L"],
+    today: "Idag",
   };
-  LocaleConfig.defaultLocale = 'sv';
+  LocaleConfig.defaultLocale = "sv";
 
   const [date, setDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
@@ -97,12 +97,12 @@ const CalendarView = ({
   useEffect(() => {
     if (visible) {
       if (isEditing) {
-        setDate(format(new Date(), 'yyyy-MM-dd'));
-        setSelectedDate(format(new Date(activity.date), 'yyyy-MM-dd'));
+        setDate(format(new Date(), "yyyy-MM-dd"));
+        setSelectedDate(format(new Date(activity.date), "yyyy-MM-dd"));
         setHours(activity.time);
       } else {
-        setDate(format(new Date(), 'yyyy-MM-dd'));
-        setSelectedDate(format(new Date(), 'yyyy-MM-dd'));
+        setDate(format(new Date(), "yyyy-MM-dd"));
+        setSelectedDate(format(new Date(), "yyyy-MM-dd"));
         setHours(0);
       }
     } else if (!visible) {
@@ -143,7 +143,7 @@ const CalendarView = ({
       })
       .catch(error => {
         console.log(error.message);
-        setError('Ett fel uppstod, vänligen försök igen.');
+        setError("Ett fel uppstod, vänligen försök igen.");
         setTimeout(() => {
           setError(null);
         }, 3500);
@@ -203,25 +203,25 @@ const CalendarView = ({
         borderRadius: 5,
         paddingTop: 14,
         paddingHorizontal: 0,
-        width: '90%',
-        maxHeight: '85%',
-        flexDirection: 'column',
-        justifyContent: 'space-between',
+        width: "90%",
+        maxHeight: "85%",
+        flexDirection: "column",
+        justifyContent: "space-between",
       }}
       animationType="fade">
       <Pressable
-        style={{position: 'absolute', right: -10, top: -10, zIndex: 2}}
+        style={{ position: "absolute", right: -10, top: -10, zIndex: 2 }}
         onPress={toggleVisibility}>
         <Icon
           name="close"
           type="material"
           size={35}
-          style={{backgroundColor: colors.background, borderRadius: 25}}
+          style={{ backgroundColor: colors.background, borderRadius: 25 }}
         />
       </Pressable>
-      <View style={{paddingHorizontal: 16}}>
+      <View style={{ paddingHorizontal: 16 }}>
         <Text testID="calendarView.headerText" style={styles.activityTitle}>
-          {isEditing ? activity.title : activity.title + ' - ' + activity.city}
+          {isEditing ? activity.title : activity.title + " - " + activity.city}
         </Text>
         <Text style={styles.chooseDateText}>Välj datum</Text>
       </View>
@@ -234,7 +234,7 @@ const CalendarView = ({
             onDayPress={day => {
               setSelectedDate(day.dateString);
             }}
-            monthFormat={'MMMM yyyy'}
+            monthFormat={"MMMM yyyy"}
             hideArrows={true}
             disableMonthChange={true}
             firstDay={1}
@@ -244,11 +244,11 @@ const CalendarView = ({
               textMonthFontSize: typography.b2.fontSize,
               textMonthFontFamily: typography.b2.fontFamily,
               monthTextColor: colors.dark,
-              textMonthFontWeight: '400',
+              textMonthFontWeight: "400",
               dayTextColor: colors.dark,
               textDayFontFamily: typography.b2.fontFamily,
             }}
-            markingType={'custom'}
+            markingType={"custom"}
             markedDates={{
               [date]: {
                 customStyles: {
@@ -293,7 +293,7 @@ const CalendarView = ({
             <TouchableOpacity
               style={[
                 styles.hourButton,
-                hours === 0 && {backgroundColor: colors.disabled},
+                hours === 0 && { backgroundColor: colors.disabled },
               ]}
               disabled={hours === 0}
               onPress={() => {
@@ -314,7 +314,7 @@ const CalendarView = ({
             <TouchableOpacity
               style={[
                 styles.hourButton,
-                hours === 24 && {backgroundColor: colors.disabled},
+                hours === 24 && { backgroundColor: colors.disabled },
               ]}
               disabled={hours === 24}
               onPress={() => {
@@ -330,7 +330,7 @@ const CalendarView = ({
         <Text
           testID="calendarView.dateAndHourInput"
           style={styles.dateAndHourSummary}>
-          {format(new Date(selectedDate), 'EEE d LLLL', {locale: sv}) +
+          {format(new Date(selectedDate), "EEE d LLLL", { locale: sv }) +
             `, ${hours}h`}
         </Text>
       </ScrollView>
@@ -338,7 +338,7 @@ const CalendarView = ({
       {error != null && (
         <Text
           testID="errorTextId"
-          style={{alignSelf: 'center', marginBottom: 5, ...errorMessage}}>
+          style={{ alignSelf: "center", marginBottom: 5, ...errorMessage }}>
           {error}
         </Text>
       )}
@@ -347,7 +347,7 @@ const CalendarView = ({
         <TouchableOpacity
           style={[
             styles.sendBtn,
-            hours === 0 && {backgroundColor: colors.disabled},
+            hours === 0 && { backgroundColor: colors.disabled },
           ]}
           onPress={() => {
             registerTimeEntry();
@@ -363,7 +363,7 @@ const CalendarView = ({
             style={[
               styles.sendBtn,
               styles.changeBtn,
-              hours === 0 && {backgroundColor: colors.disabled},
+              hours === 0 && { backgroundColor: colors.disabled },
             ]}
             onPress={() => {
               changeTimeEntry(activity.timeEntryID);
@@ -390,11 +390,12 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
-    fontWeight: '700',
+    fontWeight: "800",
+    color: "#333333",
   },
   chooseDateText: {
     ...typography.b1,
-    fontWeight: '400',
+    fontWeight: "400",
     marginBottom: 9,
   },
   calendarAndHourView: {
@@ -407,10 +408,10 @@ const styles = StyleSheet.create({
     marginLeft: -8,
   },
   hourAmountView: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 16,
     marginBottom: 16,
-    alignContent: 'center',
+    alignContent: "center",
     height: 50,
   },
   hourAmount: {
@@ -418,8 +419,8 @@ const styles = StyleSheet.create({
     flex: 1,
     marginRight: 10,
     marginLeft: 10,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
   },
   hourAmountText: {
     ...typography.h2,
@@ -428,8 +429,8 @@ const styles = StyleSheet.create({
   hourButton: {
     width: 50,
     backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   dateAndHourSummary: {
     ...typography.b1,
@@ -437,8 +438,8 @@ const styles = StyleSheet.create({
   },
   sendBtn: {
     height: 55,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.primary,
     marginBottom: -10,
     ...Platform.select({
@@ -451,7 +452,7 @@ const styles = StyleSheet.create({
   },
   sendBtnText: {
     ...typography.button.lg,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
   },
   changeBtn: {
