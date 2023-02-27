@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
@@ -6,11 +6,11 @@ import {
   Platform,
   TouchableWithoutFeedback,
   TouchableOpacity,
-} from 'react-native';
-import {FAB, Icon} from '@rneui/base';
-import {useNavigation} from '@react-navigation/native';
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+} from "react-native";
+import { FAB, Icon } from "@rneui/base";
+import { useNavigation } from "@react-navigation/native";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const FloatingActionButton = ({}) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -29,7 +29,7 @@ const FloatingActionButton = ({}) => {
               style={styles.buttonStyle}
               onPress={() => {
                 setIsOpen(false);
-                navigation.navigate('CreateActivity');
+                navigation.navigate("CreateActivity");
               }}>
               <Text style={styles.buttonText}>Lägg till aktivitet</Text>
             </TouchableOpacity>
@@ -38,7 +38,7 @@ const FloatingActionButton = ({}) => {
               style={styles.buttonStyle}
               onPress={() => {
                 setIsOpen(false);
-                navigation.navigate('CreateUser');
+                navigation.navigate("CreateUser");
               }}>
               <Text style={styles.buttonText}>Lägg till användare</Text>
             </TouchableOpacity>
@@ -47,7 +47,7 @@ const FloatingActionButton = ({}) => {
       )}
       <FAB
         icon={
-          <Icon type="material-community" name={isOpen ? 'close' : 'plus'} />
+          <Icon type="material-community" name={isOpen ? "close" : "plus"} />
         }
         testID="open.button"
         visible
@@ -66,12 +66,26 @@ export default FloatingActionButton;
 
 const styles = StyleSheet.create({
   fab: {
-    bottom: 0,
+    ...Platform.select({
+      ios: {
+        bottom: 18,
+      },
+      android: {
+        bottom: 0,
+      },
+    }),
     zIndex: 1,
   },
   menuItems: {
-    position: 'absolute',
-    bottom: 90,
+    position: "absolute",
+    ...Platform.select({
+      ios: {
+        bottom: 100,
+      },
+      android: {
+        bottom: 80,
+      },
+    }),
     right: 16,
   },
   buttonStyle: {
@@ -80,7 +94,7 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     marginTop: 10,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
     ...Platform.select({
       ios: {
         shadowOffset: {
