@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   Text,
   StyleSheet,
@@ -7,13 +7,13 @@ import {
   TouchableOpacity,
   Platform,
   Keyboard,
-} from 'react-native';
-import {Icon} from '@rneui/base';
-import Images from '../Images';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+} from "react-native";
+import { Icon } from "@rneui/base";
+import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-const HomeSuggestions = ({navigation, suggestions}) => {
+const HomeSuggestions = ({ navigation, suggestions }) => {
   const showArray = sortingByTitle(suggestions);
 
   function setTheRightPhoto(activityObjectPhoto) {
@@ -26,7 +26,7 @@ const HomeSuggestions = ({navigation, suggestions}) => {
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
-    navigation.navigate('ActivityCard', {
+    navigation.navigate("ActivityCard", {
       admin: false,
       activityInfo: activety,
       active: statusActive,
@@ -51,8 +51,8 @@ const HomeSuggestions = ({navigation, suggestions}) => {
             activeOpacity={0.4}>
             <View style={styles.photoAndText}>
               <View style={styles.textTitleCityDescriptipn}>
-                <View style={{flex: 1, flexDirection: 'row'}}>
-                  <View style={{flex: 1}}>
+                <View style={{ flex: 1, flexDirection: "row" }}>
+                  <View style={{ flex: 1 }}>
                     <Text numberOfLines={2} style={styles.textTitle}>
                       {suggestion.title}
                     </Text>
@@ -101,15 +101,15 @@ const styles = StyleSheet.create({
   activityContainer: {
     flex: 1,
     marginTop: 5,
-    alignSelf: 'center',
-    width: '99%',
+    alignSelf: "center",
+    width: "99%",
   },
   insideActivityContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
     backgroundColor: colors.background,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
@@ -129,18 +129,18 @@ const styles = StyleSheet.create({
   image: {
     flex: 0.5,
     height: 100,
-    resizeMode: 'contain',
-    alignItems: 'center',
+    resizeMode: "contain",
+    alignItems: "center",
     borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   textTitleCityDescriptipn: {
     flex: 2,
     marginRight: 7,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 5,
     color: colors.dark,
@@ -159,8 +159,8 @@ const styles = StyleSheet.create({
   },
   iconsAndTextCityContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   textDescription: {
     flex: 1,
@@ -171,8 +171,8 @@ const styles = StyleSheet.create({
   },
   iconsAndTextDescriptionContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     height: 60,
   },
 });
