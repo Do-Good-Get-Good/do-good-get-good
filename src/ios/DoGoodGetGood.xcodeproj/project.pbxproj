@@ -13,28 +13,22 @@
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
-		3DA02E85B9B10AAE6BDED9E3 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */; };
-		6412A5D829AE722700FB318F /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		6412A5D929AE722700FB318F /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		6412A5DC29AE722700FB318F /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		6412A5DD29AE722700FB318F /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		6412A5DE29AE722700FB318F /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
-		6412A5DF29AE722700FB318F /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
-		6412A5E029AE722700FB318F /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
-		6412A5E129AE722700FB318F /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
-		643B881429AF4FF500E2C867 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		643B881529AF4FF500E2C867 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		643B881829AF4FF500E2C867 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
-		643B881929AF4FF500E2C867 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
-		643B881A29AF4FF500E2C867 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
-		643B881B29AF4FF500E2C867 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
-		643B881C29AF4FF500E2C867 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
-		643B881D29AF4FF500E2C867 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
+		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
+		64B1239429AFC6A0009BFA97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */; };
+		64CEDA3729AFB41B00D996F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */; };
+		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
+		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		64CEDA5D29AFB8D500D996F1 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
+		64CEDA5E29AFB8D500D996F1 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
+		64CEDA5F29AFB8D500D996F1 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
+		64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
+		64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
+		7E92B65B988129BEEC032CE8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BE50ED0E9E5AFC415F2367 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
 		E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
-		EF6AC8841DE7ED373E939963 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6935EE839E358625362A0053 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
-		F8014D24A558D621C7697951 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */; };
+		FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,34 +45,38 @@
 		00E356EE1AD99517003FC87E /* DoGoodGetGoodTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = DoGoodGetGoodTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		00E356F11AD99517003FC87E /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		00E356F21AD99517003FC87E /* DoGoodGetGoodTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = DoGoodGetGoodTests.m; sourceTree = "<group>"; };
+		11BE50ED0E9E5AFC415F2367 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07F961A680F5B00A75B9A /* DoGoodGetGood.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGood.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = DoGoodGetGood/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; name = AppDelegate.mm; path = DoGoodGetGood/AppDelegate.mm; sourceTree = "<group>"; };
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DoGoodGetGood/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
-		2304F30B0136E0199037216D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.release.xcconfig"; sourceTree = "<group>"; };
-		6412A5E629AE722700FB318F /* DoGoodGetGood Prod.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DoGoodGetGood Prod.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		6412A5E729AE722700FB318F /* DoGoodGetGood Prod-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DoGoodGetGood Prod-Info.plist"; path = "/Users/mattiasahlstrom/Documents/GitHub/do-good-get-good/src/ios/DoGoodGetGood Prod-Info.plist"; sourceTree = "<absolute>"; };
-		643B882229AF4FF500E2C867 /* DoGoodGetGood Dev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "DoGoodGetGood Dev.app"; sourceTree = BUILT_PRODUCTS_DIR; };
-		643B882329AF4FF500E2C867 /* DoGoodGetGood Dev-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DoGoodGetGood Dev-Info.plist"; path = "/Users/mattiasahlstrom/Documents/GitHub/do-good-get-good/src/ios/DoGoodGetGood Dev-Info.plist"; sourceTree = "<absolute>"; };
-		645F88E629AD03E50008A164 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		645F88E929AD04980008A164 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		41589E760962169460036461 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
+		58595BD336CB2EC67B891AC4 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
+		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		64CEDA6C29AFB8D500D996F1 /* DoGoodGetGood copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DoGoodGetGood copy2-Info.plist"; path = "/Users/mattiasahlstrom/Documents/GitHub/do-good-get-good/src/ios/DoGoodGetGood copy2-Info.plist"; sourceTree = "<absolute>"; };
 		64D6637929A936AE0027F881 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "/Users/mattiasahlstrom/Documents/Clean-React-Native/DoGoodGetGood/ios/Info.plist"; sourceTree = "<absolute>"; };
-		6935EE839E358625362A0053 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		69CF90BE52EC466F0CF45100 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		70563D5B07364418ABFAD8F7 /* DIN-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Light.otf"; path = "../assets/fonts/DIN-Light.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DoGoodGetGood/LaunchScreen.storyboard; sourceTree = "<group>"; };
-		8AFEAEBC6D8AB3FA2ADA0DA4 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.debug.xcconfig"; sourceTree = "<group>"; };
+		855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; sourceTree = "<group>"; };
 		8E44F55844C541FB8CA47488 /* DIN-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Regular.otf"; path = "../assets/fonts/DIN-Regular.otf"; sourceTree = "<group>"; };
-		9035D17A0469037475DF6B05 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
-		98875DC74187D12F21250056 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
-		ACB565D74882EB1B1047E23D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.debug.xcconfig"; sourceTree = "<group>"; };
+		97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AE108FECF935428586ECE21F /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
 		BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C2006F8EFFB4AC5B3DC29A75 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; sourceTree = "<group>"; };
+		CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		E1582722195C47A7BA8F88A3 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
+		ECF05F1E0B76ACF3D6C6CAFC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Bold.otf"; path = "../assets/fonts/DIN-Bold.otf"; sourceTree = "<group>"; };
-		F7A362324A8BACC817AC331F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.release.xcconfig"; sourceTree = "<group>"; };
+		F326B97D9F797D00EAC2F921 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -86,7 +84,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				EF6AC8841DE7ED373E939963 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */,
+				FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -94,22 +92,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6412A5DA29AE722700FB318F /* Frameworks */ = {
+		64CEDA5929AFB8D500D996F1 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				F8014D24A558D621C7697951 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework in Frameworks */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		643B881629AF4FF500E2C867 /* Frameworks */ = {
-			isa = PBXFrameworksBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				3DA02E85B9B10AAE6BDED9E3 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework in Frameworks */,
+				7E92B65B988129BEEC032CE8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -152,7 +143,9 @@
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */,
 				BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */,
-				6935EE839E358625362A0053 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */,
+				11BE50ED0E9E5AFC415F2367 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework */,
+				5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */,
+				CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -169,20 +162,27 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		645F88E529AD03E50008A164 /* Dev */ = {
+		64B1239229AFC69F009BFA97 /* Dev */ = {
 			isa = PBXGroup;
 			children = (
-				645F88E629AD03E50008A164 /* GoogleService-Info.plist */,
+				64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */,
 			);
 			path = Dev;
 			sourceTree = "<group>";
 		};
-		645F88E829AD04980008A164 /* Prod */ = {
+		64CEDA3529AFB41B00D996F1 /* Prod */ = {
 			isa = PBXGroup;
 			children = (
-				645F88E929AD04980008A164 /* GoogleService-Info.plist */,
+				64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
+			sourceTree = "<group>";
+		};
+		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = DoGoodGetGoodDev;
 			sourceTree = "<group>";
 		};
 		832341AE1AAA6A7D00B99B32 /* Libraries */ = {
@@ -195,17 +195,17 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				645F88E829AD04980008A164 /* Prod */,
-				645F88E529AD03E50008A164 /* Dev */,
+				64B1239229AFC69F009BFA97 /* Dev */,
+				64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */,
+				64CEDA3529AFB41B00D996F1 /* Prod */,
 				13B07FAE1A68108700A75B9A /* DoGoodGetGood */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DoGoodGetGoodTests */,
 				83CBBA001A601CBA00E9B192 /* Products */,
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
-				BBD78D7AC51CEA395F1C20DB /* Pods */,
 				56B1D1E37AD34425A9C025BD /* Resources */,
-				6412A5E729AE722700FB318F /* DoGoodGetGood Prod-Info.plist */,
-				643B882329AF4FF500E2C867 /* DoGoodGetGood Dev-Info.plist */,
+				F9628818C64758E0011CF508 /* Pods */,
+				64CEDA6C29AFB8D500D996F1 /* DoGoodGetGood copy2-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -217,21 +217,24 @@
 			children = (
 				13B07F961A680F5B00A75B9A /* DoGoodGetGood.app */,
 				00E356EE1AD99517003FC87E /* DoGoodGetGoodTests.xctest */,
-				6412A5E629AE722700FB318F /* DoGoodGetGood Prod.app */,
-				643B882229AF4FF500E2C867 /* DoGoodGetGood Dev.app */,
+				64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		BBD78D7AC51CEA395F1C20DB /* Pods */ = {
+		F9628818C64758E0011CF508 /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				ACB565D74882EB1B1047E23D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.debug.xcconfig */,
-				F7A362324A8BACC817AC331F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.release.xcconfig */,
-				8AFEAEBC6D8AB3FA2ADA0DA4 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.debug.xcconfig */,
-				2304F30B0136E0199037216D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.release.xcconfig */,
-				9035D17A0469037475DF6B05 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */,
-				98875DC74187D12F21250056 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */,
+				41589E760962169460036461 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */,
+				58595BD336CB2EC67B891AC4 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */,
+				97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */,
+				CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */,
+				69CF90BE52EC466F0CF45100 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */,
+				ECF05F1E0B76ACF3D6C6CAFC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */,
+				F326B97D9F797D00EAC2F921 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig */,
+				855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */,
+				C2006F8EFFB4AC5B3DC29A75 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */,
+				E1582722195C47A7BA8F88A3 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */,
 			);
 			path = Pods;
 			sourceTree = "<group>";
@@ -264,11 +267,14 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 13B07F931A680F5B00A75B9A /* Build configuration list for PBXNativeTarget "DoGoodGetGood" */;
 			buildPhases = (
+				51BCD4BABE742517CC29CC28 /* [CP] Check Pods Manifest.lock */,
 				FD10A7F022414F080027D42C /* Start Packager */,
 				13B07F871A680F5B00A75B9A /* Sources */,
 				13B07F8C1A680F5B00A75B9A /* Frameworks */,
 				13B07F8E1A680F5B00A75B9A /* Resources */,
 				00DD1BFF1BD5951E006B06BC /* Bundle React Native code and images */,
+				75DF592A9C907FFA306B16A6 /* [CP] Embed Pods Frameworks */,
+				2D11C6568B650E474380B021 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -279,48 +285,26 @@
 			productReference = 13B07F961A680F5B00A75B9A /* DoGoodGetGood.app */;
 			productType = "com.apple.product-type.application";
 		};
-		6412A5D529AE722700FB318F /* DoGoodGetGood Prod */ = {
+		64CEDA5329AFB8D500D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = 6412A5E329AE722700FB318F /* Build configuration list for PBXNativeTarget "DoGoodGetGood Prod" */;
+			buildConfigurationList = 64CEDA6829AFB8D500D996F1 /* Build configuration list for PBXNativeTarget "DoGoodGetGoodDev" */;
 			buildPhases = (
-				DCB7ECF3048B199155859F40 /* [CP] Check Pods Manifest.lock */,
-				6412A5D629AE722700FB318F /* Start Packager */,
-				6412A5D729AE722700FB318F /* Sources */,
-				6412A5DA29AE722700FB318F /* Frameworks */,
-				6412A5DB29AE722700FB318F /* Resources */,
-				6412A5E229AE722700FB318F /* Bundle React Native code and images */,
-				5BC07EDF52736F7B6D1E37B2 /* [CP] Embed Pods Frameworks */,
-				6B0D486D2ADEE4047E3F0508 /* [CP] Copy Pods Resources */,
+				64CEDA5429AFB8D500D996F1 /* [CP] Check Pods Manifest.lock */,
+				64CEDA5529AFB8D500D996F1 /* Start Packager */,
+				64CEDA5629AFB8D500D996F1 /* Sources */,
+				64CEDA5929AFB8D500D996F1 /* Frameworks */,
+				64CEDA5B29AFB8D500D996F1 /* Resources */,
+				64CEDA6329AFB8D500D996F1 /* Bundle React Native code and images */,
+				64CEDA6429AFB8D500D996F1 /* [CP] Embed Pods Frameworks */,
+				64CEDA6529AFB8D500D996F1 /* [CP] Copy Pods Resources */,
 			);
 			buildRules = (
 			);
 			dependencies = (
 			);
-			name = "DoGoodGetGood Prod";
+			name = DoGoodGetGoodDev;
 			productName = DoGoodGetGood;
-			productReference = 6412A5E629AE722700FB318F /* DoGoodGetGood Prod.app */;
-			productType = "com.apple.product-type.application";
-		};
-		643B881129AF4FF500E2C867 /* DoGoodGetGood Dev */ = {
-			isa = PBXNativeTarget;
-			buildConfigurationList = 643B881F29AF4FF500E2C867 /* Build configuration list for PBXNativeTarget "DoGoodGetGood Dev" */;
-			buildPhases = (
-				4D93B0E6B89B656196BC994D /* [CP] Check Pods Manifest.lock */,
-				643B881229AF4FF500E2C867 /* Start Packager */,
-				643B881329AF4FF500E2C867 /* Sources */,
-				643B881629AF4FF500E2C867 /* Frameworks */,
-				643B881729AF4FF500E2C867 /* Resources */,
-				643B881E29AF4FF500E2C867 /* Bundle React Native code and images */,
-				C0B9825DEA68DC17B795A84C /* [CP] Embed Pods Frameworks */,
-				EC9783A0676A81EB56EE1CBD /* [CP] Copy Pods Resources */,
-			);
-			buildRules = (
-			);
-			dependencies = (
-			);
-			name = "DoGoodGetGood Dev";
-			productName = DoGoodGetGood;
-			productReference = 643B882229AF4FF500E2C867 /* DoGoodGetGood Dev.app */;
+			productReference = 64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -354,9 +338,8 @@
 			projectRoot = "";
 			targets = (
 				13B07F861A680F5B00A75B9A /* DoGoodGetGood */,
+				64CEDA5329AFB8D500D996F1 /* DoGoodGetGoodDev */,
 				00E356ED1AD99517003FC87E /* DoGoodGetGoodTests */,
-				6412A5D529AE722700FB318F /* DoGoodGetGood Prod */,
-				643B881129AF4FF500E2C867 /* DoGoodGetGood Dev */,
 			);
 		};
 /* End PBXProject section */
@@ -379,32 +362,21 @@
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
+				64CEDA3729AFB41B00D996F1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6412A5DB29AE722700FB318F /* Resources */ = {
+		64CEDA5B29AFB8D500D996F1 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6412A5DC29AE722700FB318F /* LaunchScreen.storyboard in Resources */,
-				6412A5DD29AE722700FB318F /* Images.xcassets in Resources */,
-				6412A5DE29AE722700FB318F /* DIN-Bold.otf in Resources */,
-				6412A5DF29AE722700FB318F /* DIN-Light.otf in Resources */,
-				6412A5E029AE722700FB318F /* DIN-Regular.otf in Resources */,
-				6412A5E129AE722700FB318F /* DIN-Medium.ttf in Resources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		643B881729AF4FF500E2C867 /* Resources */ = {
-			isa = PBXResourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				643B881829AF4FF500E2C867 /* LaunchScreen.storyboard in Resources */,
-				643B881929AF4FF500E2C867 /* Images.xcassets in Resources */,
-				643B881A29AF4FF500E2C867 /* DIN-Bold.otf in Resources */,
-				643B881B29AF4FF500E2C867 /* DIN-Light.otf in Resources */,
-				643B881C29AF4FF500E2C867 /* DIN-Regular.otf in Resources */,
-				643B881D29AF4FF500E2C867 /* DIN-Medium.ttf in Resources */,
+				64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */,
+				64B1239429AFC6A0009BFA97 /* GoogleService-Info.plist in Resources */,
+				64CEDA5D29AFB8D500D996F1 /* Images.xcassets in Resources */,
+				64CEDA5E29AFB8D500D996F1 /* DIN-Bold.otf in Resources */,
+				64CEDA5F29AFB8D500D996F1 /* DIN-Light.otf in Resources */,
+				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
+				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -427,7 +399,24 @@
 			shellPath = /bin/sh;
 			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
 		};
-		4D93B0E6B89B656196BC994D /* [CP] Check Pods Manifest.lock */ = {
+		2D11C6568B650E474380B021 /* [CP] Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-resources-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Copy Pods Resources";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-resources-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		51BCD4BABE742517CC29CC28 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
@@ -442,115 +431,119 @@
 			outputFileListPaths = (
 			);
 			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-checkManifestLockResult.txt",
+				"$(DERIVED_FILE_DIR)/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-checkManifestLockResult.txt",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		5BC07EDF52736F7B6D1E37B2 /* [CP] Embed Pods Frameworks */ = {
+		64CEDA5429AFB8D500D996F1 /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			inputPaths = (
+				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
+				"${PODS_ROOT}/Manifest.lock",
+			);
+			name = "[CP] Check Pods Manifest.lock";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(DERIVED_FILE_DIR)/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-checkManifestLockResult.txt",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
+			showEnvVarsInLog = 0;
+		};
+		64CEDA5529AFB8D500D996F1 /* Start Packager */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "Start Packager";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+		64CEDA6329AFB8D500D996F1 /* Bundle React Native code and images */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/.xcode.env.local",
+				"$(SRCROOT)/.xcode.env",
+			);
+			name = "Bundle React Native code and images";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
+		};
+		64CEDA6429AFB8D500D996F1 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Embed Pods Frameworks";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-frameworks.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
-		6412A5D629AE722700FB318F /* Start Packager */ = {
+		64CEDA6529AFB8D500D996F1 /* [CP] Copy Pods Resources */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
 			);
 			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Start Packager";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		6412A5E229AE722700FB318F /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/.xcode.env",
-			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		643B881229AF4FF500E2C867 /* Start Packager */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			name = "Start Packager";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "export RCT_METRO_PORT=\"${RCT_METRO_PORT:=8081}\"\necho \"export RCT_METRO_PORT=${RCT_METRO_PORT}\" > \"${SRCROOT}/../node_modules/react-native/scripts/.packager.env\"\nif [ -z \"${RCT_NO_LAUNCH_PACKAGER+xxx}\" ] ; then\n  if nc -w 5 -z localhost ${RCT_METRO_PORT} ; then\n    if ! curl -s \"http://localhost:${RCT_METRO_PORT}/status\" | grep -q \"packager-status:running\" ; then\n      echo \"Port ${RCT_METRO_PORT} already in use, packager is either not running or not running correctly\"\n      exit 2\n    fi\n  else\n    open \"$SRCROOT/../node_modules/react-native/scripts/launchPackager.command\" || echo \"Can't start packager automatically\"\n  fi\nfi\n";
-			showEnvVarsInLog = 0;
-		};
-		643B881E29AF4FF500E2C867 /* Bundle React Native code and images */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputPaths = (
-				"$(SRCROOT)/.xcode.env.local",
-				"$(SRCROOT)/.xcode.env",
-			);
-			name = "Bundle React Native code and images";
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "set -e\n\nWITH_ENVIRONMENT=\"../node_modules/react-native/scripts/xcode/with-environment.sh\"\nREACT_NATIVE_XCODE=\"../node_modules/react-native/scripts/react-native-xcode.sh\"\n\n/bin/sh -c \"$WITH_ENVIRONMENT $REACT_NATIVE_XCODE\"\n";
-		};
-		6B0D486D2ADEE4047E3F0508 /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-resources-${CONFIGURATION}-input-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-resources-${CONFIGURATION}-input-files.xcfilelist",
 			);
 			name = "[CP] Copy Pods Resources";
 			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-resources-${CONFIGURATION}-output-files.xcfilelist",
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-resources-${CONFIGURATION}-output-files.xcfilelist",
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-resources.sh\"\n";
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		75DF592A9C907FFA306B16A6 /* [CP] Embed Pods Frameworks */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-frameworks-${CONFIGURATION}-input-files.xcfilelist",
+			);
+			name = "[CP] Embed Pods Frameworks";
+			outputFileListPaths = (
+				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-frameworks-${CONFIGURATION}-output-files.xcfilelist",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		A55EABD7B0C7F3A422A6CC61 /* [CP] Check Pods Manifest.lock */ = {
@@ -575,23 +568,6 @@
 			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
 			showEnvVarsInLog = 0;
 		};
-		C0B9825DEA68DC17B795A84C /* [CP] Embed Pods Frameworks */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-frameworks-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Embed Pods Frameworks";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-frameworks-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
 		C59DA0FBD6956966B86A3779 /* [CP] Embed Pods Frameworks */ = {
 			isa = PBXShellScriptBuildPhase;
 			buildActionMask = 2147483647;
@@ -607,45 +583,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
 			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests-frameworks.sh\"\n";
-			showEnvVarsInLog = 0;
-		};
-		DCB7ECF3048B199155859F40 /* [CP] Check Pods Manifest.lock */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-				"${PODS_PODFILE_DIR_PATH}/Podfile.lock",
-				"${PODS_ROOT}/Manifest.lock",
-			);
-			name = "[CP] Check Pods Manifest.lock";
-			outputFileListPaths = (
-			);
-			outputPaths = (
-				"$(DERIVED_FILE_DIR)/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod-checkManifestLockResult.txt",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "diff \"${PODS_PODFILE_DIR_PATH}/Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [ $? != 0 ] ; then\n    # print error to STDERR\n    echo \"error: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\" >&2\n    exit 1\nfi\n# This output is used by Xcode 'outputs' to avoid re-running this script phase.\necho \"SUCCESS\" > \"${SCRIPT_OUTPUT_FILE_0}\"\n";
-			showEnvVarsInLog = 0;
-		};
-		EC9783A0676A81EB56EE1CBD /* [CP] Copy Pods Resources */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-resources-${CONFIGURATION}-input-files.xcfilelist",
-			);
-			name = "[CP] Copy Pods Resources";
-			outputFileListPaths = (
-				"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-resources-${CONFIGURATION}-output-files.xcfilelist",
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "\"${PODS_ROOT}/Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev-resources.sh\"\n";
 			showEnvVarsInLog = 0;
 		};
 		F6A41C54EA430FDDC6A6ED99 /* [CP] Copy Pods Resources */ = {
@@ -704,21 +641,12 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
-		6412A5D729AE722700FB318F /* Sources */ = {
+		64CEDA5629AFB8D500D996F1 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6412A5D829AE722700FB318F /* AppDelegate.mm in Sources */,
-				6412A5D929AE722700FB318F /* main.m in Sources */,
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-		};
-		643B881329AF4FF500E2C867 /* Sources */ = {
-			isa = PBXSourcesBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-				643B881429AF4FF500E2C867 /* AppDelegate.mm in Sources */,
-				643B881529AF4FF500E2C867 /* main.m in Sources */,
+				64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */,
+				64CEDA5829AFB8D500D996F1 /* main.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -735,7 +663,7 @@
 /* Begin XCBuildConfiguration section */
 		00E356F61AD99517003FC87E /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 9035D17A0469037475DF6B05 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */;
+			baseConfigurationReference = 69CF90BE52EC466F0CF45100 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -763,7 +691,7 @@
 		};
 		00E356F71AD99517003FC87E /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 98875DC74187D12F21250056 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */;
+			baseConfigurationReference = ECF05F1E0B76ACF3D6C6CAFC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				BUNDLE_LOADER = "$(TEST_HOST)";
@@ -788,10 +716,12 @@
 		};
 		13B07F941A680F5B00A75B9A /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = F326B97D9F797D00EAC2F921 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
@@ -806,7 +736,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "";
+				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -817,10 +747,12 @@
 		};
 		13B07F951A680F5B00A75B9A /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				INFOPLIST_FILE = DoGoodGetGood/Info.plist;
@@ -834,7 +766,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "";
+				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_VERSION = 5.0;
@@ -842,75 +774,18 @@
 			};
 			name = Release;
 		};
-		6412A5E429AE722700FB318F /* Debug */ = {
+		64CEDA6929AFB8D500D996F1 /* Debug */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = 8AFEAEBC6D8AB3FA2ADA0DA4 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.debug.xcconfig */;
+			baseConfigurationReference = 97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "DoGoodGetGood Prod-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Debug;
-		};
-		6412A5E529AE722700FB318F /* Release */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = 2304F30B0136E0199037216D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Prod.release.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "DoGoodGetGood Prod-Info.plist";
-				LD_RUNPATH_SEARCH_PATHS = (
-					"$(inherited)",
-					"@executable_path/Frameworks",
-				);
-				MARKETING_VERSION = 1.0;
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-ObjC",
-					"-lc++",
-				);
-				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
-				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE_SPECIFIER = "";
-				SWIFT_VERSION = 5.0;
-				VERSIONING_SYSTEM = "apple-generic";
-			};
-			name = Release;
-		};
-		643B882029AF4FF500E2C867 /* Debug */ = {
-			isa = XCBuildConfiguration;
-			baseConfigurationReference = ACB565D74882EB1B1047E23D /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.debug.xcconfig */;
-			buildSettings = {
-				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 1;
-				DEVELOPMENT_TEAM = "";
-				ENABLE_BITCODE = NO;
-				INFOPLIST_FILE = "DoGoodGetGood Dev-Info.plist";
+				INFOPLIST_FILE = DoGoodGetGoodDev/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -930,16 +805,17 @@
 			};
 			name = Debug;
 		};
-		643B882129AF4FF500E2C867 /* Release */ = {
+		64CEDA6A29AFB8D500D996F1 /* Release */ = {
 			isa = XCBuildConfiguration;
-			baseConfigurationReference = F7A362324A8BACC817AC331F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood Dev.release.xcconfig */;
+			baseConfigurationReference = CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = "";
-				INFOPLIST_FILE = "DoGoodGetGood Dev-Info.plist";
+				INFOPLIST_FILE = DoGoodGetGoodDev/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -1116,20 +992,11 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		6412A5E329AE722700FB318F /* Build configuration list for PBXNativeTarget "DoGoodGetGood Prod" */ = {
+		64CEDA6829AFB8D500D996F1 /* Build configuration list for PBXNativeTarget "DoGoodGetGoodDev" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
-				6412A5E429AE722700FB318F /* Debug */,
-				6412A5E529AE722700FB318F /* Release */,
-			);
-			defaultConfigurationIsVisible = 0;
-			defaultConfigurationName = Release;
-		};
-		643B881F29AF4FF500E2C867 /* Build configuration list for PBXNativeTarget "DoGoodGetGood Dev" */ = {
-			isa = XCConfigurationList;
-			buildConfigurations = (
-				643B882029AF4FF500E2C867 /* Debug */,
-				643B882129AF4FF500E2C867 /* Release */,
+				64CEDA6929AFB8D500D996F1 /* Debug */,
+				64CEDA6A29AFB8D500D996F1 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;

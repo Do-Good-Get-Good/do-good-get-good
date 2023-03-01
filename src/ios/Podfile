@@ -49,14 +49,12 @@ abstract_target 'DoGoodGetGoodCommonPods' do
     :app_path => "#{Pod::Config.instance.installation_root}/.."
   )
 
-  target 'DoGoodGetGood Dev' do 
+  target 'DoGoodGetGood' do
   end
-
-
-  target 'DoGoodGetGood Prod' do 
+  
+  target 'DoGoodGetGoodDev' do
   end
-
-
+  
   target 'DoGoodGetGoodTests' do
     inherit! :complete
     # Pods for testing
