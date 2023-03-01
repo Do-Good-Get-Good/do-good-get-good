@@ -14,7 +14,7 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "641E803329ACF5C400636812"
+                     BlueprintIdentifier = "643B881129AF4FF500E2C867"
                      BuildableName = "DoGoodGetGood Dev.app"
                      BlueprintName = "DoGoodGetGood Dev"
                      ReferencedContainer = "container:DoGoodGetGood.xcodeproj">
@@ -32,7 +32,7 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "641E803329ACF5C400636812"
+               BlueprintIdentifier = "643B881129AF4FF500E2C867"
                BuildableName = "DoGoodGetGood Dev.app"
                BlueprintName = "DoGoodGetGood Dev"
                ReferencedContainer = "container:DoGoodGetGood.xcodeproj">
@@ -67,7 +67,7 @@
                <EnvironmentBuildable>
                   <BuildableReference
                      BuildableIdentifier = "primary"
-                     BlueprintIdentifier = "641E803329ACF5C400636812"
+                     BlueprintIdentifier = "643B881129AF4FF500E2C867"
                      BuildableName = "DoGoodGetGood Dev.app"
                      BlueprintName = "DoGoodGetGood Dev"
                      ReferencedContainer = "container:DoGoodGetGood.xcodeproj">
@@ -80,7 +80,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "641E803329ACF5C400636812"
+            BlueprintIdentifier = "643B881129AF4FF500E2C867"
             BuildableName = "DoGoodGetGood Dev.app"
             BlueprintName = "DoGoodGetGood Dev"
             ReferencedContainer = "container:DoGoodGetGood.xcodeproj">
@@ -97,7 +97,7 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "641E803329ACF5C400636812"
+            BlueprintIdentifier = "643B881129AF4FF500E2C867"
             BuildableName = "DoGoodGetGood Dev.app"
             BlueprintName = "DoGoodGetGood Dev"
             ReferencedContainer = "container:DoGoodGetGood.xcodeproj">
