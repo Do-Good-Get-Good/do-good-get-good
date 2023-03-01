@@ -58,7 +58,6 @@
 		64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
-		64CEDA6C29AFB8D500D996F1 /* DoGoodGetGood copy2-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; name = "DoGoodGetGood copy2-Info.plist"; path = "/Users/mattiasahlstrom/Documents/GitHub/do-good-get-good/src/ios/DoGoodGetGood copy2-Info.plist"; sourceTree = "<absolute>"; };
 		64D6637929A936AE0027F881 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = "/Users/mattiasahlstrom/Documents/Clean-React-Native/DoGoodGetGood/ios/Info.plist"; sourceTree = "<absolute>"; };
 		69CF90BE52EC466F0CF45100 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		70563D5B07364418ABFAD8F7 /* DIN-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Light.otf"; path = "../assets/fonts/DIN-Light.otf"; sourceTree = "<group>"; };
@@ -205,7 +204,6 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				56B1D1E37AD34425A9C025BD /* Resources */,
 				F9628818C64758E0011CF508 /* Pods */,
-				64CEDA6C29AFB8D500D996F1 /* DoGoodGetGood copy2-Info.plist */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
