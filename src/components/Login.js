@@ -1,4 +1,4 @@
-import React, {useEffect, useState, useRef} from 'react';
+import React, { useEffect, useState, useRef } from "react";
 import {
   Text,
   View,
@@ -12,30 +12,30 @@ import {
   KeyboardAvoidingView,
   Dimensions,
   TouchableWithoutFeedback,
-} from 'react-native';
+} from "react-native";
 
-import {Icon} from '@rneui/base';
+import { Icon } from "@rneui/base";
 
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import Config from 'react-native-config';
+import Config from "react-native-config";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-import inputStyles from '../styles/inputStyle';
-import ResetPassModal from './ResetPassModal';
-import BottomLogo from './BottomLogo';
-import DevRelease from './DevRelease';
+import inputStyles from "../styles/inputStyle";
+import ResetPassModal from "./ResetPassModal";
+import BottomLogo from "./BottomLogo";
+import DevRelease from "./DevRelease";
 
-import auth from '@react-native-firebase/auth';
-import crashlytics from '@react-native-firebase/crashlytics';
+import auth from "@react-native-firebase/auth";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 export default function Login() {
-  const [email, setEmail] = useState('');
-  const [pass, setPass] = useState('');
+  const [email, setEmail] = useState("");
+  const [pass, setPass] = useState("");
   const [showPassword, setShowPassword] = useState(false);
-  const [randomText, setRandomText] = useState('');
+  const [randomText, setRandomText] = useState("");
   const [error, setError] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [isEmailValid, setEmailValid] = useState(true);
@@ -43,10 +43,10 @@ export default function Login() {
   const ref_input2 = useRef();
 
   const motivationTexts = [
-    'Du är riktigt grym!',
-    'Bra jobbat!',
-    'Detta förtjänar du!',
-    'Wohoo, du är tillbaka!',
+    "Du är riktigt grym!",
+    "Bra jobbat!",
+    "Detta förtjänar du!",
+    "Wohoo, du är tillbaka!",
   ];
 
   //Authorize user and sign in
@@ -54,23 +54,23 @@ export default function Login() {
     auth()
       .signInWithEmailAndPassword(email, pass)
       .catch(error => {
-        if (error.code === 'auth/email-already-in-use') {
-          console.log('Den e-post adressen används redan');
+        if (error.code === "auth/email-already-in-use") {
+          console.log("Den e-post adressen används redan");
         }
-        if (error.code === 'auth/user-not-found') {
-          setError('Fel e-post eller lösenord');
+        if (error.code === "auth/user-not-found") {
+          setError("Fel e-post eller lösenord");
           checkValidity(false, false);
         }
-        if (error.code === 'auth/wrong-password') {
-          setError('Fel e-post eller lösenord');
+        if (error.code === "auth/wrong-password") {
+          setError("Fel e-post eller lösenord");
           checkValidity(false, false);
         }
-        if (error.code === 'auth/invalid-email') {
-          setError('Ange en giltig e-post');
+        if (error.code === "auth/invalid-email") {
+          setError("Ange en giltig e-post");
           checkValidity(false, true);
         }
         crashlytics().recordError(error);
-        crashlytics().setAttributes({email});
+        crashlytics().setAttributes({ email });
         console.error(error);
       });
   };
@@ -85,20 +85,20 @@ export default function Login() {
   };
 
   const checkInputsAndSignIn = () => {
-    if ((email === null && pass === null) || (email === '' && pass === '')) {
-      setError('Du måste fylla i e-post och lösenord');
+    if ((email === null && pass === null) || (email === "" && pass === "")) {
+      setError("Du måste fylla i e-post och lösenord");
       checkValidity(false, false);
     } else if (
       (email != null && pass === null) ||
-      (email != '' && pass === '')
+      (email != "" && pass === "")
     ) {
-      setError('Du måste fylla i ett lösenord');
+      setError("Du måste fylla i ett lösenord");
       checkValidity(true, false);
     } else if (
       (email === null && pass != null) ||
-      (email === '' && pass != '')
+      (email === "" && pass != "")
     ) {
-      setError('Du måste fylla i en e-post');
+      setError("Du måste fylla i en e-post");
       checkValidity(false, true);
     } else {
       signIn();
@@ -115,24 +115,24 @@ export default function Login() {
   return (
     <ImageBackground
       testID="login.backgroundImage"
-      source={require('../img/blueprint-white.png')}
-      resizeMode={'cover'}
+      source={require("../img/blueprint-white.png")}
+      resizeMode={"cover"}
       style={{
-        backgroundColor: '#00000009',
-        width: Dimensions.get('screen').width,
-        height: Dimensions.get('screen').height,
+        backgroundColor: "#00000009",
+        width: Dimensions.get("screen").width,
+        height: Dimensions.get("screen").height,
       }}>
       <SafeAreaView style={styles.wrapper}>
-        {Config.NODE_ENV === 'dev' && <DevRelease />}
+        {Config.NODE_ENV === "dev" && <DevRelease />}
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <KeyboardAvoidingView
-            behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
-            style={{flex: 1}}>
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={{ flex: 1 }}>
             <View style={styles.logo}>
               <Image
                 testID="login.dgggLogo"
-                source={require('../img/Logotyp_DGGG.png')}
+                source={require("../img/Logotyp_DGGG.png")}
                 style={styles.logoImg}
               />
               <Text
@@ -145,12 +145,12 @@ export default function Login() {
             <View style={styles.loginFormView}>
               <View style={styles.inputView}>
                 <TextInput
-                  textContentType={'emailAddress'}
+                  textContentType={"emailAddress"}
                   autoCapitalize="none"
                   onChangeText={text => setEmail(text)}
                   value={email}
-                  keyboardType={'email-address'}
-                  placeholder={'E-post'}
+                  keyboardType={"email-address"}
+                  placeholder={"E-post"}
                   returnKeyType="next"
                   onSubmitEditing={() => ref_input2.current.focus()}
                   blurOnSubmit={false}
@@ -158,20 +158,20 @@ export default function Login() {
                     inputStyles.textInput,
                     error != null && inputStyles.textInputInvalid,
                     !isEmailValid && inputStyles.textInputInvalid,
-                    {fontFamily: typography.b1.fontFamily},
+                    { fontFamily: typography.b1.fontFamily },
                   ]}
                 />
               </View>
               <View
                 style={{
-                  flexDirection: 'row',
+                  flexDirection: "row",
                   marginBottom: 10,
                 }}>
                 <TextInput
-                  textContentType={'password'}
+                  textContentType={"password"}
                   onChangeText={text => setPass(text)}
                   value={pass}
-                  placeholder={'Lösenord'}
+                  placeholder={"Lösenord"}
                   secureTextEntry={showPassword ? false : true}
                   returnKeyType="send"
                   onSubmitEditing={() => checkInputsAndSignIn()}
@@ -180,12 +180,12 @@ export default function Login() {
                     inputStyles.textInput,
                     error != null && inputStyles.textInputInvalid,
                     !isPassValid && inputStyles.textInputInvalid,
-                    {paddingRight: 44, fontFamily: typography.b1.fontFamily},
+                    { paddingRight: 44, fontFamily: typography.b1.fontFamily },
                   ]}
                 />
                 <View style={styles.showPasswordIcon}>
                   <Icon
-                    name={showPassword ? 'visibility' : 'visibility-off'}
+                    name={showPassword ? "visibility" : "visibility-off"}
                     type="material"
                     size={25}
                     onPress={() => {
@@ -216,7 +216,7 @@ export default function Login() {
                     style={{
                       ...typography.button.lg,
                       color: colors.dark,
-                      fontWeight: '500',
+                      fontWeight: "500",
                     }}>
                     Logga in
                   </Text>
@@ -224,7 +224,11 @@ export default function Login() {
               </View>
               <View style={styles.passReset}>
                 <Text
-                  style={{color: '#333333', marginRight: 4, ...typography.b2}}>
+                  style={{
+                    color: "#333333",
+                    marginRight: 4,
+                    ...typography.b2,
+                  }}>
                   Glömt ditt lösenord?
                 </Text>
                 <TouchableOpacity
@@ -234,9 +238,9 @@ export default function Login() {
                   <Text
                     style={{
                       color: colors.primary,
-                      textDecorationLine: 'underline',
+                      textDecorationLine: "underline",
                       ...typography.b2,
-                      fontWeight: '700',
+                      fontWeight: "700",
                     }}>
                     Tryck här
                   </Text>
@@ -257,19 +261,20 @@ const styles = StyleSheet.create({
   },
   logo: {
     flex: 0.8,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 10,
   },
   logoImg: {
-    height: Dimensions.get('window').height * 0.15,
-    aspectRatio: 18 / 9,
+    height: "40%",
+    aspectRatio: 2,
   },
   motivationTexts: {
     ...typography.title,
     color: colors.dark,
-    alignSelf: 'center',
-    fontWeight: '500',
-    marginTop: 30,
+    alignSelf: "center",
+    fontWeight: "500",
+    marginTop: 15,
   },
   loginFormView: {
     paddingHorizontal: 18,
@@ -277,18 +282,18 @@ const styles = StyleSheet.create({
   },
   inputView: {
     marginBottom: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   showPasswordIcon: {
-    justifyContent: 'center',
+    justifyContent: "center",
     right: 36,
     elevation: 2,
   },
   loginBtn: {
-    backgroundColor: '#84BD00',
+    backgroundColor: "#84BD00",
     height: 55,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     borderRadius: 5,
     ...Platform.select({
       ios: {
@@ -304,8 +309,8 @@ const styles = StyleSheet.create({
     }),
   },
   passReset: {
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     marginTop: 10,
   },
 });
