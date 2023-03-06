@@ -30,7 +30,8 @@ const FloatingActionButton = ({}) => {
               onPress={() => {
                 setIsOpen(false);
                 navigation.navigate("CreateActivity");
-              }}>
+              }}
+            >
               <Text style={styles.buttonText}>Lägg till aktivitet</Text>
             </TouchableOpacity>
             <TouchableOpacity
@@ -39,7 +40,8 @@ const FloatingActionButton = ({}) => {
               onPress={() => {
                 setIsOpen(false);
                 navigation.navigate("CreateUser");
-              }}>
+              }}
+            >
               <Text style={styles.buttonText}>Lägg till användare</Text>
             </TouchableOpacity>
           </View>

@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 
 import {
   Text,
@@ -7,15 +7,15 @@ import {
   Image,
   TouchableOpacity,
   Platform,
-} from 'react-native';
+} from "react-native";
 
-import {Icon} from '@rneui/base';
-import CalendarView from './CalendarView';
-import Images from '../Images';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+import { Icon } from "@rneui/base";
+import CalendarView from "./CalendarView";
+import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-export const MyActivities = ({activities}) => {
+export const MyActivities = ({ activities }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
 
@@ -43,7 +43,8 @@ export const MyActivities = ({activities}) => {
 
               <View
                 testID="viewId"
-                style={styles.mapIconAndCityText(myActivity)}>
+                style={styles.mapIconAndCityText(myActivity)}
+              >
                 <Icon
                   type="material-community"
                   name="map-marker-outline"
@@ -77,7 +78,8 @@ export const MyActivities = ({activities}) => {
               toggleOverlay();
             }}
             activeOpacity={0.5}
-            style={styles.shedowForButton}>
+            style={styles.shedowForButton}
+          >
             <Text style={styles.läggTid}>Logga tid</Text>
           </TouchableOpacity>
         </View>
@@ -102,8 +104,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
-    resizeMode: 'contain',
-    alignItems: 'center',
+    resizeMode: "contain",
+    alignItems: "center",
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5,
@@ -111,11 +113,11 @@ const styles = StyleSheet.create({
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   textTitleCityTime: {
     flex: 2,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 11,
     color: colors.dark,
@@ -127,9 +129,9 @@ const styles = StyleSheet.create({
   mapIconAndCityText(myActivity) {
     return {
       flex: 1,
-      flexDirection: 'row',
+      flexDirection: "row",
       paddingTop: myActivity.title.length > 16 ? 5 : 25,
-      alignItems: 'center',
+      alignItems: "center",
     };
   },
   textCity: {
@@ -147,13 +149,13 @@ const styles = StyleSheet.create({
   läggTid: {
     fontSize: typography.button.lg.fontSize,
     color: colors.dark,
-    fontWeight: '500',
+    fontWeight: "500",
   },
   iconsAndTextTimeContainer: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
     marginTop: 6,
-    alignItems: 'center',
+    alignItems: "center",
   },
   shedowForButton: {
     borderRadius: 5,
@@ -162,8 +164,8 @@ const styles = StyleSheet.create({
     paddingVertical: 15,
     paddingHorizontal: 10,
     backgroundColor: colors.primary,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     ...Platform.select({
       ios: {
         shadowOffset: {

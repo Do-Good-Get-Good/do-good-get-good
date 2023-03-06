@@ -1,31 +1,31 @@
-import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Icon} from '@rneui/base';
-import {useRoute} from '@react-navigation/native';
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+import React, { useState, useEffect } from "react";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Icon } from "@rneui/base";
+import { useRoute } from "@react-navigation/native";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
 export function DropDownSmall({}) {
   const creactActivityContext = useCreateActivityFunction();
   const rout = useRoute();
 
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState("");
   const [sortArray, setSortArray] = useState([]);
-  const [mainWordAdminGallery, setMainWordAdminGallery] = useState('Datum');
+  const [mainWordAdminGallery, setMainWordAdminGallery] = useState("Datum");
   const [mainWordCreateActivity, setMainWordCreateActivity] =
-    useState('Välj aktivitet');
+    useState("Välj aktivitet");
   const sortingAdminGallery = [
-    {title: 'Favoriter'},
-    {title: 'Namn'},
-    {title: 'Plats'},
+    { title: "Favoriter" },
+    { title: "Namn" },
+    { title: "Plats" },
   ];
   const [openDropDown, setOpenDropDown] = useState(false);
 
   useEffect(() => {
-    if (rout.name === 'CreateActivity') {
+    if (rout.name === "CreateActivity") {
       let newArray = [];
-      newArray.push({title: 'Skapa ny aktivitet'});
+      newArray.push({ title: "Skapa ny aktivitet" });
       setSortBy(mainWordCreateActivity);
 
       for (let i = 0; i < creactActivityContext.activeActivities.length; i++) {
@@ -35,11 +35,11 @@ export function DropDownSmall({}) {
         newArray.push(activityTitle);
       }
       setSortArray(newArray);
-    } else if (rout.name === 'AdminActivityGallery') {
+    } else if (rout.name === "AdminActivityGallery") {
       setSortBy(mainWordAdminGallery);
       setSortArray(sortingAdminGallery);
     } else {
-      console.log('No rout');
+      console.log("No rout");
     }
   }, [rout.name]);
 
@@ -56,17 +56,17 @@ export function DropDownSmall({}) {
       ...typography.b1,
       color: colors.dark,
       fontStyle:
-        title === 'Skapa ny aktivitet' && index === 0 ? 'italic' : 'normal',
+        title === "Skapa ny aktivitet" && index === 0 ? "italic" : "normal",
     };
   };
 
   function pressSelectionInsideDropDown(selection, index) {
-    if (rout.name === 'CreateActivity') {
+    if (rout.name === "CreateActivity") {
       setOpenDropDown(false);
       creactActivityContext.chooseInDropDown(selection);
       setSortBy(selection);
     } else {
-      console.log('No rout');
+      console.log("No rout");
     }
   }
 
@@ -74,8 +74,8 @@ export function DropDownSmall({}) {
     borderColor: openDropDown === true ? colors.dark : colors.background,
 
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     padding: 8,
 
     marginLeft: 19,
@@ -85,7 +85,7 @@ export function DropDownSmall({}) {
     borderRadius: 3,
     borderWidth: 1,
     backgroundColor: colors.background,
-    overflow: 'hidden',
+    overflow: "hidden",
   };
 
   return (
@@ -96,7 +96,7 @@ export function DropDownSmall({}) {
           <Icon
             color={colors.secondary}
             style={styles.sortIcon}
-            name={openDropDown === true ? 'arrow-drop-up' : 'arrow-drop-down'}
+            name={openDropDown === true ? "arrow-drop-up" : "arrow-drop-down"}
             size={30}
           />
         </View>
@@ -109,7 +109,8 @@ export function DropDownSmall({}) {
                   testID="insideDropDownPressed"
                   onPress={() => {
                     pressSelectionInsideDropDown(sort.title, index);
-                  }}>
+                  }}
+                >
                   <Text style={toStileTitle(sort.title, index)}>
                     {sort.title}
                   </Text>
@@ -127,7 +128,7 @@ export default DropDownSmall;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
 
   sortText: {
@@ -141,16 +142,16 @@ const styles = StyleSheet.create({
   },
   insideSortBox: {
     flex: 1,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     marginLeft: 19,
     paddingVertical: 5,
-    overflow: 'hidden',
+    overflow: "hidden",
     paddingRight: 15,
     paddingLeft: 14,
     borderRadius: 2,
     borderWidth: 1,
     backgroundColor: colors.background,
-    overflow: 'hidden',
+    overflow: "hidden",
     borderColor: colors.background,
   },
 });

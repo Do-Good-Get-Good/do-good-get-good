@@ -1,25 +1,25 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, TouchableOpacity, View} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import {Icon, Tooltip} from '@rneui/base';
+import { Icon, Tooltip } from "@rneui/base";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-const InfoModal = ({screen, tooltipWidth}) => {
+const InfoModal = ({ screen, tooltipWidth }) => {
   const [infoText, setInfoText] = useState(null);
   const [open, setOpen] = useState(false);
 
   useEffect(() => {
     switch (screen) {
-      case 'homepage':
+      case "homepage":
         setInfoText(
-          'Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år',
+          "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år",
         );
         break;
-      case 'imageGallery':
+      case "imageGallery":
         setInfoText(
-          'Välj en bild som bäst representerar aktiviteten som den ska tillhöra.',
+          "Välj en bild som bäst representerar aktiviteten som den ska tillhöra.",
         );
         break;
     }
@@ -44,7 +44,8 @@ const InfoModal = ({screen, tooltipWidth}) => {
       onClose={() => {
         setOpen(false);
       }}
-      containerStyle={styles.overlay}>
+      containerStyle={styles.overlay}
+    >
       <View testID="InfoModal.viewAroundIcon">
         <Icon type="material" name="info-outline" size={20} />
       </View>

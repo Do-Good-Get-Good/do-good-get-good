@@ -1,23 +1,29 @@
-import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity, Platform} from 'react-native';
+import React from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
 
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import {Icon, Overlay} from '@rneui/base';
+import { Icon, Overlay } from "@rneui/base";
 
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import {useUserLevelCheckFunction} from '../context/UserLevelContext';
-import {useAdminGalleryFunction} from '../context/AdminGalleryContext';
+import { useUserLevelCheckFunction } from "../context/UserLevelContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-import {useSuperAdminFunction} from '../context/SuperAdminContext';
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-const MenuOverlay = ({openOverlay, isVisible}) => {
+const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
   const userLevel = useUserLevelCheckFunction();
   const adminGalleryContext = useAdminGalleryFunction();
@@ -27,8 +33,8 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
     auth()
       .signOut()
       .then(() => {})
-      .catch(error => {
-        console.log('Enable in your firebase console.');
+      .catch((error) => {
+        console.log("Enable in your firebase console.");
 
         console.error(error);
       });
@@ -38,15 +44,16 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
     return (
       <View style={styles.menuOverlayFooter}>
         <View style={styles.menuOverlayLoggedInAccount}>
-          <Text style={{...typography.b2}}>Inloggad som: </Text>
-          <Text style={{textDecorationLine: 'underline', ...typography.b2}}>
+          <Text style={{ ...typography.b2 }}>Inloggad som: </Text>
+          <Text style={{ textDecorationLine: "underline", ...typography.b2 }}>
             {auth().currentUser.email}
           </Text>
         </View>
         <TouchableOpacity
           testID="menuOverlay.logoutButton"
           style={styles.menuOverlayLogOutButton}
-          onPress={() => signOutFunction()}>
+          onPress={() => signOutFunction()}
+        >
           <Text style={styles.menuOverlayLogOutButtonText}>Logga ut</Text>
         </TouchableOpacity>
       </View>
@@ -60,11 +67,13 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
       animationType="fade"
       overlayStyle={{
         backgroundColor: colors.primary,
-      }}>
+      }}
+    >
       <TouchableOpacity
         testID="menuOverlay.closeButton"
         style={styles.menuOverlayCloseButton}
-        onPress={openOverlay}>
+        onPress={openOverlay}
+      >
         <Icon name="close" size={25} />
         <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
       </TouchableOpacity>
@@ -75,7 +84,8 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
           onPress={() => {
             // openOverlay();
             // changeLanguage();
-          }}>
+          }}
+        >
           <Text style={styles.menuOverlayChangeLangText}>Byt språk</Text>
         </TouchableOpacity>
         <View style={styles.menuOverlayItemStyling}>
@@ -84,8 +94,9 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
-              navigation.navigate('HomePage');
-            }}>
+              navigation.navigate("HomePage");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>Hem</Text>
           </TouchableOpacity>
 
@@ -94,8 +105,9 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
-              navigation.navigate('MyTimePage');
-            }}>
+              navigation.navigate("MyTimePage");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>Min tid</Text>
           </TouchableOpacity>
 
@@ -104,8 +116,9 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
-              navigation.navigate('ConceptPage');
-            }}>
+              navigation.navigate("ConceptPage");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>Om konceptet</Text>
           </TouchableOpacity>
           <TouchableOpacity
@@ -113,12 +126,13 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
             style={styles.menuOverlayLinkStyling}
             onPress={() => {
               openOverlay();
-              navigation.navigate('Faq');
-            }}>
+              navigation.navigate("Faq");
+            }}
+          >
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
 
-          {(userLevel === 'admin' || userLevel === 'superadmin') && (
+          {(userLevel === "admin" || userLevel === "superadmin") && (
             <>
               <TouchableOpacity
                 testID="menuOverlay.activitiesButton"
@@ -127,8 +141,9 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
                   openOverlay();
                   adminGalleryContext.chooseActiveOrNot(true);
                   adminGalleryContext.setCleanUpSearchBarComponent(true);
-                  navigation.navigate('AdminActivityGallery');
-                }}>
+                  navigation.navigate("AdminActivityGallery");
+                }}
+              >
                 <Text style={styles.menuOverlayLinkText}>Aktiviteter</Text>
               </TouchableOpacity>
 
@@ -137,24 +152,26 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
                   openOverlay();
-                  navigation.navigate('AdminPage');
-                }}>
+                  navigation.navigate("AdminPage");
+                }}
+              >
                 <Text style={styles.menuOverlayLinkText}>Admin</Text>
               </TouchableOpacity>
             </>
           )}
 
-          {userLevel === 'superadmin' && (
+          {userLevel === "superadmin" && (
             <>
               <TouchableOpacity
                 testID="menuOverlay.allUsersInTheSystem"
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
                   openOverlay();
-                  navigation.navigate('AllUsersInTheSystem');
+                  navigation.navigate("AllUsersInTheSystem");
                   superAdminContext.setGetAllUsers(true);
                   superAdminContext.userLevel(userLevel);
-                }}>
+                }}
+              >
                 <Text style={styles.menuOverlayLinkText}>Alla användare</Text>
               </TouchableOpacity>
               <TouchableOpacity
@@ -162,8 +179,9 @@ const MenuOverlay = ({openOverlay, isVisible}) => {
                 style={styles.menuOverlayLinkStyling}
                 onPress={() => {
                   openOverlay();
-                  navigation.navigate('DownloadUserData');
-                }}>
+                  navigation.navigate("DownloadUserData");
+                }}
+              >
                 <Text style={styles.menuOverlayLinkText}>Exportera data</Text>
               </TouchableOpacity>
             </>
@@ -181,7 +199,7 @@ const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
     paddingHorizontal: 70,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     ...Platform.select({
       ios: {
         paddingTop: 60,
@@ -192,8 +210,8 @@ const styles = StyleSheet.create({
     }),
   },
   menuOverlayCloseButton: {
-    alignItems: 'flex-start',
-    alignSelf: 'flex-end',
+    alignItems: "flex-start",
+    alignSelf: "flex-end",
     ...Platform.select({
       ios: {
         top: 60,
@@ -207,13 +225,13 @@ const styles = StyleSheet.create({
     }),
   },
   menuOverlayCloseButtonText: {
-    textTransform: 'uppercase',
+    textTransform: "uppercase",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     marginTop: -3,
   },
   menuOverlayChangeLangButton: {
-    justifyContent: 'center',
+    justifyContent: "center",
     width: 100,
     height: 40,
   },
@@ -234,8 +252,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
   },
   menuOverlayLoggedInAccount: {
-    flexDirection: 'row',
-    flexWrap: 'wrap',
+    flexDirection: "row",
+    flexWrap: "wrap",
   },
   menuOverlayLogOutButton: {
     width: 100,

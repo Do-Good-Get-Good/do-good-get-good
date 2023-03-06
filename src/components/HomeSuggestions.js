@@ -40,7 +40,7 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
 
   return (
     <View style={styles.activityContainer}>
-      {showArray.map(suggestion => (
+      {showArray.map((suggestion) => (
         <View key={suggestion.id}>
           <TouchableOpacity
             testID="lookDetails"
@@ -48,7 +48,8 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
               lookDetails(suggestion, suggestion.active, suggestion.popular)
             }
             style={styles.insideActivityContainer}
-            activeOpacity={0.4}>
+            activeOpacity={0.4}
+          >
             <View style={styles.photoAndText}>
               <View style={styles.textTitleCityDescriptipn}>
                 <View style={{ flex: 1, flexDirection: "row" }}>

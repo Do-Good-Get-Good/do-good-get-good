@@ -46,7 +46,8 @@ const DatePicker = ({ date, setDate }) => {
     <>
       <TouchableOpacity
         style={styles.datePickerButton}
-        onPress={() => setVisible(true)}>
+        onPress={() => setVisible(true)}
+      >
         <View style={styles.buttonView}>
           <Text style={typography.b2}>{date}</Text>
         </View>
@@ -54,10 +55,12 @@ const DatePicker = ({ date, setDate }) => {
       <Overlay
         visible={visible}
         onBackdropPress={() => setVisible(!visible)}
-        overlayStyle={styles.overlayStyle}>
+        overlayStyle={styles.overlayStyle}
+      >
         <Pressable
           style={{ position: "absolute", right: -10, top: -10, zIndex: 1 }}
-          onPress={() => setVisible(false)}>
+          onPress={() => setVisible(false)}
+        >
           <Icon
             name="close"
             type="material"
@@ -66,7 +69,7 @@ const DatePicker = ({ date, setDate }) => {
           />
         </Pressable>
         <Calendar
-          onDayPress={day => {
+          onDayPress={(day) => {
             setSelectedDate(day.dateString);
           }}
           monthFormat={"MMMM yyyy"}
@@ -118,9 +121,11 @@ const DatePicker = ({ date, setDate }) => {
           onPress={() => {
             setDate(selectedDate);
             setVisible(false);
-          }}>
+          }}
+        >
           <View
-            style={[styles.buttonView, { backgroundColor: colors.primary }]}>
+            style={[styles.buttonView, { backgroundColor: colors.primary }]}
+          >
             <Text style={{ ...typography.button.lg }}>Välj datum</Text>
           </View>
         </TouchableOpacity>

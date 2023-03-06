@@ -53,7 +53,7 @@ function MyTimeEntries() {
       try {
         let data = await getUserTimeEntriesOrderByDate(
           auth().currentUser.uid,
-          startPoint
+          startPoint,
         );
         let entries = [...dataAfterScroll, ...data];
         setDataAfterScroll(entries);

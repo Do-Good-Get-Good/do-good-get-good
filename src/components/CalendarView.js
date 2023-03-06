@@ -141,7 +141,7 @@ const CalendarView = ({
         incrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error.message);
         setError("Ett fel uppstod, vänligen försök igen.");
         setTimeout(() => {
@@ -151,7 +151,7 @@ const CalendarView = ({
   };
 
   //Change activity date and time (hours)
-  const changeTimeEntry = timeEntryID => {
+  const changeTimeEntry = (timeEntryID) => {
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
@@ -173,13 +173,13 @@ const CalendarView = ({
         }
         toggleVisibility();
       })
-      .catch(error => {
+      .catch((error) => {
         setError(error);
       });
   };
 
   //Removes a users time entry from the database
-  const removeTimeEntry = timeEntryID => {
+  const removeTimeEntry = (timeEntryID) => {
     if (removeFirstStaticTimeEntry !== undefined)
       removeFirstStaticTimeEntry(timeEntryID);
 
@@ -188,7 +188,7 @@ const CalendarView = ({
         decrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
       })
-      .catch(error => {
+      .catch((error) => {
         console.log(error);
         setError(error.message);
       });
@@ -208,10 +208,12 @@ const CalendarView = ({
         flexDirection: "column",
         justifyContent: "space-between",
       }}
-      animationType="fade">
+      animationType="fade"
+    >
       <Pressable
         style={{ position: "absolute", right: -10, top: -10, zIndex: 2 }}
-        onPress={toggleVisibility}>
+        onPress={toggleVisibility}
+      >
         <Icon
           name="close"
           type="material"
@@ -228,10 +230,11 @@ const CalendarView = ({
       <ScrollView
         style={{
           paddingHorizontal: 16,
-        }}>
+        }}
+      >
         <View style={styles.calendarAndHourView}>
           <Calendar
-            onDayPress={day => {
+            onDayPress={(day) => {
               setSelectedDate(day.dateString);
             }}
             monthFormat={"MMMM yyyy"}
@@ -301,13 +304,15 @@ const CalendarView = ({
                   return;
                 }
                 setHours(hours - 0.5);
-              }}>
+              }}
+            >
               <Text style={styles.hourAmountText}>-</Text>
             </TouchableOpacity>
             <View style={styles.hourAmount}>
               <Text
                 testID="calendarView.hourInput"
-                style={styles.hourAmountText}>
+                style={styles.hourAmountText}
+              >
                 {hours}
               </Text>
             </View>
@@ -322,14 +327,16 @@ const CalendarView = ({
                   return;
                 }
                 setHours(hours + 0.5);
-              }}>
+              }}
+            >
               <Text style={styles.hourAmountText}>+</Text>
             </TouchableOpacity>
           </View>
         </View>
         <Text
           testID="calendarView.dateAndHourInput"
-          style={styles.dateAndHourSummary}>
+          style={styles.dateAndHourSummary}
+        >
           {format(new Date(selectedDate), "EEE d LLLL", { locale: sv }) +
             `, ${hours}h`}
         </Text>
@@ -338,7 +345,8 @@ const CalendarView = ({
       {error != null && (
         <Text
           testID="errorTextId"
-          style={{ alignSelf: "center", marginBottom: 5, ...errorMessage }}>
+          style={{ alignSelf: "center", marginBottom: 5, ...errorMessage }}
+        >
           {error}
         </Text>
       )}
@@ -352,7 +360,8 @@ const CalendarView = ({
           onPress={() => {
             registerTimeEntry();
           }}
-          disabled={hours === 0 ? true : false}>
+          disabled={hours === 0 ? true : false}
+        >
           <Text style={styles.sendBtnText}>Logga tid</Text>
         </TouchableOpacity>
       )}
@@ -368,14 +377,16 @@ const CalendarView = ({
             onPress={() => {
               changeTimeEntry(activity.timeEntryID);
             }}
-            disabled={hours === 0 ? true : false}>
+            disabled={hours === 0 ? true : false}
+          >
             <Text style={styles.sendBtnText}>Ändra tid</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.sendBtn, styles.deleteBtn]}
             onPress={() => {
               removeTimeEntry(activity.timeEntryID);
-            }}>
+            }}
+          >
             <Text style={styles.sendBtnText}>Ta bort tid</Text>
           </TouchableOpacity>
         </>

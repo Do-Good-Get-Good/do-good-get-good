@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   View,
@@ -6,17 +6,17 @@ import {
   TouchableOpacity,
   Platform,
   Keyboard,
-} from 'react-native';
-import {Icon} from '@rneui/base';
-import {useAdminGalleryFunction} from '../context/AdminGalleryContext';
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+} from "react-native";
+import { Icon } from "@rneui/base";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 export function SearchBarComponent() {
   const adminGalleryContext = useAdminGalleryFunction();
   const createActivityContext = useCreateActivityFunction();
-  const [wordToSearch, setWordToSearch] = useState('');
+  const [wordToSearch, setWordToSearch] = useState("");
 
   function searchWordButtonPressed() {
     if (adminGalleryContext.activeOrInactiveActivity === true) {
@@ -28,18 +28,18 @@ export function SearchBarComponent() {
   }
 
   useEffect(() => {
-    if (wordToSearch === '' || wordToSearch === ' ') {
+    if (wordToSearch === "" || wordToSearch === " ") {
       if (adminGalleryContext.activeOrInactiveActivity === true) {
-        createActivityContext.word('');
+        createActivityContext.word("");
       } else {
-        adminGalleryContext.word('');
+        adminGalleryContext.word("");
       }
     }
   }, [wordToSearch]);
 
   useEffect(() => {
     if (adminGalleryContext.cleanUpSearchBarComponent) {
-      setWordToSearch('');
+      setWordToSearch("");
       adminGalleryContext.setCleanUpSearchBarComponent(false);
     }
   }, [adminGalleryContext.cleanUpSearchBarComponent]);
@@ -58,7 +58,8 @@ export function SearchBarComponent() {
       <TouchableOpacity
         testID="searchButtonPressed"
         onPress={() => searchWordButtonPressed()}
-        style={styles.iconContainer}>
+        style={styles.iconContainer}
+      >
         <Icon style={styles.icon} color="#5B6770" name="search" size={30} />
       </TouchableOpacity>
     </View>
@@ -67,7 +68,7 @@ export function SearchBarComponent() {
 export default SearchBarComponent;
 const styles = StyleSheet.create({
   container: {
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: colors.background,
     borderRadius: 5,
     height: 55,
@@ -103,8 +104,8 @@ const styles = StyleSheet.create({
   },
   iconContainer: {
     width: 55,
-    height: '100%',
-    alignItems: 'center',
-    justifyContent: 'center',
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

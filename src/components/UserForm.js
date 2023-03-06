@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, { useState, useEffect, useRef } from "react";
 import {
   Text,
   StyleSheet,
@@ -6,24 +6,24 @@ import {
   TouchableOpacity,
   TextInput,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 
-import {Icon} from '@rneui/base';
+import { Icon } from "@rneui/base";
 
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import BottomNavButtons from './BottomNavButtons';
-import {useNavigation} from '@react-navigation/native';
-import {UserLevels} from '../lib/enums/userlevels';
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import BottomNavButtons from "./BottomNavButtons";
+import { useNavigation } from "@react-navigation/native";
+import { UserLevels } from "../lib/enums/userlevels";
 
-const UserForm = ({userLevel, user, setUser, nextPage}) => {
+const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   const navigation = useNavigation();
 
   const [expanded, setExpanded] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [placeholder, setPlaceholder] = useState(
-    user.role === null ? 'Behörighet' : user.role,
+    user.role === null ? "Behörighet" : user.role,
   );
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [passwordFilledUp, setPasswordFilledUp] = useState();
@@ -38,7 +38,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
 
   useEffect(() => {
     if (user.name != null) {
-      if (user.name != '' && user.name.trim()) {
+      if (user.name != "" && user.name.trim()) {
         setNameFilledUp(true);
       } else {
         setNameFilledUp(false);
@@ -48,7 +48,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
 
   useEffect(() => {
     if (user.surname != null) {
-      if (user.surname != '' && user.surname.trim()) {
+      if (user.surname != "" && user.surname.trim()) {
         setSurnameFilledUp(true);
       } else {
         setSurnameFilledUp(false);
@@ -60,7 +60,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
     let reg = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w\w+)+$/;
 
     if (user.email != null) {
-      if (user.email != '' && user.email.trim()) {
+      if (user.email != "" && user.email.trim()) {
         setEmailFilledUp(true);
       } else {
         setEmailFilledUp(false);
@@ -81,7 +81,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
       } else {
         setInvalidPassword(false);
       }
-      if (user.password != '' && user.password.trim()) {
+      if (user.password != "" && user.password.trim()) {
         setPasswordFilledUp(true);
       } else {
         setPasswordFilledUp(false);
@@ -92,9 +92,9 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
   useEffect(() => {
     if (userLevel === UserLevels.Admin) {
       setPlaceholderFilledUp(true);
-      setPlaceholder('');
+      setPlaceholder("");
     } else {
-      if (placeholder === 'Behörighet') return;
+      if (placeholder === "Behörighet") return;
       if (
         [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin].includes(
           placeholder,
@@ -127,7 +127,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
       if (user.email === null) setEmailFilledUp(false);
       if (user.password === null) setPasswordFilledUp(false);
       if (
-        placeholder === 'Behörighet' ||
+        placeholder === "Behörighet" ||
         !placeholder ||
         placeholder === null
       ) {
@@ -140,13 +140,14 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
   return (
     <>
       <ScrollView
-        keyboardDismissMode={'on-drag'}
-        style={{flex: 1}}
-        contentContainerStyle={{paddingHorizontal: 16}}>
+        keyboardDismissMode={"on-drag"}
+        style={{ flex: 1 }}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+      >
         <TextInput
           style={[styles.input, styles.dropdownShadow]}
           maxLength={30}
-          onChangeText={text => setUser({...user, name: text})}
+          onChangeText={(text) => setUser({ ...user, name: text })}
           value={user.name}
           placeholder="Förnamn"
           placeholderTextColor={colors.dark}
@@ -159,12 +160,12 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
         <TextInput
           style={[styles.input, styles.dropdownShadow]}
           maxLength={30}
-          onChangeText={text => setUser({...user, surname: text})}
+          onChangeText={(text) => setUser({ ...user, surname: text })}
           value={user.surname}
           placeholder="Efternamn"
           placeholderTextColor={colors.dark}
           ref={ref_input1}
-          returnKeyType={'next'}
+          returnKeyType={"next"}
           onSubmitEditing={() => ref_input2.current.focus()}
         />
         {surnameFilledUp === false && (
@@ -172,11 +173,11 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
         )}
         <TextInput
           style={[styles.input, styles.dropdownShadow]}
-          textContentType={'emailAddress'}
-          keyboardType={'email-address'}
+          textContentType={"emailAddress"}
+          keyboardType={"email-address"}
           autoCapitalize="none"
           maxLength={100}
-          onChangeText={text => setUser({...user, email: text})}
+          onChangeText={(text) => setUser({ ...user, email: text })}
           value={user.email}
           placeholder="E-mail"
           placeholderTextColor={colors.dark}
@@ -194,11 +195,11 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
             * Ange en giltig e-mail
           </Text>
         )}
-        <View style={{flexDirection: 'row', position: 'relative'}}>
+        <View style={{ flexDirection: "row", position: "relative" }}>
           <TextInput
             style={[styles.input, styles.dropdownShadow]}
             maxLength={30}
-            onChangeText={text => setUser({...user, password: text})}
+            onChangeText={(text) => setUser({ ...user, password: text })}
             value={user.password}
             placeholder="Lösenord"
             placeholderTextColor={colors.dark}
@@ -208,7 +209,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
           />
           <View style={styles.showPasswordIcon}>
             <Icon
-              name={showPassword ? 'visibility' : 'visibility-off'}
+              name={showPassword ? "visibility" : "visibility-off"}
               type="material"
               size={25}
               onPress={() => {
@@ -226,7 +227,7 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
           </Text>
         )}
 
-        {userLevel === 'superadmin' && (
+        {userLevel === "superadmin" && (
           <>
             <TouchableOpacity
               style={[
@@ -238,18 +239,20 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
                   borderColor: expanded ? colors.dark : colors.background,
                 },
               ]}
-              onPress={() => setExpanded(!expanded)}>
+              onPress={() => setExpanded(!expanded)}
+            >
               <Text style={styles.placeholderText}>{placeholder}</Text>
               <Icon
                 color="#5B6770"
-                name={expanded === true ? 'arrow-drop-up' : 'arrow-drop-down'}
+                name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
                 size={30}
               />
             </TouchableOpacity>
 
             {expanded === true && (
               <View
-                style={[styles.listItemContentStyle, styles.dropdownShadow]}>
+                style={[styles.listItemContentStyle, styles.dropdownShadow]}
+              >
                 {roles.map((role, index) => (
                   <TouchableOpacity
                     key={index}
@@ -257,10 +260,11 @@ const UserForm = ({userLevel, user, setUser, nextPage}) => {
                       setPlaceholder(role);
                       setUser({
                         ...user,
-                        role: role.toLowerCase().replace(' ', ''),
+                        role: role.toLowerCase().replace(" ", ""),
                       });
                       setExpanded(false);
-                    }}>
+                    }}
+                  >
                     <Text style={styles.dropdownItem}>{role}</Text>
                   </TouchableOpacity>
                 ))}
@@ -288,7 +292,7 @@ export default UserForm;
 
 const styles = StyleSheet.create({
   input: {
-    width: '100%',
+    width: "100%",
     maxHeight: 55,
     backgroundColor: colors.background,
     paddingHorizontal: 12,
@@ -299,9 +303,9 @@ const styles = StyleSheet.create({
     fontFamily: typography.b1.fontFamily,
   },
   showPasswordIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 15,
-    alignSelf: 'center',
+    alignSelf: "center",
     paddingBottom: 10,
     elevation: 2,
   },
@@ -311,9 +315,9 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   dropdown: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   dropdownShadow: {
     ...Platform.select({
@@ -340,7 +344,7 @@ const styles = StyleSheet.create({
   },
   listItemContentStyle: {
     marginTop: -10,
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingHorizontal: 12,
     borderRadius: 5,
     backgroundColor: colors.background,

@@ -12,14 +12,16 @@ const DevRelease = () => {
         ...Platform.select({
           ios: { top: 50 },
         }),
-      }}>
+      }}
+    >
       <Text
         style={{
           fontSize: 16,
           fontWeight: "bold",
           color: "red",
           letterSpacing: 1,
-        }}>
+        }}
+      >
         UTVECKLARLÄGE
       </Text>
     </View>

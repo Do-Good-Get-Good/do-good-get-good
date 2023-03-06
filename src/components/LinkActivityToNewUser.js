@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -8,22 +8,22 @@ import {
   Platform,
   ScrollView,
   TextInput,
-} from 'react-native';
+} from "react-native";
 
-import LinearGradient from 'react-native-linear-gradient';
+import LinearGradient from "react-native-linear-gradient";
 
-import {useNavigation} from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 
-import {Icon} from '@rneui/base';
+import { Icon } from "@rneui/base";
 
-import BottomNavButtons from './BottomNavButtons';
+import BottomNavButtons from "./BottomNavButtons";
 
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-import Images from '../Images';
+import Images from "../Images";
 
 export function LinkActivityToNewUser({
   activity,
@@ -36,7 +36,7 @@ export function LinkActivityToNewUser({
 }) {
   const navigation = useNavigation();
   const createActivityContext = useCreateActivityFunction();
-  const {activeActivities} = createActivityContext;
+  const { activeActivities } = createActivityContext;
 
   const [expanded, setExpanded] = useState(false);
   const [titleFilledUp, setTitleFilledUp] = useState(null);
@@ -60,7 +60,7 @@ export function LinkActivityToNewUser({
   }
 
   useEffect(() => {
-    if (activity.title.trim() === '') {
+    if (activity.title.trim() === "") {
       setTitleFilledUp(false);
     } else {
       setTitleFilledUp(true);
@@ -68,7 +68,7 @@ export function LinkActivityToNewUser({
   }, [activity.title]);
 
   useEffect(() => {
-    if (activity.city.trim() === '') {
+    if (activity.city.trim() === "") {
       setCityFilledUp(false);
     } else {
       setCityFilledUp(true);
@@ -76,7 +76,7 @@ export function LinkActivityToNewUser({
   }, [activity.city]);
 
   useEffect(() => {
-    if (activity.place.trim() === '') {
+    if (activity.place.trim() === "") {
       setPlaceFilledUp(false);
     } else {
       setPlaceFilledUp(true);
@@ -130,7 +130,7 @@ export function LinkActivityToNewUser({
         <TextInput
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
-          onChangeText={text => setActivity({...activity, title: text})}
+          onChangeText={(text) => setActivity({ ...activity, title: text })}
           onEndEditing={() =>
             setActivity({
               ...activity,
@@ -147,7 +147,7 @@ export function LinkActivityToNewUser({
         <TextInput
           style={[titleCityPlaceStyle(), cityBorderStyle()]}
           maxLength={30}
-          onChangeText={text => setActivity({...activity, city: text})}
+          onChangeText={(text) => setActivity({ ...activity, city: text })}
           onEndEditing={() =>
             setActivity({
               ...activity,
@@ -164,7 +164,7 @@ export function LinkActivityToNewUser({
         <TextInput
           style={[titleCityPlaceStyle(), placeBorderStyle()]}
           maxLength={30}
-          onChangeText={text => setActivity({...activity, place: text})}
+          onChangeText={(text) => setActivity({ ...activity, place: text })}
           onEndEditing={() =>
             setActivity({
               ...activity,
@@ -182,7 +182,9 @@ export function LinkActivityToNewUser({
           style={[styles.textInputDescription, styles.shadow]}
           numberOfLines={5}
           multiline={true}
-          onChangeText={text => setActivity({...activity, description: text})}
+          onChangeText={(text) =>
+            setActivity({ ...activity, description: text })
+          }
           onEndEditing={() =>
             setActivity({
               ...activity,
@@ -203,16 +205,18 @@ export function LinkActivityToNewUser({
           <TouchableOpacity
             testID="navigateToImagesGallery"
             onPress={() =>
-              navigation.navigate('ImagesGallery', {
-                cameFrom: 'CreateUser',
+              navigation.navigate("ImagesGallery", {
+                cameFrom: "CreateUser",
                 selectedImage: activity.image,
               })
-            }>
+            }
+          >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}
-              style={styles.buttonBorderStyle}>
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonBorderStyle}
+            >
               <Text style={styles.textButtonInsert}>Infoga</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -222,8 +226,9 @@ export function LinkActivityToNewUser({
           <TouchableOpacity
             testID="buttonSomTGFavorit"
             onPress={() =>
-              setActivity({...activity, favorite: !activity.favorite})
-            }>
+              setActivity({ ...activity, favorite: !activity.favorite })
+            }
+          >
             {activity.favorite ? (
               <View style={styles.checkBoxTrue}>
                 <Icon name="done" size={20}></Icon>
@@ -251,7 +256,8 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={setTheRightPhoto(selectedActivity.photo)}></Image>
+            source={setTheRightPhoto(selectedActivity.photo)}
+          ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>
         </View>
@@ -260,11 +266,11 @@ export function LinkActivityToNewUser({
   };
 
   function dropDownTitle() {
-    if (selectedActivity !== null && selectedActivity !== 'create-new') {
+    if (selectedActivity !== null && selectedActivity !== "create-new") {
       return selectedActivity.title;
-    } else if (selectedActivity === 'create-new') {
-      return 'Skapa ny aktivitet';
-    } else return 'Välj aktivitet';
+    } else if (selectedActivity === "create-new") {
+      return "Skapa ny aktivitet";
+    } else return "Välj aktivitet";
   }
 
   const DropDown = () => {
@@ -274,14 +280,15 @@ export function LinkActivityToNewUser({
           style={[
             styles.dropdown,
             styles.shadow,
-            {borderColor: expanded ? colors.dark : colors.background},
+            { borderColor: expanded ? colors.dark : colors.background },
           ]}
-          onPress={() => setExpanded(!expanded)}>
+          onPress={() => setExpanded(!expanded)}
+        >
           <Text style={styles.dropdownTitle}>{dropDownTitle()}</Text>
           <Icon
             color={colors.secondary}
             style={styles.sortIcon}
-            name={expanded ? 'arrow-drop-up' : 'arrow-drop-down'}
+            name={expanded ? "arrow-drop-up" : "arrow-drop-down"}
             size={30}
           />
         </TouchableOpacity>
@@ -290,29 +297,32 @@ export function LinkActivityToNewUser({
             style={{
               backgroundColor: colors.background,
               paddingHorizontal: 12,
-            }}>
+            }}
+          >
             <TouchableOpacity
-              style={{paddingVertical: 8}}
+              style={{ paddingVertical: 8 }}
               onPress={() => {
-                setSelectedActivity('create-new');
+                setSelectedActivity("create-new");
                 setTitleFilledUp(null);
                 setCityFilledUp(null);
                 setPlaceFilledUp(null);
                 setExpanded(false);
-              }}>
-              <Text style={{...typography.b1, fontStyle: 'italic'}}>
+              }}
+            >
+              <Text style={{ ...typography.b1, fontStyle: "italic" }}>
                 Skapa ny aktivitet
               </Text>
             </TouchableOpacity>
-            {activeActivities.map(activity => (
+            {activeActivities.map((activity) => (
               <TouchableOpacity
                 key={activity.id}
-                style={{paddingVertical: 8}}
+                style={{ paddingVertical: 8 }}
                 onPress={() => {
                   setSelectedActivity(activity);
                   setExpanded(false);
-                }}>
-                <Text style={{...typography.b1}}>{activity.title}</Text>
+                }}
+              >
+                <Text style={{ ...typography.b1 }}>{activity.title}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -322,7 +332,7 @@ export function LinkActivityToNewUser({
   };
 
   function existingActivity() {
-    return selectedActivity !== 'create-new' && selectedActivity !== null;
+    return selectedActivity !== "create-new" && selectedActivity !== null;
   }
 
   function validate() {
@@ -335,11 +345,12 @@ export function LinkActivityToNewUser({
   return (
     <>
       <ScrollView
-        style={{flex: 1}}
-        keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{paddingHorizontal: 16}}>
+        style={{ flex: 1 }}
+        keyboardDismissMode={"on-drag"}
+        contentContainerStyle={{ paddingHorizontal: 16 }}
+      >
         <DropDown />
-        {selectedActivity === 'create-new' && createNewActivity()}
+        {selectedActivity === "create-new" && createNewActivity()}
         {existingActivity() && <AddExistingActivity />}
       </ScrollView>
       <BottomNavButtons
@@ -357,14 +368,14 @@ const styles = StyleSheet.create({
   dropdown: {
     maxHeight: 55,
     backgroundColor: colors.background,
-    width: '100%',
+    width: "100%",
     borderRadius: 5,
     borderWidth: 1,
     paddingVertical: 16,
     paddingHorizontal: 12,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   dropdownTitle: {
     fontFamily: typography.b1.fontFamily,
@@ -388,7 +399,7 @@ const styles = StyleSheet.create({
     paddingLeft: 11,
     paddingTop: 11,
     paddingBottom: 11,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     height: 130,
     marginTop: 20,
     ...typography.b1,
@@ -400,9 +411,9 @@ const styles = StyleSheet.create({
     borderColor: colors.background,
   },
   containerImageAndInsertButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   textButtonInsert: {
@@ -413,17 +424,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.light,
-    textAlign: 'center',
-    paddingTop: Platform.OS === 'ios' ? 12 : null,
-    textAlignVertical: 'center',
-    paddingHorizontal: Platform.OS === 'ios' ? 63 : 64,
+    textAlign: "center",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    textAlignVertical: "center",
+    paddingHorizontal: Platform.OS === "ios" ? 63 : 64,
     ...typography.button.lg,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
-    resizeMode: 'contain',
+    resizeMode: "contain",
     height: 100,
     width: 100,
     borderRadius: 3,
@@ -435,13 +446,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 55,
     width: 200,
-    alignItems: 'center',
+    alignItems: "center",
   },
   containerTextAndCheckbox: {
     flex: 1,
     marginTop: 10,
     marginBottom: 5,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   checkBoxTrue: {
     backgroundColor: colors.primary,
@@ -459,7 +470,7 @@ const styles = StyleSheet.create({
   textNearCheckBox: {
     marginRight: 5,
     fontSize: typography.b1.fontSize,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.dark,
     marginRight: 17,
   },
@@ -481,13 +492,13 @@ const styles = StyleSheet.create({
     borderColor: colors.disabled,
     marginBottom: 13,
     padding: 12,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   textDescription: {
     flex: 1,
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
     backgroundColor: colors.disabled,
     borderRadius: 3,
@@ -496,30 +507,30 @@ const styles = StyleSheet.create({
     marginBottom: 13,
     padding: 13,
     paddingBottom: 90,
-    overflow: 'hidden',
+    overflow: "hidden",
     marginTop: 20,
   },
   textButtonChangeImage: {
     flex: 1.5,
     ...typography.button.lg,
-    fontWeight: '500',
+    fontWeight: "500",
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.disabled,
-    textAlign: 'center',
+    textAlign: "center",
     backgroundColor: colors.disabled,
     color: colors.dark,
     marginVertical: 30,
-    paddingTop: Platform.OS === 'ios' ? 12 : null,
-    overflow: 'hidden',
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    overflow: "hidden",
     letterSpacing: 2,
     height: 55,
     width: 200,
-    textAlignVertical: 'center',
+    textAlignVertical: "center",
   },
   imageExistingActivity: {
     flex: 1,
-    resizeMode: 'contain',
+    resizeMode: "contain",
     marginRight: 80,
     marginTop: 10,
     height: 98,

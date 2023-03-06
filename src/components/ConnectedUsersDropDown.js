@@ -1,12 +1,12 @@
-import React, {useState, useEffect, useCallback} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity} from 'react-native';
-import {Icon, Overlay} from '@rneui/base';
+import React, { useState, useEffect, useCallback } from "react";
+import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import { Icon, Overlay } from "@rneui/base";
 
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-import {useSuperAdminFunction} from '../context/SuperAdminContext';
-import PopupWithRadioButtons from './PopupWithRadioButtons';
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
+import PopupWithRadioButtons from "./PopupWithRadioButtons";
 
 export function ConnectedUsersDropDown({}) {
   const superAdminContext = useSuperAdminFunction();
@@ -14,7 +14,7 @@ export function ConnectedUsersDropDown({}) {
   const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
     useState(false);
 
-  const clickOnPencilIcon = user => {
+  const clickOnPencilIcon = (user) => {
     superAdminContext.setUserIDToConnectAnotherAdmin(user);
     setShowPopupWithRadioButtons(true);
   };
@@ -25,8 +25,8 @@ export function ConnectedUsersDropDown({}) {
     );
   }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
 
-  const changeSelectedForDropDown = docId => {
-    let tempArray = userArray.map(user => {
+  const changeSelectedForDropDown = (docId) => {
+    let tempArray = userArray.map((user) => {
       return {
         ...user,
         selectedForDropDown:
@@ -45,24 +45,25 @@ export function ConnectedUsersDropDown({}) {
     }
   }, [superAdminContext.buttonToSaveChanhgesPressed]);
 
-  const dropDownOpen = useCallback(selected => {
-    let arrow = '';
+  const dropDownOpen = useCallback((selected) => {
+    let arrow = "";
     if (selected) {
-      arrow = 'arrow-drop-up';
+      arrow = "arrow-drop-up";
     } else {
-      arrow = 'arrow-drop-down';
+      arrow = "arrow-drop-down";
     }
     return arrow;
   }, []);
 
-  const whatTextToShow = user => {
+  const whatTextToShow = (user) => {
     return (
       <View key={user.user.docId} style={styles.container}>
         <TouchableOpacity
           style={styles.containerForTextAndIcon}
-          onPress={() => changeSelectedForDropDown(user.user.docId)}>
+          onPress={() => changeSelectedForDropDown(user.user.docId)}
+        >
           <Text style={styles.userAndAdminNames}>
-            {user.user.firstName + ' ' + user.user.lastName}
+            {user.user.firstName + " " + user.user.lastName}
           </Text>
 
           <Icon
@@ -78,7 +79,8 @@ export function ConnectedUsersDropDown({}) {
             <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
               <Text style={styles.userAndAdminNames}>{user.adminName}</Text>
               <TouchableOpacity
-                onPress={() => clickOnPencilIcon(user.user.docId)}>
+                onPress={() => clickOnPencilIcon(user.user.docId)}
+              >
                 <Icon
                   color={colors.secondary}
                   type="material-community"
@@ -94,17 +96,18 @@ export function ConnectedUsersDropDown({}) {
           animationType="fade"
           overlayStyle={{
             backgroundColor: colors.light,
-            width: '90%',
-            height: '35%',
+            width: "90%",
+            height: "35%",
             borderRadius: 5,
           }}
-          onBackdropPress={() => setShowPopupWithRadioButtons(false)}>
+          onBackdropPress={() => setShowPopupWithRadioButtons(false)}
+        >
           <PopupWithRadioButtons
-            titleText={'Ändra admin'}
-            showPopup={showPopupWithRadioButtons =>
+            titleText={"Ändra admin"}
+            showPopup={(showPopupWithRadioButtons) =>
               setShowPopupWithRadioButtons(showPopupWithRadioButtons)
             }
-            arrayWithChangedAdmin={userArray => setUserArray(userArray)}
+            arrayWithChangedAdmin={(userArray) => setUserArray(userArray)}
           />
         </Overlay>
       </View>
@@ -124,17 +127,17 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   containerForTextAndIcon: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     ...typography.b1,
     paddingVertical: 14,
   },
   adminText: {
-    fontWeight: '500',
+    fontWeight: "500",
     ...typography.b2,
   },
   containerAdminName: {
-    flexDirection: 'row',
+    flexDirection: "row",
     marginBottom: 7,
   },
   userAndAdminNames: {
@@ -143,7 +146,7 @@ const styles = StyleSheet.create({
   adminNameAndIcon: {
     paddingLeft: 10,
     paddingRight: 3,
-    justifyContent: 'space-between',
+    justifyContent: "space-between",
     flex: 1,
   },
 });

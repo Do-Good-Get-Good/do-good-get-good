@@ -5,25 +5,25 @@ import {
   View,
   Pressable,
   TouchableOpacity,
-} from 'react-native';
-import React, {useEffect, useState} from 'react';
+} from "react-native";
+import React, { useEffect, useState } from "react";
 
-import {CheckBox, Overlay, Icon} from '@rneui/base';
+import { CheckBox, Overlay, Icon } from "@rneui/base";
 
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
-} from '../firebase-functions/update';
-import {getAllUsersNotConnectedToAdmin} from '../firebase-functions/get';
+} from "../firebase-functions/update";
+import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 
-import adminStore from '../store/adminStore';
+import adminStore from "../store/adminStore";
 
-const ManageUsers = ({visible, closeModal, currentActivityId}) => {
+const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
   const userData = adminStore.allUsers;
@@ -42,7 +42,7 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
 
   const fetchAllMyUsers = () => {
     if (myUsers.length === 0) {
-      let users = userData.map(user => {
+      let users = userData.map((user) => {
         let connectedActivitiesArray = user.connectedActivities;
 
         let userInfo = {
@@ -74,7 +74,7 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
   };
 
   const updateUsers = () => {
-    myUsers.map(user => {
+    myUsers.map((user) => {
       if (user.checked) {
         connectNewActivityToUser(user, currentActivityId.toString());
         adminStore.connectActivityToUser(
@@ -92,8 +92,8 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
     closeModal();
   };
 
-  const checkOrUncheckUser = pressedUser => {
-    let newUserArr = myUsers.map(user => {
+  const checkOrUncheckUser = (pressedUser) => {
+    let newUserArr = myUsers.map((user) => {
       if (pressedUser.fullName === user.fullName) {
         return {
           ...user,
@@ -111,7 +111,8 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
       onBackdropPress={() => closeModal()}
       overlayStyle={styles.overlayStyle}
       backdropStyle={styles.backdropStyle}
-      animationType="fade">
+      animationType="fade"
+    >
       <Pressable style={styles.closeButton} onPress={() => closeModal()}>
         <Icon name="close" size={35} />
       </Pressable>
@@ -121,7 +122,8 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
       <ScrollView style={styles.contentScrollView}>
         <Text
           testID="test.myUsersHeader"
-          style={styles.contentScrollViewHeader1}>
+          style={styles.contentScrollViewHeader1}
+        >
           Mina användare
         </Text>
         {myUsers.length != 0 ? (
@@ -129,7 +131,8 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
             <View testID="test.userView" style={styles.userView} key={index}>
               <Text
                 testID={`test.userFullName${index}`}
-                style={styles.userViewText}>
+                style={styles.userViewText}
+              >
                 {user.fullName}
               </Text>
               <CheckBox
@@ -149,7 +152,8 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
         )}
         <Text
           testID="test.otherUsersHeader"
-          style={styles.contentScrollViewHeader2}>
+          style={styles.contentScrollViewHeader2}
+        >
           Andra användare
         </Text>
         {otherUsers.length > 0 ? (
@@ -161,10 +165,12 @@ const ManageUsers = ({visible, closeModal, currentActivityId}) => {
                   ? styles.userView
                   : [styles.userView, styles.lastUserView]
               }
-              key={index}>
+              key={index}
+            >
               <Text
                 testID={`test.otherUserFullName${index}`}
-                style={styles.userViewText}>
+                style={styles.userViewText}
+              >
                 {user.fullName}
               </Text>
             </View>
@@ -189,26 +195,26 @@ export default ManageUsers;
 const styles = StyleSheet.create({
   overlayStyle: {
     backgroundColor: colors.light,
-    width: '90%',
-    maxHeight: '75%',
+    width: "90%",
+    maxHeight: "75%",
     borderRadius: 5,
     margin: 0,
     padding: 0,
   },
   backdropStyle: {
-    backgroundColor: '#000000',
+    backgroundColor: "#000000",
     opacity: 0.5,
   },
   closeButton: {
-    position: 'absolute',
+    position: "absolute",
     right: -8,
     top: -8,
     backgroundColor: colors.background,
     borderRadius: 25,
     width: 35,
     height: 35,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     zIndex: 1,
   },
   modalHeader: {
@@ -223,23 +229,23 @@ const styles = StyleSheet.create({
     borderRadius: 2,
   },
   contentScrollViewHeader1: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
     marginTop: 14,
     marginBottom: 8,
   },
   contentScrollViewHeader2: {
-    fontWeight: 'bold',
+    fontWeight: "bold",
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
     marginTop: 16,
     marginBottom: 8,
   },
   userView: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
     paddingVertical: 5,
   },
   lastUserView: {
@@ -264,8 +270,8 @@ const styles = StyleSheet.create({
     right: 0,
     height: 54,
     borderRadius: 5,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   saveButtonText: {
     ...typography.button.lg,

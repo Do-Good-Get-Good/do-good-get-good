@@ -1,19 +1,19 @@
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
-import React, {useEffect, useState} from 'react';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import {Overlay} from '@rneui/base';
-import PopupWithRadioButtons from './PopupWithRadioButtons';
-import {useSuperAdminFunction} from '../context/SuperAdminContext';
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useEffect, useState } from "react";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import { Overlay } from "@rneui/base";
+import PopupWithRadioButtons from "./PopupWithRadioButtons";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 export function ChangeRolesAndConnection({}) {
   const superAdminContext = useSuperAdminFunction();
   const [role, setRole] = useState(null);
-  const [user, setUser] = useState({firstName: '', lastName: ''});
-  const [adminName, serAdminName] = useState('');
+  const [user, setUser] = useState({ firstName: "", lastName: "" });
+  const [adminName, serAdminName] = useState("");
   const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
     useState(false);
-  const roleArray = ['user', 'admin', 'superadmin'];
+  const roleArray = ["user", "admin", "superadmin"];
 
   useEffect(() => {
     setUser(superAdminContext.makeChangesForSelectedUser.user);
@@ -24,22 +24,22 @@ export function ChangeRolesAndConnection({}) {
   }, [superAdminContext.makeChangesForSelectedUser.adminName]);
 
   useEffect(() => {
-    if (superAdminContext.makeChangesForSelectedUser.user.role === 'user')
-      setRole('User');
+    if (superAdminContext.makeChangesForSelectedUser.user.role === "user")
+      setRole("User");
     else if (
-      superAdminContext.makeChangesForSelectedUser.user.role === 'admin'
+      superAdminContext.makeChangesForSelectedUser.user.role === "admin"
     ) {
-      setRole('Admin');
+      setRole("Admin");
     } else if (
-      superAdminContext.makeChangesForSelectedUser.user.role === 'superadmin'
+      superAdminContext.makeChangesForSelectedUser.user.role === "superadmin"
     ) {
-      setRole('Super admin');
+      setRole("Super admin");
     }
   }, [superAdminContext.makeChangesForSelectedUser.user.role]);
 
   return (
     <View>
-      <Text style={styles.title}>{user.firstName + ' ' + user.lastName}</Text>
+      <Text style={styles.title}>{user.firstName + " " + user.lastName}</Text>
       <View style={styles.containerForRoleAndAdminText}>
         <Text style={styles.textForRoleAndAdminTitle}>Nivå</Text>
         <Text style={styles.textForRoleAndAdmin}>{role}</Text>
@@ -65,14 +65,15 @@ export function ChangeRolesAndConnection({}) {
         animationType="fade"
         overlayStyle={{
           backgroundColor: colors.light,
-          width: '90%',
-          height: '35%',
+          width: "90%",
+          height: "35%",
           borderRadius: 5,
         }}
-        onBackdropPress={() => setShowPopupWithRadioButtons(false)}>
+        onBackdropPress={() => setShowPopupWithRadioButtons(false)}
+      >
         <PopupWithRadioButtons
-          titleText={'Ändra nivå'}
-          showPopup={showPopupWithRadioButtons =>
+          titleText={"Ändra nivå"}
+          showPopup={(showPopupWithRadioButtons) =>
             setShowPopupWithRadioButtons(showPopupWithRadioButtons)
           }
           listOfRoles={roleArray}
@@ -96,7 +97,7 @@ const styles = StyleSheet.create({
     ...typography.b2,
   },
   textForRoleAndAdminTitle: {
-    fontWeight: '700',
+    fontWeight: "700",
     padding: 10,
   },
   containerTextButton: {
@@ -107,8 +108,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   textAsButton: {
-    textDecorationLine: 'underline',
-    fontWeight: '700',
+    textDecorationLine: "underline",
+    fontWeight: "700",
     paddingVertical: 10,
   },
 });

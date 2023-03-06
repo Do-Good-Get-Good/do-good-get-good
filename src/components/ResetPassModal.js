@@ -1,4 +1,4 @@
-import React from 'react';
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -6,19 +6,19 @@ import {
   TextInput,
   Alert,
   TouchableOpacity,
-} from 'react-native';
+} from "react-native";
 
-import inputStyles from '../styles/inputStyle';
+import inputStyles from "../styles/inputStyle";
 
-import {Icon, Overlay} from '@rneui/base';
+import { Icon, Overlay } from "@rneui/base";
 
-import auth from '@react-native-firebase/auth';
+import auth from "@react-native-firebase/auth";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-const ResetPassModal = ({isModalOpen, openModal}) => {
-  const [email, setEmail] = React.useState('');
+const ResetPassModal = ({ isModalOpen, openModal }) => {
+  const [email, setEmail] = React.useState("");
   const [error, setError] = React.useState(null);
 
   const resetPass = () => {
@@ -30,13 +30,13 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
         openModal(false);
         alertMessage();
       })
-      .catch(error => {
+      .catch((error) => {
         const errorCode = error.code;
         // const errorMessage = error.message;
-        if (errorCode === 'auth/invalid-email') {
-          setError('Ange en giltig e-post');
+        if (errorCode === "auth/invalid-email") {
+          setError("Ange en giltig e-post");
         }
-        if (errorCode === 'auth/user-not-found') {
+        if (errorCode === "auth/user-not-found") {
           setEmail(null);
           setError(null);
           openModal(false);
@@ -47,8 +47,8 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
 
   const alertMessage = () => {
     Alert.alert(
-      'Återställ lösenord',
-      'Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!',
+      "Återställ lösenord",
+      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!",
     );
   };
 
@@ -61,7 +61,8 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
         openModal(false);
       }}
       overlayStyle={styles.overlayStyle}
-      animationType="fade">
+      animationType="fade"
+    >
       <View style={styles.modalContainer}>
         <View style={styles.modal}>
           <TouchableOpacity
@@ -71,7 +72,8 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
               setEmail(null);
               setError(null);
               openModal(false);
-            }}>
+            }}
+          >
             <Icon
               name="close"
               type="material"
@@ -85,7 +87,8 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
             </Text>
             <Text
               testID="resetPassModal.forgotPassDesc"
-              style={styles.infoText}>
+              style={styles.infoText}
+            >
               Inga problem! Skriv in din mail nedan, så skickar vi en länk för
               att återställa lösenordet.
             </Text>
@@ -93,31 +96,33 @@ const ResetPassModal = ({isModalOpen, openModal}) => {
               testID="resetPassModal.emailInput"
               style={[
                 inputStyles.textInput,
-                {marginTop: 12, marginBottom: 10},
+                { marginTop: 12, marginBottom: 10 },
                 error != null ? inputStyles.textInputInvalid : null,
               ]}
               placeholder="E-post"
               value={email}
-              keyboardType={'email-address'}
-              onChangeText={text => setEmail(text)}
+              keyboardType={"email-address"}
+              onChangeText={(text) => setEmail(text)}
             />
             {error != null ? (
-              <View style={{marginBottom: 4}}>
+              <View style={{ marginBottom: 4 }}>
                 <Text
                   testID="resetPassModal.errorText"
-                  style={{color: colors.error}}>{`* ${error}`}</Text>
+                  style={{ color: colors.error }}
+                >{`* ${error}`}</Text>
               </View>
             ) : null}
           </View>
           <TouchableOpacity
             style={styles.sendBtn}
             onPress={() => {
-              if (email === null || email === '') {
-                setError('Du måste fylla i en e-post');
+              if (email === null || email === "") {
+                setError("Du måste fylla i en e-post");
               } else {
                 resetPass();
               }
-            }}>
+            }}
+          >
             <Text style={styles.sendBtnText}>Skicka</Text>
           </TouchableOpacity>
         </View>
@@ -131,11 +136,11 @@ export default ResetPassModal;
 const styles = StyleSheet.create({
   overlayStyle: {
     backgroundColor: colors.light,
-    width: '90%',
+    width: "90%",
     borderRadius: 5,
   },
   closeButtonStyle: {
-    position: 'absolute',
+    position: "absolute",
     right: -18,
     top: -18,
   },
@@ -159,7 +164,7 @@ const styles = StyleSheet.create({
   sendBtn: {
     backgroundColor: colors.primary,
     height: 55,
-    justifyContent: 'center',
+    justifyContent: "center",
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
     marginLeft: -10,
@@ -168,6 +173,6 @@ const styles = StyleSheet.create({
   },
   sendBtnText: {
     ...typography.button.lg,
-    alignSelf: 'center',
+    alignSelf: "center",
   },
 });

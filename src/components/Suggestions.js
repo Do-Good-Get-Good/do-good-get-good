@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect, useCallback } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,15 +7,15 @@ import {
   TouchableOpacity,
   Platform,
   Keyboard,
-} from 'react-native';
-import {Icon} from '@rneui/base';
-import Images from '../Images';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+} from "react-native";
+import { Icon } from "@rneui/base";
+import Images from "../Images";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
-import {useActivityCardContext} from '../context/ActivityCardContext';
-import {useAdminGalleryFunction} from '../context/AdminGalleryContext';
+import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 export function Suggestions({
   navigation,
@@ -52,7 +52,7 @@ export function Suggestions({
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
-    navigation.navigate('ActivityCard', {
+    navigation.navigate("ActivityCard", {
       admin: true,
       activityInfo: activety,
       active: statusActive,
@@ -64,11 +64,12 @@ export function Suggestions({
     const deleteObjectFromArray = () => {
       if (
         activityCardContext.oneActivityHasBeenDeleted === true &&
-        activityCardContext.idOfTheActivityWhichHasBeenDeleted != ''
+        activityCardContext.idOfTheActivityWhichHasBeenDeleted != ""
       ) {
         let newArray = showArray;
         var index = newArray.findIndex(
-          x => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted,
+          (x) =>
+            x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted,
         );
         newArray.splice(index, 1);
         setShowArray(sortingByTitle(newArray));
@@ -83,7 +84,7 @@ export function Suggestions({
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
-          x => x.id === useCreateActivityContext.changedActivity.id,
+          (x) => x.id === useCreateActivityContext.changedActivity.id,
         );
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(sortingByTitle(newArray));
@@ -96,13 +97,13 @@ export function Suggestions({
 
   const showArrayAfterSorting = useCallback(() => {
     let sortArray = [];
-    if (choiceFromDropDown === 'Favoriter') {
+    if (choiceFromDropDown === "Favoriter") {
       sortArray = showArray.sort(
         (a, b) => Number(b.popular) - Number(a.popular),
       );
-    } else if (choiceFromDropDown === 'Namn') {
+    } else if (choiceFromDropDown === "Namn") {
       sortArray = sortingByTitle(showArray);
-    } else if (choiceFromDropDown === 'Plats') {
+    } else if (choiceFromDropDown === "Plats") {
       sortArray = showArray.sort((a, b) => a.city.localeCompare(b.city));
     } else {
       sortArray = null;
@@ -124,11 +125,12 @@ export function Suggestions({
             lookDetails(suggestion, suggestion.active, suggestion.popular)
           }
           style={styles.insideActivityContainer}
-          activeOpacity={0.4}>
+          activeOpacity={0.4}
+        >
           <View style={styles.photoAndText}>
             <View style={styles.textTitleCityDescriptipn}>
-              <View style={{flex: 1, flexDirection: 'row'}}>
-                <View style={{flex: 1}}>
+              <View style={{ flex: 1, flexDirection: "row" }}>
+                <View style={{ flex: 1 }}>
                   <Text numberOfLines={2} style={styles.textTitle}>
                     {suggestion.title}
                   </Text>
@@ -203,22 +205,22 @@ export default Suggestions;
 const styles = StyleSheet.create({
   testNoMatchInSearBar: {
     ...typography.b2,
-    textAlign: 'center',
+    textAlign: "center",
     marginVertical: 20,
     color: colors.dark,
   },
   activityContainer: {
     flex: 1,
     marginTop: 5,
-    alignSelf: 'center',
-    width: '99%',
+    alignSelf: "center",
+    width: "99%",
   },
   insideActivityContainer: {
     flex: 1,
-    justifyContent: 'center',
+    justifyContent: "center",
     marginVertical: 7,
     backgroundColor: colors.background,
-    flexWrap: 'wrap',
+    flexWrap: "wrap",
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
@@ -238,20 +240,20 @@ const styles = StyleSheet.create({
   image: {
     flex: 0.5,
     height: 100,
-    resizeMode: 'contain',
-    alignItems: 'center',
+    resizeMode: "contain",
+    alignItems: "center",
     marginHorizontal: 1,
     marginTop: 2,
     borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   textTitleCityDescriptipn: {
     flex: 2,
     marginRight: 7,
-    alignItems: 'flex-start',
+    alignItems: "flex-start",
     marginLeft: 10,
     marginTop: 5,
     color: colors.dark,
@@ -270,8 +272,8 @@ const styles = StyleSheet.create({
   },
   iconsAndTextCityContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   textDescription: {
     flex: 1,
@@ -282,8 +284,8 @@ const styles = StyleSheet.create({
   },
   iconsAndTextDescriptionContainer: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'flex-start',
+    flexDirection: "row",
+    alignItems: "flex-start",
     height: 60,
   },
 });

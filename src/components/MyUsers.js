@@ -1,26 +1,26 @@
-import React, {useEffect, useState} from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import {format} from 'date-fns';
-import {Icon, Dialog} from '@rneui/base';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
+import { format } from "date-fns";
+import { Icon, Dialog } from "@rneui/base";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
 
-import TimeStatistics from './TimeStatistics';
+import TimeStatistics from "./TimeStatistics";
 
-import adminStore from '../store/adminStore';
+import adminStore from "../store/adminStore";
 
-import {Observer} from 'mobx-react-lite';
-import {Sort} from '../lib/enums/sort';
-import {useUsersTimeObjects} from '../hooks/useUsersTimeObjects';
+import { Observer } from "mobx-react-lite";
+import { Sort } from "../lib/enums/sort";
+import { useUsersTimeObjects } from "../hooks/useUsersTimeObjects";
 
-const MyUsers = ({navigation}) => {
+const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const sortOptions = [Sort.Alphabetically, Sort.Inactive];
   const [sortBy, setSortBy] = useState(sortOptions[0]);
   useUsersTimeObjects();
 
-  const sortUsers = sortOption => {
+  const sortUsers = (sortOption) => {
     switch (sortOption) {
       case Sort.Alphabetically:
         adminStore.filterUsersByActiveStatus(true);
@@ -44,7 +44,8 @@ const MyUsers = ({navigation}) => {
         <TouchableOpacity
           testID="smallDropdown"
           style={styles.sortDropdownStyle}
-          onPress={() => setExpanded(!expanded)}>
+          onPress={() => setExpanded(!expanded)}
+        >
           <View style={styles.styleForDropdown}>
             <Text testID="dropdownText" style={styles.listItemNameStyle}>
               {sortBy}
@@ -52,7 +53,7 @@ const MyUsers = ({navigation}) => {
             <Icon
               color="#5B6770"
               style={styles.sortIcon}
-              name={expanded === true ? 'arrow-drop-up' : 'arrow-drop-down'}
+              name={expanded === true ? "arrow-drop-up" : "arrow-drop-down"}
               size={30}
             />
           </View>
@@ -66,7 +67,8 @@ const MyUsers = ({navigation}) => {
                 onPress={() => {
                   setSortBy(option);
                   setExpanded(false);
-                }}>
+                }}
+              >
                 <View style={styles.dropdownItem}>
                   <Text testID={`insideSmallDropdownText ${index}`}>
                     {option}
@@ -83,7 +85,8 @@ const MyUsers = ({navigation}) => {
             <>
               {adminStore.loading && (
                 <Dialog.Loading
-                  loadingProps={{color: '#84BD00'}}></Dialog.Loading>
+                  loadingProps={{ color: "#84BD00" }}
+                ></Dialog.Loading>
               )}
               {adminStore.users.map((user, index) => (
                 <View key={index}>
@@ -92,7 +95,8 @@ const MyUsers = ({navigation}) => {
                     style={styles.listItemContainerStyle}
                     onPress={() => {
                       adminStore.openSelectedUser(user);
-                    }}>
+                    }}
+                  >
                     <View style={styles.listItemStyle}>
                       <Text
                         testID={`user ${index} name`}
@@ -100,10 +104,11 @@ const MyUsers = ({navigation}) => {
                           styles.listItemNameStyle,
                           {
                             textDecorationLine: user.isOpen
-                              ? 'underline'
-                              : 'none',
+                              ? "underline"
+                              : "none",
                           },
-                        ]}>
+                        ]}
+                      >
                         {`${user.firstName} ${user.lastName}`}
                       </Text>
                       <Icon
@@ -111,8 +116,8 @@ const MyUsers = ({navigation}) => {
                         style={styles.sortIcon}
                         name={
                           user.isOpen === true
-                            ? 'arrow-drop-up'
-                            : 'arrow-drop-down'
+                            ? "arrow-drop-up"
+                            : "arrow-drop-down"
                         }
                         size={30}
                       />
@@ -127,21 +132,24 @@ const MyUsers = ({navigation}) => {
                             <View style={styles.listItemContentNameView}>
                               <Text
                                 testID={`user timeEntry ${index} title`}
-                                style={styles.listItemContentNameStyle}>
+                                style={styles.listItemContentNameStyle}
+                              >
                                 {timeEntry.activity_title}
                               </Text>
                             </View>
                             <View style={styles.listItemContentDateView}>
                               <Text
                                 testID={`user timeEntry ${index} date`}
-                                style={styles.listItemContentDateStyle}>
-                                {format(timeEntry.date.toDate(), 'yyyy-MM-dd')}
+                                style={styles.listItemContentDateStyle}
+                              >
+                                {format(timeEntry.date.toDate(), "yyyy-MM-dd")}
                               </Text>
                             </View>
                             <View style={styles.listItemContentHourView}>
                               <Text
                                 testID={`user timeEntry ${index} time`}
-                                style={styles.listItemContentHourStyle}>
+                                style={styles.listItemContentHourStyle}
+                              >
                                 {`${timeEntry.time} tim`}
                               </Text>
                             </View>
@@ -152,14 +160,15 @@ const MyUsers = ({navigation}) => {
                         <TouchableOpacity
                           testID="editIcon"
                           onPress={() =>
-                            navigation.navigate('ChangeUser', {
+                            navigation.navigate("ChangeUser", {
                               userName: user.firstName,
                               userSurname: user.lastName,
                               statusActive: user.statusActive,
                               userID: user.userID,
                               sortBy,
                             })
-                          }>
+                          }
+                        >
                           <Icon
                             name="pencil-outline"
                             type="material-community"
@@ -190,43 +199,43 @@ export default MyUsers;
 const styles = StyleSheet.create({
   container: {
     marginBottom: 10,
-    position: 'relative',
+    position: "relative",
   },
   header: {
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
+    alignItems: "center",
     marginTop: 40,
     marginBottom: 10,
   },
   headerText: {
-    width: '55%',
+    width: "55%",
     fontSize: 22,
   },
 
   styleForDropdown: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     padding: 10,
-    backgroundColor: 'white',
+    backgroundColor: "white",
   },
   sortDropdownStyle: {
-    width: '45%',
-    backgroundColor: '#F5F5F5',
+    width: "45%",
+    backgroundColor: "#F5F5F5",
   },
   dropdown: {
-    width: '45%',
-    position: 'absolute',
+    width: "45%",
+    position: "absolute",
     right: 0,
     top: 45,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     elevation: 5,
 
     shadowOpacity: 0.2,
     shadowRadius: 1.5,
-    shadowOffset: {width: 0, height: 1},
+    shadowOffset: { width: 0, height: 1 },
   },
   dropdownItem: {
     paddingHorizontal: 16,
@@ -239,13 +248,13 @@ const styles = StyleSheet.create({
   listItemContainerStyle: {
     padding: 10,
     marginBottom: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
   },
   listItemStyle: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     paddingVertical: 8,
   },
   listItemNameStyle: {
@@ -254,35 +263,35 @@ const styles = StyleSheet.create({
   listItemContentStyle: {
     marginTop: -10,
     marginBottom: 10,
-    backgroundColor: '#FFFFFF',
+    backgroundColor: "#FFFFFF",
     paddingVertical: 12,
     paddingHorizontal: 10,
-    flexDirection: 'row',
-    justifyContent: 'center',
+    flexDirection: "row",
+    justifyContent: "center",
     borderRadius: 5,
   },
-  listItemContentNameView: {flex: 1},
-  listItemContentDateView: {flex: 1},
-  listItemContentHourView: {flex: 1},
-  listItemContentNameStyle: {fontWeight: 'bold'},
-  listItemContentDateStyle: {textAlign: 'center'},
-  listItemContentHourStyle: {textAlign: 'center'},
+  listItemContentNameView: { flex: 1 },
+  listItemContentDateView: { flex: 1 },
+  listItemContentHourView: { flex: 1 },
+  listItemContentNameStyle: { fontWeight: "bold" },
+  listItemContentDateStyle: { textAlign: "center" },
+  listItemContentHourStyle: { textAlign: "center" },
   editUserIconView: {
-    alignItems: 'flex-end',
-    backgroundColor: 'white',
-    position: 'relative',
+    alignItems: "flex-end",
+    backgroundColor: "white",
+    position: "relative",
     bottom: 10,
-    width: '100%',
+    width: "100%",
     paddingTop: 75,
   },
   editUserIcon: {
-    position: 'absolute',
+    position: "absolute",
     right: 10,
     bottom: 10,
   },
   noInactiveUsers: {
     ...typography.b2,
-    textAlign: 'center',
+    textAlign: "center",
     marginTop: 20,
     color: colors.dark,
   },

@@ -1,15 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React, { useState, useEffect } from "react";
 import {
   Text,
   StyleSheet,
   View,
   TouchableOpacity,
   ScrollView,
-} from 'react-native';
+} from "react-native";
 
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import {useSuperAdminFunction} from '../context/SuperAdminContext';
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 export function PopupWithRadioButtons({
   titleText,
@@ -19,8 +19,8 @@ export function PopupWithRadioButtons({
 }) {
   const superAdminContext = useSuperAdminFunction();
   const [connectedAdminID, setConnectedAdminID] = useState({
-    adminName: '',
-    adminId: '',
+    adminName: "",
+    adminId: "",
   });
   const [allAdminsAnsSuperAdmin, setAllAdminsAnsSuperAdmin] = useState(
     superAdminContext.allAdminsAnsSuperAdmins,
@@ -38,25 +38,25 @@ export function PopupWithRadioButtons({
   }, [listOfRoles, superAdminContext.makeChangesForSelectedUser]);
 
   function textToShowIfRole(role) {
-    var text = '';
-    if (role === 'user') {
-      text = 'User';
-    } else if (role === 'admin') {
-      text = 'Admin';
-    } else if (role === 'superadmin') {
-      text = 'Super admin';
+    var text = "";
+    if (role === "user") {
+      text = "User";
+    } else if (role === "admin") {
+      text = "Admin";
+    } else if (role === "superadmin") {
+      text = "Super admin";
     }
     return text;
   }
 
   useEffect(() => {
     if (
-      superAdminContext.userIDToConnectAnotherAdmin != '' &&
+      superAdminContext.userIDToConnectAnotherAdmin != "" &&
       superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.length
     ) {
       var indexOfUserWhosedminIDNeedsToBeChange =
         superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-          x => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
+          (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
         );
       setConnectedAdminID({
         adminName:
@@ -80,7 +80,7 @@ export function PopupWithRadioButtons({
       superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin;
 
     var indexOfUserWhosedminIDNeedsToBeChange = changeAdminObject.findIndex(
-      x => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
+      (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
     );
 
     let tempObjectOfUserThatConnectedToAdmin = {
@@ -136,10 +136,10 @@ export function PopupWithRadioButtons({
     superAdminContext.setMakeChangesForSelectedUser(allSelectedUser);
 
     var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
-      x => x === tempObjectOfUserThatConnectedToAdmin.user.docId,
+      (x) => x === tempObjectOfUserThatConnectedToAdmin.user.docId,
     );
     if (index === -1) {
-      superAdminContext.setArrayOfIdOfChangedUserInfo(prev => [
+      superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [
         ...prev,
         tempObjectOfUserThatConnectedToAdmin.user.docId,
       ]);
@@ -153,10 +153,10 @@ export function PopupWithRadioButtons({
   function changeRoleWithPressingOkButton() {
     superAdminContext.setMakeChangesForSelectedUser(selectedUserHasRole);
     var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
-      x => x === selectedUserHasRole.user.docId,
+      (x) => x === selectedUserHasRole.user.docId,
     );
     if (index === -1) {
-      superAdminContext.setArrayOfIdOfChangedUserInfo(prev => [
+      superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [
         ...prev,
         selectedUserHasRole.user.docId,
       ]);
@@ -168,10 +168,10 @@ export function PopupWithRadioButtons({
 
   function changeRoleOfTheSelectedUser(userRole) {
     if (
-      (userRole === 'user' &&
+      (userRole === "user" &&
         selectedUserHasRole.arrayOfUsersIfAdmin.length === 0) ||
-      userRole === 'admin' ||
-      userRole === 'superadmin'
+      userRole === "admin" ||
+      userRole === "superadmin"
     ) {
       let tempObject = {
         adminName: selectedUserHasRole.adminName,
@@ -197,13 +197,14 @@ export function PopupWithRadioButtons({
 
   function ifChangeRole() {
     return (
-      <View style={{backgroundColor: colors.background}}>
+      <View style={{ backgroundColor: colors.background }}>
         {listOfRoles.map((role, index) => (
           <View style={styles.containerTextAndRadioButtins} key={index}>
             <Text>{textToShowIfRole(role)}</Text>
             <TouchableOpacity
               onPress={() => changeRoleOfTheSelectedUser(role)}
-              style={styles.radioButtons}>
+              style={styles.radioButtons}
+            >
               <View
                 style={{
                   width: 20,
@@ -215,7 +216,8 @@ export function PopupWithRadioButtons({
                       : colors.background,
                   borderColor: colors.dark,
                   borderWidth: 1,
-                }}>
+                }}
+              >
                 {role === selectedUserHasRole.user.role ? (
                   <View style={styles.smallCircul}></View>
                 ) : null}
@@ -229,19 +231,20 @@ export function PopupWithRadioButtons({
 
   function ifChangeAdmin() {
     return (
-      <View style={{backgroundColor: colors.background}}>
+      <View style={{ backgroundColor: colors.background }}>
         {allAdminsAnsSuperAdmin.map((user, index) => (
           <View style={styles.containerTextAndRadioButtins} key={user.docId}>
-            <Text>{user.firstName + ' ' + user.lastName}</Text>
+            <Text>{user.firstName + " " + user.lastName}</Text>
             <TouchableOpacity
               onPress={() =>
                 user.docId != superAdminContext.userIDToConnectAnotherAdmin &&
                 setConnectedAdminID({
-                  adminName: user.firstName + ' ' + user.lastName,
+                  adminName: user.firstName + " " + user.lastName,
                   adminId: user.docId,
                 })
               }
-              style={styles.radioButtons}>
+              style={styles.radioButtons}
+            >
               <View
                 style={{
                   width: 20,
@@ -253,7 +256,8 @@ export function PopupWithRadioButtons({
                       : colors.background,
                   borderColor: colors.dark,
                   borderWidth: 1,
-                }}>
+                }}
+              >
                 {user.docId === connectedAdminID.adminId ? (
                   <View style={styles.smallCircul}></View>
                 ) : null}
@@ -266,7 +270,7 @@ export function PopupWithRadioButtons({
   }
 
   return (
-    <View style={{flex: 1}}>
+    <View style={{ flex: 1 }}>
       <ScrollView>
         <Text style={styles.textTitle}>{titleText}</Text>
         {showRole ? ifChangeRole() : ifChangeAdmin()}
@@ -277,9 +281,11 @@ export function PopupWithRadioButtons({
             ? changeRoleWithPressingOkButton()
             : changeConnectedAdminWithPressingOkButton()
         }
-        style={styles.okButton}>
+        style={styles.okButton}
+      >
         <Text
-          style={{textAlign: 'center', fontWeight: '500', ...typography.lg}}>
+          style={{ textAlign: "center", fontWeight: "500", ...typography.lg }}
+        >
           Ok
         </Text>
       </TouchableOpacity>
@@ -291,8 +297,8 @@ export default PopupWithRadioButtons;
 
 const styles = StyleSheet.create({
   containerTextAndRadioButtins: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
     paddingVertical: 10,
     marginHorizontal: 22,
     color: colors.background,

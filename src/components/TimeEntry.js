@@ -1,14 +1,14 @@
-import React from 'react';
-import {StyleSheet, Text, View, TouchableOpacity} from 'react-native';
+import React from "react";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
-import {Icon} from '@rneui/base';
+import { Icon } from "@rneui/base";
 
-import {format} from 'date-fns';
+import { format } from "date-fns";
 
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
-const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
+const TimeEntry = ({ entry, setActivity, toggleOverlay }) => {
   const isTimeEntryTwoMonthsOld = () => {
     const now = new Date();
 
@@ -29,15 +29,16 @@ const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
         style={{
           fontWeight:
             !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
-              ? 'bold'
-              : 'normal',
+              ? "bold"
+              : "normal",
           color:
             !entry.statusConfirmed && !isTimeEntryTwoMonthsOld()
               ? colors.dark
               : colors.secondary,
           flex: 1,
           ...typography.b2,
-        }}>
+        }}
+      >
         {entry.title}
       </Text>
       <Text
@@ -48,9 +49,10 @@ const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
               : colors.secondary,
           flex: 1,
           ...typography.b2,
-          textAlign: 'center',
-        }}>
-        {format(entry.date, 'yyyy-MM-dd')}
+          textAlign: "center",
+        }}
+      >
+        {format(entry.date, "yyyy-MM-dd")}
       </Text>
       <Text
         style={{
@@ -60,9 +62,10 @@ const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
               : colors.secondary,
           flex: 0.6,
           ...typography.b2,
-          textAlign: 'center',
+          textAlign: "center",
           paddingRight: 5,
-        }}>
+        }}
+      >
         {entry.time} tim
       </Text>
       {!entry.statusConfirmed ? (
@@ -72,7 +75,8 @@ const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
           onPress={() => {
             setActivity(entry);
             toggleOverlay();
-          }}>
+          }}
+        >
           <Icon
             testID="icon"
             color={isTimeEntryTwoMonthsOld() ? colors.secondary : colors.dark}
@@ -83,7 +87,7 @@ const TimeEntry = ({entry, setActivity, toggleOverlay}) => {
         </TouchableOpacity>
       ) : (
         <View testID="doneIcon">
-          <Icon color={colors.secondary} name={'done'} size={25} />
+          <Icon color={colors.secondary} name={"done"} size={25} />
         </View>
       )}
     </View>
@@ -94,9 +98,9 @@ export default TimeEntry;
 
 const styles = StyleSheet.create({
   entryIside: {
-    flexDirection: 'row',
+    flexDirection: "row",
     backgroundColor: colors.background,
-    alignItems: 'center',
+    alignItems: "center",
     paddingVertical: 2.5,
     paddingHorizontal: 8,
   },

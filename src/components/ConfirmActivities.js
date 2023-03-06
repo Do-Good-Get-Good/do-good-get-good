@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from "react";
 import {
   StyleSheet,
   Text,
@@ -6,28 +6,28 @@ import {
   TouchableNativeFeedback,
   TouchableOpacity,
   Alert,
-} from 'react-native';
-import {CheckBox, Icon} from '@rneui/base';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import {useNetInfo} from '@react-native-community/netinfo';
+} from "react-native";
+import { CheckBox, Icon } from "@rneui/base";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import { useNetInfo } from "@react-native-community/netinfo";
 import {
   confirmTimeEntry,
   incrementTotalConfirmedHoursForUser,
   incrementYearlyTotalHoursForUser,
   updateUsersActivitiesAndAccumulatedTime,
-} from '../firebase-functions/update';
-import useTimeEntriesForAdmin from '../hooks/useTimeEntriesForAdmin';
+} from "../firebase-functions/update";
+import useTimeEntriesForAdmin from "../hooks/useTimeEntriesForAdmin";
 
-import adminStore from '../store/adminStore';
+import adminStore from "../store/adminStore";
 
-import {Observer} from 'mobx-react-lite';
-import {autorun} from 'mobx';
+import { Observer } from "mobx-react-lite";
+import { autorun } from "mobx";
 
 const ConfirmActivities = () => {
   let userData = adminStore.allUsers;
 
-  const {myUsers, setMyUsers} = useTimeEntriesForAdmin(userData);
+  const { myUsers, setMyUsers } = useTimeEntriesForAdmin(userData);
 
   const [checkAll, setCheckAll] = useState(false);
   const [checked, setChecked] = useState(false);
@@ -37,7 +37,7 @@ const ConfirmActivities = () => {
     return autorun(() => {
       if (adminStore.updatedUser) {
         const updatedUser = adminStore.updatedUserInfo;
-        let newArr = myUsers.map(user => {
+        let newArr = myUsers.map((user) => {
           if (user.userID !== updatedUser.userID) return user;
           return {
             ...user,
@@ -50,8 +50,8 @@ const ConfirmActivities = () => {
   }, [adminStore.updatedUser]);
 
   // Check/uncheck the selected users checkbox
-  const markSelected = selectedUser => {
-    const newUsersArr = myUsers.map(user => {
+  const markSelected = (selectedUser) => {
+    const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
         checked:
@@ -62,7 +62,7 @@ const ConfirmActivities = () => {
     });
     setMyUsers(newUsersArr);
     if (
-      newUsersArr.filter(user => user.checked === true).length ===
+      newUsersArr.filter((user) => user.checked === true).length ===
       myUsers.length
     ) {
       setCheckAll(true);
@@ -74,11 +74,11 @@ const ConfirmActivities = () => {
   };
 
   // Check/uncheck all users checkbox
-  const selectAll = checked => {
+  const selectAll = (checked) => {
     if (checked) {
       setCheckAll(true);
       setChecked(true);
-      let newUsersArr = myUsers.map(user => ({
+      let newUsersArr = myUsers.map((user) => ({
         ...user,
         checked: true,
       }));
@@ -86,7 +86,7 @@ const ConfirmActivities = () => {
     } else {
       setCheckAll(false);
       setChecked(false);
-      let newUsersArr = myUsers.map(user => ({
+      let newUsersArr = myUsers.map((user) => ({
         ...user,
         checked: false,
       }));
@@ -94,8 +94,8 @@ const ConfirmActivities = () => {
     }
   };
 
-  const openSelectedUser = pressedUser => {
-    const newUsersArr = myUsers.map(user => {
+  const openSelectedUser = (pressedUser) => {
+    const newUsersArr = myUsers.map((user) => {
       return {
         ...user,
         isOpen:
@@ -110,20 +110,20 @@ const ConfirmActivities = () => {
   const confirmSelectedActivities = () => {
     // Filters out all selected users and saves them to a new array
     if (inetInfo.isConnected) {
-      let selectedUsers = myUsers.filter(user => {
+      let selectedUsers = myUsers.filter((user) => {
         if (user.checked) {
           return user;
         }
       });
       Alert.alert(
-        'Godkänna aktiviteter',
+        "Godkänna aktiviteter",
         `Är du säker på att du vill godkänna de markerade (${selectedUsers.length}) aktiviteterna?`,
         [
           {
-            text: 'Nej',
+            text: "Nej",
           },
           {
-            text: 'Ja',
+            text: "Ja",
             onPress: () => {
               let userIds = [];
               selectedUsers.map(async (selectedUser, i) => {
@@ -146,13 +146,13 @@ const ConfirmActivities = () => {
     }
   };
 
-  const addAccumulatedTime = selectedUser => {
+  const addAccumulatedTime = (selectedUser) => {
     let timeArray;
-    userData.map(user => {
+    userData.map((user) => {
       if (user.userID === selectedUser.userID) {
         timeArray = user.activitiesAndAccumulatedTime;
         const objNum = timeArray.findIndex(
-          obj => obj.activity_id === selectedUser.activityID,
+          (obj) => obj.activity_id === selectedUser.activityID,
         );
         timeArray[objNum].accumulated_time += selectedUser.timeEntryHours;
       }
@@ -160,7 +160,7 @@ const ConfirmActivities = () => {
     return timeArray;
   };
 
-  const addTotalConfirmedHours = user => {
+  const addTotalConfirmedHours = (user) => {
     let today = new Date();
     let currentYear = today.getFullYear();
     let currentMonth = today.getMonth();
@@ -210,7 +210,8 @@ const ConfirmActivities = () => {
                       style={styles.listItemStyle}
                       onPress={() => {
                         openSelectedUser(user);
-                      }}>
+                      }}
+                    >
                       <View style={styles.viewForListItemName}>
                         <Text style={styles.listItemNameStyle}>
                           {user.fullName}
@@ -222,8 +223,8 @@ const ConfirmActivities = () => {
                           color={colors.secondary}
                           name={
                             user.isOpen === true
-                              ? 'arrow-drop-up'
-                              : 'arrow-drop-down'
+                              ? "arrow-drop-up"
+                              : "arrow-drop-down"
                           }
                           size={30}
                         />
@@ -261,7 +262,7 @@ const ConfirmActivities = () => {
                 ))}
               {myUsers.length === 0 && (
                 <View style={styles.viewAllConfirmed}>
-                  <Text style={{...typography.b2}}>
+                  <Text style={{ ...typography.b2 }}>
                     Du har godkänt alla konsulters tider, kolla igen senare!!
                   </Text>
                 </View>
@@ -273,22 +274,25 @@ const ConfirmActivities = () => {
       <TouchableNativeFeedback
         onPress={() => confirmSelectedActivities()}
         disabled={
-          myUsers.filter(user => user.checked === true).length > 0
+          myUsers.filter((user) => user.checked === true).length > 0
             ? false
             : true
-        }>
+        }
+      >
         <View
           style={
-            myUsers.filter(user => user.checked === true).length > 0
+            myUsers.filter((user) => user.checked === true).length > 0
               ? styles.confirmButton
-              : [styles.confirmButton, {backgroundColor: colors.disabled}]
-          }>
+              : [styles.confirmButton, { backgroundColor: colors.disabled }]
+          }
+        >
           <Text
             style={
-              myUsers.filter(user => user.checked === true).length > 0
+              myUsers.filter((user) => user.checked === true).length > 0
                 ? styles.confirmButtonText
-                : [styles.confirmButtonText, {opacity: 0.4}]
-            }>
+                : [styles.confirmButtonText, { opacity: 0.4 }]
+            }
+          >
             Godkänn
           </Text>
         </View>
@@ -301,14 +305,14 @@ export default ConfirmActivities;
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
     marginVertical: 10,
     paddingVertical: 6,
   },
-  headerText: {...typography.title},
-  headerTextSmall: {...typography.b2, fontWeight: '400'},
+  headerText: { ...typography.title },
+  headerTextSmall: { ...typography.b2, fontWeight: "400" },
   checkBoxStyle: {
     borderWidth: 0,
     paddingHorizontal: 0,
@@ -326,12 +330,12 @@ const styles = StyleSheet.create({
   },
   listItemStyle: {
     backgroundColor: colors.background,
-    flexDirection: 'row',
+    flexDirection: "row",
     paddingVertical: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   listItemNameStyle: {
-    fontWeight: '700',
+    fontWeight: "700",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     flex: 1,
@@ -345,8 +349,8 @@ const styles = StyleSheet.create({
     backgroundColor: colors.light,
     paddingVertical: 16,
     paddingHorizontal: 10,
-    flexDirection: 'column',
-    justifyContent: 'center',
+    flexDirection: "column",
+    justifyContent: "center",
     borderRadius: 5,
   },
   listItemContentNameView: {
@@ -354,12 +358,12 @@ const styles = StyleSheet.create({
   },
   listItemContentDateView: {
     flex: 1,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
-  listItemContentHourView: {flex: 1},
+  listItemContentHourView: { flex: 1 },
   listItemContentNameStyle: {
-    fontWeight: '700',
+    fontWeight: "700",
     fontFamily: typography.b2.fontFamily,
     fontSize: typography.b2.fontSize,
     paddingRight: 10,
@@ -380,26 +384,26 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   confirmButtonText: {
-    alignSelf: 'center',
+    alignSelf: "center",
     fontFamily: typography.button.lg.fontFamily,
     fontSize: typography.button.lg.fontSize,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
   },
   viewForIconAndCheckbox: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
   },
   viewForListItemName: {
     flex: 1.25,
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
   },
   viewAllConfirmed: {
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

@@ -1,27 +1,33 @@
-import React, {useState, useEffect} from 'react';
-import {Text, StyleSheet, View, TouchableOpacity, Platform} from 'react-native';
-import {Icon} from '@rneui/base';
-import {useRoute} from '@react-navigation/native';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import {useIsFocused} from '@react-navigation/native';
+import React, { useState, useEffect } from "react";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  Platform,
+} from "react-native";
+import { Icon } from "@rneui/base";
+import { useRoute } from "@react-navigation/native";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import { useIsFocused } from "@react-navigation/native";
 
-export function DropDownForSorting({choice}) {
+export function DropDownForSorting({ choice }) {
   const rout = useRoute();
   const sortArrayForTimeEntries = [
-    {title: 'Datum'},
-    {title: 'Godkända'},
-    {title: 'Inte godkända'},
+    { title: "Datum" },
+    { title: "Godkända" },
+    { title: "Inte godkända" },
   ];
   const sortArrayForAdminGallery = [
-    {title: 'Favoriter'},
-    {title: 'Namn'},
-    {title: 'Plats'},
+    { title: "Favoriter" },
+    { title: "Namn" },
+    { title: "Plats" },
   ];
 
   const [showSelection, setShowSelection] = useState([]);
 
-  const [sortBy, setSortBy] = useState('');
+  const [sortBy, setSortBy] = useState("");
   const [openDropDown, setOpenDropDown] = useState(false);
   const isFocused = useIsFocused();
 
@@ -32,23 +38,23 @@ export function DropDownForSorting({choice}) {
   function pressSelectionInsideDropDown(selection) {
     setOpenDropDown(false);
     setSortBy(selection);
-    if (rout.name === 'MyTimePage') {
+    if (rout.name === "MyTimePage") {
       choice(selection);
-    } else if (rout.name === 'AdminActivityGallery') {
-      if (selection === 'Favoriter' || 'Namn' || 'Plats') {
+    } else if (rout.name === "AdminActivityGallery") {
+      if (selection === "Favoriter" || "Namn" || "Plats") {
         choice(selection);
       }
     }
   }
 
   useEffect(() => {
-    if (rout.name === 'MyTimePage') {
+    if (rout.name === "MyTimePage") {
       setShowSelection(sortArrayForTimeEntries);
-      setSortBy('Datum');
+      setSortBy("Datum");
       choice(null);
-    } else if (rout.name === 'AdminActivityGallery') {
+    } else if (rout.name === "AdminActivityGallery") {
       setShowSelection(sortArrayForAdminGallery);
-      setSortBy('Name');
+      setSortBy("Name");
       choice(null);
     } else {
       setOpenDropDown(false);
@@ -59,15 +65,15 @@ export function DropDownForSorting({choice}) {
   const styleForDropDownInsideConrainer = {
     borderWidth: 1,
     borderColor: openDropDown ? colors.dark : colors.background,
-    flexDirection: 'row',
-    justifyContent: 'space-around',
+    flexDirection: "row",
+    justifyContent: "space-around",
     paddingVertical: 10,
     paddingHorizontal: 14,
     ...typography.b1,
     borderRadius: 3,
     backgroundColor: colors.background,
-    overflow: 'hidden',
-    alignItems: 'center',
+    overflow: "hidden",
+    alignItems: "center",
   };
 
   return (
@@ -80,7 +86,7 @@ export function DropDownForSorting({choice}) {
           <Icon
             color={colors.secondary}
             style={styles.sortIcon}
-            name={openDropDown === true ? 'arrow-drop-up' : 'arrow-drop-down'}
+            name={openDropDown === true ? "arrow-drop-up" : "arrow-drop-down"}
             size={30}
           />
         </View>
@@ -95,7 +101,8 @@ export function DropDownForSorting({choice}) {
               testID={`dropdownItem${index}`}
               onPress={() => {
                 pressSelectionInsideDropDown(sort.title);
-              }}>
+              }}
+            >
               <Text>{sort.title}</Text>
             </TouchableOpacity>
           ))}
@@ -113,7 +120,7 @@ const styles = StyleSheet.create({
     paddingVertical: 7,
   },
   sortBox: {
-    position: 'absolute',
+    position: "absolute",
     top: 45,
     right: 0,
     left: 0,
@@ -134,7 +141,7 @@ const styles = StyleSheet.create({
   insideSortBox: {
     paddingVertical: 8,
     paddingHorizontal: 10,
-    overflow: 'hidden',
+    overflow: "hidden",
     elevation: 3,
   },
 });

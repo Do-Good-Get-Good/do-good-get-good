@@ -53,7 +53,7 @@ export default function Login() {
   const signIn = () => {
     auth()
       .signInWithEmailAndPassword(email, pass)
-      .catch(error => {
+      .catch((error) => {
         if (error.code === "auth/email-already-in-use") {
           console.log("Den e-post adressen används redan");
         }
@@ -75,7 +75,7 @@ export default function Login() {
       });
   };
 
-  const isOpen = value => {
+  const isOpen = (value) => {
     setShowModal(value);
   };
 
@@ -121,14 +121,16 @@ export default function Login() {
         backgroundColor: "#00000009",
         width: Dimensions.get("screen").width,
         height: Dimensions.get("screen").height,
-      }}>
+      }}
+    >
       <SafeAreaView style={styles.wrapper}>
         {Config.NODE_ENV === "dev" && <DevRelease />}
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}>
+            style={{ flex: 1 }}
+          >
             <View style={styles.logo}>
               <Image
                 testID="login.dgggLogo"
@@ -137,7 +139,8 @@ export default function Login() {
               />
               <Text
                 testID="login.motivationalText"
-                style={styles.motivationTexts}>
+                style={styles.motivationTexts}
+              >
                 {randomText}
               </Text>
             </View>
@@ -147,7 +150,7 @@ export default function Login() {
                 <TextInput
                   textContentType={"emailAddress"}
                   autoCapitalize="none"
-                  onChangeText={text => setEmail(text)}
+                  onChangeText={(text) => setEmail(text)}
                   value={email}
                   keyboardType={"email-address"}
                   placeholder={"E-post"}
@@ -166,10 +169,11 @@ export default function Login() {
                 style={{
                   flexDirection: "row",
                   marginBottom: 10,
-                }}>
+                }}
+              >
                 <TextInput
                   textContentType={"password"}
-                  onChangeText={text => setPass(text)}
+                  onChangeText={(text) => setPass(text)}
                   value={pass}
                   placeholder={"Lösenord"}
                   secureTextEntry={showPassword ? false : true}
@@ -201,7 +205,8 @@ export default function Login() {
                       color: colors.error,
                       ...typography.b2,
                       marginBottom: 10,
-                    }}>
+                    }}
+                  >
                     * {error}
                   </Text>
                 </View>
@@ -211,13 +216,15 @@ export default function Login() {
                   style={styles.loginBtn}
                   onPress={() => {
                     checkInputsAndSignIn();
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       ...typography.button.lg,
                       color: colors.dark,
                       fontWeight: "500",
-                    }}>
+                    }}
+                  >
                     Logga in
                   </Text>
                 </TouchableOpacity>
@@ -228,20 +235,23 @@ export default function Login() {
                     color: "#333333",
                     marginRight: 4,
                     ...typography.b2,
-                  }}>
+                  }}
+                >
                   Glömt ditt lösenord?
                 </Text>
                 <TouchableOpacity
                   onPress={() => {
                     isOpen(true);
-                  }}>
+                  }}
+                >
                   <Text
                     style={{
                       color: colors.primary,
                       textDecorationLine: "underline",
                       ...typography.b2,
                       fontWeight: "700",
-                    }}>
+                    }}
+                  >
                     Tryck här
                   </Text>
                 </TouchableOpacity>
