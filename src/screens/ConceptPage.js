@@ -1,22 +1,22 @@
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
+import {StyleSheet, Text, View, ScrollView, Image} from 'react-native';
 
-import { SafeAreaView } from "react-native-safe-area-context";
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import React, { useEffect, useState } from "react";
-import Menu from "../components/Menu";
-import colors from "../assets/theme/colors";
-import typography from "../assets/theme/typography";
-import { Icon, Dialog } from "react-native-elements";
-import Images from "../Images";
-import BottomLogo from "../components/BottomLogo";
+import React, {useEffect, useState} from 'react';
+import Menu from '../components/Menu';
+import colors from '../assets/theme/colors';
+import typography from '../assets/theme/typography';
+import {Icon, Dialog} from '@rneui/base';
+import Images from '../Images';
+import BottomLogo from '../components/BottomLogo';
 
-import { format } from "date-fns";
+import {format} from 'date-fns';
 import {
   getUserData,
   getActivitiesMatchTimeEntries,
   getConcept,
   getTenLastConfirmedTimeEntries,
-} from "../firebase-functions/get";
+} from '../firebase-functions/get';
 
 const ConceptPage = () => {
   const [loadingUserData, setLoadingUserData] = useState(false);
@@ -37,11 +37,11 @@ const ConceptPage = () => {
 
         if (!response || response.size === 0) {
           setLoadingUserData(false);
-          setNoData("Det finns för tillfället inga godkända aktiviteter");
+          setNoData('Det finns för tillfället inga godkända aktiviteter');
           return;
         }
 
-        response.docs.map(async (timeEntry) => {
+        response.docs.map(async timeEntry => {
           try {
             let activity = await getActivitiesMatchTimeEntries(timeEntry);
             let userInfo = await getUserData(timeEntry.data().user_id);
@@ -55,24 +55,24 @@ const ConceptPage = () => {
               activityCity: activity.city,
               timeEntryDate: format(
                 timeEntry.data().date.toDate(),
-                "yyyy-MM-dd"
+                'yyyy-MM-dd',
               ),
             };
-            setAllUsers((prev) => [...prev, userData]);
+            setAllUsers(prev => [...prev, userData]);
 
             usersFetched++;
             if (usersFetched === response.size) {
               setLoadingUserData(false);
             }
           } catch (error) {
-            if (error === "no-data") {
-              setError("Sorry, something went wrong");
+            if (error === 'no-data') {
+              setError('Sorry, something went wrong');
             }
           }
         });
       } catch (error) {
-        if (error === "no-data") {
-          setError("Sorry, something went wrong");
+        if (error === 'no-data') {
+          setError('Sorry, something went wrong');
         }
       }
     };
@@ -90,8 +90,8 @@ const ConceptPage = () => {
         setConcept(conceptData.sort((a, b) => a.order_id - b.order_id));
         setLoadingConceptData(false);
       } catch (error) {
-        if (error === "no-data") {
-          setError2("Sorry, something went wrong");
+        if (error === 'no-data') {
+          setError2('Sorry, something went wrong');
         }
       }
     };
@@ -101,7 +101,7 @@ const ConceptPage = () => {
     };
   }, []);
 
-  const setTheRightPhoto = (activityObjectPhoto) => {
+  const setTheRightPhoto = activityObjectPhoto => {
     for (let index = 0; index < Images.length; index++) {
       if (activityObjectPhoto === Images[index].name) {
         return Images[index].image;
@@ -112,15 +112,14 @@ const ConceptPage = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
-      <ScrollView style={{ paddingHorizontal: 18 }}>
+      <ScrollView style={{paddingHorizontal: 18}}>
         <Text testID="headerText" style={styles.titleText}>
           Om konceptet
         </Text>
         <View style={styles.activityContainer}>
           {loadingConceptData ? (
             <Dialog.Loading
-              loadingProps={{ color: colors.primary }}
-            ></Dialog.Loading>
+              loadingProps={{color: colors.primary}}></Dialog.Loading>
           ) : (
             concept.length > 0 &&
             concept.map((item, index) => (
@@ -136,8 +135,7 @@ const ConceptPage = () => {
         <View style={styles.activityContainer}>
           {loadingUserData ? (
             <Dialog.Loading
-              loadingProps={{ color: colors.primary }}
-            ></Dialog.Loading>
+              loadingProps={{color: colors.primary}}></Dialog.Loading>
           ) : (
             allUsers.length > 0 &&
             allUsers
@@ -154,10 +152,9 @@ const ConceptPage = () => {
                         style={{
                           marginTop: activity.activityName.length > 16 ? 0 : 25,
                           flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
+                          flexDirection: 'row',
+                          alignItems: 'center',
+                        }}>
                         <Icon
                           type="material-community"
                           name="map-marker-outline"
@@ -208,13 +205,13 @@ const styles = StyleSheet.create({
   },
   titleText: {
     ...typography.h2,
-    fontWeight: "500",
+    fontWeight: '500',
     marginTop: 30,
     color: colors.dark,
   },
   textStyleBold: {
     ...typography.b2,
-    fontWeight: "700",
+    fontWeight: '700',
     color: colors.dark,
   },
   textStyleNormal: {
@@ -229,10 +226,10 @@ const styles = StyleSheet.create({
   },
   insideActivityContainer: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: 'center',
     marginVertical: 7,
     backgroundColor: colors.background,
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     borderRadius: 2,
     borderWidth: 1,
     borderColor: colors.background,
@@ -240,29 +237,29 @@ const styles = StyleSheet.create({
   image: {
     flex: 1,
     height: 100,
-    resizeMode: "contain",
-    alignItems: "center",
+    resizeMode: 'contain',
+    alignItems: 'center',
     marginRight: 12,
     marginTop: 10,
     borderRadius: 5,
   },
   photoAndText: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
   },
   viewTitleCityFullname: {
     flex: 2,
     marginRight: 7,
-    alignItems: "flex-start",
+    alignItems: 'flex-start',
     marginLeft: 10,
     marginTop: 11,
     color: colors.dark,
   },
   iconsAndTextTimeContainer: {
     flex: 1,
-    flexDirection: "row",
+    flexDirection: 'row',
     marginTop: 6,
-    alignItems: "center",
+    alignItems: 'center',
   },
   textTitle: {
     flex: 2,

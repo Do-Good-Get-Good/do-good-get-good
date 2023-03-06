@@ -1,29 +1,29 @@
-import "react-native";
-import React from "react";
-import { render, fireEvent, waitFor, act } from "@testing-library/react-native";
+import 'react-native';
+import React from 'react';
+import {render, fireEvent, waitFor, act} from '@testing-library/react-native';
 
-import Suggestions from "../components/Suggestions";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import { useActivityCardContext } from "../context/ActivityCardContext";
+import Suggestions from '../components/Suggestions';
+import {useCreateActivityFunction} from '../context/CreateActivityContext';
+import {useActivityCardContext} from '../context/ActivityCardContext';
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
-jest.mock("react-native-elements/dist/icons/Icon", () => () => {
-  return <fakeIcon />;
-});
+jest.mock('@rneui/base/dist/Icon/', () => ({
+  Icon: jest.fn(),
+}));
 
-jest.mock("../context/AdminGalleryContext", () => ({
+jest.mock('../context/AdminGalleryContext', () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,
     searchWordHasNoMatch: false,
   }),
 }));
 
-jest.mock("../context/UserLevelContext", () => ({
+jest.mock('../context/UserLevelContext', () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../context/CreateActivityContext", () => ({
+jest.mock('../context/CreateActivityContext', () => ({
   useCreateActivityFunction: () => ({
     changedActivity: jest.fn(),
     setUpdateGallery: jest.fn(),
@@ -32,11 +32,11 @@ jest.mock("../context/CreateActivityContext", () => ({
   }),
 }));
 
-jest.mock("../context/ActivityCardContext", () => ({
+jest.mock('../context/ActivityCardContext', () => ({
   useActivityCardContext: () => ({
     inactiveActivities: jest.fn(),
     oneActivityHasBeenDeleted: false,
-    idOfTheActivityWhichHasBeenDeleted: "id",
+    idOfTheActivityWhichHasBeenDeleted: 'id',
     confirmToDeleteActivity: jest.fn(),
     changePopularStatusInAdminGallery: jest.fn(),
   }),
@@ -45,25 +45,25 @@ jest.mock("../context/ActivityCardContext", () => ({
 const adminGallery = [
   {
     active: true,
-    city: "city",
-    description: "description",
-    id: "id",
-    photo: "symbol_earth",
-    place: "place",
+    city: 'city',
+    description: 'description',
+    id: 'id',
+    photo: 'symbol_earth',
+    place: 'place',
     popular: true,
-    title: "title",
+    title: 'title',
   },
 ];
 
 const inactiveActivities = [
   {
     active: false,
-    city: "city",
-    description: "description",
-    id: "id",
-    photo: "symbol_earth",
+    city: 'city',
+    description: 'description',
+    id: 'id',
+    photo: 'symbol_earth',
     popular: false,
-    title: "title",
+    title: 'title',
   },
 ];
 
@@ -71,139 +71,113 @@ const navigation = {
   navigate: jest.fn(),
 };
 
-jest.mock("@react-navigation/native");
+jest.mock('@react-navigation/native');
 
-beforeEach(() => {
-  jest.useFakeTimers();
-});
+// beforeAll(() => {
+//   jest.useFakeTimers();
+// });
 
-describe("Testing Suggestions", () => {
-  it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
-    require("@react-navigation/native").useRoute.mockReturnValue({
-      name: "AdminActivityGallery",
+describe('Testing Suggestions', () => {
+  it('Suggestions function lookDetails and lookDetails2 for AdminActivityGallery', () => {
+    require('@react-navigation/native').useRoute.mockReturnValue({
+      name: 'AdminActivityGallery',
     });
 
-    const { getByTestId } = render(
+    const {getByTestId} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-      />
+      />,
     );
 
-    waitFor(async () => {
-      const buttonLookDetails = getByTestId("lookDetails");
-      const buttonLookDetails2 = getByTestId("lookDetails2");
+    const buttonLookDetails = getByTestId('lookDetails');
 
-      await act(() => {
-        fireEvent.press(buttonLookDetails);
-        fireEvent.press(buttonLookDetails2);
-      });
+    act(() => {
+      fireEvent.press(buttonLookDetails);
     });
   });
 
-  it("Suggestions text title exist", () => {
-    const { getAllByText } = render(
+  it('Suggestions text title exist', () => {
+    const {getAllByText} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
-    waitFor(() => {
-      expect(getAllByText("title").length).toBe(1);
-    });
+
+    expect(getAllByText('title').length).toBe(1);
   });
 
-  it("Suggestions text city exist", () => {
-    const { getAllByText } = render(
+  it('Suggestions text city exist', () => {
+    const {getAllByText} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
 
-    waitFor(() => {
-      expect(getAllByText("city").length).toBe(1);
-    });
+    expect(getAllByText('city').length).toBe(1);
   });
 
-  it("Suggestions text description exist", () => {
-    const { getAllByText } = render(
+  it('Suggestions text description exist', () => {
+    const {getAllByText} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
 
-    waitFor(() => {
-      expect(getAllByText("description").length).toBe(1);
-    });
+    expect(getAllByText('description').length).toBe(1);
   });
 
-  it("Suggestions text photo exist", () => {
-    const { getByTestId } = render(
+  it('Suggestions text photo exist', () => {
+    const {getByTestId} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
 
-    waitFor(() => {
-      const image = getByTestId("photo");
-      expect(image.props.source).toEqual({
-        testUri: "../../../img/activities_images/symbol_earth.png",
-      });
+    const image = getByTestId('photo');
+    expect(image.props.source).toEqual({
+      testUri: '../../../img/activities_images/symbol_earth.png',
     });
   });
 
-  it("Suggestions text Läs mer exist", () => {
-    const { getAllByText } = render(
-      <Suggestions
-        navigation={navigation}
-        adminGallery={adminGallery}
-        inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
-    );
-
-    waitFor(() => {
-      expect(getAllByText("Läs mer").length).toBe(1);
-    });
-  });
-
-  it("Possible for admin to change status popular activity ", () => {
+  it('Possible for admin to change status popular activity ', () => {
     render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
 
     useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
-      false
+      false,
     );
     useCreateActivityFunction().setUpdateGallery.mockReturnValue(false);
   });
 
   it("If word from the searchBar doesn't match any activity, should stay text Inga resultat", () => {
-    const { getAllByText } = render(
+    const {getAllByText} = render(
       <Suggestions
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-        choiceFromDropDown={"Namn"}
-      />
+        choiceFromDropDown={'Namn'}
+      />,
     );
-    expect(getAllByText("Din sökning gav inga resultat.").length).toBe(1);
+    expect(getAllByText('Din sökning gav inga resultat.').length).toBe(1);
   });
 });

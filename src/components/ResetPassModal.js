@@ -10,7 +10,7 @@ import {
 
 import inputStyles from "../styles/inputStyle";
 
-import { Icon, Overlay } from "react-native-elements";
+import { Icon, Overlay } from "@rneui/base";
 
 import auth from "@react-native-firebase/auth";
 
@@ -48,7 +48,7 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
   const alertMessage = () => {
     Alert.alert(
       "Återställ lösenord",
-      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!"
+      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!",
     );
   };
 

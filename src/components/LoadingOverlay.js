@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View, Dimensions } from "react-native";
 
-import { Dialog } from "react-native-elements";
+import { Dialog } from "@rneui/base";
 
 import colors from "../assets/theme/colors";
 

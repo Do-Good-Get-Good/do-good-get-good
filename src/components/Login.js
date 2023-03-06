@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState, useRef } from "react";
 import {
   Text,
@@ -15,7 +14,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -109,7 +108,7 @@ export default function Login() {
   //Randomizes a motivational text once every app launch/login screen reload
   useEffect(() => {
     setRandomText(
-      motivationTexts[Math.floor(Math.random() * motivationTexts.length)]
+      motivationTexts[Math.floor(Math.random() * motivationTexts.length)],
     );
   }, []);
 
@@ -125,8 +124,6 @@ export default function Login() {
       }}
     >
       <SafeAreaView style={styles.wrapper}>
-        <StatusBar style="auto" />
-
         {Config.NODE_ENV === "dev" && <DevRelease />}
         <ResetPassModal isModalOpen={showModal} openModal={isOpen} />
         <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
@@ -234,7 +231,11 @@ export default function Login() {
               </View>
               <View style={styles.passReset}>
                 <Text
-                  style={{ color: "#333333", marginRight: 4, ...typography.b2 }}
+                  style={{
+                    color: "#333333",
+                    marginRight: 4,
+                    ...typography.b2,
+                  }}
                 >
                   Glömt ditt lösenord?
                 </Text>
@@ -272,17 +273,18 @@ const styles = StyleSheet.create({
     flex: 0.8,
     alignItems: "center",
     justifyContent: "center",
+    paddingTop: 10,
   },
   logoImg: {
-    height: Dimensions.get("window").height * 0.15,
-    aspectRatio: 18 / 9,
+    height: "40%",
+    aspectRatio: 2,
   },
   motivationTexts: {
     ...typography.title,
     color: colors.dark,
     alignSelf: "center",
     fontWeight: "500",
-    marginTop: 30,
+    marginTop: 15,
   },
   loginFormView: {
     paddingHorizontal: 18,

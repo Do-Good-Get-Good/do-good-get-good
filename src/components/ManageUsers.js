@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import { CheckBox, Overlay, Icon } from "react-native-elements";
+import { CheckBox, Overlay, Icon } from "@rneui/base";
 
 import auth from "@react-native-firebase/auth";
 
@@ -65,7 +65,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     try {
       let otherUsers = await getAllUsersNotConnectedToAdmin(
         auth().currentUser.uid,
-        currentActivityId.toString()
+        currentActivityId.toString(),
       );
       setOtherUsers(otherUsers);
     } catch (error) {
@@ -79,13 +79,13 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         connectNewActivityToUser(user, currentActivityId.toString());
         adminStore.connectActivityToUser(
           user.userID,
-          currentActivityId.toString()
+          currentActivityId.toString(),
         );
       } else {
         removeActivityFromUser(user.userID, currentActivityId.toString());
         adminStore.disconnectActivityFromUser(
           user.userID,
-          currentActivityId.toString()
+          currentActivityId.toString(),
         );
       }
     });

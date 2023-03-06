@@ -10,7 +10,7 @@ const DevRelease = () => {
         position: "absolute",
         height: 65,
         ...Platform.select({
-          ios: { top: 60 },
+          ios: { top: 50 },
         }),
       }}
     >

@@ -14,7 +14,7 @@ import LinearGradient from "react-native-linear-gradient";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 
 import BottomNavButtons from "./BottomNavButtons";
 

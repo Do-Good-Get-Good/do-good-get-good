@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import {
   StyleSheet,
   View,
   Text,
   Platform,
   TouchableWithoutFeedback,
+  TouchableOpacity,
 } from "react-native";
-import { FAB, Icon } from "react-native-elements";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { FAB, Icon } from "@rneui/base";
 import { useNavigation } from "@react-navigation/native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -68,12 +68,26 @@ export default FloatingActionButton;
 
 const styles = StyleSheet.create({
   fab: {
-    bottom: 0,
+    ...Platform.select({
+      ios: {
+        bottom: 18,
+      },
+      android: {
+        bottom: 0,
+      },
+    }),
     zIndex: 1,
   },
   menuItems: {
     position: "absolute",
-    bottom: 90,
+    ...Platform.select({
+      ios: {
+        bottom: 100,
+      },
+      android: {
+        bottom: 80,
+      },
+    }),
     right: 16,
   },
   buttonStyle: {

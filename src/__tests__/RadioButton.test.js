@@ -1,14 +1,14 @@
-import "react-native";
-import React from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
+import 'react-native';
+import React from 'react';
+import {render, fireEvent} from '@testing-library/react-native';
 
-import RadioButton from "../components/RadioButton";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import RadioButton from '../components/RadioButton';
+import {useAdminGalleryFunction} from '../context/AdminGalleryContext';
+import {useCreateActivityFunction} from '../context/CreateActivityContext';
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
-jest.mock("../context/AdminGalleryContext", () => ({
+jest.mock('../context/AdminGalleryContext', () => ({
   useAdminGalleryFunction: () => ({
     chooseActiveOrNot: jest.fn(),
     word: jest.fn(),
@@ -17,45 +17,45 @@ jest.mock("../context/AdminGalleryContext", () => ({
   }),
 }));
 
-jest.mock("../context/CreateActivityContext", () => ({
+jest.mock('../context/CreateActivityContext', () => ({
   useCreateActivityFunction: () => ({
     word: jest.fn(),
     setSearchWordHasNoMatch: jest.fn(),
   }),
 }));
 
-describe("Testing Radio Button", () => {
-  it("can find RadioButton Ja", () => {
-    const { getAllByText } = render(<RadioButton />);
-    expect(getAllByText("Ja").length).toBe(1);
+describe('Testing Radio Button', () => {
+  it('can find RadioButton Ja', () => {
+    const {getAllByText} = render(<RadioButton />);
+    expect(getAllByText('Ja').length).toBe(1);
   });
 
-  it("can find RadioButton Nej", () => {
-    const { getAllByText } = render(<RadioButton />);
-    expect(getAllByText("Nej").length).toBe(1);
+  it('can find RadioButton Nej', () => {
+    const {getAllByText} = render(<RadioButton />);
+    expect(getAllByText('Nej').length).toBe(1);
   });
 
-  it("can press the button RadioButton Ja and send value true to context", () => {
-    const { getByTestId } = render(<RadioButton />);
-    const buttonJa = getByTestId("pressOnButtonJa");
+  it('can press the button RadioButton Ja and send value true to context', () => {
+    const {getByTestId} = render(<RadioButton />);
+    const buttonJa = getByTestId('pressOnButtonJa');
     fireEvent.press(buttonJa);
-    useAdminGalleryFunction().word.mockReturnValue("");
+    useAdminGalleryFunction().word.mockReturnValue('');
     useAdminGalleryFunction().setSearchWordHasNoMatch.mockReturnValue(false);
     useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
-      true
+      true,
     );
     useAdminGalleryFunction().chooseActiveOrNot.mockReturnValue(true);
   });
 
-  it("can press the button RadioButton Nej and send value false to context", () => {
-    const { getByTestId } = render(<RadioButton />);
-    const buttonNej = getByTestId("pressOnButtonNej");
+  it('can press the button RadioButton Nej and send value false to context', () => {
+    const {getByTestId} = render(<RadioButton />);
+    const buttonNej = getByTestId('pressOnButtonNej');
     fireEvent.press(buttonNej);
     useAdminGalleryFunction().chooseActiveOrNot.mockReturnValue(false);
-    useCreateActivityFunction().word.mockReturnValue("");
+    useCreateActivityFunction().word.mockReturnValue('');
     useCreateActivityFunction().setSearchWordHasNoMatch.mockReturnValue(false);
     useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
-      true
+      true,
     );
   });
 });

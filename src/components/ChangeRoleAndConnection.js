@@ -1,10 +1,9 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Overlay } from "react-native-elements";
+import { Overlay } from "@rneui/base";
 import PopupWithRadioButtons from "./PopupWithRadioButtons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 export function ChangeRolesAndConnection({}) {

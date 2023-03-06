@@ -4,23 +4,23 @@ import {
   Text,
   View,
   TouchableOpacity,
-} from "react-native";
-import React, { useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
+} from 'react-native';
+import React from 'react';
+import {SafeAreaView} from 'react-native-safe-area-context';
 
-import BottomLogo from "../components/BottomLogo";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
+import BottomLogo from '../components/BottomLogo';
+import typography from '../assets/theme/typography';
+import colors from '../assets/theme/colors';
 
-import { Icon } from "react-native-elements";
+import {Icon} from '@rneui/base';
 
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
-import Menu from "../components/Menu";
+import {useSuperAdminFunction} from '../context/SuperAdminContext';
+import Menu from '../components/Menu';
 
-import ChangeRolesAndConnection from "../components/ChangeRoleAndConnection";
-import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
+import ChangeRolesAndConnection from '../components/ChangeRoleAndConnection';
+import ConnectedUsersDropDown from '../components/ConnectedUsersDropDown';
 
-export function RolesAndConnection({ navigation, route }) {
+export function RolesAndConnection({navigation, route}) {
   const superAdminContext = useSuperAdminFunction();
 
   return (
@@ -31,8 +31,7 @@ export function RolesAndConnection({ navigation, route }) {
         <View style={styles.container}>
           <TouchableOpacity
             onPress={() => navigation.goBack()}
-            style={{ flexDirection: "row" }}
-          >
+            style={{flexDirection: 'row'}}>
             <Icon
               color={colors.dark}
               name="arrow-left"
@@ -43,17 +42,16 @@ export function RolesAndConnection({ navigation, route }) {
           </TouchableOpacity>
 
           <ChangeRolesAndConnection />
-          {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
+          {superAdminContext.makeChangesForSelectedUser.user.role === 'admin' ||
           superAdminContext.makeChangesForSelectedUser.user.role ===
-            "superadmin" ? (
+            'superadmin' ? (
             <ConnectedUsersDropDown />
           ) : null}
           <TouchableOpacity
             onPress={() =>
               superAdminContext.setButtonToSaveChanhgesPressed(true)
             }
-            style={styles.saveButton}
-          >
+            style={styles.saveButton}>
             <Text style={styles.saveButtonText}>Spara</Text>
           </TouchableOpacity>
           <View style={styles.logoStyle}>
@@ -73,8 +71,8 @@ const styles = StyleSheet.create({
   textGoBackButton: {
     marginLeft: 10,
     paddingTop: 4,
-    textDecorationLine: "underline",
-    fontWeight: "500",
+    textDecorationLine: 'underline',
+    fontWeight: '500',
     ...typography.b2,
   },
   saveButton: {
@@ -82,14 +80,14 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     height: 50,
     marginBottom: 10,
-    alignItems: "center",
-    justifyContent: "center",
+    alignItems: 'center',
+    justifyContent: 'center',
     marginTop: 50,
     marginBottom: 134,
   },
   saveButtonText: {
     ...typography.button.lg,
-    fontWeight: "500",
+    fontWeight: '500',
   },
   logoStyle: {
     marginBottom: 7,

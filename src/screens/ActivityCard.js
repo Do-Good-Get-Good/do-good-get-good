@@ -10,7 +10,7 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
-import { Icon, Overlay } from "react-native-elements";
+import { Icon, Overlay } from "@rneui/base";
 
 import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -102,7 +102,7 @@ export function ActivityCard({ route, navigation }) {
         setActiveActivities(false);
       } else {
         console.log(
-          "Something went wrong with YES button while trying to archive"
+          "Something went wrong with YES button while trying to archive",
         );
       }
       activityCardContext.idActivity(activityInfo.id);
@@ -120,7 +120,7 @@ export function ActivityCard({ route, navigation }) {
         setActiveActivities(true);
       } else {
         console.log(
-          "Something went wrong with YES button while trying to take activity away from archive"
+          "Something went wrong with YES button while trying to take activity away from archive",
         );
       }
       activityCardContext.idActivity(activityInfo.id);
@@ -147,21 +147,18 @@ export function ActivityCard({ route, navigation }) {
       <Overlay
         overlayStyle={styles.overlay}
         isVisible={visible}
-        onBackdropPress={() => setVisible(!visible)}
-      >
+        onBackdropPress={() => setVisible(!visible)}>
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.light }]}
-            onPress={() => setVisible(!visible)}
-          >
+            onPress={() => setVisible(!visible)}>
             <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.primary }]}
-            onPress={() => buttonYesPressed()}
-          >
+            onPress={() => buttonYesPressed()}>
             <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
         </View>
@@ -234,8 +231,7 @@ export function ActivityCard({ route, navigation }) {
 
         <TouchableOpacity
           testID="alertToDeleteActivity"
-          onPress={() => alertToDeleteActivity()}
-        >
+          onPress={() => alertToDeleteActivity()}>
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -257,8 +253,7 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToTakeAwayFromArchiveActivity"
-            onPress={() => alertToTakeAwayFromArchiveActivity()}
-          >
+            onPress={() => alertToTakeAwayFromArchiveActivity()}>
             <Text style={styles.textNearIconArchiveArrow}>
               Flytta från arkiv
             </Text>
@@ -279,8 +274,7 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToArchiveActivity"
-            onPress={() => alertToArchiveActivity()}
-          >
+            onPress={() => alertToArchiveActivity()}>
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -307,8 +301,7 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toNotFavorite"
-            onPress={() => changePopularStatus()}
-          >
+            onPress={() => changePopularStatus()}>
             <Text style={styles.textNearIconStar}>
               Ta bort från TG-favoriter
             </Text>
@@ -329,8 +322,7 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toFavorite"
-            onPress={() => changePopularStatus()}
-          >
+            onPress={() => changePopularStatus()}>
             <Text style={styles.textNearIconStar}>
               Lägg till som TG-favorit
             </Text>
@@ -359,8 +351,7 @@ export function ActivityCard({ route, navigation }) {
                 activity: activityInfo,
                 tgPopular: popular,
               })
-            }
-          >
+            }>
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
@@ -372,8 +363,7 @@ export function ActivityCard({ route, navigation }) {
           style={styles.buttonSeeAllUsers}
           onPress={() => {
             setIsManageUsersOpen(!isManageUsersOpen);
-          }}
-        >
+          }}>
           <Text style={styles.buttonSeeAllUsersText}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
@@ -402,18 +392,18 @@ export function ActivityCard({ route, navigation }) {
             <TouchableOpacity
               testID="buttonGoBack"
               onPress={() => navigation.goBack()}
-              style={{ flexDirection: "row", alignItems: "center" }}
-            >
+              style={{ flexDirection: "row", alignItems: "center" }}>
               <Icon name="arrow-back" color={colors.dark} size={25} />
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
           </View>
           <Text style={styles.textTitle}>{activity.title}</Text>
-          <Image
-            testID="photo"
-            style={styles.image}
-            source={setTheRightPhoto(activity.photo)}
-          ></Image>
+          {activity.photo !== "" && (
+            <Image
+              testID="photo"
+              style={styles.image}
+              source={setTheRightPhoto(activity.photo)}></Image>
+          )}
           <View style={styles.containerIconAndCity}>
             <Icon
               type="material-community"

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { format } from "date-fns";
-import { Icon, Dialog } from "react-native-elements";
+import { Icon, Dialog } from "@rneui/base";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 

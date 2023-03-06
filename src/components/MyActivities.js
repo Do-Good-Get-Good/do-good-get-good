@@ -9,7 +9,7 @@ import {
   Platform,
 } from "react-native";
 
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
 import Images from "../Images";
 import typography from "../assets/theme/typography";

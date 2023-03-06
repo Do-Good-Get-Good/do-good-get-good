@@ -1,34 +1,34 @@
-import "react-native";
-import React from "react";
-import { render } from "@testing-library/react-native";
+import 'react-native';
+import React from 'react';
+import {render} from '@testing-library/react-native';
 
-import { HomePage } from "../screens/HomePage";
+import {HomePage} from '../screens/HomePage';
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+jest.mock('react-native/Libraries/EventEmitter/NativeEventEmitter');
 
-jest.mock("../components/MenuOverlay", () => () => {
+jest.mock('../components/MenuOverlay', () => () => {
   return <mockMenuOverlay />;
 });
 
-jest.mock("react-native-elements/dist/icons/Icon", () => () => {
-  return <fakeIcon />;
-});
+jest.mock('@rneui/base/dist/Icon/', () => ({
+  Icon: jest.fn(),
+}));
 
-jest.mock("@react-native-community/netinfo", () => ({
+jest.mock('@react-native-community/netinfo', () => ({
   useNetInfo: () => ({
     isConnected: false,
   }),
 }));
 
-jest.mock("@react-navigation/native", () => {
-  const actualNav = jest.requireActual("@react-navigation/native");
+jest.mock('@react-navigation/native', () => {
+  const actualNav = jest.requireActual('@react-navigation/native');
   return {
     ...actualNav,
     useNavigation: jest.fn(),
   };
 });
 
-jest.mock("../hooks/useLinkedActivities", () => () => {
+jest.mock('../hooks/useLinkedActivities', () => () => {
   return {
     timeObject: jest.fn(),
     activities: jest.fn(),
@@ -36,7 +36,7 @@ jest.mock("../hooks/useLinkedActivities", () => () => {
   };
 });
 
-jest.mock("../hooks/useActivitySuggestions", () => ({
+jest.mock('../hooks/useActivitySuggestions', () => ({
   useActivitySuggestions: () => {
     return {
       suggestions: jest.fn(),
@@ -45,25 +45,25 @@ jest.mock("../hooks/useActivitySuggestions", () => ({
   },
 }));
 
-jest.mock("../components/MyActivities", () => ({
+jest.mock('../components/MyActivities', () => ({
   MyActivities: () => <></>,
 }));
 
-jest.mock("../components/TimeStatistics", () => () => {
+jest.mock('../components/TimeStatistics', () => () => {
   return <></>;
 });
 
-jest.mock("../components/NewestTimeEntries", () => () => {
+jest.mock('../components/NewestTimeEntries', () => () => {
   return <></>;
 });
 
-jest.mock("../components/HomeSuggestions", () => () => {
+jest.mock('../components/HomeSuggestions', () => () => {
   return <></>;
 });
 
-describe("Testing HomePage", () => {
+describe('Testing HomePage', () => {
   it("Can find the 'Förslag & inspiration' text", () => {
-    const { getByText } = render(<HomePage />);
-    expect(getByText("Förslag & inspiration"));
+    const {getByText} = render(<HomePage />);
+    expect(getByText('Förslag & inspiration'));
   });
 });

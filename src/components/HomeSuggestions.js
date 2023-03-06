@@ -8,7 +8,7 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";

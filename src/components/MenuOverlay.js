@@ -9,7 +9,7 @@ import {
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import { Icon, Overlay } from "react-native-elements";
+import { Icon, Overlay } from "@rneui/base";
 
 import auth from "@react-native-firebase/auth";
 

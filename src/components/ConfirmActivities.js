@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Alert,
 } from "react-native";
-import { CheckBox, Icon } from "react-native-elements";
+import { CheckBox, Icon } from "@rneui/base";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useNetInfo } from "@react-native-community/netinfo";
@@ -141,7 +141,7 @@ const ConfirmActivities = () => {
               adminStore.updateUserTimeEntries(userIds);
             },
           },
-        ]
+        ],
       );
     }
   };
@@ -152,7 +152,7 @@ const ConfirmActivities = () => {
       if (user.userID === selectedUser.userID) {
         timeArray = user.activitiesAndAccumulatedTime;
         const objNum = timeArray.findIndex(
-          (obj) => obj.activity_id === selectedUser.activityID
+          (obj) => obj.activity_id === selectedUser.activityID,
         );
         timeArray[objNum].accumulated_time += selectedUser.timeEntryHours;
       }

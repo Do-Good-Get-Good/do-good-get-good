@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import { useRoute } from "@react-navigation/native";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";

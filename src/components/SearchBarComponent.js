@@ -7,7 +7,7 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import colors from "../assets/theme/colors";

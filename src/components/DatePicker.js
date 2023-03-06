@@ -8,7 +8,7 @@ import {
   Pressable,
 } from "react-native";
 
-import { Overlay, Icon } from "react-native-elements";
+import { Overlay, Icon } from "@rneui/base";
 import { Calendar } from "react-native-calendars";
 
 import { format } from "date-fns";
@@ -138,7 +138,8 @@ export default DatePicker;
 
 const styles = StyleSheet.create({
   overlayStyle: {
-    width: "80%",
+    width: "90%",
+    backgroundColor: colors.light,
   },
   datePickerButton: {
     height: 50,

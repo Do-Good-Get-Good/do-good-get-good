@@ -7,7 +7,7 @@ import {
   Pressable,
   StatusBar,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import { useNetInfo } from "@react-native-community/netinfo";
 import { useNavigation } from "@react-navigation/native";
 

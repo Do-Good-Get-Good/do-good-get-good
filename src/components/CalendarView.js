@@ -9,7 +9,7 @@ import {
   ScrollView,
 } from "react-native";
 
-import { Overlay, Icon } from "react-native-elements";
+import { Overlay, Icon } from "@rneui/base";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
@@ -401,7 +401,8 @@ const styles = StyleSheet.create({
   activityTitle: {
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
-    fontWeight: "700",
+    fontWeight: "800",
+    color: "#333333",
   },
   chooseDateText: {
     ...typography.b1,

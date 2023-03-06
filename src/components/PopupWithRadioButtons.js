@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { ScrollView } from "react-native-gesture-handler";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 export function PopupWithRadioButtons({
@@ -18,7 +23,7 @@ export function PopupWithRadioButtons({
     adminId: "",
   });
   const [allAdminsAnsSuperAdmin, setAllAdminsAnsSuperAdmin] = useState(
-    superAdminContext.allAdminsAnsSuperAdmins
+    superAdminContext.allAdminsAnsSuperAdmins,
   );
 
   const [selectedUserHasRole, setSelectedUserHasRole] = useState({});
@@ -51,7 +56,7 @@ export function PopupWithRadioButtons({
     ) {
       var indexOfUserWhosedminIDNeedsToBeChange =
         superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-          (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+          (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
         );
       setConnectedAdminID({
         adminName:
@@ -75,7 +80,7 @@ export function PopupWithRadioButtons({
       superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin;
 
     var indexOfUserWhosedminIDNeedsToBeChange = changeAdminObject.findIndex(
-      (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin
+      (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
     );
 
     let tempObjectOfUserThatConnectedToAdmin = {
@@ -119,7 +124,7 @@ export function PopupWithRadioButtons({
     changeAdminObject.splice(
       indexOfUserWhosedminIDNeedsToBeChange,
       1,
-      tempObjectOfUserThatConnectedToAdmin
+      tempObjectOfUserThatConnectedToAdmin,
     );
 
     let allSelectedUser = {
@@ -131,7 +136,7 @@ export function PopupWithRadioButtons({
     superAdminContext.setMakeChangesForSelectedUser(allSelectedUser);
 
     var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
-      (x) => x === tempObjectOfUserThatConnectedToAdmin.user.docId
+      (x) => x === tempObjectOfUserThatConnectedToAdmin.user.docId,
     );
     if (index === -1) {
       superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [
@@ -148,7 +153,7 @@ export function PopupWithRadioButtons({
   function changeRoleWithPressingOkButton() {
     superAdminContext.setMakeChangesForSelectedUser(selectedUserHasRole);
     var index = superAdminContext.arrayOfIdOfChangedUserInfo.findIndex(
-      (x) => x === selectedUserHasRole.user.docId
+      (x) => x === selectedUserHasRole.user.docId,
     );
     if (index === -1) {
       superAdminContext.setArrayOfIdOfChangedUserInfo((prev) => [

@@ -8,7 +8,7 @@ import {
   Platform,
   Keyboard,
 } from "react-native";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -68,7 +68,8 @@ export function Suggestions({
       ) {
         let newArray = showArray;
         var index = newArray.findIndex(
-          (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
+          (x) =>
+            x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted,
         );
         newArray.splice(index, 1);
         setShowArray(sortingByTitle(newArray));
@@ -83,7 +84,7 @@ export function Suggestions({
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
-          (x) => x.id === useCreateActivityContext.changedActivity.id
+          (x) => x.id === useCreateActivityContext.changedActivity.id,
         );
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(sortingByTitle(newArray));
@@ -98,7 +99,7 @@ export function Suggestions({
     let sortArray = [];
     if (choiceFromDropDown === "Favoriter") {
       sortArray = showArray.sort(
-        (a, b) => Number(b.popular) - Number(a.popular)
+        (a, b) => Number(b.popular) - Number(a.popular),
       );
     } else if (choiceFromDropDown === "Namn") {
       sortArray = sortingByTitle(showArray);
@@ -181,7 +182,7 @@ export function Suggestions({
     return (
       <View style={styles.activityContainer}>
         {viewArray.map((suggestion, index) =>
-          viewToShow(suggestion, index, suggestion.id + index)
+          viewToShow(suggestion, index, suggestion.id + index),
         )}
       </View>
     );

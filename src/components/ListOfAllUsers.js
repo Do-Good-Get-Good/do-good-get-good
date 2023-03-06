@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 export function ListOfAllUsers({ navigation }) {

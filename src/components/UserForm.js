@@ -8,7 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 
-import { Icon } from "react-native-elements";
+import { Icon } from "@rneui/base";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -23,7 +23,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   const [showPassword, setShowPassword] = useState(false);
   const [invalidEmail, setInvalidEmail] = useState(false);
   const [placeholder, setPlaceholder] = useState(
-    user.role === null ? "Behörighet" : user.role
+    user.role === null ? "Behörighet" : user.role,
   );
   const [invalidPassword, setInvalidPassword] = useState(false);
   const [passwordFilledUp, setPasswordFilledUp] = useState();
@@ -97,7 +97,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
       if (placeholder === "Behörighet") return;
       if (
         [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin].includes(
-          placeholder
+          placeholder,
         )
       ) {
         setPlaceholderFilledUp(true);
@@ -117,7 +117,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
       !invalidPassword &&
       placeholderFilledUp &&
       [UserLevels.User, UserLevels.Admin, UserLevels.SuperAdmin].includes(
-        placeholder
+        placeholder,
       )
     ) {
       return true;

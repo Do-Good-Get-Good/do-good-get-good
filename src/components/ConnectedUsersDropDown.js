@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { Icon, Overlay } from "react-native-elements";
+import { Icon, Overlay } from "@rneui/base";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -21,7 +21,7 @@ export function ConnectedUsersDropDown({}) {
 
   useEffect(() => {
     setUserArray(
-      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin
+      superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin,
     );
   }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
 
