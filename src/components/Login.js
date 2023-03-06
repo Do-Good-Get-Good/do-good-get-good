@@ -268,12 +268,13 @@ export default function Login() {
 const styles = StyleSheet.create({
   wrapper: {
     flex: 1,
+    paddingBottom: 20,
   },
   logo: {
     flex: 0.8,
     alignItems: "center",
     justifyContent: "center",
-    paddingTop: 10,
+    paddingTop: 20,
   },
   logoImg: {
     height: "40%",
