@@ -77,7 +77,7 @@ export const getAllUsersData = async () => {
 
     if (querySnapshot.empty)
       throw new Error(
-        "No users were found. Please create users before trying again!"
+        "No users were found. Please create users before trying again!",
       );
 
     let allUsers = querySnapshot.docs.map((doc) => {
@@ -149,14 +149,11 @@ export const getAllActivitiesWithStatus = async (status) => {
   }
 };
 
-export const getAllFavoriteActivities = async () => {
+export const getAllActivities = async () => {
   try {
-    let querySnapshot = await firestore()
-      .collection("Activities")
-      .where("tg_favorite", "==", true)
-      .get();
+    let querySnapshot = await firestore().collection("Activities").get();
 
-    let favoriteActivities = querySnapshot.docs.map((doc) => {
+    let allActivities = querySnapshot.docs.map((doc) => {
       return {
         id: doc.id,
         title: doc.data().activity_title,
@@ -168,7 +165,7 @@ export const getAllFavoriteActivities = async () => {
       };
     });
 
-    return Promise.resolve(favoriteActivities);
+    return Promise.resolve(allActivities);
   } catch (error) {
     return Promise.reject(error);
   }
