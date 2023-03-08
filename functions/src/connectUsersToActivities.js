@@ -16,7 +16,8 @@ async function updateActivities(activities) {
             .collection("Activities")
             .doc(activity.id)
             .update({
-              connected_users: activity.connected_users,
+              connected_users: activity.connectedUsers,
+              user_count: activity.userCount,
             });
           res(true);
         } catch (error) {
@@ -49,7 +50,8 @@ exports.connectUsersToActivities = functions.firestore
 
       newActivityData.push({
         ...activity,
-        connected_users: connectedUsers,
+        connectedUsers,
+        userCount: connectedUsers.length,
       });
     });
 
