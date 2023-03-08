@@ -14,8 +14,6 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 const HomeSuggestions = ({ navigation, suggestions }) => {
-  const showArray = sortingByTitle(suggestions);
-
   function setTheRightPhoto(activityObjectPhoto) {
     for (let index = 0; index < Images.length; index++) {
       if (activityObjectPhoto === Images[index].name) {
@@ -34,13 +32,9 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
     });
   }
 
-  function sortingByTitle(arrayToSort) {
-    return arrayToSort.sort((a, b) => a.title.localeCompare(b.title));
-  }
-
   return (
     <View style={styles.activityContainer}>
-      {showArray.map((suggestion) => (
+      {suggestions.map((suggestion) => (
         <View key={suggestion.id}>
           <TouchableOpacity
             testID="lookDetails"
