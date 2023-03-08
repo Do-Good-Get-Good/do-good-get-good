@@ -151,7 +151,10 @@ export const getAllActivitiesWithStatus = async (status) => {
 
 export const getAllActivities = async () => {
   try {
-    let querySnapshot = await firestore().collection("Activities").get();
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .orderBy("user_count", "desc")
+      .get();
 
     let allActivities = querySnapshot.docs.map((doc) => {
       return {
