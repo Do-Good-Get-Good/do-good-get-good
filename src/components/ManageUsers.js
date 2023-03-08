@@ -18,6 +18,7 @@ import typography from "../assets/theme/typography";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
+  updateConnectedUsersOnActivity,
 } from "../firebase-functions/update";
 import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 
@@ -73,22 +74,48 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     }
   };
 
-  const updateUsers = () => {
-    myUsers.map((user) => {
-      if (user.checked) {
-        connectNewActivityToUser(user, currentActivityId.toString());
-        adminStore.connectActivityToUser(
-          user.userID,
-          currentActivityId.toString(),
-        );
-      } else {
-        removeActivityFromUser(user.userID, currentActivityId.toString());
-        adminStore.disconnectActivityFromUser(
-          user.userID,
-          currentActivityId.toString(),
-        );
-      }
+  const updateUsers = async () => {
+    let connectedUsers = [];
+    await Promise.all(
+      myUsers.map((user) => {
+        return new Promise(async (res) => {
+          try {
+            if (user.checked) {
+              connectedUsers.push(user.userID);
+              connectNewActivityToUser(user, currentActivityId.toString());
+              adminStore.connectActivityToUser(
+                user.userID,
+                currentActivityId.toString(),
+              );
+            } else {
+              removeActivityFromUser(user.userID, currentActivityId.toString());
+              adminStore.disconnectActivityFromUser(
+                user.userID,
+                currentActivityId.toString(),
+              );
+            }
+            res(true);
+          } catch (error) {
+            console.log(error);
+            res(false);
+          }
+        });
+      }),
+    );
+
+    otherUsers.map((user) => {
+      let found = user.connectedActivities.find(
+        (activity) => activity === currentActivityId.toString(),
+      );
+
+      if (!found) return;
+      connectedUsers.push(user.id);
     });
+
+    updateConnectedUsersOnActivity(
+      currentActivityId.toString(),
+      connectedUsers,
+    );
     closeModal();
   };
 
