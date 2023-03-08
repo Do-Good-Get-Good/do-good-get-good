@@ -61,7 +61,9 @@ export const getAllUsersNotConnectedToAdmin = async (adminId, activityId) => {
 
     let otherUsers = querySnapshot.docs.map((doc) => {
       return {
+        id: doc.id,
         fullName: `${doc.data().first_name} ${doc.data().last_name}`,
+        connectedActivities: doc.data().connected_activities,
       };
     });
 
