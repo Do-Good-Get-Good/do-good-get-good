@@ -7,6 +7,7 @@ const { updateYear } = require("./src/updateYear");
 const { assignAdminClaim } = require("./src/assignAdminClaim");
 const { downloadData } = require("./src/downloadData/downloadData");
 const { connectUsersToActivities } = require("./src/connectUsersToActivities");
+const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 
 const { firebaseConfig } = require("./config");
 
@@ -20,3 +21,4 @@ exports.updateYear = updateYear;
 exports.assignAdminClaim = assignAdminClaim;
 exports.downloadData = downloadData;
 exports.connectUsersToActivities = connectUsersToActivities;
+exports.updateActivityUserCount = updateActivityUserCount;
