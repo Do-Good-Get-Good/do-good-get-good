@@ -67,10 +67,11 @@
     "collectCoverage": true,
     "coverageDirectory": "./reports/coverage",
     "collectCoverageFrom": [
+      "App.js",
       "./screens/**",
       "./components/**",
-      "App.js",
-      "./context/**"
+      "./context/**",
+      "./hooks/**"
     ],
     "coverageThreshold": {
       "global": {
