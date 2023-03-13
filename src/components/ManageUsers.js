@@ -279,7 +279,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 5,
-    zIndex: 2,
   },
   lastUserView: {
     marginBottom: 22,
