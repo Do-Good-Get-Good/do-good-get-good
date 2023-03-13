@@ -176,11 +176,9 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             </TouchableOpacity>
           ))}
         {myUsers.length === 0 && (
-          <View testID="test.userView" style={styles.userView}>
-            <Text style={styles.userViewText}>
-              Du har inga användare kopplade till dig
-            </Text>
-          </View>
+          <Text testID="test.userView" style={styles.userViewText}>
+            Du har inga användare kopplade till dig
+          </Text>
         )}
         <Text
           testID="test.otherUsersHeader"
@@ -208,11 +206,9 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             </View>
           ))}
         {otherUsers.length === 0 && (
-          <View testID="test.otherUsersView" style={styles.noOtherUsersView}>
-            <Text testID="test.noOtherUsers" style={styles.userViewText}>
-              Inga andra användare är kopplade till den här aktiviteten!
-            </Text>
-          </View>
+          <Text testID="test.noOtherUsers" style={styles.userViewText}>
+            Inga andra användare är kopplade till den här aktiviteten!
+          </Text>
         )}
       </ScrollView>
       <TouchableOpacity style={styles.saveButton} onPress={() => updateUsers()}>
@@ -285,10 +281,6 @@ const styles = StyleSheet.create({
   },
   userViewText: {
     ...typography.b2,
-  },
-  noOtherUsersView: {
-    paddingVertical: 5,
-    marginBottom: 22,
   },
   checkBoxContainerStyle: {
     padding: 0,
