@@ -1,13 +1,17 @@
 import "react-native";
 import React from "react";
-import {
-  render,
-  waitFor,
-  cleanup,
-  fireEvent,
-} from "@testing-library/react-native";
+import { render, cleanup, fireEvent, act } from "@testing-library/react-native";
 import ManageUsers from "../../components/ManageUsers";
 import adminStore from "../../store/adminStore";
+
+import {
+  connectNewActivityToUser,
+  removeActivityFromUser,
+  updateConnectedUsersOnActivity,
+} from "../../firebase-functions/update";
+import { getAllUsersNotConnectedToAdmin } from "../../firebase-functions/get";
+
+import { when } from "mobx";
 
 jest.useFakeTimers();
 
@@ -21,33 +25,28 @@ jest.mock("@rneui/base/dist/CheckBox/CheckBox", () => ({
   CheckBox: jest.fn(),
 }));
 
+jest.mock("../../firebase-functions/get", () => ({
+  getAllUsersNotConnectedToAdmin: jest.fn(),
+}));
+
+jest.mock("../../firebase-functions/update", () => ({
+  connectNewActivityToUser: jest.fn(),
+  removeActivityFromUser: jest.fn(),
+  updateConnectedUsersOnActivity: jest.fn(),
+}));
+
 let mockOtherUserData = [
   {
-    data: () => ({
-      first_name: "Other",
-      last_name: "User",
-    }),
+    id: 987,
+    fullName: "Other user",
+    connectedActivities: ["1234"],
   },
   {
-    data: () => ({
-      first_name: "Other",
-      last_name: "User 2",
-    }),
+    id: 988,
+    fullName: "Other2 user2",
+    connectedActivities: ["1234"],
   },
 ];
-
-jest.mock("@react-native-firebase/firestore", () => () => ({
-  collection: jest.fn(() => ({
-    where: jest.fn(() => ({
-      where: jest.fn(() => ({
-        get: jest.fn(() => ({
-          empty: false,
-          docs: mockOtherUserData,
-        })),
-      })),
-    })),
-  })),
-}));
 
 jest.mock("@react-native-firebase/auth", () => () => ({
   currentUser: {
@@ -79,7 +78,7 @@ describe("Testing ManageUsers component", () => {
   adminStore.addNewUser({
     activitiesAndAccumulatedTime: [],
     adminID: "123",
-    connectedActivities: ["1234"],
+    connectedActivities: [],
     firstName: "Test2",
     lastName: "lastname2",
     role: "user",
@@ -92,7 +91,9 @@ describe("Testing ManageUsers component", () => {
       currentForMonth: 0,
     },
   });
-  it("Can render users connected and correct other users when no other users are connected", () => {
+  it("Can render users connected and correct other users", async () => {
+    getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
+
     const { getByTestId, getAllByTestId } = render(
       <ManageUsers
         visible={true}
@@ -100,15 +101,15 @@ describe("Testing ManageUsers component", () => {
         currentActivityId={"activity_id"}
       />,
     );
-    waitFor(() => {});
+
+    await when(() => adminStore.allUsers.length === 2);
+
     expect(getByTestId("test.modalHeader").children[0]).toEqual(
       "Lägg till eller ta bort:",
     );
-
     expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
       "Mina användare",
     );
-
     expect(getAllByTestId("test.userView").length).toBe(2);
     expect(getByTestId("test.userFullName0").children[0]).toEqual(
       "Test1 lastname1",
@@ -116,30 +117,39 @@ describe("Testing ManageUsers component", () => {
     expect(getByTestId("test.userFullName1").children[0]).toEqual(
       "Test2 lastname2",
     );
-
     expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
       "Andra användare",
     );
-
-    expect(getAllByTestId("test.otherUsersView").length).toBe(1);
-
-    expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
-      "Inga andra användare är kopplade till den här aktiviteten!",
+    expect(getAllByTestId("test.otherUsersView").length).toBe(2);
+    expect(getByTestId("test.otherUserFullName0").children[0]).toEqual(
+      mockOtherUserData[0].fullName,
+    );
+    expect(getByTestId("test.otherUserFullName1").children[0]).toEqual(
+      mockOtherUserData[1].fullName,
     );
   });
 
-  it("Can press on save button", () => {
+  it("Can press on save button", async () => {
+    const activityId = "1234";
+    const connectedUser1 = adminStore.allUsers[0].userID;
+
     const { getByText } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
-        currentActivityId={"activity_id"}
+        currentActivityId={activityId}
       />,
     );
 
     const saveButton = getByText("Spara");
     expect(saveButton);
 
-    fireEvent.press(saveButton);
+    await act(() => {
+      fireEvent.press(saveButton);
+    });
+
+    expect(updateConnectedUsersOnActivity).toHaveBeenCalledWith(activityId, [
+      connectedUser1,
+    ]);
   });
 });

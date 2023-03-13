@@ -153,9 +153,14 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Mina användare
         </Text>
-        {myUsers.length != 0 ? (
+        {myUsers.length !== 0 &&
           myUsers.map((user, index) => (
-            <View testID="test.userView" style={styles.userView} key={index}>
+            <TouchableOpacity
+              testID="test.userView"
+              style={styles.userView}
+              key={index}
+              onPress={() => checkOrUncheckUser(user)}
+            >
               <Text
                 testID={`test.userFullName${index}`}
                 style={styles.userViewText}
@@ -164,13 +169,13 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
               </Text>
               <CheckBox
                 checked={user.checked}
-                onPress={() => checkOrUncheckUser(user)}
                 containerStyle={styles.checkBoxContainerStyle}
                 checkedColor={colors.primary}
+                disabled
               />
-            </View>
-          ))
-        ) : (
+            </TouchableOpacity>
+          ))}
+        {myUsers.length === 0 && (
           <View testID="test.userView" style={styles.userView}>
             <Text style={styles.userViewText}>
               Du har inga användare kopplade till dig
@@ -183,7 +188,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Andra användare
         </Text>
-        {otherUsers.length > 0 ? (
+        {otherUsers.length !== 0 &&
           otherUsers.map((user, index) => (
             <View
               testID="test.otherUsersView"
@@ -201,8 +206,8 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
                 {user.fullName}
               </Text>
             </View>
-          ))
-        ) : (
+          ))}
+        {otherUsers.length === 0 && (
           <View testID="test.otherUsersView" style={styles.noOtherUsersView}>
             <Text testID="test.noOtherUsers" style={styles.userViewText}>
               Inga andra användare är kopplade till den här aktiviteten!
@@ -274,6 +279,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     paddingVertical: 5,
+    zIndex: 2,
   },
   lastUserView: {
     marginBottom: 22,
