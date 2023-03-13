@@ -148,6 +148,8 @@ describe("Testing ManageUsers component", () => {
       fireEvent.press(saveButton);
     });
 
+    expect(connectNewActivityToUser).toHaveBeenCalledTimes(1);
+    expect(removeActivityFromUser).toHaveBeenCalledTimes(1);
     expect(updateConnectedUsersOnActivity).toHaveBeenCalledWith(activityId, [
       connectedUser1,
     ]);
