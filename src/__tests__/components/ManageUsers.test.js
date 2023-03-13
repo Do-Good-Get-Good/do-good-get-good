@@ -2,7 +2,6 @@ import "react-native";
 import React from "react";
 import {
   render,
-  cleanup,
   fireEvent,
   act,
   waitForElementToBeRemoved,
