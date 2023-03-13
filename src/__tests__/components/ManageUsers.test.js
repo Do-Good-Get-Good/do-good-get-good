@@ -1,6 +1,12 @@
 import "react-native";
 import React from "react";
-import { render, cleanup, fireEvent, act } from "@testing-library/react-native";
+import {
+  render,
+  cleanup,
+  fireEvent,
+  act,
+  waitForElementToBeRemoved,
+} from "@testing-library/react-native";
 import ManageUsers from "../../components/ManageUsers";
 import adminStore from "../../store/adminStore";
 
@@ -55,50 +61,51 @@ jest.mock("@react-native-firebase/auth", () => () => ({
 }));
 
 afterEach(() => {
-  cleanup();
+  adminStore.resetStore();
+  getAllUsersNotConnectedToAdmin.mockReturnValue([]);
 });
 
 describe("Testing ManageUsers component", () => {
-  adminStore.addNewUser({
-    activitiesAndAccumulatedTime: [],
-    adminID: "123",
-    connectedActivities: ["1234"],
-    firstName: "Test1",
-    lastName: "lastname1",
-    role: "user",
-    timeEntries: [],
-    isOpen: false,
-    statusActive: true,
-    userID: "012",
-    timeObject: {
-      paidTime: 0,
-      currentForMonth: 0,
-    },
-  });
-  adminStore.addNewUser({
-    activitiesAndAccumulatedTime: [],
-    adminID: "123",
-    connectedActivities: [],
-    firstName: "Test2",
-    lastName: "lastname2",
-    role: "user",
-    timeEntries: [],
-    isOpen: false,
-    statusActive: true,
-    userID: "0124",
-    timeObject: {
-      paidTime: 0,
-      currentForMonth: 0,
-    },
-  });
   it("Can render users connected and correct other users", async () => {
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: ["1234"],
+      firstName: "Test1",
+      lastName: "lastname1",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "012",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: [],
+      firstName: "Test2",
+      lastName: "lastname2",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "0124",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
     getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
 
     const { getByTestId, getAllByTestId } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
-        currentActivityId={"activity_id"}
+        currentActivityId={"1234"}
       />,
     );
 
@@ -129,7 +136,165 @@ describe("Testing ManageUsers component", () => {
     );
   });
 
+  it("Renders info text when no users are connected to an admin and no other users are found", async () => {
+    getAllUsersNotConnectedToAdmin.mockReturnValue([]);
+    const { getByTestId } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"1234"}
+      />,
+    );
+
+    expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
+      "Mina användare",
+    );
+    expect(getByTestId("test.userView").children[0]).toEqual(
+      "Du har inga användare kopplade till dig",
+    );
+    expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+      "Andra användare",
+    );
+    expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
+      "Inga andra användare är kopplade till den här aktiviteten!",
+    );
+  });
+
+  it("Renders users and info when other users are not found", async () => {
+    getAllUsersNotConnectedToAdmin.mockReturnValue([]);
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: ["1234"],
+      firstName: "Test1",
+      lastName: "lastname1",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "012",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
+
+    const { getByTestId } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"1234"}
+      />,
+    );
+
+    expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
+      "Mina användare",
+    );
+    expect(getByTestId("test.userFullName0").children[0]).toEqual(
+      "Test1 lastname1",
+    );
+    expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+      "Andra användare",
+    );
+    expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
+      "Inga andra användare är kopplade till den här aktiviteten!",
+    );
+  });
+
+  it("Renders info text when no users are connected to an admin and correct other users", async () => {
+    getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
+
+    const { getByTestId } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"1234"}
+      />,
+    );
+
+    await waitForElementToBeRemoved(() => getByTestId("test.noOtherUsers"));
+
+    expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
+      "Mina användare",
+    );
+    expect(getByTestId("test.userView").children[0]).toEqual(
+      "Du har inga användare kopplade till dig",
+    );
+    expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+      "Andra användare",
+    );
+
+    expect(getByTestId("test.otherUserFullName0").children[0]).toEqual(
+      mockOtherUserData[0].fullName,
+    );
+    expect(getByTestId("test.otherUserFullName1").children[0]).toEqual(
+      mockOtherUserData[1].fullName,
+    );
+  });
+
+  it("It's possible to press on a user", async () => {
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: ["1234"],
+      firstName: "Test1",
+      lastName: "lastname1",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "012",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
+
+    const { getByTestId } = render(
+      <ManageUsers
+        visible={true}
+        closeModal={jest.fn()}
+        currentActivityId={"1234"}
+      />,
+    );
+
+    const user = getByTestId("test.userView");
+    act(() => fireEvent.press(user));
+  });
+
   it("Can press on save button", async () => {
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: ["1234"],
+      firstName: "Test1",
+      lastName: "lastname1",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "012",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
+    adminStore.addNewUser({
+      activitiesAndAccumulatedTime: [],
+      adminID: "123",
+      connectedActivities: [],
+      firstName: "Test2",
+      lastName: "lastname2",
+      role: "user",
+      timeEntries: [],
+      isOpen: false,
+      statusActive: true,
+      userID: "0124",
+      timeObject: {
+        paidTime: 0,
+        currentForMonth: 0,
+      },
+    });
     const activityId = "1234";
     const connectedUser1 = adminStore.allUsers[0].userID;
 
