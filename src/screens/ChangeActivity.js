@@ -18,7 +18,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import BottomNavButtons from "../components/BottomNavButtons";
 
-import Images from "../Images";
+import Images from "../lib/images";
 
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";

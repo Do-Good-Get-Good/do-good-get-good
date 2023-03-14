@@ -9,7 +9,7 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import Images from "../Images";
+import Images from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 

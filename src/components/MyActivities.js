@@ -11,7 +11,7 @@ import {
 
 import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
-import Images from "../Images";
+import Images from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 

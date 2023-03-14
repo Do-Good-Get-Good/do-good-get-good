@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Text, StyleSheet, View, ScrollView } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -53,7 +53,7 @@ export function AdminActivityGallery({ navigation }) {
           createActivityContext.changedActivity.id != ""
         ) {
           var indexActive = arrayOfActiveActivities.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id
+            (x) => x.id === createActivityContext.changedActivity.id,
           );
 
           if (
@@ -73,7 +73,7 @@ export function AdminActivityGallery({ navigation }) {
           var arrayInactive = inactiveActivities;
 
           var indexInactive = arrayInactive.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id
+            (x) => x.id === createActivityContext.changedActivity.id,
           );
 
           if (indexInactive != -1) {
@@ -88,7 +88,7 @@ export function AdminActivityGallery({ navigation }) {
           createActivityContext.changedActivity.id != ""
         ) {
           var indexInactive2 = inactiveActivities.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id
+            (x) => x.id === createActivityContext.changedActivity.id,
           );
 
           if (
@@ -107,7 +107,7 @@ export function AdminActivityGallery({ navigation }) {
 
           var arrayStatusActive = arrayOfActiveActivities;
           var indexOfActiveActivities = arrayStatusActive.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id
+            (x) => x.id === createActivityContext.changedActivity.id,
           );
 
           if (indexOfActiveActivities != -1) {

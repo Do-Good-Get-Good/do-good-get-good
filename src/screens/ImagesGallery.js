@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useLayoutEffect } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -13,13 +13,15 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
-import Images from "../Images";
+import Images from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 
 export function ImagesGallery({ navigation, route }) {
-  const [imagesArray, setImagesArray] = useState(Images);
+  const [imagesArray, setImagesArray] = useState(
+    Images.filter((img) => img.wide !== true),
+  );
   const [imageName, setImageName] = useState(route.params.selectedImage);
 
   useEffect(() => {
@@ -39,7 +41,7 @@ export function ImagesGallery({ navigation, route }) {
     return {
       flex: 1,
       flexDirection: "row",
-      resizeMode: "contain",
+      resizeMode: "cover",
       backgroundColor: colors.background,
       alignItems: "center",
       borderRadius: 5,

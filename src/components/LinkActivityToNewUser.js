@@ -23,7 +23,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import Images from "../Images";
+import Images from "../lib/images";
 
 export function LinkActivityToNewUser({
   activity,
@@ -44,9 +44,10 @@ export function LinkActivityToNewUser({
   const [cityFilledUp, setCityFilledUp] = useState(null);
 
   function setImageForNewActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (activity.image === Images[index].name) {
-        return Images[index].image;
+    let images = Images.filter((img) => img.wide !== true);
+    for (let index = 0; index < images.length; index++) {
+      if (activity.image === images[index].name) {
+        return images[index].image;
       }
     }
   }

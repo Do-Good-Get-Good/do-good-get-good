@@ -6,13 +6,15 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
+  ImageBackground,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
-import Images from "../Images";
+import Images from "../lib/images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -147,18 +149,21 @@ export function ActivityCard({ route, navigation }) {
       <Overlay
         overlayStyle={styles.overlay}
         isVisible={visible}
-        onBackdropPress={() => setVisible(!visible)}>
+        onBackdropPress={() => setVisible(!visible)}
+      >
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.light }]}
-            onPress={() => setVisible(!visible)}>
+            onPress={() => setVisible(!visible)}
+          >
             <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.primary }]}
-            onPress={() => buttonYesPressed()}>
+            onPress={() => buttonYesPressed()}
+          >
             <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
         </View>
@@ -187,9 +192,10 @@ export function ActivityCard({ route, navigation }) {
   }, [tgPopular]);
 
   function setTheRightPhoto(activityObjectPhoto) {
-    for (let i = 0; i < Images.length; i++) {
-      if (activityObjectPhoto === Images[i].name) {
-        return Images[i].image;
+    let images = Images.filter((img) => img.wide === true);
+    for (let i = 0; i < images.length; i++) {
+      if (activityObjectPhoto === images[i].name) {
+        return images[i].image;
       }
     }
   }
@@ -231,7 +237,8 @@ export function ActivityCard({ route, navigation }) {
 
         <TouchableOpacity
           testID="alertToDeleteActivity"
-          onPress={() => alertToDeleteActivity()}>
+          onPress={() => alertToDeleteActivity()}
+        >
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -253,7 +260,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToTakeAwayFromArchiveActivity"
-            onPress={() => alertToTakeAwayFromArchiveActivity()}>
+            onPress={() => alertToTakeAwayFromArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>
               Flytta från arkiv
             </Text>
@@ -274,7 +282,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToArchiveActivity"
-            onPress={() => alertToArchiveActivity()}>
+            onPress={() => alertToArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -301,7 +310,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toNotFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Ta bort från TG-favoriter
             </Text>
@@ -322,7 +332,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Lägg till som TG-favorit
             </Text>
@@ -351,7 +362,8 @@ export function ActivityCard({ route, navigation }) {
                 activity: activityInfo,
                 tgPopular: popular,
               })
-            }>
+            }
+          >
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
@@ -363,7 +375,8 @@ export function ActivityCard({ route, navigation }) {
           style={styles.buttonSeeAllUsers}
           onPress={() => {
             setIsManageUsersOpen(!isManageUsersOpen);
-          }}>
+          }}
+        >
           <Text style={styles.buttonSeeAllUsersText}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
@@ -386,24 +399,38 @@ export function ActivityCard({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={styles.container}>
-        <View style={{ flex: 1, marginBottom: 20 }}>
-          <View style={styles.containerArrowAndText}>
-            <TouchableOpacity
-              testID="buttonGoBack"
-              onPress={() => navigation.goBack()}
-              style={{ flexDirection: "row", alignItems: "center" }}>
-              <Icon name="arrow-back" color={colors.dark} size={25} />
-              <Text style={styles.textNearArrow}>Gå tillbaka</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.textTitle}>{activity.title}</Text>
-          {activity.photo !== "" && (
-            <Image
-              testID="photo"
-              style={styles.image}
-              source={setTheRightPhoto(activity.photo)}></Image>
-          )}
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          marginRight: 16,
+        }}
+      >
+        <TouchableOpacity
+          testID="buttonGoBack"
+          onPress={() => navigation.goBack()}
+        >
+          <Icon
+            name="arrow-back"
+            color={colors.dark}
+            size={30}
+            containerStyle={{
+              paddingHorizontal: 10,
+              paddingVertical: 5,
+            }}
+          />
+        </TouchableOpacity>
+        <Text style={styles.textTitle}>{activity.title}</Text>
+      </View>
+      <ScrollView>
+        {activity.photo !== "" && (
+          <Image
+            testID="photo"
+            style={styles.image}
+            source={setTheRightPhoto(activity.photo)}
+          />
+        )}
+        <View style={{ flex: 1, marginVertical: 20, marginHorizontal: 16 }}>
           <View style={styles.containerIconAndCity}>
             <Icon
               type="material-community"
@@ -432,12 +459,12 @@ export function ActivityCard({ route, navigation }) {
             />
             <Text style={styles.textDescription}>{activity.description}</Text>
           </View>
-          {adminOpenedActyvity === true && activeActivities === true
-            ? adminActionsForActiveActivities()
-            : null}
-          {adminOpenedActyvity === true && activeActivities === false
-            ? adminActionsForInactiveActivities()
-            : null}
+          {adminOpenedActyvity === true &&
+            activeActivities === true &&
+            adminActionsForActiveActivities()}
+          {adminOpenedActyvity === true &&
+            activeActivities === false &&
+            adminActionsForInactiveActivities()}
           {alertForArchivingAndDelete()}
         </View>
         <BottomLogo />
@@ -456,37 +483,15 @@ export function ActivityCard({ route, navigation }) {
 export default ActivityCard;
 
 const styles = StyleSheet.create({
-  container: {
-    height: 200,
-    paddingHorizontal: 16,
-  },
-  containerArrowAndText: {
-    flexDirection: "row",
-    marginLeft: -5,
-    marginTop: 30,
-  },
-  textNearArrow: {
-    fontFamily: typography.button.sm.fontFamily,
-    fontSize: typography.button.sm.fontSize,
-    fontWeight: "700",
-    textDecorationLine: "underline",
-    color: colors.dark,
-    marginLeft: 8,
-  },
   textTitle: {
-    ...typography.h2,
+    ...typography.h3,
     color: colors.dark,
-    marginTop: 32,
+    paddingTop: 6,
   },
   image: {
-    resizeMode: "contain",
-    marginTop: 22,
-    height: 98,
-    width: 107,
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.background,
+    resizeMode: "cover",
+    width: "100%",
+    height: 250,
   },
   textCity: {
     flex: 1,
@@ -497,7 +502,6 @@ const styles = StyleSheet.create({
   containerIconAndCity: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 40,
     color: colors.dark,
   },
   textDescription: {

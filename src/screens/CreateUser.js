@@ -64,7 +64,7 @@ const CreateUser = ({ route, navigation }) => {
 
   useEffect(() => {
     if (route.params?.imageForActivity === undefined) {
-      setActivity({ ...activity, image: "symbol_hands_heart-DEFAULT" });
+      setActivity({ ...activity, image: "blodgivning" });
     } else {
       setActivity({ ...activity, image: route.params?.imageForActivity });
     }
@@ -83,7 +83,7 @@ const CreateUser = ({ route, navigation }) => {
       user,
       selectedActivity,
       setLoading,
-      navigation
+      navigation,
     );
   }
 
@@ -109,7 +109,7 @@ const CreateUser = ({ route, navigation }) => {
       newUser,
       setAllActiveActvivitiesFB,
       setLoading,
-      navigation
+      navigation,
     );
   }
 
