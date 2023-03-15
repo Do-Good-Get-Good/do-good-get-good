@@ -6,8 +6,6 @@ import {
   Image,
   TouchableOpacity,
   ScrollView,
-  ImageBackground,
-  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
@@ -399,13 +397,7 @@ export function ActivityCard({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <View
-        style={{
-          flexDirection: "row",
-          alignItems: "center",
-          marginRight: 16,
-        }}
-      >
+      <View style={styles.titleAndBackButton}>
         <TouchableOpacity
           testID="buttonGoBack"
           onPress={() => navigation.goBack()}
@@ -414,10 +406,7 @@ export function ActivityCard({ route, navigation }) {
             name="arrow-back"
             color={colors.dark}
             size={30}
-            containerStyle={{
-              paddingHorizontal: 10,
-              paddingVertical: 5,
-            }}
+            containerStyle={styles.backIconContainerStyle}
           />
         </TouchableOpacity>
         <Text style={styles.textTitle}>{activity.title}</Text>
@@ -483,10 +472,21 @@ export function ActivityCard({ route, navigation }) {
 export default ActivityCard;
 
 const styles = StyleSheet.create({
+  titleAndBackButton: {
+    flexDirection: "row",
+    marginRight: 16,
+    height: 50,
+    paddingBottom: 10,
+  },
+  backIconContainerStyle: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+  },
   textTitle: {
     ...typography.h3,
     color: colors.dark,
-    paddingTop: 6,
+    alignSelf: "flex-end",
   },
   image: {
     resizeMode: "cover",
