@@ -19,7 +19,7 @@ const mockSuggestions = [
     city: "city",
     place: "place",
     description: "description",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     popular: true,
   },
 ];
@@ -44,7 +44,8 @@ describe("Testing HomeSuggestions", () => {
 
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      testUri:
+        "../../../assets/images/activities/square/blodgivning_400x400.png",
     });
 
     const suggestionCard = getByTestId("lookDetails");

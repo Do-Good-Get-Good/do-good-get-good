@@ -48,7 +48,7 @@ const adminGallery = [
     city: "city",
     description: "description",
     id: "id",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     place: "place",
     popular: true,
     title: "title",
@@ -61,7 +61,7 @@ const inactiveActivities = [
     city: "city",
     description: "description",
     id: "id",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     popular: false,
     title: "title",
   },
@@ -145,7 +145,8 @@ describe("Testing Suggestions", () => {
 
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      testUri:
+        "../../../assets/images/activities/square/blodgivning_400x400.png",
     });
   });
 

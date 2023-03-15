@@ -18,7 +18,7 @@ const activities = [
     id: "123",
     title: "Studiehjälp för lågstadiebarn",
     city: "Gbg",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     time: 0,
     adminId: "321",
   },
@@ -26,7 +26,7 @@ const activities = [
     id: "123",
     title: "Missing people",
     city: "Gbg",
-    photo: "symbol_hands_heart-DEFAULT",
+    photo: "frisor",
     time: 0,
     adminId: "321",
   },
@@ -53,10 +53,11 @@ describe("Testing MyActivities", () => {
     const { getAllByTestId } = render(<MyActivities activities={activities} />);
     const image = getAllByTestId("imageId");
     expect(image[0].props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      testUri:
+        "../../../assets/images/activities/square/blodgivning_400x400.png",
     });
     expect(image[1].props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
+      testUri: "../../../assets/images/activities/square/frisor_400x400.png",
     });
   });
 

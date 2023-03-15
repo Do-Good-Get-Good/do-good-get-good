@@ -27,7 +27,7 @@ jest.mock("../../firebase-functions/get", () => ({
   }),
   getActivitiesMatchTimeEntries: () => ({
     title: "Title",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     city: "City",
   }),
   getConcept: () => {
@@ -69,12 +69,13 @@ describe("Testing ManageUsers component", () => {
 
       const image = getByTestId("image");
       expect(image.props.source).toEqual({
-        testUri: "../../../img/activities_images/symbol_earth.png",
+        testUri:
+          "../../../assets/images/activities/square/blodgivning_400x400.png",
       });
 
       const bottomLogo = getByTestId("login.bottomLogo");
       expect(bottomLogo.props.source).toEqual({
-        testUri: "../../../img/Technogarden-logotyp-Large.png",
+        testUri: "../../../assets/images/Technogarden-logotyp-Large.png",
       });
     });
   });

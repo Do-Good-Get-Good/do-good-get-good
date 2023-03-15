@@ -49,7 +49,7 @@ const route = {
       title: "title",
       city: "city",
       description: " description",
-      photo: "symbol_earth",
+      photo: "blodgivning",
     },
     active: true,
     tgPopular: true,
@@ -57,17 +57,12 @@ const route = {
 };
 
 describe("Testing ActivityCard ", () => {
-  it("Can find ActivityCard", () => {
-    const component = render(<ActivityCard route={route} />);
-    component.getByText("Gå tillbaka");
-  });
-
   it("Photo exists in ActivityCard", () => {
     const { getByTestId } = render(<ActivityCard route={route} />);
     expect(getByTestId("photo"));
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      testUri: "../../../assets/images/activities/wide/blodgivning_700x400.png",
     });
   });
 

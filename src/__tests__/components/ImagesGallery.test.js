@@ -21,7 +21,7 @@ const navigation = {
 const route = {
   params: {
     cameFrom: "CreateActivity",
-    selectedImage: "symbol_hands_heart-DEFAULT",
+    selectedImage: "blodgivning",
   },
 };
 
@@ -36,7 +36,8 @@ describe("Testing ImagesGallery", () => {
     const image = getAllByTestId("imageInImageGallery");
 
     expect(image[0].props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
+      testUri:
+        "../../../assets/images/activities/square/blodgivning_400x400.png",
     });
   });
 
@@ -48,7 +49,7 @@ describe("Testing ImagesGallery", () => {
     const saveButton = getByTestId("saveButton");
     fireEvent.press(saveButton);
     expect(navigation.navigate).toHaveBeenCalledWith("CreateActivity", {
-      imageForActivity: "symbol_hands_heart-DEFAULT",
+      imageForActivity: "blodgivning",
     });
   });
 
