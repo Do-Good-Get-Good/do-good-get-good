@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
   ifNoInternet: {
     ...typography.b1,
     color: colors.error,
-    alignSelf: "flex-start",
     marginHorizontal: 16,
   },
 });
