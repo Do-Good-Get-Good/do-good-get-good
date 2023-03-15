@@ -110,7 +110,7 @@ const ConceptPage = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <ScrollView style={{ paddingHorizontal: 18 }}>
         <Text testID="headerText" style={styles.titleText}>
@@ -144,50 +144,47 @@ const ConceptPage = () => {
               .sort((a, b) => b.timeEntryDate.localeCompare(a.timeEntryDate))
               .map((activity, index) => (
                 <View key={index} style={styles.insideActivityContainer}>
-                  <View style={styles.photoAndText}>
-                    <View style={styles.viewTitleCityFullname}>
-                      <Text numberOfLines={2} style={styles.textTitle}>
-                        {activity.activityName}
+                  <View style={styles.viewTitleCityFullname}>
+                    <Text numberOfLines={2} style={styles.textTitle}>
+                      {activity.activityName}
+                    </Text>
+
+                    <View
+                      style={{
+                        marginTop: activity.activityName.length > 16 ? 0 : 25,
+                        flexDirection: "row",
+                        alignItems: "center",
+                      }}
+                    >
+                      <Icon
+                        type="material-community"
+                        name="map-marker-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+
+                      <Text style={styles.textCity}>
+                        {activity.activityCity}
                       </Text>
-
-                      <View
-                        style={{
-                          marginTop: activity.activityName.length > 16 ? 0 : 25,
-                          flex: 1,
-                          flexDirection: "row",
-                          alignItems: "center",
-                        }}
-                      >
-                        <Icon
-                          type="material-community"
-                          name="map-marker-outline"
-                          color={colors.dark}
-                          size={25}
-                        />
-
-                        <Text style={styles.textCity}>
-                          {activity.activityCity}
-                        </Text>
-                      </View>
-
-                      <View style={styles.iconsAndTextTimeContainer}>
-                        <Icon
-                          type="material-community"
-                          name="account-outline"
-                          color={colors.dark}
-                          size={25}
-                        />
-                        <Text numberOfLines={2} style={styles.textFullName}>
-                          {activity.fullName}
-                        </Text>
-                      </View>
                     </View>
-                    <Image
-                      testID="image"
-                      style={styles.image}
-                      source={setTheRightPhoto(activity.activityPhoto)}
-                    />
+
+                    <View style={styles.iconsAndTextTimeContainer}>
+                      <Icon
+                        type="material-community"
+                        name="account-outline"
+                        color={colors.dark}
+                        size={25}
+                      />
+                      <Text numberOfLines={2} style={styles.textFullName}>
+                        {activity.fullName}
+                      </Text>
+                    </View>
                   </View>
+                  <Image
+                    testID="image"
+                    style={styles.image}
+                    source={setTheRightPhoto(activity.activityPhoto)}
+                  />
                 </View>
               ))
           )}
@@ -203,9 +200,6 @@ const ConceptPage = () => {
 export default ConceptPage;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
   titleText: {
     ...typography.h2,
     fontWeight: "500",
@@ -223,64 +217,44 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   activityContainer: {
-    flex: 1,
     marginTop: 5,
     marginBottom: 15,
   },
   insideActivityContainer: {
-    flex: 1,
-    justifyContent: "center",
-    marginVertical: 7,
+    flexDirection: "row",
+    justifyContent: "space-between",
     backgroundColor: colors.background,
-    flexWrap: "wrap",
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.background,
+    borderRadius: 5,
+    marginBottom: 10,
+    paddingVertical: 10,
+    paddingHorizontal: 10,
   },
   image: {
-    flex: 1,
+    width: 100,
     height: 100,
-    resizeMode: "contain",
-    alignItems: "center",
-    marginRight: 12,
-    marginTop: 10,
     borderRadius: 5,
   },
-  photoAndText: {
-    flex: 1,
-    flexDirection: "row",
-  },
   viewTitleCityFullname: {
-    flex: 2,
-    marginRight: 7,
-    alignItems: "flex-start",
-    marginLeft: 10,
-    marginTop: 11,
     color: colors.dark,
   },
   iconsAndTextTimeContainer: {
-    flex: 1,
     flexDirection: "row",
-    marginTop: 6,
+    marginTop: 5,
     alignItems: "center",
   },
   textTitle: {
-    flex: 2,
     ...typography.title,
+    paddingVertical: 0,
     color: colors.dark,
   },
   textCity: {
-    flex: 1,
     ...typography.b1,
-    paddingTop: 5,
-    marginLeft: 12,
+    marginLeft: 10,
     color: colors.dark,
   },
   textFullName: {
-    flex: 1,
     ...typography.b1,
-    paddingTop: 3,
-    marginLeft: 12,
+    marginLeft: 10,
     color: colors.dark,
   },
   errorText: {
