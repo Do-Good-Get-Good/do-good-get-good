@@ -243,8 +243,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textTitle: {
-    ...typography.title,
-    paddingVertical: 0,
+    ...typography.cardTitle,
     color: colors.dark,
   },
   textCity: {
