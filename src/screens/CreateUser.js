@@ -63,8 +63,8 @@ const CreateUser = ({ route, navigation }) => {
   ]);
 
   useEffect(() => {
-    if (route.params?.imageForActivity === undefined) {
-      setActivity({ ...activity, image: "blodgivning" });
+    if (!route.params?.imageForActivity) {
+      setActivity({ ...activity, image: "placeholder" });
     } else {
       setActivity({ ...activity, image: route.params?.imageForActivity });
     }

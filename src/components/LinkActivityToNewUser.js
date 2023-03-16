@@ -23,7 +23,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import Images from "../lib/images";
+import Images, { placeholderImage } from "../lib/images";
 
 export function LinkActivityToNewUser({
   activity,
@@ -44,6 +44,8 @@ export function LinkActivityToNewUser({
   const [cityFilledUp, setCityFilledUp] = useState(null);
 
   function setImageForNewActivity() {
+    if (activity.image === "placeholder") return placeholderImage;
+
     let images = Images.filter((img) => img.wide !== true);
     for (let index = 0; index < images.length; index++) {
       if (activity.image === images[index].name) {
