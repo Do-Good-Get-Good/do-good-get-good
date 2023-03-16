@@ -1,9 +1,11 @@
+export const placeholderImage = require("../assets/images/placeholder.png");
+
 export default Images = [
   {
     key: "1",
     image: require("../assets/images/activities/square/blodgivning_400x400.png"),
     name: "blodgivning",
-    selected: true,
+    selected: false,
   },
   {
     key: "2",
@@ -59,7 +61,7 @@ export default Images = [
     key: "10",
     image: require("../assets/images/activities/wide/blodgivning_700x400.png"),
     name: "blodgivning",
-    selected: true,
+    selected: false,
     wide: true,
   },
   {
