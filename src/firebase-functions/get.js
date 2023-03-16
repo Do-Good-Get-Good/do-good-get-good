@@ -61,7 +61,9 @@ export const getAllUsersNotConnectedToAdmin = async (adminId, activityId) => {
 
     let otherUsers = querySnapshot.docs.map((doc) => {
       return {
+        id: doc.id,
         fullName: `${doc.data().first_name} ${doc.data().last_name}`,
+        connectedActivities: doc.data().connected_activities,
       };
     });
 
@@ -77,7 +79,7 @@ export const getAllUsersData = async () => {
 
     if (querySnapshot.empty)
       throw new Error(
-        "No users were found. Please create users before trying again!"
+        "No users were found. Please create users before trying again!",
       );
 
     let allUsers = querySnapshot.docs.map((doc) => {
@@ -149,14 +151,14 @@ export const getAllActivitiesWithStatus = async (status) => {
   }
 };
 
-export const getAllFavoriteActivities = async () => {
+export const getAllActivities = async () => {
   try {
     let querySnapshot = await firestore()
       .collection("Activities")
-      .where("tg_favorite", "==", true)
+      .orderBy("user_count", "desc")
       .get();
 
-    let favoriteActivities = querySnapshot.docs.map((doc) => {
+    let allActivities = querySnapshot.docs.map((doc) => {
       return {
         id: doc.id,
         title: doc.data().activity_title,
@@ -168,7 +170,7 @@ export const getAllFavoriteActivities = async () => {
       };
     });
 
-    return Promise.resolve(favoriteActivities);
+    return Promise.resolve(allActivities);
   } catch (error) {
     return Promise.reject(error);
   }

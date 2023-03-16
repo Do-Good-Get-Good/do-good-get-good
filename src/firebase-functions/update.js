@@ -67,7 +67,7 @@ export const incrementTotalConfirmedHoursForUser = (userId, time) => {
   } catch (error) {
     console.log(
       "There was an error incrementing 'total_confirmed_hours'",
-      error
+      error,
     );
   }
 };
@@ -87,7 +87,7 @@ export const incrementYearlyTotalHoursForUser = (userId, time) => {
 
 export const updateUsersActivitiesAndAccumulatedTime = (
   userId,
-  activitiesAndTime
+  activitiesAndTime,
 ) => {
   try {
     firestore().collection("Users").doc(userId).update({
@@ -96,7 +96,7 @@ export const updateUsersActivitiesAndAccumulatedTime = (
   } catch (error) {
     console.log(
       "There was an error updating 'activities_and_accumulated_time'",
-      error
+      error,
     );
   }
 };
@@ -159,6 +159,16 @@ export const updateActivityInfo = (newData) => {
       activity_place: newData.place,
       activity_title: newData.title,
       tg_favorite: newData.popular,
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const updateConnectedUsersOnActivity = (activityId, connectedUsers) => {
+  try {
+    firestore().collection("Activities").doc(activityId).update({
+      connected_users: connectedUsers,
     });
   } catch (error) {
     console.log(error);

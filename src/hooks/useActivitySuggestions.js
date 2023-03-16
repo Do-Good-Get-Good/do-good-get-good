@@ -1,14 +1,20 @@
 import { useEffect, useState } from "react";
-import { getAllFavoriteActivities } from "../firebase-functions/get";
+import { getAllActivities } from "../firebase-functions/get";
 
 export const useActivitySuggestions = () => {
   const [suggestions, setSuggestions] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   const fetchSuggestions = async () => {
-    const suggestions = await getAllFavoriteActivities();
-    setSuggestions(suggestions);
-    setLoading(false);
+    try {
+      const suggestions = await getAllActivities();
+      setSuggestions(suggestions);
+    } catch (error) {
+      setError(error.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -16,5 +22,5 @@ export const useActivitySuggestions = () => {
     fetchSuggestions();
   }, []);
 
-  return { suggestions, loading };
+  return { suggestions, loading, error };
 };

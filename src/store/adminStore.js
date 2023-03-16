@@ -19,7 +19,7 @@ const filterUsersByActiveStatus = (users, status) => {
 
 const openSelectedUser = (users, selectedUser) => {
   let userIndex = users.findIndex(
-    (user) => user.userID === selectedUser.userID
+    (user) => user.userID === selectedUser.userID,
   );
   users[userIndex].isOpen = !users[userIndex].isOpen;
 
@@ -162,7 +162,7 @@ class AdminStore {
           this.allUsers = updateUserTimeEntries(
             this.allUsers,
             userId,
-            timeEntryData
+            timeEntryData,
           );
           this.users = updateUserTimeEntries(this.users, userId, timeEntryData);
         });
@@ -185,8 +185,17 @@ class AdminStore {
     this.allUsers = disconnectActivityFromUser(
       this.allUsers,
       userId,
-      activityId
+      activityId,
     );
+  }
+
+  resetStore() {
+    this.allUsers = [];
+    this.users = [];
+    this.fetchUsers = true;
+    this.loading = true;
+    this.updatedUser = false;
+    this.updatedUserInfo = {};
   }
 }
 

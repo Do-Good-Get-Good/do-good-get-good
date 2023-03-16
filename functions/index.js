@@ -1,20 +1,24 @@
 const admin = require("firebase-admin");
 
-const createUser = require("./src/createUser");
-const deleteUser = require("./src/deleteUser");
-const updateMonth = require("./src/updateMonth");
-const updateYear = require("./src/updateYear");
-const assignAdminClaim = require("./src/assignAdminClaim");
-const downloadData = require("./src/downloadData/downloadData");
+const { createUser } = require("./src/createUser");
+const { deleteUser } = require("./src/deleteUser");
+const { updateMonth } = require("./src/updateMonth");
+const { updateYear } = require("./src/updateYear");
+const { assignAdminClaim } = require("./src/assignAdminClaim");
+const { downloadData } = require("./src/downloadData/downloadData");
+const { connectUsersToActivities } = require("./src/connectUsersToActivities");
+const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 
 const { firebaseConfig } = require("./config");
 
 admin.initializeApp(firebaseConfig);
 
 // Cloud functions
-exports.createUser = createUser.createUser;
-exports.deleteUser = deleteUser.deleteUser;
-exports.updateMonth = updateMonth.updateMonth;
-exports.updateYear = updateYear.updateYear;
-exports.assignAdminClaim = assignAdminClaim.assignAdminClaim;
-exports.downloadData = downloadData.downloadData;
+exports.createUser = createUser;
+exports.deleteUser = deleteUser;
+exports.updateMonth = updateMonth;
+exports.updateYear = updateYear;
+exports.assignAdminClaim = assignAdminClaim;
+exports.downloadData = downloadData;
+exports.connectUsersToActivities = connectUsersToActivities;
+exports.updateActivityUserCount = updateActivityUserCount;

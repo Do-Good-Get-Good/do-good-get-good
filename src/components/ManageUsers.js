@@ -18,6 +18,7 @@ import typography from "../assets/theme/typography";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
+  updateConnectedUsersOnActivity,
 } from "../firebase-functions/update";
 import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 
@@ -73,22 +74,48 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     }
   };
 
-  const updateUsers = () => {
-    myUsers.map((user) => {
-      if (user.checked) {
-        connectNewActivityToUser(user, currentActivityId.toString());
-        adminStore.connectActivityToUser(
-          user.userID,
-          currentActivityId.toString(),
-        );
-      } else {
-        removeActivityFromUser(user.userID, currentActivityId.toString());
-        adminStore.disconnectActivityFromUser(
-          user.userID,
-          currentActivityId.toString(),
-        );
-      }
+  const connectOrRemoveActivityFromUsers = async () => {
+    let connectedUsers = [];
+    await Promise.all(
+      myUsers.map((user) => {
+        return new Promise(async (res) => {
+          try {
+            if (user.checked) {
+              connectedUsers.push(user.userID);
+              connectNewActivityToUser(user, currentActivityId.toString());
+              adminStore.connectActivityToUser(
+                user.userID,
+                currentActivityId.toString(),
+              );
+            } else {
+              removeActivityFromUser(user.userID, currentActivityId.toString());
+              adminStore.disconnectActivityFromUser(
+                user.userID,
+                currentActivityId.toString(),
+              );
+            }
+            res(true);
+          } catch (error) {
+            console.log(error);
+            res(false);
+          }
+        });
+      }),
+    );
+
+    otherUsers.map((user) => {
+      let found = user.connectedActivities.find(
+        (activity) => activity === currentActivityId.toString(),
+      );
+
+      if (!found) return;
+      connectedUsers.push(user.id);
     });
+
+    updateConnectedUsersOnActivity(
+      currentActivityId.toString(),
+      connectedUsers,
+    );
     closeModal();
   };
 
@@ -126,9 +153,14 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Mina användare
         </Text>
-        {myUsers.length != 0 ? (
+        {myUsers.length !== 0 &&
           myUsers.map((user, index) => (
-            <View testID="test.userView" style={styles.userView} key={index}>
+            <TouchableOpacity
+              testID="test.userView"
+              style={styles.userView}
+              key={index}
+              onPress={() => checkOrUncheckUser(user)}
+            >
               <Text
                 testID={`test.userFullName${index}`}
                 style={styles.userViewText}
@@ -137,18 +169,16 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
               </Text>
               <CheckBox
                 checked={user.checked}
-                onPress={() => checkOrUncheckUser(user)}
                 containerStyle={styles.checkBoxContainerStyle}
                 checkedColor={colors.primary}
+                disabled
               />
-            </View>
-          ))
-        ) : (
-          <View testID="test.userView" style={styles.userView}>
-            <Text style={styles.userViewText}>
-              Du har inga användare kopplade till dig
-            </Text>
-          </View>
+            </TouchableOpacity>
+          ))}
+        {myUsers.length === 0 && (
+          <Text testID="test.userView" style={styles.userViewText}>
+            Du har inga användare kopplade till dig
+          </Text>
         )}
         <Text
           testID="test.otherUsersHeader"
@@ -156,7 +186,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Andra användare
         </Text>
-        {otherUsers.length > 0 ? (
+        {otherUsers.length !== 0 &&
           otherUsers.map((user, index) => (
             <View
               testID="test.otherUsersView"
@@ -174,16 +204,17 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
                 {user.fullName}
               </Text>
             </View>
-          ))
-        ) : (
-          <View testID="test.otherUsersView" style={styles.noOtherUsersView}>
-            <Text testID="test.noOtherUsers" style={styles.userViewText}>
-              Inga andra användare är kopplade till den här aktiviteten!
-            </Text>
-          </View>
+          ))}
+        {otherUsers.length === 0 && (
+          <Text testID="test.noOtherUsers" style={styles.userViewText}>
+            Inga andra användare är kopplade till den här aktiviteten!
+          </Text>
         )}
       </ScrollView>
-      <TouchableOpacity style={styles.saveButton} onPress={() => updateUsers()}>
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={() => connectOrRemoveActivityFromUsers()}
+      >
         <Text style={styles.saveButtonText}>Spara</Text>
       </TouchableOpacity>
     </Overlay>
@@ -253,10 +284,6 @@ const styles = StyleSheet.create({
   },
   userViewText: {
     ...typography.b2,
-  },
-  noOtherUsersView: {
-    paddingVertical: 5,
-    marginBottom: 22,
   },
   checkBoxContainerStyle: {
     padding: 0,
