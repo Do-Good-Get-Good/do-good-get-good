@@ -104,9 +104,9 @@ export function ImagesGallery({ navigation, route }) {
       />
       <BottomNavButtons
         primaryText="Spara"
-        primaryFunc={buttonSavePressed}
+        primaryFunc={() => buttonSavePressed()}
         secondaryText="Avbryt"
-        secondaryFunc={navigation.goBack}
+        secondaryFunc={() => navigation.goBack()}
       />
     </SafeAreaView>
   );

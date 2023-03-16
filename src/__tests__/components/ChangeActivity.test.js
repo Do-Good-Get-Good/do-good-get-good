@@ -107,6 +107,7 @@ describe("Testing ChangeActivity screen", () => {
       activity: route.params.activity,
       tgPopular: route.params.tgPopular,
       cameFrom: "ChangeActivity",
+      selectedImage: "symbol_earth",
     });
   });
 

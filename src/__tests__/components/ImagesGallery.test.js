@@ -42,11 +42,11 @@ describe("Testing ImagesGallery", () => {
   });
 
   it("ImagesGallery. Button 'Save' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+    const { getAllByText, getByText } = render(
       <ImagesGallery navigation={navigation} route={route} />,
     );
     expect(getAllByText("Spara").length).toBe(1);
-    const saveButton = getByTestId("saveButton");
+    const saveButton = getByText("Spara");
     fireEvent.press(saveButton);
     expect(navigation.navigate).toHaveBeenCalledWith("CreateActivity", {
       imageForActivity: "blodgivning",
@@ -54,11 +54,11 @@ describe("Testing ImagesGallery", () => {
   });
 
   it("ImagesGallery. Button 'Back' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+    const { getAllByText, getByText } = render(
       <ImagesGallery navigation={navigation} route={route} />,
     );
     expect(getAllByText("Avbryt").length).toBe(1);
-    const backButton = getByTestId("backButton");
+    const backButton = getByText("Avbryt");
     fireEvent.press(backButton);
     expect(navigation.goBack).toHaveBeenCalled();
   });

@@ -244,7 +244,7 @@ export function CreateActivity({ route, navigation }) {
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateActivity",
-                selectedImage: activityImage,
+                selectedImage: imageName,
               })
             }
           >
