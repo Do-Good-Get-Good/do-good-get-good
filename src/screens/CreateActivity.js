@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
@@ -16,7 +16,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
 import { Icon } from "@rneui/base";
-import Images from "../lib/images";
+import Images, { placeholderImage } from "../lib/images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
@@ -35,15 +35,15 @@ export function CreateActivity({ route, navigation }) {
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-  const [newActivityImage, setNewActivityImage] = useState();
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    if (route.params?.imageForActivity === undefined) {
-      setNewActivityImage("blodgivning");
-    } else {
-      setNewActivityImage(route.params?.imageForActivity);
-    }
+  const activityImage = useMemo(() => {
+    if (!route.params?.imageForActivity) return placeholderImage;
+
+    let images = Images.filter((image) => image.wide !== true);
+
+    return images.find((image) => image.name === route.params?.imageForActivity)
+      .image;
   }, [route.params?.imageForActivity]);
 
   useEffect(() => {
@@ -85,21 +85,13 @@ export function CreateActivity({ route, navigation }) {
     return false;
   }
 
-  function setImageForNewActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (newActivityImage === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
   async function createActivityAndAddLocally() {
     setLoading(true);
     const newActivity = {
       active_status: true,
       activity_city: city,
       activity_description: description,
-      activity_photo: newActivityImage,
+      activity_photo: activityImage,
       activity_place: place,
       activity_title: title,
       tg_favorite: checkBoxPressed,
@@ -242,18 +234,14 @@ export function CreateActivity({ route, navigation }) {
           placeholderTextColor={colors.dark}
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image
-            testID="photo"
-            style={styles.image}
-            source={setImageForNewActivity()}
-          />
+          <Image testID="photo" style={styles.image} source={activityImage} />
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateActivity",
-                selectedImage: newActivityImage,
+                selectedImage: activityImage,
               })
             }
           >
