@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useMemo } from "react";
 import {
   Text,
   StyleSheet,
@@ -34,12 +34,11 @@ export function ChangeActivity({ route, navigation }) {
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
-  const [photo, setPhoto] = useState(activity.photo);
 
-  useEffect(() => {
-    if (route.params?.imageForActivity != undefined) {
-      setPhoto(route.params?.imageForActivity);
-    }
+  const photo = useMemo(() => {
+    if (!route.params?.imageForActivity) return activity.photo;
+
+    return route.params?.imageForActivity;
   }, [route.params?.imageForActivity]);
 
   function buttonSavePressed() {
