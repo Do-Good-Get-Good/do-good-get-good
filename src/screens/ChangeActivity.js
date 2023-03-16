@@ -18,13 +18,14 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import BottomNavButtons from "../components/BottomNavButtons";
 
-import Images from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
 
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { Format } from "../lib/enums/imageFormat";
 
 export function ChangeActivity({ route, navigation }) {
   const { activity, tgPopular } = route.params;
@@ -69,14 +70,6 @@ export function ChangeActivity({ route, navigation }) {
     createActivityContext.activityHasChanged(true);
   }
 
-  function changeImageForActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (photo === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
@@ -118,7 +111,10 @@ export function ChangeActivity({ route, navigation }) {
           />
 
           <View style={styles.containerImageAndInsertButton}>
-            <Image style={styles.image} source={changeImageForActivity()} />
+            <Image
+              style={styles.image}
+              source={setTheRightPhoto(photo, Format.square)}
+            />
             <TouchableOpacity
               testID="navigateToImagesGallery"
               onPress={() =>
@@ -126,6 +122,7 @@ export function ChangeActivity({ route, navigation }) {
                   activity: activity,
                   tgPopular: tgPopular,
                   cameFrom: "ChangeActivity",
+                  selectedImage: photo,
                 })
               }
             >
