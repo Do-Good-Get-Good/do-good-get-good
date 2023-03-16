@@ -23,7 +23,8 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import Images, { placeholderImage } from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
+import { Format } from "../lib/enums/imageFormat";
 
 export function LinkActivityToNewUser({
   activity,
@@ -42,25 +43,6 @@ export function LinkActivityToNewUser({
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-
-  function setImageForNewActivity() {
-    if (activity.image === "placeholder") return placeholderImage;
-
-    let images = Images.filter((img) => img.wide !== true);
-    for (let index = 0; index < images.length; index++) {
-      if (activity.image === images[index].name) {
-        return images[index].image;
-      }
-    }
-  }
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   useEffect(() => {
     if (activity.title.trim() === "") {
@@ -202,7 +184,7 @@ export function LinkActivityToNewUser({
           <Image
             testID="photo"
             style={styles.image}
-            source={setImageForNewActivity()}
+            source={setTheRightPhoto(activity.image, Format.square)}
           />
 
           <TouchableOpacity
@@ -259,7 +241,7 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={setTheRightPhoto(selectedActivity.photo)}
+            source={setTheRightPhoto(selectedActivity.photo, Format.square)}
           ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>
@@ -532,11 +514,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   imageExistingActivity: {
-    flex: 1,
     resizeMode: "contain",
     marginRight: 80,
     marginTop: 10,
-    height: 98,
+    height: 100,
+    width: 100,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: colors.primary,

@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
-import Images from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -23,6 +23,7 @@ import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
+import { Format } from "../lib/enums/imageFormat";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
@@ -188,15 +189,6 @@ export function ActivityCard({ route, navigation }) {
   useEffect(() => {
     setPopular(tgPopular);
   }, [tgPopular]);
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    let images = Images.filter((img) => img.wide === true);
-    for (let i = 0; i < images.length; i++) {
-      if (activityObjectPhoto === images[i].name) {
-        return images[i].image;
-      }
-    }
-  }
 
   function changePopularStatus() {
     if (popular === true) {
@@ -416,7 +408,7 @@ export function ActivityCard({ route, navigation }) {
           <Image
             testID="photo"
             style={styles.image}
-            source={setTheRightPhoto(activity.photo)}
+            source={setTheRightPhoto(activity.photo, Format.wide)}
           />
         )}
         <View style={{ flex: 1, marginVertical: 20, marginHorizontal: 16 }}>

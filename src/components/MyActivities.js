@@ -11,9 +11,10 @@ import {
 
 import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
-import Images from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { Format } from "../lib/enums/imageFormat";
 
 export const MyActivities = ({ activities }) => {
   const [visible, setVisible] = useState(false);
@@ -22,14 +23,6 @@ export const MyActivities = ({ activities }) => {
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   return (
     <>
@@ -67,7 +60,7 @@ export const MyActivities = ({ activities }) => {
             <Image
               testID="imageId"
               style={styles.image}
-              source={setTheRightPhoto(myActivity.photo)}
+              source={setTheRightPhoto(myActivity.photo, Format.square)}
             />
           </View>
 

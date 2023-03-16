@@ -9,19 +9,12 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import Images from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { Format } from "../lib/enums/imageFormat";
 
 const HomeSuggestions = ({ navigation, suggestions }) => {
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
     navigation.navigate("ActivityCard", {
@@ -70,7 +63,7 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
               <Image
                 testID="photo"
                 style={styles.image}
-                source={setTheRightPhoto(suggestion.photo)}
+                source={setTheRightPhoto(suggestion.photo, Format.square)}
               />
             </View>
 

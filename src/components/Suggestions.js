@@ -9,13 +9,14 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import Images from "../lib/images";
+import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { Format } from "../lib/enums/imageFormat";
 
 export function Suggestions({
   navigation,
@@ -41,14 +42,6 @@ export function Suggestions({
       setShowArray(sortingByTitle(adminGallery));
     }
   }, [adminGallery, inactiveActivities, showActiveArray]);
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
@@ -154,7 +147,7 @@ export function Suggestions({
               <Image
                 testID="photo"
                 style={styles.image}
-                source={setTheRightPhoto(suggestion.photo)}
+                source={setTheRightPhoto(suggestion.photo, Format.square)}
               />
             </View>
 
