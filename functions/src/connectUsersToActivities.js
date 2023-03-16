@@ -6,7 +6,7 @@ async function getAllCollectionData(collection) {
   return response.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }
 
-async function updateActivities(activities) {
+async function updateUsersConnectedToActivities(activities) {
   return Promise.all(
     activities.map((activity) => {
       return new Promise(async (res) => {
@@ -55,5 +55,5 @@ exports.connectUsersToActivities = functions.firestore
       });
     });
 
-    await updateActivities(newActivityData);
+    await updateUsersConnectedToActivities(newActivityData);
   });
