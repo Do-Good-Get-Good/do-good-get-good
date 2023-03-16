@@ -35,15 +35,18 @@ export function CreateActivity({ route, navigation }) {
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
+  const [imageName, setImageName] = useState("placeholder");
   const [loading, setLoading] = useState(false);
 
   const activityImage = useMemo(() => {
     if (!route.params?.imageForActivity) return placeholderImage;
 
     let images = Images.filter((image) => image.wide !== true);
-
-    return images.find((image) => image.name === route.params?.imageForActivity)
-      .image;
+    let found = images.find(
+      (image) => image.name === route.params?.imageForActivity,
+    );
+    setImageName(found.name);
+    return found.image;
   }, [route.params?.imageForActivity]);
 
   useEffect(() => {
@@ -91,7 +94,7 @@ export function CreateActivity({ route, navigation }) {
       active_status: true,
       activity_city: city,
       activity_description: description,
-      activity_photo: activityImage,
+      activity_photo: imageName,
       activity_place: place,
       activity_title: title,
       tg_favorite: checkBoxPressed,
