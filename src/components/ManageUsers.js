@@ -74,7 +74,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     }
   };
 
-  const updateUsers = async () => {
+  const connectOrRemoveActivityFromUsers = async () => {
     let connectedUsers = [];
     await Promise.all(
       myUsers.map((user) => {
@@ -211,7 +211,10 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           </Text>
         )}
       </ScrollView>
-      <TouchableOpacity style={styles.saveButton} onPress={() => updateUsers()}>
+      <TouchableOpacity
+        style={styles.saveButton}
+        onPress={() => connectOrRemoveActivityFromUsers()}
+      >
         <Text style={styles.saveButtonText}>Spara</Text>
       </TouchableOpacity>
     </Overlay>
