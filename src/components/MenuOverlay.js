@@ -78,16 +78,6 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
         <Text style={styles.menuOverlayCloseButtonText}>Stäng</Text>
       </TouchableOpacity>
       <View style={styles.menuOverlay}>
-        <TouchableOpacity
-          testID="menuOverlay.languageButton"
-          style={styles.menuOverlayChangeLangButton}
-          onPress={() => {
-            // openOverlay();
-            // changeLanguage();
-          }}
-        >
-          <Text style={styles.menuOverlayChangeLangText}>Byt språk</Text>
-        </TouchableOpacity>
         <View style={styles.menuOverlayItemStyling}>
           <TouchableOpacity
             testID="menuOverlay.homeButton"
@@ -198,14 +188,10 @@ export default MenuOverlay;
 const styles = StyleSheet.create({
   menuOverlay: {
     flex: 1,
-    paddingHorizontal: 70,
-    justifyContent: "space-between",
+    paddingHorizontal: 40,
     ...Platform.select({
       ios: {
-        paddingTop: 60,
-      },
-      android: {
-        paddingTop: 2,
+        paddingTop: 50,
       },
     }),
   },
@@ -230,23 +216,18 @@ const styles = StyleSheet.create({
     fontSize: typography.b2.fontSize,
     marginTop: -3,
   },
-  menuOverlayChangeLangButton: {
-    justifyContent: "center",
-    width: 100,
-    height: 40,
-  },
-  menuOverlayChangeLangText: {
-    ...typography.b1,
-  },
   menuOverlayItemStyling: {
     flex: 1,
     marginTop: 40,
   },
   menuOverlayLinkStyling: {
-    marginBottom: 6,
+    marginBottom: 0,
+    marginVertical: 4,
   },
   menuOverlayLinkText: {
-    ...typography.title,
+    fontFamily: typography.title.fontFamily,
+    fontSize: typography.title.fontSize,
+    paddingVertical: 4,
   },
   menuOverlayFooter: {
     marginBottom: 25,
