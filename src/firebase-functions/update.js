@@ -44,16 +44,33 @@ export const incrementTotalHoursMonthForUser = (uid, hours) => {
 };
 
 export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  let updateValue = firestore.FieldValue.increment(-hours);
-  if (registeredTime - hours <= 0) updateValue = 0;
-
   try {
-    firestore().collection("Users").doc(uid).update({
-      total_hours_month: updateValue,
-    });
+    updateValue = calculateNewHours(hours, registeredTime);
   } catch (error) {
     console.log("There was an error decrementing 'total_hours_month'", error);
   }
+  try {
+    updateFirebaseDB(uid, updateValue);
+  } catch (error) {
+    console.log(
+      `There was an error saving new 'total_hours_month' for user '${uid}' to Firebase DB`,
+      error,
+    );
+  }
+};
+
+export const calculateNewHours = (hours, registeredTime) => {
+  var updateValue = registeredTime - hours;
+  if (updateValue <= 0) {
+    updateValue = 0;
+  }
+  return updateValue;
+};
+
+export const updateFirebaseDB = (uid, updateValue) => {
+  firestore().collection("Users").doc(uid).update({
+    total_hours_month: updateValue,
+  });
 };
 
 export const incrementTotalConfirmedHoursForUser = (userId, time) => {
