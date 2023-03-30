@@ -43,14 +43,14 @@ export const incrementTotalHoursMonthForUser = (uid, hours) => {
   }
 };
 
-export const decrementTotalHoursMonthForUser = (uid, hours) => {
+export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
+  let updateValue = firestore.FieldValue.increment(-hours);
+  if (registeredTime - hours <= 0) updateValue = 0;
+
   try {
-    firestore()
-      .collection("Users")
-      .doc(uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(-hours),
-      });
+    firestore().collection("Users").doc(uid).update({
+      total_hours_month: updateValue,
+    });
   } catch (error) {
     console.log("There was an error decrementing 'total_hours_month'", error);
   }

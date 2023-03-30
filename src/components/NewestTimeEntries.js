@@ -9,7 +9,7 @@ import CalendarView from "./CalendarView";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-const NewestTimeEntries = ({ navigation }) => {
+const NewestTimeEntries = ({ navigation, registeredTime }) => {
   const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(5);
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
@@ -58,6 +58,7 @@ const NewestTimeEntries = ({ navigation }) => {
         activity={activity}
         adminID={activity.adminID}
         isEditing={true}
+        registeredTime={registeredTime}
       />
     </>
   );

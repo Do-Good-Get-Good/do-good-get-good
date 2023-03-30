@@ -39,10 +39,12 @@ export const HomePage = ({ navigation }) => {
           <>
             <TimeStatistics timeObject={timeObject} />
             <MyActivities activities={activities} />
+            <NewestTimeEntries
+              navigation={navigation}
+              registeredTime={timeObject[0].currentForMonth}
+            />
           </>
         )}
-
-        <NewestTimeEntries navigation={navigation} />
 
         <Text style={styles.suggestionHeader}>Förslag & inspiration</Text>
         {loading && (

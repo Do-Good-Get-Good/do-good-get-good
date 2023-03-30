@@ -38,6 +38,7 @@ const CalendarView = ({
   isEditing,
   adminID,
   removeFirstStaticTimeEntry,
+  registeredTime,
 }) => {
   LocaleConfig.locales["sv"] = {
     monthNames: [
@@ -185,8 +186,8 @@ const CalendarView = ({
 
     deleteTimeEntry(timeEntryID)
       .then(() => {
-        decrementTotalHoursMonthForUser(uid, hours);
         toggleVisibility();
+        decrementTotalHoursMonthForUser(uid, hours, registeredTime);
       })
       .catch((error) => {
         console.log(error);
