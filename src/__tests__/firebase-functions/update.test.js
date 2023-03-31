@@ -41,7 +41,7 @@ each([
 
 each([
   [10, 14, 4],
-  [3, 6, 3],
+  [0, 3, 5],
   [0, 0, 10],
   [0, 10, Number.MAX_SAFE_INTEGER],
 ]).test(
