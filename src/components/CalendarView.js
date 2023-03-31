@@ -85,7 +85,7 @@ const CalendarView = ({
 
   const [date, setDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [hours, setHours] = useState(null);
+  const [hours, setHours] = useState(0);
   const [todaySelected, setTodaySelected] = useState(null);
   const [error, setError] = useState(null);
 
@@ -139,7 +139,7 @@ const CalendarView = ({
 
     addTimeEntry(timeEntry)
       .then(() => {
-        incrementTotalHoursMonthForUser(uid, hours);
+        incrementTotalHoursMonthForUser(uid, hours, registeredTime);
         toggleVisibility();
       })
       .catch((error) => {
@@ -166,16 +166,16 @@ const CalendarView = ({
         ) {
           if (activity.time < hours) {
             let newTime = hours - activity.time;
-            incrementTotalHoursMonthForUser(uid, newTime);
+            incrementTotalHoursMonthForUser(uid, newTime, registeredTime);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
-            decrementTotalHoursMonthForUser(uid, newTime);
+            decrementTotalHoursMonthForUser(uid, newTime, registeredTime);
           }
         }
         toggleVisibility();
       })
       .catch((error) => {
-        setError(error);
+        setError(error.message);
       });
   };
 

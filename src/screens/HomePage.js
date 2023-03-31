@@ -38,7 +38,10 @@ export const HomePage = ({ navigation }) => {
         {activities.length !== 0 && timeObject.length !== 0 && (
           <>
             <TimeStatistics timeObject={timeObject} />
-            <MyActivities activities={activities} />
+            <MyActivities
+              activities={activities}
+              registeredTime={timeObject[0].currentForMonth}
+            />
             <NewestTimeEntries
               navigation={navigation}
               registeredTime={timeObject[0].currentForMonth}
