@@ -4,6 +4,9 @@ import {
   incrementTotalHoursMonthForUser,
   updateTotalHoursMonthForUser,
 } from "../../firebase-functions/update.js";
+import { Arithmetic } from "../../lib/enums/arithmetic.js";
+
+import each from "jest-each";
 
 jest.mock("@react-native-firebase/firestore", () => ({
   collection: () => ({
@@ -22,64 +25,33 @@ jest.mock("../../firebase-functions/update.js", () => {
   };
 });
 
-test("that saved hours are zero if removed time are greater than registered time", () => {
-  var hours = 4;
-  var registeredTime = 2;
+each([
+  [2, 1, 1],
+  [1, 1, 0],
+  [100, 90, 10],
+  [Number.MAX_SAFE_INTEGER + 124, 124, Number.MAX_SAFE_INTEGER],
+]).test(
+  "returns %s when adding %s and %s",
+  (expected, registeredTime, hours) => {
+    expect(calculateNewHours(hours, registeredTime, Arithmetic.Add)).toBe(
+      expected,
+    );
+  },
+);
 
-  totalHours = calculateNewHours(hours, registeredTime, "sub");
-  expect(totalHours).toBe(0);
-});
-
-test("that saved hours are removed with the right amout", () => {
-  var hours = 2;
-  var registeredTime = 4;
-  var answer = registeredTime - hours;
-
-  totalHours = calculateNewHours(hours, registeredTime, "sub");
-  expect(totalHours).toBe(answer);
-});
-
-test("that saved hours are removed with the right amout even if amount is big", () => {
-  var hours = Number.MAX_SAFE_INTEGER;
-  var registeredTime = 2423;
-
-  totalHours = calculateNewHours(hours, registeredTime, "sub");
-  expect(totalHours).toBe(0);
-});
-
-test("that saved hours are added with the right amout", () => {
-  var hours = 2;
-  var registeredTime = 0;
-  var answer = registeredTime + hours;
-
-  totalHours = calculateNewHours(hours, registeredTime, "add");
-  expect(totalHours).toBe(answer);
-});
-
-test("that saved hours are added with the right amout even if amount is big", () => {
-  var hours = Number.MAX_SAFE_INTEGER;
-  var registeredTime = 2423;
-  var answer = registeredTime + hours;
-
-  totalHours = calculateNewHours(hours, registeredTime, "add");
-  expect(totalHours).toBe(answer);
-});
-
-test("that saved hours still is 0 when adding 0", () => {
-  var hours = 0;
-  var registeredTime = 0;
-
-  totalHours = calculateNewHours(hours, registeredTime, "add");
-  expect(totalHours).toBe(0);
-});
-
-test("that saved hours still is 0 when subtracting 0", () => {
-  var hours = 0;
-  var registeredTime = 0;
-
-  totalHours = calculateNewHours(hours, registeredTime, "sub");
-  expect(totalHours).toBe(0);
-});
+each([
+  [10, 14, 4],
+  [3, 6, 3],
+  [0, 0, 10],
+  [0, 10, Number.MAX_SAFE_INTEGER],
+]).test(
+  "returns %s when subtracting %s with %s",
+  (expected, registeredTime, hours) => {
+    expect(calculateNewHours(hours, registeredTime, Arithmetic.Sub)).toBe(
+      expected,
+    );
+  },
+);
 
 test("incrementTotalHoursMonthForUser can throw error", async () => {
   updateTotalHoursMonthForUser.mockRejectedValueOnce(new Error("error"));
