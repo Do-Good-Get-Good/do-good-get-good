@@ -88,7 +88,7 @@ test("incrementTotalHoursMonthForUser can throw error", async () => {
     incrementTotalHoursMonthForUser(uid, 7, 3);
   } catch (error) {
     expect(error.message).toEqual(
-      `There was an error incrementing 'total_hours_month' for user '${uid}' in Firebase`,
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
     );
   }
 });
@@ -100,7 +100,7 @@ test("decrementTotalHoursMonthForUser can throw error", async () => {
     decrementTotalHoursMonthForUser(uid, 7, 3);
   } catch (error) {
     expect(error.message).toEqual(
-      `There was an error decrementing 'total_hours_month' for user '${uid}' in Firebase`,
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
     );
   }
 });

@@ -1,4 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
+import { Arithmetic } from "../lib/enums/arithmetic";
 
 export const updateTimeEntry = async (timeEntryID, date, hours) => {
   try {
@@ -31,36 +32,30 @@ export const confirmTimeEntry = async (timeEntryID) => {
 };
 
 export const incrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  let updateValue = calculateNewHours(hours, registeredTime, "add");
+  let updateValue = calculateNewHours(hours, registeredTime, Arithmetic.Add);
   try {
     updateTotalHoursMonthForUser(uid, updateValue);
   } catch (error) {
-    throw new Error(
-      `There was an error incrementing 'total_hours_month' for user '${uid}' in Firebase`,
-      error,
-    );
+    throw new Error(error.message);
   }
 };
 
 export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  let updateValue = calculateNewHours(hours, registeredTime, "sub");
+  let updateValue = calculateNewHours(hours, registeredTime, Arithmetic.Sub);
   try {
     updateTotalHoursMonthForUser(uid, updateValue);
   } catch (error) {
-    throw new Error(
-      `There was an error decrementing 'total_hours_month' for user '${uid}' in Firebase`,
-      error,
-    );
+    throw new Error(error.message);
   }
 };
 
 export const calculateNewHours = (hours, registeredTime, arithmetic) => {
   let value;
   switch (arithmetic) {
-    case "add":
+    case Arithmetic.Add:
       value = registeredTime + hours;
       break;
-    case "sub":
+    case Arithmetic.Sub:
       value = registeredTime - hours;
       if (value <= 0) {
         value = 0;
@@ -74,9 +69,15 @@ export const calculateNewHours = (hours, registeredTime, arithmetic) => {
 };
 
 export const updateTotalHoursMonthForUser = (uid, updateValue) => {
-  firestore().collection("Users").doc(uid).update({
-    total_hours_month: updateValue,
-  });
+  try {
+    firestore().collection("Users").doc(uid).update({
+      total_hours_month: updateValue,
+    });
+  } catch (error) {
+    throw new Error(
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
+    );
+  }
 };
 
 export const incrementTotalConfirmedHoursForUser = (userId, time) => {
