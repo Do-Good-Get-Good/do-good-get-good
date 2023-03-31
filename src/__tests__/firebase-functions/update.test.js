@@ -29,7 +29,7 @@ each([
   [2, 1, 1],
   [1, 1, 0],
   [100, 90, 10],
-  [Number.MAX_SAFE_INTEGER + 124, 124, Number.MAX_SAFE_INTEGER],
+  [Number.MAX_SAFE_INTEGER, 124, Number.MAX_SAFE_INTEGER],
 ]).test(
   "returns %s when adding %s and %s",
   (expected, registeredTime, hours) => {

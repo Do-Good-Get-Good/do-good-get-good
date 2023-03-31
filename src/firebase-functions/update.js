@@ -54,6 +54,9 @@ export const calculateNewHours = (hours, registeredTime, arithmetic) => {
   switch (arithmetic) {
     case Arithmetic.Add:
       value = registeredTime + hours;
+      if (value >= Number.MAX_SAFE_INTEGER) {
+        value = Number.MAX_SAFE_INTEGER;
+      }
       break;
     case Arithmetic.Sub:
       value = registeredTime - hours;
