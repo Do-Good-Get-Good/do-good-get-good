@@ -30,44 +30,50 @@ export const confirmTimeEntry = async (timeEntryID) => {
   }
 };
 
-export const incrementTotalHoursMonthForUser = (uid, hours) => {
+export const incrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
+  let updateValue = calculateNewHours(hours, registeredTime, "add");
   try {
-    firestore()
-      .collection("Users")
-      .doc(uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(hours),
-      });
-  } catch (error) {
-    console.log("There was an error incrementing 'total_hours_month'", error);
-  }
-};
-
-export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  try {
-    updateValue = calculateNewHours(hours, registeredTime);
-  } catch (error) {
-    console.log("There was an error decrementing 'total_hours_month'", error);
-  }
-  try {
-    updateFirebaseDB(uid, updateValue);
+    updateTotalHoursMonthForUser(uid, updateValue);
   } catch (error) {
     console.log(
-      `There was an error saving new 'total_hours_month' for user '${uid}' to Firebase DB`,
+      `There was an error incrementing 'total_hours_month' for user '${uid}' in Firebase`,
       error,
     );
   }
 };
 
-export const calculateNewHours = (hours, registeredTime) => {
-  var updateValue = registeredTime - hours;
-  if (updateValue <= 0) {
-    updateValue = 0;
+export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
+  let updateValue = calculateNewHours(hours, registeredTime, "sub");
+  try {
+    updateTotalHoursMonthForUser(uid, updateValue);
+  } catch (error) {
+    console.log(
+      `There was an error decrementing 'total_hours_month' for user '${uid}' in Firebase`,
+      error,
+    );
   }
-  return updateValue;
 };
 
-export const updateFirebaseDB = (uid, updateValue) => {
+export const calculateNewHours = (hours, registeredTime, arithmetic) => {
+  let value;
+  switch (arithmetic) {
+    case "add":
+      value = registeredTime + hours;
+      break;
+    case "sub":
+      value = registeredTime - hours;
+      if (value <= 0) {
+        value = 0;
+      }
+      break;
+    default:
+      break;
+  }
+
+  return value;
+};
+
+export const updateTotalHoursMonthForUser = (uid, updateValue) => {
   firestore().collection("Users").doc(uid).update({
     total_hours_month: updateValue,
   });
