@@ -35,7 +35,7 @@ export const incrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
   try {
     updateTotalHoursMonthForUser(uid, updateValue);
   } catch (error) {
-    console.log(
+    throw new Error(
       `There was an error incrementing 'total_hours_month' for user '${uid}' in Firebase`,
       error,
     );
@@ -47,7 +47,7 @@ export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
   try {
     updateTotalHoursMonthForUser(uid, updateValue);
   } catch (error) {
-    console.log(
+    throw new Error(
       `There was an error decrementing 'total_hours_month' for user '${uid}' in Firebase`,
       error,
     );
