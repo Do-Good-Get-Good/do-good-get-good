@@ -26,8 +26,7 @@ import errorMessage from "../assets/recyclingStyles/errorMessage";
 import { deleteTimeEntry } from "../firebase-functions/delete";
 import { addTimeEntry } from "../firebase-functions/add";
 import {
-  incrementTotalHoursMonthForUser,
-  decrementTotalHoursMonthForUser,
+  updateTotalHoursMonthForUser,
   updateTimeEntry,
 } from "../firebase-functions/update";
 
@@ -168,7 +167,7 @@ const CalendarView = ({
           registeredTime,
           Arithmetic.Add,
         );
-        incrementTotalHoursMonthForUser(uid, updateValue);
+        updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
       })
       .catch((error) => {
@@ -200,7 +199,7 @@ const CalendarView = ({
               registeredTime,
               Arithmetic.Add,
             );
-            incrementTotalHoursMonthForUser(uid, updateValue);
+            updateTotalHoursMonthForUser(uid, updateValue);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
             let updateValue = calculateNewHours(
@@ -208,7 +207,7 @@ const CalendarView = ({
               registeredTime,
               Arithmetic.Sub,
             );
-            decrementTotalHoursMonthForUser(uid, updateValue);
+            updateTotalHoursMonthForUser(uid, updateValue);
           }
         }
         toggleVisibility();
@@ -235,7 +234,7 @@ const CalendarView = ({
           registeredTime,
           Arithmetic.Sub,
         );
-        decrementTotalHoursMonthForUser(uid, updateValue);
+        updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
       })
       .catch((error) => {
