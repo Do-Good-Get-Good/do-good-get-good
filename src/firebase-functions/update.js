@@ -1,5 +1,4 @@
 import firestore from "@react-native-firebase/firestore";
-import { Arithmetic } from "../lib/enums/arithmetic";
 
 export const updateTimeEntry = async (timeEntryID, date, hours) => {
   try {
@@ -31,44 +30,20 @@ export const confirmTimeEntry = async (timeEntryID) => {
   }
 };
 
-export const incrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  let updateValue = calculateNewHours(hours, registeredTime, Arithmetic.Add);
+export const incrementTotalHoursMonthForUser = (uid, value) => {
   try {
-    updateTotalHoursMonthForUser(uid, updateValue);
+    updateTotalHoursMonthForUser(uid, value);
   } catch (error) {
     throw new Error(error.message);
   }
 };
 
-export const decrementTotalHoursMonthForUser = (uid, hours, registeredTime) => {
-  let updateValue = calculateNewHours(hours, registeredTime, Arithmetic.Sub);
+export const decrementTotalHoursMonthForUser = (uid, value) => {
   try {
-    updateTotalHoursMonthForUser(uid, updateValue);
+    updateTotalHoursMonthForUser(uid, value);
   } catch (error) {
     throw new Error(error.message);
   }
-};
-
-export const calculateNewHours = (hours, registeredTime, arithmetic) => {
-  let value;
-  switch (arithmetic) {
-    case Arithmetic.Add:
-      value = registeredTime + hours;
-      if (value >= Number.MAX_SAFE_INTEGER) {
-        value = Number.MAX_SAFE_INTEGER;
-      }
-      break;
-    case Arithmetic.Sub:
-      value = registeredTime - hours;
-      if (value <= 0) {
-        value = 0;
-      }
-      break;
-    default:
-      break;
-  }
-
-  return value;
 };
 
 export const updateTotalHoursMonthForUser = (uid, updateValue) => {

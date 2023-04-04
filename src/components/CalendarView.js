@@ -31,6 +31,8 @@ import {
   updateTimeEntry,
 } from "../firebase-functions/update";
 
+import { Arithmetic } from "../lib/enums/arithmetic";
+
 const CalendarView = ({
   visible,
   toggleVisibility,
@@ -139,7 +141,12 @@ const CalendarView = ({
 
     addTimeEntry(timeEntry)
       .then(() => {
-        incrementTotalHoursMonthForUser(uid, hours, registeredTime);
+        let updateValue = calculateNewHours(
+          hours,
+          registeredTime,
+          Arithmetic.Add,
+        );
+        incrementTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
       })
       .catch((error) => {
@@ -166,10 +173,20 @@ const CalendarView = ({
         ) {
           if (activity.time < hours) {
             let newTime = hours - activity.time;
-            incrementTotalHoursMonthForUser(uid, newTime, registeredTime);
+            let updateValue = calculateNewHours(
+              newTime,
+              registeredTime,
+              Arithmetic.Add,
+            );
+            incrementTotalHoursMonthForUser(uid, updateValue);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
-            decrementTotalHoursMonthForUser(uid, newTime, registeredTime);
+            let updateValue = calculateNewHours(
+              newTime,
+              registeredTime,
+              Arithmetic.Sub,
+            );
+            decrementTotalHoursMonthForUser(uid, updateValue);
           }
         }
         toggleVisibility();
@@ -186,13 +203,40 @@ const CalendarView = ({
 
     deleteTimeEntry(timeEntryID)
       .then(() => {
+        let updateValue = calculateNewHours(
+          activity.time,
+          registeredTime,
+          Arithmetic.Sub,
+        );
+        decrementTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
-        decrementTotalHoursMonthForUser(uid, hours, registeredTime);
       })
       .catch((error) => {
         console.log(error);
         setError(error.message);
       });
+  };
+
+  const calculateNewHours = (hours, registeredTime, arithmetic) => {
+    let value;
+    switch (arithmetic) {
+      case Arithmetic.Add:
+        value = registeredTime + hours;
+        if (value >= Number.MAX_SAFE_INTEGER) {
+          value = Number.MAX_SAFE_INTEGER;
+        }
+        break;
+      case Arithmetic.Sub:
+        value = registeredTime - hours;
+        if (value <= 0) {
+          value = 0;
+        }
+        break;
+      default:
+        break;
+    }
+
+    return value;
   };
 
   return (
