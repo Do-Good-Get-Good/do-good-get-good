@@ -54,6 +54,12 @@ export const calculateNewHours = (hours, registeredTime, arithmetic) => {
   return value;
 };
 
+export const checkIfSameMonth = (date) => {
+  const currentMonth = new Date().getMonth();
+  if (date.getMonth() < currentMonth) return false;
+  else return true;
+};
+
 const CalendarView = ({
   visible,
   toggleVisibility,
@@ -241,12 +247,6 @@ const CalendarView = ({
         console.log(error);
         setError(error.message);
       });
-  };
-
-  const checkIfSameMonth = (date) => {
-    const currentMonth = new Date().getMonth();
-    if (date.getMonth() < currentMonth) return false;
-    else return true;
   };
 
   return (

@@ -5,7 +5,10 @@ import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import each from "jest-each";
 
-import CalendarView, { calculateNewHours } from "../../components/CalendarView";
+import CalendarView, {
+  calculateNewHours,
+  checkIfSameMonth,
+} from "../../components/CalendarView";
 
 import { Arithmetic } from "../../lib/enums/arithmetic.js";
 
@@ -20,8 +23,7 @@ jest.mock("../../firebase-functions/add", () => ({
 }));
 
 jest.mock("../../firebase-functions/update", () => ({
-  incrementTotalHoursMonthForUser: jest.fn(),
-  decrementTotalHoursMonthForUser: jest.fn(),
+  updateTotalHoursMonthForUser: jest.fn(),
   updateTimeEntry: jest.fn(() => {
     return Promise.resolve();
   }),
@@ -282,4 +284,16 @@ describe("Testing CalendarView", () => {
       );
     },
   );
+
+  it(`returns false when ${new Date(
+    "2022-01-01",
+  )} doesn't have the same month as ${new Date()}`, () => {
+    const date = new Date("2022-02-02");
+    expect(checkIfSameMonth(date)).toBe(false);
+  });
+
+  it(`returns true when ${new Date()} has the same month as ${new Date()}`, () => {
+    const date = new Date("2022-02-02");
+    expect(checkIfSameMonth(date)).toBe(false);
+  });
 });
