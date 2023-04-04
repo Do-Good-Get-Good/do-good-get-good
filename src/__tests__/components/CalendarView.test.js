@@ -3,8 +3,11 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import each from "jest-each";
 
-import CalendarView from "../../components/CalendarView";
+import CalendarView, { calculateNewHours } from "../../components/CalendarView";
+
+import { Arithmetic } from "../../lib/enums/arithmetic.js";
 
 jest.mock("../../firebase-functions/delete", () => ({
   deleteTimeEntry: jest.fn(() => {
@@ -251,4 +254,32 @@ describe("Testing CalendarView", () => {
       fireEvent.press(changeTimeButton);
     });
   });
+
+  each([
+    [2, 1, 1],
+    [1, 1, 0],
+    [100, 90, 10],
+    [Number.MAX_SAFE_INTEGER, 124, Number.MAX_SAFE_INTEGER],
+  ]).test(
+    "returns %s when adding %s and %s",
+    (expected, registeredTime, hours) => {
+      expect(calculateNewHours(hours, registeredTime, Arithmetic.Add)).toBe(
+        expected,
+      );
+    },
+  );
+
+  each([
+    [10, 14, 4],
+    [0, 3, 5],
+    [0, 0, 10],
+    [0, 10, Number.MAX_SAFE_INTEGER],
+  ]).test(
+    "returns %s when subtracting %s with %s",
+    (expected, registeredTime, hours) => {
+      expect(calculateNewHours(hours, registeredTime, Arithmetic.Sub)).toBe(
+        expected,
+      );
+    },
+  );
 });

@@ -33,6 +33,28 @@ import {
 
 import { Arithmetic } from "../lib/enums/arithmetic";
 
+export const calculateNewHours = (hours, registeredTime, arithmetic) => {
+  let value;
+  switch (arithmetic) {
+    case Arithmetic.Add:
+      value = registeredTime + hours;
+      if (value >= Number.MAX_SAFE_INTEGER) {
+        value = Number.MAX_SAFE_INTEGER;
+      }
+      break;
+    case Arithmetic.Sub:
+      value = registeredTime - hours;
+      if (value <= 0) {
+        value = 0;
+      }
+      break;
+    default:
+      break;
+  }
+
+  return value;
+};
+
 const CalendarView = ({
   visible,
   toggleVisibility,
@@ -203,6 +225,11 @@ const CalendarView = ({
 
     deleteTimeEntry(timeEntryID)
       .then(() => {
+        if (!checkIfSameMonth(activity.date)) {
+          toggleVisibility();
+          return;
+        }
+
         let updateValue = calculateNewHours(
           activity.time,
           registeredTime,
@@ -217,26 +244,10 @@ const CalendarView = ({
       });
   };
 
-  const calculateNewHours = (hours, registeredTime, arithmetic) => {
-    let value;
-    switch (arithmetic) {
-      case Arithmetic.Add:
-        value = registeredTime + hours;
-        if (value >= Number.MAX_SAFE_INTEGER) {
-          value = Number.MAX_SAFE_INTEGER;
-        }
-        break;
-      case Arithmetic.Sub:
-        value = registeredTime - hours;
-        if (value <= 0) {
-          value = 0;
-        }
-        break;
-      default:
-        break;
-    }
-
-    return value;
+  const checkIfSameMonth = (date) => {
+    const currentMonth = new Date().getMonth();
+    if (date.getMonth() < currentMonth) return false;
+    else return true;
   };
 
   return (
