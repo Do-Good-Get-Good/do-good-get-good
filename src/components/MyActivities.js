@@ -16,7 +16,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { Format } from "../lib/enums/imageFormat";
 
-export const MyActivities = ({ activities }) => {
+export const MyActivities = ({ activities, registeredTime }) => {
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
 
@@ -83,6 +83,7 @@ export const MyActivities = ({ activities }) => {
         activity={activity}
         adminID={activities[0].adminId}
         isEditing={false}
+        registeredTime={registeredTime}
       />
     </>
   );

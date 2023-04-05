@@ -26,10 +26,38 @@ import errorMessage from "../assets/recyclingStyles/errorMessage";
 import { deleteTimeEntry } from "../firebase-functions/delete";
 import { addTimeEntry } from "../firebase-functions/add";
 import {
-  incrementTotalHoursMonthForUser,
-  decrementTotalHoursMonthForUser,
+  updateTotalHoursMonthForUser,
   updateTimeEntry,
 } from "../firebase-functions/update";
+
+import { Arithmetic } from "../lib/enums/arithmetic";
+
+export const calculateNewHours = (hours, registeredTime, arithmetic) => {
+  let value;
+  switch (arithmetic) {
+    case Arithmetic.Add:
+      value = registeredTime + hours;
+      if (value >= Number.MAX_SAFE_INTEGER) {
+        value = Number.MAX_SAFE_INTEGER;
+      }
+      break;
+    case Arithmetic.Sub:
+      value = registeredTime - hours;
+      if (value <= 0) {
+        value = 0;
+      }
+      break;
+    default:
+      break;
+  }
+
+  return value;
+};
+
+export const checkIfSameMonth = (date1, date2) => {
+  if (date1.getMonth() !== date2.getMonth()) return false;
+  else return true;
+};
 
 const CalendarView = ({
   visible,
@@ -38,6 +66,7 @@ const CalendarView = ({
   isEditing,
   adminID,
   removeFirstStaticTimeEntry,
+  registeredTime,
 }) => {
   LocaleConfig.locales["sv"] = {
     monthNames: [
@@ -84,7 +113,7 @@ const CalendarView = ({
 
   const [date, setDate] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
-  const [hours, setHours] = useState(null);
+  const [hours, setHours] = useState(0);
   const [todaySelected, setTodaySelected] = useState(null);
   const [error, setError] = useState(null);
 
@@ -138,7 +167,12 @@ const CalendarView = ({
 
     addTimeEntry(timeEntry)
       .then(() => {
-        incrementTotalHoursMonthForUser(uid, hours);
+        let updateValue = calculateNewHours(
+          hours,
+          registeredTime,
+          Arithmetic.Add,
+        );
+        updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
       })
       .catch((error) => {
@@ -165,16 +199,26 @@ const CalendarView = ({
         ) {
           if (activity.time < hours) {
             let newTime = hours - activity.time;
-            incrementTotalHoursMonthForUser(uid, newTime);
+            let updateValue = calculateNewHours(
+              newTime,
+              registeredTime,
+              Arithmetic.Add,
+            );
+            updateTotalHoursMonthForUser(uid, updateValue);
           } else if (activity.time > hours) {
             let newTime = activity.time - hours;
-            decrementTotalHoursMonthForUser(uid, newTime);
+            let updateValue = calculateNewHours(
+              newTime,
+              registeredTime,
+              Arithmetic.Sub,
+            );
+            updateTotalHoursMonthForUser(uid, updateValue);
           }
         }
         toggleVisibility();
       })
       .catch((error) => {
-        setError(error);
+        setError(error.message);
       });
   };
 
@@ -185,7 +229,17 @@ const CalendarView = ({
 
     deleteTimeEntry(timeEntryID)
       .then(() => {
-        decrementTotalHoursMonthForUser(uid, hours);
+        if (!checkIfSameMonth(activity.date, new Date())) {
+          toggleVisibility();
+          return;
+        }
+
+        let updateValue = calculateNewHours(
+          activity.time,
+          registeredTime,
+          Arithmetic.Sub,
+        );
+        updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
       })
       .catch((error) => {
