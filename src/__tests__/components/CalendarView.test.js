@@ -285,17 +285,15 @@ describe("Testing CalendarView", () => {
     },
   );
 
-  let date = new Date();
-  let year = date.getFullYear();
-  let month = (date.getMonth() + 1).toString().padStart(2, "0");
-
   it("Verify that 1987-06-05 do not have the same month as today", () => {
     const date = new Date("1987-06-05");
-    expect(checkIfSameMonth(date)).toBe(false);
+    const today = new Date();
+    expect(checkIfSameMonth(date, today)).toBe(false);
   });
 
-  it(`Verify that ${year}-${month}-12 has the same month as today`, () => {
-    const date = new Date(`${year}-${month}-12`);
-    expect(checkIfSameMonth(date)).toBe(true);
+  it(`Verify that 2023-03-12 has the same month as 2023-03-01`, () => {
+    const date1 = new Date("2023-03-12");
+    const date2 = new Date("2023-03-01");
+    expect(checkIfSameMonth(date1, date2)).toBe(true);
   });
 });

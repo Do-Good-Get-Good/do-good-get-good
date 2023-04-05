@@ -54,9 +54,8 @@ export const calculateNewHours = (hours, registeredTime, arithmetic) => {
   return value;
 };
 
-export const checkIfSameMonth = (date) => {
-  const currentMonth = new Date().getMonth();
-  if (date.getMonth() !== currentMonth) return false;
+export const checkIfSameMonth = (date1, date2) => {
+  if (date1.getMonth() !== date2.getMonth()) return false;
   else return true;
 };
 
@@ -230,7 +229,7 @@ const CalendarView = ({
 
     deleteTimeEntry(timeEntryID)
       .then(() => {
-        if (!checkIfSameMonth(activity.date)) {
+        if (!checkIfSameMonth(activity.date, new Date())) {
           toggleVisibility();
           return;
         }
