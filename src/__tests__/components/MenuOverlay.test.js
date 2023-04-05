@@ -66,7 +66,6 @@ describe("Testing MenuOverlay", () => {
       <MenuOverlay isVisible={true} />,
     );
     expect(getAllByText("Stäng").length).toBe(1);
-    expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Min tid").length).toBe(1);
     const activitiesLink = queryByText("Aktiviteter");
@@ -86,7 +85,6 @@ describe("Testing MenuOverlay", () => {
       <MenuOverlay isVisible={true} />,
     );
     expect(getAllByText("Stäng").length).toBe(1);
-    expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
@@ -102,7 +100,6 @@ describe("Testing MenuOverlay", () => {
     useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
     const { getAllByText } = render(<MenuOverlay isVisible={true} />);
     expect(getAllByText("Stäng").length).toBe(1);
-    expect(getAllByText("Byt språk").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
@@ -122,16 +119,6 @@ describe("Testing MenuOverlay", () => {
 
       const closeButton = getByTestId("menuOverlay.closeButton");
       fireEvent.press(closeButton);
-    });
-
-    it("Change language button", () => {
-      const onClickMock = jest.fn();
-      const { getByTestId } = render(
-        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
-      );
-
-      const languageButton = getByTestId("menuOverlay.languageButton");
-      fireEvent.press(languageButton);
     });
 
     it("Home button", () => {

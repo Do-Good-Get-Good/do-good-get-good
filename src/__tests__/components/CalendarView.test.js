@@ -3,8 +3,14 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import each from "jest-each";
 
-import CalendarView from "../../components/CalendarView";
+import CalendarView, {
+  calculateNewHours,
+  checkIfSameMonth,
+} from "../../components/CalendarView";
+
+import { Arithmetic } from "../../lib/enums/arithmetic.js";
 
 jest.mock("../../firebase-functions/delete", () => ({
   deleteTimeEntry: jest.fn(() => {
@@ -17,8 +23,7 @@ jest.mock("../../firebase-functions/add", () => ({
 }));
 
 jest.mock("../../firebase-functions/update", () => ({
-  incrementTotalHoursMonthForUser: jest.fn(),
-  decrementTotalHoursMonthForUser: jest.fn(),
+  updateTotalHoursMonthForUser: jest.fn(),
   updateTimeEntry: jest.fn(() => {
     return Promise.resolve();
   }),
@@ -250,5 +255,45 @@ describe("Testing CalendarView", () => {
       const changeTimeButton = getByText("Ta bort tid");
       fireEvent.press(changeTimeButton);
     });
+  });
+
+  each([
+    [2, 1, 1],
+    [1, 1, 0],
+    [100, 90, 10],
+    [Number.MAX_SAFE_INTEGER, 124, Number.MAX_SAFE_INTEGER],
+  ]).test(
+    "returns %s when adding %s and %s",
+    (expected, registeredTime, hours) => {
+      expect(calculateNewHours(hours, registeredTime, Arithmetic.Add)).toBe(
+        expected,
+      );
+    },
+  );
+
+  each([
+    [10, 14, 4],
+    [0, 3, 5],
+    [0, 0, 10],
+    [0, 10, Number.MAX_SAFE_INTEGER],
+  ]).test(
+    "returns %s when subtracting %s with %s",
+    (expected, registeredTime, hours) => {
+      expect(calculateNewHours(hours, registeredTime, Arithmetic.Sub)).toBe(
+        expected,
+      );
+    },
+  );
+
+  it("Verify that 1987-06-05 do not have the same month as today", () => {
+    const date = new Date("1987-06-05");
+    const today = new Date();
+    expect(checkIfSameMonth(date, today)).toBe(false);
+  });
+
+  it(`Verify that 2023-03-12 has the same month as 2023-03-01`, () => {
+    const date1 = new Date("2023-03-12");
+    const date2 = new Date("2023-03-01");
+    expect(checkIfSameMonth(date1, date2)).toBe(true);
   });
 });

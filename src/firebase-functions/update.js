@@ -30,29 +30,15 @@ export const confirmTimeEntry = async (timeEntryID) => {
   }
 };
 
-export const incrementTotalHoursMonthForUser = (uid, hours) => {
+export const updateTotalHoursMonthForUser = (uid, updateValue) => {
   try {
-    firestore()
-      .collection("Users")
-      .doc(uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(hours),
-      });
+    firestore().collection("Users").doc(uid).update({
+      total_hours_month: updateValue,
+    });
   } catch (error) {
-    console.log("There was an error incrementing 'total_hours_month'", error);
-  }
-};
-
-export const decrementTotalHoursMonthForUser = (uid, hours) => {
-  try {
-    firestore()
-      .collection("Users")
-      .doc(uid)
-      .update({
-        total_hours_month: firestore.FieldValue.increment(-hours),
-      });
-  } catch (error) {
-    console.log("There was an error decrementing 'total_hours_month'", error);
+    throw new Error(
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
+    );
   }
 };
 
