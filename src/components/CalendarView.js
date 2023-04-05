@@ -56,7 +56,7 @@ export const calculateNewHours = (hours, registeredTime, arithmetic) => {
 
 export const checkIfSameMonth = (date) => {
   const currentMonth = new Date().getMonth();
-  if (date.getMonth() < currentMonth) return false;
+  if (date.getMonth() !== currentMonth) return false;
   else return true;
 };
 
