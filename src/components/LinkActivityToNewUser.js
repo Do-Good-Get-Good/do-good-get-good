@@ -184,7 +184,7 @@ export function LinkActivityToNewUser({
           <Image
             testID="photo"
             style={styles.image}
-            source={setTheRightPhoto(activity.image, Format.square)}
+            source={setTheRightPhoto(activity, Format.square)}
           />
 
           <TouchableOpacity
@@ -192,7 +192,7 @@ export function LinkActivityToNewUser({
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateUser",
-                selectedImage: activity.image,
+                selectedImage: activity.photo,
               })
             }
           >
@@ -241,7 +241,7 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={setTheRightPhoto(selectedActivity.photo, Format.square)}
+            source={setTheRightPhoto(selectedActivity, Format.square)}
           ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>
@@ -419,7 +419,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,
@@ -514,7 +514,7 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   imageExistingActivity: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     marginRight: 80,
     marginTop: 10,
     height: 100,

@@ -40,7 +40,8 @@ const CreateUser = ({ route, navigation }) => {
     city: "",
     description: "",
     favorite: false,
-    image: "",
+    photo: "",
+    imageUrl: "",
   });
   const [selectedActivity, setSelectedActivity] = useState(null);
 
@@ -63,12 +64,16 @@ const CreateUser = ({ route, navigation }) => {
   ]);
 
   useEffect(() => {
-    if (!route.params?.imageForActivity) {
-      setActivity({ ...activity, image: "placeholder" });
+    if (!route.params?.image.name) {
+      setActivity({ ...activity, photo: "placeholder" });
     } else {
-      setActivity({ ...activity, image: route.params?.imageForActivity });
+      setActivity({
+        ...activity,
+        photo: route.params?.image.name,
+        imageUrl: route.params?.image.url,
+      });
     }
-  }, [route.params?.imageForActivity]);
+  }, [route.params?.image.name, route.params?.image.url]);
 
   function handleNextPage() {
     next();
@@ -92,7 +97,8 @@ const CreateUser = ({ route, navigation }) => {
       active_status: true,
       activity_city: activity.city,
       activity_description: activity.description,
-      activity_photo: activity.image,
+      activity_photo: activity.photo,
+      image_url: activity.imageUrl,
       activity_place: activity.place,
       activity_title: activity.title,
       tg_favorite: activity.favorite,

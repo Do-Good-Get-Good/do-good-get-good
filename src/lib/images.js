@@ -2,13 +2,17 @@ import { Format } from "./enums/imageFormat";
 
 export const placeholderImage = require("../assets/images/placeholder.png");
 
-export function setTheRightPhoto(activityImage, format) {
-  let images = Images.filter((image) => image.format === format);
-  let found = images.find((image) => image.name === activityImage);
+export function setTheRightPhoto(activity, format) {
+  if (!activity.imageUrl) {
+    let images = Images.filter((image) => image.format === format);
+    let found = images.find((image) => image.name === activity.photo);
 
-  if (!found) return placeholderImage;
+    if (!found) return placeholderImage;
 
-  return found.image;
+    return found.image;
+  } else {
+    return { uri: activity.imageUrl };
+  }
 }
 
 const Images = [
