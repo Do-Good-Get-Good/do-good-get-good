@@ -36,18 +36,17 @@ export function CreateActivity({ route, navigation }) {
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
   const [imageName, setImageName] = useState("placeholder");
+  const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
   const activityImage = useMemo(() => {
-    if (!route.params?.imageForActivity) return placeholderImage;
+    let image = route.params?.image;
+    if (!image) return placeholderImage;
 
-    let images = Images.filter((image) => image.wide !== true);
-    let found = images.find(
-      (image) => image.name === route.params?.imageForActivity,
-    );
-    setImageName(found.name);
-    return found.image;
-  }, [route.params?.imageForActivity]);
+    setImageName(image.name);
+    setImageUrl(image.url);
+    return { uri: image.url };
+  }, [route.params?.image.name, route.params?.image.url]);
 
   useEffect(() => {
     if (title !== null) {
@@ -95,6 +94,7 @@ export function CreateActivity({ route, navigation }) {
       activity_city: city,
       activity_description: description,
       activity_photo: imageName,
+      image_url: imageUrl,
       activity_place: place,
       activity_title: title,
       tg_favorite: checkBoxPressed,
@@ -111,6 +111,7 @@ export function CreateActivity({ route, navigation }) {
           place: newActivity.activity_place,
           description: newActivity.activity_description,
           photo: newActivity.activity_photo,
+          imageUrl: newActivity.image_url,
           popular: newActivity.tg_favorite,
         },
       ]);
@@ -364,7 +365,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,

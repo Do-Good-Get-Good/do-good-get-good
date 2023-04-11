@@ -20,14 +20,19 @@ import { useActivityImages } from "../hooks/useActivityImages";
 export function ImagesGallery({ navigation, route }) {
   const { images, loading, error } = useActivityImages();
 
-  const [imageName, setImageName] = useState(route.params.selectedImage);
+  const [selectedImage, setSelectedImage] = useState({
+    name: route.params.selectedImage,
+    url: "",
+  });
 
   const imagesArray = useMemo(() => {
     return images.map((img) => {
-      if (img.imageName !== imageName) return { ...img, selected: false };
+      if (img.imageName !== selectedImage.name)
+        return { ...img, selected: false };
+
       return { ...img, selected: true };
     });
-  }, [images, imageName]);
+  }, [images, selectedImage.name]);
 
   const imageStyle = (selected) => {
     return {
@@ -49,19 +54,19 @@ export function ImagesGallery({ navigation, route }) {
   const buttonSavePressed = () => {
     if (route.params?.cameFrom === "CreateActivity") {
       navigation.navigate("CreateActivity", {
-        imageForActivity: imageName,
+        image: selectedImage,
       });
     }
     if (route.params?.cameFrom === "CreateUser") {
       navigation.navigate("CreateUser", {
-        imageForActivity: imageName,
+        image: selectedImage,
       });
     }
     if (route.params?.cameFrom === "ChangeActivity") {
       navigation.navigate("ChangeActivity", {
         activity: route.params?.activity,
         tgPopular: route.params?.tgPopular,
-        imageForActivity: imageName,
+        image: selectedImage,
       });
     }
   };
@@ -81,7 +86,9 @@ export function ImagesGallery({ navigation, route }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             testID="pressOnImage"
-            onPress={() => setImageName(item.imageName)}
+            onPress={() =>
+              setSelectedImage({ name: item.imageName, url: item.imageUrl })
+            }
             style={{ flex: 0.5, flexDirection: "row" }}
           >
             <Image
