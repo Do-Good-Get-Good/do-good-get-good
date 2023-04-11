@@ -9,9 +9,18 @@ export const useActivityImages = () => {
 
   const fetchImages = async () => {
     try {
-      const reference = storage().ref("activity-images");
-      const images = listFilesAndDirectories(reference);
-      setImages(images);
+      setImages([]);
+      let result = await storage().ref("activity-images").listAll();
+
+      result.items.forEach(async (ref) => {
+        const imagePath = ref.fullPath;
+        const url = await storage().ref(imagePath).getDownloadURL();
+        const imageData = {
+          imageName: imagePath,
+          imageUrl: url,
+        };
+        setImages((prev) => [...prev, imageData]);
+      });
     } catch (error) {
       setError(error.message);
     } finally {
@@ -26,18 +35,3 @@ export const useActivityImages = () => {
 
   return { images, loading, error };
 };
-
-function listFilesAndDirectories(reference, pageToken) {
-  return reference.list({ pageToken }).then((result) => {
-    // Loop over each item
-    result.items.forEach((ref) => {
-      console.log(ref.fullPath);
-    });
-
-    if (result.nextPageToken) {
-      return listFilesAndDirectories(reference, result.nextPageToken);
-    }
-
-    return Promise.resolve();
-  });
-}

@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from "react";
-import LinearGradient from "react-native-linear-gradient";
+import React, { useState, useMemo } from "react";
 import {
   Text,
   StyleSheet,
@@ -7,37 +6,28 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  Platform,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
-import Images from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
-import { Format } from "../lib/enums/imageFormat";
 import BottomNavButtons from "../components/BottomNavButtons";
+import { useActivityImages } from "../hooks/useActivityImages";
 
 export function ImagesGallery({ navigation, route }) {
-  const [imagesArray, setImagesArray] = useState(
-    Images.filter((img) => img.format === Format.square),
-  );
+  const { images, loading, error } = useActivityImages();
+
   const [imageName, setImageName] = useState(route.params.selectedImage);
 
-  useEffect(() => {
-    changeBorderStyle(imageName);
-  }, [imageName]);
-
-  function changeBorderStyle(imageName) {
-    let newArr = imagesArray.map((image) => {
-      if (image.name !== imageName) return { ...image, selected: false };
-
-      return { ...image, selected: true };
+  const imagesArray = useMemo(() => {
+    return images.map((img) => {
+      if (img.imageName !== imageName) return { ...img, selected: false };
+      return { ...img, selected: true };
     });
-    setImagesArray(newArr);
-  }
+  }, [images, imageName]);
 
   const imageStyle = (selected) => {
     return {
@@ -91,13 +81,13 @@ export function ImagesGallery({ navigation, route }) {
         renderItem={({ item }) => (
           <TouchableOpacity
             testID="pressOnImage"
-            onPress={() => setImageName(item.name)}
+            onPress={() => setImageName(item.imageName)}
             style={{ flex: 0.5, flexDirection: "row" }}
           >
             <Image
               testID="imageInImageGallery"
               style={imageStyle(item.selected)}
-              source={item.image}
+              source={{ uri: item.imageUrl }}
             />
           </TouchableOpacity>
         )}
@@ -113,6 +103,7 @@ export function ImagesGallery({ navigation, route }) {
 }
 
 export default ImagesGallery;
+
 const styles = StyleSheet.create({
   headerView: {
     marginTop: 12,
