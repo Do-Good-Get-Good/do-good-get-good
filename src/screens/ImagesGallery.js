@@ -26,12 +26,14 @@ export function ImagesGallery({ navigation, route }) {
   });
 
   const imagesArray = useMemo(() => {
-    return images.map((img) => {
-      if (img.imageName !== selectedImage.name)
-        return { ...img, selected: false };
+    return images
+      .map((img) => {
+        if (img.imageName !== selectedImage.name)
+          return { ...img, selected: false };
 
-      return { ...img, selected: true };
-    });
+        return { ...img, selected: true };
+      })
+      .sort((a, b) => a.imageName.localeCompare(b.imageName));
   }, [images, selectedImage.name]);
 
   const imageStyle = (selected) => {

@@ -8,10 +8,9 @@ export const useActivityImages = () => {
   const [error, setError] = useState(null);
 
   const fetchImages = async () => {
+    setImages([]);
     try {
-      setImages([]);
       let result = await storage().ref("activity-images").listAll();
-
       result.items.forEach(async (ref) => {
         const imagePath = ref.fullPath;
         const url = await storage().ref(imagePath).getDownloadURL();
