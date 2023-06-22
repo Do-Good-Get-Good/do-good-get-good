@@ -92,7 +92,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   useEffect(() => {
     if (userLevel === UserLevels.Admin) {
       setPlaceholderFilledUp(true);
-      setPlaceholder("");
+      setPlaceholder(UserLevels.User);
     } else {
       if (placeholder === "Behörighet") return;
       if (
