@@ -1,27 +1,30 @@
 [![CI](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml/badge.svg?branch=main)](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml)
 # Do Good Get Good #
+
 ## A time reporting app from Technogarden ##
 
 ## Building the project ##
+
 The app is a cross platform application built in react native. Development focus on using as many built in components and existing libraries as possible. The instructions assumes you have some knowledge how operating systems works with environment variables and such.
+
 ### How to run ###
+
 1. The source code is located in `./src`
 2. You will need NodeJS from https://nodejs.org
-3. After installing Node you need to install expo. `npm install -g expo`
-4. You need Android Studio from https://developer.android.com/studio/
-5. For **Windows** you need to add two environment variables 
+3. You need Android Studio from https://developer.android.com/studio/
+4. For **Windows** you need to add two environment variables 
    1. You need to add `ANDROID_HOME` with the value for Android SDK Location. You find it in Android Studio Settings, `Appearance & Behavior -> System SEttings -> Android SDK`
    ![Android sdk](doc/images/android_sdk.png)
    2. You also need to add `JAVA_HOME` with the value for Android studio JRE, default is `C:\Program Files\Android\Android Studio\jre`
    3. Lastly you need to create a `local.properties` file and write the file-path to Android Studio SDKs i.e. `sdk.dir = C:\\Users\\<username>\\AppData\\Local\\Android\\Sdk`
-6. For **MacOS** and **Linux** you need to add two environment variables
+5. For **MacOS** and **Linux** you need to add two environment variables
    1. First is `ANDROID_SDK` that is the same as `ANDROID_HOME` under **Windows**
    2. Second one is to Update `PATH` with Android Studio SDK Platform tools. Usually found in `/Users/<username>/Library/Android/sdk/platform-tools`
    3. Third, create a `local.properties` file in the root of the Android folder and write Android Studio SDKs file-path i.e. `sdk.dir = /Users/<name>/Library/Android/sdk`
-7. After that go to the source code in a command line tool like powershell or bash and do `npm install`.
-8. If you are running MacOS you need to go to the `ios` folder and runt `pod install`
-9. You might need to install firestore manually with `npm add @react-native-firebase/firestore`
-10. Standing in the root for the source code run:
+6. After that go to the source code in a command line tool like powershell or bash and do `npm install`.
+7. If you are running MacOS you need to go to the `ios` folder and runt `pod install`
+8. You might need to install firestore manually with `npm add @react-native-firebase/firestore`
+9.  Standing in the root for the source code run:
     
     **Android:** 
     
