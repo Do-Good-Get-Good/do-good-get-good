@@ -24,7 +24,7 @@ jobs:
           architecture: x64 # (x64 or x86) - defaults to x64
       - uses: actions/setup-node@v2
         with:
-          node-version: "18"
+          node-version: "16"
       - name: Install React Native CLI
         run: |
           npm install react-native-cli -g
