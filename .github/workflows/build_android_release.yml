@@ -11,6 +11,9 @@ on:
 jobs:
   build-android-adhoc:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: ./src
     steps:
       - name: Getting the repo
         uses: actions/checkout@v2
@@ -28,7 +31,6 @@ jobs:
       - name: Install npm dependencies
         run: |
           npm ci
-        working-directory: src/
       # - name: Building bundle
       #   run: |
       #     npx react-native bundle --platform android --dev false --entry-file index.js --bundle-output android/app/src/main/assets/index.android.bundle --assets-dest android/app/src/main/res/
@@ -45,7 +47,6 @@ jobs:
           gpg -d --passphrase "${{ secrets.DGGG_KEYSTORE_PASSPHRASE }}" --batch dggg_release.keystore.asc > android/app/dggg_key.keystore
           cd android && ./gradlew assembleRelease -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
           ./gradlew bundle -PversCode=$VERSION_CODE -PversName=$VERSION_NAME
-        working-directory: src/
       - name: Upload Artifact
         uses: actions/upload-artifact@v2
         with:
