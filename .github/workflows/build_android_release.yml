@@ -30,6 +30,7 @@ jobs:
           npm install react-native-cli -g
       - name: Install npm dependencies
         run: |
+          npm login
           npm ci
       # - name: Building bundle
       #   run: |
