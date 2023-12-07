@@ -1,9 +1,9 @@
 module.exports = {
   project: {
     ios: {
-      sourceDir: './ios',
+      sourceDir: "./ios",
     },
     android: {},
   },
-  assets: ['./assets/fonts'],
+  assets: ["./assets/fonts"],
 };

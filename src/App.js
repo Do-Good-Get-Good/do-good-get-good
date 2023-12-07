@@ -33,7 +33,7 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [userClaims, setUserClaims] = useState();
-
+  console.log(userClaims);
   // Handle user state changes
   async function onAuthStateChanged(user) {
     setUser(user);
@@ -121,13 +121,15 @@ export default function App() {
             Något är fel med din användare, vänligen kontakta{" "}
             <Text
               style={{ textDecorationLine: "underline" }}
-              onPress={() => Linking.openURL("mailto:dggg@technogarden.se")}>
+              onPress={() => Linking.openURL("mailto:dggg@technogarden.se")}
+            >
               dggg@technogarden.se
             </Text>
           </Text>
           <TouchableOpacity
             style={styles.logOutBtn}
-            onPress={() => auth().signOut()}>
+            onPress={() => auth().signOut()}
+          >
             <Text style={styles.logOutBtnText}>Logga ut</Text>
           </TouchableOpacity>
         </View>
