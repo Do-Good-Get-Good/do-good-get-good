@@ -7,4 +7,7 @@
    <FileRef
       location = "group:Pods/Pods.xcodeproj">
    </FileRef>
+   <FileRef
+      location = "group:../../../../DO_GOOD_GET_GOOD/do-good-get-good/src/ios/DoGoodGetGood.xcodeproj">
+   </FileRef>
 </Workspace>
