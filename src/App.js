@@ -33,7 +33,6 @@ export default function App() {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
   const [userClaims, setUserClaims] = useState();
-  console.log(userClaims);
   // Handle user state changes
   async function onAuthStateChanged(user) {
     setUser(user);

@@ -124,33 +124,4 @@ const styles = StyleSheet.create({
     }),
     paddingHorizontal: 16,
   },
-  warningAboutRequired: {
-    color: colors.error,
-    marginTop: 1,
-  },
-  // textChangeStatusActive: {
-  //   color: colors.dark,
-  //   ...typography.button.sm,
-  //   textDecorationLine: "underline",
-  //   fontWeight: "bold",
-  // },
-  dropdownShadow: {
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          height: 1,
-        },
-        shadowOpacity: 0.2,
-        shadowRadius: 1,
-      },
-      android: {
-        elevation: 1,
-      },
-    }),
-  },
-  placeholderText: {
-    fontSize: typography.b1.fontSize,
-    fontFamily: typography.b1.fontFamily,
-    color: colors.dark,
-  },
 });
