@@ -1,15 +1,12 @@
 import { StyleSheet, ScrollView } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-import { Icon } from "@rneui/base";
 
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
-import { UserLevels } from "../lib/enums/userlevels";
+
 import { Role } from "../utilily/enums";
-import { User } from "../utilily/types";
+
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField } from "./InputField";
 import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
