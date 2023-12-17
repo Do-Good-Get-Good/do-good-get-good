@@ -78,8 +78,12 @@ exports.createUser = functions.https.onCall(async (data, context) => {
       password: data.password,
     };
 
-    const userRecord = await admin.auth().createUser(newUser);
-
+    // const userRecord = await admin.auth().createUser(newUser);
+    const userRecord = await admin
+      .auth()
+      .generateEmailVerificationLink(data.email, {
+        url: "https://stackoverflow.com/questions/72037180/committed-changes-on-one-branch-break-things-on-another-branch",
+      });
     const userId = userRecord.uid;
 
     const claims = {};
