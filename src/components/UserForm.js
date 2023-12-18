@@ -92,7 +92,11 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
   useEffect(() => {
     if (userLevel === UserLevels.Admin) {
       setPlaceholderFilledUp(true);
-      setPlaceholder("");
+      setPlaceholder(UserLevels.User);
+      setUser({
+        ...user,
+        role: UserLevels.User,
+      });
     } else {
       if (placeholder === "Behörighet") return;
       if (
@@ -105,7 +109,7 @@ const UserForm = ({ userLevel, user, setUser, nextPage }) => {
         setPlaceholderFilledUp(false);
       }
     }
-  }, [placeholder]);
+  }, [placeholder, userLevel]);
 
   function validInputs() {
     if (

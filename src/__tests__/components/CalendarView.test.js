@@ -285,10 +285,10 @@ describe("Testing CalendarView", () => {
     },
   );
 
-  it("Verify that 1987-06-05 do not have the same month as today", () => {
-    const date = new Date("1987-06-05");
-    const today = new Date();
-    expect(checkIfSameMonth(date, today)).toBe(false);
+  it("Verify that 1987-06-05 do not have the same month as ex. 2023-02-24", () => {
+    const date1 = new Date("1987-06-05");
+    const date2 = new Date("2023-02-24");
+    expect(checkIfSameMonth(date1, date2)).toBe(false);
   });
 
   it(`Verify that 2023-03-12 has the same month as 2023-03-01`, () => {
