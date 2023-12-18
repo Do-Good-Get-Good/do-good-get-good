@@ -32,15 +32,20 @@ export default function App() {
 
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState();
-  const [userClaims, setUserClaims] = useState();
+  const [userClaims, setUserClaims] = useState<{
+    superadmin?: string;
+    admin?: string;
+    user?: string;
+  }>();
+
   // Handle user state changes
-  async function onAuthStateChanged(user) {
+  async function onAuthStateChanged(user: any) {
     setUser(user);
     if (user) {
       try {
         let userIdToken = await user.getIdTokenResult();
         setUserClaims(userIdToken.claims);
-      } catch (error) {
+      } catch (error: any) {
         crashlytics().log("There was an error getting the users ID Token");
         crashlytics().recordError(error);
         console.log(error);
@@ -66,7 +71,7 @@ export default function App() {
     return <Login />;
   }
 
-  if (userClaims.superadmin) {
+  if (userClaims?.superadmin) {
     // Render superadmin content
     return (
       <SafeAreaProvider>
@@ -85,7 +90,7 @@ export default function App() {
         </ActivityCardProvider>
       </SafeAreaProvider>
     );
-  } else if (userClaims.admin) {
+  } else if (userClaims?.admin) {
     // Render admin content
     return (
       <SafeAreaProvider>
@@ -102,7 +107,7 @@ export default function App() {
         </ActivityCardProvider>
       </SafeAreaProvider>
     );
-  } else if (userClaims.user) {
+  } else if (userClaims?.user) {
     return (
       <SafeAreaProvider>
         <UserLevelProvider>
