@@ -7,7 +7,6 @@ require Pod::Executable.execute_command('node', ['-p',
 
 platform :ios, min_ios_version_supported
 prepare_react_native_project!
-project '/Users/alonakirichenko/DO_GOOD_GET_GOOD/do-good-get-good/src/ios/DoGoodGetGood.xcodeproj'
 
 # If you are using a `react-native-flipper` your iOS build will fail when `NO_FLIPPER=1` is set.
 # because `react-native-flipper` depends on (FlipperKit,...) that will be excluded
