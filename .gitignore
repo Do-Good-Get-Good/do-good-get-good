@@ -58,3 +58,5 @@ coverage/
 reports/
 src/package-lock.json
 src/android/app/gradle.properties
+functions/firebase-debug.log
+functions/ServiceAccount/devServiceAccount.json
