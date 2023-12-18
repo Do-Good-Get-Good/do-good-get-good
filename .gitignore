@@ -56,3 +56,5 @@ src/.jest/
 junit.xml
 coverage/
 reports/
+src/package-lock.json
+src/android/app/gradle.properties
