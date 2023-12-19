@@ -31,6 +31,13 @@ function roleIsValid(role) {
   return validRoles.includes(role);
 }
 
+
+//TODO: implement sending emails. 
+function sendCustomVerificationEmail(email, displayname, link) {
+  return "email: " + email + "\nname: " + displayname +  "\nlink: " + link
+}
+
+
 // Cloud functions below //
 exports.createUser = functions.https.onCall(async (data, context) => {
   try {
@@ -86,11 +93,12 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     .then((link) => {
       // Construct email verification template, embed the link and send
       // using custom SMTP server.
-      return functions.sendCustomVerificationEmail(userRecord.email, userRecord.first_name, link);
+      return sendCustomVerificationEmail(userRecord.email, userRecord.first_name, link);
     })
     .catch((error) => {
       throw error;
     });
+    //TODO: implement the logic to handle verified vs unverified emails.
 
 
     const claims = {};
