@@ -79,8 +79,19 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     };
 
     const userRecord = await admin.auth().createUser(newUser);
-
+    
     const userId = userRecord.uid;
+
+    const verification = await admin.auth().generateEmailVerificationLink(userRecord.email)
+    .then((link) => {
+      // Construct email verification template, embed the link and send
+      // using custom SMTP server.
+      return functions.sendCustomVerificationEmail(userRecord.email, userRecord.first_name, link);
+    })
+    .catch((error) => {
+      throw error;
+    });
+
 
     const claims = {};
     claims[role] = true;
