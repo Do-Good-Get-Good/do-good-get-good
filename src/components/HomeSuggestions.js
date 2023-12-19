@@ -13,8 +13,13 @@ import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 const HomeSuggestions = ({ navigation, suggestions }) => {
+  const { getImages, getImageByName, loading, error } = useActivityImages();
+
+  if (!loading) console.log(getImages());
+
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
     navigation.navigate("ActivityCard", {

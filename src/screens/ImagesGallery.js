@@ -15,10 +15,10 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
-import { useActivityImages } from "../hooks/useActivityImages";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function ImagesGallery({ navigation, route }) {
-  const { images, loading, error } = useActivityImages();
+  const { getImages, getImageByName, loading, error } = useActivityImages();
 
   const [selectedImage, setSelectedImage] = useState({
     name: route.params.selectedImage,
@@ -26,7 +26,7 @@ export function ImagesGallery({ navigation, route }) {
   });
 
   const imagesArray = useMemo(() => {
-    return images
+    return getImages()
       .map((img) => {
         if (img.imageName !== selectedImage.name)
           return { ...img, selected: false };
@@ -34,7 +34,7 @@ export function ImagesGallery({ navigation, route }) {
         return { ...img, selected: true };
       })
       .sort((a, b) => a.imageName.localeCompare(b.imageName));
-  }, [images, selectedImage.name]);
+  }, [getImages(), selectedImage.name]);
 
   const imageStyle = (selected) => {
     return {
