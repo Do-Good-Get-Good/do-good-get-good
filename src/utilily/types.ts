@@ -1,10 +1,4 @@
-export enum ActivityImages {
-  handsHeartDEFAULT = "symbol_hands_heart-DEFAULT",
-  earth = "symbol_earth",
-  blood = "symbol_blood",
-  hund = "symbol_hund",
-  sport = "symbol_sport",
-}
+import { ActivityImages } from "./enums";
 
 export type Activity = {
   id: string;
@@ -49,6 +43,7 @@ export type User = {
   connectedActivities?: Array<Activity["id"]>;
   firstName: string;
   lastName: string;
+  email?: string;
   role?: string;
   timeEntries?: TimeEntrie | Array<TimeEntrie>;
   //// TODO: (ckeck what is this checked)

@@ -1,13 +1,12 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState } from "react";
 import * as yup from "yup";
-import { Controller, SubmitErrorHandler, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import {
   Text,
   StyleSheet,
   TouchableOpacity,
   Platform,
   ScrollView,
-  TextInput,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -16,17 +15,25 @@ import Menu from "../../components/Menu";
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import BottomNavButtons from "../../components/BottomNavButtons";
-
-import { InputField } from "../../components/TextInput";
-import { error } from "firebase-functions/logger";
 import { UserName, onUpdateUser } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
+import { InputField } from "../../components/InputField";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()
   .shape({
-    name: yup.string().trim().max(20).min(1).required("Obligatorisk"),
-    surname: yup.string().trim().max(20).min(1).required("Obligatorisk"),
+    name: yup
+      .string()
+      .trim()
+      .max(20)
+      .min(1, "* Förnamn måste innehålla minst 1 tecken")
+      .required("Obligatorisk"),
+    surname: yup
+      .string()
+      .trim()
+      .max(20)
+      .min(1, "* Efternamn måste innehålla minst 1 tecken")
+      .required("Obligatorisk"),
   })
   .defined();
 
@@ -101,8 +108,6 @@ export const ChangeUser = ({ route, navigation }: Props) => {
     </SafeAreaView>
   );
 };
-
-export default ChangeUser;
 
 const styles = StyleSheet.create({
   container: {

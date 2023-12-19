@@ -79,7 +79,6 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     };
 
     const userRecord = await admin.auth().createUser(newUser);
-
     const userId = userRecord.uid;
 
     const claims = {};
