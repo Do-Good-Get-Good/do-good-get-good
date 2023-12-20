@@ -120,6 +120,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           control={control}
           error={errors.email}
           name={"email"}
+          autoCapitalize={"none"}
           keyboardType={"email-address"}
         />
 

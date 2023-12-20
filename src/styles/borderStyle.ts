@@ -5,9 +5,9 @@ import {
   TextStyle,
 } from "react-native/Libraries/StyleSheet/StyleSheetTypes";
 export const borderStyle = (
-  isEror: boolean = false,
+  isError: boolean = false,
 ): StyleProp<FlexStyle | TextStyle> => ({
   borderRadius: 5,
   borderWidth: 1,
-  borderColor: isEror ? colors.error : colors.background,
+  borderColor: isError ? colors.error : colors.background,
 });

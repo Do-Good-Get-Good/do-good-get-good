@@ -18,7 +18,7 @@ export type Concept = {
   orderID: number;
 };
 
-export type TimeEntrie = {
+export type TimeEntry = {
   id: string;
   activityID: Activity["id"];
   adminID: User["id"];
@@ -31,25 +31,25 @@ export type TimeEntrie = {
   time: number;
 };
 
-export type AtivitiesAndAccumulatedTime = {
+export type ActivitiesAndAccumulatedTime = {
   accumulatedTime: number;
   activityID: Activity["id"];
 };
 
 export type User = {
   id: string;
-  activitiesAndAccumulatedTime?: Array<AtivitiesAndAccumulatedTime>;
+  activitiesAndAccumulatedTime?: Array<ActivitiesAndAccumulatedTime>;
   adminID?: User["id"];
   connectedActivities?: Array<Activity["id"]>;
   firstName: string;
   lastName: string;
   email?: string;
   role?: string;
-  timeEntries?: TimeEntrie | Array<TimeEntrie>;
+  timeEntries?: TimeEntry | Array<TimeEntry>;
   //// TODO: (ckeck what is this checked)
   checked?: boolean;
   timeObject?: {};
-  // timeEntries?: Array<TimeEntrie>;
+  // timeEntries?: Array<TimeEntry>;
   isOpen?: boolean;
   statusActive?: boolean;
   totalConfirmedHours?: number;

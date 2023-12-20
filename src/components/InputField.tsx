@@ -4,6 +4,7 @@ import {
   Text,
   TextInput,
   TextInputIOSProps,
+  TextInputProps,
   View,
 } from "react-native";
 import { errorTextStyle } from "../styles/errorTextStyle";
@@ -24,6 +25,7 @@ type Props = {
   IconRight?: any;
   returnKeyType?: ReturnKeyTypeOptions;
   secureTextEntry?: boolean;
+  autoCapitalize?: TextInputProps["autoCapitalize"];
 };
 
 export const InputField = ({
@@ -37,6 +39,7 @@ export const InputField = ({
   IconRight,
   returnKeyType = "next",
   secureTextEntry = false,
+  autoCapitalize = "words",
 }: Props) => {
   return (
     <Controller
@@ -57,6 +60,7 @@ export const InputField = ({
               keyboardType={keyboardType}
               textContentType={textContentType}
               secureTextEntry={secureTextEntry}
+              autoCapitalize={autoCapitalize}
             />
             <View style={styles.showPasswordIcon}>
               {IconRight && IconRight}

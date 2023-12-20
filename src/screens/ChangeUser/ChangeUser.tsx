@@ -53,7 +53,7 @@ export const ChangeUser = ({ route, navigation }: Props) => {
     defaultValues: { name: userName, surname: userSurname },
     resolver: yupResolver(schema),
   });
-  const [changedStatus, setcChangedStatus] = useState(statusActive);
+  const [changedStatus, setChangedStatus] = useState(statusActive);
 
   const onSubmit = (data: UserName) => {
     onUpdateUser(
@@ -92,7 +92,7 @@ export const ChangeUser = ({ route, navigation }: Props) => {
             marginTop: 10,
             alignSelf: "flex-start",
           }}
-          onPress={() => setcChangedStatus(!changedStatus)}
+          onPress={() => setChangedStatus(!changedStatus)}
         >
           <Text style={boldTextWithUnderline()}>
             {changedStatus ? "Inaktivera användare" : "Aktivera användare"}
