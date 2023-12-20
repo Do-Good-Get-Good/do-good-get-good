@@ -16,7 +16,7 @@ import typography from "../assets/theme/typography";
 
 import Config from "react-native-config";
 
-import MenuOverlay from "./MenuOverlay";
+import { MenuOverlay } from "./MenuOverlay";
 import DevRelease from "./DevRelease";
 
 const Menu = () => {

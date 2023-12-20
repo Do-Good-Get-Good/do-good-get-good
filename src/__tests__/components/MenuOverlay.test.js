@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import MenuOverlay from "../../components/MenuOverlay";
+import MenuOverlay from "../../components/MenuOverlay/MenuOverlay";
 
 import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
