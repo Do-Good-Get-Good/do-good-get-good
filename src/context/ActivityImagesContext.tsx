@@ -11,30 +11,22 @@ import storage from "@react-native-firebase/storage";
 import { setTheRightPhoto } from "../lib/images";
 import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
 
-type Activity = {
-  id: string;
-  title: any;
-  city: any;
-  place: any;
-  description: any;
-  photo: any;
-  popular: any;
-  imageUrl?: string;
-};
-
 export type ActivityImage = {
-  imageName: string;
+  photo: string;
   imageUrl?: string;
 };
 
 const ActivityImageContext = createContext<{
   getImages: () => ActivityImage[];
-  getImageForActivity: (activity: Activity) => ImageSourcePropType | undefined;
+  getImageForActivity: (
+    photo: string,
+    imageUrl?: string,
+  ) => ImageSourcePropType | undefined;
   loading: boolean;
   error?: any;
 }>({
   getImages: (): ActivityImage[] => [],
-  getImageForActivity: (activity: Activity) => undefined,
+  getImageForActivity: (photo: string, imageUrl?: string) => undefined,
   loading: false,
 });
 
@@ -54,10 +46,10 @@ export const ActivityImagesProvider = ({ children }: PropsWithChildren) => {
       let result = await storage().ref("activity-images").listAll();
 
       let imagesPromises = result.items.map(async (ref) => {
-        const imageName = ref.fullPath;
-        const imageUrl = await storage().ref(imageName).getDownloadURL();
+        const photo = ref.fullPath;
+        const imageUrl = await storage().ref(photo).getDownloadURL();
         const image: ActivityImage = {
-          imageName,
+          photo,
           imageUrl,
         };
         return image;
@@ -80,8 +72,8 @@ export const ActivityImagesProvider = ({ children }: PropsWithChildren) => {
     return images;
   };
 
-  const getImageForActivity = (activity: Activity) =>
-    setTheRightPhoto(activity);
+  const getImageForActivity = (photo: string, imageUrl?: string) =>
+    setTheRightPhoto(photo, imageUrl);
 
   return (
     <ActivityImageContext.Provider

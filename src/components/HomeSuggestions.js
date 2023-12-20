@@ -64,7 +64,10 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
               <Image
                 testID="photo"
                 style={styles.image}
-                source={getImageForActivity(suggestion)}
+                source={getImageForActivity(
+                  suggestion.photo,
+                  suggestion.imageUrl,
+                )}
               />
             </View>
             <View style={styles.iconsAndTextDescriptionContainer}>

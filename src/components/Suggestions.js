@@ -147,7 +147,10 @@ export function Suggestions({
               <Image
                 testID="photo"
                 style={styles.image}
-                source={getImageForActivity(suggestion)}
+                source={getImageForActivity(
+                  suggestion.photo,
+                  suggestion.imageUrl,
+                )}
               />
             </View>
 

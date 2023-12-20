@@ -28,6 +28,7 @@ export const CreateActivityProvider = ({ children }) => {
     photo: "",
     description: "",
     popular: "",
+    imageUrl: "",
   });
   const [changedOneActivity, setChangedOneActivity] = useState(false);
 
@@ -39,6 +40,7 @@ export const CreateActivityProvider = ({ children }) => {
     photo: "",
     description: "",
     popular: "",
+    imageUrl: "",
   });
 
   useEffect(() => {
@@ -64,6 +66,7 @@ export const CreateActivityProvider = ({ children }) => {
         photo: activityID.activityInfo.photo,
         title: activityID.activityInfo.title,
         popular: activityID.popular,
+        imageUrl: activityID.imageUrl,
       };
       setNewChangeActivity(dataInfo);
       setChangedOneActivity(false);
@@ -87,7 +90,7 @@ export const CreateActivityProvider = ({ children }) => {
 
           if (searchAtFCity != -1 || searchAtTitle != -1) {
             var cheackIfObjectOlreadyExistInArray = searchArray.findIndex(
-              (x) => x.id === newArray[i].id
+              (x) => x.id === newArray[i].id,
             );
             if (cheackIfObjectOlreadyExistInArray === -1) {
               arrayWithFoundObjects.push(newArray[i]);

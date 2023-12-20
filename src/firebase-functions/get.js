@@ -117,6 +117,7 @@ export const getActivityInformation = async (activityId) => {
       title: querySnapshot.data().activity_title,
       city: querySnapshot.data().activity_city,
       photo: querySnapshot.data().activity_photo,
+      imageUrl: querySnapshot.data().imageUrl,
     };
 
     return Promise.resolve(activity);
@@ -142,6 +143,7 @@ export const getAllActivitiesWithStatus = async (status) => {
         description: doc.data().activity_description,
         photo: doc.data().activity_photo,
         popular: doc.data().tg_favorite,
+        imageUrl: doc.data().imageUrl,
       };
     });
 

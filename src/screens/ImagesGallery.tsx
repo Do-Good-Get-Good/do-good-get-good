@@ -28,22 +28,22 @@ export function ImagesGallery({
   navigation: any;
   route: any;
 }) {
-  const { getImages, loading } = useActivityImages();
+  const { getImages } = useActivityImages();
 
-  const [selectedImage, setSelectedImage] = useState<ActivityImage>({
-    imageName: route.params.selectedImage,
-  });
+  const [selectedImage, setSelectedImage] = useState<ActivityImage>(
+    route.params.selectedImage,
+  );
 
   const imagesArray = useMemo(() => {
     return getImages()
       .map((img) => {
-        if (img.imageName !== selectedImage.imageName)
+        if (img.photo !== selectedImage.photo)
           return { ...img, selected: false };
 
         return { ...img, selected: true };
       })
-      .sort((a, b) => a.imageName.localeCompare(b.imageName));
-  }, [getImages(), selectedImage.imageName, loading]);
+      .sort((a, b) => a.photo.localeCompare(b.photo));
+  }, [getImages(), selectedImage]);
 
   const imageStyle = (selected: any): ImageStyle => {
     return {
@@ -99,7 +99,7 @@ export function ImagesGallery({
             testID="pressOnImage"
             onPress={() =>
               setSelectedImage({
-                imageName: item.imageName,
+                photo: item.photo,
                 imageUrl: item.imageUrl,
               })
             }

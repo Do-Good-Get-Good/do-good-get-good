@@ -25,13 +25,15 @@ import { UserLevels } from "../lib/enums/userlevels";
 import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function ActivityCard({ route, navigation }) {
-  const activityCardContext = useActivityCardContext();
-  const createActivityContext = useCreateActivityFunction();
-  const adminGalleryContext = useAdminGalleryFunction();
-  const userLevel = useUserLevelCheckFunction();
-  const { getImageForActivity } = useActivityImages();
-
   const { admin, activityInfo, active, tgPopular } = route.params;
+
+  const { changeActive, changePopular, idActivity, confirmToDeleteActivity } =
+    useActivityCardContext();
+  const { activityHasChangedID } = useCreateActivityFunction();
+  const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
+  const { getImageForActivity } = useActivityImages();
+  const userLevel = useUserLevelCheckFunction();
+
   const [activity, setActivity] = useState({
     active: "",
     title: "",
@@ -40,6 +42,7 @@ export function ActivityCard({ route, navigation }) {
     description: "",
     place: "",
     popular: "",
+    imageUrl: "",
   });
 
   const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
@@ -72,7 +75,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertArchiveQuestion);
     setAlertClarification(alertArchiveClarification);
-    adminGalleryContext.setCleanUpSearchBarComponent(true);
+    setCleanUpSearchBarComponent(true);
   };
 
   const alertToTakeAwayFromArchiveActivity = () => {
@@ -82,7 +85,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertQuestionToTakeAwayFromArchive);
     setAlertClarification(alertClarificationToTakeAwayFromArchive);
-    adminGalleryContext.setCleanUpSearchBarComponent(true);
+    setCleanUpSearchBarComponent(true);
   };
 
   const alertToDeleteActivity = () => {
@@ -99,15 +102,15 @@ export function ActivityCard({ route, navigation }) {
 
     if (pressedToArchive === true) {
       if (activeActivities === true) {
-        activityCardContext.changeActive(false);
+        changeActive(false);
         setActiveActivities(false);
       } else {
         console.log(
           "Something went wrong with YES button while trying to archive",
         );
       }
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
 
         popular: activityInfo.popular,
@@ -116,7 +119,7 @@ export function ActivityCard({ route, navigation }) {
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
-        activityCardContext.changeActive(true);
+        changeActive(true);
 
         setActiveActivities(true);
       } else {
@@ -124,8 +127,8 @@ export function ActivityCard({ route, navigation }) {
           "Something went wrong with YES button while trying to take activity away from archive",
         );
       }
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
 
         popular: activityInfo.popular,
@@ -133,8 +136,8 @@ export function ActivityCard({ route, navigation }) {
       });
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {
-      activityCardContext.idActivity(activityInfo.id);
-      activityCardContext.confirmToDeleteActivity(true);
+      idActivity(activityInfo.id);
+      confirmToDeleteActivity(true);
 
       setPressedToDelete(false);
       navigation.goBack();
@@ -179,6 +182,7 @@ export function ActivityCard({ route, navigation }) {
       city: activityInfo.city,
       place: activityInfo.place,
       description: activityInfo.description,
+      imageUrl: activityInfo.imageUrl,
     });
   }, [admin, activityInfo]);
 
@@ -193,18 +197,18 @@ export function ActivityCard({ route, navigation }) {
   function changePopularStatus() {
     if (popular === true) {
       setPopular(false);
-      activityCardContext.changePopular(false);
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      changePopular(false);
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
         popular: false,
         statusActive: activityInfo.active,
       });
     } else if (popular === false) {
       setPopular(true);
-      activityCardContext.changePopular(true);
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      changePopular(true);
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
         popular: true,
         statusActive: activityInfo.active,
@@ -351,6 +355,10 @@ export function ActivityCard({ route, navigation }) {
               navigation.navigate("ChangeActivity", {
                 activity: activityInfo,
                 tgPopular: popular,
+                image: {
+                  photo: activity.photo,
+                  imageUrl: activity.imageUrl,
+                },
               })
             }
           >
@@ -404,13 +412,15 @@ export function ActivityCard({ route, navigation }) {
         <Text style={styles.textTitle}>{activity.title}</Text>
       </View>
       <ScrollView>
-        {activity.photo !== "" && (
-          <Image
-            testID="photo"
-            style={styles.image}
-            source={getImageForActivity(activity)}
-          />
-        )}
+        <Image
+          testID="photo"
+          style={styles.image}
+          source={getImageForActivity(
+            activityInfo.photo,
+            activityInfo.imageUrl,
+          )}
+        />
+
         <View style={{ flex: 1, marginVertical: 20, marginHorizontal: 16 }}>
           <View style={styles.containerIconAndCity}>
             <Icon

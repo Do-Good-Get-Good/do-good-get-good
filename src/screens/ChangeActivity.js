@@ -37,10 +37,16 @@ export function ChangeActivity({ route, navigation }) {
   const [description, setDescription] = useState(activity.description);
 
   const photo = useMemo(() => {
-    if (!route.params?.image) return activity;
+    if (!route.params?.image)
+      return { photo: activity.photo, imageUrl: activity.imageUrl };
 
-    return route.params?.image;
-  }, [route.params?.image.imageName, route.params?.image.imageUrl]);
+    return {
+      photo: route.params?.image.photo,
+      imageUrl: route.params.image.imageUrl,
+    };
+  }, [route.params?.image]);
+
+  console.log("Change Activity: ", photo);
 
   function buttonSavePressed() {
     let changedObject = {
@@ -48,10 +54,11 @@ export function ChangeActivity({ route, navigation }) {
       city: city,
       description: description,
       id: activity.id,
-      photo: photo,
+      photo: photo.photo,
       place: place,
       popular: activity.popular,
       title: title,
+      imageUrl: photo.imageUrl,
     };
 
     activityCardFunction.changeActivityCard(true);
@@ -111,7 +118,10 @@ export function ChangeActivity({ route, navigation }) {
           />
 
           <View style={styles.containerImageAndInsertButton}>
-            <Image style={styles.image} source={getImageForActivity(photo)} />
+            <Image
+              style={styles.image}
+              source={getImageForActivity(photo.photo, photo.imageUrl)}
+            />
             <TouchableOpacity
               testID="navigateToImagesGallery"
               onPress={() =>

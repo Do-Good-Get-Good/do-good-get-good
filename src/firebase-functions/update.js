@@ -145,6 +145,7 @@ export const updateActivityInfo = (newData) => {
       activity_place: newData.place,
       activity_title: newData.title,
       tg_favorite: newData.popular,
+      imageUrl: newData.imageUrl,
     });
   } catch (error) {
     console.log(error);
