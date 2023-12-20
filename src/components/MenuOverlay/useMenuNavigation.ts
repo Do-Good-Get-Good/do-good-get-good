@@ -12,11 +12,6 @@ export type NavigationObject = {
   screenName: SuperAdminStack | AdminStack | UserStack;
   toDo?: () => void;
 };
-type MenuNavigation = {
-  userStack: Array<NavigationObject>;
-  adminStack: Array<NavigationObject>;
-  superAdminStack: Array<NavigationObject>;
-};
 
 const userNavigations: Array<NavigationObject> = [
   {
@@ -74,21 +69,12 @@ export const useMenuNavigation = (role: Role | undefined) => {
       screenName: SuperAdminStack.DownloadUserData,
     },
   ];
-  const menuNavigation: MenuNavigation = {
-    userStack: userNavigations,
-    adminStack: [...userNavigations, ...adminNavigations],
-    superAdminStack: [
-      ...userNavigations,
-      ...adminNavigations,
-      ...superAdminNavigations,
-    ],
-  };
 
   return role === Role.user
-    ? menuNavigation.userStack
+    ? userNavigations
     : role === Role.admin
-      ? menuNavigation.adminStack
+      ? [...userNavigations, ...adminNavigations]
       : role === Role.superadmin
-        ? menuNavigation.superAdminStack
+        ? [...userNavigations, ...adminNavigations, ...superAdminNavigations]
         : undefined;
 };

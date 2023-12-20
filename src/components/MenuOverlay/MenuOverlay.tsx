@@ -6,20 +6,9 @@ import {
   TouchableOpacity,
   Platform,
 } from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import { Icon, Overlay } from "@rneui/base";
-
 import auth from "@react-native-firebase/auth";
-
-import { useNavigation } from "@react-navigation/native";
-
 import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
-import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-
-import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { MenuFooter } from "./MenuFooter";
