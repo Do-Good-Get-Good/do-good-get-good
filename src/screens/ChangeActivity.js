@@ -37,10 +37,10 @@ export function ChangeActivity({ route, navigation }) {
   const [description, setDescription] = useState(activity.description);
 
   const photo = useMemo(() => {
-    if (!route.params?.imageForActivity) return activity;
+    if (!route.params?.image) return activity;
 
-    return route.params?.imageForActivity;
-  }, [route.params?.imageForActivity]);
+    return route.params?.image;
+  }, [route.params?.image.imageName, route.params?.image.imageUrl]);
 
   function buttonSavePressed() {
     let changedObject = {
@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,

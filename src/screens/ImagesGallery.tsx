@@ -6,6 +6,7 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
+  ImageStyle,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
@@ -15,28 +16,36 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import {
+  useActivityImages,
+  ActivityImage,
+} from "../context/ActivityImagesContext";
 
-export function ImagesGallery({ navigation, route }) {
+export function ImagesGallery({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) {
   const { getImages, loading } = useActivityImages();
 
-  const [selectedImage, setSelectedImage] = useState({
-    name: route.params.selectedImage,
-    url: "",
+  const [selectedImage, setSelectedImage] = useState<ActivityImage>({
+    imageName: route.params.selectedImage,
   });
 
   const imagesArray = useMemo(() => {
     return getImages()
       .map((img) => {
-        if (img.imageName !== selectedImage.name)
+        if (img.imageName !== selectedImage.imageName)
           return { ...img, selected: false };
 
         return { ...img, selected: true };
       })
       .sort((a, b) => a.imageName.localeCompare(b.imageName));
-  }, [getImages(), selectedImage.name, loading]);
+  }, [getImages(), selectedImage.imageName, loading]);
 
-  const imageStyle = (selected) => {
+  const imageStyle = (selected: any): ImageStyle => {
     return {
       flex: 1,
       flexDirection: "row",
@@ -47,7 +56,6 @@ export function ImagesGallery({ navigation, route }) {
       height: 150,
       width: 150,
       marginHorizontal: 5,
-      borderRadius: 3,
       borderWidth: selected === true ? 7 : 1,
       borderColor: colors.primary,
     };
@@ -65,6 +73,7 @@ export function ImagesGallery({ navigation, route }) {
       });
     }
     if (route.params?.cameFrom === "ChangeActivity") {
+      console.log(selectedImage);
       navigation.navigate("ChangeActivity", {
         activity: route.params?.activity,
         tgPopular: route.params?.tgPopular,
@@ -89,7 +98,10 @@ export function ImagesGallery({ navigation, route }) {
           <TouchableOpacity
             testID="pressOnImage"
             onPress={() =>
-              setSelectedImage({ name: item.imageName, url: item.imageUrl })
+              setSelectedImage({
+                imageName: item.imageName,
+                imageUrl: item.imageUrl,
+              })
             }
             style={{ flex: 0.5, flexDirection: "row" }}
           >

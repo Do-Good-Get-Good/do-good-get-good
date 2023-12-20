@@ -24,7 +24,7 @@ type Activity = {
 
 export type ActivityImage = {
   imageName: string;
-  imageUrl: string;
+  imageUrl?: string;
 };
 
 const ActivityImageContext = createContext<{
