@@ -18,7 +18,7 @@ import BottomNavButtons from "../components/BottomNavButtons";
 import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function ImagesGallery({ navigation, route }) {
-  const { getImages, getImageByName, loading, error } = useActivityImages();
+  const { getImages, loading } = useActivityImages();
 
   const [selectedImage, setSelectedImage] = useState({
     name: route.params.selectedImage,
@@ -34,7 +34,7 @@ export function ImagesGallery({ navigation, route }) {
         return { ...img, selected: true };
       })
       .sort((a, b) => a.imageName.localeCompare(b.imageName));
-  }, [getImages(), selectedImage.name]);
+  }, [getImages(), selectedImage.name, loading]);
 
   const imageStyle = (selected) => {
     return {

@@ -9,22 +9,18 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Format } from "../lib/enums/imageFormat";
 import { useActivityImages } from "../context/ActivityImagesContext";
 
 const HomeSuggestions = ({ navigation, suggestions }) => {
-  const { getImages, getImageByName, loading, error } = useActivityImages();
+  const { getImageForActivity } = useActivityImages();
 
-  if (!loading) console.log(getImages());
-
-  function lookDetails(activety, statusActive, statusPopular) {
+  function lookDetails(activity, statusActive, statusPopular) {
     Keyboard.dismiss();
     navigation.navigate("ActivityCard", {
       admin: false,
-      activityInfo: activety,
+      activityInfo: activity,
       active: statusActive,
       tgPopular: statusPopular,
     });
@@ -68,10 +64,9 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
               <Image
                 testID="photo"
                 style={styles.image}
-                source={setTheRightPhoto(suggestion.photo, Format.square)}
+                source={getImageForActivity(suggestion)}
               />
             </View>
-
             <View style={styles.iconsAndTextDescriptionContainer}>
               <Icon
                 type="material-community"

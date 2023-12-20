@@ -12,7 +12,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
-import { setTheRightPhoto } from "../lib/images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
@@ -23,13 +22,14 @@ import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
-import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   const userLevel = useUserLevelCheckFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
@@ -408,7 +408,7 @@ export function ActivityCard({ route, navigation }) {
           <Image
             testID="photo"
             style={styles.image}
-            source={setTheRightPhoto(activity.photo, Format.wide)}
+            source={getImageForActivity(activity)}
           />
         )}
         <View style={{ flex: 1, marginVertical: 20, marginHorizontal: 16 }}>

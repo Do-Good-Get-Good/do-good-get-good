@@ -11,12 +11,13 @@ import {
 
 import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
-import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export const MyActivities = ({ activities, registeredTime }) => {
+  const { getImageForActivity } = useActivityImages();
+
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
 
@@ -60,7 +61,7 @@ export const MyActivities = ({ activities, registeredTime }) => {
             <Image
               testID="imageId"
               style={styles.image}
-              source={setTheRightPhoto(myActivity.photo, Format.square)}
+              source={getImageForActivity(myActivity)}
             />
           </View>
 

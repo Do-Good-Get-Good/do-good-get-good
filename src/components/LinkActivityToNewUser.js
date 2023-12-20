@@ -23,8 +23,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { setTheRightPhoto } from "../lib/images";
-import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function LinkActivityToNewUser({
   activity,
@@ -36,8 +35,8 @@ export function LinkActivityToNewUser({
   createUserAndLinkSelectedActivity,
 }) {
   const navigation = useNavigation();
-  const createActivityContext = useCreateActivityFunction();
-  const { activeActivities } = createActivityContext;
+  const { activeActivities } = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const [expanded, setExpanded] = useState(false);
   const [titleFilledUp, setTitleFilledUp] = useState(null);
@@ -184,7 +183,7 @@ export function LinkActivityToNewUser({
           <Image
             testID="photo"
             style={styles.image}
-            source={setTheRightPhoto(activity, Format.square)}
+            source={getImageForActivity(activity)}
           />
 
           <TouchableOpacity
@@ -241,7 +240,7 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={setTheRightPhoto(selectedActivity, Format.square)}
+            source={getImageForActivity(selectedActivity)}
           ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>

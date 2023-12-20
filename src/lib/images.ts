@@ -1,18 +1,32 @@
+import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
 import { Format } from "./enums/imageFormat";
 
 export const placeholderImage = require("../assets/images/placeholder.png");
 
-export function setTheRightPhoto(activity, format) {
-  if (!activity.imageUrl) {
-    let images = Images.filter((image) => image.format === format);
-    let found = images.find((image) => image.name === activity.photo);
+type Activity = {
+  id: string;
+  title: any;
+  city: any;
+  place: any;
+  description: any;
+  photo: any;
+  popular: any;
+  imageUrl?: string;
+};
+
+export function setTheRightPhoto(
+  activity: Activity,
+): ImageSourcePropType | undefined {
+  if (!activity?.imageUrl) {
+    let images = Images.filter((image) => image.format === Format.wide);
+    let found = images.find((image) => image.name === activity?.photo);
 
     if (!found) return placeholderImage;
 
     return found.image;
-  } else {
-    return { uri: activity.imageUrl };
   }
+
+  return { uri: activity.imageUrl };
 }
 
 const Images = [

@@ -7,7 +7,6 @@ import Menu from "../components/Menu";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon, Dialog } from "@rneui/base";
-import { setTheRightPhoto } from "../lib/images";
 import BottomLogo from "../components/BottomLogo";
 
 import { format } from "date-fns";
@@ -17,9 +16,11 @@ import {
   getConcept,
   getTenLastConfirmedTimeEntries,
 } from "../firebase-functions/get";
-import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 const ConceptPage = () => {
+  const { getImageForActivity } = useActivityImages();
+
   const [loadingUserData, setLoadingUserData] = useState(false);
   const [loadingConceptData, setLoadingConceptData] = useState(false);
   const [allUsers, setAllUsers] = useState([]);
@@ -176,10 +177,7 @@ const ConceptPage = () => {
                   <Image
                     testID="image"
                     style={styles.image}
-                    source={setTheRightPhoto(
-                      activity.activityPhoto,
-                      Format.square,
-                    )}
+                    source={getImageForActivity(activity)}
                   />
                 </View>
               ))

@@ -167,6 +167,7 @@ export const getAllActivities = async () => {
         description: doc.data().activity_description,
         photo: doc.data().activity_photo,
         popular: doc.data().tg_favorite,
+        imageUrl: doc.data().imageUrl,
       };
     });
 

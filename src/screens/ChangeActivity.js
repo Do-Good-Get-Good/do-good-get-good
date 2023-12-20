@@ -18,26 +18,26 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import BottomNavButtons from "../components/BottomNavButtons";
 
-import { setTheRightPhoto } from "../lib/images";
-
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Format } from "../lib/enums/imageFormat";
 
 export function ChangeActivity({ route, navigation }) {
   const { activity, tgPopular } = route.params;
   const activityCardFunction = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
+
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
 
   const photo = useMemo(() => {
-    if (!route.params?.imageForActivity) return activity.photo;
+    if (!route.params?.imageForActivity) return activity;
 
     return route.params?.imageForActivity;
   }, [route.params?.imageForActivity]);
@@ -111,10 +111,7 @@ export function ChangeActivity({ route, navigation }) {
           />
 
           <View style={styles.containerImageAndInsertButton}>
-            <Image
-              style={styles.image}
-              source={setTheRightPhoto(photo, Format.square)}
-            />
+            <Image style={styles.image} source={getImageForActivity(photo)} />
             <TouchableOpacity
               testID="navigateToImagesGallery"
               onPress={() =>

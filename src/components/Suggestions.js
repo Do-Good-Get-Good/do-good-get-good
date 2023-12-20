@@ -9,14 +9,13 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import { setTheRightPhoto } from "../lib/images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { Format } from "../lib/enums/imageFormat";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function Suggestions({
   navigation,
@@ -27,6 +26,7 @@ export function Suggestions({
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
   const adminGalleryContext = useAdminGalleryFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const [showArray, setShowArray] = useState([]);
   const [showActiveArray, setShowActiveArray] = useState(true);
@@ -147,7 +147,7 @@ export function Suggestions({
               <Image
                 testID="photo"
                 style={styles.image}
-                source={setTheRightPhoto(suggestion.photo, Format.square)}
+                source={getImageForActivity(suggestion)}
               />
             </View>
 
