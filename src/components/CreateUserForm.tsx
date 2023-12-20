@@ -129,6 +129,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           control={control}
           error={errors.confirmEmail}
           name={"confirmEmail"}
+          autoCapitalize={"none"}
           keyboardType={"email-address"}
         />
         <InputField
