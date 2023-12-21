@@ -6,7 +6,6 @@ export function setTheRightPhoto(
   photo: string,
   imageUrl?: string,
 ): ImageSourcePropType | undefined {
-  console.log("images: ", photo);
   if (!imageUrl) {
     let found = Images.find((image) => image.name === photo);
 

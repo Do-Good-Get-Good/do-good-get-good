@@ -73,7 +73,6 @@ export function ImagesGallery({
       });
     }
     if (route.params?.cameFrom === "ChangeActivity") {
-      console.log(selectedImage);
       navigation.navigate("ChangeActivity", {
         activity: route.params?.activity,
         tgPopular: route.params?.tgPopular,
