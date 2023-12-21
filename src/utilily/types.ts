@@ -55,6 +55,7 @@ export type User = {
   totalConfirmedHours?: number;
   totalHoursMonth?: number;
   totalHoursYear?: number;
+  connectedUsers?: Array<User>;
 };
 
 // export type SortByNotConnectedUsersToAdmin = {

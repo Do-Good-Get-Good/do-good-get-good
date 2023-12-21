@@ -58,6 +58,7 @@ export function ListOfAllUsers({ navigation }) {
   }
 
   function changingUserData(chooseUser) {
+    console.log(chooseUser, "chooseUser");
     let userAdminName = findNameOfUserAdmin(chooseUser.adminId);
     let arrayOfUsers = [];
     if (chooseUser.role === "admin" || chooseUser.role === "superadmin") {
