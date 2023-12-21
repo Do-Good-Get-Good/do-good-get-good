@@ -61,7 +61,10 @@ export const MyActivities = ({ activities, registeredTime }) => {
             <Image
               testID="imageId"
               style={styles.image}
-              source={getImageForActivity(myActivity)}
+              source={getImageForActivity(
+                myActivity.photo,
+                myActivity.imageUrl,
+              )}
             />
           </View>
 
@@ -106,6 +109,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 100,
     width: 100,
+    resizeMode: "cover",
   },
   textTitleCityTime: {
     color: colors.dark,
