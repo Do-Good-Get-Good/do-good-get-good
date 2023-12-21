@@ -17,7 +17,7 @@ export class Cache {
       dateWhenStored: new Date().getTime(),
       storedData: data,
     };
-    console.log("STORE");
+
     try {
       const jsonValue = JSON.stringify(dataToStore);
       await AsyncStorage.setItem(`@${key}`, jsonValue);
@@ -32,10 +32,8 @@ export class Cache {
       const jsonValue = await AsyncStorage.getItem(`@${key}`);
       const data = jsonValue != null ? JSON.parse(jsonValue) : null;
 
-      if (!Cache.isStoredDataOlderThan15Minutes(data.dateWhenStored)) {
-        console.log("GET");
+      if (!Cache.isStoredDataOlderThan15Minutes(data.dateWhenStored))
         return data.storedData;
-      }
     } catch (e) {
       // error reading value
       console.log(e);
