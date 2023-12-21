@@ -73,16 +73,16 @@ const CreateUser = ({ route, navigation }: Props) => {
   ]);
 
   useEffect(() => {
-    if (!route.params?.image.name) {
+    if (!route.params?.image) {
       setActivity({ ...activity, photo: "placeholder" });
     } else {
       setActivity({
         ...activity,
-        photo: route.params?.image.name,
-        imageUrl: route.params?.image.url,
+        photo: route.params?.image.photo,
+        imageUrl: route.params?.image.imageUrl,
       });
     }
-  }, [route.params?.image.name, route.params?.image.url]);
+  }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
   function handleNextPage() {
     next();

@@ -183,7 +183,7 @@ export function LinkActivityToNewUser({
           <Image
             testID="photo"
             style={styles.image}
-            source={getImageForActivity(activity)}
+            source={getImageForActivity(activity.photo, activity.imageUrl)}
           />
 
           <TouchableOpacity
@@ -191,7 +191,10 @@ export function LinkActivityToNewUser({
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateUser",
-                selectedImage: activity.photo,
+                selectedImage: {
+                  photo: activity.photo,
+                  imageUrl: activity.imageUrl,
+                },
               })
             }
           >
@@ -240,7 +243,10 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={getImageForActivity(selectedActivity)}
+            source={getImageForActivity(
+              selectedActivity.photo,
+              selectedActivity.imageUrl,
+            )}
           ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>
