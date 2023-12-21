@@ -6,6 +6,24 @@ import CreateActivity from "../../screens/CreateActivity";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
+
 jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
 }));
@@ -29,7 +47,7 @@ const navigation = {
 
 const route = {
   params: {
-    imageForActivity: "blodgivning",
+    image: { photo: "symbol_blood" },
   },
 };
 
@@ -63,8 +81,7 @@ describe("Testing CreateActivity ", () => {
     const { getByTestId } = render(<CreateActivity route={route} />);
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri:
-        "../../../assets/images/activities/square/blodgivning_400x400.png",
+      photo: "symbol_blood",
     });
   });
   it("Can navigate to ImagesGallery", () => {
@@ -76,7 +93,7 @@ describe("Testing CreateActivity ", () => {
     fireEvent.press(imagesGalleryButton);
     expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery", {
       cameFrom: "CreateActivity",
-      selectedImage: "blodgivning",
+      selectedImage: { photo: "symbol_blood" },
     });
   });
 

@@ -14,6 +14,24 @@ jest.mock("@react-navigation/native");
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
+
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
@@ -49,7 +67,7 @@ const route = {
       title: "title",
       city: "city",
       description: " description",
-      photo: "blodgivning",
+      photo: "symbol_blood",
     },
     active: true,
     tgPopular: true,
@@ -62,7 +80,7 @@ describe("Testing ActivityCard ", () => {
     expect(getByTestId("photo"));
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../assets/images/activities/wide/blodgivning_700x400.png",
+      photo: "symbol_blood",
     });
   });
 

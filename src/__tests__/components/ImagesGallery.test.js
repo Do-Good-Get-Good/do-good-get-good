@@ -13,6 +13,17 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+jest.mock("../../context/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImages: jest.fn(() => [
+      {
+        photo: "blodgivning",
+        imageUrl: "image-url",
+      },
+    ]),
+  })),
+}));
+
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
@@ -21,7 +32,7 @@ const navigation = {
 const route = {
   params: {
     cameFrom: "CreateActivity",
-    selectedImage: "blodgivning",
+    selectedImage: { photo: "blodgivning" },
   },
 };
 
@@ -36,8 +47,7 @@ describe("Testing ImagesGallery", () => {
     const image = getAllByTestId("imageInImageGallery");
 
     expect(image[0].props.source).toEqual({
-      testUri:
-        "../../../assets/images/activities/square/blodgivning_400x400.png",
+      uri: "image-url",
     });
   });
 
@@ -49,7 +59,7 @@ describe("Testing ImagesGallery", () => {
     const saveButton = getByText("Spara");
     fireEvent.press(saveButton);
     expect(navigation.navigate).toHaveBeenCalledWith("CreateActivity", {
-      imageForActivity: "blodgivning",
+      image: { photo: "blodgivning", imageUrl: undefined },
     });
   });
 

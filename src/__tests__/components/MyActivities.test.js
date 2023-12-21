@@ -5,6 +5,24 @@ import { MyActivities } from "../../components/MyActivities";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
+
 jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
 }));
@@ -18,15 +36,15 @@ const activities = [
     id: "123",
     title: "Studiehjälp för lågstadiebarn",
     city: "Gbg",
-    photo: "blodgivning",
+    photo: "symbol_blood",
     time: 0,
     adminId: "321",
   },
   {
-    id: "123",
+    id: "124",
     title: "Missing people",
     city: "Gbg",
-    photo: "frisor",
+    photo: "symbol_blood",
     time: 0,
     adminId: "321",
   },
@@ -53,11 +71,10 @@ describe("Testing MyActivities", () => {
     const { getAllByTestId } = render(<MyActivities activities={activities} />);
     const image = getAllByTestId("imageId");
     expect(image[0].props.source).toEqual({
-      testUri:
-        "../../../assets/images/activities/square/blodgivning_400x400.png",
+      photo: "symbol_blood",
     });
     expect(image[1].props.source).toEqual({
-      testUri: "../../../assets/images/activities/square/frisor_400x400.png",
+      photo: "symbol_blood",
     });
   });
 
