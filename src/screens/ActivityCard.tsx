@@ -24,7 +24,12 @@ import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
 import { useActivityImages } from "../context/ActivityImagesContext";
 
-export function ActivityCard({ route, navigation }) {
+type Props = {
+  route: any;
+  navigation: any;
+};
+
+export function ActivityCard({ route, navigation }: Props) {
   const { admin, activityInfo, active, tgPopular } = route.params;
 
   const { changeActive, changePopular, idActivity, confirmToDeleteActivity } =
@@ -35,6 +40,7 @@ export function ActivityCard({ route, navigation }) {
   const userLevel = useUserLevelCheckFunction();
 
   const [activity, setActivity] = useState({
+    id: "",
     active: "",
     title: "",
     photo: "",
@@ -177,11 +183,13 @@ export function ActivityCard({ route, navigation }) {
     setAdminOpenedActyvity(admin);
     setActivity({
       id: activityInfo.id,
+      active: active,
       title: activityInfo.title,
       photo: activityInfo.photo,
       city: activityInfo.city,
-      place: activityInfo.place,
       description: activityInfo.description,
+      place: activityInfo.place,
+      popular: tgPopular,
       imageUrl: activityInfo.imageUrl,
     });
   }, [admin, activityInfo]);
@@ -437,7 +445,7 @@ export function ActivityCard({ route, navigation }) {
               name="building-o"
               color={colors.dark}
               size={23}
-              paddingHorizontal={3}
+              style={{ paddingHorizontal: 3 }}
             />
             <Text style={styles.textCity}>{activity.place}</Text>
           </View>
