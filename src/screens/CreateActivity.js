@@ -16,16 +16,17 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
 import { Icon } from "@rneui/base";
-import Images, { placeholderImage } from "../lib/images";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import BottomNavButtons from "../components/BottomNavButtons";
 import { addActivity } from "../firebase-functions/add";
 import LoadingOverlay from "../components/LoadingOverlay";
+import { useActivityImages } from "../context/ActivityImagesContext";
 
 export function CreateActivity({ route, navigation }) {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const [checkBoxPressed, setCheckBoxPressed] = useState(false);
   const [title, setTitle] = useState(null);
@@ -35,18 +36,16 @@ export function CreateActivity({ route, navigation }) {
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-  const [imageName, setImageName] = useState("placeholder");
-  const [imageUrl, setImageUrl] = useState(null);
   const [loading, setLoading] = useState(false);
 
-  const activityImage = useMemo(() => {
-    let image = route.params?.image;
-    if (!image) return placeholderImage;
+  const photo = useMemo(() => {
+    if (!route.params?.image) return { photo: "placeholder", imageUrl: "" };
 
-    setImageName(image.name);
-    setImageUrl(image.url);
-    return { uri: image.url };
-  }, [route.params?.image.name, route.params?.image.url]);
+    return {
+      photo: route.params?.image?.photo,
+      imageUrl: route.params?.image?.imageUrl,
+    };
+  }, [route.params?.image?.photo, route.params?.image?.imageUrl]);
 
   useEffect(() => {
     if (title !== null) {
@@ -93,8 +92,8 @@ export function CreateActivity({ route, navigation }) {
       active_status: true,
       activity_city: city,
       activity_description: description,
-      activity_photo: imageName,
-      image_url: imageUrl,
+      activity_photo: photo.photo,
+      image_url: photo.imageUrl,
       activity_place: place,
       activity_title: title,
       tg_favorite: checkBoxPressed,
@@ -238,14 +237,18 @@ export function CreateActivity({ route, navigation }) {
           placeholderTextColor={colors.dark}
         />
         <View style={styles.containerImageAndInsertButton}>
-          <Image testID="photo" style={styles.image} source={activityImage} />
+          <Image
+            testID="photo"
+            style={styles.image}
+            source={getImageForActivity(photo.photo, photo.imageUrl)}
+          />
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateActivity",
-                selectedImage: imageName,
+                selectedImage: photo,
               })
             }
           >
