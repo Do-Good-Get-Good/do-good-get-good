@@ -199,6 +199,7 @@ export const getActivitiesMatchTimeEntries = async (timeEntry) => {
       title: documentSnapshot.data().activity_title,
       photo: documentSnapshot.data().activity_photo,
       city: documentSnapshot.data().activity_city,
+      imageUrl: documentSnapshot.data().imageUrl,
     };
 
     return Promise.resolve(activity);

@@ -55,6 +55,7 @@ const ConceptPage = () => {
               activityName: activity.title,
               activityPhoto: activity.photo,
               activityCity: activity.city,
+              imageUrl: activity.imageUrl,
               timeEntryDate: format(
                 timeEntry.data().date.toDate(),
                 "yyyy-MM-dd",
@@ -177,7 +178,10 @@ const ConceptPage = () => {
                   <Image
                     testID="image"
                     style={styles.image}
-                    source={getImageForActivity(activity)}
+                    source={getImageForActivity(
+                      activity.activityPhoto,
+                      activity.imageUrl,
+                    )}
                   />
                 </View>
               ))
@@ -224,6 +228,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
   },
   image: {
+    resizeMode: "cover",
     width: 100,
     height: 100,
     borderRadius: 5,
