@@ -41,12 +41,10 @@ export function ChangeActivity({ route, navigation }) {
       return { photo: activity.photo, imageUrl: activity.imageUrl };
 
     return {
-      photo: route.params?.image.photo,
-      imageUrl: route.params.image.imageUrl,
+      photo: route.params?.image?.photo,
+      imageUrl: route.params?.image?.imageUrl,
     };
-  }, [route.params?.image]);
-
-  console.log("Change Activity: ", photo);
+  }, [route.params?.image?.photo, route.params?.image?.imageUrl]);
 
   function buttonSavePressed() {
     let changedObject = {

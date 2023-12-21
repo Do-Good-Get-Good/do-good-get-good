@@ -65,8 +65,8 @@ export const CreateActivityProvider = ({ children }) => {
         place: activityID.activityInfo.place,
         photo: activityID.activityInfo.photo,
         title: activityID.activityInfo.title,
-        popular: activityID.popular,
-        imageUrl: activityID.imageUrl,
+        popular: activityID.activityInfo.popular,
+        imageUrl: activityID.activityInfo.imageUrl,
       };
       setNewChangeActivity(dataInfo);
       setChangedOneActivity(false);
