@@ -10,6 +10,7 @@ import storage from "@react-native-firebase/storage";
 
 import { setTheRightPhoto } from "../lib/images";
 import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
+import { Cache } from "../lib/cache-helper/cacheData";
 
 export type ActivityImage = {
   photo: string;
@@ -57,6 +58,7 @@ export const ActivityImagesProvider = ({ children }: PropsWithChildren) => {
 
       let images = await Promise.all(imagesPromises);
       setImages(images);
+      Cache.storeData(images, "Cloud_Images_Key");
       setLoading(false);
     } catch (error: any) {
       setError(error.message);
@@ -65,7 +67,13 @@ export const ActivityImagesProvider = ({ children }: PropsWithChildren) => {
   };
 
   useEffect(() => {
-    fetchImages();
+    Cache.getData("Cloud_Images_Key")
+      .then((res) => {
+        if (!res) fetchImages();
+
+        setImages(res);
+      })
+      .catch((error) => console.log(error));
   }, []);
 
   const getImages = () => {
