@@ -2,7 +2,7 @@ import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
 
 export const placeholderImage = require("../assets/images/placeholder.png");
 
-export function setTheRightPhoto(
+export function getImageForActivity(
   photo: string,
   imageUrl?: string,
 ): ImageSourcePropType | undefined {

@@ -16,10 +16,8 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
-import {
-  useActivityImages,
-  ActivityImage,
-} from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext";
+import { ActivityImage } from "../hooks/useCloudImages";
 
 export function ImagesGallery({
   navigation,
@@ -28,14 +26,14 @@ export function ImagesGallery({
   navigation: any;
   route: any;
 }) {
-  const { getImages } = useActivityImages();
+  const { images } = useActivityImages();
 
   const [selectedImage, setSelectedImage] = useState<ActivityImage>(
     route.params.selectedImage,
   );
 
   const imagesArray = useMemo(() => {
-    return getImages()
+    return images
       .map((img) => {
         if (img.photo !== selectedImage.photo)
           return { ...img, selected: false };
@@ -43,7 +41,7 @@ export function ImagesGallery({
         return { ...img, selected: true };
       })
       .sort((a, b) => a.photo.localeCompare(b.photo));
-  }, [getImages(), selectedImage]);
+  }, [images, selectedImage]);
 
   const imageStyle = (selected: any): ImageStyle => {
     return {

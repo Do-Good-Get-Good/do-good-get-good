@@ -15,12 +15,12 @@ jest.mock("../../components/Menu", () => () => {
 
 jest.mock("../../context/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
-    getImages: jest.fn(() => [
+    images: [
       {
         photo: "blodgivning",
         imageUrl: "image-url",
       },
-    ]),
+    ],
   })),
 }));
 
