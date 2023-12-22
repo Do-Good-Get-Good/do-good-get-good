@@ -23,6 +23,7 @@ import { User } from "../utilily/types";
 import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { LongButton } from "../components/Buttons/LongButton";
 type UserIdAndFullName = { id: string; fullName: string };
 
 type UserInfo = {
@@ -82,6 +83,10 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  const onSave = () => {
+    //  superAdminContext.setButtonToSaveChanhgesPressed(true)
+  };
+
   return (
     <SafeAreaView>
       <Menu />
@@ -106,19 +111,10 @@ export const RolesAndConnection = ({ navigation }: Props) => {
             role={getValues("role")}
             adminName={getValues("admin.fullName")}
           />
-          {superAdminContext.makeChangesForSelectedUser.user.role === "admin" ||
-          superAdminContext.makeChangesForSelectedUser.user.role ===
-            "superadmin" ? (
-            <ConnectedUsersDropDown />
-          ) : null}
-          <TouchableOpacity
-            onPress={() =>
-              superAdminContext.setButtonToSaveChanhgesPressed(true)
-            }
-            style={styles.saveButton}
-          >
-            <Text style={styles.saveButtonText}>Spara</Text>
-          </TouchableOpacity>
+
+          <ConnectedUsersDropDown />
+          <LongButton onPress={handleSubmit(onSave)} title={"Spara"} />
+
           <View style={styles.logoStyle}>
             <BottomLogo />
           </View>
@@ -140,20 +136,7 @@ const styles = StyleSheet.create({
     fontWeight: "500",
     ...typography.b2,
   },
-  saveButton: {
-    borderRadius: 5,
-    backgroundColor: colors.primary,
-    height: 50,
 
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 50,
-    marginBottom: 144,
-  },
-  saveButtonText: {
-    ...typography.button.lg,
-    fontWeight: "500",
-  },
   logoStyle: {
     marginBottom: 7,
   },
