@@ -23,10 +23,12 @@ import BottomNavButtons from "../components/BottomNavButtons";
 import { addActivity } from "../firebase-functions/add";
 import LoadingOverlay from "../components/LoadingOverlay";
 import { useActivityImages } from "../context/ActivityImagesContext";
+import useSelectedImage from "../hooks/useSelectedImage";
 
 export function CreateActivity({ route, navigation }) {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
   const { getImageForActivity } = useActivityImages();
+  const photo = useSelectedImage(route.params?.image);
 
   const [checkBoxPressed, setCheckBoxPressed] = useState(false);
   const [title, setTitle] = useState(null);
@@ -37,15 +39,6 @@ export function CreateActivity({ route, navigation }) {
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
   const [loading, setLoading] = useState(false);
-
-  const photo = useMemo(() => {
-    if (!route.params?.image) return { photo: "placeholder", imageUrl: "" };
-
-    return {
-      photo: route.params?.image?.photo,
-      imageUrl: route.params?.image?.imageUrl,
-    };
-  }, [route.params?.image?.photo, route.params?.image?.imageUrl]);
 
   useEffect(() => {
     if (title !== null) {

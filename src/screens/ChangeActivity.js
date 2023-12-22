@@ -24,27 +24,19 @@ import { useActivityImages } from "../context/ActivityImagesContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import useSelectedImage from "../hooks/useSelectedImage";
 
 export function ChangeActivity({ route, navigation }) {
   const { activity, tgPopular } = route.params;
   const activityCardFunction = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const { getImageForActivity } = useActivityImages();
+  const photo = useSelectedImage(route.params?.image);
 
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
-
-  const photo = useMemo(() => {
-    if (!route.params?.image)
-      return { photo: activity.photo, imageUrl: activity.imageUrl };
-
-    return {
-      photo: route.params?.image?.photo,
-      imageUrl: route.params?.image?.imageUrl,
-    };
-  }, [route.params?.image?.photo, route.params?.image?.imageUrl]);
 
   function buttonSavePressed() {
     let changedObject = {
