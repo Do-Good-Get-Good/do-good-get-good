@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
 import ActivityCard from "../../screens/ActivityCard";
 

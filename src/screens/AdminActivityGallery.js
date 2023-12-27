@@ -8,7 +8,7 @@ import RadioButton from "../components/RadioButton";
 import Suggestions from "../components/Suggestions";
 import SearchBarComponent from "../components/SearchBarComponent";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";

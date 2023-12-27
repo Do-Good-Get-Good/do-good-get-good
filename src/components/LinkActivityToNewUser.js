@@ -18,7 +18,7 @@ import { Icon } from "@rneui/base";
 
 import BottomNavButtons from "./BottomNavButtons";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";

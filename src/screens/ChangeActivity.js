@@ -19,7 +19,7 @@ import Menu from "../components/Menu";
 import BottomNavButtons from "../components/BottomNavButtons";
 
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityImages } from "../context/ActivityImagesContext";
 
 import typography from "../assets/theme/typography";

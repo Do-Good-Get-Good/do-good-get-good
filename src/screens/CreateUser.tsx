@@ -8,7 +8,7 @@ import Menu from "../components/Menu";
 import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";

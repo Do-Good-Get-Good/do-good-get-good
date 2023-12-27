@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 
 import SearchBarComponent from "../../components/SearchBarComponent";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 

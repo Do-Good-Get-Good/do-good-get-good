@@ -16,7 +16,7 @@ import { UserLevelProvider } from "./context/UserLevelContext";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
 import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
-import { CreateActivityProvider } from "./context/CreateActivityContext";
+import { CreateActivityProvider } from "./context/CreateActivityContext/CreateActivityContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
 import { ActivityImagesProvider } from "./context/ActivityImagesContext";
 

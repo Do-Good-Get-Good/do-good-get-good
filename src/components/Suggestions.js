@@ -12,7 +12,7 @@ import { Icon } from "@rneui/base";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useActivityImages } from "../context/ActivityImagesContext";

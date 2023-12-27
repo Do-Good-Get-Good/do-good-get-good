@@ -3,7 +3,7 @@ import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
 
 import Suggestions from "../../components/Suggestions";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");

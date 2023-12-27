@@ -4,7 +4,7 @@ import { render } from "@testing-library/react-native";
 
 import AdminActivityGallery from "../../screens/AdminActivityGallery";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");

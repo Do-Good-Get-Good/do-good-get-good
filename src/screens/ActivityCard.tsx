@@ -13,7 +13,7 @@ import Menu from "../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
