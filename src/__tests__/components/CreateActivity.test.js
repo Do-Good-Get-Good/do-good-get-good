@@ -93,7 +93,7 @@ describe("Testing CreateActivity ", () => {
     fireEvent.press(imagesGalleryButton);
     expect(navigation.navigate).toHaveBeenCalledWith("ImagesGallery", {
       cameFrom: "CreateActivity",
-      selectedImage: { photo: "symbol_blood" },
+      selectedImage: { photo: "symbol_blood", imageUrl: "" },
     });
   });
 

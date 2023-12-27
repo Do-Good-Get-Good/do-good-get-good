@@ -125,7 +125,7 @@ describe("Testing ChangeActivity screen", () => {
       activity: route.params.activity,
       tgPopular: route.params.tgPopular,
       cameFrom: "ChangeActivity",
-      selectedImage: { photo: "symbol_earth" },
+      selectedImage: { photo: "symbol_earth", imageUrl: "" },
     });
   });
 
@@ -147,6 +147,7 @@ describe("Testing ChangeActivity screen", () => {
       place: "Some place 51",
       popular: route.params.tgPopular,
       title: "title",
+      imageUrl: "",
     };
 
     expect(navigation.navigate).toHaveBeenCalledWith("ActivityCard", {
