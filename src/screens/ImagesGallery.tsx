@@ -6,18 +6,17 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  ImageStyle,
 } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
 import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
 import { useActivityImages } from "../context/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
+import { selectedImageStyle } from "../styles/selectedImageStyle";
 
 export function ImagesGallery({
   navigation,
@@ -41,22 +40,6 @@ export function ImagesGallery({
       }))
       .sort((a, b) => a.photo.localeCompare(b.photo));
   }, [images, selected]);
-
-  const imageStyle = (selected: any): ImageStyle => {
-    return {
-      flex: 1,
-      flexDirection: "row",
-      resizeMode: "cover",
-      backgroundColor: colors.background,
-      alignItems: "center",
-      borderRadius: 5,
-      height: 150,
-      width: 150,
-      marginHorizontal: 5,
-      borderWidth: selected === true ? 7 : 1,
-      borderColor: colors.primary,
-    };
-  };
 
   const buttonSavePressed = () => {
     if (cameFrom === "CreateActivity") {
@@ -103,7 +86,7 @@ export function ImagesGallery({
           >
             <Image
               testID="imageInImageGallery"
-              style={imageStyle(item.selected)}
+              style={selectedImageStyle(item.selected)}
               source={{ uri: item.imageUrl }}
             />
           </TouchableOpacity>
