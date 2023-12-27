@@ -1,5 +1,3 @@
-import { ActivityImages } from "./enums";
-
 export type Activity = {
   id: string;
   title: string;
@@ -7,7 +5,7 @@ export type Activity = {
   city: string;
   place?: string;
   description?: string;
-  photo: ActivityImages;
+  photo: string;
   popular?: string;
   imageUrl?: string;
 };
