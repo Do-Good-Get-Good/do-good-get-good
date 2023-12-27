@@ -18,6 +18,12 @@ import { useActivityImages } from "../context/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
 import { selectedImageStyle } from "../styles/selectedImageStyle";
 
+enum Routes {
+  CreateActivity = "CreateActivity",
+  CreateUser = "CreateUser",
+  ChangeActivity = "ChangeActivity",
+}
+
 export function ImagesGallery({
   navigation,
   route,
@@ -42,22 +48,20 @@ export function ImagesGallery({
   }, [images, selected]);
 
   const buttonSavePressed = () => {
-    if (cameFrom === "CreateActivity") {
-      navigation.navigate("CreateActivity", {
-        image: selected,
-      });
-    }
-    if (cameFrom === "CreateUser") {
-      navigation.navigate("CreateUser", {
-        image: selected,
-      });
-    }
-    if (cameFrom === "ChangeActivity") {
-      navigation.navigate("ChangeActivity", {
-        activity,
-        tgPopular,
-        image: selected,
-      });
+    const routeMapping = {
+      CreateActivity: Routes.CreateActivity,
+      CreateUser: Routes.CreateUser,
+      ChangeActivity: Routes.ChangeActivity,
+    };
+
+    const route = routeMapping[cameFrom as Routes];
+
+    if (route) {
+      const navigationParams =
+        cameFrom === Routes.ChangeActivity
+          ? { activity, tgPopular, image: selected }
+          : { image: selected };
+      navigation.navigate(route, navigationParams);
     }
   };
 
