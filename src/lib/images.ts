@@ -1,4 +1,5 @@
 import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
+import { ActivityImages } from "../utilily/enums";
 
 export const placeholderImage = require("../assets/images/placeholder.png");
 
@@ -21,31 +22,31 @@ const Images = [
   {
     key: "1",
     image: require("../assets/images/activities/symbol_hands_heart-DEFAULT.png"),
-    name: "symbol_hands_heart-DEFAULT",
+    name: ActivityImages.handsHeartDEFAULT,
     selected: true,
   },
   {
     key: "2",
     image: require("../assets/images/activities/symbol_blood.png"),
-    name: "symbol_blood",
+    name: ActivityImages.blood,
     selected: false,
   },
   {
     key: "3",
     image: require("../assets/images/activities/symbol_earth.png"),
-    name: "symbol_earth",
+    name: ActivityImages.earth,
     selected: false,
   },
   {
     key: "4",
     image: require("../assets/images/activities/symbol_hund.png"),
-    name: "symbol_hund",
+    name: ActivityImages.hund,
     selected: false,
   },
   {
     key: "5",
     image: require("../assets/images/activities/symbol_sport.png"),
-    name: "symbol_sport",
+    name: ActivityImages.sport,
     selected: false,
   },
 ];
