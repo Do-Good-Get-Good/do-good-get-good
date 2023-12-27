@@ -41,7 +41,7 @@ jest.mock("../../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     changedActivity: jest.fn(),
     setUpdateGallery: jest.fn(),

@@ -34,7 +34,7 @@ jest.mock("../../components/Menu", () => () => {
 
 jest.mock("@react-navigation/native");
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     setAllActiveActvivitiesFB: jest.fn(),
   }),

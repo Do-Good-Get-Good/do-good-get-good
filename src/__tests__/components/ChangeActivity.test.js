@@ -39,7 +39,7 @@ jest.mock("../../context/ActivityCardContext", () => ({
   }),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activityHasChangedID: jest.fn(),
     activityHasChanged: jest.fn(),

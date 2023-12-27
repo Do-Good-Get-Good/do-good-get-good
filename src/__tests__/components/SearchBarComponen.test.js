@@ -21,7 +21,7 @@ jest.mock("../../context/AdminGalleryContext", () => ({
   }),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     word: jest.fn(),
   }),

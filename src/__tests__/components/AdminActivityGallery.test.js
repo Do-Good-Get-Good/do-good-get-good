@@ -41,7 +41,7 @@ jest.mock("../../context/AdminGalleryContext", () => ({
   }),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
     setSearchWordHasNoMatch: jest.fn(),
