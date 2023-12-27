@@ -19,14 +19,13 @@ import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
 import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
-import { User } from "../utilily/types";
 import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
 type UserIdAndFullName = { id: string; fullName: string };
 
-type UserInfo = {
+export type UserInfo = {
   role: Role;
   admin: UserIdAndFullName;
   isActive: boolean;
@@ -63,10 +62,8 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmins = superAdminContext.allAdminsAnsSuperAdmins;
 
   const user = superAdminContext.makeChangesForSelectedUser;
-  console.log(user.user, "------------------ user");
 
   const {
     handleSubmit,
@@ -75,10 +72,10 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     formState: { errors, isDirty },
   } = useForm<UserInfo>({
     defaultValues: {
-      role: user.user.role,
-      admin: { id: user.user.adminId, fullName: user.adminName },
-      isActive: user.user.statusActive,
-      connectedUsers: user.arrayOfUsersIfAdmin,
+      role: user?.user.role as Role,
+      admin: { id: user?.user.adminID, fullName: user?.adminName },
+      isActive: user?.user.statusActive,
+      connectedUsers: user?.arrayOfUsersIfAdmin,
     },
     resolver: yupResolver(schema),
   });
@@ -108,11 +105,11 @@ export const RolesAndConnection = ({ navigation }: Props) => {
 
           <ChangeRolesAndConnection
             control={control}
-            role={getValues("role")}
+            getValues={getValues}
             adminName={getValues("admin.fullName")}
           />
 
-          <ConnectedUsersDropDown />
+          {/* <ConnectedUsersDropDown /> */}
           <LongButton onPress={handleSubmit(onSave)} title={"Spara"} />
 
           <View style={styles.logoStyle}>

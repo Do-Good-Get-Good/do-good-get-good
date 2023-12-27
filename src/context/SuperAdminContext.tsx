@@ -1,32 +1,50 @@
 import React, { useContext, useState, useEffect } from "react";
-import { superAdminUpdatesUserInfo } from "../firebase-functions/update";
-import { getAllUsersData } from "../firebase-functions/get";
+import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
+import { getAllUsersData } from "../firebase-functions/getTS/getAllUsersData";
+import { User, UserObjectForSuperAdmin } from "../utilily/types";
+import { Role } from "../utilily/enums";
 
-const SuperAdminContext = React.createContext();
+type SuperAdminContextType = {
+  allUsersInSystem: User[] | undefined;
+  getAllUsers: boolean;
+  allAdminsAnsSuperAdmins: User[] | undefined;
+  makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
+};
+const defaultValue: SuperAdminContextType = {
+  allUsersInSystem: undefined,
+  getAllUsers: false,
+  allAdminsAnsSuperAdmins: undefined,
+  makeChangesForSelectedUser: undefined,
+};
+
+const SuperAdminContext =
+  React.createContext<SuperAdminContextType>(defaultValue);
 
 export const useSuperAdminFunction = () => {
   return useContext(SuperAdminContext);
 };
 
 export const SuperAdminProvider = ({ children }) => {
-  const [allUsersInSystem, setAllUsersInSystem] = useState([]);
-  const [getAllUsers, setGetAllUsers] = useState(false);
-  const [userLevel, setUserLevel] = useState(null);
-  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState([]);
-  const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState(
-    {}
+  const [allUsersInSystem, setAllUsersInSystem] = useState<User[] | undefined>(
+    [],
   );
+  const [getAllUsers, setGetAllUsers] = useState(false);
+  const [userLevel, setUserLevel] = useState<Role | null>(null);
+  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState([]);
+  const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
+    UserObjectForSuperAdmin | undefined
+  >(undefined);
   const [buttonToSaveChanhgesPressed, setButtonToSaveChanhgesPressed] =
     useState(false);
   const [userIDToConnectAnotherAdmin, setUserIDToConnectAnotherAdmin] =
-    useState("");
+    useState<User["id"]>("");
 
   const [arrayOfIdOfChangedUserInfo, setArrayOfIdOfChangedUserInfo] = useState(
-    []
+    [],
   );
 
   useEffect(() => {
-    if (getAllUsers === true && userLevel === "superadmin") {
+    if (getAllUsers === true && userLevel === Role.superadmin) {
       const getAllUsersThatExistInTheSystem = async () => {
         try {
           let allUsers = await getAllUsersData();
@@ -45,20 +63,20 @@ export const SuperAdminProvider = ({ children }) => {
     if (buttonToSaveChanhgesPressed) {
       const changeUserData = () => {
         for (let i = 0; i < arrayOfIdOfChangedUserInfo.length; i++) {
-          let user = null;
+          let user: User | undefined = undefined;
 
-          var index = makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-            (x) => x.user.docId === arrayOfIdOfChangedUserInfo[i]
-          );
+          const index =
+            makeChangesForSelectedUser?.arrayOfUsersIfAdmin?.findIndex(
+              (x) => x.id === arrayOfIdOfChangedUserInfo[i],
+            );
 
           if (
-            makeChangesForSelectedUser.user.docId ===
+            makeChangesForSelectedUser?.user.id ===
             arrayOfIdOfChangedUserInfo[i]
           ) {
             user = makeChangesForSelectedUser.user;
           } else if (index != -1) {
-            user = makeChangesForSelectedUser.arrayOfUsersIfAdmin[index].user;
-            console.log(" user  ", user);
+            user = makeChangesForSelectedUser?.arrayOfUsersIfAdmin[index].user;
           }
 
           if (user != null) {
@@ -66,7 +84,7 @@ export const SuperAdminProvider = ({ children }) => {
               if (res.success) {
                 let tempArray = allUsersInSystem;
                 let findIndexInArray = tempArray.findIndex(
-                  (x) => x.docId === user.docId
+                  (x) => x.id === user.id,
                 );
                 tempArray.splice(findIndexInArray, 1, user);
                 setAllUsersInSystem(tempArray);

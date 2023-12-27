@@ -1,32 +1,64 @@
+import { useState } from "react";
+import { superAdminMakeUserObject } from "../../utilily/utils";
+import { ChagesType } from "./ChangeRoleOrAdminPopup";
+
+export enum ChangeButtonsKey {
+  role = "role",
+  admin = "admin",
+  changeUser = "changeUser",
+}
+
 type ChangeButtonsType = {
+  key: ChangeButtonsKey;
   title: string;
   onPress: () => void;
 };
-export const useChangeRoleAndConnectionButtons = (
-  isShowPopup: () => void,
-): Array<ChangeButtonsType> => {
-  const onPressButton = (func: () => void) => {
-    isShowPopup();
-    func();
+
+export const useChangeRoleAndConnectionButtons = () => {
+  const [isShowPopup, setShowPopup] = useState(false);
+  const [changeRoleOrAdmin, setChangeRoleOrAdmin] = useState<
+    ChagesType | undefined
+  >(undefined);
+
+  const onChangeRole = () => {
+    setChangeRoleOrAdmin(ChagesType.role), setShowPopup(!isShowPopup);
   };
 
-  const changeRoleAndConnectionButtons = [
+  const onChangeAdmin = () => {
+    setChangeRoleOrAdmin(ChagesType.admin), setShowPopup(!isShowPopup);
+  };
+
+  const onChangeUser = () => {
+    console.log("onChangeUser");
+  };
+
+  const changeRoleAndConnectionButtons: ChangeButtonsType[] = [
     {
+      key: ChangeButtonsKey.role,
       title: "Ändra nivå",
-      onPress: () => onPressButton(() => console.log("func")),
+      onPress: () => onChangeRole(),
     },
     {
+      key: ChangeButtonsKey.admin,
       title: "Ändra admin",
-      onPress: () => onPressButton(() => console.log("Ändra admin")),
+      onPress: () => onChangeAdmin(),
     },
     {
+      key: ChangeButtonsKey.changeUser,
       title: "Ändra användare",
-      onPress: () => onPressButton(() => console.log("Ändra användare")),
+      onPress: () => onChangeUser(),
     },
-    {
-      title: "Inaktivera",
-      onPress: () => onPressButton(() => console.log("Inaktivera")),
-    },
+    // {
+    //   key: ChangeButtonsKey.isActive,
+    //   title: "Inaktivera",
+    //   onPress: () => onPress,
+    // },
   ];
-  return changeRoleAndConnectionButtons;
+
+  return {
+    changeRoleAndConnectionButtons,
+    isShowPopup,
+    changeRoleOrAdmin,
+    setShowPopup,
+  };
 };

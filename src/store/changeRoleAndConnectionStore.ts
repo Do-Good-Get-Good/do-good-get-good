@@ -4,6 +4,7 @@ import { Role } from "../utilily/enums";
 class ChangeRoleAndConnectionStore {
   userName: string;
   role: Role | undefined;
+
   constructor() {
     this.userName = "";
     this.role = undefined;

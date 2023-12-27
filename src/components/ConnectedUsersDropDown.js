@@ -6,7 +6,7 @@ import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-import PopupWithRadioButtons from "./PopupWithRadioButtons";
+import PopupWithRadioButtons from "./Popup/PopupWithRadioButtons";
 
 export function ConnectedUsersDropDown({}) {
   const superAdminContext = useSuperAdminFunction();
@@ -25,12 +25,12 @@ export function ConnectedUsersDropDown({}) {
     );
   }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
 
-  const changeSelectedForDropDown = (docId) => {
+  const changeSelectedForDropDown = (id) => {
     let tempArray = userArray.map((user) => {
       return {
         ...user,
         selectedForDropDown:
-          user.user.docId === docId
+          user.user.id === id
             ? !user.selectedForDropDown
             : user.selectedForDropDown,
       };
@@ -57,10 +57,10 @@ export function ConnectedUsersDropDown({}) {
 
   const whatTextToShow = (user) => {
     return (
-      <View key={user.user.docId} style={styles.container}>
+      <View key={user.user.id} style={styles.container}>
         <TouchableOpacity
           style={styles.containerForTextAndIcon}
-          onPress={() => changeSelectedForDropDown(user.user.docId)}
+          onPress={() => changeSelectedForDropDown(user.user.id)}
         >
           <Text style={styles.userAndAdminNames}>
             {user.user.firstName + " " + user.user.lastName}
@@ -78,9 +78,7 @@ export function ConnectedUsersDropDown({}) {
             <Text style={styles.adminText}>Admin:</Text>
             <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
               <Text style={styles.userAndAdminNames}>{user.adminName}</Text>
-              <TouchableOpacity
-                onPress={() => clickOnPencilIcon(user.user.docId)}
-              >
+              <TouchableOpacity onPress={() => clickOnPencilIcon(user.user.id)}>
                 <Icon
                   color={colors.secondary}
                   type="material-community"

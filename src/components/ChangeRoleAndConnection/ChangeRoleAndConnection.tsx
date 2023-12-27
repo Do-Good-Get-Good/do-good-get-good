@@ -1,29 +1,50 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
-import typography from "../../assets/theme/typography";
-import colors from "../../assets/theme/colors";
-import { Overlay } from "@rneui/base";
 
-import { PopupWithRadioButtons } from "../PopupWithRadioButtons";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { useChangeRoleAndConnectionButtons } from "./useChangeRoleAndConnectionButtons";
+import {
+  ChangeButtonsKey,
+  useChangeRoleAndConnectionButtons,
+} from "./useChangeRoleAndConnectionButtons";
 import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
 import { NameRoleAdmin } from "./NameRoleAdmin";
 import { Role } from "../../utilily/enums";
 
+import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
+import { roleTitles } from "../../utilily/utils";
+
+import { ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
+import { Controller, UseFormGetValues } from "react-hook-form";
+import { UserInfo } from "../../screens/RolesAndConnection";
+
 type Props = {
-  role: Role;
+  // role: Role;
+  getValues: UseFormGetValues<UserInfo>;
   adminName: string;
   control: any;
 };
 
-export function ChangeRolesAndConnection({ role, control, adminName }: Props) {
+export function ChangeRolesAndConnection({
+  getValues,
+  adminName,
+  control,
+}: Props) {
   const superAdminContext = useSuperAdminFunction();
-  const user = superAdminContext.makeChangesForSelectedUser.user;
-  const [isShowPopup, setShowPopup] = useState(false);
-  const changeRoleAndConnectionButtons = useChangeRoleAndConnectionButtons(() =>
-    setShowPopup(!isShowPopup),
-  );
+  const allAdminsAnsSuperAdmins = superAdminContext.allAdminsAnsSuperAdmins;
+  const user = superAdminContext.makeChangesForSelectedUser?.user;
+
+  const {
+    changeRoleAndConnectionButtons,
+    isShowPopup,
+    changeRoleOrAdmin,
+    setShowPopup,
+  } = useChangeRoleAndConnectionButtons();
+
+  // const allAdmins = makeObjectFromArrayValues(
+  //   "docId",
+  //   "firstName",
+  //   allAdminsAnsSuperAdmins,
+  // );
 
   // useEffect(() => {
   //   setUser(superAdminContext.makeChangesForSelectedUser.user);
@@ -36,34 +57,37 @@ export function ChangeRolesAndConnection({ role, control, adminName }: Props) {
   return (
     <View>
       <NameRoleAdmin
-        userName={user.firstName + " " + user.lastName}
-        role={role}
+        userName={user?.firstName + " " + user?.lastName}
+        role={getValues("role")}
         adminName={adminName}
       />
 
       <View style={styles.containerTextButton}>
         {changeRoleAndConnectionButtons.map((button, i) => (
           <TextUnderlineButton
-            key={button.title + i}
+            key={button.key}
             title={button.title}
-            onPress={button.onPress}
+            onPress={() => button.onPress()}
           />
         ))}
+        <Controller
+          name={"isActive"}
+          control={control}
+          rules={{ required: true }}
+          render={({ field: { onChange, value } }) => (
+            <TextUnderlineButton
+              title={value ? "Inaktivera" : "Aktivera"}
+              onPress={() => onChange(!value)}
+            />
+          )}
+        />
       </View>
-      <Overlay
-        isVisible={isShowPopup}
-        animationType="fade"
-        overlayStyle={styles.overlayStyle}
-        onBackdropPress={() => setShowPopup(false)}
-      >
-        {/* <PopupWithRadioButtons
-          titleText={"Ändra nivå"}
-          showPopup={(showPopupWithRadioButtons) =>
-            setShowPopupWithRadioButtons(showPopupWithRadioButtons)
-          }
-          listOfRoles={roleArray}
-        /> */}
-      </Overlay>
+
+      <ChangeRoleOrAdminPopup
+        isShowPopup={isShowPopup}
+        changeRoleOrAdmin={changeRoleOrAdmin}
+        setShowPopup={() => setShowPopup(!isShowPopup)}
+      />
     </View>
   );
 }
@@ -73,12 +97,12 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 2,
   },
-  overlayStyle: {
-    backgroundColor: colors.light,
-    width: "90%",
-    height: "35%",
-    borderRadius: 5,
-  },
+  // overlayStyle: {
+  //   backgroundColor: colors.light,
+  //   width: "90%",
+  //   height: "35%",
+  //   borderRadius: 5,
+  // },
 
   textAsButton: {
     textDecorationLine: "underline",

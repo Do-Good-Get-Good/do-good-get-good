@@ -99,21 +99,21 @@ export const updateUserInfoFromAdminScreen = (data) => {
   }
 };
 
-export const superAdminUpdatesUserInfo = async (newChangesInUserInfo) => {
-  try {
-    console.log("newChangesInUserInfo  ", newChangesInUserInfo);
-    firestore().collection("Users").doc(newChangesInUserInfo.docId).update({
-      first_name: newChangesInUserInfo.firstName,
-      last_name: newChangesInUserInfo.lastName,
-      status_active: newChangesInUserInfo.statusActive,
-      role: newChangesInUserInfo.role,
-      admin_id: newChangesInUserInfo.adminId,
-    });
-    console.log("Super admin update user data");
-  } catch (error) {
-    console.log(error);
-  }
-};
+// export const superAdminUpdatesUserInfo = async (newChangesInUserInfo) => {
+//   try {
+//     console.log("newChangesInUserInfo  ", newChangesInUserInfo);
+//     firestore().collection("Users").doc(newChangesInUserInfo.docId).update({
+//       first_name: newChangesInUserInfo.firstName,
+//       last_name: newChangesInUserInfo.lastName,
+//       status_active: newChangesInUserInfo.statusActive,
+//       role: newChangesInUserInfo.role,
+//       admin_id: newChangesInUserInfo.adminID,
+//     });
+//     console.log("Super admin update user data");
+//   } catch (error) {
+//     console.log(error);
+//   }
+// };
 
 export const updateActivityFavoriteStatus = (activityId, status) => {
   try {

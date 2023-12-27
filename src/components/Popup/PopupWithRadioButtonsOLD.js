@@ -7,9 +7,9 @@ import {
   ScrollView,
 } from "react-native";
 
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
+import typography from "../../assets/theme/typography";
+import colors from "../../assets/theme/colors";
+import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 export function PopupWithRadioButtons({
   titleText,
@@ -56,7 +56,7 @@ export function PopupWithRadioButtons({
     ) {
       var indexOfUserWhosedminIDNeedsToBeChange =
         superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-          (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
+          (x) => x.user.id === superAdminContext.userIDToConnectAnotherAdmin,
         );
       setConnectedAdminID({
         adminName:
@@ -66,7 +66,7 @@ export function PopupWithRadioButtons({
         adminId:
           superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin[
             indexOfUserWhosedminIDNeedsToBeChange
-          ].user.adminId,
+          ].user.adminID,
       });
     }
   }, [superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin]);
@@ -80,46 +80,46 @@ export function PopupWithRadioButtons({
       superAdminContext.makeChangesForSelectedUser.arrayOfUsersIfAdmin;
 
     var indexOfUserWhosedminIDNeedsToBeChange = changeAdminObject.findIndex(
-      (x) => x.user.docId === superAdminContext.userIDToConnectAnotherAdmin,
+      (x) => x.user.id === superAdminContext.userIDToConnectAnotherAdmin,
     );
 
-    let tempObjectOfUserThatConnectedToAdmin = {
-      adminName: connectedAdminID.adminName,
-      selectedForDropDown:
-        changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange]
-          .selectedForDropDown,
-      user: {
-        activitiesAndAccumulatedTime:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .activitiesAndAccumulatedTime,
-        adminId: connectedAdminID.adminId,
-        connectedActivities:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .connectedActivities,
-        docId:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user.docId,
-        firstName:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .firstName,
-        lastName:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .lastName,
-        role: changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-          .role,
-        statusActive:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .statusActive,
-        totalConfirmedHours:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .totalConfirmedHours,
-        totalHoursMonth:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .totalHoursMonth,
-        totalHoursYear:
-          changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
-            .totalHoursYear,
-      },
-    };
+    // let tempObjectOfUserThatConnectedToAdmin = {
+    //   adminName: connectedAdminID.adminName,
+    //   selectedForDropDown:
+    //     changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange]
+    //       .selectedForDropDown,
+    //   user: {
+    //     activitiesAndAccumulatedTime:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .activitiesAndAccumulatedTime,
+    //     adminId: connectedAdminID.adminId,
+    //     connectedActivities:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .connectedActivities,
+    //     docId:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user.docId,
+    //     firstName:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .firstName,
+    //     lastName:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .lastName,
+    //     role: changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //       .role,
+    //     statusActive:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .statusActive,
+    //     totalConfirmedHours:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .totalConfirmedHours,
+    //     totalHoursMonth:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .totalHoursMonth,
+    //     totalHoursYear:
+    //       changeAdminObject[indexOfUserWhosedminIDNeedsToBeChange].user
+    //         .totalHoursYear,
+    //   },
+    // };
 
     changeAdminObject.splice(
       indexOfUserWhosedminIDNeedsToBeChange,
@@ -166,34 +166,34 @@ export function PopupWithRadioButtons({
     setShowRole(false);
   }
 
-  function changeRoleOfTheSelectedUser(userRole) {
-    if (
-      (userRole === "user" &&
-        selectedUserHasRole.arrayOfUsersIfAdmin.length === 0) ||
-      userRole === "admin" ||
-      userRole === "superadmin"
-    ) {
-      let tempObject = {
-        adminName: selectedUserHasRole.adminName,
-        arrayOfUsersIfAdmin: selectedUserHasRole.arrayOfUsersIfAdmin,
-        user: {
-          activitiesAndAccumulatedTime:
-            selectedUserHasRole.user.activitiesAndAccumulatedTime,
-          adminId: selectedUserHasRole.user.adminId,
-          connectedActivities: selectedUserHasRole.user.connectedActivities,
-          docId: selectedUserHasRole.user.docId,
-          firstName: selectedUserHasRole.user.firstName,
-          lastName: selectedUserHasRole.user.lastName,
-          role: userRole,
-          statusActive: selectedUserHasRole.user.statusActive,
-          totalConfirmedHours: selectedUserHasRole.user.totalConfirmedHours,
-          totalHoursMonth: selectedUserHasRole.user.totalHoursMonth,
-          totalHoursYear: selectedUserHasRole.user.totalHoursYear,
-        },
-      };
-      setSelectedUserHasRole(tempObject);
-    }
-  }
+  // function changeRoleOfTheSelectedUser(userRole) {
+  //   if (
+  //     (userRole === "user" &&
+  //       selectedUserHasRole.arrayOfUsersIfAdmin.length === 0) ||
+  //     userRole === "admin" ||
+  //     userRole === "superadmin"
+  //   ) {
+  //     let tempObject = {
+  //       adminName: selectedUserHasRole.adminName,
+  //       arrayOfUsersIfAdmin: selectedUserHasRole.arrayOfUsersIfAdmin,
+  //       user: {
+  //         activitiesAndAccumulatedTime:
+  //           selectedUserHasRole.user.activitiesAndAccumulatedTime,
+  //         adminId: selectedUserHasRole.user.adminId,
+  //         connectedActivities: selectedUserHasRole.user.connectedActivities,
+  //         docId: selectedUserHasRole.user.docId,
+  //         firstName: selectedUserHasRole.user.firstName,
+  //         lastName: selectedUserHasRole.user.lastName,
+  //         role: userRole,
+  //         statusActive: selectedUserHasRole.user.statusActive,
+  //         totalConfirmedHours: selectedUserHasRole.user.totalConfirmedHours,
+  //         totalHoursMonth: selectedUserHasRole.user.totalHoursMonth,
+  //         totalHoursYear: selectedUserHasRole.user.totalHoursYear,
+  //       },
+  //     };
+  //     setSelectedUserHasRole(tempObject);
+  //   }
+  // }
 
   function ifChangeRole() {
     return (
