@@ -1,7 +1,6 @@
 import { Role } from "../../utilily/enums";
 import { roleTitles } from "../../utilily/utils";
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
-
 export enum ChagesType {
   role = "role",
   admin = "admin",
@@ -10,13 +9,14 @@ export enum ChagesType {
 type Props = {
   isShowPopup: boolean;
   changeRoleOrAdmin: ChagesType | undefined;
-
+  onChange: () => void;
   setShowPopup: () => void;
 };
 
 export const ChangeRoleOrAdminPopup = ({
   isShowPopup,
   changeRoleOrAdmin,
+  onChange,
   setShowPopup,
 }: Props) => {
   return (
@@ -27,6 +27,7 @@ export const ChangeRoleOrAdminPopup = ({
         }
         optionsList={roleTitles}
         selected={Role.admin}
+        onSelect={onChange}
         showPopup={isShowPopup}
         setShowPopup={setShowPopup}
       />

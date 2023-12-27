@@ -10,6 +10,7 @@ import typography from "../../assets/theme/typography";
 import { useState } from "react";
 
 import { Overlay } from "@rneui/base";
+import { LongButton } from "../Buttons/LongButton";
 
 type OptionsListType = {
   [key: string]: string;
@@ -19,7 +20,7 @@ type Props = {
   mainTitle: string;
   optionsList: OptionsListType;
   selected: keyof OptionsListType;
-  onSelect?: (select: keyof OptionsListType) => void;
+  onSelect: (select: keyof OptionsListType) => void;
   showPopup: boolean;
   setShowPopup: () => void;
 };
@@ -33,6 +34,9 @@ export const PopupWithRadioButtons = ({
   setShowPopup,
 }: Props) => {
   const [choice, setChoice] = useState(selected);
+  const onOkayButton = () => {
+    onSelect(choice), setShowPopup();
+  };
 
   return (
     <Overlay
@@ -41,7 +45,7 @@ export const PopupWithRadioButtons = ({
       overlayStyle={styles.overlayStyle}
       onBackdropPress={setShowPopup}
     >
-      <View style={{ flex: 1 }}>
+      <View>
         <ScrollView>
           <Text style={styles.textTitle}>{mainTitle}</Text>
           <View style={{ backgroundColor: colors.background }}>
@@ -72,6 +76,7 @@ export const PopupWithRadioButtons = ({
             ))}
           </View>
         </ScrollView>
+        <LongButton title="Ok" onPress={() => onOkayButton()} />
       </View>
     </Overlay>
   );

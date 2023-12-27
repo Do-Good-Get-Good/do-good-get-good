@@ -82,11 +82,18 @@ export function ChangeRolesAndConnection({
           )}
         />
       </View>
-
-      <ChangeRoleOrAdminPopup
-        isShowPopup={isShowPopup}
-        changeRoleOrAdmin={changeRoleOrAdmin}
-        setShowPopup={() => setShowPopup(!isShowPopup)}
+      <Controller
+        name={changeRoleOrAdmin ?? "none"}
+        control={control}
+        rules={{ required: true }}
+        render={({ field: { onChange, value } }) => (
+          <ChangeRoleOrAdminPopup
+            isShowPopup={isShowPopup}
+            changeRoleOrAdmin={changeRoleOrAdmin}
+            setShowPopup={() => setShowPopup(!isShowPopup)}
+            onChange={onChange}
+          />
+        )}
       />
     </View>
   );
