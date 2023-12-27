@@ -9,6 +9,7 @@ export type Activity = {
   description?: string;
   photo: ActivityImages;
   popular?: string;
+  imageUrl?: string;
 };
 
 export type Concept = {

@@ -1,15 +1,19 @@
 import { useMemo } from "react";
 import { ActivityImage } from "./useCloudImages";
+import { Activity } from "../utilily/types";
 
-const useSelectedImage = (imageObject: ActivityImage) => {
+const useSelectedImage = (imageObject: ActivityImage, activity?: Activity) => {
   const photo = useMemo(() => {
-    if (!imageObject) return { photo: "placeholder", imageUrl: "" };
-
     return {
-      photo: imageObject?.photo,
-      imageUrl: imageObject?.imageUrl,
+      photo: imageObject?.photo || activity?.photo || "placeholder",
+      imageUrl: imageObject?.imageUrl || activity?.imageUrl || "",
     };
-  }, [imageObject?.photo, imageObject?.imageUrl]);
+  }, [
+    imageObject?.photo,
+    imageObject?.imageUrl,
+    activity?.photo,
+    activity?.imageUrl,
+  ]);
 
   return photo;
 };

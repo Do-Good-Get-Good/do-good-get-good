@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -27,16 +27,17 @@ import colors from "../assets/theme/colors";
 import useSelectedImage from "../hooks/useSelectedImage";
 
 export function ChangeActivity({ route, navigation }) {
-  const { activity, tgPopular } = route.params;
+  const { activity, tgPopular, image } = route.params;
   const activityCardFunction = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const { getImageForActivity } = useActivityImages();
-  const photo = useSelectedImage(route.params?.image);
 
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
+
+  const photo = useSelectedImage(image, activity);
 
   function buttonSavePressed() {
     let changedObject = {
@@ -110,7 +111,7 @@ export function ChangeActivity({ route, navigation }) {
           <View style={styles.containerImageAndInsertButton}>
             <Image
               style={styles.image}
-              source={getImageForActivity(photo.photo, photo.imageUrl)}
+              source={getImageForActivity(photo?.photo, photo?.imageUrl)}
             />
             <TouchableOpacity
               testID="navigateToImagesGallery"

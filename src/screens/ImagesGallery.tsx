@@ -26,22 +26,21 @@ export function ImagesGallery({
   navigation: any;
   route: any;
 }) {
+  const { selectedImage, cameFrom, tgPopular, activity } = route.params;
   const { images } = useActivityImages();
 
-  const [selectedImage, setSelectedImage] = useState<ActivityImage>(
-    route.params.selectedImage,
+  const [selected, setSelected] = useState<ActivityImage>(
+    selectedImage ?? { photo: "" },
   );
 
   const imagesArray = useMemo(() => {
     return images
-      .map((img) => {
-        if (img.photo !== selectedImage.photo)
-          return { ...img, selected: false };
-
-        return { ...img, selected: true };
-      })
+      .map((img) => ({
+        ...img,
+        selected: img.photo === selected.photo,
+      }))
       .sort((a, b) => a.photo.localeCompare(b.photo));
-  }, [images, selectedImage]);
+  }, [images, selected]);
 
   const imageStyle = (selected: any): ImageStyle => {
     return {
@@ -60,21 +59,21 @@ export function ImagesGallery({
   };
 
   const buttonSavePressed = () => {
-    if (route.params?.cameFrom === "CreateActivity") {
+    if (cameFrom === "CreateActivity") {
       navigation.navigate("CreateActivity", {
-        image: selectedImage,
+        image: selected,
       });
     }
-    if (route.params?.cameFrom === "CreateUser") {
+    if (cameFrom === "CreateUser") {
       navigation.navigate("CreateUser", {
-        image: selectedImage,
+        image: selected,
       });
     }
-    if (route.params?.cameFrom === "ChangeActivity") {
+    if (cameFrom === "ChangeActivity") {
       navigation.navigate("ChangeActivity", {
-        activity: route.params?.activity,
-        tgPopular: route.params?.tgPopular,
-        image: selectedImage,
+        activity,
+        tgPopular,
+        image: selected,
       });
     }
   };
@@ -95,7 +94,7 @@ export function ImagesGallery({
           <TouchableOpacity
             testID="pressOnImage"
             onPress={() =>
-              setSelectedImage({
+              setSelected({
                 photo: item.photo,
                 imageUrl: item.imageUrl,
               })

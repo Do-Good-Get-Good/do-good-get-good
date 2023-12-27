@@ -1,17 +1,13 @@
 import { createContext, useContext, PropsWithChildren } from "react";
 
 import { getImageForActivity } from "../lib/images";
-import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
 import useCloudImages, { ActivityImage } from "../hooks/useCloudImages";
 
 const ActivityImageContext = createContext<{
   images: ActivityImage[];
   loading: boolean;
+  getImageForActivity: typeof getImageForActivity;
   error?: any;
-  getImageForActivity: (
-    photo: string,
-    imageUrl?: string,
-  ) => ImageSourcePropType | undefined;
 }>({
   images: [],
   getImageForActivity: (photo: string, imageUrl?: string) => undefined,
