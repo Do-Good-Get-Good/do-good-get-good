@@ -13,7 +13,7 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
-jest.mock("../../context/ActivityImagesContext", () => ({
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
     images: [
       {

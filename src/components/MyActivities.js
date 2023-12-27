@@ -13,7 +13,7 @@ import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export const MyActivities = ({ activities, registeredTime }) => {
   const { getImageForActivity } = useActivityImages();

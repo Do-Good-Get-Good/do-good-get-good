@@ -16,7 +16,7 @@ jest.mock("@react-native-async-storage/async-storage", () => {
   };
 });
 
-jest.mock("../../context/ActivityImagesContext", () => ({
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
     getImageForActivity: jest.fn(() => ({
       photo: "symbol_blood",

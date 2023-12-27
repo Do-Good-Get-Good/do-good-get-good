@@ -20,7 +20,7 @@ import BottomNavButtons from "../components/BottomNavButtons";
 
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";

@@ -18,7 +18,7 @@ import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext/CreateActivityContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
-import { ActivityImagesProvider } from "./context/ActivityImagesContext";
+import { ActivityImagesProvider } from "./context/ActivityImagesContext/ActivityImagesContext";
 
 import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 

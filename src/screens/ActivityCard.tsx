@@ -22,7 +22,7 @@ import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 type Props = {
   route: any;

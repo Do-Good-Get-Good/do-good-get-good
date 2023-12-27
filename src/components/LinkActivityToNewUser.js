@@ -23,7 +23,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext/Crea
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export function LinkActivityToNewUser({
   activity,

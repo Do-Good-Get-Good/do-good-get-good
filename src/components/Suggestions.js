@@ -15,7 +15,7 @@ import colors from "../assets/theme/colors";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export function Suggestions({
   navigation,

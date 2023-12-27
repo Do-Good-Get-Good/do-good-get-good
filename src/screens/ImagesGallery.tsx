@@ -14,7 +14,7 @@ import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";
 import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
 import { selectedImageStyle } from "../styles/selectedImageStyle";
 

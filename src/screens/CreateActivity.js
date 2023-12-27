@@ -22,7 +22,7 @@ import colors from "../assets/theme/colors";
 import BottomNavButtons from "../components/BottomNavButtons";
 import { addActivity } from "../firebase-functions/add";
 import LoadingOverlay from "../components/LoadingOverlay";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import useSelectedImage from "../hooks/useSelectedImage";
 
 export function CreateActivity({ route, navigation }) {

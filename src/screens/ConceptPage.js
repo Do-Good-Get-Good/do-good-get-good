@@ -16,7 +16,7 @@ import {
   getConcept,
   getTenLastConfirmedTimeEntries,
 } from "../firebase-functions/get";
-import { useActivityImages } from "../context/ActivityImagesContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 const ConceptPage = () => {
   const { getImageForActivity } = useActivityImages();
