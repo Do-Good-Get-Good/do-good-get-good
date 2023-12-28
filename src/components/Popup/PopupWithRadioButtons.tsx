@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 import { Overlay } from "@rneui/base";
 import { LongButton } from "../Buttons/LongButton";
@@ -37,6 +37,10 @@ export const PopupWithRadioButtons = ({
   const onOkayButton = () => {
     onSelect(choice), setShowPopup();
   };
+  useEffect(() => {
+    setChoice(selected);
+  }, [selected]);
+  console.log(optionsList, "optionsList[selected");
 
   return (
     <Overlay

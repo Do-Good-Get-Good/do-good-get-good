@@ -1,6 +1,6 @@
 import { useState } from "react";
-import { superAdminMakeUserObject } from "../../utilily/utils";
-import { ChagesType } from "./ChangeRoleOrAdminPopup";
+import { superAdminMakeUserObject } from "../../../utilily/utils";
+import { ChagesType } from "../ChangeRoleOrAdminPopup";
 
 export enum ChangeButtonsKey {
   role = "role",

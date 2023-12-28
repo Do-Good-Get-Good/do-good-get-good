@@ -5,15 +5,11 @@ import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 import {
   ChangeButtonsKey,
   useChangeRoleAndConnectionButtons,
-} from "./useChangeRoleAndConnectionButtons";
+} from "./hooks/useChangeRoleAndConnectionButtons";
 import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
 import { NameRoleAdmin } from "./NameRoleAdmin";
-import { Role } from "../../utilily/enums";
 
-import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
-import { roleTitles } from "../../utilily/utils";
-
-import { ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
+import { ChagesType, ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
 import { Controller, UseFormGetValues } from "react-hook-form";
 import { UserInfo } from "../../screens/RolesAndConnection";
 
@@ -30,7 +26,7 @@ export function ChangeRolesAndConnection({
   control,
 }: Props) {
   const superAdminContext = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmins = superAdminContext.allAdminsAnsSuperAdmins;
+
   const user = superAdminContext.makeChangesForSelectedUser?.user;
 
   const {
@@ -39,12 +35,6 @@ export function ChangeRolesAndConnection({
     changeRoleOrAdmin,
     setShowPopup,
   } = useChangeRoleAndConnectionButtons();
-
-  // const allAdmins = makeObjectFromArrayValues(
-  //   "docId",
-  //   "firstName",
-  //   allAdminsAnsSuperAdmins,
-  // );
 
   // useEffect(() => {
   //   setUser(superAdminContext.makeChangesForSelectedUser.user);
@@ -86,9 +76,14 @@ export function ChangeRolesAndConnection({
         name={changeRoleOrAdmin ?? "none"}
         control={control}
         rules={{ required: true }}
-        render={({ field: { onChange, value } }) => (
+        render={({ field: { onChange } }) => (
           <ChangeRoleOrAdminPopup
             isShowPopup={isShowPopup}
+            selected={
+              changeRoleOrAdmin === ChagesType.admin
+                ? getValues("admin.id")
+                : getValues("role")
+            }
             changeRoleOrAdmin={changeRoleOrAdmin}
             setShowPopup={() => setShowPopup(!isShowPopup)}
             onChange={onChange}

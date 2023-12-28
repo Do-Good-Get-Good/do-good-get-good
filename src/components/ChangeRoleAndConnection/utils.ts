@@ -1,11 +1,14 @@
 import { User } from "../../utilily/types";
 
-export const makePopupObjectOfAdminNameAndID = (arr: Array<User>) => {
-  let newObj: { [key: string]: any } = {};
-  let adminNameAndID = [];
-  arr.map((item) => {
-    adminNameAndID.push(
-      (newObj[item["id"]] = `${item["firstName"]} ${item["lastName"]}`),
-    );
+type Obj = { [key: string]: string };
+
+export const makePopupObjectOfAdminNameAndID = (arr?: Array<User>) => {
+  let newObj: Obj = {};
+
+  arr?.forEach((item) => {
+    const fullName = `${item["firstName"]} ${item["lastName"]}`;
+    newObj[item["id"]] = fullName;
   });
+
+  return newObj;
 };
