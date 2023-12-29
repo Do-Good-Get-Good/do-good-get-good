@@ -6,7 +6,7 @@ import {
   AdminStack,
   SuperAdminStack,
   UserStack,
-} from "../../utilily/navigationEnums";
+} from "../../utilily/routeEnums";
 
 type Props = {
   navigatationObj: NavigationObject;

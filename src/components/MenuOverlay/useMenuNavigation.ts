@@ -5,7 +5,7 @@ import {
   AdminStack,
   SuperAdminStack,
   UserStack,
-} from "../../utilily/navigationEnums";
+} from "../../utilily/routeEnums";
 
 export type NavigationObject = {
   title: string;
@@ -70,11 +70,21 @@ export const useMenuNavigation = (role: Role | undefined) => {
     },
   ];
 
-  return role === Role.user
-    ? userNavigations
-    : role === Role.admin
-      ? [...userNavigations, ...adminNavigations]
-      : role === Role.superadmin
-        ? [...userNavigations, ...adminNavigations, ...superAdminNavigations]
-        : undefined;
+  switch (role) {
+    case Role.user:
+      return userNavigations;
+
+    case Role.admin:
+      return [...userNavigations, ...adminNavigations];
+
+    case Role.superadmin:
+      return [
+        ...userNavigations,
+        ...adminNavigations,
+        ...superAdminNavigations,
+      ];
+
+    default:
+      undefined;
+  }
 };
