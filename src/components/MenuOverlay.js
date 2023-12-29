@@ -174,6 +174,24 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
               </TouchableOpacity>
             </>
           )}
+          {userLevel?.developer && (
+            <>
+              <TouchableOpacity
+                testID="menuOverlay.devModeButton"
+                style={styles.menuOverlayLinkStyling}
+                onPress={() => {
+                  openOverlay();
+                  navigation.navigate("DeveloperOptions");
+                }}
+              >
+                <Text
+                  style={[styles.menuOverlayLinkText, styles.devModeButtonText]}
+                >
+                  Developer options
+                </Text>
+              </TouchableOpacity>
+            </>
+          )}
         </View>
         {menuFooter()}
       </View>
@@ -241,5 +259,8 @@ const styles = StyleSheet.create({
   },
   menuOverlayLogOutButtonText: {
     ...typography.b1,
+  },
+  devModeButtonText: {
+    color: "red",
   },
 });
