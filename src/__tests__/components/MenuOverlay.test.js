@@ -4,7 +4,7 @@ import { render, fireEvent } from "@testing-library/react-native";
 
 import MenuOverlay from "../../components/MenuOverlay";
 
-import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
+import { useUserLevel } from "../../context/UserLevelContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -39,7 +39,7 @@ jest.mock("@react-native-firebase/auth", () => {
 });
 
 jest.mock("../../context/UserLevelContext", () => ({
-  useUserLevelCheckFunction: jest.fn(),
+  useUserLevel: jest.fn(),
 }));
 
 jest.mock("../../context/AdminGalleryContext", () => ({
@@ -80,7 +80,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the admin-menu buttons visible", () => {
-    useUserLevelCheckFunction.mockReturnValueOnce("admin");
+    useUserLevel.mockReturnValueOnce({ admin: true });
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />,
     );
@@ -97,7 +97,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the superadmin-menu buttons visible", () => {
-    useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+    useUserLevel.mockReturnValueOnce({ superadmin: true });
     const { getAllByText } = render(<MenuOverlay isVisible={true} />);
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
@@ -133,7 +133,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Activities button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("admin");
+      useUserLevel.mockReturnValueOnce({ admin: true });
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
@@ -150,7 +150,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Admin button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("admin");
+      useUserLevel.mockReturnValueOnce({ admin: true });
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
@@ -163,7 +163,7 @@ describe("Testing MenuOverlay", () => {
     });
 
     it("Super admin button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+      useUserLevel.mockReturnValueOnce({ superadmin: true });
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
