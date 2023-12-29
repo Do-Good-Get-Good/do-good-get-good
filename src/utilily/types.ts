@@ -1,5 +1,11 @@
 import { ActivityImages } from "./enums";
 
+export type UserPermissionLevel = {
+  superadmin?: boolean;
+  admin?: boolean;
+  user?: boolean;
+};
+
 export type Activity = {
   id: string;
   title: string;
