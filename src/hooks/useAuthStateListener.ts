@@ -7,7 +7,7 @@ import { UserPermissionLevel } from "../utilily/types";
 export const useAuthStateListener = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [userClaims, setUserClaims] = useState<UserPermissionLevel>();
+  const [userLevel, setUserLevel] = useState<UserPermissionLevel>();
 
   async function onAuthStateChanged(userState: FirebaseAuthTypes.User | null) {
     setUser(userState);
@@ -15,14 +15,14 @@ export const useAuthStateListener = () => {
       try {
         let userIdToken = await userState.getIdTokenResult();
         console.log(userIdToken.claims);
-        setUserClaims(userIdToken.claims);
+        setUserLevel(userIdToken.claims);
       } catch (error: any) {
         crashlytics().log("There was an error getting the users ID Token");
         crashlytics().recordError(error);
         console.log(error);
       }
     } else {
-      setUserClaims(undefined);
+      setUserLevel(undefined);
     }
     if (initializing) setInitializing(false);
   }
@@ -33,5 +33,5 @@ export const useAuthStateListener = () => {
     return auth().onAuthStateChanged(onAuthStateChanged);
   }, []);
 
-  return { initializing, user, userClaims, signOut };
+  return { initializing, user, userLevel, signOut };
 };

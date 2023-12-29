@@ -7,6 +7,7 @@ const UserLevelContext = React.createContext<UserPermissionLevel>({
   superadmin: false,
   admin: false,
   user: false,
+  developer: false,
 });
 
 export const useUserLevel = () => {

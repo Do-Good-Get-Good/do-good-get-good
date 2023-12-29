@@ -4,6 +4,7 @@ export type UserPermissionLevel = {
   superadmin?: boolean;
   admin?: boolean;
   user?: boolean;
+  developer?: boolean;
 };
 
 export type Activity = {

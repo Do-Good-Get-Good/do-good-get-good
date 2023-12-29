@@ -26,7 +26,7 @@ import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
 
 export default function App() {
-  const { initializing, user, userClaims, signOut } = useAuthStateListener();
+  const { initializing, user, userLevel, signOut } = useAuthStateListener();
 
   if (initializing) return null;
 
@@ -34,21 +34,21 @@ export default function App() {
     return <Login />;
   }
 
-  if (!userClaims) {
+  if (!userLevel) {
     return <Login />;
   }
 
-  if (userClaims?.superadmin) {
+  if (userLevel?.superadmin) {
     // Render superadmin content
     return (
       <SafeAreaProvider>
         <ActivityCardProvider>
           <AdminGalleryProvider>
             <CreateActivityProvider>
-              <UserLevelProvider userLevel={userClaims}>
+              <UserLevelProvider userLevel={userLevel}>
                 <TimeStatisticsProvider>
                   <SuperAdminProvider>
-                    <SuperAdminStack />
+                    <SuperAdminStack developer={userLevel.developer ?? false} />
                   </SuperAdminProvider>
                 </TimeStatisticsProvider>
               </UserLevelProvider>
@@ -57,14 +57,14 @@ export default function App() {
         </ActivityCardProvider>
       </SafeAreaProvider>
     );
-  } else if (userClaims?.admin) {
+  } else if (userLevel?.admin) {
     // Render admin content
     return (
       <SafeAreaProvider>
         <ActivityCardProvider>
           <AdminGalleryProvider>
             <CreateActivityProvider>
-              <UserLevelProvider userLevel={userClaims}>
+              <UserLevelProvider userLevel={userLevel}>
                 <TimeStatisticsProvider>
                   <AdminStack />
                 </TimeStatisticsProvider>
@@ -74,10 +74,10 @@ export default function App() {
         </ActivityCardProvider>
       </SafeAreaProvider>
     );
-  } else if (userClaims?.user) {
+  } else if (userLevel?.user) {
     return (
       <SafeAreaProvider>
-        <UserLevelProvider userLevel={userClaims}>
+        <UserLevelProvider userLevel={userLevel}>
           <TimeStatisticsProvider>
             <UserStack />
           </TimeStatisticsProvider>
