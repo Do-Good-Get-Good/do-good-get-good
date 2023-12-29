@@ -44,10 +44,10 @@ export function ImagesGallery({
 
   const buttonSavePressed = () => {
     const navigationParams =
-      (cameFrom as Routes) === Routes.ChangeActivity
+      cameFrom === Routes.ChangeActivity
         ? { activity, tgPopular, image: selected }
         : { image: selected };
-    navigation.navigate(route, navigationParams);
+    navigation.navigate(cameFrom, navigationParams);
   };
 
   return (
