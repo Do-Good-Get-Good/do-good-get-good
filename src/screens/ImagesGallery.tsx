@@ -17,12 +17,7 @@ import BottomNavButtons from "../components/BottomNavButtons";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
 import { selectedImageStyle } from "../styles/selectedImageStyle";
-
-enum Routes {
-  CreateActivity = "CreateActivity",
-  CreateUser = "CreateUser",
-  ChangeActivity = "ChangeActivity",
-}
+import { Routes } from "../utilily/routes";
 
 export function ImagesGallery({
   navigation,
@@ -48,21 +43,11 @@ export function ImagesGallery({
   }, [images, selected]);
 
   const buttonSavePressed = () => {
-    const routeMapping = {
-      CreateActivity: Routes.CreateActivity,
-      CreateUser: Routes.CreateUser,
-      ChangeActivity: Routes.ChangeActivity,
-    };
-
-    const route = routeMapping[cameFrom as Routes];
-
-    if (route) {
-      const navigationParams =
-        cameFrom === Routes.ChangeActivity
-          ? { activity, tgPopular, image: selected }
-          : { image: selected };
-      navigation.navigate(route, navigationParams);
-    }
+    const navigationParams =
+      (cameFrom as Routes) === Routes.ChangeActivity
+        ? { activity, tgPopular, image: selected }
+        : { image: selected };
+    navigation.navigate(route, navigationParams);
   };
 
   return (
