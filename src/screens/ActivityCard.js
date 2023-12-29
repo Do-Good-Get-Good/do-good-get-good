@@ -16,7 +16,7 @@ import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
+import { useUserLevel } from "../context/UserLevelContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -28,7 +28,7 @@ export function ActivityCard({ route, navigation }) {
   const activityCardContext = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
   const adminGalleryContext = useAdminGalleryFunction();
-  const userLevel = useUserLevelCheckFunction();
+  const userLevel = useUserLevel();
 
   const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
@@ -147,18 +147,21 @@ export function ActivityCard({ route, navigation }) {
       <Overlay
         overlayStyle={styles.overlay}
         isVisible={visible}
-        onBackdropPress={() => setVisible(!visible)}>
+        onBackdropPress={() => setVisible(!visible)}
+      >
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.light }]}
-            onPress={() => setVisible(!visible)}>
+            onPress={() => setVisible(!visible)}
+          >
             <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.primary }]}
-            onPress={() => buttonYesPressed()}>
+            onPress={() => buttonYesPressed()}
+          >
             <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
         </View>
@@ -231,7 +234,8 @@ export function ActivityCard({ route, navigation }) {
 
         <TouchableOpacity
           testID="alertToDeleteActivity"
-          onPress={() => alertToDeleteActivity()}>
+          onPress={() => alertToDeleteActivity()}
+        >
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -253,7 +257,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToTakeAwayFromArchiveActivity"
-            onPress={() => alertToTakeAwayFromArchiveActivity()}>
+            onPress={() => alertToTakeAwayFromArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>
               Flytta från arkiv
             </Text>
@@ -274,7 +279,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToArchiveActivity"
-            onPress={() => alertToArchiveActivity()}>
+            onPress={() => alertToArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -301,7 +307,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toNotFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Ta bort från TG-favoriter
             </Text>
@@ -322,7 +329,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Lägg till som TG-favorit
             </Text>
@@ -351,7 +359,8 @@ export function ActivityCard({ route, navigation }) {
                 activity: activityInfo,
                 tgPopular: popular,
               })
-            }>
+            }
+          >
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
@@ -363,7 +372,8 @@ export function ActivityCard({ route, navigation }) {
           style={styles.buttonSeeAllUsers}
           onPress={() => {
             setIsManageUsersOpen(!isManageUsersOpen);
-          }}>
+          }}
+        >
           <Text style={styles.buttonSeeAllUsersText}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
@@ -392,7 +402,8 @@ export function ActivityCard({ route, navigation }) {
             <TouchableOpacity
               testID="buttonGoBack"
               onPress={() => navigation.goBack()}
-              style={{ flexDirection: "row", alignItems: "center" }}>
+              style={{ flexDirection: "row", alignItems: "center" }}
+            >
               <Icon name="arrow-back" color={colors.dark} size={25} />
               <Text style={styles.textNearArrow}>Gå tillbaka</Text>
             </TouchableOpacity>
@@ -402,7 +413,8 @@ export function ActivityCard({ route, navigation }) {
             <Image
               testID="photo"
               style={styles.image}
-              source={setTheRightPhoto(activity.photo)}></Image>
+              source={setTheRightPhoto(activity.photo)}
+            ></Image>
           )}
           <View style={styles.containerIconAndCity}>
             <Icon

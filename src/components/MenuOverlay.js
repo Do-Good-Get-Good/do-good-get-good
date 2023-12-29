@@ -7,15 +7,13 @@ import {
   Platform,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-
 import { Icon, Overlay } from "@rneui/base";
 
 import auth from "@react-native-firebase/auth";
 
 import { useNavigation } from "@react-navigation/native";
 
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
+import { useUserLevel } from "../context/UserLevelContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
@@ -25,7 +23,7 @@ import typography from "../assets/theme/typography";
 
 const MenuOverlay = ({ openOverlay, isVisible }) => {
   const navigation = useNavigation();
-  const userLevel = useUserLevelCheckFunction();
+  const userLevel = useUserLevel();
   const adminGalleryContext = useAdminGalleryFunction();
   const superAdminContext = useSuperAdminFunction();
 
@@ -122,7 +120,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             <Text style={styles.menuOverlayLinkText}>FAQ</Text>
           </TouchableOpacity>
 
-          {(userLevel === "admin" || userLevel === "superadmin") && (
+          {(userLevel?.admin || userLevel?.superadmin) && (
             <>
               <TouchableOpacity
                 testID="menuOverlay.activitiesButton"
@@ -150,7 +148,7 @@ const MenuOverlay = ({ openOverlay, isVisible }) => {
             </>
           )}
 
-          {userLevel === "superadmin" && (
+          {userLevel?.superadmin && (
             <>
               <TouchableOpacity
                 testID="menuOverlay.allUsersInTheSystem"

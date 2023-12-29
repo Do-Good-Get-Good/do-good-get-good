@@ -1,9 +1,4 @@
-import { Icon } from "@rneui/base";
-
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
-import colors from "../assets/theme/colors";
-import typography from "../assets/theme/typography";
-import { Role } from "../utilily/enums";
+import { useState } from "react";
 import {
   Platform,
   StyleSheet,
@@ -11,12 +6,17 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { InputField } from "./InputField";
-import { useState } from "react";
-import { error } from "firebase-functions/logger";
 import { Controller, FieldError } from "react-hook-form";
-import { errorTextStyle } from "../styles/errorTextStyle";
+
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 import { ArrowUpDown } from "../assets/icons/ArrowUpDown";
+
+import { useUserLevel } from "../context/UserLevelContext";
+
+import { errorTextStyle } from "../styles/errorTextStyle";
+
+import { Role } from "../utilily/enums";
 
 type Props = {
   control: any;
@@ -24,11 +24,11 @@ type Props = {
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const userLevel = useUserLevelCheckFunction();
+  const userLevel = useUserLevel();
   const [expanded, setExpanded] = useState(false);
   return (
     <View style={{ marginTop: 10 }}>
-      {userLevel === Role.superadmin && (
+      {userLevel?.superadmin && (
         <Controller
           name="role"
           control={control}
@@ -80,9 +80,6 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
   );
 };
 
-{
-}
-
 const styles = StyleSheet.create({
   input: {
     width: "100%",
@@ -94,7 +91,6 @@ const styles = StyleSheet.create({
     fontSize: typography.b1.fontSize,
     fontFamily: typography.b1.fontFamily,
   },
-
   warningAboutRequired: {
     color: colors.error,
     marginTop: -5,
