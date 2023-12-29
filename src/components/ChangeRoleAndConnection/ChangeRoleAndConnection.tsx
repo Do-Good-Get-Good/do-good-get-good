@@ -16,15 +16,10 @@ import { UserInfo } from "../../screens/RolesAndConnection";
 type Props = {
   // role: Role;
   getValues: UseFormGetValues<UserInfo>;
-  adminName: string;
   control: any;
 };
 
-export function ChangeRolesAndConnection({
-  getValues,
-  adminName,
-  control,
-}: Props) {
+export function ChangeRolesAndConnection({ getValues, control }: Props) {
   const superAdminContext = useSuperAdminFunction();
 
   const user = superAdminContext.makeChangesForSelectedUser?.user;
@@ -42,14 +37,14 @@ export function ChangeRolesAndConnection({
 
   // useEffect(() => {
   //   serAdminName(superAdminContext.makeChangesForSelectedUser.adminName);
-  // }, [superAdminContext.makeChangesForSelectedUser.adminName]);
+  // }, [superAdminContext.makeChangesForSelectedUser.adminName]);'
 
   return (
     <View>
       <NameRoleAdmin
         userName={user?.firstName + " " + user?.lastName}
         role={getValues("role")}
-        adminName={adminName}
+        adminName={getValues("admin.fullName")}
       />
 
       <View style={styles.containerTextButton}>

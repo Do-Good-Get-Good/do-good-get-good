@@ -11,6 +11,7 @@ import colors from "../../assets/theme/colors";
 type Props = {
   title: string;
   onPress: () => void;
+  style?: StyleProp<FlexStyle | TextStyle>;
 };
 
 const containerStyle = (
@@ -22,8 +23,6 @@ const containerStyle = (
 
   alignItems: "center",
   justifyContent: "center",
-  marginTop: 50,
-  marginBottom: 144,
 });
 
 const textStyle = (): StyleProp<TextStyle> => ({
@@ -31,9 +30,12 @@ const textStyle = (): StyleProp<TextStyle> => ({
   fontWeight: "500",
 });
 
-export const LongButton = ({ title, onPress }: Props) => {
+export const LongButton = ({ title, onPress, style }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} style={containerStyle()}>
+    <TouchableOpacity
+      onPress={() => onPress()}
+      style={[containerStyle(), style]}
+    >
       <Text style={textStyle()}>{title}</Text>
     </TouchableOpacity>
   );

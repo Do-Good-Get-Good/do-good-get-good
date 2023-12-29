@@ -13,7 +13,7 @@ type Props = {
   isShowPopup: boolean;
   changeRoleOrAdmin: ChagesType | undefined;
   selected: string;
-  onChange: () => void;
+  onChange: (select: string | { [key: string]: string }) => void;
   setShowPopup: () => void;
 };
 
@@ -24,12 +24,12 @@ export const ChangeRoleOrAdminPopup = ({
   onChange,
   setShowPopup,
 }: Props) => {
-  const allAdminsAnsSuperAdmins =
-    useSuperAdminFunction().allAdminsAnsSuperAdmins;
+  const context = useSuperAdminFunction();
 
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
-    allAdminsAnsSuperAdmins,
+    context.allAdminsAnsSuperAdmins,
   );
+  const userID = context.makeChangesForSelectedUser?.user.id;
 
   const isRolePopup = changeRoleOrAdmin === ChagesType.role;
 
@@ -39,7 +39,12 @@ export const ChangeRoleOrAdminPopup = ({
         mainTitle={isRolePopup ? "Ändra nivå" : "Ändra admin"}
         optionsList={isRolePopup ? roleTitles : allAdminsPopupObj}
         selected={selected}
-        onSelect={onChange}
+        exceptOf={userID}
+        onSelect={(key) =>
+          isRolePopup
+            ? onChange(key)
+            : onChange({ id: key, fullName: allAdminsPopupObj[key] })
+        }
         showPopup={isShowPopup}
         setShowPopup={setShowPopup}
       />

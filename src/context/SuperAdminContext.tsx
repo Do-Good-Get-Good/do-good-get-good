@@ -30,7 +30,9 @@ export const SuperAdminProvider = ({ children }) => {
   );
   const [getAllUsers, setGetAllUsers] = useState(false);
   const [userLevel, setUserLevel] = useState<Role | null>(null);
-  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState([]);
+  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
+    User[]
+  >([]);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
     UserObjectForSuperAdmin | undefined
   >(undefined);
@@ -59,50 +61,50 @@ export const SuperAdminProvider = ({ children }) => {
     }
   }, [getAllUsers]);
 
-  useEffect(() => {
-    if (buttonToSaveChanhgesPressed) {
-      const changeUserData = () => {
-        for (let i = 0; i < arrayOfIdOfChangedUserInfo.length; i++) {
-          let user: User | undefined = undefined;
+  // useEffect(() => {
+  //   if (buttonToSaveChanhgesPressed) {
+  //     const changeUserData = () => {
+  //       for (let i = 0; i < arrayOfIdOfChangedUserInfo.length; i++) {
+  //         let user: User | undefined = undefined;
 
-          const index =
-            makeChangesForSelectedUser?.arrayOfUsersIfAdmin?.findIndex(
-              (x) => x.id === arrayOfIdOfChangedUserInfo[i],
-            );
+  //         const index =
+  //           makeChangesForSelectedUser?.arrayOfUsersIfAdmin?.findIndex(
+  //             (x) => x.id === arrayOfIdOfChangedUserInfo[i],
+  //           );
 
-          if (
-            makeChangesForSelectedUser?.user.id ===
-            arrayOfIdOfChangedUserInfo[i]
-          ) {
-            user = makeChangesForSelectedUser.user;
-          } else if (index != -1) {
-            user = makeChangesForSelectedUser?.arrayOfUsersIfAdmin[index].user;
-          }
+  //         if (
+  //           makeChangesForSelectedUser?.user.id ===
+  //           arrayOfIdOfChangedUserInfo[i]
+  //         ) {
+  //           user = makeChangesForSelectedUser.user;
+  //         } else if (index != -1) {
+  //           user = makeChangesForSelectedUser?.arrayOfUsersIfAdmin[index].user;
+  //         }
 
-          if (user != null) {
-            superAdminUpdatesUserInfo(user).then((res) => {
-              if (res.success) {
-                let tempArray = allUsersInSystem;
-                let findIndexInArray = tempArray.findIndex(
-                  (x) => x.id === user.id,
-                );
-                tempArray.splice(findIndexInArray, 1, user);
-                setAllUsersInSystem(tempArray);
+  //         if (user != null) {
+  //           superAdminUpdatesUserInfo(user).then((res) => {
+  //             if (res.success) {
+  //               let tempArray = allUsersInSystem;
+  //               let findIndexInArray = tempArray.findIndex(
+  //                 (x) => x.id === user.id,
+  //               );
+  //               tempArray.splice(findIndexInArray, 1, user);
+  //               setAllUsersInSystem(tempArray);
 
-                //After User name, status active, .... need to find this object in array and made changes there as well
-              }
-            });
-          }
-          setButtonToSaveChanhgesPressed(false);
-        }
-      };
+  //               //After User name, status active, .... need to find this object in array and made changes there as well
+  //             }
+  //           });
+  //         }
+  //         setButtonToSaveChanhgesPressed(false);
+  //       }
+  //     };
 
-      changeUserData();
-    }
-  }, [buttonToSaveChanhgesPressed]);
+  //     changeUserData();
+  //   }
+  // }, [buttonToSaveChanhgesPressed]);
 
-  const findAdminsAndSuperAdmins = (userArray) => {
-    let adminArray = [];
+  const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
+    let adminArray: Array<User> = [];
     for (let i = 0; i < userArray.length; i++) {
       if (userArray[i].role === "admin" || userArray[i].role === "superadmin") {
         adminArray.push(userArray[i]);

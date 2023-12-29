@@ -1,15 +1,21 @@
 import firestore from "@react-native-firebase/firestore";
 import { User } from "../../utilily/types";
 
-export const superAdminUpdatesUserInfo = async (newChangesInUserInfo: User) => {
+export const superAdminUpdatesUserInfo = async (
+  id: User["id"],
+  firstName: User["firstName"],
+  lastName: User["lastName"],
+  statusActive: User["statusActive"],
+  role: User["role"],
+  adminID: User["adminID"],
+) => {
   try {
-    console.log("newChangesInUserInfo  ", newChangesInUserInfo);
-    firestore().collection("Users").doc(newChangesInUserInfo.id).update({
-      first_name: newChangesInUserInfo.firstName,
-      last_name: newChangesInUserInfo.lastName,
-      status_active: newChangesInUserInfo.statusActive,
-      role: newChangesInUserInfo.role,
-      admin_id: newChangesInUserInfo.adminID,
+    firestore().collection("Users").doc(id).update({
+      first_name: firstName,
+      last_name: lastName,
+      status_active: statusActive,
+      role: role,
+      admin_id: adminID,
     });
     console.log("Super admin update user data");
   } catch (error) {

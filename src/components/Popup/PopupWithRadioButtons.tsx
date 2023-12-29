@@ -1,7 +1,10 @@
 import {
+  FlexStyle,
   ScrollView,
+  StyleProp,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableOpacity,
   View,
 } from "react-native";
@@ -20,7 +23,8 @@ type Props = {
   mainTitle: string;
   optionsList: OptionsListType;
   selected: keyof OptionsListType;
-  onSelect: (select: keyof OptionsListType) => void;
+  onSelect: (select: string) => void;
+  exceptOf?: keyof OptionsListType;
   showPopup: boolean;
   setShowPopup: () => void;
 };
@@ -30,17 +34,17 @@ export const PopupWithRadioButtons = ({
   optionsList,
   selected,
   onSelect,
+  exceptOf,
   showPopup = false,
   setShowPopup,
 }: Props) => {
   const [choice, setChoice] = useState(selected);
   const onOkayButton = () => {
-    onSelect(choice), setShowPopup();
+    onSelect(choice.toString()), setShowPopup();
   };
   useEffect(() => {
     setChoice(selected);
   }, [selected]);
-  console.log(optionsList, "optionsList[selected");
 
   return (
     <Overlay
@@ -50,37 +54,31 @@ export const PopupWithRadioButtons = ({
       onBackdropPress={setShowPopup}
     >
       <View>
-        <ScrollView>
-          <Text style={styles.textTitle}>{mainTitle}</Text>
+        <Text style={styles.textTitle}>{mainTitle}</Text>
+        <ScrollView style={{ height: "50%" }}>
           <View style={{ backgroundColor: colors.background }}>
-            {Object.entries(optionsList).map(([key, value]) => (
-              <View style={styles.containerTextAndRadioButtins} key={key}>
-                <Text>{value}</Text>
-                <TouchableOpacity
-                  onPress={() => setChoice(key)}
-                  // style={styles.radioButtons}
-                >
-                  <View
-                    style={{
-                      width: 20,
-                      height: 20,
-                      borderRadius: 20 / 2,
-                      backgroundColor:
-                        key === choice ? colors.primary : colors.background,
-                      borderColor: colors.dark,
-                      borderWidth: 1,
-                    }}
-                  >
-                    {key === choice ? (
-                      <View style={styles.smallCircul}></View>
-                    ) : null}
+            {Object.entries(optionsList).map(
+              ([key, value]) =>
+                exceptOf !== key && (
+                  <View style={styles.containerTextAndRadioButtins} key={key}>
+                    <Text>{value}</Text>
+                    <TouchableOpacity onPress={() => setChoice(key)}>
+                      <View style={radioButtonStyle(key, choice)}>
+                        {key === choice ? (
+                          <View style={styles.smallCircul}></View>
+                        ) : null}
+                      </View>
+                    </TouchableOpacity>
                   </View>
-                </TouchableOpacity>
-              </View>
-            ))}
+                ),
+            )}
           </View>
         </ScrollView>
-        <LongButton title="Ok" onPress={() => onOkayButton()} />
+        <LongButton
+          style={{ marginTop: 20 }}
+          title="Ok"
+          onPress={() => onOkayButton()}
+        />
       </View>
     </Overlay>
   );
@@ -109,7 +107,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     borderRadius: 5,
     paddingVertical: 17,
-    marginTop: 30,
   },
   overlayStyle: {
     backgroundColor: colors.light,
@@ -117,4 +114,15 @@ const styles = StyleSheet.create({
     height: "35%",
     borderRadius: 5,
   },
+});
+const radioButtonStyle = (
+  key: keyof OptionsListType,
+  choice: keyof OptionsListType,
+) => ({
+  width: 20,
+  height: 20,
+  borderRadius: 20 / 2,
+  backgroundColor: key === choice ? colors.primary : colors.background,
+  borderColor: colors.dark,
+  borderWidth: 1,
 });

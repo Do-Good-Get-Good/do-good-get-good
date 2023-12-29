@@ -23,6 +23,7 @@ import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
+import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -80,7 +81,21 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSave = () => {
+  const onSave = (data: UserInfo) => {
+    console.log(data);
+    console.log("lmmm");
+
+    // return (
+    //   user?.user &&
+    //   superAdminUpdatesUserInfo(
+    //     user.user.id,
+    //     user.user.firstName,
+    //     user.user.lastName,
+    //     data.isActive,
+    //     data.role,
+    //     data.admin.id,
+    //   )
+    // );
     //  superAdminContext.setButtonToSaveChanhgesPressed(true)
   };
 
@@ -103,14 +118,14 @@ export const RolesAndConnection = ({ navigation }: Props) => {
             <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
           </TouchableOpacity>
 
-          <ChangeRolesAndConnection
-            control={control}
-            getValues={getValues}
-            adminName={getValues("admin.fullName")}
-          />
+          <ChangeRolesAndConnection control={control} getValues={getValues} />
 
           {/* <ConnectedUsersDropDown /> */}
-          <LongButton onPress={handleSubmit(onSave)} title={"Spara"} />
+          <LongButton
+            style={{ marginTop: 50 }}
+            onPress={handleSubmit(onSave)}
+            title={"Spara"}
+          />
 
           <View style={styles.logoStyle}>
             <BottomLogo />
