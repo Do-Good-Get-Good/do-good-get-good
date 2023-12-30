@@ -24,6 +24,7 @@ import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
 import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
+import { GoBackButton } from "../components/Buttons/GoBackButton";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -36,10 +37,7 @@ export type UserInfo = {
 const schema: yup.ObjectSchema<UserInfo> = yup
   .object()
   .shape({
-    role: yup
-      .mixed<Role>()
-      .oneOf(Object.values(Role), "* Obligatorisk")
-      .required(),
+    role: yup.mixed<Role>().oneOf(Object.values(Role)).required(),
     admin: yup
       .object()
       .shape({
@@ -63,7 +61,6 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-
   const user = superAdminContext.makeChangesForSelectedUser;
 
   const {
@@ -82,8 +79,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   });
 
   const onSave = (data: UserInfo) => {
-    console.log(data);
-    console.log("lmmm");
+    // console.log(data);
+    return;
 
     // return (
     //   user?.user &&
@@ -105,25 +102,13 @@ export const RolesAndConnection = ({ navigation }: Props) => {
 
       <ScrollView>
         <View style={styles.container}>
-          <TouchableOpacity
-            onPress={() => navigation.goBack()}
-            style={{ flexDirection: "row" }}
-          >
-            <Icon
-              color={colors.dark}
-              name="arrow-left"
-              type="material-community"
-              size={25}
-            />
-            <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
-          </TouchableOpacity>
-
+          <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
 
           {/* <ConnectedUsersDropDown /> */}
           <LongButton
             style={{ marginTop: 50 }}
-            onPress={handleSubmit(onSave)}
+            onPress={() => handleSubmit(onSave)}
             title={"Spara"}
           />
 
@@ -140,13 +125,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 16,
     paddingBottom: 40,
-  },
-  textGoBackButton: {
-    marginLeft: 10,
-    paddingTop: 4,
-    textDecorationLine: "underline",
-    fontWeight: "500",
-    ...typography.b2,
   },
 
   logoStyle: {
