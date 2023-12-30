@@ -14,9 +14,13 @@ const DeveloperOptions = () => {
         <TouchableOpacity
           style={styles.button}
           onPress={() => {
-            const test = functions().httpsCallable("updateAllUsersPermissions");
+            const updateAllUsersPermissions = functions().httpsCallable(
+              "updateAllUsersPermissions",
+            );
 
-            test().then(() => console.log("DONE"));
+            updateAllUsersPermissions()
+              .then((res) => console.log(res))
+              .catch((error) => console.log(error));
           }}
         >
           <Text>Move users permissions to custom claims</Text>
