@@ -19,15 +19,18 @@ const updateClaims = async (users) => {
   await Promise.all(updatePromises);
 };
 
-const removeOldPermissions = async (users, usersColRef) => {
-  const updatePromises = users.docs.map(async (doc) => {
-    return await usersColRef.doc(doc.id).update({
-      role: admin.firestore.FieldValue.delete(),
-    });
-  });
+// Uncomment when deleting old user permissions
+// (ex. when more than 80% of users use the new app version)
 
-  await Promise.all(updatePromises);
-};
+// const removeOldPermissions = async (users, usersColRef) => {
+//   const updatePromises = users.docs.map(async (doc) => {
+//     return await usersColRef.doc(doc.id).update({
+//       role: admin.firestore.FieldValue.delete(),
+//     });
+//   });
+
+//   await Promise.all(updatePromises);
+// };
 
 const updateUsersCustomClaims = async () => {
   const usersColRef = admin.firestore().collection("Users");
@@ -35,7 +38,10 @@ const updateUsersCustomClaims = async () => {
 
   try {
     await updateClaims(users);
-    await removeOldPermissions(users, usersColRef);
+
+    // Uncomment when deleting old user permissions
+    // (ex. when more than 80% of users use the new app version)
+    // await removeOldPermissions(users, usersColRef);
   } catch (error) {
     throw error;
   }
