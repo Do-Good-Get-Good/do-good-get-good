@@ -14,7 +14,7 @@ export const SuperAdminProvider = ({ children }) => {
   const [userLevel, setUserLevel] = useState(null);
   const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState([]);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState(
-    {}
+    {},
   );
   const [buttonToSaveChanhgesPressed, setButtonToSaveChanhgesPressed] =
     useState(false);
@@ -22,11 +22,11 @@ export const SuperAdminProvider = ({ children }) => {
     useState("");
 
   const [arrayOfIdOfChangedUserInfo, setArrayOfIdOfChangedUserInfo] = useState(
-    []
+    [],
   );
 
   useEffect(() => {
-    if (getAllUsers === true && userLevel === "superadmin") {
+    if (getAllUsers === true && userLevel?.superadmin) {
       const getAllUsersThatExistInTheSystem = async () => {
         try {
           let allUsers = await getAllUsersData();
@@ -48,7 +48,7 @@ export const SuperAdminProvider = ({ children }) => {
           let user = null;
 
           var index = makeChangesForSelectedUser.arrayOfUsersIfAdmin.findIndex(
-            (x) => x.user.docId === arrayOfIdOfChangedUserInfo[i]
+            (x) => x.user.docId === arrayOfIdOfChangedUserInfo[i],
           );
 
           if (
@@ -66,7 +66,7 @@ export const SuperAdminProvider = ({ children }) => {
               if (res.success) {
                 let tempArray = allUsersInSystem;
                 let findIndexInArray = tempArray.findIndex(
-                  (x) => x.docId === user.docId
+                  (x) => x.docId === user.docId,
                 );
                 tempArray.splice(findIndexInArray, 1, user);
                 setAllUsersInSystem(tempArray);

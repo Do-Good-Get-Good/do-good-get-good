@@ -2,29 +2,11 @@ const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
-class UnauthenticatedError extends Error {
-  constructor(message) {
-    super(message);
-    this.message = message;
-    this.type = "UnauthenticatedError";
-  }
-}
-
-class NotAnAdminError extends Error {
-  constructor(message) {
-    super(message);
-    this.message = message;
-    this.type = "NotAnAdminError";
-  }
-}
-
-class InvalidRoleError extends Error {
-  constructor(message) {
-    super(message);
-    this.message = message;
-    this.type = "InvalidRoleError";
-  }
-}
+const {
+  UnauthenticatedError,
+  InvalidRoleError,
+  NotPermittedError,
+} = require("./lib/customErrors/errors");
 
 function roleIsValid(role) {
   const validRoles = ["user", "admin", "superadmin"]; //To be adapted with your own list of roles
@@ -51,7 +33,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
         !callerUserRecord.customClaims.superadmin) ||
       callerUserRecord.customClaims.user
     ) {
-      throw new NotAnAdminError("Only Admin users can create new users.");
+      throw new NotPermittedError("Only Admin users can create new users.");
     }
 
     //Checking that the new user role is valid
@@ -124,7 +106,7 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     if (error.type === "UnauthenticatedError") {
       throw new functions.https.HttpsError("unauthenticated", error.message);
     } else if (
-      error.type === "NotAnAdminError" ||
+      error.type === "NotPermittedError" ||
       error.type === "InvalidRoleError"
     ) {
       throw new functions.https.HttpsError(

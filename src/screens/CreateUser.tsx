@@ -9,7 +9,6 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext";
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
 import { Role } from "../utilily/enums";

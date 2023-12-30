@@ -17,9 +17,10 @@ import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
 import AdminPage from "./screens/AdminPage";
+import DeveloperOptions from "./screens/DeveloperOptions/DeveloperOptions";
 
 const Stack = createNativeStackNavigator();
-export const SuperAdminStack = () => {
+export const SuperAdminStack = ({ developer }: { developer: boolean }) => {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -51,6 +52,9 @@ export const SuperAdminStack = () => {
           name="RolesAndConnection"
           component={RolesAndConnection}
         />
+        {developer && (
+          <Stack.Screen name="DeveloperOptions" component={DeveloperOptions} />
+        )}
       </Stack.Navigator>
     </NavigationContainer>
   );
