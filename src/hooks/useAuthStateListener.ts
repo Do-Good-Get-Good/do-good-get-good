@@ -14,7 +14,6 @@ export const useAuthStateListener = () => {
     if (userState) {
       try {
         let userIdToken = await userState.getIdTokenResult();
-        console.log(userIdToken.claims);
         setUserLevel(userIdToken.claims);
       } catch (error: any) {
         crashlytics().log("There was an error getting the users ID Token");
