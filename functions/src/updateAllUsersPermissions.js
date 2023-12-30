@@ -64,7 +64,8 @@ exports.updateAllUsersPermissions = functions.https.onCall(
 
       return updateUsersCustomClaims()
         .then(() => ({
-          success: "WOHOOOOO",
+          success:
+            "Flyttningen av alla användares behörigheter till custom claims har slutförts",
         }))
         .catch((error) => {
           throw error;
