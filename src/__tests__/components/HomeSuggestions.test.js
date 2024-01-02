@@ -8,6 +8,26 @@ jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
 }));
 
+jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
+
 const mockNavigation = {
   navigate: jest.fn(),
 };
@@ -19,7 +39,7 @@ const mockSuggestions = [
     city: "city",
     place: "place",
     description: "description",
-    photo: "symbol_earth",
+    photo: "symbol_blood",
     popular: true,
   },
 ];
@@ -44,7 +64,7 @@ describe("Testing HomeSuggestions", () => {
 
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      photo: "symbol_blood",
     });
 
     const suggestionCard = getByTestId("lookDetails");

@@ -30,10 +30,10 @@ describe("Testing Login", () => {
     );
 
     expect(getByTestId("login.backgroundImage").props.source.testUri).toBe(
-      "../../../img/blueprint-white.png",
+      "../../../assets/images/blueprint-white.png",
     );
     expect(getByTestId("login.dgggLogo").props.source.testUri).toBe(
-      "../../../img/Logotyp_DGGG.png",
+      "../../../assets/images/Logotyp_DGGG.png",
     );
     getByTestId("login.motivationalText");
     getByPlaceholderText("E-post");
@@ -42,7 +42,7 @@ describe("Testing Login", () => {
     expect(getAllByText("Glömt ditt lösenord?").length).toBe(1);
     expect(getAllByText("Tryck här").length).toBe(1);
     expect(getByTestId("login.bottomLogo").props.source.testUri).toBe(
-      "../../../img/Technogarden-logotyp-Large.png",
+      "../../../assets/images/Technogarden-logotyp-Large.png",
     );
   });
 

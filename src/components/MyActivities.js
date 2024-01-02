@@ -11,25 +11,19 @@ import {
 
 import { Icon } from "@rneui/base";
 import CalendarView from "./CalendarView";
-import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export const MyActivities = ({ activities, registeredTime }) => {
+  const { getImageForActivity } = useActivityImages();
+
   const [visible, setVisible] = useState(false);
   const [activity, setActivity] = useState({});
 
   const toggleOverlay = () => {
     setVisible(!visible);
   };
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   return (
     <>
@@ -67,7 +61,10 @@ export const MyActivities = ({ activities, registeredTime }) => {
             <Image
               testID="imageId"
               style={styles.image}
-              source={setTheRightPhoto(myActivity.photo)}
+              source={getImageForActivity(
+                myActivity.photo,
+                myActivity.imageUrl,
+              )}
             />
           </View>
 
@@ -98,38 +95,32 @@ export const MyActivities = ({ activities, registeredTime }) => {
 
 const styles = StyleSheet.create({
   activityContainer: {
-    flex: 1,
     marginTop: 10,
+    paddingTop: 10,
+    paddingHorizontal: 10,
     backgroundColor: colors.background,
     borderRadius: 2,
   },
-  image: {
-    flex: 1,
-    resizeMode: "contain",
-    alignItems: "center",
-    marginRight: 12,
-    marginTop: 10,
-    borderRadius: 5,
-    height: 98,
-  },
   photoAndText: {
-    flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
+  },
+  image: {
+    borderRadius: 5,
+    height: 100,
+    width: 100,
+    resizeMode: "cover",
   },
   textTitleCityTime: {
-    flex: 2,
-    alignItems: "flex-start",
-    marginLeft: 10,
-    marginTop: 11,
     color: colors.dark,
   },
   textTitle: {
     ...typography.cardTitle,
     color: colors.dark,
+    marginTop: -3,
   },
   mapIconAndCityText(myActivity) {
     return {
-      flex: 1,
       flexDirection: "row",
       paddingTop: myActivity.title.length > 16 ? 5 : 25,
       alignItems: "center",
@@ -137,14 +128,12 @@ const styles = StyleSheet.create({
   },
   textCity: {
     ...typography.b1,
-    paddingTop: 5,
-    marginLeft: 12,
+    marginLeft: 10,
     color: colors.dark,
   },
   textTime: {
     ...typography.b1,
-    paddingTop: 3,
-    marginLeft: 12,
+    marginLeft: 10,
     color: colors.dark,
   },
   läggTid: {
@@ -153,7 +142,6 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   iconsAndTextTimeContainer: {
-    flex: 1,
     flexDirection: "row",
     marginTop: 6,
     alignItems: "center",
@@ -161,7 +149,6 @@ const styles = StyleSheet.create({
   shedowForButton: {
     borderRadius: 5,
     marginVertical: 10,
-    marginHorizontal: 10,
     paddingVertical: 15,
     paddingHorizontal: 10,
     backgroundColor: colors.primary,

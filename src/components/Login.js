@@ -115,7 +115,7 @@ export default function Login() {
   return (
     <ImageBackground
       testID="login.backgroundImage"
-      source={require("../img/blueprint-white.png")}
+      source={require("../assets/images/blueprint-white.png")}
       resizeMode={"cover"}
       style={{
         backgroundColor: "#00000009",
@@ -134,7 +134,7 @@ export default function Login() {
             <View style={styles.logo}>
               <Image
                 testID="login.dgggLogo"
-                source={require("../img/Logotyp_DGGG.png")}
+                source={require("../assets/images/Logotyp_DGGG.png")}
                 style={styles.logoImg}
               />
               <Text

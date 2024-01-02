@@ -54,7 +54,7 @@ const Menu = () => {
           >
             <Image
               testID="dgggLogo"
-              source={require("../img/Logotyp_DGGG.png")}
+              source={require("../assets/images/Logotyp_DGGG.png")}
               style={styles.headerLogo}
             />
           </Pressable>
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
   ifNoInternet: {
     ...typography.b1,
     color: colors.error,
-    alignSelf: "flex-start",
     marginHorizontal: 16,
   },
 });
