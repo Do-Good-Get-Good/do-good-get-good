@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
 import { Icon } from "@rneui/base";
 import { useRoute } from "@react-navigation/native";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -60,10 +60,9 @@ export function DropDownSmall({}) {
     };
   };
 
-  function pressSelectionInsideDropDown(selection, index) {
+  function pressSelectionInsideDropDown(selection) {
     if (rout.name === "CreateActivity") {
       setOpenDropDown(false);
-      creactActivityContext.chooseInDropDown(selection);
       setSortBy(selection);
     } else {
       console.log("No rout");

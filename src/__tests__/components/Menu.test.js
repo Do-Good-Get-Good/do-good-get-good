@@ -39,7 +39,9 @@ describe("Testing Menu for User and Admin", () => {
   it("can find a Do Good Get Good Icon", () => {
     const { getByTestId } = render(<UserMenu />);
     const logo = getByTestId("dgggLogo");
-    expect(logo.props["source"].testUri).toBe("../../../img/Logotyp_DGGG.png");
+    expect(logo.props["source"].testUri).toBe(
+      "../../../assets/images/Logotyp_DGGG.png",
+    );
   });
   it("can press the button", () => {
     const { getByTestId } = render(<UserMenu />);

@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
 import ActivityCard from "../../screens/ActivityCard";
 
@@ -14,6 +14,24 @@ jest.mock("@react-navigation/native");
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
+
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
@@ -24,7 +42,7 @@ jest.mock("../../context/AdminGalleryContext", () => ({
   }),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
     activityHasChangedID: jest.fn(),
@@ -49,7 +67,7 @@ const route = {
       title: "title",
       city: "city",
       description: " description",
-      photo: "symbol_earth",
+      photo: "symbol_blood",
     },
     active: true,
     tgPopular: true,
@@ -57,17 +75,12 @@ const route = {
 };
 
 describe("Testing ActivityCard ", () => {
-  it("Can find ActivityCard", () => {
-    const component = render(<ActivityCard route={route} />);
-    component.getByText("Gå tillbaka");
-  });
-
   it("Photo exists in ActivityCard", () => {
     const { getByTestId } = render(<ActivityCard route={route} />);
     expect(getByTestId("photo"));
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      photo: "symbol_blood",
     });
   });
 

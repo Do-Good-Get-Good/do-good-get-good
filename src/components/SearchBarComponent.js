@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { Icon } from "@rneui/base";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
