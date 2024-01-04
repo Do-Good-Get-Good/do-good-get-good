@@ -8,7 +8,7 @@ import { CreateActivity } from "./screens/CreateActivity";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ImagesGallery } from "./screens/ImagesGallery";
 import CreateUser from "./screens/CreateUser";
-import ChangeUser from "./screens/ChangeUser";
+import { ChangeUser } from "./screens/ChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
 import RolesAndConnection from "./screens/RolesAndConnection";

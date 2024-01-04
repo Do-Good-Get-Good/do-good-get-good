@@ -141,10 +141,10 @@ export const updateActivityInfo = (newData) => {
       active_status: newData.active,
       activity_city: newData.city,
       activity_description: newData.description,
-      activity_photo: newData.photo,
       activity_place: newData.place,
       activity_title: newData.title,
       tg_favorite: newData.popular,
+      imageUrl: newData.imageUrl,
     });
   } catch (error) {
     console.log(error);

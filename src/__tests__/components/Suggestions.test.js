@@ -3,10 +3,28 @@ import React from "react";
 import { render, fireEvent, act } from "@testing-library/react-native";
 
 import Suggestions from "../../components/Suggestions";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+  return {
+    ...actualAsyncStorage,
+    getItem: () => null,
+  };
+});
+
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    getImageForActivity: jest.fn(() => ({
+      photo: "symbol_blood",
+    })),
+  })),
+}));
 
 jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
@@ -23,7 +41,7 @@ jest.mock("../../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     changedActivity: jest.fn(),
     setUpdateGallery: jest.fn(),
@@ -48,7 +66,7 @@ const adminGallery = [
     city: "city",
     description: "description",
     id: "id",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     place: "place",
     popular: true,
     title: "title",
@@ -61,7 +79,7 @@ const inactiveActivities = [
     city: "city",
     description: "description",
     id: "id",
-    photo: "symbol_earth",
+    photo: "blodgivning",
     popular: false,
     title: "title",
   },
@@ -145,7 +163,7 @@ describe("Testing Suggestions", () => {
 
     const image = getByTestId("photo");
     expect(image.props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_earth.png",
+      photo: "symbol_blood",
     });
   });
 

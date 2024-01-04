@@ -13,20 +13,10 @@ const BottomNavButtons = ({
 }) => {
   return (
     <View style={styles.containerForTwoBottomButtons}>
-      <TouchableOpacity
-        onPress={() => {
-          primaryFunc();
-        }}
-        style={styles.button}
-      >
+      <TouchableOpacity onPress={primaryFunc} style={styles.button}>
         <Text style={styles.buttonText}>{primaryText}</Text>
       </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => {
-          secondaryFunc();
-        }}
-        style={styles.button}
-      >
+      <TouchableOpacity onPress={secondaryFunc} style={styles.button}>
         <LinearGradient
           colors={[colors.primary, colors.secondary]}
           start={{ x: 0, y: 0 }}

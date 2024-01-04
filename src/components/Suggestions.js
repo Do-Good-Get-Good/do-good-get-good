@@ -9,13 +9,13 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export function Suggestions({
   navigation,
@@ -26,6 +26,7 @@ export function Suggestions({
   const useCreateActivityContext = useCreateActivityFunction();
   const activityCardContext = useActivityCardContext();
   const adminGalleryContext = useAdminGalleryFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const [showArray, setShowArray] = useState([]);
   const [showActiveArray, setShowActiveArray] = useState(true);
@@ -41,14 +42,6 @@ export function Suggestions({
       setShowArray(sortingByTitle(adminGallery));
     }
   }, [adminGallery, inactiveActivities, showActiveArray]);
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   function lookDetails(activety, statusActive, statusPopular) {
     Keyboard.dismiss();
@@ -120,51 +113,58 @@ export function Suggestions({
     return (
       <View index={index} key={id}>
         <TouchableOpacity
+          key={suggestion.id}
           testID="lookDetails"
+          style={styles.insideActivityContainer}
+          activeOpacity={0.4}
           onPress={() =>
             lookDetails(suggestion, suggestion.active, suggestion.popular)
           }
-          style={styles.insideActivityContainer}
-          activeOpacity={0.4}
         >
-          <View style={styles.photoAndText}>
-            <View style={styles.textTitleCityDescriptipn}>
-              <View style={{ flex: 1, flexDirection: "row" }}>
-                <View style={{ flex: 1 }}>
-                  <Text numberOfLines={2} style={styles.textTitle}>
-                    {suggestion.title}
-                  </Text>
-
-                  <View style={styles.iconsAndTextCityContainer}>
-                    <Icon
-                      type="material-community"
-                      name="map-marker-outline"
-                      color={colors.dark}
-                      size={25}
-                    />
-
-                    <Text style={styles.textCity}>{suggestion.city}</Text>
-                  </View>
-                </View>
-                <Image
-                  testID="photo"
-                  style={styles.image}
-                  source={setTheRightPhoto(suggestion.photo)}
-                />
-              </View>
-
-              <View style={styles.iconsAndTextDescriptionContainer}>
-                <Icon
-                  type="material-community"
-                  name="information-outline"
-                  color={colors.dark}
-                  size={25}
-                  style={styles.iconDescription}
-                />
-                <Text numberOfLines={2} style={styles.textDescription}>
-                  {suggestion.description}
+          <View style={styles.textTitleCityDescriptipn}>
+            <View style={{ flexDirection: "row", marginBottom: 6 }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text numberOfLines={2} style={styles.textTitle}>
+                  {suggestion.title}
                 </Text>
+
+                <View style={styles.iconsAndTextCityContainer}>
+                  <Icon
+                    type="material-community"
+                    name="map-marker-outline"
+                    color={colors.dark}
+                    size={25}
+                  />
+
+                  <Text style={styles.textCity}>{suggestion.city}</Text>
+                </View>
               </View>
+              <Image
+                testID="photo"
+                style={styles.image}
+                source={getImageForActivity(
+                  suggestion.photo,
+                  suggestion.imageUrl,
+                )}
+              />
+            </View>
+
+            <View style={styles.iconsAndTextDescriptionContainer}>
+              <Icon
+                type="material-community"
+                name="information-outline"
+                color={colors.dark}
+                size={25}
+                style={styles.iconDescription}
+              />
+              <Text numberOfLines={2} style={styles.textDescription}>
+                {suggestion.description}
+              </Text>
             </View>
           </View>
         </TouchableOpacity>
@@ -210,10 +210,9 @@ const styles = StyleSheet.create({
     color: colors.dark,
   },
   activityContainer: {
-    flex: 1,
     marginTop: 5,
     alignSelf: "center",
-    width: "99%",
+    width: "100%",
   },
   insideActivityContainer: {
     flex: 1,
@@ -238,31 +237,21 @@ const styles = StyleSheet.create({
     }),
   },
   image: {
-    flex: 0.5,
+    width: 100,
     height: 100,
-    resizeMode: "contain",
+    resizeMode: "cover",
     alignItems: "center",
-    marginHorizontal: 1,
-    marginTop: 2,
     borderRadius: 5,
   },
-  photoAndText: {
-    flex: 1,
-    flexDirection: "row",
-  },
   textTitleCityDescriptipn: {
-    flex: 2,
-    marginRight: 7,
     alignItems: "flex-start",
-    marginLeft: 10,
-    marginTop: 5,
     color: colors.dark,
+    paddingTop: 10,
+    paddingHorizontal: 10,
   },
   textTitle: {
     ...typography.cardTitle,
-    paddingTop: 3,
     color: colors.dark,
-    height: 65,
   },
   textCity: {
     flex: 1,
@@ -271,7 +260,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   iconsAndTextCityContainer: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },

@@ -4,33 +4,47 @@ import { Text, StyleSheet, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import Menu from "../components/Menu";
-import UserForm from "../components/UserForm";
+
 import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
-
+import { Role } from "../utilily/enums";
 import typography from "../assets/theme/typography";
 
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
+import { CreateUserForm } from "../components";
 
-const CreateUser = ({ route, navigation }) => {
-  const userLevel = useUserLevelCheckFunction();
+export type UserNewAccount = {
+  name: string;
+  surname: string;
+  email: string;
+  confirmEmail?: string;
+  password: string;
+  role?: Role | "Behörighet";
+};
+
+type Props = {
+  route: any;
+  navigation: any;
+};
+
+const CreateUser = ({ route, navigation }: Props) => {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
 
   const [loading, setLoading] = useState(false);
 
   // Step 1
-  const [user, setUser] = useState({
-    name: null,
-    surname: null,
-    email: null,
-    password: null,
-    role: null,
+  const [user, setUser] = useState<UserNewAccount>({
+    name: "",
+    surname: "",
+    email: "",
+    password: "",
+    role: Role.user,
   });
 
   // Step 2
@@ -40,17 +54,13 @@ const CreateUser = ({ route, navigation }) => {
     city: "",
     description: "",
     favorite: false,
-    image: "",
+    photo: "",
+    imageUrl: "",
   });
   const [selectedActivity, setSelectedActivity] = useState(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
-    <UserForm
-      userLevel={userLevel}
-      user={user}
-      setUser={setUser}
-      nextPage={handleNextPage}
-    />,
+    <CreateUserForm user={user} setUser={setUser} nextPage={handleNextPage} />,
     <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
@@ -63,12 +73,16 @@ const CreateUser = ({ route, navigation }) => {
   ]);
 
   useEffect(() => {
-    if (route.params?.imageForActivity === undefined) {
-      setActivity({ ...activity, image: "symbol_hands_heart-DEFAULT" });
+    if (!route.params?.image) {
+      setActivity({ ...activity, photo: "placeholder" });
     } else {
-      setActivity({ ...activity, image: route.params?.imageForActivity });
+      setActivity({
+        ...activity,
+        photo: route.params?.image.photo,
+        imageUrl: route.params?.image.imageUrl,
+      });
     }
-  }, [route.params?.imageForActivity]);
+  }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
   function handleNextPage() {
     next();
@@ -83,7 +97,7 @@ const CreateUser = ({ route, navigation }) => {
       user,
       selectedActivity,
       setLoading,
-      navigation
+      navigation,
     );
   }
 
@@ -92,7 +106,8 @@ const CreateUser = ({ route, navigation }) => {
       active_status: true,
       activity_city: activity.city,
       activity_description: activity.description,
-      activity_photo: activity.image,
+      activity_photo: activity.photo,
+      image_url: activity.imageUrl,
       activity_place: activity.place,
       activity_title: activity.title,
       tg_favorite: activity.favorite,
@@ -109,7 +124,7 @@ const CreateUser = ({ route, navigation }) => {
       newUser,
       setAllActiveActvivitiesFB,
       setLoading,
-      navigation
+      navigation,
     );
   }
 
