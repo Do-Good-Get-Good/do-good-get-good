@@ -20,7 +20,7 @@ export const MenuLink = ({ navigatationObj, openOverlay }: Props) => {
 
   return (
     <TouchableOpacity
-      testID="menuOverlay.homeButton"
+      testID={`menuLinkButton.${navigatationObj.screenName}`}
       style={styles.menuOverlayLinkStyling}
       onPress={() => {
         openOverlay();

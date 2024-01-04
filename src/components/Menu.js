@@ -39,7 +39,7 @@ const Menu = () => {
   };
 
   return (
-    <>
+    <View>
       <View style={styles.header}>
         <StatusBar
           backgroundColor={visible ? colors.primary : colors.light}
@@ -78,7 +78,7 @@ const Menu = () => {
       {inetInfo.isConnected === false && ifNoInternetConnection()}
       {Config.NODE_ENV === "dev" && <DevRelease />}
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
-    </>
+    </View>
   );
 };
 

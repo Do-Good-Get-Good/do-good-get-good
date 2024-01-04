@@ -2,10 +2,15 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import MenuOverlay from "../../components/MenuOverlay/MenuOverlay";
+import { MenuOverlay } from "../../components/MenuOverlay";
 
 import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
-import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
+import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigation";
+import {
+  mockUserNav,
+  adminNavigations,
+  superAdminNavigations,
+} from "../../components/MenuOverlay/mock/mockUseMenuNavigation";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -42,13 +47,6 @@ jest.mock("../../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../../context/AdminGalleryContext", () => ({
-  useAdminGalleryFunction: () => ({
-    chooseActiveOrNot: jest.fn(),
-    setCleanUpSearchBarComponent: jest.fn(),
-  }),
-}));
-
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     setGetAllUsers: jest.fn(),
@@ -60,11 +58,36 @@ afterEach(() => {
   jest.clearAllMocks();
 });
 
+jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
+  useMenuNavigation: jest.fn(),
+}));
+
+const user = () => {
+  useUserLevelCheckFunction.mockReturnValueOnce("user");
+  useMenuNavigation.mockReturnValueOnce(mockUserNav);
+};
+
+const admin = () => {
+  useUserLevelCheckFunction.mockReturnValueOnce("admin");
+  useMenuNavigation.mockReturnValueOnce([...mockUserNav, ...adminNavigations]);
+};
+
+const superAdmin = () => {
+  useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+  useMenuNavigation.mockReturnValueOnce([
+    ...mockUserNav,
+    ...adminNavigations,
+    ...superAdminNavigations,
+  ]);
+};
+
 describe("Testing MenuOverlay", () => {
   it("Are the user-menu buttons visible", () => {
+    user();
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />,
     );
+
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Min tid").length).toBe(1);
@@ -80,7 +103,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the admin-menu buttons visible", () => {
-    useUserLevelCheckFunction.mockReturnValueOnce("admin");
+    admin();
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />,
     );
@@ -97,7 +120,7 @@ describe("Testing MenuOverlay", () => {
   });
 
   it("Are the superadmin-menu buttons visible", () => {
-    useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+    superAdmin();
     const { getAllByText } = render(<MenuOverlay isVisible={true} />);
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
@@ -113,6 +136,7 @@ describe("Testing MenuOverlay", () => {
   describe("Can you click on the menu buttons?", () => {
     it("Close button", () => {
       const onClickMock = jest.fn();
+      user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
@@ -123,89 +147,91 @@ describe("Testing MenuOverlay", () => {
 
     it("Home button", () => {
       const onClickMock = jest.fn();
-      const { getByTestId } = render(
+      user();
+      const { getByTestId, debug } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
-      const homeButton = getByTestId("menuOverlay.homeButton");
+      const homeButton = getByTestId("menuLinkButton.HomePage");
       fireEvent.press(homeButton);
       expect(mockedNavigate).toHaveBeenCalledWith("HomePage");
     });
 
-    it("Activities button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("admin");
-      const onClickMock = jest.fn();
-      const { getByTestId } = render(
-        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
-      );
-
-      const activitiesButton = getByTestId("menuOverlay.activitiesButton");
-      fireEvent.press(activitiesButton);
-      useAdminGalleryFunction().chooseActiveOrNot.mockReturnValue(true);
-      useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
-        true,
-      );
-
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
-    });
-
-    it("Admin button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("admin");
-      const onClickMock = jest.fn();
-      const { getByTestId } = render(
-        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
-      );
-
-      const adminButton = getByTestId("menuOverlay.adminButton");
-      fireEvent.press(adminButton);
-
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage");
-    });
-
-    it("Super admin button", () => {
-      useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
-      const onClickMock = jest.fn();
-      const { getByTestId } = render(
-        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
-      );
-
-      const superAdminButton = getByTestId("menuOverlay.allUsersInTheSystem");
-      fireEvent.press(superAdminButton);
-
-      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem");
-    });
-
     it("My time button", () => {
       const onClickMock = jest.fn();
+      user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
-      const myTimeButton = getByTestId("menuOverlay.myTimeButton");
+      const myTimeButton = getByTestId("menuLinkButton.MyTimePage");
       fireEvent.press(myTimeButton);
       expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
     });
 
-    it("About button", () => {
+    it("Concept button", () => {
       const onClickMock = jest.fn();
+      user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
-      const aboutButton = getByTestId("menuOverlay.aboutButton");
+      const aboutButton = getByTestId("menuLinkButton.ConceptPage");
       fireEvent.press(aboutButton);
       expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage");
     });
 
     it("FAQ button", () => {
       const onClickMock = jest.fn();
+      user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
-      const faqButton = getByTestId("menuOverlay.faqButton");
+      const faqButton = getByTestId("menuLinkButton.Faq");
       fireEvent.press(faqButton);
       expect(mockedNavigate).toHaveBeenCalledWith("Faq");
+    });
+
+    it("Admin button", () => {
+      admin();
+      const onClickMock = jest.fn();
+      const { getByTestId, debug } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+      );
+      debug();
+      const adminButton = getByTestId("menuLinkButton.AdminPage");
+      fireEvent.press(adminButton);
+
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage");
+    });
+
+    it("Activities button", () => {
+      admin();
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+      );
+
+      const activitiesButton = getByTestId(
+        "menuLinkButton.AdminActivityGallery",
+      );
+      fireEvent.press(activitiesButton);
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
+    });
+    it("Super admin button", () => {
+      superAdmin();
+      const onClickMock = jest.fn();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+      );
+
+      const superAdminButton = getByTestId(
+        "menuLinkButton.AllUsersInTheSystem",
+      );
+      fireEvent.press(superAdminButton);
+
+      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem");
     });
 
     it("Log out button", () => {

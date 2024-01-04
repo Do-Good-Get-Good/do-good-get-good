@@ -6,8 +6,8 @@ import { HomePage } from "../../screens/HomePage";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("../../components/MenuOverlay", () => () => {
-  return <mockMenuOverlay />;
+jest.mock("../../components/Menu", () => () => {
+  return <mockMenu />;
 });
 
 jest.mock("@rneui/base/dist/Icon/", () => ({
@@ -64,6 +64,7 @@ jest.mock("../../components/HomeSuggestions", () => () => {
 describe("Testing HomePage", () => {
   it("Can find the 'Förslag & inspiration' text", () => {
     const { getByText } = render(<HomePage />);
+
     expect(getByText("Förslag & inspiration"));
   });
 });

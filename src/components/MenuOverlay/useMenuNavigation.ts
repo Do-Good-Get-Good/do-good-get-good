@@ -13,7 +13,7 @@ export type NavigationObject = {
   toDo?: () => void;
 };
 
-const userNavigations: Array<NavigationObject> = [
+export const userNavigations: Array<NavigationObject> = [
   {
     title: "Hem",
     screenName: UserStack.HomePage,
