@@ -1,5 +1,5 @@
-import React, {useState, useEffect} from 'react';
-import LinearGradient from 'react-native-linear-gradient';
+import React, { useState, useEffect, useMemo } from "react";
+import LinearGradient from "react-native-linear-gradient";
 import {
   Text,
   StyleSheet,
@@ -10,45 +10,39 @@ import {
   ScrollView,
   TextInput,
   Alert,
-} from 'react-native';
+} from "react-native";
 
-import {SafeAreaView} from 'react-native-safe-area-context';
+import { SafeAreaView } from "react-native-safe-area-context";
 
-import Menu from '../components/Menu';
-import {Icon} from '@rneui/base';
-import Images from '../Images';
-import {useCreateActivityFunction} from '../context/CreateActivityContext';
-import typography from '../assets/theme/typography';
-import colors from '../assets/theme/colors';
-import BottomNavButtons from '../components/BottomNavButtons';
-import {addActivity} from '../firebase-functions/add';
-import LoadingOverlay from '../components/LoadingOverlay';
+import Menu from "../components/Menu";
+import { Icon } from "@rneui/base";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import typography from "../assets/theme/typography";
+import colors from "../assets/theme/colors";
+import BottomNavButtons from "../components/BottomNavButtons";
+import { addActivity } from "../firebase-functions/add";
+import LoadingOverlay from "../components/LoadingOverlay";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import useSelectedImage from "../hooks/useSelectedImage";
 
-export function CreateActivity({route, navigation}) {
-  const {setAllActiveActvivitiesFB} = useCreateActivityFunction();
+export function CreateActivity({ route, navigation }) {
+  const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
+  const photo = useSelectedImage(route.params?.image);
 
   const [checkBoxPressed, setCheckBoxPressed] = useState(false);
   const [title, setTitle] = useState(null);
   const [place, setPlace] = useState(null);
   const [city, setCity] = useState(null);
-  const [description, setDescription] = useState('');
+  const [description, setDescription] = useState("");
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-  const [newActivityImage, setNewActivityImage] = useState();
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    if (route.params?.imageForActivity === undefined) {
-      setNewActivityImage('symbol_hands_heart-DEFAULT');
-    } else {
-      setNewActivityImage(route.params?.imageForActivity);
-    }
-  }, [route.params?.imageForActivity]);
-
-  useEffect(() => {
     if (title !== null) {
-      if (title.trim() === '') {
+      if (title.trim() === "") {
         setTitleFilledUp(false);
       } else {
         setTitleFilledUp(true);
@@ -58,7 +52,7 @@ export function CreateActivity({route, navigation}) {
 
   useEffect(() => {
     if (city !== null) {
-      if (city.trim() === '') {
+      if (city.trim() === "") {
         setCityFilledUp(false);
       } else {
         setCityFilledUp(true);
@@ -68,7 +62,7 @@ export function CreateActivity({route, navigation}) {
 
   useEffect(() => {
     if (place !== null) {
-      if (place.trim() === '') {
+      if (place.trim() === "") {
         setPlaceFilledUp(false);
       } else {
         setPlaceFilledUp(true);
@@ -85,28 +79,21 @@ export function CreateActivity({route, navigation}) {
     return false;
   }
 
-  function setImageForNewActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (newActivityImage === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
   async function createActivityAndAddLocally() {
     setLoading(true);
     const newActivity = {
       active_status: true,
       activity_city: city,
       activity_description: description,
-      activity_photo: newActivityImage,
+      activity_photo: photo.photo,
+      image_url: photo.imageUrl,
       activity_place: place,
       activity_title: title,
       tg_favorite: checkBoxPressed,
     };
     try {
       let createdActivityId = await addActivity(newActivity);
-      setAllActiveActvivitiesFB(prev => [
+      setAllActiveActvivitiesFB((prev) => [
         ...prev,
         {
           id: createdActivityId,
@@ -116,6 +103,7 @@ export function CreateActivity({route, navigation}) {
           place: newActivity.activity_place,
           description: newActivity.activity_description,
           photo: newActivity.activity_photo,
+          imageUrl: newActivity.image_url,
           popular: newActivity.tg_favorite,
         },
       ]);
@@ -124,21 +112,21 @@ export function CreateActivity({route, navigation}) {
     } catch (error) {
       setLoading(false);
       Alert.alert(
-        'Ett fel uppstod! Det gick inte att skapa aktiviteten',
+        "Ett fel uppstod! Det gick inte att skapa aktiviteten",
         error.message,
       );
     }
   }
 
   function alertPopUp(title) {
-    let alertTitle = 'Skapa aktivitet';
+    let alertTitle = "Skapa aktivitet";
     let alertMessage = `Aktiviteten '${title}' har skapats!`;
 
     Alert.alert(alertTitle, alertMessage, [
       {
-        text: 'OK',
+        text: "OK",
         onPress: () => {
-          navigation.navigate('AdminPage');
+          navigation.navigate("AdminPage");
         },
       },
     ]);
@@ -181,13 +169,14 @@ export function CreateActivity({route, navigation}) {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       {loading && <LoadingOverlay />}
       <Menu />
       <Text style={styles.textMainTitle}>Lägg till aktivitet</Text>
       <ScrollView
-        keyboardDismissMode={'on-drag'}
-        contentContainerStyle={{marginHorizontal: 16, paddingBottom: 16}}>
+        keyboardDismissMode={"on-drag"}
+        contentContainerStyle={{ marginHorizontal: 16, paddingBottom: 16 }}
+      >
         <TextInput
           style={[titleCityPlaceStyle(), titleBorderStyle()]}
           maxLength={30}
@@ -244,22 +233,24 @@ export function CreateActivity({route, navigation}) {
           <Image
             testID="photo"
             style={styles.image}
-            source={setImageForNewActivity()}
+            source={getImageForActivity(photo.photo, photo.imageUrl)}
           />
 
           <TouchableOpacity
             testID="navigateToImagesGallery"
             onPress={() =>
-              navigation.navigate('ImagesGallery', {
-                cameFrom: 'CreateActivity',
-                selectedImage: newActivityImage,
+              navigation.navigate("ImagesGallery", {
+                cameFrom: "CreateActivity",
+                selectedImage: photo,
               })
-            }>
+            }
+          >
             <LinearGradient
               colors={[colors.primary, colors.secondary]}
-              start={{x: 0, y: 0}}
-              end={{x: 1, y: 1}}
-              style={styles.buttonBorderStyle}>
+              start={{ x: 0, y: 0 }}
+              end={{ x: 1, y: 1 }}
+              style={styles.buttonBorderStyle}
+            >
               <Text style={styles.textButtonInsert}>Infoga</Text>
             </LinearGradient>
           </TouchableOpacity>
@@ -272,7 +263,8 @@ export function CreateActivity({route, navigation}) {
               checkBoxPressed === false
                 ? setCheckBoxPressed(true)
                 : setCheckBoxPressed(false);
-            }}>
+            }}
+          >
             {checkBoxPressed === true ? (
               <View style={styles.checkBoxTrue}>
                 <Icon name="done" size={20}></Icon>
@@ -304,7 +296,7 @@ export default CreateActivity;
 const styles = StyleSheet.create({
   textMainTitle: {
     ...typography.h2,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
     marginHorizontal: 16,
     ...Platform.select({
@@ -334,7 +326,7 @@ const styles = StyleSheet.create({
     paddingLeft: 11,
     paddingTop: 11,
     paddingBottom: 11,
-    textAlignVertical: 'top',
+    textAlignVertical: "top",
     height: 130,
     marginTop: 20,
     ...typography.b1,
@@ -346,9 +338,9 @@ const styles = StyleSheet.create({
     borderColor: colors.background,
   },
   containerImageAndInsertButton: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     marginBottom: 20,
   },
   textButtonInsert: {
@@ -359,17 +351,17 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.light,
-    textAlign: 'center',
-    paddingTop: Platform.OS === 'ios' ? 12 : null,
-    textAlignVertical: 'center',
-    paddingHorizontal: Platform.OS === 'ios' ? 63 : 64,
+    textAlign: "center",
+    paddingTop: Platform.OS === "ios" ? 12 : null,
+    textAlignVertical: "center",
+    paddingHorizontal: Platform.OS === "ios" ? 63 : 64,
     ...typography.button.lg,
-    fontWeight: '500',
+    fontWeight: "500",
     color: colors.dark,
-    overflow: 'hidden',
+    overflow: "hidden",
   },
   image: {
-    resizeMode: 'contain',
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,
@@ -381,13 +373,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 55,
     width: 200,
-    alignItems: 'center',
+    alignItems: "center",
   },
   containerTextAndCheckbox: {
     flex: 1,
     marginTop: 10,
     marginBottom: 5,
-    flexDirection: 'row',
+    flexDirection: "row",
   },
   checkBoxTrue: {
     backgroundColor: colors.primary,
@@ -405,7 +397,7 @@ const styles = StyleSheet.create({
   textNearCheckBox: {
     marginRight: 5,
     fontSize: typography.b1.fontSize,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: colors.dark,
     marginRight: 17,
   },

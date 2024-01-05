@@ -117,6 +117,7 @@ export const getActivityInformation = async (activityId) => {
       title: querySnapshot.data().activity_title,
       city: querySnapshot.data().activity_city,
       photo: querySnapshot.data().activity_photo,
+      imageUrl: querySnapshot.data().imageUrl,
     };
 
     return Promise.resolve(activity);
@@ -142,6 +143,7 @@ export const getAllActivitiesWithStatus = async (status) => {
         description: doc.data().activity_description,
         photo: doc.data().activity_photo,
         popular: doc.data().tg_favorite,
+        imageUrl: doc.data().imageUrl,
       };
     });
 
@@ -167,6 +169,7 @@ export const getAllActivities = async () => {
         description: doc.data().activity_description,
         photo: doc.data().activity_photo,
         popular: doc.data().tg_favorite,
+        imageUrl: doc.data().imageUrl,
       };
     });
 
@@ -196,6 +199,7 @@ export const getActivitiesMatchTimeEntries = async (timeEntry) => {
       title: documentSnapshot.data().activity_title,
       photo: documentSnapshot.data().activity_photo,
       city: documentSnapshot.data().activity_city,
+      imageUrl: documentSnapshot.data().imageUrl,
     };
 
     return Promise.resolve(activity);

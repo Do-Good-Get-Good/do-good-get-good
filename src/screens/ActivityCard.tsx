@@ -12,9 +12,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
-import Images from "../Images";
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
@@ -23,15 +22,25 @@ import typography from "../assets/theme/typography";
 import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
-export function ActivityCard({ route, navigation }) {
-  const activityCardContext = useActivityCardContext();
-  const createActivityContext = useCreateActivityFunction();
-  const adminGalleryContext = useAdminGalleryFunction();
+type Props = {
+  route: any;
+  navigation: any;
+};
+
+export function ActivityCard({ route, navigation }: Props) {
+  const { admin, activityInfo, active, tgPopular } = route.params;
+
+  const { changeActive, changePopular, idActivity, confirmToDeleteActivity } =
+    useActivityCardContext();
+  const { activityHasChangedID } = useCreateActivityFunction();
+  const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
+  const { getImageForActivity } = useActivityImages();
   const userLevel = useUserLevelCheckFunction();
 
-  const { admin, activityInfo, active, tgPopular } = route.params;
   const [activity, setActivity] = useState({
+    id: "",
     active: "",
     title: "",
     photo: "",
@@ -39,6 +48,7 @@ export function ActivityCard({ route, navigation }) {
     description: "",
     place: "",
     popular: "",
+    imageUrl: "",
   });
 
   const [adminOpenedActyvity, setAdminOpenedActyvity] = useState(admin);
@@ -71,7 +81,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertArchiveQuestion);
     setAlertClarification(alertArchiveClarification);
-    adminGalleryContext.setCleanUpSearchBarComponent(true);
+    setCleanUpSearchBarComponent(true);
   };
 
   const alertToTakeAwayFromArchiveActivity = () => {
@@ -81,7 +91,7 @@ export function ActivityCard({ route, navigation }) {
     setPressedToDelete(false);
     setAlertQuestion(alertQuestionToTakeAwayFromArchive);
     setAlertClarification(alertClarificationToTakeAwayFromArchive);
-    adminGalleryContext.setCleanUpSearchBarComponent(true);
+    setCleanUpSearchBarComponent(true);
   };
 
   const alertToDeleteActivity = () => {
@@ -98,15 +108,15 @@ export function ActivityCard({ route, navigation }) {
 
     if (pressedToArchive === true) {
       if (activeActivities === true) {
-        activityCardContext.changeActive(false);
+        changeActive(false);
         setActiveActivities(false);
       } else {
         console.log(
           "Something went wrong with YES button while trying to archive",
         );
       }
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
 
         popular: activityInfo.popular,
@@ -115,7 +125,7 @@ export function ActivityCard({ route, navigation }) {
       setPressedToArchive(false);
     } else if (pressedToTakeAwayFromArchive === true) {
       if (activeActivities === false) {
-        activityCardContext.changeActive(true);
+        changeActive(true);
 
         setActiveActivities(true);
       } else {
@@ -123,8 +133,8 @@ export function ActivityCard({ route, navigation }) {
           "Something went wrong with YES button while trying to take activity away from archive",
         );
       }
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
 
         popular: activityInfo.popular,
@@ -132,8 +142,8 @@ export function ActivityCard({ route, navigation }) {
       });
       setPressedToTakeAwayFromArchive(false);
     } else if (pressedToDelete === true) {
-      activityCardContext.idActivity(activityInfo.id);
-      activityCardContext.confirmToDeleteActivity(true);
+      idActivity(activityInfo.id);
+      confirmToDeleteActivity(true);
 
       setPressedToDelete(false);
       navigation.goBack();
@@ -147,18 +157,21 @@ export function ActivityCard({ route, navigation }) {
       <Overlay
         overlayStyle={styles.overlay}
         isVisible={visible}
-        onBackdropPress={() => setVisible(!visible)}>
+        onBackdropPress={() => setVisible(!visible)}
+      >
         <Text style={styles.textQuestionAlert}>{alertQuestion}</Text>
         <Text style={styles.textUnderQuestionAlert}>{alertClarification}</Text>
         <View style={styles.containerButtonsAlert}>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.light }]}
-            onPress={() => setVisible(!visible)}>
+            onPress={() => setVisible(!visible)}
+          >
             <Text style={styles.buttonAlertText}>Nej</Text>
           </TouchableOpacity>
           <TouchableOpacity
             style={[styles.alertButton, { backgroundColor: colors.primary }]}
-            onPress={() => buttonYesPressed()}>
+            onPress={() => buttonYesPressed()}
+          >
             <Text style={styles.buttonAlertText}>Ja</Text>
           </TouchableOpacity>
         </View>
@@ -170,11 +183,14 @@ export function ActivityCard({ route, navigation }) {
     setAdminOpenedActyvity(admin);
     setActivity({
       id: activityInfo.id,
+      active: active,
       title: activityInfo.title,
       photo: activityInfo.photo,
       city: activityInfo.city,
-      place: activityInfo.place,
       description: activityInfo.description,
+      place: activityInfo.place,
+      popular: tgPopular,
+      imageUrl: activityInfo.imageUrl,
     });
   }, [admin, activityInfo]);
 
@@ -186,29 +202,21 @@ export function ActivityCard({ route, navigation }) {
     setPopular(tgPopular);
   }, [tgPopular]);
 
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let i = 0; i < Images.length; i++) {
-      if (activityObjectPhoto === Images[i].name) {
-        return Images[i].image;
-      }
-    }
-  }
-
   function changePopularStatus() {
     if (popular === true) {
       setPopular(false);
-      activityCardContext.changePopular(false);
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      changePopular(false);
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
         popular: false,
         statusActive: activityInfo.active,
       });
     } else if (popular === false) {
       setPopular(true);
-      activityCardContext.changePopular(true);
-      activityCardContext.idActivity(activityInfo.id);
-      createActivityContext.activityHasChangedID({
+      changePopular(true);
+      idActivity(activityInfo.id);
+      activityHasChangedID({
         activityInfo: activityInfo,
         popular: true,
         statusActive: activityInfo.active,
@@ -231,7 +239,8 @@ export function ActivityCard({ route, navigation }) {
 
         <TouchableOpacity
           testID="alertToDeleteActivity"
-          onPress={() => alertToDeleteActivity()}>
+          onPress={() => alertToDeleteActivity()}
+        >
           <Text style={styles.textNearDelete}>Ta bort</Text>
         </TouchableOpacity>
       </View>
@@ -253,7 +262,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToTakeAwayFromArchiveActivity"
-            onPress={() => alertToTakeAwayFromArchiveActivity()}>
+            onPress={() => alertToTakeAwayFromArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>
               Flytta från arkiv
             </Text>
@@ -274,7 +284,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="alertToArchiveActivity"
-            onPress={() => alertToArchiveActivity()}>
+            onPress={() => alertToArchiveActivity()}
+          >
             <Text style={styles.textNearIconArchiveArrow}>Arkivera</Text>
           </TouchableOpacity>
         </View>
@@ -301,7 +312,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toNotFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Ta bort från TG-favoriter
             </Text>
@@ -322,7 +334,8 @@ export function ActivityCard({ route, navigation }) {
           </TouchableOpacity>
           <TouchableOpacity
             testID="toFavorite"
-            onPress={() => changePopularStatus()}>
+            onPress={() => changePopularStatus()}
+          >
             <Text style={styles.textNearIconStar}>
               Lägg till som TG-favorit
             </Text>
@@ -350,8 +363,13 @@ export function ActivityCard({ route, navigation }) {
               navigation.navigate("ChangeActivity", {
                 activity: activityInfo,
                 tgPopular: popular,
+                image: {
+                  photo: activity.photo,
+                  imageUrl: activity.imageUrl,
+                },
               })
-            }>
+            }
+          >
             <Text style={styles.textNearPencil}>Ändra</Text>
           </TouchableOpacity>
         </View>
@@ -363,7 +381,8 @@ export function ActivityCard({ route, navigation }) {
           style={styles.buttonSeeAllUsers}
           onPress={() => {
             setIsManageUsersOpen(!isManageUsersOpen);
-          }}>
+          }}
+        >
           <Text style={styles.buttonSeeAllUsersText}> Se alla användare</Text>
         </TouchableOpacity>
       </View>
@@ -386,24 +405,31 @@ export function ActivityCard({ route, navigation }) {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <ScrollView style={styles.container}>
-        <View style={{ flex: 1, marginBottom: 20 }}>
-          <View style={styles.containerArrowAndText}>
-            <TouchableOpacity
-              testID="buttonGoBack"
-              onPress={() => navigation.goBack()}
-              style={{ flexDirection: "row", alignItems: "center" }}>
-              <Icon name="arrow-back" color={colors.dark} size={25} />
-              <Text style={styles.textNearArrow}>Gå tillbaka</Text>
-            </TouchableOpacity>
-          </View>
-          <Text style={styles.textTitle}>{activity.title}</Text>
-          {activity.photo !== "" && (
-            <Image
-              testID="photo"
-              style={styles.image}
-              source={setTheRightPhoto(activity.photo)}></Image>
+      <View style={styles.titleAndBackButton}>
+        <TouchableOpacity
+          testID="buttonGoBack"
+          onPress={() => navigation.goBack()}
+        >
+          <Icon
+            name="arrow-back"
+            color={colors.dark}
+            size={30}
+            containerStyle={styles.backIconContainerStyle}
+          />
+        </TouchableOpacity>
+        <Text style={styles.textTitle}>{activity.title}</Text>
+      </View>
+      <ScrollView>
+        <Image
+          testID="photo"
+          style={styles.image}
+          source={getImageForActivity(
+            activityInfo.photo,
+            activityInfo.imageUrl,
           )}
+        />
+
+        <View style={{ flex: 1, marginVertical: 20, marginHorizontal: 16 }}>
           <View style={styles.containerIconAndCity}>
             <Icon
               type="material-community"
@@ -419,7 +445,7 @@ export function ActivityCard({ route, navigation }) {
               name="building-o"
               color={colors.dark}
               size={23}
-              paddingHorizontal={3}
+              style={{ paddingHorizontal: 3 }}
             />
             <Text style={styles.textCity}>{activity.place}</Text>
           </View>
@@ -432,12 +458,12 @@ export function ActivityCard({ route, navigation }) {
             />
             <Text style={styles.textDescription}>{activity.description}</Text>
           </View>
-          {adminOpenedActyvity === true && activeActivities === true
-            ? adminActionsForActiveActivities()
-            : null}
-          {adminOpenedActyvity === true && activeActivities === false
-            ? adminActionsForInactiveActivities()
-            : null}
+          {adminOpenedActyvity === true &&
+            activeActivities === true &&
+            adminActionsForActiveActivities()}
+          {adminOpenedActyvity === true &&
+            activeActivities === false &&
+            adminActionsForInactiveActivities()}
           {alertForArchivingAndDelete()}
         </View>
         <BottomLogo />
@@ -456,37 +482,26 @@ export function ActivityCard({ route, navigation }) {
 export default ActivityCard;
 
 const styles = StyleSheet.create({
-  container: {
-    height: 200,
-    paddingHorizontal: 16,
-  },
-  containerArrowAndText: {
+  titleAndBackButton: {
     flexDirection: "row",
-    marginLeft: -5,
-    marginTop: 30,
+    marginRight: 16,
+    height: 50,
+    paddingBottom: 10,
   },
-  textNearArrow: {
-    fontFamily: typography.button.sm.fontFamily,
-    fontSize: typography.button.sm.fontSize,
-    fontWeight: "700",
-    textDecorationLine: "underline",
-    color: colors.dark,
-    marginLeft: 8,
+  backIconContainerStyle: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
   },
   textTitle: {
-    ...typography.h2,
+    ...typography.h3,
     color: colors.dark,
-    marginTop: 32,
+    alignSelf: "flex-end",
   },
   image: {
-    resizeMode: "contain",
-    marginTop: 22,
-    height: 98,
-    width: 107,
-    borderRadius: 2,
-    borderWidth: 1,
-    borderColor: colors.primary,
-    backgroundColor: colors.background,
+    resizeMode: "cover",
+    width: "100%",
+    height: 250,
   },
   textCity: {
     flex: 1,
@@ -497,7 +512,6 @@ const styles = StyleSheet.create({
   containerIconAndCity: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: 40,
     color: colors.dark,
   },
   textDescription: {

@@ -8,7 +8,7 @@ import Menu from "../components/Menu";
 import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
@@ -54,7 +54,8 @@ const CreateUser = ({ route, navigation }: Props) => {
     city: "",
     description: "",
     favorite: false,
-    image: "",
+    photo: "",
+    imageUrl: "",
   });
   const [selectedActivity, setSelectedActivity] = useState(null);
 
@@ -72,12 +73,16 @@ const CreateUser = ({ route, navigation }: Props) => {
   ]);
 
   useEffect(() => {
-    if (route.params?.imageForActivity === undefined) {
-      setActivity({ ...activity, image: "symbol_hands_heart-DEFAULT" });
+    if (!route.params?.image) {
+      setActivity({ ...activity, photo: "placeholder" });
     } else {
-      setActivity({ ...activity, image: route.params?.imageForActivity });
+      setActivity({
+        ...activity,
+        photo: route.params?.image.photo,
+        imageUrl: route.params?.image.imageUrl,
+      });
     }
-  }, [route.params?.imageForActivity]);
+  }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
   function handleNextPage() {
     next();
@@ -101,7 +106,8 @@ const CreateUser = ({ route, navigation }: Props) => {
       active_status: true,
       activity_city: activity.city,
       activity_description: activity.description,
-      activity_photo: activity.image,
+      activity_photo: activity.photo,
+      image_url: activity.imageUrl,
       activity_place: activity.place,
       activity_title: activity.title,
       tg_favorite: activity.favorite,

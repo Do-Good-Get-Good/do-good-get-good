@@ -6,7 +6,7 @@ const BottomLogo = () => {
     <View style={styles.bottomLogoView}>
       <Image
         testID="login.bottomLogo"
-        source={require("../img/Technogarden-logotyp-Large.png")}
+        source={require("../assets/images/Technogarden-logotyp-Large.png")}
         style={styles.bottomLogoImg}
       />
     </View>
