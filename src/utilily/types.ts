@@ -59,7 +59,7 @@ export type User = {
 
 export type UserObjectForSuperAdmin = {
   adminName: string;
-  arrayOfUsersIfAdmin: Array<User>;
+  arrayOfUsersIfAdmin?: Array<User>;
   user: User;
 };
 

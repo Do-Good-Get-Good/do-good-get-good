@@ -12,8 +12,12 @@ type TitleAndValue = {
 const TitleAndValue = ({ title, value }: TitleAndValue) => {
   return (
     <>
-      <Text style={styles.textForRoleAndAdminTitle}>{title}</Text>
-      <Text style={styles.textForRoleAndAdmin}>{value}</Text>
+      <Text testID={`title.${title}`} style={styles.textForRoleAndAdminTitle}>
+        {title}
+      </Text>
+      <Text testID={`value.${value}`} style={styles.textForRoleAndAdmin}>
+        {value}
+      </Text>
     </>
   );
 };

@@ -8,7 +8,11 @@ type Props = {
 };
 export const GoBackButton = ({ onPress }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress} style={{ flexDirection: "row" }}>
+    <TouchableOpacity
+      testID="goBackButton"
+      onPress={onPress}
+      style={{ flexDirection: "row" }}
+    >
       <Icon
         color={colors.dark}
         name="arrow-left"
