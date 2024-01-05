@@ -1,3 +1,4 @@
+import { Role } from "react-native";
 import { User, UserObjectForSuperAdmin } from "../../utilily/types";
 
 export const userSuperadminMock: User = {
@@ -5,7 +6,7 @@ export const userSuperadminMock: User = {
   adminID: "adminID",
   firstName: "Super",
   lastName: "Supersson",
-  role: "superadmin",
+  role: "superadmin" as Role,
   statusActive: true,
 };
 
@@ -14,7 +15,7 @@ export const userAdminOneMock: User = {
   adminID: "1",
   firstName: "Admin",
   lastName: "Adminsson",
-  role: "admin",
+  role: "admin" as Role,
   statusActive: true,
 };
 
@@ -23,7 +24,7 @@ export const userAdminTwoMock: User = {
   adminID: "2",
   firstName: "Admin2",
   lastName: "Adminsson2",
-  role: "admin",
+  role: "admin" as Role,
   statusActive: true,
 };
 
@@ -32,7 +33,7 @@ export const userUserOneMock: User = {
   adminID: "2",
   firstName: "Johan",
   lastName: "Johansson",
-  role: "user",
+  role: "user" as Role,
   statusActive: true,
 };
 
@@ -41,7 +42,7 @@ export const userUserTwoMock: User = {
   adminID: "2",
   firstName: "Johan2",
   lastName: "Johansson2",
-  role: "user",
+  role: "user" as Role,
   statusActive: true,
 };
 
@@ -51,8 +52,45 @@ export const usersArrayConnectedToAdminMock: Array<User> = [
   userUserTwoMock,
 ];
 
+// export const superAdminObjectMock: UserObjectForSuperAdmin = {
+//   adminName: "Admin Adminsson",
+//   arrayOfUsersIfAdmin: usersArrayConnectedToAdminMock,
+//   user: userSuperadminMock,
+// };
 export const superAdminObjectMock: UserObjectForSuperAdmin = {
   adminName: "Admin Adminsson",
-  arrayOfUsersIfAdmin: usersArrayConnectedToAdminMock,
-  user: userSuperadminMock,
+  arrayOfUsersIfAdmin: [
+    {
+      id: "3",
+      adminID: "2",
+      firstName: "Admin2",
+      lastName: "Adminsson2",
+      role: "admin" as Role,
+      statusActive: true,
+    },
+    {
+      id: "4",
+      adminID: "2",
+      firstName: "Johan",
+      lastName: "Johansson",
+      role: "user" as Role,
+      statusActive: true,
+    },
+    {
+      id: "4",
+      adminID: "2",
+      firstName: "Johan2",
+      lastName: "Johansson2",
+      role: "user" as Role,
+      statusActive: true,
+    },
+  ],
+  user: {
+    id: "1",
+    adminID: "adminID",
+    firstName: "Super",
+    lastName: "Supersson",
+    role: "superadmin" as Role,
+    statusActive: true,
+  },
 };

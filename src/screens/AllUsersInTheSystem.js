@@ -9,7 +9,7 @@ function AllUsersInTheSystem({ navigation }) {
   return (
     <SafeAreaView>
       <Menu />
-      <ScrollView>
+      <ScrollView testID="allUsersInTheSystemScreen">
         <ListOfAllUsers navigation={navigation} />
         <View style={{ marginTop: 30 }}>
           <BottomLogo />

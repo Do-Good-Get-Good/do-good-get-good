@@ -65,7 +65,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const user = superAdminContext.makeChangesForSelectedUser;
+  const user = superAdminContext?.makeChangesForSelectedUser;
 
   const { handleSubmit, control, getValues } = useForm<UserInfo>({
     defaultValues: {
@@ -76,6 +76,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     },
     resolver: yupResolver(schema),
   });
+
+  console.log(navigation, "----  navigation ");
 
   const onSave = (data: UserInfo) => {
     return (

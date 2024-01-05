@@ -27,9 +27,9 @@ export const ChangeRoleOrAdminPopup = ({
   const context = useSuperAdminFunction();
 
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
-    context.allAdminsAnsSuperAdmins,
+    context?.allAdminsAnsSuperAdmins,
   );
-  const userID = context.makeChangesForSelectedUser?.user.id;
+  const userID = context?.makeChangesForSelectedUser?.user.id;
 
   const isRolePopup = changeRoleOrAdmin === ChagesType.role;
 

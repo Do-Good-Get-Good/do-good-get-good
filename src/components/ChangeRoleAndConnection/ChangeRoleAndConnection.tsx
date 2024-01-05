@@ -21,7 +21,7 @@ type Props = {
 export function ChangeRolesAndConnection({ getValues, control }: Props) {
   const superAdminContext = useSuperAdminFunction();
 
-  const user = superAdminContext.makeChangesForSelectedUser?.user;
+  const user = superAdminContext?.makeChangesForSelectedUser?.user;
 
   const {
     changeRoleAndConnectionButtons,
@@ -49,6 +49,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
       <View style={styles.containerTextButton}>
         {changeRoleAndConnectionButtons.map((button, i) => (
           <TextUnderlineButton
+            testID={`textUnderlineButton.${i}`}
             key={button.key}
             title={button.title}
             onPress={() => button.onPress()}
@@ -60,6 +61,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
           rules={{ required: true }}
           render={({ field: { onChange, value } }) => (
             <TextUnderlineButton
+              testID={"textUnderlineButton.active"}
               title={value ? "Inaktivera" : "Aktivera"}
               onPress={() => onChange(!value)}
             />

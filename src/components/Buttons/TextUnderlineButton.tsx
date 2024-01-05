@@ -1,13 +1,14 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 
 type Props = {
+  testID?: string;
   title: string;
   onPress: () => void;
 };
 
-export const TextUnderlineButton = ({ title, onPress }: Props) => {
+export const TextUnderlineButton = ({ title, onPress, testID }: Props) => {
   return (
-    <TouchableOpacity onPress={onPress}>
+    <TouchableOpacity testID={testID} onPress={onPress}>
       <Text style={styles.textAsButton}>{title}</Text>
     </TouchableOpacity>
   );
