@@ -14,7 +14,6 @@ import { Controller, UseFormGetValues } from "react-hook-form";
 import { UserInfo } from "../../screens/RolesAndConnection";
 
 type Props = {
-  // role: Role;
   getValues: UseFormGetValues<UserInfo>;
   control: any;
 };

@@ -48,11 +48,6 @@ export const useChangeRoleAndConnectionButtons = () => {
       title: "Ändra användare",
       onPress: () => onChangeUser(),
     },
-    // {
-    //   key: ChangeButtonsKey.isActive,
-    //   title: "Inaktivera",
-    //   onPress: () => onPress,
-    // },
   ];
 
   return {

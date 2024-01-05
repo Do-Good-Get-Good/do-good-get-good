@@ -31,7 +31,7 @@ export type UserInfo = {
   role: Role;
   admin: UserIdAndFullName;
   isActive: boolean;
-  connectedUsers?: Array<UserIdAndFullName> | undefined;
+  // connectedUsers?: Array<UserIdAndFullName> | undefined;
 };
 
 const schema: yup.ObjectSchema<UserInfo> = yup
@@ -46,12 +46,16 @@ const schema: yup.ObjectSchema<UserInfo> = yup
       })
       .required(),
     isActive: yup.boolean().required(),
-    connectedUsers: yup.array().of(
-      yup.object().shape({
-        id: yup.string().required(),
-        fullName: yup.string().required(),
-      }),
-    ),
+    // connectedUsers: yup
+    //   .array()
+
+    //   .of(
+    //     yup.object().shape({
+    //       id: yup.string().required(),
+    //       fullName: yup.string().required(),
+    //     }),
+    //   )
+    //   .optional(),
   })
   .defined();
 
@@ -63,37 +67,28 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
   const user = superAdminContext.makeChangesForSelectedUser;
 
-  const {
-    handleSubmit,
-    control,
-    getValues,
-    formState: { errors, isDirty },
-  } = useForm<UserInfo>({
+  const { handleSubmit, control, getValues } = useForm<UserInfo>({
     defaultValues: {
       role: user?.user.role as Role,
       admin: { id: user?.user.adminID, fullName: user?.adminName },
       isActive: user?.user.statusActive,
-      connectedUsers: user?.arrayOfUsersIfAdmin,
+      // connectedUsers: user?.arrayOfUsersIfAdmin ?? undefined,
     },
     resolver: yupResolver(schema),
   });
 
   const onSave = (data: UserInfo) => {
-    // console.log(data);
-    return;
-
-    // return (
-    //   user?.user &&
-    //   superAdminUpdatesUserInfo(
-    //     user.user.id,
-    //     user.user.firstName,
-    //     user.user.lastName,
-    //     data.isActive,
-    //     data.role,
-    //     data.admin.id,
-    //   )
-    // );
-    //  superAdminContext.setButtonToSaveChanhgesPressed(true)
+    return (
+      user?.user &&
+      superAdminUpdatesUserInfo(
+        user.user.id,
+        user.user.firstName,
+        user.user.lastName,
+        data.isActive,
+        data.role,
+        data.admin.id,
+      )
+    );
   };
 
   return (
@@ -108,7 +103,7 @@ export const RolesAndConnection = ({ navigation }: Props) => {
           {/* <ConnectedUsersDropDown /> */}
           <LongButton
             style={{ marginTop: 50 }}
-            onPress={() => handleSubmit(onSave)}
+            onPress={handleSubmit(onSave)}
             title={"Spara"}
           />
 
