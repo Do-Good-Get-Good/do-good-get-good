@@ -6,19 +6,34 @@ import { Role } from "../utilily/enums";
 
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
+  userLevel: (value: Role | undefined) => void;
   getAllUsers: boolean;
+  setGetAllUsers: (value: boolean) => void;
+  setMakeChangesForSelectedUser: (
+    value: UserObjectForSuperAdmin | undefined,
+  ) => void;
+  buttonToSaveChanhgesPressed: boolean;
+  setButtonToSaveChanhgesPressed: (value: boolean) => void;
   allAdminsAnsSuperAdmins: User[] | undefined;
+  userIDToConnectAnotherAdmin: User["id"];
+  setUserIDToConnectAnotherAdmin: (value: User["id"]) => void;
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
 };
-const defaultValue: SuperAdminContextType = {
-  allUsersInSystem: undefined,
-  getAllUsers: false,
-  allAdminsAnsSuperAdmins: undefined,
-  makeChangesForSelectedUser: undefined,
-};
+// const defaultValue: SuperAdminContextType = {
+//   userLevel: () => undefined,
+//   buttonToSaveChanhgesPressed: false,
 
-const SuperAdminContext =
-  React.createContext<SuperAdminContextType>(defaultValue);
+//   // setGetAllUsers: () => false,
+//   allUsersInSystem: undefined,
+//   getAllUsers: false,
+//   allAdminsAnsSuperAdmins: undefined,
+//   makeChangesForSelectedUser: undefined,
+//   userIDToConnectAnotherAdmin: "",
+// };
+
+const SuperAdminContext = React.createContext<
+  SuperAdminContextType | undefined
+>(undefined);
 
 export const useSuperAdminFunction = () => {
   return useContext(SuperAdminContext);
@@ -29,7 +44,7 @@ export const SuperAdminProvider = ({ children }) => {
     [],
   );
   const [getAllUsers, setGetAllUsers] = useState(false);
-  const [userLevel, setUserLevel] = useState<Role | null>(null);
+  const [userLevel, setUserLevel] = useState<Role | undefined>(undefined);
   const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
     User[]
   >([]);
@@ -51,7 +66,7 @@ export const SuperAdminProvider = ({ children }) => {
         try {
           let allUsers = await getAllUsersData();
           setAllUsersInSystem(allUsers);
-          findAdminsAndSuperAdmins(allUsers);
+          allUsers && findAdminsAndSuperAdmins(allUsers);
         } catch (error) {
           console.log("SuperAdminContext errorMessage ", error);
         }
@@ -60,6 +75,8 @@ export const SuperAdminProvider = ({ children }) => {
       getAllUsersThatExistInTheSystem();
     }
   }, [getAllUsers]);
+
+  console.log(getAllUsers, "----------  getAllUsers");
 
   // useEffect(() => {
   //   if (buttonToSaveChanhgesPressed) {
@@ -112,7 +129,7 @@ export const SuperAdminProvider = ({ children }) => {
     }
     setAllAdminsAnsSuperAdmins(adminArray);
   };
-
+  console.log(allUsersInSystem);
   return (
     <SuperAdminContext.Provider
       value={{
