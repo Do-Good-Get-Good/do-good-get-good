@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Text,
   StyleSheet,
@@ -18,29 +18,26 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import BottomNavButtons from "../components/BottomNavButtons";
 
-import Images from "../Images";
-
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import useSelectedImage from "../hooks/useSelectedImage";
 
 export function ChangeActivity({ route, navigation }) {
-  const { activity, tgPopular } = route.params;
+  const { activity, tgPopular, image } = route.params;
   const activityCardFunction = useActivityCardContext();
   const createActivityContext = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
+
   const [title, setTitle] = useState(activity.title);
   const [city, setCity] = useState(activity.city);
   const [place, setPlace] = useState(activity.place);
   const [description, setDescription] = useState(activity.description);
-  const [photo, setPhoto] = useState(activity.photo);
 
-  useEffect(() => {
-    if (route.params?.imageForActivity != undefined) {
-      setPhoto(route.params?.imageForActivity);
-    }
-  }, [route.params?.imageForActivity]);
+  const photo = useSelectedImage(image, activity);
 
   function buttonSavePressed() {
     let changedObject = {
@@ -48,10 +45,11 @@ export function ChangeActivity({ route, navigation }) {
       city: city,
       description: description,
       id: activity.id,
-      photo: photo,
+      photo: photo.photo,
       place: place,
       popular: activity.popular,
       title: title,
+      imageUrl: photo.imageUrl,
     };
 
     activityCardFunction.changeActivityCard(true);
@@ -68,14 +66,6 @@ export function ChangeActivity({ route, navigation }) {
       statusActive: true,
     });
     createActivityContext.activityHasChanged(true);
-  }
-
-  function changeImageForActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (photo === Images[index].name) {
-        return Images[index].image;
-      }
-    }
   }
 
   return (
@@ -119,7 +109,10 @@ export function ChangeActivity({ route, navigation }) {
           />
 
           <View style={styles.containerImageAndInsertButton}>
-            <Image style={styles.image} source={changeImageForActivity()} />
+            <Image
+              style={styles.image}
+              source={getImageForActivity(photo?.photo, photo?.imageUrl)}
+            />
             <TouchableOpacity
               testID="navigateToImagesGallery"
               onPress={() =>
@@ -127,6 +120,7 @@ export function ChangeActivity({ route, navigation }) {
                   activity: activity,
                   tgPopular: tgPopular,
                   cameFrom: "ChangeActivity",
+                  selectedImage: photo,
                 })
               }
             >
@@ -201,7 +195,7 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,

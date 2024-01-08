@@ -9,24 +9,18 @@ import {
   Keyboard,
 } from "react-native";
 import { Icon } from "@rneui/base";
-import Images from "../Images";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 const HomeSuggestions = ({ navigation, suggestions }) => {
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
+  const { getImageForActivity } = useActivityImages();
 
-  function lookDetails(activety, statusActive, statusPopular) {
+  function lookDetails(activity, statusActive, statusPopular) {
     Keyboard.dismiss();
     navigation.navigate("ActivityCard", {
       admin: false,
-      activityInfo: activety,
+      activityInfo: activity,
       active: statusActive,
       tgPopular: statusPopular,
     });
@@ -35,57 +29,61 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
   return (
     <View style={styles.activityContainer}>
       {suggestions.map((suggestion) => (
-        <View key={suggestion.id}>
-          <TouchableOpacity
-            testID="lookDetails"
-            onPress={() =>
-              lookDetails(suggestion, suggestion.active, suggestion.popular)
-            }
-            style={styles.insideActivityContainer}
-            activeOpacity={0.4}
-          >
-            <View style={styles.photoAndText}>
-              <View style={styles.textTitleCityDescriptipn}>
-                <View style={{ flex: 1, flexDirection: "row" }}>
-                  <View style={{ flex: 1 }}>
-                    <Text numberOfLines={2} style={styles.textTitle}>
-                      {suggestion.title}
-                    </Text>
+        <TouchableOpacity
+          key={suggestion.id}
+          testID="lookDetails"
+          style={styles.insideActivityContainer}
+          activeOpacity={0.4}
+          onPress={() =>
+            lookDetails(suggestion, suggestion.active, suggestion.popular)
+          }
+        >
+          <View style={styles.textTitleCityDescriptipn}>
+            <View style={{ flexDirection: "row", marginBottom: 6 }}>
+              <View
+                style={{
+                  flex: 1,
+                  justifyContent: "space-between",
+                }}
+              >
+                <Text numberOfLines={2} style={styles.textTitle}>
+                  {suggestion.title}
+                </Text>
 
-                    <View style={styles.iconsAndTextCityContainer}>
-                      <Icon
-                        type="material-community"
-                        name="map-marker-outline"
-                        color={colors.dark}
-                        size={25}
-                      />
-
-                      <Text style={styles.textCity}>{suggestion.city}</Text>
-                    </View>
-                  </View>
-                  <Image
-                    testID="photo"
-                    style={styles.image}
-                    source={setTheRightPhoto(suggestion.photo)}
-                  />
-                </View>
-
-                <View style={styles.iconsAndTextDescriptionContainer}>
+                <View style={styles.iconsAndTextCityContainer}>
                   <Icon
                     type="material-community"
-                    name="information-outline"
+                    name="map-marker-outline"
                     color={colors.dark}
                     size={25}
-                    style={styles.iconDescription}
                   />
-                  <Text numberOfLines={2} style={styles.textDescription}>
-                    {suggestion.description}
-                  </Text>
+
+                  <Text style={styles.textCity}>{suggestion.city}</Text>
                 </View>
               </View>
+              <Image
+                testID="photo"
+                style={styles.image}
+                source={getImageForActivity(
+                  suggestion.photo,
+                  suggestion.imageUrl,
+                )}
+              />
             </View>
-          </TouchableOpacity>
-        </View>
+            <View style={styles.iconsAndTextDescriptionContainer}>
+              <Icon
+                type="material-community"
+                name="information-outline"
+                color={colors.dark}
+                size={25}
+                style={styles.iconDescription}
+              />
+              <Text numberOfLines={2} style={styles.textDescription}>
+                {suggestion.description}
+              </Text>
+            </View>
+          </View>
+        </TouchableOpacity>
       ))}
     </View>
   );
@@ -97,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 5,
     alignSelf: "center",
-    width: "99%",
+    width: "100%",
   },
   insideActivityContainer: {
     flex: 1,
@@ -122,29 +120,21 @@ const styles = StyleSheet.create({
     }),
   },
   image: {
-    flex: 0.5,
+    width: 100,
     height: 100,
-    resizeMode: "contain",
+    resizeMode: "cover",
     alignItems: "center",
     borderRadius: 5,
   },
-  photoAndText: {
-    flex: 1,
-    flexDirection: "row",
-  },
   textTitleCityDescriptipn: {
-    flex: 2,
-    marginRight: 7,
     alignItems: "flex-start",
-    marginLeft: 10,
-    marginTop: 5,
     color: colors.dark,
+    paddingTop: 10,
+    paddingHorizontal: 10,
   },
   textTitle: {
     ...typography.cardTitle,
-    paddingTop: 3,
     color: colors.dark,
-    height: 65,
   },
   textCity: {
     flex: 1,
@@ -153,7 +143,6 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   iconsAndTextCityContainer: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "center",
   },

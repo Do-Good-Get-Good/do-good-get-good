@@ -18,12 +18,12 @@ import { Icon } from "@rneui/base";
 
 import BottomNavButtons from "./BottomNavButtons";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
-import Images from "../Images";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 export function LinkActivityToNewUser({
   activity,
@@ -35,29 +35,13 @@ export function LinkActivityToNewUser({
   createUserAndLinkSelectedActivity,
 }) {
   const navigation = useNavigation();
-  const createActivityContext = useCreateActivityFunction();
-  const { activeActivities } = createActivityContext;
+  const { activeActivities } = useCreateActivityFunction();
+  const { getImageForActivity } = useActivityImages();
 
   const [expanded, setExpanded] = useState(false);
   const [titleFilledUp, setTitleFilledUp] = useState(null);
   const [placeFilledUp, setPlaceFilledUp] = useState(null);
   const [cityFilledUp, setCityFilledUp] = useState(null);
-
-  function setImageForNewActivity() {
-    for (let index = 0; index < Images.length; index++) {
-      if (activity.image === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
-
-  function setTheRightPhoto(activityObjectPhoto) {
-    for (let index = 0; index < Images.length; index++) {
-      if (activityObjectPhoto === Images[index].name) {
-        return Images[index].image;
-      }
-    }
-  }
 
   useEffect(() => {
     if (activity.title.trim() === "") {
@@ -199,7 +183,7 @@ export function LinkActivityToNewUser({
           <Image
             testID="photo"
             style={styles.image}
-            source={setImageForNewActivity()}
+            source={getImageForActivity(activity.photo, activity.imageUrl)}
           />
 
           <TouchableOpacity
@@ -207,7 +191,10 @@ export function LinkActivityToNewUser({
             onPress={() =>
               navigation.navigate("ImagesGallery", {
                 cameFrom: "CreateUser",
-                selectedImage: activity.image,
+                selectedImage: {
+                  photo: activity.photo,
+                  imageUrl: activity.imageUrl,
+                },
               })
             }
           >
@@ -256,7 +243,10 @@ export function LinkActivityToNewUser({
         <View style={styles.containerImageAndInsertButton}>
           <Image
             style={styles.imageExistingActivity}
-            source={setTheRightPhoto(selectedActivity.photo)}
+            source={getImageForActivity(
+              selectedActivity.photo,
+              selectedActivity.imageUrl,
+            )}
           ></Image>
 
           <Text style={styles.textButtonChangeImage}>Byt bild</Text>
@@ -434,7 +424,7 @@ const styles = StyleSheet.create({
     overflow: "hidden",
   },
   image: {
-    resizeMode: "contain",
+    resizeMode: "cover",
     height: 100,
     width: 100,
     borderRadius: 3,
@@ -529,11 +519,11 @@ const styles = StyleSheet.create({
     textAlignVertical: "center",
   },
   imageExistingActivity: {
-    flex: 1,
-    resizeMode: "contain",
+    resizeMode: "cover",
     marginRight: 80,
     marginTop: 10,
-    height: 98,
+    height: 100,
+    width: 100,
     borderRadius: 3,
     borderWidth: 1,
     borderColor: colors.primary,

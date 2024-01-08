@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 
-import { useCreateActivityFunction } from "../context/CreateActivityContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 

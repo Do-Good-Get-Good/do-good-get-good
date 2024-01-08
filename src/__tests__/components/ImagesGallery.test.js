@@ -13,6 +13,17 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
+  useActivityImages: jest.fn(() => ({
+    images: [
+      {
+        photo: "blodgivning",
+        imageUrl: "image-url",
+      },
+    ],
+  })),
+}));
+
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),
@@ -21,7 +32,7 @@ const navigation = {
 const route = {
   params: {
     cameFrom: "CreateActivity",
-    selectedImage: "symbol_hands_heart-DEFAULT",
+    selectedImage: { photo: "blodgivning" },
   },
 };
 
@@ -36,28 +47,28 @@ describe("Testing ImagesGallery", () => {
     const image = getAllByTestId("imageInImageGallery");
 
     expect(image[0].props.source).toEqual({
-      testUri: "../../../img/activities_images/symbol_hands_heart-DEFAULT.png",
+      uri: "image-url",
     });
   });
 
   it("ImagesGallery. Button 'Save' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+    const { getAllByText, getByText } = render(
       <ImagesGallery navigation={navigation} route={route} />,
     );
     expect(getAllByText("Spara").length).toBe(1);
-    const saveButton = getByTestId("saveButton");
+    const saveButton = getByText("Spara");
     fireEvent.press(saveButton);
     expect(navigation.navigate).toHaveBeenCalledWith("CreateActivity", {
-      imageForActivity: "symbol_hands_heart-DEFAULT",
+      image: { photo: "blodgivning", imageUrl: undefined },
     });
   });
 
   it("ImagesGallery. Button 'Back' exist and navigate back  ", () => {
-    const { getAllByText, getByTestId } = render(
+    const { getAllByText, getByText } = render(
       <ImagesGallery navigation={navigation} route={route} />,
     );
     expect(getAllByText("Avbryt").length).toBe(1);
-    const backButton = getByTestId("backButton");
+    const backButton = getByText("Avbryt");
     fireEvent.press(backButton);
     expect(navigation.goBack).toHaveBeenCalled();
   });

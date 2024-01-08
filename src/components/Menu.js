@@ -16,7 +16,7 @@ import typography from "../assets/theme/typography";
 
 import Config from "react-native-config";
 
-import MenuOverlay from "./MenuOverlay";
+import { MenuOverlay } from "./MenuOverlay";
 import DevRelease from "./DevRelease";
 
 const Menu = () => {
@@ -39,7 +39,7 @@ const Menu = () => {
   };
 
   return (
-    <>
+    <View>
       <View style={styles.header}>
         <StatusBar
           backgroundColor={visible ? colors.primary : colors.light}
@@ -54,7 +54,7 @@ const Menu = () => {
           >
             <Image
               testID="dgggLogo"
-              source={require("../img/Logotyp_DGGG.png")}
+              source={require("../assets/images/Logotyp_DGGG.png")}
               style={styles.headerLogo}
             />
           </Pressable>
@@ -78,7 +78,7 @@ const Menu = () => {
       {inetInfo.isConnected === false && ifNoInternetConnection()}
       {Config.NODE_ENV === "dev" && <DevRelease />}
       <MenuOverlay openOverlay={toggleOverlay} isVisible={visible} />
-    </>
+    </View>
   );
 };
 
@@ -108,7 +108,6 @@ const styles = StyleSheet.create({
   ifNoInternet: {
     ...typography.b1,
     color: colors.error,
-    alignSelf: "flex-start",
     marginHorizontal: 16,
   },
 });

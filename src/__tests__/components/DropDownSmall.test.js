@@ -9,7 +9,7 @@ jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
 }));
 
-jest.mock("../../context/CreateActivityContext", () => ({
+jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
     chooseInDropDown: jest.fn(),
