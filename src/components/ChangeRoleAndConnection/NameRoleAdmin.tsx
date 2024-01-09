@@ -13,7 +13,9 @@ const TitleAndValue = ({ title, value }: TitleAndValue) => {
   return (
     <>
       <Text style={styles.textForRoleAndAdminTitle}>{title}</Text>
-      <Text style={styles.textForRoleAndAdmin}>{value}</Text>
+      <Text testID="title-and-value-value" style={styles.textForRoleAndAdmin}>
+        {value}
+      </Text>
     </>
   );
 };

@@ -38,12 +38,30 @@ export const userUserOneMock: User = {
 };
 
 export const userUserTwoMock: User = {
-  id: "4",
+  id: "5",
   adminID: "2",
   firstName: "Johan2",
   lastName: "Johansson2",
   role: "user" as Role,
   statusActive: true,
+};
+
+export const userSuperadminTwoMock: User = {
+  id: "6",
+  adminID: "2",
+  firstName: "Super2",
+  lastName: "Supersson2",
+  role: "superadmin" as Role,
+  statusActive: true,
+};
+
+export const userSuperadminThreeMock: User = {
+  id: "7",
+  adminID: "6",
+  firstName: "Super3",
+  lastName: "Supersson3",
+  role: "superadmin" as Role,
+  statusActive: false,
 };
 
 export const usersArrayConnectedToAdminMock: Array<User> = [

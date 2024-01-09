@@ -54,10 +54,7 @@ export const PopupWithRadioButtons = ({
       onBackdropPress={setShowPopup}
     >
       <View>
-        <Text
-          testID={`popUpTextvalue.mainTitle.${mainTitle}`}
-          style={styles.textTitle}
-        >
+        <Text testID="popUpTextvalue.mainTitle" style={styles.textTitle}>
           {mainTitle}
         </Text>
         <ScrollView style={{ height: "50%" }}>
@@ -67,7 +64,10 @@ export const PopupWithRadioButtons = ({
                 exceptOf !== key && (
                   <View style={styles.containerTextAndRadioButtins} key={key}>
                     <Text testID={`popUpTextvalue.${key}`}>{value}</Text>
-                    <TouchableOpacity onPress={() => setChoice(key)}>
+                    <TouchableOpacity
+                      testID={`popUpRadioButton.${key}`}
+                      onPress={() => setChoice(key)}
+                    >
                       <View style={radioButtonStyle(key, choice)}>
                         {key === choice ? (
                           <View style={styles.smallCircul}></View>

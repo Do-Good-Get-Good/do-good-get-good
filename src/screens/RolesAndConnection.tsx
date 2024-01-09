@@ -77,20 +77,17 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  console.log(navigation, "----  navigation ");
-
   const onSave = (data: UserInfo) => {
-    return (
-      user?.user &&
-      superAdminUpdatesUserInfo(
+    if (user?.user && data?.role) {
+      return superAdminUpdatesUserInfo(
         user.user.id,
         user.user.firstName,
         user.user.lastName,
         data.isActive,
-        data.role,
+        data?.role,
         data.admin.id,
-      )
-    );
+      );
+    }
   };
 
   return (

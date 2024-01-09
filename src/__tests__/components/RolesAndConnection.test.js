@@ -34,12 +34,37 @@ jest.mock("../../context/SuperAdminContext", () => ({
         statusActive: true,
       },
       {
+        id: "2",
+        adminID: "1",
+        firstName: "Admin",
+        lastName: "Adminsson",
+        role: "admin",
+        statusActive: true,
+      },
+      {
         id: "1",
         adminID: "adminID",
         firstName: "Super",
         lastName: "Supersson",
         role: "superadmin",
         statusActive: true,
+      },
+      {
+        id: "6",
+        adminID: "2",
+        firstName: "Super2",
+        lastName: "Supersson2",
+        role: "superadmin",
+        statusActive: true,
+      },
+
+      {
+        id: "7",
+        adminID: "6",
+        firstName: "Super3",
+        lastName: "Supersson3",
+        role: "superadmin",
+        statusActive: false,
       },
     ],
     makeChangesForSelectedUser: {
@@ -98,28 +123,87 @@ describe("Testing RolesAndConnection screen ", () => {
   });
 
   it("It shows user name, role and admin ", async () => {
-    const { getByText } = render(
+    const { getByText, getAllByTestId, getByTestId, debug } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
     expect(getByText("Super Supersson")).toBeTruthy();
     expect(getByText("Nivå")).toBeTruthy();
-    expect(getByText("Super admin")).toBeTruthy();
+
+    expect(getAllByTestId("title-and-value-value")[0].props.children).toBe(
+      "Super admin",
+    );
     expect(getByText("Admin")).toBeTruthy();
-    expect(getByText("Admin Adminsson")).toBeTruthy();
+    expect(getAllByTestId("title-and-value-value")[1].props.children).toBe(
+      "Admin Adminsson",
+    );
   });
 
-  it("It works to change role", async () => {
-    const { getByTestId, queryByTestId, queryByText, debug } = render(
+  it("It works to open overlay to change role", async () => {
+    const { getByTestId, queryByTestId, queryByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
     const changeRoleButton = getByTestId("textUnderlineButton.0");
     fireEvent.press(changeRoleButton);
-    debug();
-    expect(queryByTestId("popUpTextvalue.mainTitle.Ändra nivå"));
-    expect(queryByTestId("popUpTextvalue.user"));
-    expect(queryByTestId("popUpTextvalue.admin"));
-    expect(queryByTestId("popUpTextvalue.superadmin"));
+    expect(getByTestId("popUpTextvalue.mainTitle").props.children).toBe(
+      "Ändra nivå",
+    );
+
+    expect(getByTestId("popUpRadioButton.user"));
+    expect(getByTestId("popUpTextvalue.user"));
+    expect(getByTestId("popUpRadioButton.admin"));
+    expect(getByTestId("popUpTextvalue.admin"));
+    expect(getByTestId("popUpRadioButton.superadmin"));
+    expect(getByTestId("popUpTextvalue.superadmin"));
     expect(queryByText("Ok")).toBeTruthy();
+  });
+
+  it("It works to change role", async () => {
+    const { getByTestId, getByText, getAllByTestId, queryByTestId, debug } =
+      render(<RolesAndConnection navigation={navigationMock} />);
+
+    const changeRoleButton = getByTestId("textUnderlineButton.0");
+    fireEvent.press(changeRoleButton);
+    expect(queryByTestId("popUpRadioButton.admin"));
+
+    const chanegeToAdminButtonPressed = queryByTestId("popUpRadioButton.admin");
+    const okButton = getByText("Ok");
+    fireEvent.press(chanegeToAdminButtonPressed);
+    fireEvent.press(okButton);
+
+    expect(getByText("Nivå")).toBeTruthy();
+    expect(getAllByTestId("title-and-value-value")[0].props.children).toBe(
+      "Admin",
+    );
+  });
+
+  it("It works to open overlay to change admin", async () => {
+    const { getByTestId, debug, queryByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    const changeRoleButton = getByTestId("textUnderlineButton.1");
+    fireEvent.press(changeRoleButton);
+
+    expect(queryByTestId("popUpTextvalue.mainTitle").props.children).toBe(
+      "Ändra admin",
+    );
+    debug();
+    await waitFor(() => {
+      expect(getByTestId("popUpTextvalue.3").props.children).toBe(
+        "Admin2 Adminsson2",
+      );
+      expect(getByTestId("popUpTextvalue.2").props.children).toBe(
+        "Admin Adminsson",
+      );
+      expect(getByTestId("popUpTextvalue.1").props.children).toBe(
+        "Super Supersson",
+      );
+      expect(getByTestId("popUpTextvalue.6").props.children).toBe(
+        "Super2 Supersson2",
+      );
+      expect(queryByTestId("popUpTextvalue.7")).toBeNull();
+    });
+    // expect(queryByText("Ok")).toBeTruthy();
   });
 });
