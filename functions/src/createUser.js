@@ -2,6 +2,9 @@ const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
+const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
+const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+
 class UnauthenticatedError extends Error {
   constructor(message) {
     super(message);
@@ -31,10 +34,28 @@ function roleIsValid(role) {
   return validRoles.includes(role);
 }
 
+function sendCustomVerificationEmail(email, displayName, link) {
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(SENDGRID_API_KEY);
 
-//TODO: implement sending emails. 
-function sendCustomVerificationEmail(email, displayname, link) {
-  return "email: " + email + "\nname: " + displayname +  "\nlink: " + link
+  const msg = {
+    to: email,
+    from: SENDGRID_FROM_EMAIL,
+    templateId: "d-b940b67bf681439babe6b023c5c22e7a",
+    dynamicTemplateData: {
+      firstName: displayName,
+      verificationLink: link,
+    },
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
 }
 
 
