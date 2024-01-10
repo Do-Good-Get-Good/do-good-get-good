@@ -8,12 +8,12 @@ import {
 } from "react-native";
 import { Icon, Overlay } from "@rneui/base";
 import auth from "@react-native-firebase/auth";
-import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { MenuFooter } from "./MenuFooter";
 import { useMenuNavigation } from "./useMenuNavigation";
 import { MenuLink } from "./MenuLink";
+import userLevelStore from "../../store/userLevel";
 
 type Props = {
   openOverlay: () => void;
@@ -21,8 +21,9 @@ type Props = {
 };
 
 export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
-  const userLevel = useUserLevelCheckFunction();
-  const menuNavigation = useMenuNavigation(userLevel ?? undefined);
+  const menuNavigation = useMenuNavigation(
+    userLevelStore.userLevel ?? undefined,
+  );
   function signOutFunction() {
     auth()
       .signOut()

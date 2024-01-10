@@ -6,7 +6,7 @@
     "android": "react-native run-android --mode=devDebug --appIdSuffix=dev",
     "android-prod": "react-native run-android --mode=prodDebug",
     "build-apk": "cd android && ./gradlew clean && ./gradlew assembleRelease",
-    "ios": "react-native run-ios --scheme 'DoGoodGetGoodDev' --simulator 'iPhone 14 Pro Max'",
+    "ios": "react-native run-ios --scheme 'DoGoodGetGoodDev' --simulator 'iPhone SE (3rd generation)'",
     "ios-prod": "react-native run-ios --simulator 'iPhone 14 Pro Max'",
     "lint": "eslint .",
     "start": "react-native start",

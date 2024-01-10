@@ -15,14 +15,15 @@ import typography from "../assets/theme/typography";
 import useLinkedActivities from "../hooks/useLinkedActivities";
 import { useActivitySuggestions } from "../hooks/useActivitySuggestions";
 import colors from "../assets/theme/colors";
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
+
 import { UserLevels } from "../lib/enums/userlevels";
+import userLevelStore from "../store/userLevel";
 import adminStore from "../store/adminStore";
 
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
-  const userLevel = useUserLevelCheckFunction();
+  const userLevel = userLevelStore.userLevel;
 
   useEffect(() => {
     if ([UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel)) {
