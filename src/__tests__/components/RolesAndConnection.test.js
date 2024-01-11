@@ -1,5 +1,3 @@
-import "react-native";
-import React from "react";
 import {
   render,
   fireEvent,
@@ -139,7 +137,7 @@ describe("Testing RolesAndConnection screen ", () => {
   });
 
   it("It works to open overlay to change role", async () => {
-    const { getByTestId, queryByTestId, queryByText } = render(
+    const { getByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
@@ -155,12 +153,13 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(getByTestId("popUpTextvalue.admin"));
     expect(getByTestId("popUpRadioButton.superadmin"));
     expect(getByTestId("popUpTextvalue.superadmin"));
-    expect(queryByText("Ok")).toBeTruthy();
+    expect(getByText("Ok")).toBeTruthy();
   });
 
   it("It works to change role", async () => {
-    const { getByTestId, getByText, getAllByTestId, queryByTestId, debug } =
-      render(<RolesAndConnection navigation={navigationMock} />);
+    const { getByTestId, getByText, getAllByTestId, queryByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
 
     const changeRoleButton = getByTestId("textUnderlineButton.0");
     fireEvent.press(changeRoleButton);
@@ -178,7 +177,7 @@ describe("Testing RolesAndConnection screen ", () => {
   });
 
   it("It works to open overlay to change admin", async () => {
-    const { getByTestId, debug, queryByTestId } = render(
+    const { getByTestId, getByText, queryByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
@@ -188,7 +187,7 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(queryByTestId("popUpTextvalue.mainTitle").props.children).toBe(
       "Ändra admin",
     );
-    debug();
+
     await waitFor(() => {
       expect(getByTestId("popUpTextvalue.3").props.children).toBe(
         "Admin2 Adminsson2",
@@ -196,14 +195,23 @@ describe("Testing RolesAndConnection screen ", () => {
       expect(getByTestId("popUpTextvalue.2").props.children).toBe(
         "Admin Adminsson",
       );
-      expect(getByTestId("popUpTextvalue.1").props.children).toBe(
-        "Super Supersson",
-      );
+
       expect(getByTestId("popUpTextvalue.6").props.children).toBe(
         "Super2 Supersson2",
       );
-      expect(queryByTestId("popUpTextvalue.7")).toBeNull();
+      expect(getByTestId("popUpTextvalue.7").props.children).toBe(
+        "Super3 Supersson3",
+      );
     });
-    // expect(queryByText("Ok")).toBeTruthy();
+
+    expect(getByText("Ok")).toBeTruthy();
+  });
+
+  it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
+    const { queryByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    expect(queryByTestId("popUpTextvalue.1")).toBeNull();
   });
 });
