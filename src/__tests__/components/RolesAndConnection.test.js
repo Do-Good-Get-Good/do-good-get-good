@@ -4,7 +4,10 @@ import {
   screen,
   waitFor,
 } from "@testing-library/react-native";
-import { superAdminObjectMock } from "../dataMock/mocksSuperAdmin";
+import {
+  mockAllAdminsAnsSuperAdmins,
+  mockSelectedUser,
+} from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
 
 jest.mock("@react-native-firebase/firestore", () => {
@@ -22,86 +25,9 @@ jest.mock("@react-native-firebase/auth", () => {
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
-    allAdminsAnsSuperAdmins: [
-      {
-        id: "3",
-        adminID: "2",
-        firstName: "Admin2",
-        lastName: "Adminsson2",
-        role: "admin",
-        statusActive: true,
-      },
-      {
-        id: "2",
-        adminID: "1",
-        firstName: "Admin",
-        lastName: "Adminsson",
-        role: "admin",
-        statusActive: true,
-      },
-      {
-        id: "1",
-        adminID: "adminID",
-        firstName: "Super",
-        lastName: "Supersson",
-        role: "superadmin",
-        statusActive: true,
-      },
-      {
-        id: "6",
-        adminID: "2",
-        firstName: "Super2",
-        lastName: "Supersson2",
-        role: "superadmin",
-        statusActive: true,
-      },
+    allAdminsAnsSuperAdmins: mockAllAdminsAnsSuperAdmins,
 
-      {
-        id: "7",
-        adminID: "6",
-        firstName: "Super3",
-        lastName: "Supersson3",
-        role: "superadmin",
-        statusActive: false,
-      },
-    ],
-    makeChangesForSelectedUser: {
-      adminName: "Admin Adminsson",
-      arrayOfUsersIfAdmin: [
-        {
-          id: "3",
-          adminID: "2",
-          firstName: "Admin2",
-          lastName: "Adminsson2",
-          role: "admin",
-          statusActive: true,
-        },
-        {
-          id: "4",
-          adminID: "2",
-          firstName: "Johan",
-          lastName: "Johansson",
-          role: "user",
-          statusActive: true,
-        },
-        {
-          id: "4",
-          adminID: "2",
-          firstName: "Johan2",
-          lastName: "Johansson2",
-          role: "user",
-          statusActive: true,
-        },
-      ],
-      user: {
-        id: "1",
-        adminID: "adminID",
-        firstName: "Super",
-        lastName: "Supersson",
-        role: "superadmin",
-        statusActive: true,
-      },
-    },
+    makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
 
