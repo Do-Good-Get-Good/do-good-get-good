@@ -30,8 +30,18 @@ export const ChangeRoleOrAdminPopup = ({
     context?.allAdminsAnsSuperAdmins,
   );
   const userID = context?.makeChangesForSelectedUser?.user.id;
+  const arrayOfUsersIfAdmin =
+    context?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
+  const isHavingUsers =
+    arrayOfUsersIfAdmin !== undefined && arrayOfUsersIfAdmin.length > 0;
 
   const isRolePopup = changeRoleOrAdmin === ChagesType.role;
+
+  const onSelectRole = (key: string) => {
+    isHavingUsers && key === Role.user
+      ? console.log("You need to connect users to another admin")
+      : onChange(key);
+  };
 
   return (
     changeRoleOrAdmin && (
@@ -42,7 +52,7 @@ export const ChangeRoleOrAdminPopup = ({
         exceptOf={userID}
         onSelect={(key) =>
           isRolePopup
-            ? onChange(key)
+            ? onSelectRole(key)
             : onChange({ id: key, fullName: allAdminsPopupObj[key] })
         }
         showPopup={isShowPopup}

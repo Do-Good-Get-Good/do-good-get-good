@@ -23,7 +23,6 @@ type Props = {
 export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
   const userLevel = useUserLevelCheckFunction();
   const menuNavigation = useMenuNavigation(userLevel ?? undefined);
-
   function signOutFunction() {
     auth()
       .signOut()
