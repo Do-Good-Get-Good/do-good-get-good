@@ -62,7 +62,6 @@ export const SuperAdminProvider = ({ children }) => {
         try {
           let allUsers = await getAllUsersData();
           setAllUsersInSystem(allUsers);
-          allUsers && findAdminsAndSuperAdmins(allUsers);
         } catch (error) {
           console.log("SuperAdminContext errorMessage ", error);
         }
@@ -93,9 +92,11 @@ export const SuperAdminProvider = ({ children }) => {
 
     allUsersInSystem &&
       setAllUsersInSystem(updateUserArray(allUsersInSystem, changedUser));
-
-    allUsersInSystem && findAdminsAndSuperAdmins(allUsersInSystem);
   };
+
+  useEffect(() => {
+    allUsersInSystem && findAdminsAndSuperAdmins(allUsersInSystem);
+  }, [allUsersInSystem]);
 
   const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
     let adminArray: Array<User> = [];
@@ -104,6 +105,7 @@ export const SuperAdminProvider = ({ children }) => {
         adminArray.push(userArray[i]);
       }
     }
+
     setAllAdminsAnsSuperAdmins(adminArray);
   };
 
