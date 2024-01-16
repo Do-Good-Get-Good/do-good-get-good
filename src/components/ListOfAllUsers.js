@@ -17,10 +17,7 @@ export function ListOfAllUsers({ navigation }) {
   const [arrayOfAllUsersInSystem, setArrayOfAllUsersInSystem] = useState([]);
 
   useEffect(() => {
-    if (
-      superAdminContext.getAllUsers === true &&
-      superAdminContext.allUsersInSystem.length != 0
-    ) {
+    if (superAdminContext.allUsersInSystem.length != 0) {
       setArrayOfAllUsersInSystem(superAdminContext.allUsersInSystem);
       superAdminContext.setGetAllUsers(false);
     }

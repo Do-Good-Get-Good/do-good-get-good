@@ -79,13 +79,17 @@ export const RolesAndConnection = ({ navigation }: Props) => {
 
   const onSave = (data: UserInfo) => {
     if (user?.user && data?.role) {
-      return superAdminUpdatesUserInfo(
-        user.user.id,
-        user.user.firstName,
-        user.user.lastName,
-        data.isActive,
-        data?.role,
-        data.admin.id,
+      const changedData = {
+        id: user.user.id,
+        firstName: user.user.firstName,
+        lastName: user.user.lastName,
+        statusActive: data.isActive,
+        role: data?.role,
+        adminID: data.admin.id,
+      };
+
+      return superAdminUpdatesUserInfo(changedData).then(
+        () => superAdminContext?.updateUserAfterChanges(changedData),
       );
     }
   };

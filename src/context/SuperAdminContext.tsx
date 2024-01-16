@@ -3,6 +3,7 @@ import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superA
 import { getAllUsersData } from "../firebase-functions/getTS/getAllUsersData";
 import { User, UserObjectForSuperAdmin } from "../utilily/types";
 import { Role } from "../utilily/enums";
+import { findIndex, set } from "lodash";
 
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
@@ -18,18 +19,17 @@ type SuperAdminContextType = {
   userIDToConnectAnotherAdmin: User["id"];
   setUserIDToConnectAnotherAdmin: (value: User["id"]) => void;
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
+  updateUserAfterChanges: (value: User) => void;
 };
-// const defaultValue: SuperAdminContextType = {
-//   userLevel: () => undefined,
-//   buttonToSaveChanhgesPressed: false,
 
-//   // setGetAllUsers: () => false,
-//   allUsersInSystem: undefined,
-//   getAllUsers: false,
-//   allAdminsAnsSuperAdmins: undefined,
-//   makeChangesForSelectedUser: undefined,
-//   userIDToConnectAnotherAdmin: "",
-// };
+const updateUserArray = (arrayToUpdate: Array<User>, changedUser: User) => {
+  const index = findIndex(arrayToUpdate, ["id", changedUser.id]);
+  if (index !== -1) {
+    const newArray = [...arrayToUpdate];
+    newArray.splice(index, 1, changedUser);
+    return newArray;
+  } else arrayToUpdate;
+};
 
 const SuperAdminContext = React.createContext<
   SuperAdminContextType | undefined
@@ -46,8 +46,8 @@ export const SuperAdminProvider = ({ children }) => {
   const [getAllUsers, setGetAllUsers] = useState(false);
   const [userLevel, setUserLevel] = useState<Role | undefined>(undefined);
   const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
-    User[]
-  >([]);
+    User[] | undefined
+  >(undefined);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
     UserObjectForSuperAdmin | undefined
   >(undefined);
@@ -55,10 +55,6 @@ export const SuperAdminProvider = ({ children }) => {
     useState(false);
   const [userIDToConnectAnotherAdmin, setUserIDToConnectAnotherAdmin] =
     useState<User["id"]>("");
-
-  const [arrayOfIdOfChangedUserInfo, setArrayOfIdOfChangedUserInfo] = useState(
-    [],
-  );
 
   useEffect(() => {
     if (getAllUsers === true && userLevel === Role.superadmin) {
@@ -76,49 +72,30 @@ export const SuperAdminProvider = ({ children }) => {
     }
   }, [getAllUsers]);
 
-  console.log(getAllUsers, "----------  getAllUsers");
+  const updateUserAfterChanges = (changedUser: User) => {
+    if (makeChangesForSelectedUser?.user.id === changedUser.id) {
+      setMakeChangesForSelectedUser(
+        set(makeChangesForSelectedUser, "user", changedUser),
+      );
+    }
 
-  // useEffect(() => {
-  //   if (buttonToSaveChanhgesPressed) {
-  //     const changeUserData = () => {
-  //       for (let i = 0; i < arrayOfIdOfChangedUserInfo.length; i++) {
-  //         let user: User | undefined = undefined;
+    makeChangesForSelectedUser?.arrayOfUsersIfAdmin &&
+      setMakeChangesForSelectedUser(
+        set(
+          makeChangesForSelectedUser,
+          "arrayOfUsersIfAdmin",
+          updateUserArray(
+            makeChangesForSelectedUser.arrayOfUsersIfAdmin,
+            changedUser,
+          ),
+        ),
+      );
 
-  //         const index =
-  //           makeChangesForSelectedUser?.arrayOfUsersIfAdmin?.findIndex(
-  //             (x) => x.id === arrayOfIdOfChangedUserInfo[i],
-  //           );
+    allUsersInSystem &&
+      setAllUsersInSystem(updateUserArray(allUsersInSystem, changedUser));
 
-  //         if (
-  //           makeChangesForSelectedUser?.user.id ===
-  //           arrayOfIdOfChangedUserInfo[i]
-  //         ) {
-  //           user = makeChangesForSelectedUser.user;
-  //         } else if (index != -1) {
-  //           user = makeChangesForSelectedUser?.arrayOfUsersIfAdmin[index].user;
-  //         }
-
-  //         if (user != null) {
-  //           superAdminUpdatesUserInfo(user).then((res) => {
-  //             if (res.success) {
-  //               let tempArray = allUsersInSystem;
-  //               let findIndexInArray = tempArray.findIndex(
-  //                 (x) => x.id === user.id,
-  //               );
-  //               tempArray.splice(findIndexInArray, 1, user);
-  //               setAllUsersInSystem(tempArray);
-
-  //               //After User name, status active, .... need to find this object in array and made changes there as well
-  //             }
-  //           });
-  //         }
-  //         setButtonToSaveChanhgesPressed(false);
-  //       }
-  //     };
-
-  //     changeUserData();
-  //   }
-  // }, [buttonToSaveChanhgesPressed]);
+    allUsersInSystem && findAdminsAndSuperAdmins(allUsersInSystem);
+  };
 
   const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
     let adminArray: Array<User> = [];
@@ -129,7 +106,7 @@ export const SuperAdminProvider = ({ children }) => {
     }
     setAllAdminsAnsSuperAdmins(adminArray);
   };
-  console.log(allUsersInSystem);
+
   return (
     <SuperAdminContext.Provider
       value={{
@@ -148,8 +125,7 @@ export const SuperAdminProvider = ({ children }) => {
         userIDToConnectAnotherAdmin: userIDToConnectAnotherAdmin,
         setUserIDToConnectAnotherAdmin: setUserIDToConnectAnotherAdmin,
 
-        arrayOfIdOfChangedUserInfo: arrayOfIdOfChangedUserInfo,
-        setArrayOfIdOfChangedUserInfo: setArrayOfIdOfChangedUserInfo,
+        updateUserAfterChanges: updateUserAfterChanges,
       }}
     >
       {children}
