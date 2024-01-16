@@ -1,4 +1,5 @@
 import {
+  Dimensions,
   FlexStyle,
   ScrollView,
   StyleProp,
@@ -116,7 +117,7 @@ const styles = StyleSheet.create({
   overlayStyle: {
     backgroundColor: colors.light,
     width: "90%",
-    height: "35%",
+    maxHeight: "45%",
     borderRadius: 5,
   },
 });

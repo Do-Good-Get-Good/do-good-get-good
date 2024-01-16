@@ -30,14 +30,6 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
     setShowPopup,
   } = useChangeRoleAndConnectionButtons();
 
-  // useEffect(() => {
-  //   setUser(superAdminContext.makeChangesForSelectedUser.user);
-  // }, [superAdminContext.makeChangesForSelectedUser.user]);
-
-  // useEffect(() => {
-  //   serAdminName(superAdminContext.makeChangesForSelectedUser.adminName);
-  // }, [superAdminContext.makeChangesForSelectedUser.adminName]);'
-
   return (
     <View>
       <NameRoleAdmin
@@ -95,12 +87,6 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 2,
   },
-  // overlayStyle: {
-  //   backgroundColor: colors.light,
-  //   width: "90%",
-  //   height: "35%",
-  //   borderRadius: 5,
-  // },
 
   textAsButton: {
     textDecorationLine: "underline",
