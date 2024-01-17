@@ -1,8 +1,6 @@
-import { Controller, UseFormGetValues, useForm } from "react-hook-form";
-import { UserInfo } from "../../screens/RolesAndConnection";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { User, UserObjectForSuperAdmin } from "../../utilily/types";
+import { User } from "../../utilily/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";

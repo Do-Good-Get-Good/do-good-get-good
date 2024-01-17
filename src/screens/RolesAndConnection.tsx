@@ -72,6 +72,12 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
+  const updateUser = (changedUser: User) => {
+    superAdminUpdatesUserInfo(changedUser).then(
+      () => superAdminContext?.updateUserAfterChanges(changedUser),
+    );
+  };
+
   const onSave = (data: UserInfo) => {
     if (user?.user && data?.role) {
       const changedData = {
@@ -83,9 +89,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         adminID: data.admin.id,
       };
 
-      return superAdminUpdatesUserInfo(changedData).then(
-        () => superAdminContext?.updateUserAfterChanges(changedData),
-      );
+      updateUser(changedData);
+      usersWithChangedAdmin.map((item) => updateUser(item));
     }
   };
 
