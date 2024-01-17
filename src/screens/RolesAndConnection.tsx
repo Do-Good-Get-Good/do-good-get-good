@@ -89,7 +89,7 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     }
   };
 
-  const onSelect = (user: User) => {
+  const onSaveUsersWithChangedAdmin = (user: User) => {
     setUsersWithChangedAdmin([
       ...reject(usersWithChangedAdmin, { id: user.id }),
       user,
@@ -104,7 +104,9 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         <View style={styles.container}>
           <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
-          <ConnectedUsersDropDown onSelect={onSelect} />
+          <ConnectedUsersDropDown
+            onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
+          />
           <LongButton
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}

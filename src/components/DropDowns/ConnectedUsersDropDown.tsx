@@ -6,8 +6,8 @@ import { User, UserObjectForSuperAdmin } from "../../utilily/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
-import { useCallback, useState } from "react";
-import { set } from "lodash";
+import { useState } from "react";
+import { cloneDeep, find, findIndex, update } from "lodash";
 
 import { Pencil } from "../../assets/icons/Pencil";
 
@@ -18,32 +18,26 @@ type DropDownInfoProps = {
   onSelect: (user: User) => void;
   user: User;
 };
+
 const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const context = useSuperAdminFunction();
-  const admin = context?.makeChangesForSelectedUser?.user;
   const allAdminsAnsSuperAdmin = context?.allAdminsAnsSuperAdmins;
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
     allAdminsAnsSuperAdmin,
   );
 
-  const adminName = admin?.firstName + " " + admin?.lastName;
-
-  //   const onSelect = (adminID: string)=>{
-  //     setUsersWithChangedAdmin(prev => [
-  //         ...prev,
-  //         { ...user, adminID: adminID }
-  //       ]);
-
-  //   }
+  const showAdminName = (connectedAdmin: User["adminID"]) => {
+    const admin = find(allAdminsAnsSuperAdmin, { id: connectedAdmin });
+    return admin?.firstName + " " + admin?.lastName;
+  };
 
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.containerForTextAndIcon}
         onPress={() => setIsOpen(!isOpen)}
-        //   onPress={() => changeSelectedForDropDown(user.user.id)}
       >
         <Text style={styles.userAndAdminNames}>
           {user.firstName + " " + user.lastName}
@@ -54,7 +48,9 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
       {isOpen && (
         <View style={styles.containerAdminName}>
           <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
-            <Text style={styles.userAndAdminNames}>{adminName}</Text>
+            <Text style={styles.userAndAdminNames}>
+              {showAdminName(user.adminID)}
+            </Text>
 
             <Pencil onPress={() => setIsShowPopup(!isShowPopup)} />
           </View>
@@ -75,13 +71,24 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
 };
 
 type Props = {
-  onSelect: (user: User) => void;
+  onSaveUsersWithChangedAdmin: (user: User) => void;
 };
-export const ConnectedUsersDropDown = ({ onSelect }: Props) => {
+export const ConnectedUsersDropDown = ({
+  onSaveUsersWithChangedAdmin,
+}: Props) => {
   const superAdminContext = useSuperAdminFunction();
+  const [connectedUsers, setConnectedUsers] = useState<User[] | undefined>(
+    superAdminContext?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin,
+  );
 
-  const connectedUsers =
-    superAdminContext?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
+  const onSelect = (user: User) => {
+    onSaveUsersWithChangedAdmin(user);
+    const i = findIndex(connectedUsers, { id: user.id });
+    const arr = cloneDeep(connectedUsers);
+    i !== -1 &&
+      arr !== undefined &&
+      setConnectedUsers(update(arr, i, () => ({ ...user })));
+  };
 
   return (
     <View>
@@ -123,48 +130,3 @@ const styles = StyleSheet.create({
     flex: 1,
   },
 });
-
-// type ConnectedUserAdminInfo = {
-//   id: User["adminID"];
-//   adminFullName: string;
-// };
-
-// const schema: yup.ObjectSchema<ConnectedUserAdminInfo> = yup
-//   .object()
-//   .shape({
-//     id: yup.string().required(),
-//     adminFullName: yup.string().required(),
-//   })
-
-//   .defined();
-
-//   const { handleSubmit, control, getValues } = useForm<ConnectedUserAdminInfo>({
-//     defaultValues: {
-//       id: user.adminID,
-//       adminFullName: user?.adminName,
-//     },
-//     resolver: yupResolver(schema),
-//   });
-
-{
-  /* <Controller
-        name={ChagesType.admin}
-        control={props.control}
-        rules={{ required: true }}
-        render={({ field: { onChange } }) => (
-             <PopupWithRadioButtons
-            mainTitle={ "Ändra admin"}
-            optionsList={ allAdminsPopupObj}
-            selected={getValues("admin.id")}
-            exceptOf={userID}
-            onSelect={(key) =>
-              isRolePopup
-                ? onSelectRole(key)
-                : onChange({ id: key, fullName: allAdminsPopupObj[key] })
-            }
-            showPopup={isShowPopup}
-            setShowPopup={setShowPopup}
-          />
-        )}
-      /> */
-}
