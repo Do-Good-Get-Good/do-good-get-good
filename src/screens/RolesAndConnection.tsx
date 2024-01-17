@@ -5,7 +5,7 @@ import {
   View,
   TouchableOpacity,
 } from "react-native";
-import React from "react";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
@@ -18,20 +18,22 @@ import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
-import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
+
 import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
 import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
+import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
+import { User } from "../utilily/types";
+import { reject } from "lodash";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
   role: Role;
   admin: UserIdAndFullName;
   isActive: boolean;
-  // connectedUsers?: Array<UserIdAndFullName> | undefined;
 };
 
 const schema: yup.ObjectSchema<UserInfo> = yup
@@ -46,17 +48,8 @@ const schema: yup.ObjectSchema<UserInfo> = yup
       })
       .required(),
     isActive: yup.boolean().required(),
-    // connectedUsers: yup
-    //   .array()
-
-    //   .of(
-    //     yup.object().shape({
-    //       id: yup.string().required(),
-    //       fullName: yup.string().required(),
-    //     }),
-    //   )
-    //   .optional(),
   })
+
   .defined();
 
 type Props = {
@@ -66,13 +59,15 @@ type Props = {
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
   const user = superAdminContext?.makeChangesForSelectedUser;
+  const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
+    [],
+  );
 
   const { handleSubmit, control, getValues } = useForm<UserInfo>({
     defaultValues: {
       role: user?.user.role as Role,
       admin: { id: user?.user.adminID, fullName: user?.adminName },
       isActive: user?.user.statusActive,
-      // connectedUsers: user?.arrayOfUsersIfAdmin ?? undefined,
     },
     resolver: yupResolver(schema),
   });
@@ -94,6 +89,13 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     }
   };
 
+  const onSelect = (user: User) => {
+    setUsersWithChangedAdmin([
+      ...reject(usersWithChangedAdmin, { id: user.id }),
+      user,
+    ]);
+  };
+
   return (
     <SafeAreaView>
       <Menu />
@@ -102,8 +104,7 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         <View style={styles.container}>
           <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
-
-          {/* <ConnectedUsersDropDown /> */}
+          <ConnectedUsersDropDown onSelect={onSelect} />
           <LongButton
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}

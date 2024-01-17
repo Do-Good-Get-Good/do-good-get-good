@@ -42,12 +42,7 @@ export function ListOfAllUsers({ navigation }) {
 
     for (let index = 0; index < arrayOfAllUsersInSystem.length; index++) {
       if (arrayOfAllUsersInSystem[index].adminID === userId) {
-        let tempObject = {
-          user: arrayOfAllUsersInSystem[index],
-          adminName: adminName,
-          selectedForDropDown: false,
-        };
-        usersArray.push(tempObject);
+        usersArray.push(arrayOfAllUsersInSystem[index]);
       }
     }
 

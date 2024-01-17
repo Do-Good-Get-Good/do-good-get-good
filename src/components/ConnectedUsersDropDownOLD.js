@@ -8,7 +8,7 @@ import colors from "../assets/theme/colors";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import PopupWithRadioButtons from "./Popup/PopupWithRadioButtons";
 
-export function ConnectedUsersDropDown({}) {
+export function ConnectedUsersDropDownOLD({}) {
   const superAdminContext = useSuperAdminFunction();
   const [userArray, setUserArray] = useState([]);
   const [showPopupWithRadioButtons, setShowPopupWithRadioButtons] =
@@ -116,7 +116,7 @@ export function ConnectedUsersDropDown({}) {
     <View>{userArray.map((user, index) => whatTextToShow(user, index))}</View>
   );
 }
-export default ConnectedUsersDropDown;
+export default ConnectedUsersDropDownOLD;
 const styles = StyleSheet.create({
   container: {
     backgroundColor: colors.background,
