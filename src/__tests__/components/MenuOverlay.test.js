@@ -47,13 +47,6 @@ jest.mock("../../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../../context/SuperAdminContext", () => ({
-  useSuperAdminFunction: () => ({
-    setGetAllUsers: jest.fn(),
-    userLevel: jest.fn(),
-  }),
-}));
-
 afterEach(() => {
   jest.clearAllMocks();
 });

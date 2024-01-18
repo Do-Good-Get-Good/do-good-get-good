@@ -1,18 +1,8 @@
-import {
-  StyleSheet,
-  ScrollView,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, ScrollView, View } from "react-native";
 import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-
-import { Icon } from "@rneui/base";
 
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import Menu from "../components/Menu";

@@ -28,7 +28,10 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   );
 
   return (
-    <View style={styles.container}>
+    <View
+      testID={`connected-users-dropdown-${user.id}`}
+      style={styles.container}
+    >
       <TouchableOpacity
         style={styles.containerForTextAndIcon}
         onPress={() => setIsOpen(!isOpen)}
@@ -42,9 +45,15 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
       {isOpen && (
         <View style={styles.containerAdminName}>
           <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
-            <Text style={styles.userAndAdminNames}>
-              {showAdminName(user.adminID, allAdminsAnsSuperAdmin)}
-            </Text>
+            <View style={{ flexDirection: "row" }}>
+              <Text style={styles.adminText}>Admin:</Text>
+              <Text
+                testID="drop-down-admin-name"
+                style={styles.userAndAdminNames}
+              >
+                {showAdminName(user.adminID, allAdminsAnsSuperAdmin)}
+              </Text>
+            </View>
 
             <Pencil onPress={() => setIsShowPopup(!isShowPopup)} />
           </View>
@@ -113,6 +122,7 @@ const styles = StyleSheet.create({
     paddingVertical: 14,
   },
   adminText: {
+    paddingRight: 5,
     fontWeight: "500",
     ...typography.b2,
   },
@@ -124,7 +134,6 @@ const styles = StyleSheet.create({
     ...typography.b2,
   },
   adminNameAndIcon: {
-    paddingLeft: 10,
     paddingRight: 3,
     justifyContent: "space-between",
     flex: 1,

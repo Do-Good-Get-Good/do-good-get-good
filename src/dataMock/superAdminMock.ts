@@ -13,15 +13,15 @@ const userSuperadminMock: User = {
 const userAdminOneMock: User = {
   id: "2",
   adminID: "1",
-  firstName: "Admin",
-  lastName: "Adminsson",
+  firstName: "Admin4",
+  lastName: "Adminsson4",
   role: "admin" as Role,
   statusActive: true,
 };
 
 const userAdminTwoMock: User = {
   id: "3",
-  adminID: "2",
+  adminID: "1",
   firstName: "Admin2",
   lastName: "Adminsson2",
   role: "admin" as Role,
@@ -30,7 +30,7 @@ const userAdminTwoMock: User = {
 
 const userUserOneMock: User = {
   id: "4",
-  adminID: "2",
+  adminID: "1",
   firstName: "Johan",
   lastName: "Johansson",
   role: "user" as Role,
@@ -65,9 +65,9 @@ const userSuperadminThreeMock: User = {
 };
 
 const usersArrayConnectedToAdminMock: Array<User> = [
+  userAdminOneMock,
   userAdminTwoMock,
   userUserOneMock,
-  userUserTwoMock,
 ];
 
 export const mockSelectedUser: UserObjectForSuperAdmin = {

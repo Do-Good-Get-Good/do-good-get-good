@@ -8,6 +8,7 @@ type Props = {
 export const Pencil = ({ onPress }: Props) => {
   return (
     <Icon
+      testID="pencil-icon"
       color={colors.secondary}
       type="material-community"
       name="pencil-outline"
