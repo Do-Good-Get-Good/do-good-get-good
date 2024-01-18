@@ -24,7 +24,6 @@ export function ListOfAllUsers({ navigation }: Props) {
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
-
     navigation.navigate("RolesAndConnection");
   }
 
@@ -65,38 +64,3 @@ const styles = StyleSheet.create({
     ...typography.b2,
   },
 });
-
-// const [arrayOfAllUsersInSystem, setArrayOfAllUsersInSystem] = useState([]);
-
-// useEffect(() => {
-
-//     setArrayOfAllUsersInSystem(superAdminContext.allUsersInSystem);
-//     // superAdminContext.setGetAllUsers(false);
-
-// }, [superAdminContext.allUsersInSystem]);
-
-// function findNameOfUserAdmin(adminId) {
-//   let adminName = "";
-//   let index = arrayOfAllUsersInSystem.findIndex((x) => x.id === adminId);
-
-//   if (index != -1) {
-//     adminName =
-//       arrayOfAllUsersInSystem[index].firstName +
-//       " " +
-//       arrayOfAllUsersInSystem[index].lastName;
-//   }
-//   return adminName;
-// }
-
-// function findAllUsersConnectedToTheAdmin(userId) {
-//   let usersArray = [];
-//   let adminName = findNameOfUserAdmin(userId);
-
-//   for (let index = 0; index < arrayOfAllUsersInSystem.length; index++) {
-//     if (arrayOfAllUsersInSystem[index].adminID === userId) {
-//       usersArray.push(arrayOfAllUsersInSystem[index]);
-//     }
-//   }
-
-//   return usersArray;
-// }

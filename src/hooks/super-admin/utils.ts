@@ -1,4 +1,4 @@
-import { filter, find } from "lodash";
+import { filter, find, findIndex } from "lodash";
 import { User, UserObjectForSuperAdmin } from "../../utilily/types";
 import { Role } from "../../utilily/enums";
 
@@ -14,6 +14,18 @@ export const findAllUsersConnectedToTheAdmin = (
   adminID: User["id"],
   arrayOfAllUsersInSystem: User[] | undefined,
 ): User[] => filter(arrayOfAllUsersInSystem, { adminID: adminID });
+
+export const updateUserArray = (
+  arrayToUpdate: Array<User> | undefined,
+  changedUser: User,
+) => {
+  const index = findIndex(arrayToUpdate, ["id", changedUser.id]);
+  if (index !== -1 && arrayToUpdate) {
+    const newArray = [...arrayToUpdate];
+    newArray.splice(index, 1, changedUser);
+    return newArray;
+  } else arrayToUpdate;
+};
 
 export const superAdminMakeUserObject = (
   selectedUser: User,

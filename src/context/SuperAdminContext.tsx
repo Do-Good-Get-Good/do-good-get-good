@@ -3,10 +3,9 @@ import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superA
 
 import { User, UserObjectForSuperAdmin } from "../utilily/types";
 
-import { updateUserArray } from "./utils";
 import { reject, set } from "lodash";
 import { Role } from "../utilily/enums";
-import { findAllUsersConnectedToTheAdmin } from "../hooks/super-admin/utils";
+import { updateUserArray } from "../hooks/super-admin/utils";
 
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
@@ -22,15 +21,6 @@ type SuperAdminContextType = {
   updateUserAfterChanges: (value: User) => void;
 };
 
-// const updateUserArray = (arrayToUpdate: Array<User>, changedUser: User) => {
-//   const index = findIndex(arrayToUpdate, ["id", changedUser.id]);
-//   if (index !== -1) {
-//     const newArray = [...arrayToUpdate];
-//     newArray.splice(index, 1, changedUser);
-//     return newArray;
-//   } else arrayToUpdate;
-// };
-
 const SuperAdminContext = React.createContext<
   SuperAdminContextType | undefined
 >(undefined);
@@ -39,7 +29,9 @@ export const useSuperAdminFunction = () => {
   return useContext(SuperAdminContext);
 };
 
-export const SuperAdminProvider = ({ children }) => {
+export const SuperAdminProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [allUsersInSystem, setAllUsersInSystem] = useState<User[] | undefined>(
     [],
   );
