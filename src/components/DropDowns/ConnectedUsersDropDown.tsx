@@ -4,13 +4,14 @@ import { User } from "../../utilily/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
-import { useState } from "react";
-import { cloneDeep, find, findIndex, update } from "lodash";
+import { useEffect, useState } from "react";
+import { cloneDeep, findIndex, update } from "lodash";
 
 import { Pencil } from "../../assets/icons/Pencil";
 
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
+import { showAdminName } from "../../hooks/super-admin/utils";
 
 type DropDownInfoProps = {
   onSelect: (user: User) => void;
@@ -25,11 +26,6 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
     allAdminsAnsSuperAdmin,
   );
-
-  const showAdminName = (connectedAdmin: User["adminID"]) => {
-    const admin = find(allAdminsAnsSuperAdmin, { id: connectedAdmin });
-    return admin?.firstName + " " + admin?.lastName;
-  };
 
   return (
     <View style={styles.container}>
@@ -47,7 +43,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
         <View style={styles.containerAdminName}>
           <View style={[styles.containerAdminName, styles.adminNameAndIcon]}>
             <Text style={styles.userAndAdminNames}>
-              {showAdminName(user.adminID)}
+              {showAdminName(user.adminID, allAdminsAnsSuperAdmin)}
             </Text>
 
             <Pencil onPress={() => setIsShowPopup(!isShowPopup)} />
@@ -75,9 +71,15 @@ export const ConnectedUsersDropDown = ({
   onSaveUsersWithChangedAdmin,
 }: Props) => {
   const superAdminContext = useSuperAdminFunction();
+  const contextArrayOfUsersIfAdmin =
+    superAdminContext?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
   const [connectedUsers, setConnectedUsers] = useState<User[] | undefined>(
-    superAdminContext?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin,
+    contextArrayOfUsersIfAdmin,
   );
+
+  useEffect(() => {
+    setConnectedUsers(contextArrayOfUsersIfAdmin);
+  }, [contextArrayOfUsersIfAdmin]);
 
   const onSelect = (user: User) => {
     onSaveUsersWithChangedAdmin(user);

@@ -1,11 +1,14 @@
+import { ro } from "date-fns/locale";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+import { useGetAllUsersThatExistInTheSystem } from "../../hooks/super-admin/useGetAllUsersThatExistInTheSystem";
 import { Role } from "../../utilily/enums";
 import {
   AdminStack,
   SuperAdminStack,
   UserStack,
 } from "../../utilily/routeEnums";
+import { useEffect } from "react";
 
 export type NavigationObject = {
   title: string;
@@ -34,16 +37,11 @@ export const userNavigations: Array<NavigationObject> = [
 
 export const useMenuNavigation = (role: Role | undefined) => {
   const adminGalleryContext = useAdminGalleryFunction();
-  const superAdminContext = useSuperAdminFunction();
+  useGetAllUsersThatExistInTheSystem(role);
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
     adminGalleryContext.setCleanUpSearchBarComponent(true);
-  };
-
-  const toUsersInTheSystem = () => {
-    superAdminContext?.setGetAllUsers(true);
-    superAdminContext?.userLevel(role);
   };
 
   const adminNavigations: Array<NavigationObject> = [
@@ -62,7 +60,6 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Alla användare",
       screenName: SuperAdminStack.AllUsersInTheSystem,
-      toDo: toUsersInTheSystem,
     },
     {
       title: "Exportera data",

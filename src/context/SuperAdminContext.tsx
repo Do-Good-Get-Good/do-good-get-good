@@ -1,35 +1,35 @@
 import React, { useContext, useState, useEffect } from "react";
 import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
-import { getAllUsersData } from "../firebase-functions/getTS/getAllUsersData";
+
 import { User, UserObjectForSuperAdmin } from "../utilily/types";
+
+import { updateUserArray } from "./utils";
+import { reject, set } from "lodash";
 import { Role } from "../utilily/enums";
-import { findIndex, set } from "lodash";
+import { findAllUsersConnectedToTheAdmin } from "../hooks/super-admin/utils";
 
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
-  userLevel: (value: Role | undefined) => void;
-  getAllUsers: boolean;
-  setGetAllUsers: (value: boolean) => void;
+  setAllUsersInSystem: (users: User[] | undefined) => void;
+
   setMakeChangesForSelectedUser: (
     value: UserObjectForSuperAdmin | undefined,
   ) => void;
-  buttonToSaveChanhgesPressed: boolean;
-  setButtonToSaveChanhgesPressed: (value: boolean) => void;
+
   allAdminsAnsSuperAdmins: User[] | undefined;
-  userIDToConnectAnotherAdmin: User["id"];
-  setUserIDToConnectAnotherAdmin: (value: User["id"]) => void;
+
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
   updateUserAfterChanges: (value: User) => void;
 };
 
-const updateUserArray = (arrayToUpdate: Array<User>, changedUser: User) => {
-  const index = findIndex(arrayToUpdate, ["id", changedUser.id]);
-  if (index !== -1) {
-    const newArray = [...arrayToUpdate];
-    newArray.splice(index, 1, changedUser);
-    return newArray;
-  } else arrayToUpdate;
-};
+// const updateUserArray = (arrayToUpdate: Array<User>, changedUser: User) => {
+//   const index = findIndex(arrayToUpdate, ["id", changedUser.id]);
+//   if (index !== -1) {
+//     const newArray = [...arrayToUpdate];
+//     newArray.splice(index, 1, changedUser);
+//     return newArray;
+//   } else arrayToUpdate;
+// };
 
 const SuperAdminContext = React.createContext<
   SuperAdminContextType | undefined
@@ -43,33 +43,30 @@ export const SuperAdminProvider = ({ children }) => {
   const [allUsersInSystem, setAllUsersInSystem] = useState<User[] | undefined>(
     [],
   );
-  const [getAllUsers, setGetAllUsers] = useState(false);
-  const [userLevel, setUserLevel] = useState<Role | undefined>(undefined);
+
   const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
     User[] | undefined
   >(undefined);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
     UserObjectForSuperAdmin | undefined
   >(undefined);
-  const [buttonToSaveChanhgesPressed, setButtonToSaveChanhgesPressed] =
-    useState(false);
-  const [userIDToConnectAnotherAdmin, setUserIDToConnectAnotherAdmin] =
-    useState<User["id"]>("");
 
-  useEffect(() => {
-    if (getAllUsers === true && userLevel === Role.superadmin) {
-      const getAllUsersThatExistInTheSystem = async () => {
-        try {
-          let allUsers = await getAllUsersData();
-          setAllUsersInSystem(allUsers);
-        } catch (error) {
-          console.log("SuperAdminContext errorMessage ", error);
-        }
-      };
+  const updateUserInfoInArrayOfUsersIfAdmin = (changedUser: User) => {
+    const connectedUsers = makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
+    const isAdminChanged =
+      changedUser.adminID !== makeChangesForSelectedUser?.user.id;
 
-      getAllUsersThatExistInTheSystem();
-    }
-  }, [getAllUsers]);
+    makeChangesForSelectedUser?.arrayOfUsersIfAdmin &&
+      setMakeChangesForSelectedUser(
+        set(
+          makeChangesForSelectedUser,
+          "arrayOfUsersIfAdmin",
+          isAdminChanged
+            ? [...reject(connectedUsers, { id: changedUser.id })]
+            : updateUserArray(connectedUsers, changedUser),
+        ),
+      );
+  };
 
   const updateUserAfterChanges = (changedUser: User) => {
     if (makeChangesForSelectedUser?.user.id === changedUser.id) {
@@ -77,18 +74,7 @@ export const SuperAdminProvider = ({ children }) => {
         set(makeChangesForSelectedUser, "user", changedUser),
       );
     }
-
-    makeChangesForSelectedUser?.arrayOfUsersIfAdmin &&
-      setMakeChangesForSelectedUser(
-        set(
-          makeChangesForSelectedUser,
-          "arrayOfUsersIfAdmin",
-          updateUserArray(
-            makeChangesForSelectedUser.arrayOfUsersIfAdmin,
-            changedUser,
-          ),
-        ),
-      );
+    updateUserInfoInArrayOfUsersIfAdmin(changedUser);
 
     allUsersInSystem &&
       setAllUsersInSystem(updateUserArray(allUsersInSystem, changedUser));
@@ -101,7 +87,10 @@ export const SuperAdminProvider = ({ children }) => {
   const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
     let adminArray: Array<User> = [];
     for (let i = 0; i < userArray.length; i++) {
-      if (userArray[i].role === "admin" || userArray[i].role === "superadmin") {
+      if (
+        userArray[i].role === Role.admin ||
+        userArray[i].role === Role.superadmin
+      ) {
         adminArray.push(userArray[i]);
       }
     }
@@ -113,19 +102,12 @@ export const SuperAdminProvider = ({ children }) => {
     <SuperAdminContext.Provider
       value={{
         allUsersInSystem: allUsersInSystem,
-        setGetAllUsers: setGetAllUsers,
-        getAllUsers: getAllUsers,
-        userLevel: setUserLevel,
+        setAllUsersInSystem: setAllUsersInSystem,
+
         allAdminsAnsSuperAdmins: allAdminsAnsSuperAdmins,
 
         makeChangesForSelectedUser: makeChangesForSelectedUser,
         setMakeChangesForSelectedUser: setMakeChangesForSelectedUser,
-
-        buttonToSaveChanhgesPressed: buttonToSaveChanhgesPressed,
-        setButtonToSaveChanhgesPressed: setButtonToSaveChanhgesPressed,
-
-        userIDToConnectAnotherAdmin: userIDToConnectAnotherAdmin,
-        setUserIDToConnectAnotherAdmin: setUserIDToConnectAnotherAdmin,
 
         updateUserAfterChanges: updateUserAfterChanges,
       }}
