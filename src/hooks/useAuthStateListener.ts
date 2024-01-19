@@ -2,15 +2,16 @@ import { useEffect, useState } from "react";
 
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import crashlytics from "@react-native-firebase/crashlytics";
-import { UserClames } from "../utilily/firebaseTypes";
+import { UserClaims } from "../utilily/firebaseTypes";
 
 import { Role } from "../utilily/enums";
 import userLevelStore from "../store/userLevel";
+import { intersection, head } from "lodash";
 
 export const useAuthStateListener = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
-  const [userClaims, setUserClaims] = useState<UserClames | undefined>(
+  const [userClaims, setUserClaims] = useState<UserClaims | undefined>(
     undefined,
   );
 
@@ -22,15 +23,12 @@ export const useAuthStateListener = () => {
           await userState.getIdTokenResult();
         setUserClaims(userIdToken?.claims);
 
-        userLevelStore.setUserLevel(
-          userIdToken?.claims?.admin
-            ? Role.admin
-            : userIdToken?.claims?.superadmin
-              ? Role.superadmin
-              : userIdToken?.claims?.user
-                ? Role.user
-                : undefined,
+        const searchUserRoleInClaims = intersection(
+          Object.keys(userIdToken?.claims),
+          Object.keys(Role),
         );
+        const role = Role[head(searchUserRoleInClaims) as keyof typeof Role];
+        userLevelStore.setUserLevel(role);
       } catch (error: any) {
         crashlytics().log("There was an error getting the users ID Token");
         crashlytics().recordError(error);

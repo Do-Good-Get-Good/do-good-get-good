@@ -23,7 +23,7 @@ import adminStore from "../store/adminStore";
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
-  const userLevel = userLevelStore.userLevel;
+  const { userLevel } = userLevelStore;
 
   useEffect(() => {
     if ([UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel)) {

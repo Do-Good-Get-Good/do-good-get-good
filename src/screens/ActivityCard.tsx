@@ -37,7 +37,7 @@ export function ActivityCard({ route, navigation }: Props) {
   const { activityHasChangedID } = useCreateActivityFunction();
   const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
   const { getImageForActivity } = useActivityImages();
-  const userLevel = userLevelStore.userLevel;
+  const { userLevel } = userLevelStore;
 
   const [activity, setActivity] = useState({
     id: "",

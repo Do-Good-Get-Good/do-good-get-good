@@ -22,7 +22,7 @@ type Props = {
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const userLevel = userLevelStore.userLevel;
+  const { userLevel } = userLevelStore;
   const [expanded, setExpanded] = useState(false);
   return (
     <View style={{ marginTop: 10 }}>

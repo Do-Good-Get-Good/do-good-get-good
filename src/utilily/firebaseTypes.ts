@@ -1,6 +1,7 @@
 import { User } from "./types";
 
-export type UserClames = {
+// I wrote this type by looking at what data we are receiving. We should look over it and maybe change what we want to receive
+export type UserClaims = {
   admin?: boolean;
   superadmin?: boolean;
   user?: boolean;
