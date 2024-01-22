@@ -4,7 +4,6 @@ import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
 
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
@@ -18,6 +17,8 @@ import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
 import { User } from "../utilily/types";
 import { reject } from "lodash";
+import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -48,6 +49,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
+  const { updateUserAfterChanges } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
     [],
@@ -63,8 +65,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   });
 
   const updateUser = (changedUser: User) => {
-    superAdminUpdatesUserInfo(changedUser).then(
-      () => superAdminContext?.updateUserAfterChanges(changedUser),
+    superAdminUpdatesUserInfo(changedUser).then(() =>
+      updateUserAfterChanges(changedUser),
     );
   };
 

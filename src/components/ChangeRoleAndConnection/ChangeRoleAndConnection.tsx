@@ -1,7 +1,6 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 import {
   ChangeButtonsKey,
   useChangeRoleAndConnectionButtons,
@@ -12,6 +11,7 @@ import { NameRoleAdmin } from "./NameRoleAdmin";
 import { ChagesType, ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
 import { Controller, UseFormGetValues } from "react-hook-form";
 import { UserInfo } from "../../screens/RolesAndConnection";
+import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 type Props = {
   getValues: UseFormGetValues<UserInfo>;

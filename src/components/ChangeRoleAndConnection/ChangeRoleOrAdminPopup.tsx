@@ -1,6 +1,5 @@
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 import { Role } from "../../utilily/enums";
-import { User } from "../../utilily/types";
 import { roleTitles } from "../../utilily/utils";
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "./utils";

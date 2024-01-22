@@ -1,5 +1,5 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+
 import { User } from "../../utilily/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
@@ -12,6 +12,7 @@ import { Pencil } from "../../assets/icons/Pencil";
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
 import { showAdminName } from "../../hooks/super-admin/utils";
+import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 type DropDownInfoProps = {
   onSelect: (user: User) => void;

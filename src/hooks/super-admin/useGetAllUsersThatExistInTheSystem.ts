@@ -1,8 +1,8 @@
 import { useEffect } from "react";
-import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+
 import { getAllUsersData } from "../../firebase-functions/getTS/getAllUsersData";
 import { Role } from "../../utilily/enums";
-import { roleTitles } from "../../utilily/utils";
+import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 export const useGetAllUsersThatExistInTheSystem = (
   userLevel: Role | undefined,

@@ -1,9 +1,4 @@
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import {
   mockAllAdminsAnsSuperAdmins,
   mockSelectedUser,
@@ -24,7 +19,6 @@ jest.mock("@react-native-firebase/auth", () => {
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     allAdminsAnsSuperAdmins: mockAllAdminsAnsSuperAdmins,
-    updateUserAfterChanges: jest.fn(),
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));

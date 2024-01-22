@@ -10,9 +10,10 @@ import {
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
 import { User } from "../utilily/types";
 import { useOnSelectUser } from "../hooks/super-admin/useOnSelectUser";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 type Props = {
   navigation: any;
 };
