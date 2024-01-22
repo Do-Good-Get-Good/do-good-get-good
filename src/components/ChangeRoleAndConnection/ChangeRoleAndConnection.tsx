@@ -87,10 +87,4 @@ const styles = StyleSheet.create({
     marginTop: 40,
     marginLeft: 2,
   },
-
-  textAsButton: {
-    textDecorationLine: "underline",
-    fontWeight: "700",
-    paddingVertical: 10,
-  },
 });

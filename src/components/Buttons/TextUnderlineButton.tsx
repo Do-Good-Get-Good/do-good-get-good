@@ -8,8 +8,10 @@ type Props = {
 
 export const TextUnderlineButton = ({ title, onPress, testID }: Props) => {
   return (
-    <TouchableOpacity testID={testID} onPress={onPress}>
-      <Text style={styles.textAsButton}>{title}</Text>
+    <TouchableOpacity testID={testID} style={{ alignSelf: "baseline" }}>
+      <Text onPress={onPress} style={styles.textAsButton}>
+        {title}
+      </Text>
     </TouchableOpacity>
   );
 };
