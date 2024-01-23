@@ -9,6 +9,8 @@ const { downloadData } = require("./src/downloadData/downloadData");
 const { connectUsersToActivities } = require("./src/connectUsersToActivities");
 const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 const { changeAllActivityImages } = require("./src/changeAllActivityImages");
+const updateUserEmail = require("./src/updateUser");
+// const { getUserEmail } = require("./src/getUserEmail");
 
 const { firebaseConfig } = require("./config");
 
@@ -24,3 +26,5 @@ exports.downloadData = downloadData;
 exports.connectUsersToActivities = connectUsersToActivities;
 exports.updateActivityUserCount = updateActivityUserCount;
 exports.changeAllActivityImages = changeAllActivityImages;
+// exports.getUserEmail = getUserEmail;
+exports.updateUserEmail = updateUserEmail;

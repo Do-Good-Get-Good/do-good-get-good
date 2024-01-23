@@ -50,7 +50,7 @@ export type User = {
   timeObject?: {};
   // timeEntries?: Array<TimeEntry>;
   isOpen?: boolean;
-  statusActive?: boolean;
+  statusActive: boolean;
   totalConfirmedHours?: number;
   totalHoursMonth?: number;
   totalHoursYear?: number;

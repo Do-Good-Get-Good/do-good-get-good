@@ -4,6 +4,7 @@ import { Sort } from "../../lib/enums/sort";
 export type UserName = {
   name: string;
   surname: string;
+  email?: string;
 };
 
 export const onUpdateUser = (
@@ -13,7 +14,7 @@ export const onUpdateUser = (
   userID: string,
   userName: string,
   userSurname: string,
-  sortBy: Sort,
+  sortBy: Sort = Sort.Alphabetically,
 ) => {
   if (
     prevStatus != changedStatus ||
@@ -26,6 +27,7 @@ export const onUpdateUser = (
       userLastName: newData.surname,
       statusActive: changedStatus,
     });
+
     if (sortBy === Sort.Alphabetically)
       adminStore.filterUsersByActiveStatus(true);
     else adminStore.filterUsersByActiveStatus(false);

@@ -18,6 +18,10 @@ import BottomNavButtons from "../../components/BottomNavButtons";
 import { UserName, onUpdateUser } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
 import { InputField } from "../../components/InputField";
+import { User } from "../../utilily/types";
+import { Sort } from "../../lib/enums/sort";
+import { ChangeUserScreenRouteProps } from "../../utilily/typeRouteProps";
+import { useUpdateUserInfo } from "../../hooks/useUpdateUserInfo";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()
@@ -34,6 +38,11 @@ const schema: yup.ObjectSchema<UserName> = yup
       .max(20)
       .min(1, "* Efternamn måste innehålla minst 1 tecken")
       .required("Obligatorisk"),
+    email: yup
+      .string()
+      .trim()
+      .email("* Ange en giltig e-mail")
+      .required("* Obligatorisk"),
   })
   .defined();
 
@@ -43,14 +52,21 @@ type Props = {
 };
 
 export const ChangeUser = ({ route, navigation }: Props) => {
-  const { userName, userSurname, statusActive, userID, sortBy } = route.params;
-
+  const {
+    userName,
+    userSurname,
+    statusActive,
+    userID,
+    sortBy,
+  }: ChangeUserScreenRouteProps = route.params;
+  const { email, updateUserEmail } = useUpdateUserInfo(userID);
+  console.log(email, " ......... email   userEmail");
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm<UserName>({
-    defaultValues: { name: userName, surname: userSurname },
+    defaultValues: { name: userName, surname: userSurname, email: email },
     resolver: yupResolver(schema),
   });
   const [changedStatus, setChangedStatus] = useState(statusActive);
@@ -65,6 +81,7 @@ export const ChangeUser = ({ route, navigation }: Props) => {
       userSurname,
       sortBy,
     );
+    data?.email && updateUserEmail(data?.email);
     navigation.goBack();
   };
 
@@ -86,7 +103,12 @@ export const ChangeUser = ({ route, navigation }: Props) => {
           error={errors.surname}
           name={"surname"}
         />
-
+        <InputField
+          placeholderText={"E-mail"}
+          control={control}
+          error={errors.email}
+          name={"email"}
+        />
         <TouchableOpacity
           style={{
             marginTop: 10,

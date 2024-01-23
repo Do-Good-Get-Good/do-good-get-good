@@ -1,6 +1,11 @@
 import { useState } from "react";
 import { ChagesType } from "../ChangeRoleOrAdminPopup";
 
+import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { User } from "../../../utilily/types";
+import { SuperAdminStack } from "../../../utilily/routeEnums";
+import { ChangeUserScreenRouteProps } from "../../../utilily/typeRouteProps";
+
 export enum ChangeButtonsKey {
   role = "role",
   admin = "admin",
@@ -10,10 +15,12 @@ export enum ChangeButtonsKey {
 type ChangeButtonsType = {
   key: ChangeButtonsKey;
   title: string;
-  onPress: () => void;
+  onPress: (user?: User) => void;
 };
 
 export const useChangeRoleAndConnectionButtons = () => {
+  const navigation = useNavigation();
+
   const [isShowPopup, setShowPopup] = useState(false);
   const [changeRoleOrAdmin, setChangeRoleOrAdmin] = useState<
     ChagesType | undefined
@@ -27,8 +34,14 @@ export const useChangeRoleAndConnectionButtons = () => {
     setChangeRoleOrAdmin(ChagesType.admin), setShowPopup(!isShowPopup);
   };
 
-  const onChangeUser = () => {
-    console.log("onChangeUser");
+  const onChangeUser = (user: User) => {
+    user &&
+      navigation.navigate("ChangeUser", {
+        userName: user.firstName,
+        userSurname: user.lastName,
+        statusActive: user.statusActive,
+        userID: user.id,
+      });
   };
 
   const changeRoleAndConnectionButtons: ChangeButtonsType[] = [
@@ -45,7 +58,7 @@ export const useChangeRoleAndConnectionButtons = () => {
     {
       key: ChangeButtonsKey.changeUser,
       title: "Ändra användare",
-      onPress: () => onChangeUser(),
+      onPress: (user?: User) => user && onChangeUser(user),
     },
   ];
 
@@ -56,3 +69,4 @@ export const useChangeRoleAndConnectionButtons = () => {
     setShowPopup,
   };
 };
+// NavigationProp<SuperAdminStack>>
