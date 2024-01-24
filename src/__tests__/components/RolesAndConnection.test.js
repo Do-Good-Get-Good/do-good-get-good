@@ -27,6 +27,10 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: jest.fn(),
+}));
+
 describe("Testing RolesAndConnection screen ", () => {
   const navigationMock = { goBack: jest.fn() };
   it("Go back button is showen and navigate back", async () => {

@@ -1,10 +1,7 @@
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import {
-  ChangeButtonsKey,
-  useChangeRoleAndConnectionButtons,
-} from "./hooks/useChangeRoleAndConnectionButtons";
+import { useChangeRoleAndConnectionButtons } from "./hooks/useChangeRoleAndConnectionButtons";
 import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
 import { NameRoleAdmin } from "./NameRoleAdmin";
 
@@ -44,7 +41,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
             testID={`textUnderlineButton.${i}`}
             key={button.key}
             title={button.title}
-            onPress={() => button.onPress()}
+            onPress={() => button.onPress(user)}
           />
         ))}
         <Controller

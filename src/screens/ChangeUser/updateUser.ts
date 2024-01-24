@@ -13,7 +13,7 @@ export const onUpdateUser = (
   userID: string,
   userName: string,
   userSurname: string,
-  sortBy: Sort,
+  sortBy?: Sort,
 ) => {
   if (
     prevStatus != changedStatus ||
