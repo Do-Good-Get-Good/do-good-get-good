@@ -27,8 +27,11 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+const mockedNavigate = jest.fn();
 jest.mock("@react-navigation/native", () => ({
-  useNavigation: jest.fn(),
+  useNavigation: () => ({
+    navigate: mockedNavigate,
+  }),
 }));
 
 describe("Testing RolesAndConnection screen ", () => {
@@ -57,7 +60,7 @@ describe("Testing RolesAndConnection screen ", () => {
       "Admin Adminsson",
     );
   });
-
+  /////////////////// Change role button
   it("It works to open overlay to change role", async () => {
     const { getByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
@@ -97,6 +100,7 @@ describe("Testing RolesAndConnection screen ", () => {
       "Admin",
     );
   });
+  ///////////////////////// Change admin button
 
   it("It works to open overlay to change admin", async () => {
     const { getByTestId, getByText, queryByTestId } = render(
@@ -143,6 +147,23 @@ describe("Testing RolesAndConnection screen ", () => {
     );
 
     expect(queryByTestId("popUpTextvalue.1")).toBeNull();
+  });
+
+  /////////////// Change user button
+
+  it("It works to press on Change user button and navigate to ChangeUser screen ", async () => {
+    const { getByTestId } = render(<RolesAndConnection />);
+
+    const changeUserButton = getByTestId("textUnderlineButton.2");
+    fireEvent.press(changeUserButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
+      userName: "Super",
+      userSurname: "Supersson",
+      statusActive: true,
+      userID: "1",
+      prevRoute: "RolesAndConnection",
+    });
   });
 
   /////////// Connected users dropdown
