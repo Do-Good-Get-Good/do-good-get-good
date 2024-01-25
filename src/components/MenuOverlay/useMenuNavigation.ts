@@ -63,6 +63,10 @@ export const useMenuNavigation = (role: Role | undefined) => {
       title: "Exportera data",
       screenName: SuperAdminStack.DownloadUserData,
     },
+    {
+      title: "Super admin",
+      screenName: SuperAdminStack.SuperAdminHomePage,
+    },
   ];
 
   switch (role) {

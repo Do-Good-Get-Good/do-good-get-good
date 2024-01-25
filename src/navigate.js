@@ -12,6 +12,7 @@ import { ChangeUser } from "./screens/ChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
 import { RolesAndConnection } from "./screens/RolesAndConnection";
+import { SuperAdminHomePage } from "./screens/SuperAdminHomePage";
 
 import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
@@ -50,6 +51,10 @@ export const SuperAdminStack = () => {
         <Stack.Screen
           name="RolesAndConnection"
           component={RolesAndConnection}
+        />
+        <Stack.Screen
+          name="SuperAdminHomePage"
+          component={SuperAdminHomePage}
         />
       </Stack.Navigator>
     </NavigationContainer>
