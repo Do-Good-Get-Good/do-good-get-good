@@ -25,7 +25,7 @@ export const MenuLink = ({ navigatationObj, openOverlay }: Props) => {
       onPress={() => {
         openOverlay();
         navigation.navigate(navigatationObj.screenName);
-        navigatationObj.toDo && navigatationObj;
+        navigatationObj.toDo && navigatationObj.toDo();
       }}
     >
       <Text style={styles.menuOverlayLinkText}>{navigatationObj.title}</Text>

@@ -47,13 +47,6 @@ jest.mock("../../context/UserLevelContext", () => ({
   useUserLevelCheckFunction: jest.fn(),
 }));
 
-jest.mock("../../context/SuperAdminContext", () => ({
-  useSuperAdminFunction: () => ({
-    setGetAllUsers: jest.fn(),
-    userLevel: jest.fn(),
-  }),
-}));
-
 afterEach(() => {
   jest.clearAllMocks();
 });
@@ -148,7 +141,7 @@ describe("Testing MenuOverlay", () => {
     it("Home button", () => {
       const onClickMock = jest.fn();
       user();
-      const { getByTestId, debug } = render(
+      const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 

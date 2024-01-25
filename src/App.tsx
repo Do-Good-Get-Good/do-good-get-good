@@ -13,7 +13,7 @@ import auth from "@react-native-firebase/auth";
 import crashlytics from "@react-native-firebase/crashlytics";
 
 import { UserLevelProvider } from "./context/UserLevelContext";
-import { SuperAdminProvider } from "./context/SuperAdminContext";
+
 import { AdminGalleryProvider } from "./context/AdminGalleryContext";
 import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext/CreateActivityContext";
@@ -27,6 +27,7 @@ import BottomLogo from "./components/BottomLogo";
 
 import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
+import { SuperAdminProvider } from "./context/SuperAdminContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects

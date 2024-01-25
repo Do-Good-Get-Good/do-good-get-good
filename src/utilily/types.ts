@@ -50,19 +50,20 @@ export type User = {
   timeObject?: {};
   // timeEntries?: Array<TimeEntry>;
   isOpen?: boolean;
-  statusActive?: boolean;
+  statusActive: boolean;
   totalConfirmedHours?: number;
   totalHoursMonth?: number;
   totalHoursYear?: number;
+  connectedUsers?: Array<User>;
 };
 
-// export type SortByNotConnectedUsersToAdmin = {
-//   id: User["id"];
-//   userFullName: User["firstName" | "lastName"];
-//   connectedActivities: Array<Activity["id"]>;
-// };
+export type UserObjectForSuperAdmin = {
+  adminName: string;
+  arrayOfUsersIfAdmin?: Array<User>;
+  user: User;
+};
 
-// export type SortByUsersConnectedToAdmin ={
-//   id: User["id"];
-
-// }
+export type AdminsNameAndID = {
+  id: User["id"];
+  fullName: string;
+};
