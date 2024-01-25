@@ -45,13 +45,24 @@ export const SuperAdminHomePage = () => {
       <Menu />
       <ScrollView style={{ paddingHorizontal: 16 }}>
         {userAndTimeEntriesArr.map((user) => (
-          <UserAndUnapprovedTymeEntriesDropDown
-            key={user.userID}
-            userAndTimeEntry={user}
-          />
+          <UserAndUnapprovedTymeEntriesDropDown key={user.userID} user={user} />
         ))}
         <BottomLogo />
       </ScrollView>
     </SafeAreaView>
   );
 };
+{
+  /* <CheckBox
+          title="Markera alla"
+          iconRight
+          disabled={myUsers.length === 0}
+          containerStyle={styles.checkBoxStyle}
+          checked={checked}
+          checkedColor={colors.primary}
+          onPress={() => {
+            selectAll(!checkAll);
+          }}
+          textStyle={styles.headerTextSmall}
+        /> */
+}

@@ -34,7 +34,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
-    paddingVertical: 3,
+    marginVertical: 7,
     flex: 1,
   },
   textName: { fontWeight: "bold", flex: 1 },
