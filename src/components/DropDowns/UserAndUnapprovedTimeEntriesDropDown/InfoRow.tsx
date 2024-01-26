@@ -4,7 +4,7 @@ import colors from "../../../assets/theme/colors";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
 type Props = {
-  activityName: Activity["title"];
+  activityTitle: Activity["title"];
   date: TimeEntry["date"];
   time: TimeEntry["time"];
   checked: boolean;
@@ -12,7 +12,7 @@ type Props = {
 };
 
 export const InfoRow = ({
-  activityName,
+  activityTitle,
   date,
   time,
   onCheck,
@@ -20,9 +20,9 @@ export const InfoRow = ({
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.textName}>{activityName}</Text>
+      <Text style={styles.textName}>{activityTitle}</Text>
       <Text style={{ flex: 0.5 }}>{date.toString()}</Text>
-      <Text style={{ flex: 0.2 }}>{time}</Text>
+      <Text style={{ flex: 0.2 }}>{time.toString()}</Text>
       <BouncyCheckbox
         style={{ flex: 0.1 }}
         size={20}
@@ -30,7 +30,6 @@ export const InfoRow = ({
         unfillColor={colors.background}
         iconStyle={styles.iconStyle}
         innerIconStyle={styles.innerIconStyle}
-        textStyle={{ fontFamily: "JosefinSans-Regular" }}
         isChecked={checked}
         onPress={onCheck}
       />

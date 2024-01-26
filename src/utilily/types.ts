@@ -21,12 +21,12 @@ export type TimeEntry = {
   id: string;
   activityID: Activity["id"];
   adminID: User["id"];
-  userID?: User["id"];
-  title: string;
+  userID: User["id"];
+  activityTitle: string;
   photo?: string;
   city?: string;
-  date: Date;
-  statusConfirmed?: boolean;
+  date: Date | string;
+  statusConfirmed: boolean;
   time: number;
 };
 
@@ -66,4 +66,12 @@ export type UserObjectForSuperAdmin = {
 export type AdminsNameAndID = {
   id: User["id"];
   fullName: string;
+};
+
+export type UserAndUnapprovedTimeEntriesType = {
+  adminFirstName: User["firstName"];
+  adminLastName: User["lastName"];
+  userFirstName: User["firstName"];
+  userLastName: User["lastName"];
+  unapprovedTimeEntries: Array<TimeEntry>;
 };

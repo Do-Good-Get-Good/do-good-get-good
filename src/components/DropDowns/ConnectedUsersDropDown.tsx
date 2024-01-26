@@ -11,7 +11,7 @@ import { Pencil } from "../../assets/icons/Pencil";
 
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
-import { showAdminName } from "../../hooks/super-admin/utils";
+import { showAdminName } from "../../hooks/superAdmin/utils";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 type DropDownInfoProps = {

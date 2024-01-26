@@ -1,7 +1,7 @@
 import { reject, set } from "lodash";
 import { User } from "../../utilily/types";
 
-import { updateUserArray } from "../../hooks/super-admin/utils";
+import { updateUserArray } from "../../hooks/superAdmin/utils";
 import { useEffect } from "react";
 import { Role } from "../../utilily/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";

@@ -28,6 +28,7 @@ import BottomLogo from "./components/BottomLogo";
 import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
 import { SuperAdminProvider } from "./context/SuperAdminContext";
+import { SuperAdminHomePageContextProvider } from "./context/SuperAdminHomePageContext";
 
 export default function App() {
   // Set an initializing state whilst Firebase connects
@@ -81,13 +82,15 @@ export default function App() {
           <ActivityCardProvider>
             <AdminGalleryProvider>
               <CreateActivityProvider>
-                <UserLevelProvider>
-                  <TimeStatisticsProvider>
-                    <SuperAdminProvider>
-                      <SuperAdminStack />
-                    </SuperAdminProvider>
-                  </TimeStatisticsProvider>
-                </UserLevelProvider>
+                <SuperAdminHomePageContextProvider>
+                  <UserLevelProvider>
+                    <TimeStatisticsProvider>
+                      <SuperAdminProvider>
+                        <SuperAdminStack />
+                      </SuperAdminProvider>
+                    </TimeStatisticsProvider>
+                  </UserLevelProvider>
+                </SuperAdminHomePageContextProvider>
               </CreateActivityProvider>
             </AdminGalleryProvider>
           </ActivityCardProvider>
