@@ -5,7 +5,7 @@ import { MainLabel } from "./MainLabel";
 import { useState } from "react";
 import { InfoRow } from "./InfoRow";
 import colors from "../../../assets/theme/colors";
-import { includes, reject } from "lodash";
+import { includes, pull, reject } from "lodash";
 
 type ActivityAndTymeEntries = {
   activityID: Activity["id"];
@@ -30,11 +30,13 @@ export const UserAndUnapprovedTymeEntriesDropDown = ({ user }: Props) => {
   const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
 
   const onCheckPress = (timeEntryID: TimeEntry["id"]) => {
-    includes(onCheck, timeEntryID)
-      ? reject(onCheck, timeEntryID)
-      : setOnCheck([...onCheck, timeEntryID]);
+    setOnCheck(
+      includes(onCheck, timeEntryID)
+        ? [...pull(onCheck, timeEntryID)]
+        : [...onCheck, timeEntryID],
+    );
   };
-  console.log(onCheck);
+
   return (
     <View style={styles.dropDownMonolithContainer}>
       {user && (

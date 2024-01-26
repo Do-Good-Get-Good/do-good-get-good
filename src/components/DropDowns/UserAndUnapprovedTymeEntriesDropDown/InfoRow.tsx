@@ -21,14 +21,15 @@ export const InfoRow = ({
   return (
     <View style={styles.container}>
       <Text style={styles.textName}>{activityName}</Text>
-      <Text style={{ flex: 0.8 }}>{date.toString()}</Text>
-      <Text>{time}</Text>
+      <Text style={{ flex: 0.5 }}>{date.toString()}</Text>
+      <Text style={{ flex: 0.2 }}>{time}</Text>
       <BouncyCheckbox
-        size={25}
-        fillColor="red"
-        unfillColor="#FFFFFF"
-        iconStyle={{ borderColor: "red" }}
-        innerIconStyle={{ borderWidth: 0.7, borderRadius: 5 }}
+        style={{ flex: 0.1 }}
+        size={20}
+        fillColor={colors.primary}
+        unfillColor={colors.background}
+        iconStyle={styles.iconStyle}
+        innerIconStyle={styles.innerIconStyle}
         textStyle={{ fontFamily: "JosefinSans-Regular" }}
         isChecked={checked}
         onPress={onCheck}
@@ -38,15 +39,18 @@ export const InfoRow = ({
 };
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     flexDirection: "row",
+
     paddingHorizontal: 15,
     backgroundColor: colors.light,
     borderRadius: 5,
     paddingVertical: 10,
   },
-  textName: { fontWeight: "bold", flex: 1 },
-  listItemCheckBoxStyle: {
-    padding: 0,
-    margin: 0,
+  textName: { fontWeight: "bold", flex: 0.5 },
+  iconStyle: {
+    borderColor: colors.primary,
+    borderRadius: 5,
   },
+  innerIconStyle: { borderWidth: 0.7, borderRadius: 5 },
 });

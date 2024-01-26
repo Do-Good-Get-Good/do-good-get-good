@@ -41,7 +41,7 @@ export const SuperAdminHomePage = () => {
   ];
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
+    <SafeAreaView>
       <Menu />
       <ScrollView style={{ paddingHorizontal: 16 }}>
         {userAndTimeEntriesArr.map((user) => (
