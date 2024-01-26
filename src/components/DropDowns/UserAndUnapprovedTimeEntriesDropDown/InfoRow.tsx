@@ -24,7 +24,7 @@ export const InfoRow = ({
       <Text style={{ flex: 0.5 }}>{date.toString()}</Text>
       <Text style={{ flex: 0.2 }}>{time.toString()}</Text>
       <BouncyCheckbox
-        style={{ flex: 0.1 }}
+        style={{ flex: 0.07 }}
         size={20}
         fillColor={colors.primary}
         unfillColor={colors.background}
@@ -46,7 +46,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     paddingVertical: 10,
   },
-  textName: { fontWeight: "bold", flex: 0.5 },
+  textName: { fontWeight: "bold", flex: 0.8 },
   iconStyle: {
     borderColor: colors.primary,
     borderRadius: 5,
