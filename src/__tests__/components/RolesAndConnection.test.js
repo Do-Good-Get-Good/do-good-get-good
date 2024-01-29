@@ -5,7 +5,7 @@ import {
   waitFor,
 } from "@testing-library/react-native";
 import {
-  mockallAdminsAndSuperAdmins,
+  mockAllAdminsAndSuperAdmins,
   mockSelectedUser,
 } from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
@@ -25,7 +25,7 @@ jest.mock("@react-native-firebase/auth", () => {
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
-    AllAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
+    allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
 
     makeChangesForSelectedUser: mockSelectedUser,
   }),
@@ -47,7 +47,7 @@ describe("Testing RolesAndConnection screen ", () => {
   });
 
   it("It shows user name, role and admin ", async () => {
-    const { getByText, getAllByTestId, getByTestId, debug } = render(
+    const { getByText, getAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
     expect(getByText("Super Supersson")).toBeTruthy();

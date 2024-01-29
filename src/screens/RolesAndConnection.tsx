@@ -55,7 +55,6 @@ export const RolesAndConnection = ({ navigation }: Props) => {
       role: user?.user.role as Role,
       admin: { id: user?.user.adminID, fullName: user?.adminName },
       isActive: user?.user.statusActive,
-      // connectedUsers: user?.arrayOfUsersIfAdmin ?? undefined,
     },
     resolver: yupResolver(schema),
   });
