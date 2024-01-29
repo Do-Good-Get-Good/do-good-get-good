@@ -9,16 +9,10 @@ import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-
-import { Icon } from "@rneui/base";
-
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
-import ConnectedUsersDropDown from "../components/ConnectedUsersDropDown";
 import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -31,7 +25,6 @@ export type UserInfo = {
   role: Role;
   admin: UserIdAndFullName;
   isActive: boolean;
-  // connectedUsers?: Array<UserIdAndFullName> | undefined;
 };
 
 const schema: yup.ObjectSchema<UserInfo> = yup
@@ -46,16 +39,6 @@ const schema: yup.ObjectSchema<UserInfo> = yup
       })
       .required(),
     isActive: yup.boolean().required(),
-    // connectedUsers: yup
-    //   .array()
-
-    //   .of(
-    //     yup.object().shape({
-    //       id: yup.string().required(),
-    //       fullName: yup.string().required(),
-    //     }),
-    //   )
-    //   .optional(),
   })
   .defined();
 
@@ -102,8 +85,6 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         <View style={styles.container}>
           <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
-
-          {/* <ConnectedUsersDropDown /> */}
           <LongButton
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}

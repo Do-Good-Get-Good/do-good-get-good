@@ -76,7 +76,7 @@ export const mockSelectedUser: UserObjectForSuperAdmin = {
   user: userSuperadminMock,
 };
 
-export const mockAllAdminsAnsSuperAdmins = [
+export const mockAllAdminsAndSuperAdmins = [
   userSuperadminMock,
   userAdminOneMock,
   userAdminTwoMock,

@@ -3,7 +3,7 @@ import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superA
 import { getAllUsersData } from "../firebase-functions/getTS/getAllUsersData";
 import { User, UserObjectForSuperAdmin } from "../utilily/types";
 import { Role } from "../utilily/enums";
-import { findIndex, set } from "lodash";
+import { filter, findIndex, set } from "lodash";
 
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
@@ -15,7 +15,7 @@ type SuperAdminContextType = {
   ) => void;
   buttonToSaveChanhgesPressed: boolean;
   setButtonToSaveChanhgesPressed: (value: boolean) => void;
-  allAdminsAnsSuperAdmins: User[] | undefined;
+  allAdminsAndSuperAdmins: User[] | undefined;
   userIDToConnectAnotherAdmin: User["id"];
   setUserIDToConnectAnotherAdmin: (value: User["id"]) => void;
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
@@ -45,7 +45,7 @@ export const SuperAdminProvider = ({ children }) => {
   );
   const [getAllUsers, setGetAllUsers] = useState(false);
   const [userLevel, setUserLevel] = useState<Role | undefined>(undefined);
-  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
+  const [allAdminsAndSuperAdmins, setAllAdminsAndSuperAdmins] = useState<
     User[] | undefined
   >(undefined);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
@@ -99,14 +99,12 @@ export const SuperAdminProvider = ({ children }) => {
   }, [allUsersInSystem]);
 
   const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
-    let adminArray: Array<User> = [];
-    for (let i = 0; i < userArray.length; i++) {
-      if (userArray[i].role === "admin" || userArray[i].role === "superadmin") {
-        adminArray.push(userArray[i]);
-      }
-    }
-
-    setAllAdminsAnsSuperAdmins(adminArray);
+    setAllAdminsAndSuperAdmins([
+      ...filter(
+        userArray,
+        (user) => user.role === "admin" || user.role === "superadmin",
+      ),
+    ]);
   };
 
   return (
@@ -116,7 +114,7 @@ export const SuperAdminProvider = ({ children }) => {
         setGetAllUsers: setGetAllUsers,
         getAllUsers: getAllUsers,
         userLevel: setUserLevel,
-        allAdminsAnsSuperAdmins: allAdminsAnsSuperAdmins,
+        allAdminsAndSuperAdmins: allAdminsAndSuperAdmins,
 
         makeChangesForSelectedUser: makeChangesForSelectedUser,
         setMakeChangesForSelectedUser: setMakeChangesForSelectedUser,
