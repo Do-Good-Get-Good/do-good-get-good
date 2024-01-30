@@ -1,6 +1,7 @@
 import { User } from "./types";
 
-// I wrote this type by looking at what data we are receiving. We should look over it and maybe change what we want to receive
+// This represents the entire object that we receive from firebase.
+// Not all objects in the model is used, but felt better to handle them, then to ignore them.
 export type UserClaims = {
   admin?: boolean;
   superadmin?: boolean;
