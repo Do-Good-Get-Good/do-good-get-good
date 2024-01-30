@@ -80,9 +80,6 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
   );
 };
 
-{
-}
-
 const styles = StyleSheet.create({
   input: {
     width: "100%",
@@ -109,6 +106,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowOffset: {
+          width: 0,
           height: 1,
         },
         shadowOpacity: 0.2,

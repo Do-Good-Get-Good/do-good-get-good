@@ -26,7 +26,10 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({ user }: Props) => {
   };
 
   return (
-    <View style={styles.dropDownMonolithContainer}>
+    <View
+      testID="unapproved-time-entries-drop-down"
+      style={styles.dropDownMonolithContainer}
+    >
       {user && (
         <MainLabel
           firstName={user.userFirstName}
