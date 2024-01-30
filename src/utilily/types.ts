@@ -55,14 +55,3 @@ export type User = {
   totalHoursMonth?: number;
   totalHoursYear?: number;
 };
-
-// export type SortByNotConnectedUsersToAdmin = {
-//   id: User["id"];
-//   userFullName: User["firstName" | "lastName"];
-//   connectedActivities: Array<Activity["id"]>;
-// };
-
-// export type SortByUsersConnectedToAdmin ={
-//   id: User["id"];
-
-// }
