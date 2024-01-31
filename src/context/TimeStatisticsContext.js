@@ -1,5 +1,5 @@
 import React, { useState, useContext, useEffect } from "react";
-import auth from "@react-native-firebase/auth";
+
 import { getMaxConfirmedHours } from "../firebase-functions/get";
 
 const TimeStatisticsContext = React.createContext();
