@@ -19,13 +19,17 @@ export const MainLabel = ({
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Text style={styles.textName}>{`${firstName}\u00A0${lastName}`}</Text>
+      <Text
+        onPress={setIsOpen}
+        testID="user-name-drop-down"
+        style={styles.textName}
+      >{`${firstName}\u00A0${lastName}`}</Text>
       <ArrowUpDown
         style={{ marginHorizontal: 5 }}
         onPress={setIsOpen}
         expanded={isOpen}
       />
-      <Text>{`${amountOfTimeEntries}\u00A0st`}</Text>
+      <Text testID="amount-of-unapproved-time-entries">{`${amountOfTimeEntries}\u00A0st`}</Text>
     </View>
   );
 };

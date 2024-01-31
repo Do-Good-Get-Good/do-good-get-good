@@ -15,7 +15,7 @@ import { UserAndUnapprovedTimeEntriesType } from "../utilily/types";
 const userOne: UserAndUnapprovedTimeEntriesType = {
   unapprovedTimeEntries: [
     {
-      id: " unapprovedTimeEntries1",
+      id: "unapprovedTimeEntries1",
       activityID: "activityID1",
       adminID: "adminID1",
       userID: "userID1",
@@ -23,6 +23,16 @@ const userOne: UserAndUnapprovedTimeEntriesType = {
       date: "2022-05-27",
       statusConfirmed: false,
       time: 0.5,
+    },
+    {
+      id: "unapprovedTimeEntries3",
+      activityID: "activityID3",
+      adminID: "adminID3",
+      userID: "userID3",
+      activityTitle: "Activity Title 3",
+      date: "2022-04-10",
+      statusConfirmed: false,
+      time: 3.5,
     },
   ],
   adminFirstName: "Admin1",
@@ -33,7 +43,7 @@ const userOne: UserAndUnapprovedTimeEntriesType = {
 const userTwo: UserAndUnapprovedTimeEntriesType = {
   unapprovedTimeEntries: [
     {
-      id: " unapprovedTimeEntries2",
+      id: "unapprovedTimeEntries2",
       activityID: "activityID2",
       adminID: "adminID2",
       userID: "userID2",
