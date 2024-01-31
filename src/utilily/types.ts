@@ -67,14 +67,3 @@ export type AdminsNameAndID = {
   id: User["id"];
   fullName: string;
 };
-
-// export type SortByNotConnectedUsersToAdmin = {
-//   id: User["id"];
-//   userFullName: User["firstName" | "lastName"];
-//   connectedActivities: Array<Activity["id"]>;
-// };
-
-// export type SortByUsersConnectedToAdmin ={
-//   id: User["id"];
-
-// }
