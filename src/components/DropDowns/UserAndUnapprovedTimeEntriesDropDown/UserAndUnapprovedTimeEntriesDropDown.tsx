@@ -12,10 +12,15 @@ import { includes, pull } from "lodash";
 
 type Props = {
   user: UserAndUnapprovedTimeEntriesType;
+  onCheck: Array<TimeEntry["id"]>;
+  setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
 };
-export const UserAndUnapprovedTimeEntriesDropDown = ({ user }: Props) => {
+export const UserAndUnapprovedTimeEntriesDropDown = ({
+  user,
+  onCheck,
+  setOnCheck,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
 
   const onCheckPress = (timeEntryID: TimeEntry["id"]) => {
     setOnCheck(
