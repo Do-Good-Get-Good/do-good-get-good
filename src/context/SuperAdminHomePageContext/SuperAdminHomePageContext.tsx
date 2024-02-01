@@ -9,6 +9,7 @@ import {
 import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
 import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 import { confirmTimeEntry } from "../../firebase-functions/updateTS/update";
+import { filter, isEmpty, reject, remove, set } from "lodash";
 
 type SuperAdminHomePageContextType = {
   allUsersWithUnconfirmedTimeEntries: Array<UserAndUnapprovedTimeEntriesType>;
@@ -52,11 +53,33 @@ export const SuperAdminHomePageContextProvider: React.FC<{
   ) => {
     timeEntries.map(
       async (id) =>
-        await confirmTimeEntry(id, approvedBy).then((respons) => {
-          console.log(id);
+        await confirmTimeEntry(id, approvedBy).then(() => {
+          setAllUsersWithUnconfirmedTimeEntries((prevUsers) => {
+            return prevUsers
+              .map((user) => ({
+                ...user,
+                unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
+                  id: timeEntries,
+                }) as TimeEntry[],
+              }))
+              .filter((user) => user.unapprovedTimeEntries.length > 0);
+          });
 
-          console.log(respons);
-          console.log("respons");
+          //   const filterTimeEntries = allUsersWithUnconfirmedTimeEntries;
+
+          //   filterTimeEntries.map((user) => ({
+          //     ...user,
+          //     unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
+          //       id: timeEntries,
+          //     }),
+          //   }));
+
+          //   setAllUsersWithUnconfirmedTimeEntries([
+          //     ...filter(
+          //       filterTimeEntries,
+          //       (user) => user.unapprovedTimeEntries.length > 0,
+          //     ),
+          //   ]);
         }),
     );
   };

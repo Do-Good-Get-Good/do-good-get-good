@@ -18,6 +18,7 @@ export const InfoRow = ({
   onCheck,
   checked,
 }: Props) => {
+  console.log(time, "---------- time");
   return (
     <View style={styles.container}>
       <Text testID="info-row-activity-title" style={styles.textName}>

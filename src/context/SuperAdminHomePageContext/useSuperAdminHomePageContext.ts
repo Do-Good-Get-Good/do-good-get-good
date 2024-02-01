@@ -5,7 +5,7 @@ import {
   UserAndUnapprovedTimeEntriesType,
 } from "../../utilily/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
-import { find, remove } from "lodash";
+import { find } from "lodash";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
   let findKeyValue = find(users, { id: userID }) && find(users, { id: userID });
