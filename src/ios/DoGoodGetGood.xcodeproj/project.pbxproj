@@ -313,7 +313,8 @@
 		83CBB9F71A601CBA00E9B192 /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 1420;
+				BuildIndependentTargetsInParallel = YES;
+				LastUpgradeCheck = 1430;
 				TargetAttributes = {
 					00E356ED1AD99517003FC87E = {
 						CreatedOnToolsVersion = 6.2;
@@ -672,7 +673,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = DoGoodGetGoodTests/Info.plist;
+<<<<<<< HEAD
+				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
+=======
 				IPHONEOS_DEPLOYMENT_TARGET = 17;
+>>>>>>> main
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

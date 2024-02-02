@@ -25,6 +25,9 @@ jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
 }));
 
 describe("Testing Radio Button", () => {
+  afterEach(() => {
+    jest.resetAllMocks();
+  });
   it("can find RadioButton Ja", () => {
     const { getAllByText } = render(<RadioButton />);
     expect(getAllByText("Ja").length).toBe(1);

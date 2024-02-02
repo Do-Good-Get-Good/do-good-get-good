@@ -17,10 +17,7 @@ export function ListOfAllUsers({ navigation }) {
   const [arrayOfAllUsersInSystem, setArrayOfAllUsersInSystem] = useState([]);
 
   useEffect(() => {
-    if (
-      superAdminContext.getAllUsers === true &&
-      superAdminContext.allUsersInSystem.length != 0
-    ) {
+    if (superAdminContext.allUsersInSystem.length != 0) {
       setArrayOfAllUsersInSystem(superAdminContext.allUsersInSystem);
       superAdminContext.setGetAllUsers(false);
     }
@@ -28,7 +25,7 @@ export function ListOfAllUsers({ navigation }) {
 
   function findNameOfUserAdmin(adminId) {
     let adminName = "";
-    let index = arrayOfAllUsersInSystem.findIndex((x) => x.docId === adminId);
+    let index = arrayOfAllUsersInSystem.findIndex((x) => x.id === adminId);
 
     if (index != -1) {
       adminName =
@@ -44,7 +41,7 @@ export function ListOfAllUsers({ navigation }) {
     let adminName = findNameOfUserAdmin(userId);
 
     for (let index = 0; index < arrayOfAllUsersInSystem.length; index++) {
-      if (arrayOfAllUsersInSystem[index].adminId === userId) {
+      if (arrayOfAllUsersInSystem[index].adminID === userId) {
         let tempObject = {
           user: arrayOfAllUsersInSystem[index],
           adminName: adminName,
@@ -58,10 +55,10 @@ export function ListOfAllUsers({ navigation }) {
   }
 
   function changingUserData(chooseUser) {
-    let userAdminName = findNameOfUserAdmin(chooseUser.adminId);
+    let userAdminName = findNameOfUserAdmin(chooseUser.adminID);
     let arrayOfUsers = [];
     if (chooseUser.role === "admin" || chooseUser.role === "superadmin") {
-      arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.docId);
+      arrayOfUsers = findAllUsersConnectedToTheAdmin(chooseUser.id);
     }
 
     superAdminContext.setMakeChangesForSelectedUser({
@@ -77,7 +74,7 @@ export function ListOfAllUsers({ navigation }) {
     <View style={{ marginTop: 16 }}>
       {arrayOfAllUsersInSystem.length != 0 &&
         arrayOfAllUsersInSystem.map((user, index) => (
-          <View key={user.docId} style={styles.contrainer}>
+          <View key={user.id} style={styles.contrainer}>
             <Text style={styles.firstAndLastNameText}>
               {user.firstName + " " + user.lastName}
             </Text>

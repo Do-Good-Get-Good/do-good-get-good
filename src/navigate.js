@@ -11,7 +11,7 @@ import CreateUser from "./screens/CreateUser";
 import { ChangeUser } from "./screens/ChangeUser";
 import { ChangeActivity } from "./screens/ChangeActivity";
 import AllUsersInTheSystem from "./screens/AllUsersInTheSystem";
-import RolesAndConnection from "./screens/RolesAndConnection";
+import { RolesAndConnection } from "./screens/RolesAndConnection";
 
 import { SafeAreaProvider } from "react-native-safe-area-context";
 

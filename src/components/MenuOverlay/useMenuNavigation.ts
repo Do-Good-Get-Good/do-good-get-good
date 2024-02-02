@@ -42,8 +42,8 @@ export const useMenuNavigation = (role: Role | undefined) => {
   };
 
   const toUsersInTheSystem = () => {
-    superAdminContext.setGetAllUsers(true);
-    superAdminContext.userLevel(role);
+    superAdminContext?.setGetAllUsers(true);
+    superAdminContext?.userLevel(role);
   };
 
   const adminNavigations: Array<NavigationObject> = [

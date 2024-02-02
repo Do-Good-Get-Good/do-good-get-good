@@ -54,4 +54,16 @@ export type User = {
   totalConfirmedHours?: number;
   totalHoursMonth?: number;
   totalHoursYear?: number;
+  connectedUsers?: Array<User>;
+};
+
+export type UserObjectForSuperAdmin = {
+  adminName: string;
+  arrayOfUsersIfAdmin?: Array<User>;
+  user: User;
+};
+
+export type AdminsNameAndID = {
+  id: User["id"];
+  fullName: string;
 };

@@ -145,7 +145,7 @@ describe("Testing MenuOverlay", () => {
     it("Home button", () => {
       const onClickMock = jest.fn();
       user();
-      const { getByTestId, debug } = render(
+      const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
