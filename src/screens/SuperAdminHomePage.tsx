@@ -8,6 +8,7 @@ import { LongButton } from "../components/Buttons/LongButton";
 import { useState } from "react";
 import { TimeEntry } from "../utilily/types";
 import auth from "@react-native-firebase/auth";
+import { TitleAndOnCheckAll } from "../components/TitleAndOnCheckAll";
 
 export const SuperAdminHomePage = () => {
   const context = useSuperAdminHomePageFunction();
@@ -15,7 +16,6 @@ export const SuperAdminHomePage = () => {
     context?.allUsersWithUnconfirmedTimeEntries ?? [];
   const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
   const superAdminID = auth()?.currentUser?.uid;
-  console.log(superAdminID, "superAdminID");
 
   const onApprove = () => {
     if (superAdminID !== undefined)
@@ -25,6 +25,10 @@ export const SuperAdminHomePage = () => {
   return (
     <SafeAreaView>
       <Menu />
+      <TitleAndOnCheckAll
+        allUsersWithUnconfirmedTimeEntries={allUsersWithUnconfirmedTimeEntries}
+        setOnCheck={setOnCheck}
+      />
       <ScrollView style={{ paddingHorizontal: 16 }}>
         {allUsersWithUnconfirmedTimeEntries.map((user, i) => (
           <UserAndUnapprovedTimeEntriesDropDown
