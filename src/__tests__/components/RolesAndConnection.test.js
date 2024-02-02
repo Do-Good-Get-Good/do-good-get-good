@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import {
-  mockAllAdminsAnsSuperAdmins,
+  mockAllAdminsAndSuperAdmins,
   mockSelectedUser,
 } from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
@@ -18,7 +18,8 @@ jest.mock("@react-native-firebase/auth", () => {
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
-    allAdminsAnsSuperAdmins: mockAllAdminsAnsSuperAdmins,
+    allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
+
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
