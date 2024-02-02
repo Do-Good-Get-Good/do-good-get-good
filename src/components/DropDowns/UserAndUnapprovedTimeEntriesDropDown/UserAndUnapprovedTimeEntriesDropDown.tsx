@@ -29,7 +29,6 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
         : [...onCheck, timeEntryID],
     );
   };
-  console.log(user, " .    ---   user");
 
   return (
     <View
