@@ -21,27 +21,31 @@ export const useSuperAdminHomePageContext = () => {
   ): Promise<UserAndUnapprovedTimeEntriesType[]> => {
     let tempArr: UserAndUnapprovedTimeEntriesType[] = [];
 
-    await Promise.all(
-      timeEntries.map(async (item) => {
-        const userEntry = find(timeEntries, { userID: item.userID });
-        const isAlreadyAdded = find(tempArr, { userID: item.userID });
+    for (const item of timeEntries) {
+      const userEntry: TimeEntry[] = timeEntries.filter(
+        (entry) => entry.userID === item.userID,
+      );
 
-        if (userEntry && !isAlreadyAdded) {
-          const adminInfo = await findUserInfo(allUsersInSystem, item.adminID);
-          const userInfo = await findUserInfo(allUsersInSystem, item.userID);
+      const isAlreadyAdded = tempArr.some(
+        (u) => u.unapprovedTimeEntries[0].userID === item.userID,
+      );
 
-          const obj: UserAndUnapprovedTimeEntriesType = {
-            unapprovedTimeEntries: [userEntry],
-            adminFirstName: adminInfo.firstName,
-            adminLastName: adminInfo.lastName,
-            userFirstName: userInfo.firstName,
-            userLastName: userInfo.lastName,
-          };
+      if (!isAlreadyAdded) {
+        const adminInfo = await findUserInfo(allUsersInSystem, item.adminID);
+        const userInfo = await findUserInfo(allUsersInSystem, item.userID);
 
-          tempArr.push(obj);
-        }
-      }),
-    );
+        const obj: UserAndUnapprovedTimeEntriesType = {
+          unapprovedTimeEntries: userEntry,
+          adminFirstName: adminInfo.firstName,
+          adminLastName: adminInfo.lastName,
+          userFirstName: userInfo.firstName,
+          userLastName: userInfo.lastName,
+        };
+
+        tempArr.push(obj);
+      }
+    }
+
     return tempArr;
   };
 
