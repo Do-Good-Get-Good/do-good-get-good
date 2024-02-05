@@ -9,11 +9,6 @@ type Props = {
 };
 
 export const Checkbox = ({ onCheck, checked }: Props) => {
-  console.log(
-    checked,
-    "       -       -     -   checked       -       -     -   ",
-  );
-
   return (
     <BouncyCheckbox
       testID="checkbox"

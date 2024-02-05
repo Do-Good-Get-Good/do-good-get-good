@@ -9,17 +9,18 @@ import { useState } from "react";
 import { TimeEntry } from "../utilily/types";
 import auth from "@react-native-firebase/auth";
 import { TitleAndOnCheckAll } from "../components/TitleAndOnCheckAll";
+import { useSuperAdminHomePageContext } from "../context/SuperAdminHomePageContext/useSuperAdminHomePageContext";
 
 export const SuperAdminHomePage = () => {
   const context = useSuperAdminHomePageFunction();
+  const { onApproveTimeEntries } = useSuperAdminHomePageContext();
   const allUsersWithUnconfirmedTimeEntries =
     context?.allUsersWithUnconfirmedTimeEntries ?? [];
   const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
   const superAdminID = auth()?.currentUser?.uid;
 
   const onApprove = () => {
-    if (superAdminID !== undefined)
-      context?.onApproveTimeEntries(onCheck, superAdminID);
+    if (superAdminID !== undefined) onApproveTimeEntries(onCheck, superAdminID);
   };
 
   return (

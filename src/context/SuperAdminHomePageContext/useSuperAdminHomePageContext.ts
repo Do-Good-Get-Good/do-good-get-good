@@ -5,16 +5,50 @@ import {
   UserAndUnapprovedTimeEntriesType,
 } from "../../utilily/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
-import { find } from "lodash";
+
+import { confirmTimeEntry } from "../../firebase-functions/updateTS/update";
+import { filter, isEmpty, reject, remove, set, find } from "lodash";
+import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
   let findKeyValue = find(users, { id: userID }) && find(users, { id: userID });
   return findKeyValue ?? ((await getUserData(userID)) as User);
 };
 
+const filterAfterChanges = (
+  prev: UserAndUnapprovedTimeEntriesType[],
+  timeEntryID: TimeEntry["id"],
+) =>
+  prev
+    .map((user) => ({
+      ...user,
+      unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
+        id: timeEntryID,
+      }) as TimeEntry[],
+    }))
+    .filter((user) => user.unapprovedTimeEntries.length > 0);
+
 export const useSuperAdminHomePageContext = () => {
   const context = useSuperAdminFunction();
+  const contextSAHP = useSuperAdminHomePageFunction();
   const allUsersInSystem = context?.allUsersInSystem ?? [];
+
+  const onApproveTimeEntries = (
+    timeEntries: Array<TimeEntry["id"]>,
+    approvedBy: User["id"],
+  ) => {
+    timeEntries.map(
+      async (timeEntryID) =>
+        await confirmTimeEntry(timeEntryID, approvedBy).then(() => {
+          contextSAHP?.setAllUsersWithUnconfirmedTimeEntries([
+            ...filterAfterChanges(
+              contextSAHP.allUsersWithUnconfirmedTimeEntries,
+              timeEntryID,
+            ),
+          ]);
+        }),
+    );
+  };
 
   const usersWithUnconfirmedTimeEntries = async (
     timeEntries: TimeEntry[],
@@ -49,5 +83,5 @@ export const useSuperAdminHomePageContext = () => {
     return tempArr;
   };
 
-  return { usersWithUnconfirmedTimeEntries };
+  return { onApproveTimeEntries, usersWithUnconfirmedTimeEntries };
 };
