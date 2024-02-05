@@ -19,7 +19,6 @@ jest.mock("@react-native-firebase/auth", () => {
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
-
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
@@ -145,7 +144,7 @@ describe("Testing RolesAndConnection screen ", () => {
   /////////// Connected users dropdown
 
   it("Connected users dropdown should be shown if user has role admin or superadmin", async () => {
-    const { getByTestId, getAllByTestId, getByText, debug } = render(
+    const { getByTestId, getAllByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
@@ -171,16 +170,16 @@ describe("Testing RolesAndConnection screen ", () => {
   });
 
   it("Connected users dropdown. Should open only one dropdown when user press on it", async () => {
-    const { debug, getAllByTestId, getByTestId } = render(
+    const { getAllByTestId, getByTestId, debug } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
+
     const firtsDropboxItem = getAllByTestId("arrow-drop-down-icon")[0];
     fireEvent.press(firtsDropboxItem);
 
     expect(getAllByTestId("arrow-drop-up-icon")).toHaveLength(1);
     expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(2);
     expect(getByTestId("pencil-icon")).toBeTruthy();
-
     expect(getByTestId("drop-down-admin-name").props.children).toBe(
       "Super Supersson",
     );

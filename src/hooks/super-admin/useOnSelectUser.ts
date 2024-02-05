@@ -4,7 +4,7 @@ import { superAdminMakeUserObject } from "./utils";
 
 export const useOnSelectUser = () => {
   const context = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmin = context?.allAdminsAnsSuperAdmins;
+  const allAdminsAnsSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allUsersInTheSystem = context?.allUsersInSystem;
 
   const onSelectUser = (selectedUser: User) => {

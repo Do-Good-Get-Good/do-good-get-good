@@ -23,7 +23,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const context = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmin = context?.allAdminsAnsSuperAdmins;
+  const allAdminsAnsSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
     allAdminsAnsSuperAdmin,
   );
