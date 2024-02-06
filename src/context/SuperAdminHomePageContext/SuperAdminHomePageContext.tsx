@@ -56,23 +56,3 @@ export const SuperAdminHomePageContextProvider: React.FC<{
     </SuperAdminHomePageContext.Provider>
   );
 };
-// const onApproveTimeEntries = (
-//   timeEntries: Array<TimeEntry["id"]>,
-//   approvedBy: User["id"],
-// ) => {
-//   timeEntries.map(
-//     async (timeEntryID) =>
-//       await confirmTimeEntry(timeEntryID, approvedBy).then(() => {
-//         setAllUsersWithUnconfirmedTimeEntries((prevUsers) => {
-//           return prevUsers
-//             .map((user) => ({
-//               ...user,
-//               unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
-//                 id: timeEntryID,
-//               }) as TimeEntry[],
-//             }))
-//             .filter((user) => user.unapprovedTimeEntries.length > 0);
-//         });
-//       }),
-//   );
-// };

@@ -68,6 +68,7 @@ export const useSuperAdminHomePageContext = () => {
         const userInfo = await findUserInfo(allUsersInSystem, item.userID);
 
         const obj: UserAndUnapprovedTimeEntriesType = {
+          adminID: userInfo.adminID,
           unapprovedTimeEntries: userEntry,
           adminFirstName: adminInfo.firstName,
           adminLastName: adminInfo.lastName,

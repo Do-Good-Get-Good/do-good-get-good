@@ -37,8 +37,8 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
     >
       {user && (
         <MainLabel
-          firstName={user.userFirstName}
-          lastName={user.userLastName}
+          firstName={user.adminFirstName}
+          lastName={user.adminLastName}
           amountOfTimeEntries={user.unapprovedTimeEntries.length}
           setIsOpen={() => setIsOpen(!isOpen)}
           isOpen={isOpen}
@@ -50,7 +50,7 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
           {user.unapprovedTimeEntries.map((entry) => (
             <InfoRow
               key={entry.id}
-              activityTitle={entry.activityTitle}
+              activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
               time={entry.time}
               date={entry.date}
               checked={includes(onCheck, entry.id)}
