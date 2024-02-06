@@ -7,7 +7,7 @@ import {
 import { useSuperAdminFunction } from "../SuperAdminContext";
 
 import { confirmTimeEntry } from "../../firebase-functions/updateTS/update";
-import { filter, isEmpty, reject, remove, set, find } from "lodash";
+import { reject, remove, find } from "lodash";
 import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
@@ -32,20 +32,19 @@ export const useSuperAdminHomePageContext = () => {
   const context = useSuperAdminFunction();
   const contextSAHP = useSuperAdminHomePageFunction();
   const allUsersInSystem = context?.allUsersInSystem ?? [];
+  const allUsersWithUnconfirmedTimeEntries =
+    contextSAHP?.allUsersWithUnconfirmedTimeEntries;
 
   const onApproveTimeEntries = (
     timeEntries: Array<TimeEntry["id"]>,
     approvedBy: User["id"],
   ) => {
+    let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
     timeEntries.map(
       async (timeEntryID) =>
         await confirmTimeEntry(timeEntryID, approvedBy).then(() => {
-          contextSAHP?.setAllUsersWithUnconfirmedTimeEntries([
-            ...filterAfterChanges(
-              contextSAHP.allUsersWithUnconfirmedTimeEntries,
-              timeEntryID,
-            ),
-          ]);
+          temArr = [...filterAfterChanges(temArr, timeEntryID)];
+          contextSAHP?.setAllUsersWithUnconfirmedTimeEntries(temArr);
         }),
     );
   };

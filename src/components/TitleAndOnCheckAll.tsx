@@ -5,33 +5,42 @@ import typography from "../assets/theme/typography";
 import { Checkbox } from "./Checkbox";
 import { TimeEntry, UserAndUnapprovedTimeEntriesType } from "../utilily/types";
 import { flatMap } from "lodash";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const title = "Icke godkänd";
 const checkBoxText = "Markera alla";
 
 type Props = {
+  onCheck: Array<TimeEntry["id"]>;
   allUsersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[];
   setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
 };
 
+const allUnconfirmedTimeEntries = (
+  users: UserAndUnapprovedTimeEntriesType[],
+) => [
+  ...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry.id)),
+];
+
 export const TitleAndOnCheckAll = ({
+  onCheck,
   allUsersWithUnconfirmedTimeEntries,
   setOnCheck,
 }: Props) => {
-  const [isOnCheckAll, setisOnCheckAll] = useState(false);
+  const isOnCheckAll = useCallback(() => {
+    return (
+      onCheck.length ===
+        allUnconfirmedTimeEntries(allUsersWithUnconfirmedTimeEntries).length &&
+      onCheck.length !== 0
+    );
+  }, [onCheck]);
 
   const onCheckAll = () => {
     setOnCheck(
-      isOnCheckAll
+      isOnCheckAll()
         ? []
-        : [
-            ...flatMap(allUsersWithUnconfirmedTimeEntries, (u) =>
-              u.unapprovedTimeEntries.map((entry) => entry.id),
-            ),
-          ],
+        : allUnconfirmedTimeEntries(allUsersWithUnconfirmedTimeEntries),
     );
-    setisOnCheckAll(!isOnCheckAll);
   };
 
   return (
@@ -39,7 +48,7 @@ export const TitleAndOnCheckAll = ({
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.checkBoxText}>{checkBoxText}</Text>
-        <Checkbox onCheck={onCheckAll} checked={isOnCheckAll} />
+        <Checkbox onCheck={onCheckAll} checked={isOnCheckAll()} />
       </View>
     </View>
   );

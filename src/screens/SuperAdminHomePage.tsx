@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native";
 import { UserAndUnapprovedTimeEntriesDropDown } from "../components/DropDowns/UserAndUnapprovedTimeEntriesDropDown";
 import { useSuperAdminHomePageFunction } from "../context/SuperAdminHomePageContext";
 import { LongButton } from "../components/Buttons/LongButton";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TimeEntry } from "../utilily/types";
 import auth from "@react-native-firebase/auth";
 import { TitleAndOnCheckAll } from "../components/TitleAndOnCheckAll";
@@ -23,10 +23,15 @@ export const SuperAdminHomePage = () => {
     if (superAdminID !== undefined) onApproveTimeEntries(onCheck, superAdminID);
   };
 
+  useEffect(() => {
+    setOnCheck([]);
+  }, [allUsersWithUnconfirmedTimeEntries]);
+
   return (
     <SafeAreaView>
       <Menu />
       <TitleAndOnCheckAll
+        onCheck={onCheck}
         allUsersWithUnconfirmedTimeEntries={allUsersWithUnconfirmedTimeEntries}
         setOnCheck={setOnCheck}
       />
