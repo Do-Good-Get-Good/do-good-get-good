@@ -23,9 +23,9 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const context = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmin = context?.allAdminsAndSuperAdmins;
+  const allAdminsAndSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
-    allAdminsAnsSuperAdmin,
+    allAdminsAndSuperAdmin,
   );
 
   return (
@@ -52,7 +52,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
                 testID="drop-down-admin-name"
                 style={styles.userAndAdminNames}
               >
-                {showAdminName(user.adminID, allAdminsAnsSuperAdmin)}
+                {showAdminName(user.adminID, allAdminsAndSuperAdmin)}
               </Text>
             </View>
 

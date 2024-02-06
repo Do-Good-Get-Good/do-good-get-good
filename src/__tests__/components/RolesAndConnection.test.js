@@ -140,10 +140,12 @@ describe("Testing RolesAndConnection screen ", () => {
 
     expect(queryByTestId("popUpTextvalue.1")).toBeNull();
   });
+});
 
-  /////////// Connected users dropdown
+describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
+  const navigationMock = { goBack: jest.fn() };
 
-  it("Connected users dropdown should be shown if user has role admin or superadmin", async () => {
+  it("Dropdown should be shown if user has role admin or superadmin", async () => {
     const { getByTestId, getAllByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -160,7 +162,7 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(getByText("Johan Johansson")).toBeTruthy();
   });
 
-  it("Connected users dropdown should be all closed before press", async () => {
+  it("Dropdown should be all closed before press", async () => {
     const { queryByText, queryAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -169,7 +171,7 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(queryByText("Admin:Super Supersson")).toBeNull();
   });
 
-  it("Connected users dropdown. Should open only one dropdown when user press on it", async () => {
+  it("Dropdown. Should open only one dropdown when user press on it", async () => {
     const { getAllByTestId, getByTestId, debug } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -184,7 +186,7 @@ describe("Testing RolesAndConnection screen ", () => {
       "Super Supersson",
     );
   });
-  it("Connected users dropdown. Should show the same admin name  ", async () => {
+  it("Dropdown. Should show the same admin name  ", async () => {
     const { getAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -207,7 +209,7 @@ describe("Testing RolesAndConnection screen ", () => {
       "Super Supersson",
     );
   });
-  it("Connected users dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
+  it("Dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
     const { queryByTestId, getAllByTestId, getByText, getByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
