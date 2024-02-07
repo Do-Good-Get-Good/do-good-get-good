@@ -5,7 +5,6 @@ import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
 import { useEffect, useState } from "react";
-import { cloneDeep, findIndex, update } from "lodash";
 
 import { Pencil } from "../../assets/icons/Pencil";
 
@@ -93,11 +92,14 @@ export const ConnectedUsersDropDown = ({
 
   const onSelect = (user: User) => {
     onSaveUsersWithChangedAdmin(user);
-    const i = findIndex(connectedUsers, { id: user.id });
-    const arr = cloneDeep(connectedUsers);
-    i !== -1 &&
-      arr !== undefined &&
-      setConnectedUsers(update(arr, i, () => ({ ...user })));
+
+    const i = connectedUsers?.findIndex((u) => u.id === user.id) ?? -1;
+    const arr = connectedUsers;
+    if (i !== -1 && arr !== undefined) {
+      arr[i] = { ...user };
+
+      setConnectedUsers(arr);
+    }
   };
 
   return (

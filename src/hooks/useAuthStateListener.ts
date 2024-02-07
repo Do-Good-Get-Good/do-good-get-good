@@ -6,7 +6,8 @@ import { UserClaims } from "../utilily/firebaseTypes";
 
 import { Role } from "../utilily/enums";
 import userLevelStore from "../store/userLevel";
-import { intersection, head } from "lodash";
+import intersection from "lodash/intersection";
+import head from "lodash/head";
 
 export const useAuthStateListener = () => {
   const [initializing, setInitializing] = useState(true);

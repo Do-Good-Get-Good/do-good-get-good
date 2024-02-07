@@ -1,8 +1,8 @@
-import { reject, set } from "lodash";
+import reject from "lodash/reject";
+
 import { User } from "../../utilily/types";
 
 import { updateUserArray } from "../../hooks/super-admin/utils";
-import { useEffect } from "react";
 import { Role } from "../../utilily/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 
@@ -18,22 +18,20 @@ export const useSuperAdminContext = () => {
       changedUser.adminID !== makeChangesForSelectedUser?.user.id;
 
     makeChangesForSelectedUser?.arrayOfUsersIfAdmin &&
-      context?.setMakeChangesForSelectedUser(
-        set(
-          makeChangesForSelectedUser,
-          "arrayOfUsersIfAdmin",
-          isAdminChanged
-            ? [...reject(connectedUsers, { id: changedUser.id })]
-            : updateUserArray(connectedUsers, changedUser),
-        ),
-      );
+      context?.setMakeChangesForSelectedUser({
+        ...makeChangesForSelectedUser,
+        arrayOfUsersIfAdmin: isAdminChanged
+          ? [...reject(connectedUsers, { id: changedUser.id })]
+          : updateUserArray(connectedUsers, changedUser),
+      });
   };
 
   const updateUserAfterChanges = (changedUser: User) => {
     if (makeChangesForSelectedUser?.user.id === changedUser.id) {
-      context?.setMakeChangesForSelectedUser(
-        set(makeChangesForSelectedUser, "user", changedUser),
-      );
+      context?.setMakeChangesForSelectedUser({
+        ...makeChangesForSelectedUser,
+        user: changedUser,
+      });
     }
     updateUserInfoInArrayOfUsersIfAdmin(changedUser);
 
