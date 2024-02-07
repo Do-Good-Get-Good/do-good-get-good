@@ -69,6 +69,8 @@ export type AdminsNameAndID = {
 };
 
 export type UserAndUnapprovedTimeEntriesType = {
+  adminID: User["adminID"];
+  userID: User["id"];
   adminFirstName: User["firstName"];
   adminLastName: User["lastName"];
   userFirstName: User["firstName"];

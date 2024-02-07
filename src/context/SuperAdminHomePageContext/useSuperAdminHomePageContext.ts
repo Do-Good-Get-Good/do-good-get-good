@@ -35,11 +35,13 @@ export const useSuperAdminHomePageContext = () => {
         const userInfo = await findUserInfo(allUsersInSystem, item.userID);
 
         const obj: UserAndUnapprovedTimeEntriesType = {
-          unapprovedTimeEntries: userEntry,
+          adminID: userInfo.adminID,
+          userID: userInfo.id,
           adminFirstName: adminInfo.firstName,
           adminLastName: adminInfo.lastName,
           userFirstName: userInfo.firstName,
           userLastName: userInfo.lastName,
+          unapprovedTimeEntries: userEntry,
         };
 
         tempArr.push(obj);
