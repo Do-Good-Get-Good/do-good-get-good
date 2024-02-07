@@ -41,18 +41,10 @@ export const useSuperAdminContext = () => {
       );
   };
 
-  const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
-    let adminArray: Array<User> = [];
-    for (let i = 0; i < userArray.length; i++) {
-      if (
-        userArray[i].role === Role.admin ||
-        userArray[i].role === Role.superadmin
-      ) {
-        adminArray.push(userArray[i]);
-      }
-    }
-    return adminArray;
-  };
+  const findAdminsAndSuperAdmins = (userArray: Array<User>) =>
+    userArray.filter(
+      (user) => user.role === Role.admin || user.role === Role.superadmin,
+    );
 
   return { updateUserAfterChanges, findAdminsAndSuperAdmins };
 };
