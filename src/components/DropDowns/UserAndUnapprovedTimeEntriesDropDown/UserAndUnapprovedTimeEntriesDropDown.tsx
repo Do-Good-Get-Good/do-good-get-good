@@ -11,9 +11,17 @@ import colors from "../../../assets/theme/colors";
 import { includes, pull } from "lodash";
 
 type Props = {
+  mainLableText?: string;
   user: UserAndUnapprovedTimeEntriesType;
+  isUserName?: boolean;
+  amountOfTimeEntries?: number;
 };
-export const UserAndUnapprovedTimeEntriesDropDown = ({ user }: Props) => {
+export const UserAndUnapprovedTimeEntriesDropDown = ({
+  user,
+  mainLableText,
+  isUserName = true,
+  amountOfTimeEntries,
+}: Props) => {
   const [isOpen, setIsOpen] = useState(false);
   const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
 
@@ -24,17 +32,16 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({ user }: Props) => {
         : [...onCheck, timeEntryID],
     );
   };
-
+  console.log(user, " .      ---  user");
   return (
     <View
       testID="unapproved-time-entries-drop-down"
       style={styles.dropDownMonolithContainer}
     >
-      {user && (
+      {mainLableText && (
         <MainLabel
-          firstName={user.userFirstName}
-          lastName={user.userLastName}
-          amountOfTimeEntries={user.unapprovedTimeEntries.length}
+          title={mainLableText}
+          amountOfTimeEntries={amountOfTimeEntries}
           setIsOpen={() => setIsOpen(!isOpen)}
           isOpen={isOpen}
         />
@@ -45,7 +52,11 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({ user }: Props) => {
           {user.unapprovedTimeEntries.map((entry) => (
             <InfoRow
               key={entry.id}
-              activityTitle={entry.activityTitle}
+              activityTitle={
+                isUserName
+                  ? `${user.userFirstName}\u00A0${user.userLastName}`
+                  : entry.activityTitle
+              }
               time={entry.time}
               date={entry.date}
               checked={includes(onCheck, entry.id)}
