@@ -15,7 +15,6 @@ import { Icon, Overlay } from "@rneui/base";
 import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
@@ -23,6 +22,7 @@ import BottomLogo from "../components/BottomLogo";
 import ManageUsers from "../components/ManageUsers";
 import { UserLevels } from "../lib/enums/userlevels";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import userLevelStore from "../store/userLevel";
 
 type Props = {
   route: any;
@@ -37,7 +37,7 @@ export function ActivityCard({ route, navigation }: Props) {
   const { activityHasChangedID } = useCreateActivityFunction();
   const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
   const { getImageForActivity } = useActivityImages();
-  const userLevel = useUserLevelCheckFunction();
+  const { userLevel } = userLevelStore;
 
   const [activity, setActivity] = useState({
     id: "",

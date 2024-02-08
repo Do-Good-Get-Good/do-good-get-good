@@ -1,6 +1,6 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import {
-  mockAllAdminsAnsSuperAdmins,
+  mockAllAdminsAndSuperAdmins,
   mockSelectedUser,
 } from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
@@ -18,7 +18,7 @@ jest.mock("@react-native-firebase/auth", () => {
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
-    allAdminsAnsSuperAdmins: mockAllAdminsAnsSuperAdmins,
+    allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
@@ -148,9 +148,6 @@ describe("Testing RolesAndConnection screen ", () => {
 
     expect(queryByTestId("popUpTextvalue.1")).toBeNull();
   });
-
-  /////////////// Change user button
-
   it("It works to press on Change user button and navigate to ChangeUser screen ", async () => {
     const { getByTestId } = render(<RolesAndConnection />);
 
@@ -165,11 +162,15 @@ describe("Testing RolesAndConnection screen ", () => {
       prevRoute: "RolesAndConnection",
     });
   });
+});
 
-  /////////// Connected users dropdown
+/////////// Connected users dropdown
 
-  it("Connected users dropdown should be shown if user has role admin or superadmin", async () => {
-    const { getByTestId, getAllByTestId, getByText, debug } = render(
+describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
+  const navigationMock = { goBack: jest.fn() };
+
+  it("Dropdown should be shown if user has role admin or superadmin", async () => {
+    const { getByTestId, getAllByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
@@ -185,7 +186,7 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(getByText("Johan Johansson")).toBeTruthy();
   });
 
-  it("Connected users dropdown should be all closed before press", async () => {
+  it("Dropdown should be all closed before press", async () => {
     const { queryByText, queryAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -194,22 +195,22 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(queryByText("Admin:Super Supersson")).toBeNull();
   });
 
-  it("Connected users dropdown. Should open only one dropdown when user press on it", async () => {
-    const { debug, getAllByTestId, getByTestId } = render(
+  it("Dropdown. Should open only one dropdown when user press on it", async () => {
+    const { getAllByTestId, getByTestId, debug } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
+
     const firtsDropboxItem = getAllByTestId("arrow-drop-down-icon")[0];
     fireEvent.press(firtsDropboxItem);
 
     expect(getAllByTestId("arrow-drop-up-icon")).toHaveLength(1);
     expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(2);
     expect(getByTestId("pencil-icon")).toBeTruthy();
-
     expect(getByTestId("drop-down-admin-name").props.children).toBe(
       "Super Supersson",
     );
   });
-  it("Connected users dropdown. Should show the same admin name  ", async () => {
+  it("Dropdown. Should show the same admin name  ", async () => {
     const { getAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
@@ -232,7 +233,7 @@ describe("Testing RolesAndConnection screen ", () => {
       "Super Supersson",
     );
   });
-  it("Connected users dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
+  it("Dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
     const { queryByTestId, getAllByTestId, getByText, getByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );

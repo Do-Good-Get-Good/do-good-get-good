@@ -1,6 +1,3 @@
-import { Icon } from "@rneui/base";
-
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Role } from "../utilily/enums";
@@ -17,6 +14,7 @@ import { error } from "firebase-functions/logger";
 import { Controller, FieldError } from "react-hook-form";
 import { errorTextStyle } from "../styles/errorTextStyle";
 import { ArrowUpDown } from "../assets/icons/ArrowUpDown";
+import userLevelStore from "../store/userLevel";
 
 type Props = {
   control: any;
@@ -24,7 +22,7 @@ type Props = {
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const userLevel = useUserLevelCheckFunction();
+  const { userLevel } = userLevelStore;
   const [expanded, setExpanded] = useState(false);
   return (
     <View style={{ marginTop: 10 }}>

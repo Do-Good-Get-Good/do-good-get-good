@@ -14,6 +14,7 @@ import { Icon } from "@rneui/base";
 import { User } from "../utilily/types";
 import { useOnSelectUser } from "../hooks/super-admin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
 type Props = {
   navigation: any;
 };

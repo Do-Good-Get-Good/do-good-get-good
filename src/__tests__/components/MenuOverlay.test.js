@@ -3,14 +3,15 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import { MenuOverlay } from "../../components/MenuOverlay";
-
-import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
 import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigation";
 import {
   mockUserNav,
   adminNavigations,
   superAdminNavigations,
 } from "../../components/MenuOverlay/mock/mockUseMenuNavigation";
+
+import userLevelStore from "../../store/userLevel";
+import { Role } from "../../utilily/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -43,8 +44,11 @@ jest.mock("@react-native-firebase/auth", () => {
   });
 });
 
-jest.mock("../../context/UserLevelContext", () => ({
-  useUserLevelCheckFunction: jest.fn(),
+jest.mock("../../context/SuperAdminContext", () => ({
+  useSuperAdminFunction: () => ({
+    setGetAllUsers: jest.fn(),
+    userLevel: jest.fn(),
+  }),
 }));
 
 afterEach(() => {
@@ -56,17 +60,17 @@ jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
 }));
 
 const user = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("user");
+  userLevelStore.setUserLevel(Role.user);
   useMenuNavigation.mockReturnValueOnce(mockUserNav);
 };
 
 const admin = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("admin");
+  userLevelStore.setUserLevel(Role.admin);
   useMenuNavigation.mockReturnValueOnce([...mockUserNav, ...adminNavigations]);
 };
 
 const superAdmin = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+  userLevelStore.setUserLevel(Role.superadmin);
   useMenuNavigation.mockReturnValueOnce([
     ...mockUserNav,
     ...adminNavigations,

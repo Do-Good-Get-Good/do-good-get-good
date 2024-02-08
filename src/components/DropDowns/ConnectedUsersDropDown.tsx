@@ -5,7 +5,6 @@ import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
 import { useEffect, useState } from "react";
-import { cloneDeep, findIndex, update } from "lodash";
 
 import { Pencil } from "../../assets/icons/Pencil";
 
@@ -23,9 +22,9 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [isShowPopup, setIsShowPopup] = useState(false);
   const context = useSuperAdminFunction();
-  const allAdminsAnsSuperAdmin = context?.allAdminsAnsSuperAdmins;
+  const allAdminsAndSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
-    allAdminsAnsSuperAdmin,
+    allAdminsAndSuperAdmin,
   );
 
   return (
@@ -52,7 +51,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
                 testID="drop-down-admin-name"
                 style={styles.userAndAdminNames}
               >
-                {showAdminName(user.adminID, allAdminsAnsSuperAdmin)}
+                {showAdminName(user.adminID, allAdminsAndSuperAdmin)}
               </Text>
             </View>
 
@@ -93,11 +92,14 @@ export const ConnectedUsersDropDown = ({
 
   const onSelect = (user: User) => {
     onSaveUsersWithChangedAdmin(user);
-    const i = findIndex(connectedUsers, { id: user.id });
-    const arr = cloneDeep(connectedUsers);
-    i !== -1 &&
-      arr !== undefined &&
-      setConnectedUsers(update(arr, i, () => ({ ...user })));
+
+    const i = connectedUsers?.findIndex((u) => u.id === user.id) ?? -1;
+    const arr = connectedUsers;
+    if (i !== -1 && arr !== undefined) {
+      arr[i] = { ...user };
+
+      setConnectedUsers(arr);
+    }
   };
 
   return (

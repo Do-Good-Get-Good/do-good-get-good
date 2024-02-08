@@ -16,7 +16,7 @@ import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superA
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
 import { User } from "../utilily/types";
-import { reject } from "lodash";
+import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 type UserIdAndFullName = { id: string; fullName: string };

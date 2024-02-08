@@ -70,9 +70,9 @@ export const PopupWithRadioButtons = ({
                       onPress={() => setChoice(key)}
                     >
                       <View style={radioButtonStyle(key, choice)}>
-                        {key === choice ? (
+                        {key === choice && (
                           <View style={styles.smallCircul}></View>
-                        ) : null}
+                        )}
                       </View>
                     </TouchableOpacity>
                   </View>
@@ -83,7 +83,7 @@ export const PopupWithRadioButtons = ({
         <LongButton
           style={{ marginTop: 20 }}
           title="Ok"
-          onPress={() => onOkayButton()}
+          onPress={onOkayButton}
         />
       </View>
     </Overlay>
