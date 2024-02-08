@@ -1,9 +1,4 @@
-import {
-  render,
-  fireEvent,
-  screen,
-  waitFor,
-} from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import {
   mockAllAdminsAndSuperAdmins,
   mockSelectedUser,
@@ -13,9 +8,7 @@ import { RolesAndConnection } from "../../screens/RolesAndConnection";
 jest.mock("@react-native-firebase/firestore", () => {
   return jest.fn();
 });
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
+
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: jest.fn(),
 }));
@@ -26,7 +19,6 @@ jest.mock("@react-native-firebase/auth", () => {
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
-
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
@@ -119,7 +111,7 @@ describe("Testing RolesAndConnection screen ", () => {
         "Admin2 Adminsson2",
       );
       expect(getByTestId("popUpTextvalue.2").props.children).toBe(
-        "Admin Adminsson",
+        "Admin4 Adminsson4",
       );
 
       expect(getByTestId("popUpTextvalue.6").props.children).toBe(
@@ -139,5 +131,159 @@ describe("Testing RolesAndConnection screen ", () => {
     );
 
     expect(queryByTestId("popUpTextvalue.1")).toBeNull();
+  });
+
+  it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
+    const { queryByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    expect(queryByTestId("popUpTextvalue.1")).toBeNull();
+  });
+});
+
+describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
+  const navigationMock = { goBack: jest.fn() };
+
+  it("Dropdown should be shown if user has role admin or superadmin", async () => {
+    const { getByTestId, getAllByTestId, getByText } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(3);
+
+    expect(getByTestId("connected-users-dropdown-2")).toBeTruthy();
+    expect(getByText("Admin4 Adminsson4")).toBeTruthy();
+
+    expect(getByTestId("connected-users-dropdown-3")).toBeTruthy();
+    expect(getByText("Admin2 Adminsson2")).toBeTruthy();
+
+    expect(getByTestId("connected-users-dropdown-4")).toBeTruthy();
+    expect(getByText("Johan Johansson")).toBeTruthy();
+  });
+
+  it("Dropdown should be all closed before press", async () => {
+    const { queryByText, queryAllByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    expect(queryAllByTestId("pencil-icon")).toHaveLength(0);
+    expect(queryByText("Admin:Super Supersson")).toBeNull();
+  });
+
+  it("Dropdown. Should open only one dropdown when user press on it", async () => {
+    const { getAllByTestId, getByTestId, debug } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    const firtsDropboxItem = getAllByTestId("arrow-drop-down-icon")[0];
+    fireEvent.press(firtsDropboxItem);
+
+    expect(getAllByTestId("arrow-drop-up-icon")).toHaveLength(1);
+    expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(2);
+    expect(getByTestId("pencil-icon")).toBeTruthy();
+    expect(getByTestId("drop-down-admin-name").props.children).toBe(
+      "Super Supersson",
+    );
+  });
+  it("Dropdown. Should show the same admin name  ", async () => {
+    const { getAllByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+    const firtsDropboxItem1 = getAllByTestId("arrow-drop-down-icon")[0];
+    fireEvent.press(firtsDropboxItem1);
+
+    const firtsDropboxItem2 = getAllByTestId("arrow-drop-down-icon")[0];
+    fireEvent.press(firtsDropboxItem2);
+
+    const firtsDropboxItem3 = getAllByTestId("arrow-drop-down-icon")[0];
+    fireEvent.press(firtsDropboxItem3);
+
+    expect(getAllByTestId("drop-down-admin-name")[0].props.children).toBe(
+      "Super Supersson",
+    );
+    expect(getAllByTestId("drop-down-admin-name")[1].props.children).toBe(
+      "Super Supersson",
+    );
+    expect(getAllByTestId("drop-down-admin-name")[2].props.children).toBe(
+      "Super Supersson",
+    );
+  });
+  it("Dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
+    const { queryByTestId, getAllByTestId, getByText, getByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+    const firtsDropboxItem1 = getAllByTestId("arrow-drop-down-icon")[0];
+    fireEvent.press(firtsDropboxItem1);
+    expect(getByText("Admin4 Adminsson4")).toBeTruthy();
+
+    const pencilIcon = getByTestId("pencil-icon");
+    fireEvent.press(pencilIcon);
+
+    expect(getByTestId("popUpTextvalue.mainTitle").props.children).toBe(
+      "Ändra admin",
+    );
+
+    await waitFor(() => {
+      expect(getByTestId("popUpTextvalue.3").props.children).toBe(
+        "Admin2 Adminsson2",
+      );
+      expect(getByTestId("popUpTextvalue.1").props.children).toBe(
+        "Super Supersson",
+      );
+
+      expect(getByTestId("popUpTextvalue.6").props.children).toBe(
+        "Super2 Supersson2",
+      );
+      expect(getByTestId("popUpTextvalue.7").props.children).toBe(
+        "Super3 Supersson3",
+      );
+
+      expect(queryByTestId("popUpTextvalue.2")).toBeNull();
+    });
+
+    expect(getByText("Ok")).toBeTruthy();
+  });
+
+  it("Should be possible to change user admin by pressing on another admin in overlay list", async () => {
+    const { getAllByTestId, getByTestId, getByText } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    fireEvent.press(getAllByTestId("arrow-drop-down-icon")[0]);
+
+    expect(getByTestId("drop-down-admin-name").props.children).toBe(
+      "Super Supersson",
+    );
+
+    fireEvent.press(getByTestId("pencil-icon"));
+
+    await waitFor(() => {
+      fireEvent.press(getByTestId("popUpRadioButton.6"));
+      fireEvent.press(getByText("Ok"));
+    });
+
+    expect(getByTestId("drop-down-admin-name").props.children).toBe(
+      "Super2 Supersson2",
+    );
+  });
+
+  it("Press to change admin of connected user. Update connectedUsersArray after saving changes", async () => {
+    const { getAllByTestId, getByTestId, getByText } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(3);
+
+    fireEvent.press(getAllByTestId("arrow-drop-down-icon")[0]);
+    fireEvent.press(getByTestId("pencil-icon"));
+
+    await waitFor(() => {
+      fireEvent.press(getByTestId("popUpRadioButton.6"));
+      fireEvent.press(getByText("Ok"));
+    });
+
+    fireEvent.press(getByText("Spara"));
+    expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(2);
   });
 });

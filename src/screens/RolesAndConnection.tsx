@@ -1,24 +1,24 @@
-import {
-  StyleSheet,
-  ScrollView,
-  Text,
-  View,
-  TouchableOpacity,
-} from "react-native";
-import React from "react";
+import { StyleSheet, ScrollView, View } from "react-native";
+import React, { useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
 import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
+
 import { Role } from "../utilily/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
 import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
+import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
+import { User } from "../utilily/types";
+import reject from "lodash/reject";
+import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -40,6 +40,7 @@ const schema: yup.ObjectSchema<UserInfo> = yup
       .required(),
     isActive: yup.boolean().required(),
   })
+
   .defined();
 
 type Props = {
@@ -48,7 +49,11 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
+  const { updateUserAfterChanges } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
+  const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
+    [],
+  );
 
   const { handleSubmit, control, getValues } = useForm<UserInfo>({
     defaultValues: {
@@ -58,6 +63,12 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     },
     resolver: yupResolver(schema),
   });
+
+  const updateUser = (changedUser: User) => {
+    superAdminUpdatesUserInfo(changedUser).then(() =>
+      updateUserAfterChanges(changedUser),
+    );
+  };
 
   const onSave = (data: UserInfo) => {
     if (user?.user && data?.role) {
@@ -70,10 +81,16 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         adminID: data.admin.id,
       };
 
-      return superAdminUpdatesUserInfo(changedData).then(
-        () => superAdminContext?.updateUserAfterChanges(changedData),
-      );
+      updateUser(changedData);
+      usersWithChangedAdmin.map((item) => updateUser(item));
     }
+  };
+
+  const onSaveUsersWithChangedAdmin = (user: User) => {
+    setUsersWithChangedAdmin([
+      ...reject(usersWithChangedAdmin, { id: user.id }),
+      user,
+    ]);
   };
 
   return (
@@ -84,6 +101,9 @@ export const RolesAndConnection = ({ navigation }: Props) => {
         <View style={styles.container}>
           <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
+          <ConnectedUsersDropDown
+            onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
+          />
           <LongButton
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}

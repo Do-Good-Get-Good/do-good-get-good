@@ -3,3 +3,5 @@ export const UserLevels = {
   Admin: "admin",
   SuperAdmin: "superadmin",
 };
+
+// TODU: (Alona) We need to use enum Role
