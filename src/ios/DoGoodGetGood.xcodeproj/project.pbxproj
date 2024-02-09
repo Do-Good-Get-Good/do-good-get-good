@@ -673,11 +673,11 @@
 					"$(inherited)",
 				);
 				INFOPLIST_FILE = DoGoodGetGoodTests/Info.plist;
-<<<<<<< HEAD
-				IPHONEOS_DEPLOYMENT_TARGET = 16.4;
-=======
+
 				IPHONEOS_DEPLOYMENT_TARGET = 17;
->>>>>>> main
+
+				
+
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",

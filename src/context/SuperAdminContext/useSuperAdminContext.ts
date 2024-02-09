@@ -1,8 +1,9 @@
-import { reject, set } from "lodash";
+import reject from "lodash/reject";
+
 import { User } from "../../utilily/types";
 
 import { updateUserArray } from "../../hooks/superAdmin/utils";
-import { useEffect } from "react";
+
 import { Role } from "../../utilily/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
@@ -55,30 +56,13 @@ export const useSuperAdminContext = () => {
     }
   };
 
-  const updateUserInfoInArrayOfUsersIfAdmin = (changedUser: User) => {
-    const connectedUsers = makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
-    const isAdminChanged =
-      changedUser.adminID !== makeChangesForSelectedUser?.user.id;
-
-    makeChangesForSelectedUser?.arrayOfUsersIfAdmin &&
-      context?.setMakeChangesForSelectedUser(
-        set(
-          makeChangesForSelectedUser,
-          "arrayOfUsersIfAdmin",
-          isAdminChanged
-            ? [...reject(connectedUsers, { id: changedUser.id })]
-            : updateUserArray(connectedUsers, changedUser),
-        ),
-      );
-  };
-
   const updateUserAfterChanges = (changedUser: User) => {
     if (makeChangesForSelectedUser?.user.id === changedUser.id) {
-      context?.setMakeChangesForSelectedUser(
-        set(makeChangesForSelectedUser, "user", changedUser),
-      );
+      context?.setMakeChangesForSelectedUser({
+        ...makeChangesForSelectedUser,
+        user: changedUser,
+      });
     }
-    updateUserInfoInArrayOfUsersIfAdmin(changedUser);
 
     allUsersInSystem &&
       context?.setAllUsersInSystem(
@@ -86,18 +70,10 @@ export const useSuperAdminContext = () => {
       );
   };
 
-  const findAdminsAndSuperAdmins = (userArray: Array<User>) => {
-    let adminArray: Array<User> = [];
-    for (let i = 0; i < userArray.length; i++) {
-      if (
-        userArray[i].role === Role.admin ||
-        userArray[i].role === Role.superadmin
-      ) {
-        adminArray.push(userArray[i]);
-      }
-    }
-    return adminArray;
-  };
+  const findAdminsAndSuperAdmins = (userArray: Array<User>) =>
+    userArray.filter(
+      (user) => user.role === Role.admin || user.role === Role.superadmin,
+    );
 
   return {
     updateUserAfterChanges,
