@@ -4,8 +4,6 @@ import firestore, {
 import { TimeEntry, User } from "../../utilily/types";
 import { format } from "date-fns";
 
-// FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>.data(): FirebaseFirestoreTypes.DocumentData | undefined
-
 const userObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>

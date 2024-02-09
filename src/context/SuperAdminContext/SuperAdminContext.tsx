@@ -6,13 +6,10 @@ import { useSuperAdminContext } from "./useSuperAdminContext";
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
   setAllUsersInSystem: (users: User[] | undefined) => void;
-
   setMakeChangesForSelectedUser: (
     value: UserObjectForSuperAdmin | undefined,
   ) => void;
-
-  allAdminsAnsSuperAdmins: User[] | undefined;
-
+  allAdminsAndSuperAdmins: User[] | undefined;
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
 };
 
@@ -32,7 +29,7 @@ export const SuperAdminProvider: React.FC<{ children: React.ReactNode }> = ({
     [],
   );
 
-  const [allAdminsAnsSuperAdmins, setAllAdminsAnsSuperAdmins] = useState<
+  const [allAdminsAndSuperAdmins, setAllAdminsAndSuperAdmins] = useState<
     User[] | undefined
   >(undefined);
   const [makeChangesForSelectedUser, setMakeChangesForSelectedUser] = useState<
@@ -41,7 +38,7 @@ export const SuperAdminProvider: React.FC<{ children: React.ReactNode }> = ({
 
   useEffect(() => {
     allUsersInSystem &&
-      setAllAdminsAnsSuperAdmins(findAdminsAndSuperAdmins(allUsersInSystem));
+      setAllAdminsAndSuperAdmins(findAdminsAndSuperAdmins(allUsersInSystem));
   }, [allUsersInSystem]);
 
   return (
@@ -50,7 +47,7 @@ export const SuperAdminProvider: React.FC<{ children: React.ReactNode }> = ({
         allUsersInSystem,
         setAllUsersInSystem,
 
-        allAdminsAnsSuperAdmins,
+        allAdminsAndSuperAdmins,
 
         makeChangesForSelectedUser,
         setMakeChangesForSelectedUser,

@@ -38,10 +38,8 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexDirection: "row",
-
     paddingHorizontal: 15,
     backgroundColor: colors.light,
-    borderRadius: 5,
     paddingVertical: 10,
   },
   textName: { fontWeight: "bold", flex: 0.8 },
