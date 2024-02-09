@@ -19,7 +19,7 @@ export const MainLabel = ({
     <View style={styles.container}>
       <Text
         onPress={setIsOpen}
-        testID="user-name-drop-down"
+        testID="main-title-drop-down"
         style={styles.textName}
       >
         {title}

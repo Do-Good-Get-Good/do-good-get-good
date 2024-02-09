@@ -20,7 +20,6 @@ export const useSuperAdminHomePageContext = () => {
     timeEntries: TimeEntry[],
   ): Promise<UserAndUnapprovedTimeEntriesType[]> => {
     let tempArr: UserAndUnapprovedTimeEntriesType[] = [];
-    console.log(timeEntries);
 
     for (const item of timeEntries) {
       const userEntry: TimeEntry[] = timeEntries.filter(
