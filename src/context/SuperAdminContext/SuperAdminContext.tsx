@@ -6,13 +6,10 @@ import { useSuperAdminContext } from "./useSuperAdminContext";
 type SuperAdminContextType = {
   allUsersInSystem: User[] | undefined;
   setAllUsersInSystem: (users: User[] | undefined) => void;
-
   setMakeChangesForSelectedUser: (
     value: UserObjectForSuperAdmin | undefined,
   ) => void;
-
   allAdminsAndSuperAdmins: User[] | undefined;
-
   makeChangesForSelectedUser: UserObjectForSuperAdmin | undefined;
 };
 

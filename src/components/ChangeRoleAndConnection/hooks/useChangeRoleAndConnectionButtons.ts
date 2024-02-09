@@ -1,16 +1,14 @@
 import { useState } from "react";
 import { ChagesType } from "../ChangeRoleOrAdminPopup";
-
-export enum ChangeButtonsKey {
-  role = "role",
-  admin = "admin",
-  changeUser = "changeUser",
-}
+import { useNavigation } from "@react-navigation/native";
+import { AdminStack, SuperAdminStack } from "../../../utilily/routeEnums";
+import { User } from "../../../utilily/types";
+import { ChangeUserRouteProps } from "../../../utilily/typesRouteProps";
 
 type ChangeButtonsType = {
-  key: ChangeButtonsKey;
+  key: string;
   title: string;
-  onPress: () => void;
+  onPress: (user?: User) => void;
 };
 
 export const useChangeRoleAndConnectionButtons = () => {
@@ -18,6 +16,9 @@ export const useChangeRoleAndConnectionButtons = () => {
   const [changeRoleOrAdmin, setChangeRoleOrAdmin] = useState<
     ChagesType | undefined
   >(undefined);
+  const navigation = useNavigation<{
+    navigate: (nav: AdminStack, props: ChangeUserRouteProps) => void;
+  }>();
 
   const onChangeRole = () => {
     setChangeRoleOrAdmin(ChagesType.role), setShowPopup(!isShowPopup);
@@ -27,25 +28,31 @@ export const useChangeRoleAndConnectionButtons = () => {
     setChangeRoleOrAdmin(ChagesType.admin), setShowPopup(!isShowPopup);
   };
 
-  const onChangeUser = () => {
-    console.log("onChangeUser");
+  const onChangeUser = (user: User) => {
+    navigation.navigate(AdminStack.ChangeUser, {
+      userName: user.firstName,
+      userSurname: user.lastName,
+      statusActive: user.statusActive,
+      userID: user.id,
+      prevRoute: SuperAdminStack.RolesAndConnection,
+    });
   };
 
   const changeRoleAndConnectionButtons: ChangeButtonsType[] = [
     {
-      key: ChangeButtonsKey.role,
+      key: "role",
       title: "Ändra nivå",
       onPress: () => onChangeRole(),
     },
     {
-      key: ChangeButtonsKey.admin,
+      key: "admin",
       title: "Ändra admin",
       onPress: () => onChangeAdmin(),
     },
     {
-      key: ChangeButtonsKey.changeUser,
+      key: "changeUser",
       title: "Ändra användare",
-      onPress: () => onChangeUser(),
+      onPress: (user?: User) => user && onChangeUser(user),
     },
   ];
 

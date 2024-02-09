@@ -18,6 +18,10 @@ import BottomNavButtons from "../../components/BottomNavButtons";
 import { UserName, onUpdateUser } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
 import { InputField } from "../../components/InputField";
+import { ChangeUserRouteProps } from "../../utilily/typesRouteProps";
+import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+import { SuperAdminStack } from "../../utilily/routeEnums";
+import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()
@@ -43,7 +47,14 @@ type Props = {
 };
 
 export const ChangeUser = ({ route, navigation }: Props) => {
-  const { userName, userSurname, statusActive, userID, sortBy } = route.params;
+  const {
+    userName,
+    userSurname,
+    statusActive,
+    userID,
+    sortBy,
+    prevRoute,
+  }: ChangeUserRouteProps = route.params;
 
   const {
     handleSubmit,
@@ -54,17 +65,23 @@ export const ChangeUser = ({ route, navigation }: Props) => {
     resolver: yupResolver(schema),
   });
   const [changedStatus, setChangedStatus] = useState(statusActive);
+  const { updateUserName } = useSuperAdminContext();
 
   const onSubmit = (data: UserName) => {
-    onUpdateUser(
-      data,
-      statusActive,
-      changedStatus,
-      userID,
-      userName,
-      userSurname,
-      sortBy,
-    );
+    if (prevRoute === SuperAdminStack.RolesAndConnection) {
+      updateUserName(data);
+    } else {
+      onUpdateUser(
+        data,
+        statusActive,
+        changedStatus,
+        userID,
+        userName,
+        userSurname,
+        sortBy,
+      );
+    }
+
     navigation.goBack();
   };
 

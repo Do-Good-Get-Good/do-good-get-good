@@ -49,7 +49,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const { updateUserAfterChanges } = useSuperAdminContext();
+  const { onSaveChangedUser } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
     [],
@@ -64,26 +64,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const updateUser = (changedUser: User) => {
-    superAdminUpdatesUserInfo(changedUser).then(() =>
-      updateUserAfterChanges(changedUser),
-    );
-  };
-
   const onSave = (data: UserInfo) => {
-    if (user?.user && data?.role) {
-      const changedData = {
-        id: user.user.id,
-        firstName: user.user.firstName,
-        lastName: user.user.lastName,
-        statusActive: data.isActive,
-        role: data?.role,
-        adminID: data.admin.id,
-      };
-
-      updateUser(changedData);
-      usersWithChangedAdmin.map((item) => updateUser(item));
-    }
+    onSaveChangedUser(data, usersWithChangedAdmin);
   };
 
   const onSaveUsersWithChangedAdmin = (user: User) => {

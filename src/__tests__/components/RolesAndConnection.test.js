@@ -27,8 +27,14 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+const mockedNavigate = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    navigate: mockedNavigate,
+  }),
+}));
+const navigationMock = { goBack: jest.fn() };
 describe("Testing RolesAndConnection screen ", () => {
-  const navigationMock = { goBack: jest.fn() };
   it("Go back button is showen and navigate back", async () => {
     const { getByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
@@ -54,6 +60,74 @@ describe("Testing RolesAndConnection screen ", () => {
     );
   });
 
+  it("It works to press on Change user button and navigate to ChangeUser screen ", async () => {
+    const { getByTestId } = render(<RolesAndConnection />);
+
+    const changeUserButton = getByTestId("textUnderlineButton.2");
+    fireEvent.press(changeUserButton);
+
+    expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
+      userName: "Super",
+      userSurname: "Supersson",
+      statusActive: true,
+      userID: "1",
+      prevRoute: "RolesAndConnection",
+    });
+  });
+});
+
+describe("Testing RolesAndConnection screen. Change admin button ", () => {
+  it("It works to open overlay to change admin", async () => {
+    const { getByTestId, getByText, queryByTestId, getAllByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+
+    const changeRoleButton = getByTestId("textUnderlineButton.1");
+    fireEvent.press(changeRoleButton);
+
+    expect(queryByTestId("popUpTextvalue.mainTitle").props.children).toBe(
+      "Ändra admin",
+    );
+
+    await waitFor(() => {
+      expect(getByTestId("popUpTextvalue.3").props.children).toBe(
+        "Admin2 Adminsson2",
+      );
+      expect(getByTestId("popUpTextvalue.2").props.children).toBe(
+        "Admin4 Adminsson4",
+      );
+
+      expect(getByTestId("popUpTextvalue.6").props.children).toBe(
+        "Super2 Supersson2",
+      );
+      expect(getByTestId("popUpTextvalue.7").props.children).toBe(
+        "Super3 Supersson3",
+      );
+    });
+
+    await waitFor(() => {
+      fireEvent.press(getByTestId("popUpRadioButton.3"));
+      fireEvent.press(getByText("Ok"));
+      expect(getByText("Admin")).toBeTruthy();
+      expect(getAllByTestId("title-and-value-value")[1].props.children).toBe(
+        "Admin2 Adminsson2",
+      );
+    });
+  });
+
+  it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
+    const { queryByTestId, getByTestId } = render(
+      <RolesAndConnection navigation={navigationMock} />,
+    );
+    const changeRoleButton = getByTestId("textUnderlineButton.1");
+    fireEvent.press(changeRoleButton);
+    await waitFor(() => {
+      expect(queryByTestId("popUpTextvalue.1")).toBeNull();
+    });
+  });
+});
+
+describe("Testing RolesAndConnection screen. Change role button ", () => {
   it("It works to open overlay to change role", async () => {
     const { getByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
@@ -93,58 +167,9 @@ describe("Testing RolesAndConnection screen ", () => {
       "Admin",
     );
   });
-
-  it("It works to open overlay to change admin", async () => {
-    const { getByTestId, getByText, queryByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
-    );
-
-    const changeRoleButton = getByTestId("textUnderlineButton.1");
-    fireEvent.press(changeRoleButton);
-
-    expect(queryByTestId("popUpTextvalue.mainTitle").props.children).toBe(
-      "Ändra admin",
-    );
-
-    await waitFor(() => {
-      expect(getByTestId("popUpTextvalue.3").props.children).toBe(
-        "Admin2 Adminsson2",
-      );
-      expect(getByTestId("popUpTextvalue.2").props.children).toBe(
-        "Admin4 Adminsson4",
-      );
-
-      expect(getByTestId("popUpTextvalue.6").props.children).toBe(
-        "Super2 Supersson2",
-      );
-      expect(getByTestId("popUpTextvalue.7").props.children).toBe(
-        "Super3 Supersson3",
-      );
-    });
-
-    expect(getByText("Ok")).toBeTruthy();
-  });
-
-  it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
-    const { queryByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
-    );
-
-    expect(queryByTestId("popUpTextvalue.1")).toBeNull();
-  });
-
-  it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
-    const { queryByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
-    );
-
-    expect(queryByTestId("popUpTextvalue.1")).toBeNull();
-  });
 });
 
 describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
-  const navigationMock = { goBack: jest.fn() };
-
   it("Dropdown should be shown if user has role admin or superadmin", async () => {
     const { getByTestId, getAllByTestId, getByText } = render(
       <RolesAndConnection navigation={navigationMock} />,
@@ -172,7 +197,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
   });
 
   it("Dropdown. Should open only one dropdown when user press on it", async () => {
-    const { getAllByTestId, getByTestId, debug } = render(
+    const { getAllByTestId, getByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
 
