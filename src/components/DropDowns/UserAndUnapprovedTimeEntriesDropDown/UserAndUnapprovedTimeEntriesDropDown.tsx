@@ -50,24 +50,31 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
 
       {isOpen && (
         <View style={{ paddingBottom: 10 }}>
-          {usersTimeEtries.map((user) =>
-            user.unapprovedTimeEntries.map((entry) => (
-              <InfoRow
-                key={entry.id}
-                activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
-                time={entry.time}
-                date={entry.date}
-                checked={includes(onCheck, entry.id)}
-                onCheck={() => onCheckPress(entry.id)}
-              />
-            )),
-          )}
+          {usersTimeEtries.map((user, j) => (
+            <View key={j} style={styles.containerBorder}>
+              {user.unapprovedTimeEntries.map((entry) => (
+                <InfoRow
+                  key={entry.id}
+                  activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
+                  time={entry.time}
+                  date={entry.date}
+                  checked={includes(onCheck, entry.id)}
+                  onCheck={() => onCheckPress(entry.id)}
+                />
+              ))}
+            </View>
+          ))}
         </View>
       )}
     </View>
   );
 };
 const styles = StyleSheet.create({
+  containerBorder: {
+    borderRadius: 5,
+    borderWidth: 2,
+    borderColor: colors.light,
+  },
   dropDownMonolithContainer: {
     backgroundColor: colors.background,
     paddingHorizontal: 14,
