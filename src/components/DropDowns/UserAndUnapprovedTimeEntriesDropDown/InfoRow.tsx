@@ -21,7 +21,7 @@ export const InfoRow = ({
 }: Props) => {
   return (
     <View style={styles.container}>
-      <Text testID="info-row-activity-title" style={styles.textName}>
+      <Text testID="info-row-title" style={styles.textName}>
         {activityTitle}
       </Text>
       <Text testID="info-row-date" style={{ flex: 0.5 }}>

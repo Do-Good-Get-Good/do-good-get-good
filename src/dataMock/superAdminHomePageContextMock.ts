@@ -35,8 +35,10 @@ const userOne: UserAndUnapprovedTimeEntriesType = {
       time: 3.5,
     },
   ],
-  adminFirstName: "Admin1",
-  adminLastName: "Adminsson1",
+  adminID: "newAdminID",
+  userID: "userID3",
+  adminFirstName: "Admin4",
+  adminLastName: "Adminsson4",
   userFirstName: "User1",
   userLastName: "Usersson1",
 };
@@ -53,11 +55,34 @@ const userTwo: UserAndUnapprovedTimeEntriesType = {
       time: 1.5,
     },
   ],
+  adminID: "adminID2",
+  userID: "userID2",
   adminFirstName: "Admin2",
   adminLastName: "Adminsson2",
   userFirstName: "User2",
   userLastName: "Usersson2",
 };
 
+const userThree: UserAndUnapprovedTimeEntriesType = {
+  unapprovedTimeEntries: [
+    {
+      id: "unapprovedTimeEntries4",
+      activityID: "activityID2",
+      adminID: "adminID2",
+      userID: "userID4",
+      activityTitle: "Activity Title 4",
+      date: "2022-02-10",
+      statusConfirmed: false,
+      time: 0.5,
+    },
+  ],
+  adminID: "newAdminID",
+  userID: "userID4",
+  adminFirstName: "Admin4",
+  adminLastName: "Adminsson4",
+  userFirstName: "User4",
+  userLastName: "Usersson4",
+};
+
 export const mockAllUsersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[] =
-  [userOne, userTwo];
+  [userOne, userTwo, userThree];

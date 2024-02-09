@@ -10,17 +10,28 @@ import { InfoRow } from "./InfoRow";
 import colors from "../../../assets/theme/colors";
 import { includes, pull } from "lodash";
 
+const countAllEntries = (
+  usersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[],
+) =>
+  usersWithUnconfirmedTimeEntries.reduce(
+    (total, current) => total + current.unapprovedTimeEntries.length,
+    0,
+  );
+
 type Props = {
-  user: UserAndUnapprovedTimeEntriesType;
   onCheck: Array<TimeEntry["id"]>;
   setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
+
+  usersTimeEtries: UserAndUnapprovedTimeEntriesType[];
 };
 export const UserAndUnapprovedTimeEntriesDropDown = ({
-  user,
-  onCheck,
+  usersTimeEtries,
   setOnCheck,
+  onCheck,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
+  // const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
+  const adminName = `${usersTimeEtries[0].adminFirstName}\u00A0${usersTimeEtries[0].adminLastName}`;
 
   const onCheckPress = (timeEntryID: TimeEntry["id"]) => {
     setOnCheck(
@@ -35,28 +46,27 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
       testID="unapproved-time-entries-drop-down"
       style={styles.dropDownMonolithContainer}
     >
-      {user && (
-        <MainLabel
-          firstName={user.adminFirstName}
-          lastName={user.adminLastName}
-          amountOfTimeEntries={user.unapprovedTimeEntries.length}
-          setIsOpen={() => setIsOpen(!isOpen)}
-          isOpen={isOpen}
-        />
-      )}
+      <MainLabel
+        title={adminName}
+        amountOfTimeEntries={countAllEntries(usersTimeEtries)}
+        setIsOpen={() => setIsOpen(!isOpen)}
+        isOpen={isOpen}
+      />
 
       {isOpen && (
         <View style={{ paddingBottom: 10 }}>
-          {user.unapprovedTimeEntries.map((entry) => (
-            <InfoRow
-              key={entry.id}
-              activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
-              time={entry.time}
-              date={entry.date}
-              checked={includes(onCheck, entry.id)}
-              onCheck={() => onCheckPress(entry.id)}
-            />
-          ))}
+          {usersTimeEtries.map((user) =>
+            user.unapprovedTimeEntries.map((entry) => (
+              <InfoRow
+                key={entry.id}
+                activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
+                time={entry.time}
+                date={entry.date}
+                checked={includes(onCheck, entry.id)}
+                onCheck={() => onCheckPress(entry.id)}
+              />
+            )),
+          )}
         </View>
       )}
     </View>

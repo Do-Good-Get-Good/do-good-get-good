@@ -3,16 +3,14 @@ import { User } from "../../../utilily/types";
 import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
 
 type Props = {
-  firstName: User["firstName"];
-  lastName: User["lastName"];
-  amountOfTimeEntries: number;
+  title: string;
+  amountOfTimeEntries?: number;
   setIsOpen: () => void;
   isOpen: boolean;
 };
 
 export const MainLabel = ({
-  firstName,
-  lastName,
+  title,
   amountOfTimeEntries,
   setIsOpen,
   isOpen,
@@ -21,15 +19,19 @@ export const MainLabel = ({
     <View style={styles.container}>
       <Text
         onPress={setIsOpen}
-        testID="user-name-drop-down"
+        testID="main-title-drop-down"
         style={styles.textName}
-      >{`${firstName}\u00A0${lastName}`}</Text>
+      >
+        {title}
+      </Text>
       <ArrowUpDown
         style={{ marginHorizontal: 5 }}
         onPress={setIsOpen}
         expanded={isOpen}
       />
-      <Text testID="amount-of-unapproved-time-entries">{`${amountOfTimeEntries}\u00A0st`}</Text>
+      <Text testID="amount-of-unapproved-time-entries">
+        {amountOfTimeEntries && `${amountOfTimeEntries}\u00A0st`}
+      </Text>
     </View>
   );
 };
