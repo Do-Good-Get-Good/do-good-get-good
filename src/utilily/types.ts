@@ -48,7 +48,6 @@ export type User = {
   //// TODO: (ckeck what is this checked)
   checked?: boolean;
   timeObject?: {};
-  // timeEntries?: Array<TimeEntry>;
   isOpen?: boolean;
   statusActive: boolean;
   totalConfirmedHours?: number;
