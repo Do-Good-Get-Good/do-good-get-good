@@ -10,6 +10,7 @@ type Props = {
   time: TimeEntry["time"];
   checked: boolean;
   onCheck: () => void;
+  testID: string;
 };
 
 export const InfoRow = ({
@@ -18,6 +19,7 @@ export const InfoRow = ({
   time,
   onCheck,
   checked,
+  testID,
 }: Props) => {
   return (
     <View style={styles.container}>
@@ -30,7 +32,11 @@ export const InfoRow = ({
       <Text testID="info-row-time" style={{ flex: 0.2 }}>
         {time.toString()}
       </Text>
-      <Checkbox onCheck={onCheck} checked={checked} />
+      <Checkbox
+        testID={`info-row-${testID}`}
+        onCheck={onCheck}
+        checked={checked}
+      />
     </View>
   );
 };

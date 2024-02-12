@@ -13,6 +13,7 @@ type Props = {
   onPress: () => void;
   style?: StyleProp<FlexStyle | TextStyle>;
   isDisabled?: boolean;
+  testID?: string;
 };
 
 const containerStyle = (
@@ -33,9 +34,16 @@ const textStyle = (isDisabled: boolean = false): StyleProp<TextStyle> => ({
   color: isDisabled ? colors.secondary : colors.dark,
 });
 
-export const LongButton = ({ title, onPress, style, isDisabled }: Props) => {
+export const LongButton = ({
+  title,
+  onPress,
+  style,
+  isDisabled,
+  testID,
+}: Props) => {
   return (
     <TouchableOpacity
+      testID={`long-button-${testID}`}
       disabled={isDisabled}
       onPress={() => onPress()}
       style={[containerStyle(isDisabled), style]}

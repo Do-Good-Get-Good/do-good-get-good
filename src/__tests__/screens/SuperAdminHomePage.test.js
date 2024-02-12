@@ -6,6 +6,24 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
+jest.mock("@react-native-firebase/firestore", () => () => ({
+  collection: () => ({
+    doc: () => ({
+      update: jest.fn(),
+    }),
+  }),
+}));
+
+jest.mock("@react-native-firebase/auth", () => {
+  return () => ({
+    auth: jest.fn(() => ({
+      currentUser: {
+        uid: "SuperadminID",
+      },
+    })),
+  });
+});
+
 jest.mock("../../context/SuperAdminHomePageContext", () => ({
   useSuperAdminHomePageFunction: () => ({
     allUsersWithUnconfirmedTimeEntries: mockAllUsersWithUnconfirmedTimeEntries,
@@ -52,7 +70,9 @@ describe("Testing SuperAdminHomePage screen ", () => {
     );
     expect(getByTestId("info-row-date").props.children).toBe("2022-07-10");
     expect(getByTestId("info-row-time").props.children).toBe("1.5");
-    expect(getByTestId("checkbox").props.isChecked).toBe(false);
+    expect(
+      getByTestId("checkbox-info-row-unapprovedTimeEntries2").props.isChecked,
+    ).toBe(false);
   });
 
   it("Checkbox should work ", async () => {
@@ -60,7 +80,7 @@ describe("Testing SuperAdminHomePage screen ", () => {
     const adminName = getAllByTestId("main-title-drop-down");
     fireEvent.press(adminName[1]);
 
-    const checkbox = getByTestId("checkbox");
+    const checkbox = getByTestId("checkbox-info-row-unapprovedTimeEntries2");
     expect(checkbox.props.isChecked).toBe(false);
     fireEvent.press(checkbox);
     expect(checkbox.props.isChecked).toBe(true);

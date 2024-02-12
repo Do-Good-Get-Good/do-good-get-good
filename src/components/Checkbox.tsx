@@ -8,12 +8,13 @@ import { Text } from "@rneui/base";
 type Props = {
   checked: boolean;
   onCheck: () => void;
+  testID?: string;
 };
 
-export const Checkbox = ({ onCheck, checked }: Props) => {
+export const Checkbox = ({ onCheck, checked, testID }: Props) => {
   return (
     <BouncyCheckbox
-      testID="checkbox"
+      testID={`checkbox-${testID}`}
       style={{ flex: 0.07 }}
       size={20}
       fillColor={colors.primary}

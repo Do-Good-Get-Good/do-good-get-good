@@ -48,7 +48,11 @@ export const TitleAndOnCheckAll = ({
       <Text style={styles.title}>{title}</Text>
       <View style={{ flexDirection: "row" }}>
         <Text style={styles.checkBoxText}>{checkBoxText}</Text>
-        <Checkbox onCheck={onCheckAll} checked={isOnCheckAll()} />
+        <Checkbox
+          testID={"on-check-all"}
+          onCheck={onCheckAll}
+          checked={isOnCheckAll()}
+        />
       </View>
     </View>
   );

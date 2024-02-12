@@ -1,7 +1,7 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../components/Menu";
 import BottomLogo from "../components/BottomLogo";
-import { ScrollView, View } from "react-native";
+import { ScrollView } from "react-native";
 import { UserAndUnapprovedTimeEntriesDropDown } from "../components/DropDowns/UserAndUnapprovedTimeEntriesDropDown";
 import { useSuperAdminHomePageFunction } from "../context/SuperAdminHomePageContext";
 
@@ -12,10 +12,11 @@ import {
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../utilily/types";
-import auth from "@react-native-firebase/auth";
+
 import { TitleAndOnCheckAll } from "../components/TitleAndOnCheckAll";
 import { useSuperAdminHomePageContext } from "../context/SuperAdminHomePageContext/useSuperAdminHomePageContext";
 import groupBy from "lodash/groupBy";
+import auth from "@react-native-firebase/auth";
 
 const superAdminID = auth()?.currentUser?.uid;
 
@@ -46,10 +47,6 @@ export const SuperAdminHomePage = () => {
     Array<AdminWithUsersUnapprovedTimeEntriesType>
   >([]);
 
-  useEffect(() => {
-    setAllAdmins(prepareAdminArray(allUsersWithUnconfirmedTimeEntries));
-  }, [allUsersWithUnconfirmedTimeEntries]);
-
   const onApprove = () => {
     if (superAdminID !== undefined) onApproveTimeEntries(onCheck, superAdminID);
   };
@@ -59,7 +56,6 @@ export const SuperAdminHomePage = () => {
     setAllAdmins(prepareAdminArray(allUsersWithUnconfirmedTimeEntries));
   }, [allUsersWithUnconfirmedTimeEntries]);
 
-  console.log(allUsersWithUnconfirmedTimeEntries.length);
   return (
     <SafeAreaView>
       <Menu />
@@ -82,6 +78,7 @@ export const SuperAdminHomePage = () => {
           style={{ marginTop: 20 }}
           title="Godkänn"
           onPress={onApprove}
+          testID="on-save"
         />
 
         <BottomLogo />

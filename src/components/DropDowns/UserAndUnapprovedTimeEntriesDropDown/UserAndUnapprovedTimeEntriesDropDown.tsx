@@ -30,7 +30,6 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
   onCheck,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  // const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
   const adminName = `${usersTimeEtries[0].adminFirstName}\u00A0${usersTimeEtries[0].adminLastName}`;
 
   const onCheckPress = (timeEntryID: TimeEntry["id"]) => {
@@ -60,6 +59,7 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
               {user.unapprovedTimeEntries.map((entry) => (
                 <InfoRow
                   key={entry.id}
+                  testID={entry.id}
                   activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
                   time={entry.time}
                   date={entry.date}
