@@ -58,10 +58,6 @@ export const useMenuNavigation = (role: Role | undefined) => {
 
   const superAdminNavigations: Array<NavigationObject> = [
     {
-      title: "Alla användare",
-      screenName: SuperAdminStack.AllUsersInTheSystem,
-    },
-    {
       title: "Exportera data",
       screenName: SuperAdminStack.DownloadUserData,
     },

@@ -21,7 +21,6 @@ const countAllEntries = (
 type Props = {
   onCheck: Array<TimeEntry["id"]>;
   setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
-
   usersTimeEtries: UserAndUnapprovedTimeEntriesType[];
 };
 export const UserAndUnapprovedTimeEntriesDropDown = ({

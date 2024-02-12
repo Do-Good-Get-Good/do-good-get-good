@@ -124,7 +124,6 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
     expect(getAllByText("Admin").length).toBe(1);
-    expect(getAllByText("Alla användare").length).toBe(1);
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);

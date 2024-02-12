@@ -1,6 +1,7 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
+import { SuperAdminStack } from "../../utilily/routeEnums";
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
@@ -13,6 +14,22 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
     }),
   }),
 }));
+
+// const mockNav = SuperAdminStack.AllUsersInTheSystem;
+// jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
+//   useMenuNavigation: jest.fn(),
+// }));
+const mockedNavigate = jest.fn();
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+  };
+});
 
 jest.mock("@react-native-firebase/auth", () => {
   return () => ({
@@ -86,3 +103,17 @@ describe("Testing SuperAdminHomePage screen ", () => {
     expect(checkbox.props.isChecked).toBe(true);
   });
 });
+
+// describe("Testing SuperAd", () => {
+//   it("Should show text /Inga admins att visa /  if no admin had unapproved time entries", async () => {
+//     jest.clearAllMocks();
+//     jest.mock("../../context/SuperAdminHomePageContext", () => ({
+//       useSuperAdminHomePageFunction: () => ({
+//         allUsersWithUnconfirmedTimeEntries: [],
+//       }),
+//     }));
+//     const { getByText, debug } = render(<SuperAdminHomePage />);
+//     debug();
+//     expect(getByText("Inga admins att visa")).toBeTruthy();
+//   });
+// });
