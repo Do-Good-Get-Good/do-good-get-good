@@ -1,7 +1,7 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
-import { SuperAdminStack } from "../../utilily/routeEnums";
+import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
@@ -46,6 +46,11 @@ jest.mock("../../context/SuperAdminHomePageContext", () => ({
     allUsersWithUnconfirmedTimeEntries: mockAllUsersWithUnconfirmedTimeEntries,
   }),
 }));
+
+// jest.mock("@react-native-firebase/auth", () => () => ({
+//   auth: jest.fn(),
+//   signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true)),
+// }));
 
 describe("Testing SuperAdminHomePage screen ", () => {
   it("As super admin I want to see all users that have unapproved time entries. Main lable dropDown - admin name and amount of unapproved time entries", async () => {
@@ -102,18 +107,12 @@ describe("Testing SuperAdminHomePage screen ", () => {
     fireEvent.press(checkbox);
     expect(checkbox.props.isChecked).toBe(true);
   });
-});
 
-// describe("Testing SuperAd", () => {
-//   it("Should show text /Inga admins att visa /  if no admin had unapproved time entries", async () => {
-//     jest.clearAllMocks();
-//     jest.mock("../../context/SuperAdminHomePageContext", () => ({
-//       useSuperAdminHomePageFunction: () => ({
-//         allUsersWithUnconfirmedTimeEntries: [],
-//       }),
-//     }));
-//     const { getByText, debug } = render(<SuperAdminHomePage />);
-//     debug();
-//     expect(getByText("Inga admins att visa")).toBeTruthy();
-//   });
-// });
+  // it("Should show text /Inga admins att visa /  if no admin had unapproved time entries", async () => {
+  //   const { getByText, debug } = render(<SuperAdminHomePage />);
+  //   allUsersWithUnconfirmedTimeEntries = [];
+
+  //   debug();
+  //   expect(getByText("Inga admins att visa")).toBeTruthy();
+  // });
+});
