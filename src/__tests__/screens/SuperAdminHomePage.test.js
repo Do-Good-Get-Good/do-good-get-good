@@ -1,7 +1,11 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
+import {
+  mockAllUsersWithUnconfirmedTimeEntries,
+  mockAllUsersWithUnconfirmedAfterApprove,
+} from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
 import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
+import useSuperAdminHomePageContext from "../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext";
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
@@ -47,10 +51,24 @@ jest.mock("../../context/SuperAdminHomePageContext", () => ({
   }),
 }));
 
-// jest.mock("@react-native-firebase/auth", () => () => ({
-//   auth: jest.fn(),
-//   signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true)),
-// }));
+// jest.mock(
+//   "../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext",
+//   () => ({
+//     useSuperAdminHomePageContext: () => ({
+//       onApproveTimeEntries: jest.fn(),
+//     }),
+//     // useSuperAdminHomePageContext: () => ({
+//     //   onApproveTimeEntries: jest.fn(),
+//     // }),
+//   }),
+// );
+
+// jest.mock(
+//   "../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext",
+//   () => ({
+//     useSuperAdminHomePageContext: jest.fn(),
+//   }),
+// );
 
 describe("Testing SuperAdminHomePage screen ", () => {
   it("As super admin I want to see all users that have unapproved time entries. Main lable dropDown - admin name and amount of unapproved time entries", async () => {
@@ -115,4 +133,33 @@ describe("Testing SuperAdminHomePage screen ", () => {
   //   debug();
   //   expect(getByText("Inga admins att visa")).toBeTruthy();
   // });
+
+  it("Time entry should disappear from the list after approve", async () => {
+    const { getAllByTestId, getByTestId, queryTestId } = render(
+      <SuperAdminHomePage />,
+    );
+    const adminName = getAllByTestId("main-title-drop-down");
+    fireEvent.press(adminName[0]);
+    expect(
+      getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
+    ).toBeTruthy();
+    expect(
+      getByTestId("checkbox-info-row-unapprovedTimeEntries3"),
+    ).toBeTruthy();
+
+    const checkbox = getByTestId("checkbox-info-row-unapprovedTimeEntries3");
+    fireEvent.press(checkbox);
+    const onSaveButton = getByTestId("long-button-on-save");
+    fireEvent.press(onSaveButton);
+
+    require("../../context/SuperAdminHomePageContext")
+      .useSuperAdminHomePageFunction()
+      .setAllUsersWithUnconfirmedTimeEntries()
+      .mockReturnValue(mockAllUsersWithUnconfirmedAfterApprove);
+
+    expect(
+      getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
+    ).toBeTruthy();
+    expect(queryTestId("checkbox-info-row-unapprovedTimeEntries3")).toBeNull();
+  });
 });
