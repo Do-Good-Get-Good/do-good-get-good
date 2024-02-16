@@ -13,7 +13,7 @@ import { useCreateActivityFunction } from "../context/CreateActivityContext/Crea
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
-export function SearchBarComponent() {
+export function SearchBarComponentOld() {
   const adminGalleryContext = useAdminGalleryFunction();
   const createActivityContext = useCreateActivityFunction();
   const [wordToSearch, setWordToSearch] = useState("");
@@ -65,7 +65,7 @@ export function SearchBarComponent() {
     </View>
   );
 }
-export default SearchBarComponent;
+export default SearchBarComponentOld;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
