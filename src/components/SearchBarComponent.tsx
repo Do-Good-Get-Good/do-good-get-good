@@ -17,46 +17,49 @@ type Props<T> = {
   style?: StyleProp<ViewStyle>;
   keys: Array<keyof T>;
   arrayToSearch: Array<T>;
+  onSearch: (value:Array<T>)=> void
 };
 
 function search<T>(input: string, data: T[], keys: Array<keyof T>) {
-  //   return data.filter((item) =>  item[key].toLowerCase().includes(query.toLowerCase()))
+  
+ const  h = data.filter((item) =>{
+    let valuesOfAllKeys = ''
+     keys.forEach((key) => valuesOfAllKeys +=  " " +`${item[key]}`)      
+     return  findByKey(input, valuesOfAllKeys)
 
-  const d = data.filter((item) =>
-    keys.map((key) => findByKey(input, item[key] as string)),
-  );
-  //   console.log(input, " .  input");
-  //   console.log(d.length, " .       ------d");
-  //   console.log(data.length, " .       ------data.");
-  return d;
+  }
+  )
+
+return h
+
 }
 
-const findByKey = (value: string, key: string) => {
-  const f = key.toLowerCase().includes(value.toLowerCase());
-
-  console.log(value, " .       ------value");
-  console.log(key, " .       ------ key");
-
-  console.log(f, " .      f ");
-  return f;
+const findByKey = (input: string, value: string) => {
+  const v = value.trim().toLowerCase()
+  const i = input.trim().toLowerCase()
+return v.includes(i);
+ 
+ 
 };
+
+
 
 export const SearchBarComponent = <T,>({
   arrayToSearch,
   style,
   keys,
+  onSearch
+
 }: Props<T>) => {
   return (
     <View style={[styles.container, style]}>
       <TextInput
-        // onSubmitEditing={() => searchWordButtonPressed()}
         returnKeyType="search"
         style={styles.textInput}
-        onChangeText={(word) => search(word, arrayToSearch, keys)}
-        //  value={word}
+        onChangeText={(word) => onSearch(search(word, arrayToSearch, keys)) }
         placeholder="Sök"
       />
-      <View style={styles.lineNearIcon} />
+    
       <SearchIcon testID="search-button-pressed" />
     </View>
   );
@@ -88,11 +91,5 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     ...typography.b1,
   },
-  lineNearIcon: {
-    width: 1,
-    height: 55,
-    borderLeftWidth: 1,
-    borderColor: colors.dark,
-    opacity: 0.18,
-  },
+
 });

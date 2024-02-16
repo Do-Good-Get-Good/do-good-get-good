@@ -24,11 +24,14 @@ export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const allUsersInSystem = superAdminContext?.allUsersInSystem;
   const { onSelectUser } = useOnSelectUser();
+  const [searchArray,setSearchArray]=useState<User[]>([])
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
     navigation.navigate("RolesAndConnection");
   }
+
+
 
   return (
     <View style={styles.screenContainer}>
@@ -36,9 +39,9 @@ export function ListOfAllUsers({ navigation }: Props) {
         style={{ marginBottom: 25 }}
         arrayToSearch={allUsersInSystem ?? []}
         keys={["firstName", "lastName"]}
+        onSearch={  setSearchArray}
       />
-      {allUsersInSystem &&
-        allUsersInSystem.map((user, index) => (
+      { searchArray.map((user, index) => (
           <View key={user.id + index} style={styles.contrainer}>
             <Text style={styles.firstAndLastNameText}>
               {user.firstName + " " + user.lastName}
@@ -52,7 +55,7 @@ export function ListOfAllUsers({ navigation }: Props) {
               />
             </TouchableOpacity>
           </View>
-        ))}
+        ))  }
     </View>
   );
 }

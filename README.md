@@ -45,7 +45,7 @@ Production build: `npx react-native run-android --variant=prodDebug`
 
 **iOS:**
 
-Development build: run `npx react-native start` -> select ios by pressing "i" -> in a new terminal, run `react-native run-ios --scheme DoGoodGetGoodDev`
+Development build: run `npx react-native start` -> select ios by pressing "i" -> in a new terminal, run `react-native run-ios --scheme DoGoodGetGoodDev` (if does't work then try `npx react-native run-ios --scheme DoGoodGetGoodDev`)
 
 Production build: `npx react-native run-ios`
 
