@@ -24,7 +24,7 @@ export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const allUsersInSystem = superAdminContext?.allUsersInSystem;
   const { onSelectUser } = useOnSelectUser();
-  const [searchArray,setSearchArray]=useState<User[]>([])
+  const [searchArray,setSearchArray]=useState<User[]>(allUsersInSystem ?? [])
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);

@@ -22,23 +22,23 @@ type Props<T> = {
 
 function search<T>(input: string, data: T[], keys: Array<keyof T>) {
   
- const  h = data.filter((item) =>{
+  return  data.filter((item) =>{
     let valuesOfAllKeys = ''
-     keys.forEach((key) => valuesOfAllKeys +=  " " +`${item[key]}`)      
+     keys.forEach((key) => valuesOfAllKeys +=  " " +`${item[key]}`)   
      return  findByKey(input, valuesOfAllKeys)
+ 
 
-  }
-  )
-
-return h
-
+  })
 }
 
 const findByKey = (input: string, value: string) => {
-  const v = value.trim().toLowerCase()
-  const i = input.trim().toLowerCase()
-return v.includes(i);
- 
+
+const inputWords = input.trim().toLowerCase().split(' ');
+const valueWords = value.trim().toLowerCase().split(' ');
+
+return inputWords.every(inputWord =>
+  valueWords.some(valueWord => valueWord.startsWith(inputWord))
+);
  
 };
 
@@ -51,12 +51,22 @@ export const SearchBarComponent = <T,>({
   onSearch
 
 }: Props<T>) => {
+
+  const [value, setValue]=useState('')
+  const  onChangeText =(word: string)=>{
+    onSearch(search(word, arrayToSearch, keys))
+    setValue(word)
+  }
+
+
   return (
     <View style={[styles.container, style]}>
       <TextInput
+      testID="searchbar-input"
         returnKeyType="search"
         style={styles.textInput}
-        onChangeText={(word) => onSearch(search(word, arrayToSearch, keys)) }
+        onChangeText={(word) => arrayToSearch && onChangeText(word)  }
+        value={value}
         placeholder="Sök"
       />
     
