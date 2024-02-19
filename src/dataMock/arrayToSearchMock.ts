@@ -37,23 +37,34 @@ export const mockUserArray: User[]=[mockUser1,mockUser2]
     id: "activity1",
     title: "help dogs",
     active: true,
-    city: "Gothenburg",
-    place: "Doghouse",
+    city: "Malmo",
+    place: "Petcare",
     description: "Spend time with pet dogs",
     photo: "gdasdfs",
     popular: true,
     imageUrl: ["ashdgh"]
   };
-  const activity2:Activity = {
+ const activity2:Activity = {
     id: "activity2",
     title: "help cats",
     active: true,
     city: "Gothenburg",
-    place: "Cathouse",
+    place: "Petcare",
     description: "Spend time with pet cats",
     photo: "gdasasfg",
     popular: true,
     imageUrl: ["advghsdf"]
   };
-  export const mockActivityArray: Activity[]=[activity1,activity2]
+ const activity3:Activity = {
+    id: "activity3",
+    title: "SocialMarathon",
+    active: true,
+    city: "Gothenburg",
+    place: "Help to pets",
+    description: "Spend time with pet cats",
+    photo: "gdasasfg",
+    popular: true,
+    imageUrl: ["advghsdf"]
+  };
+  export const mockActivityArray: Activity[]=[activity1,activity2, activity3]
 

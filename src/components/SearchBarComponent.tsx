@@ -53,6 +53,9 @@ export const SearchBarComponent = <T,>({
 }: Props<T>) => {
 
   const [value, setValue]=useState('')
+
+
+  
   const  onChangeText =(word: string)=>{
     onSearch(search(word, arrayToSearch, keys))
     setValue(word)
