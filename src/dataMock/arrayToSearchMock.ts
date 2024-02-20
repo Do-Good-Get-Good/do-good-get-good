@@ -2,7 +2,7 @@
 import { Role } from "../utilily/enums";
 import { Activity, User } from "../utilily/types";
 
-export const mockUser1 : User={
+export const user1 : User={
     id: "user1",
     activitiesAndAccumulatedTime: [{  accumulatedTime: 6,
         activityID: "activity1"}],
@@ -17,7 +17,7 @@ export const mockUser1 : User={
     totalHoursYear: 0
 }
 
-export const mockUser2 : User={
+export const user2 : User={
     id: "user2",
     activitiesAndAccumulatedTime: [{  accumulatedTime: 6,
         activityID: "activity2"}],
@@ -31,7 +31,7 @@ export const mockUser2 : User={
     totalHoursMonth: 0,
     totalHoursYear: 0
 }
-export const mockUserArray: User[]=[mockUser1,mockUser2]
+export const userArray: User[]=[user1,user2]
 
  const activity1:Activity = {
     id: "activity1",
@@ -66,5 +66,5 @@ export const mockUserArray: User[]=[mockUser1,mockUser2]
     popular: true,
     imageUrl: ["advghsdf"]
   };
-  export const mockActivityArray: Activity[]=[activity1,activity2, activity3]
+  export const activityArray: Activity[]=[activity1,activity2, activity3]
 
