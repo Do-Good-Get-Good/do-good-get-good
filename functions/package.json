@@ -14,7 +14,7 @@
   },
   "main": "index.js",
   "dependencies": {
-    "@sendgrid/mail": "^7.7.0",
+    "@sendgrid/mail": "^8.1.1",
     "date-fns": "^2.28.0",
     "exceljs": "^4.3.0",
     "firebase-admin": "^10.0.2",
