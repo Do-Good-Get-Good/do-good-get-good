@@ -12,7 +12,7 @@ import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
 
 import { User } from "../utilily/types";
-import { useOnSelectUser } from "../hooks/super-admin/useOnSelectUser";
+import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 
 type Props = {

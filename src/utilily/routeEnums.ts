@@ -20,4 +20,5 @@ export enum SuperAdminStack {
   DownloadUserData = "DownloadUserData",
   AllUsersInTheSystem = "AllUsersInTheSystem",
   RolesAndConnection = "RolesAndConnection",
+  SuperAdminHomePage = "SuperAdminHomePage",
 }

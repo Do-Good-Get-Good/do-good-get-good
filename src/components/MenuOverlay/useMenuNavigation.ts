@@ -1,6 +1,7 @@
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
+import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
 
-import { useGetAllUsersThatExistInTheSystem } from "../../hooks/super-admin/useGetAllUsersThatExistInTheSystem";
+import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import { Role } from "../../utilily/enums";
 import {
   AdminStack,
@@ -34,6 +35,8 @@ export const userNavigations: Array<NavigationObject> = [
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
+  const { getAllUserAndUnapprovedTimeEntries } =
+    useSuperAdminHomePageFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   useGetAllUsersThatExistInTheSystem(role);
 
@@ -62,6 +65,11 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Exportera data",
       screenName: SuperAdminStack.DownloadUserData,
+    },
+    {
+      title: "Super admin",
+      screenName: SuperAdminStack.SuperAdminHomePage,
+      toDo: getAllUserAndUnapprovedTimeEntries,
     },
   ];
 
