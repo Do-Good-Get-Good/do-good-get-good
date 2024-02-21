@@ -35,7 +35,8 @@ export const userNavigations: Array<NavigationObject> = [
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
-  const superAdminHomePageContext = useSuperAdminHomePageFunction();
+  const { getAllUserAndUnapprovedTimeEntries } =
+    useSuperAdminHomePageFunction();
   const adminGalleryContext = useAdminGalleryFunction();
   useGetAllUsersThatExistInTheSystem(role);
 
@@ -68,7 +69,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Super admin",
       screenName: SuperAdminStack.SuperAdminHomePage,
-      toDo: superAdminHomePageContext?.getAllUserAndUnapprovedTimeEntries,
+      toDo: getAllUserAndUnapprovedTimeEntries,
     },
   ];
 

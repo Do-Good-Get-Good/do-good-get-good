@@ -14,9 +14,11 @@ type SuperAdminHomePageContextType = {
   getAllUserAndUnapprovedTimeEntries: () => void;
 };
 
-const SuperAdminHomePageContext = React.createContext<
-  SuperAdminHomePageContextType | undefined
->(undefined);
+const SuperAdminHomePageContext =
+  React.createContext<SuperAdminHomePageContextType>({
+    allUsersWithUnconfirmedTimeEntries: [],
+    getAllUserAndUnapprovedTimeEntries: () => [],
+  });
 
 export const useSuperAdminHomePageFunction = () => {
   return useContext(SuperAdminHomePageContext);

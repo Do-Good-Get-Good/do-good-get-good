@@ -24,9 +24,8 @@ type AdminWithUsersUnapprovedTimeEntriesType = {
 };
 
 export const SuperAdminHomePage = () => {
-  const context = useSuperAdminHomePageFunction();
-  const allUsersWithUnconfirmedTimeEntries =
-    context?.allUsersWithUnconfirmedTimeEntries ?? [];
+  const { allUsersWithUnconfirmedTimeEntries } =
+    useSuperAdminHomePageFunction();
   const [allAdmins, setAllAdmins] = useState<
     Array<AdminWithUsersUnapprovedTimeEntriesType>
   >([]);
