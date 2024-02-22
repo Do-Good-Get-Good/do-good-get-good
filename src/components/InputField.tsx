@@ -1,6 +1,7 @@
 import {
   KeyboardTypeOptions,
   ReturnKeyTypeOptions,
+  StyleSheet,
   Text,
   TextInput,
   TextInputIOSProps,
@@ -12,7 +13,9 @@ import { Controller, FieldError } from "react-hook-form";
 import colors from "../assets/theme/colors";
 import { borderStyle } from "../styles/borderStyle";
 import { placeholderTextStyle } from "../styles/placeholderTextStyle";
-import { StyleSheet } from "react-native";
+
+
+
 
 type Props = {
   error?: FieldError;
@@ -26,6 +29,7 @@ type Props = {
   returnKeyType?: ReturnKeyTypeOptions;
   secureTextEntry?: boolean;
   autoCapitalize?: TextInputProps["autoCapitalize"];
+  contextMenuHidden?:boolean
 };
 
 export const InputField = ({
@@ -40,7 +44,10 @@ export const InputField = ({
   returnKeyType = "next",
   secureTextEntry = false,
   autoCapitalize = "words",
+  contextMenuHidden=false
+ 
 }: Props) => {
+
   return (
     <Controller
       name={name}
@@ -61,6 +68,7 @@ export const InputField = ({
               textContentType={textContentType}
               secureTextEntry={secureTextEntry}
               autoCapitalize={autoCapitalize}
+              contextMenuHidden={contextMenuHidden}
             />
             <View style={styles.showPasswordIcon}>
               {IconRight && IconRight}

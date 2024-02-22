@@ -122,6 +122,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           name={"email"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
+          contextMenuHidden={true}
         />
 
         <InputField
@@ -131,6 +132,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           name={"confirmEmail"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
+          contextMenuHidden={true}
         />
         <InputField
           placeholderText={"Lösenord"}

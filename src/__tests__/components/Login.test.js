@@ -90,4 +90,23 @@ describe("Testing Login", () => {
     const forgotPasswordButton = getByText("Tryck här");
     fireEvent.press(forgotPasswordButton);
   });
+
+  it("Trying to login with a space before  or after entering an e-mail its just takes away that space ", () => {
+    const { getByTestId } = render(<Login />);
+
+    const inputEmail = getByTestId("input-email");
+    fireEvent.changeText(inputEmail, '  can2@example.com');
+    expect(inputEmail.props.value).toBe("can2@example.com");
+    
+  });
+  it("Trying to enter  a space in a password its just takes away that space ", () => {
+    
+    const { getByTestId } = render(<Login />);
+
+    const inputPassword = getByTestId("input-password")
+    fireEvent.changeText(inputPassword, '  dfdfdf');
+    expect(inputPassword.props.value).toBe("dfdfdf");
+    
+  });
+
 });

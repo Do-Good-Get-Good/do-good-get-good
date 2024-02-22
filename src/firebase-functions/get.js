@@ -22,6 +22,7 @@ export const getUserLevel = async (userId) => {
   }
 };
 
+// getUserData exist in getTS. use that one instead and remove this one in the future
 export const getUserData = async (userId) => {
   try {
     let data = await firestore().collection("Users").doc(userId).get();
