@@ -20,13 +20,13 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     name: yup
       .string()
       .trim()
-      .max(30)
+      .max(30,"* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Förnamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     surname: yup
       .string()
       .trim()
-      .max(30)
+      .max(30,"* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Efternamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     email: yup
@@ -68,11 +68,11 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
     formState: { errors, isDirty },
   } = useForm<UserNewAccount>({
     defaultValues: {
-      name: user.name,
-      surname: user.name,
-      email: user.email,
-      confirmEmail: user.email,
-      password: user.password,
+      name: user?.name,
+      surname: user?.name,
+      email: user?.email,
+      confirmEmail: user?.email,
+      password: user?.password,
       role: "Behörighet",
     },
     resolver: yupResolver(schema),
