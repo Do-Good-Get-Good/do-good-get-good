@@ -1,4 +1,4 @@
-import { Activity } from "../../utilily/types";
+import { Activity } from "../../utility/types";
 
 export interface ICreateActivityContext {
   activeActivities: Activity[];

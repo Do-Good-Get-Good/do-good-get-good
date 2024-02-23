@@ -17,7 +17,7 @@ import BottomNavButtons from "../components/BottomNavButtons";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
 import { selectedImageStyle } from "../styles/selectedImageStyle";
-import { Routes } from "../utilily/routes";
+import { Routes } from "../utility/routes";
 
 export function ImagesGallery({
   navigation,

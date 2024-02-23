@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import {
   TimeEntry,
   UserAndUnapprovedTimeEntriesType,
-} from "../../../utilily/types";
+} from "../../../utility/types";
 import { MainLabel } from "./MainLabel";
 import { useState } from "react";
 import { InfoRow } from "./InfoRow";

@@ -3,7 +3,7 @@ import { StyleSheet, View } from "react-native";
 import typography from "../assets/theme/typography";
 
 import { Checkbox } from "./Checkbox";
-import { TimeEntry, UserAndUnapprovedTimeEntriesType } from "../utilily/types";
+import { TimeEntry, UserAndUnapprovedTimeEntriesType } from "../utility/types";
 import { flatMap } from "lodash";
 import { useCallback, useEffect, useState } from "react";
 

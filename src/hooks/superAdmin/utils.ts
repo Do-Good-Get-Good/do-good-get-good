@@ -1,5 +1,5 @@
-import { User, UserObjectForSuperAdmin } from "../../utilily/types";
-import { Role } from "../../utilily/enums";
+import { User, UserObjectForSuperAdmin } from "../../utility/types";
+import { Role } from "../../utility/enums";
 
 export const showAdminName = (
   connectedAdmin: User["adminID"],

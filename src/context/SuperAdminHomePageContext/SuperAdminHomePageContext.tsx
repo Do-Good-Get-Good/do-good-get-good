@@ -5,7 +5,7 @@ import {
   User,
   UserAndUnapprovedTimeEntriesType,
   UserObjectForSuperAdmin,
-} from "../../utilily/types";
+} from "../../utility/types";
 import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
 import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 
@@ -17,9 +17,12 @@ type SuperAdminHomePageContextType = {
   ) => void;
 };
 
-const SuperAdminHomePageContext = React.createContext<
-  SuperAdminHomePageContextType | undefined
->(undefined);
+const SuperAdminHomePageContext =
+  React.createContext<SuperAdminHomePageContextType>({
+    allUsersWithUnconfirmedTimeEntries: [],
+    getAllUserAndUnapprovedTimeEntries: () => [],
+    setAllUsersWithUnconfirmedTimeEntries: () => [],
+  });
 
 export const useSuperAdminHomePageFunction = () => {
   return useContext(SuperAdminHomePageContext);

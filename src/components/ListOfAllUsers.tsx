@@ -11,10 +11,10 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
 
-import { User } from "../utilily/types";
+import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-import { SuperAdminStack } from "../utilily/routeEnums";
+import { SuperAdminStack } from "../utility/routeEnums";
 import { GoBackButton } from "./Buttons/GoBackButton";
 
 type Props = {

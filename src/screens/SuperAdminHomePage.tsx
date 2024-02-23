@@ -11,7 +11,7 @@ import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
-} from "../utilily/types";
+} from "../utility/types";
 
 import { TitleAndOnCheckAll } from "../components/TitleAndOnCheckAll";
 import { useSuperAdminHomePageContext } from "../context/SuperAdminHomePageContext/useSuperAdminHomePageContext";
@@ -19,7 +19,7 @@ import groupBy from "lodash/groupBy";
 import auth from "@react-native-firebase/auth";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { SuperAdminStack } from "../utilily/routeEnums";
+import { SuperAdminStack } from "../utility/routeEnums";
 import { useNavigation } from "@react-navigation/native";
 
 const superAdminID = auth()?.currentUser?.uid;
@@ -44,13 +44,13 @@ export const SuperAdminHomePage = () => {
     navigate: (nav: SuperAdminStack) => void;
   }>();
 
-  const context = useSuperAdminHomePageFunction();
   const { onApproveTimeEntries } = useSuperAdminHomePageContext();
 
-  const allUsersWithUnconfirmedTimeEntries =
-    context?.allUsersWithUnconfirmedTimeEntries ?? [];
-
   const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
+
+  const { allUsersWithUnconfirmedTimeEntries } =
+    useSuperAdminHomePageFunction();
+
   const [allAdmins, setAllAdmins] = useState<
     Array<AdminWithUsersUnapprovedTimeEntriesType>
   >([]);

@@ -1,5 +1,24 @@
 import firestore from "@react-native-firebase/firestore";
-import { TimeEntry, User } from "../../utilily/types";
+import { TimeEntry, User } from "../../utility/types";
+
+const addTotalConfirmedHours = (user) => {
+  let today = new Date();
+  let currentYear = today.getFullYear();
+  let currentMonth = today.getMonth();
+  let accumulatedTime = addAccumulatedTime(user);
+
+  let timeEntryMonth = new Date(user.timeEntryDate).getMonth();
+  let timeEntryYear = new Date(user.timeEntryDate).getFullYear();
+
+  if (currentMonth === timeEntryMonth && currentYear === timeEntryYear) {
+    incrementTotalConfirmedHoursForUser(user.userID, user.timeEntryHours);
+    incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+    updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
+  } else if (currentMonth !== timeEntryMonth && currentYear === timeEntryYear) {
+    incrementYearlyTotalHoursForUser(user.userID, user.timeEntryHours);
+    updateUsersActivitiesAndAccumulatedTime(user.userID, accumulatedTime);
+  }
+};
 
 export const confirmTimeEntry = async (
   timeEntryID: TimeEntry["id"],

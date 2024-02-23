@@ -2,9 +2,9 @@ import { useEffect, useState } from "react";
 
 import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import crashlytics from "@react-native-firebase/crashlytics";
-import { UserClaims } from "../utilily/firebaseTypes";
+import { UserClaims } from "../utility/firebaseTypes";
 
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import userLevelStore from "../store/userLevel";
 import intersection from "lodash/intersection";
 import head from "lodash/head";

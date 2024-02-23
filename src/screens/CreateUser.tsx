@@ -11,7 +11,7 @@ import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import typography from "../assets/theme/typography";
 
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
