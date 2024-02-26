@@ -30,6 +30,7 @@ type Props = {
   secureTextEntry?: boolean;
   autoCapitalize?: TextInputProps["autoCapitalize"];
   contextMenuHidden?:boolean
+  testID?:string
 };
 
 export const InputField = ({
@@ -44,7 +45,8 @@ export const InputField = ({
   returnKeyType = "next",
   secureTextEntry = false,
   autoCapitalize = "words",
-  contextMenuHidden=false
+  contextMenuHidden=false,
+  testID
  
 }: Props) => {
 
@@ -74,7 +76,7 @@ export const InputField = ({
               {IconRight && IconRight}
             </View>
           </View>
-          {error && <Text style={errorTextStyle()}>{error.message}</Text>}
+          {error && <Text testID={`input-error-${testID}`} style={errorTextStyle()}>{error.message}</Text>}
         </>
       )}
     />

@@ -7,6 +7,7 @@ import {
   Text,
   TouchableOpacity,
   View,
+  
 } from "react-native";
 import { InputField } from "./InputField";
 import { useState } from "react";
@@ -19,13 +20,14 @@ import userLevelStore from "../store/userLevel";
 type Props = {
   control: any;
   error?: FieldError;
+ 
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
   const { userLevel } = userLevelStore;
   const [expanded, setExpanded] = useState(false);
   return (
-    <View style={{ marginTop: 10 }}>
+     <View style={{ marginTop: 10 }}>
       {userLevel === Role.superadmin && (
         <Controller
           name="role"
@@ -47,7 +49,7 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
                   setExpanded(!expanded);
                 }}
               >
-                <Text style={styles.placeholderText}>{value}</Text>
+                <Text  testID={"role-item"}style={styles.placeholderText}>{value}</Text>
                 <ArrowUpDown
                   onPress={() => setExpanded(!expanded)}
                   expanded={expanded}
@@ -64,19 +66,21 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
                         [onChange(role), setExpanded(!expanded)];
                       }}
                     >
-                      <Text style={styles.dropdownItem}>{role}</Text>
+                      <Text  style={styles.dropdownItem}>{role}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
               )}
-              {error && <Text style={errorTextStyle()}>{error.message}</Text>}
+              {error && <Text  testID={"role-error"} style={errorTextStyle()}>{error.message}</Text>}
             </>
           )}
         />
       )}
     </View>
+ 
   );
 };
+
 
 const styles = StyleSheet.create({
   input: {

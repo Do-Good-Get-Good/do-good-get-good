@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { ScrollView ,} from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +13,7 @@ import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
 import { UserNewAccount } from "../screens/CreateUser";
 import { useState } from "react";
 import { ChangeUserRole } from "./ChangeUserRole";
+import React, { useRef } from 'react';
 
 const schema: yup.ObjectSchema<UserNewAccount> = yup
   .object()
@@ -61,6 +62,13 @@ type Props = {
 export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   const navigation = useNavigation();
   const [showPassword, setShowPassword] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const handleContentSizeChange = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
+
+  
 
   const {
     handleSubmit,
@@ -99,8 +107,12 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   return (
     <>
       <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={handleContentSizeChange}
+    
         keyboardDismissMode={"on-drag"}
         style={{ flex: 1 }}
+        testID="scroll"
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
         <InputField
@@ -108,12 +120,14 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           control={control}
           error={errors.name}
           name={"name"}
+          testID={'name'}
         />
         <InputField
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
           name={"surname"}
+          testID={'surname'}
         />
         <InputField
           placeholderText={"E-mail"}
@@ -123,6 +137,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           autoCapitalize={"none"}
           keyboardType={"email-address"}
           contextMenuHidden={true}
+          testID={'email'}
         />
 
         <InputField
@@ -133,16 +148,21 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           autoCapitalize={"none"}
           keyboardType={"email-address"}
           contextMenuHidden={true}
+          testID={'confirm-email'}
         />
         <InputField
+        
           placeholderText={"Lösenord"}
           control={control}
           error={errors.password}
           name={"password"}
           secureTextEntry={!showPassword}
+          testID={"password"}
           IconRight={
+          
             <VisibilityIcon
-              onPress={() => setShowPassword(!showPassword)}
+        
+             onPress={() => setShowPassword(!showPassword)}
               visibilityOn={showPassword}
             />
           }
