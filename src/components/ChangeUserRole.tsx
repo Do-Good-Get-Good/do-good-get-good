@@ -66,7 +66,7 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
                         [onChange(role), setExpanded(!expanded)];
                       }}
                     >
-                      <Text  style={styles.dropdownItem}>{role}</Text>
+                      <Text testID={`role-item-${role}`} style={styles.dropdownItem}>{role}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
