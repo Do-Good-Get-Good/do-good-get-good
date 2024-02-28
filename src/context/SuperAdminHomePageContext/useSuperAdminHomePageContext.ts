@@ -6,9 +6,9 @@ import {
 } from "../../utility/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
 
-import { confirmTimeEntry } from "../../firebase-functions/updateTS/update";
 import reject from "lodash/reject";
 import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
+import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
   let findKeyValue = users.find((user) => user.id === userID);
@@ -29,6 +29,7 @@ const filterAfterChanges = (
     .filter((user) => user.unapprovedTimeEntries.length > 0);
 
 export const useSuperAdminHomePageContext = () => {
+  const { onApproveTimeEntries } = useApproveTimeEntry();
   const context = useSuperAdminFunction();
   const allUsersInSystem = context?.allUsersInSystem ?? [];
   const {
@@ -36,19 +37,17 @@ export const useSuperAdminHomePageContext = () => {
     setAllUsersWithUnconfirmedTimeEntries,
   } = useSuperAdminHomePageFunction();
 
-  const onApproveTimeEntries = (
-    timeEntries: Array<TimeEntry["id"]>,
+  const onApproveTimeEntriesSuperadmin = async (
+    timeEntries: Array<TimeEntry>,
     approvedBy: User["id"],
   ) => {
     let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
-    timeEntries.map(
-      async (timeEntryID) =>
-        await confirmTimeEntry(timeEntryID, approvedBy).then(() => {
-          temArr = [...filterAfterChanges(temArr, timeEntryID)];
-
-          setAllUsersWithUnconfirmedTimeEntries(temArr);
-        }),
-    );
+    const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
+    console.log(afterApprove, " . -----   afterApprove");
+    afterApprove.forEach((timeEntry) => {
+      temArr = [...filterAfterChanges(temArr, timeEntry.id)];
+      setAllUsersWithUnconfirmedTimeEntries(temArr);
+    });
   };
 
   const usersWithUnconfirmedTimeEntries = async (
@@ -90,5 +89,5 @@ export const useSuperAdminHomePageContext = () => {
     return tempArr;
   };
 
-  return { onApproveTimeEntries, usersWithUnconfirmedTimeEntries };
+  return { onApproveTimeEntriesSuperadmin, usersWithUnconfirmedTimeEntries };
 };

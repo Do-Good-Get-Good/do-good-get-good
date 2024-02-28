@@ -4,23 +4,21 @@ import typography from "../assets/theme/typography";
 
 import { Checkbox } from "./Checkbox";
 import { TimeEntry, UserAndUnapprovedTimeEntriesType } from "../utility/types";
-import { flatMap } from "lodash";
-import { useCallback, useEffect, useState } from "react";
+import flatMap from "lodash/flatMap";
+import { useCallback } from "react";
 
 const title = "Icke godkänd";
 const checkBoxText = "Markera alla";
 
 type Props = {
-  onCheck: Array<TimeEntry["id"]>;
+  onCheck: Array<TimeEntry>;
   allUsersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[];
-  setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
+  setOnCheck: (onCheck: Array<TimeEntry>) => void;
 };
 
 const allUnconfirmedTimeEntries = (
   users: UserAndUnapprovedTimeEntriesType[],
-) => [
-  ...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry.id)),
-];
+) => [...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry))];
 
 export const TitleAndOnCheckAll = ({
   onCheck,

@@ -44,21 +44,18 @@ export const SuperAdminHomePage = () => {
     navigate: (nav: SuperAdminStack) => void;
   }>();
 
-  const { onApproveTimeEntries } = useSuperAdminHomePageContext();
-
-  const [onCheck, setOnCheck] = useState<TimeEntry["id"][]>([]);
+  const { onApproveTimeEntriesSuperadmin } = useSuperAdminHomePageContext();
+  const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
 
   const { allUsersWithUnconfirmedTimeEntries } =
     useSuperAdminHomePageFunction();
-
   const [allAdmins, setAllAdmins] = useState<
     Array<AdminWithUsersUnapprovedTimeEntriesType>
   >([]);
-
   const textIfEmptyList = "Inga admins att visa";
-
   const onApprove = () => {
-    if (superAdminID !== undefined) onApproveTimeEntries(onCheck, superAdminID);
+    if (superAdminID !== undefined)
+      onApproveTimeEntriesSuperadmin(onCheck, superAdminID);
   };
 
   useEffect(() => {

@@ -19,8 +19,8 @@ const countAllEntries = (
   );
 
 type Props = {
-  onCheck: Array<TimeEntry["id"]>;
-  setOnCheck: (onCheck: Array<TimeEntry["id"]>) => void;
+  onCheck: Array<TimeEntry>;
+  setOnCheck: (onCheck: Array<TimeEntry>) => void;
   usersTimeEtries: UserAndUnapprovedTimeEntriesType[];
 };
 export const UserAndUnapprovedTimeEntriesDropDown = ({
@@ -31,7 +31,7 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
   const [isOpen, setIsOpen] = useState(false);
   const adminName = `${usersTimeEtries[0].adminFirstName}\u00A0${usersTimeEtries[0].adminLastName}`;
 
-  const onCheckPress = (timeEntryID: TimeEntry["id"]) => {
+  const onCheckPress = (timeEntryID: TimeEntry) => {
     setOnCheck(
       includes(onCheck, timeEntryID)
         ? [...pull(onCheck, timeEntryID)]
@@ -62,8 +62,8 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
                   activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
                   time={entry.time}
                   date={entry.date}
-                  checked={includes(onCheck, entry.id)}
-                  onCheck={() => onCheckPress(entry.id)}
+                  checked={includes(onCheck, entry)}
+                  onCheck={() => onCheckPress(entry)}
                 />
               ))}
             </View>

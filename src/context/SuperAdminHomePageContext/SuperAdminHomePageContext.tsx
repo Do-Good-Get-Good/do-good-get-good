@@ -1,11 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-  UserObjectForSuperAdmin,
-} from "../../utility/types";
+import { UserAndUnapprovedTimeEntriesType } from "../../utility/types";
 import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
 import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 
