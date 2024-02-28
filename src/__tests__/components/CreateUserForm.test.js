@@ -21,6 +21,10 @@ jest.mock("@react-navigation/native", () => ({
 const superAdmin = () => {
   userLevelStore.setUserLevel(Role.superadmin);
 };
+const admin=( )=>{
+  userLevelStore.setUserLevel(Role.admin);
+
+};
 describe("Testing CreateUserForm ", () => {
 
     it('Should be possible to write to write user name', () => {
@@ -207,12 +211,12 @@ describe("Testing CreateUserForm ", () => {
 
            it('Should  select a role if superadmin otherwise show error',async () => {
                       superAdmin()
-                      const { getByText,getByTestId,  } = render(<CreateUserForm />);
+                      const { getByText,getByTestId} = render(<CreateUserForm />);
                       const nextButton= getByText("Nästa")
                       fireEvent.press(nextButton);
                   
                       await waitFor(() => {
-                        const errorMessage = getByTestId('role-error');
+                        const errorMessage = getByTestId("role-error");
                         expect(errorMessage.props.children).toBe('* Obligatorisk');
                       });
                   });
@@ -276,14 +280,14 @@ describe("Testing CreateUserForm ", () => {
                         fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
                         fireEvent.changeText(getByPlaceholderText('Lösenord'), 'sdfghddd')
                         fireEvent.press(getByTestId("role-item"))
-                        fireEvent.press(getByTestId("role-item-user"));
+                        fireEvent.press(getByTestId("role-item-admin"));
                         const nextButton = getByText('Nästa');
                         const userData= {
                           name:"John",
                           surname:"Andersson",
                           email:"test@example.com",
                           password:"sdfghddd",
-                          role:"user"
+                          role:"admin"
                         };
                         fireEvent.press(nextButton);
                 
@@ -299,6 +303,36 @@ describe("Testing CreateUserForm ", () => {
                         fireEvent.press(backButton) 
                           expect(mockGoBack).toHaveBeenCalled();
                       });
+                      
+                      it("Admin should not have possibilty to give role to user.It should be automatically user.It works to create user", async () => {
+                        admin()
+                        const  setUser=jest.fn();
+                        const nextPage=jest.fn();
+                        const {getByPlaceholderText,getByTestId,getByText,queryByTestId} = render(<CreateUserForm nextPage={nextPage} setUser={setUser} />);
+                        fireEvent.changeText(getByPlaceholderText('Förnamn'), 'John');
+                        fireEvent.changeText(getByPlaceholderText('Efternamn'), 'Andersson');
+                        fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com');
+                        fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
+                        fireEvent.changeText(getByPlaceholderText('Lösenord'), 'sdfghddd')
+                        expect(queryByTestId("role-item")).toBeNull();
+                  
+                      
+                        const nextButton = getByText('Nästa');
+                        const userData= {
+                          name:"John",
+                          surname:"Andersson",
+                          email:"test@example.com",
+                          password:"sdfghddd",
+                          role:"user"
+                        };
+                        fireEvent.press(nextButton);
+                
+                        await waitFor(() => {
+                          expect(nextPage).toHaveBeenCalled();
+                          expect(setUser).toHaveBeenCalledWith(userData);
+                        });                      
+                      });
                     
                 });
+              
   

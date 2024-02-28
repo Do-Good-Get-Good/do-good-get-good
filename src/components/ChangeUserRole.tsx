@@ -9,13 +9,11 @@ import {
   View,
   
 } from "react-native";
-import { InputField } from "./InputField";
 import { useState } from "react";
 import { error } from "firebase-functions/logger";
 import { Controller, FieldError } from "react-hook-form";
 import { errorTextStyle } from "../styles/errorTextStyle";
 import { ArrowUpDown } from "../assets/icons/ArrowUpDown";
-import userLevelStore from "../store/userLevel";
 
 type Props = {
   control: any;
@@ -24,11 +22,9 @@ type Props = {
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const { userLevel } = userLevelStore;
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false); 
   return (
      <View style={{ marginTop: 10 }}>
-      {userLevel === Role.superadmin && (
         <Controller
           name="role"
           control={control}
@@ -75,9 +71,7 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
             </>
           )}
         />
-      )}
     </View>
- 
   );
 };
 

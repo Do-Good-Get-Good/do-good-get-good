@@ -14,6 +14,7 @@ import { UserNewAccount } from "../screens/CreateUser";
 import { useState } from "react";
 import { ChangeUserRole } from "./ChangeUserRole";
 import React, { useRef } from 'react';
+import userLevelStore from "../store/userLevel";
 
 const schema: yup.ObjectSchema<UserNewAccount> = yup
   .object()
@@ -49,7 +50,7 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     role: yup
       .mixed<Role>()
       .oneOf(Object.values(Role), "* Obligatorisk")
-      .required(),
+      .required()
   })
   .defined();
 
@@ -61,6 +62,7 @@ type Props = {
 
 export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   const navigation = useNavigation();
+  const { userLevel } = userLevelStore;
   const [showPassword, setShowPassword] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
@@ -81,7 +83,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
       email: user?.email,
       confirmEmail: user?.email,
       password: user?.password,
-      role: "Behörighet",
+      role:userLevel=== Role.superadmin? "Behörighet" : Role.user 
     },
     resolver: yupResolver(schema),
   });
@@ -91,7 +93,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
     surname,
     email,
     password,
-    role,
+    role 
   }: UserNewAccount) => {
     isDirty &&
       setUser({
@@ -167,8 +169,9 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
             />
           }
         />
-
+        {userLevel === Role.superadmin && (
         <ChangeUserRole error={errors.role} control={control} />
+        )}
       </ScrollView>
       <BottomNavButtons
         primaryText="Nästa"
