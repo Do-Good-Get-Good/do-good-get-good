@@ -27,7 +27,7 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
-jest.mock("../../components/SearchBarComponent", () => () => {
+jest.mock("../../components/SearchBarComponentOld", () => () => {
   return <mockSearchBar />;
 });
 

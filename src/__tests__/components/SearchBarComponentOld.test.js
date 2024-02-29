@@ -2,7 +2,7 @@ import "react-native";
 import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
-import SearchBarComponent from "../../components/SearchBarComponent";
+import SearchBarComponentOld from "../../components/SearchBarComponentOld";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
@@ -29,7 +29,7 @@ jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
 
 describe("Testing SearchBarComponent", () => {
   it("SearchBarComponent exist TextInput and it's possible to wrire a text there", () => {
-    const { getByPlaceholderText } = render(<SearchBarComponent />);
+    const { getByPlaceholderText } = render(<SearchBarComponentOld />);
     const input = getByPlaceholderText("Sök");
     fireEvent.changeText(input, "activity name or title");
     expect(input.props.value).toEqual("activity name or title");
@@ -37,7 +37,7 @@ describe("Testing SearchBarComponent", () => {
 
   it("SearchBarComponent send searching word when you press on the button for active array", () => {
     const { getByTestId, getByPlaceholderText } = render(
-      <SearchBarComponent />,
+      <SearchBarComponentOld />,
     );
     const button = getByTestId("searchButtonPressed");
     const input = getByPlaceholderText("Sök");
@@ -49,7 +49,7 @@ describe("Testing SearchBarComponent", () => {
 
   it("SearchBarComponent send searching word when you press on the button for inactive array ", () => {
     const { getByTestId, getByPlaceholderText } = render(
-      <SearchBarComponent />,
+      <SearchBarComponentOld />,
     );
     useAdminGalleryFunction().activeOrInactiveActivity = true;
     const button = getByTestId("searchButtonPressed");
