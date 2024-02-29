@@ -54,6 +54,7 @@ export const SuperAdminHomePage = () => {
   >([]);
   const textIfEmptyList = "Inga admins att visa";
   const onApprove = () => {
+    console.log("onApprove called");
     if (superAdminID !== undefined)
       onApproveTimeEntriesSuperadmin(onCheck, superAdminID);
   };

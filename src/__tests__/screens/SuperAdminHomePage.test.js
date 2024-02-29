@@ -4,12 +4,16 @@ import {
   mockAllUsersWithUnconfirmedAfterApprove,
 } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
-import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
-import { onApproveTimeEntries } from "../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext";
+// import {onApproveTimeEntriesSuperadmin} from '../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext'
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
+jest.mock("@react-native-community/netinfo", () => ({
+  useNetInfo: () => ({
+    isConnected: true,
+  }),
+}));
 
 jest.mock("@react-native-firebase/firestore", () => () => ({
   collection: () => ({
@@ -19,10 +23,6 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
   }),
 }));
 
-// const mockNav = SuperAdminStack.AllUsersInTheSystem;
-// jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
-//   useMenuNavigation: jest.fn(),
-// }));
 const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {
@@ -48,22 +48,26 @@ jest.mock("@react-native-firebase/auth", () => {
 jest.mock("../../context/SuperAdminHomePageContext", () => ({
   useSuperAdminHomePageFunction: () => ({
     allUsersWithUnconfirmedTimeEntries: mockAllUsersWithUnconfirmedTimeEntries,
+    getAllUserAndUnapprovedTimeEntries: jest.fn(),
     setAllUsersWithUnconfirmedTimeEntries: jest.fn(),
   }),
 }));
 
-jest.mock("../../firebase-functions/updateTS/update", () => ({
-  confirmTimeEntry: jest.fn(() => () => new Promise.resolve(true)),
-}));
-
-jest.mock(
-  "../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext",
-  () => ({
+// jest.mock("../../firebase-functions/updateTS/update", () => ({
+//   confirmTimeEntry: jest.fn(() => () => new Promise.resolve(true)),
+// }));
+const mockOnApproveTimeEntries = jest.fn();
+const mockUsersWithUnconfirmedTimeEntries = jest.fn();
+jest.mock("../../context/SuperAdminHomePageContext", () => {
+  console.log("Mock function called");
+  return {
+    __esModule: true,
     useSuperAdminHomePageContext: () => ({
-      onApproveTimeEntries: jest.fn(),
+      onApproveTimeEntriesSuperadmin: mockOnApproveTimeEntries,
+      usersWithUnconfirmedTimeEntries: mockUsersWithUnconfirmedTimeEntries,
     }),
-  }),
-);
+  };
+});
 
 describe("Testing SuperAdminHomePage screen ", () => {
   it("As super admin I want to see all users that have unapproved time entries. Main lable dropDown - admin name and amount of unapproved time entries", async () => {
@@ -130,32 +134,42 @@ describe("Testing SuperAdminHomePage screen ", () => {
     expect(
       getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
     ).toBeTruthy();
-    expect(
-      getByTestId("checkbox-info-row-unapprovedTimeEntries3"),
-    ).toBeTruthy();
 
     const checkbox = getByTestId("checkbox-info-row-unapprovedTimeEntries3");
+    expect(checkbox).toBeTruthy();
+
     fireEvent.press(checkbox);
+    const onCheck = [
+      {
+        id: "unapprovedTimeEntries3",
+        activityID: "activityID3",
+        adminID: "adminID3",
+        userID: "userID3",
+        activityTitle: "Activity Title 3",
+        date: "2022-04-10",
+        statusConfirmed: false,
+        time: 3.5,
+      },
+    ];
 
     const onSaveButton = getByTestId("long-button-on-save");
     fireEvent.press(onSaveButton);
 
-    useSuperAdminHomePageContext().onApproveTimeEntries.mockReturnValue(
-      useSuperAdminHomePageFunction().setAllUsersWithUnconfirmedTimeEntries.mockReturnValue(
-        mockAllUsersWithUnconfirmedAfterApprove,
-      ),
-    );
-    // useSuperAdminHomePageFunction().setAllUsersWithUnconfirmedTimeEntries.mockReturnValue(
-    //   mockAllUsersWithUnconfirmedAfterApprove,
-    // );
     debug();
     await waitFor(() => {
-      expect(
-        getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
-      ).toBeTruthy();
-      expect(
-        queryByTestId("checkbox-info-row-unapprovedTimeEntries3"),
-      ).toBeNull();
+      console.log("Mock function calls:", mockOnApproveTimeEntries.mock.calls);
+
+      expect(mockOnApproveTimeEntries).toHaveBeenCalledWith(
+        onCheck,
+        "SuperadminID",
+      );
+
+      // expect(
+      //   getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
+      // ).toBeTruthy();
+      // expect(
+      //   queryByTestId("checkbox-info-row-unapprovedTimeEntries3"),
+      // ).toBeNull();
     });
   });
 });

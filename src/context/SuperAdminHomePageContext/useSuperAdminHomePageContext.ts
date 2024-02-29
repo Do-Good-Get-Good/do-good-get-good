@@ -43,7 +43,6 @@ export const useSuperAdminHomePageContext = () => {
   ) => {
     let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
     const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
-    console.log(afterApprove, " . -----   afterApprove");
     afterApprove.forEach((timeEntry) => {
       temArr = [...filterAfterChanges(temArr, timeEntry.id)];
       setAllUsersWithUnconfirmedTimeEntries(temArr);
