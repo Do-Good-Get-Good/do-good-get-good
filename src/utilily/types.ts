@@ -6,8 +6,8 @@ export type Activity = {
   place?: string;
   description?: string;
   photo: string;
-  popular?: string;
-  imageUrl?: string;
+  popular?: boolean;
+  imageUrl?: string[];
 };
 
 export type Concept = {
