@@ -1,22 +1,15 @@
-import { Alert } from "react-native";
+import { Alert, View } from "react-native";
 
-type Props = {
-  title: string;
-  question: string;
-  onPressNo: () => void;
-  onPressYes: () => void;
-};
-
-export const AlertQuestion = ({
-  title,
-  question,
-  onPressNo,
-  onPressYes,
-}: Props) =>
+export const AlertQuestion = (
+  title: string,
+  question: string,
+  onPressYes: () => void,
+  onPressNo?: () => void,
+) =>
   Alert.alert(title, question, [
     {
       text: "Nej",
-      onPress: () => onPressNo(),
+      onPress: onPressNo,
     },
     {
       text: "Ja",

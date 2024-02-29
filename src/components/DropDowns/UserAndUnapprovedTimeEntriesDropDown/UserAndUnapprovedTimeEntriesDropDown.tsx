@@ -16,7 +16,7 @@ const countAllEntries = (
   usersWithUnconfirmedTimeEntries.reduce(
     (total, current) => total + current.unapprovedTimeEntries.length,
     0,
-  );
+  ) ?? 0;
 
 type Props = {
   onCheck: Array<TimeEntry>;
@@ -40,37 +40,41 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
   };
 
   return (
-    <View
-      testID="unapproved-time-entries-drop-down"
-      style={styles.dropDownMonolithContainer}
-    >
-      <MainLabel
-        title={adminName}
-        amountOfTimeEntries={countAllEntries(usersTimeEtries)}
-        setIsOpen={() => setIsOpen(!isOpen)}
-        isOpen={isOpen}
-      />
+    <>
+      {usersTimeEtries.length > 0 && (
+        <View
+          testID="unapproved-time-entries-drop-down"
+          style={styles.dropDownMonolithContainer}
+        >
+          <MainLabel
+            title={adminName}
+            amountOfTimeEntries={countAllEntries(usersTimeEtries)}
+            setIsOpen={() => setIsOpen(!isOpen)}
+            isOpen={isOpen}
+          />
 
-      {isOpen && (
-        <View style={{ paddingBottom: 10 }}>
-          {usersTimeEtries.map((user, j) => (
-            <View key={j} style={styles.containerBorder}>
-              {user.unapprovedTimeEntries.map((entry) => (
-                <InfoRow
-                  key={entry.id}
-                  testID={entry.id}
-                  activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
-                  time={entry.time}
-                  date={entry.date}
-                  checked={includes(onCheck, entry)}
-                  onCheck={() => onCheckPress(entry)}
-                />
+          {isOpen && (
+            <View style={{ paddingBottom: 10 }}>
+              {usersTimeEtries.map((user, j) => (
+                <View key={j} style={styles.containerBorder}>
+                  {user.unapprovedTimeEntries.map((entry) => (
+                    <InfoRow
+                      key={entry.id}
+                      testID={entry.id}
+                      activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
+                      time={entry.time}
+                      date={entry.date}
+                      checked={includes(onCheck, entry)}
+                      onCheck={() => onCheckPress(entry)}
+                    />
+                  ))}
+                </View>
               ))}
             </View>
-          ))}
+          )}
         </View>
       )}
-    </View>
+    </>
   );
 };
 const styles = StyleSheet.create({
