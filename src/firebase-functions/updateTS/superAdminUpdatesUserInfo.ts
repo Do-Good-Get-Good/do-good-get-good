@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { User } from "../../utilily/types";
+import { User } from "../../utility/types";
 
 export const superAdminUpdatesUserInfo = async (user: User) => {
   try {

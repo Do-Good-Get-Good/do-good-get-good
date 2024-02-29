@@ -5,7 +5,7 @@ import {
   User,
   UserAndUnapprovedTimeEntriesType,
   UserObjectForSuperAdmin,
-} from "../../utilily/types";
+} from "../../utility/types";
 import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
 import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 
