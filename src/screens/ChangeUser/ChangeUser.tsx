@@ -18,9 +18,9 @@ import BottomNavButtons from "../../components/BottomNavButtons";
 import { UserName, onUpdateUser } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
 import { InputField } from "../../components/InputField";
-import { ChangeUserRouteProps } from "../../utilily/typesRouteProps";
+import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { SuperAdminStack } from "../../utilily/routeEnums";
+import { SuperAdminStack } from "../../utility/routeEnums";
 import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
 
 const schema: yup.ObjectSchema<UserName> = yup

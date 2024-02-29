@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Activity, TimeEntry } from "../../../utilily/types";
+import { Activity, TimeEntry } from "../../../utility/types";
 import colors from "../../../assets/theme/colors";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 
