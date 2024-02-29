@@ -499,7 +499,7 @@ const styles = StyleSheet.create({
     alignSelf: "flex-end",
   },
   image: {
-    resizeMode: "cover",
+    resizeMode: "contain",
     width: "100%",
     height: 250,
   },
