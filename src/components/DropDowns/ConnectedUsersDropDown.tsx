@@ -10,7 +10,7 @@ import { Pencil } from "../../assets/icons/Pencil";
 
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
-import { showAdminName } from "../../hooks/super-admin/utils";
+import { showAdminName } from "../../hooks/superAdmin/utils";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 
 type DropDownInfoProps = {
@@ -30,7 +30,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   return (
     <View
       testID={`connected-users-dropdown-${user.id}`}
-      style={styles.container}
+      style={styles.dropDownContainer}
     >
       <TouchableOpacity
         style={styles.containerForTextAndIcon}
@@ -112,7 +112,7 @@ export const ConnectedUsersDropDown = ({
   );
 };
 const styles = StyleSheet.create({
-  container: {
+  dropDownContainer: {
     backgroundColor: colors.background,
     paddingHorizontal: 14,
     marginTop: 10,

@@ -2,7 +2,8 @@ import reject from "lodash/reject";
 
 import { User } from "../../utilily/types";
 
-import { updateUserArray } from "../../hooks/super-admin/utils";
+import { updateUserArray } from "../../hooks/superAdmin/utils";
+
 import { Role } from "../../utilily/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";

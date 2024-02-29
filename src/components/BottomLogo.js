@@ -20,6 +20,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     paddingVertical: 10,
+    flex: 1,
+    justifyContent: "flex-end",
   },
   bottomLogoImg: {
     width: 143,
