@@ -4,7 +4,6 @@ import {
   mockAllUsersWithUnconfirmedAfterApprove,
 } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
-// import {onApproveTimeEntriesSuperadmin} from '../../context/SuperAdminHomePageContext/useSuperAdminHomePageContext'
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
