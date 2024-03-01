@@ -12,12 +12,11 @@ import {
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
 
-import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
-
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import { prepareAdminArray, textIfEmptyList } from "./utility";
 import { SuperAdminLongButtons } from "../../components/SuperAdminLongButtons";
+import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
 
 type AdminWithUsersUnapprovedTimeEntriesType = {
   adminID: User["adminID"];

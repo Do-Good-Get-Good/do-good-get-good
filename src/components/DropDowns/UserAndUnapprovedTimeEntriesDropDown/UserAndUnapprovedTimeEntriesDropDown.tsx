@@ -31,11 +31,11 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
   const [isOpen, setIsOpen] = useState(false);
   const adminName = `${usersTimeEtries[0].adminFirstName}\u00A0${usersTimeEtries[0].adminLastName}`;
 
-  const onCheckPress = (timeEntryID: TimeEntry) => {
+  const onCheckPress = (timeEntry: TimeEntry) => {
     setOnCheck(
-      includes(onCheck, timeEntryID)
-        ? [...pull(onCheck, timeEntryID)]
-        : [...onCheck, timeEntryID],
+      includes(onCheck, timeEntry)
+        ? [...pull(onCheck, timeEntry)]
+        : [...onCheck, timeEntry],
     );
   };
 
