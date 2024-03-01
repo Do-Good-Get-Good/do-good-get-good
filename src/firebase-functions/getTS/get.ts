@@ -3,6 +3,20 @@ import firestore, {
 } from "@react-native-firebase/firestore";
 import { TimeEntry, User } from "../../utility/types";
 import { format } from "date-fns";
+import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
+
+const userActivitiesAndAccumulatedTime = (
+  arr: FirebaseuserActivityAndAccumulatedTime[],
+): User["activitiesAndAccumulatedTime"] => {
+  let temArr: User["activitiesAndAccumulatedTime"] = [];
+  arr.forEach((item) =>
+    temArr.push({
+      accumulatedTime: item.accumulated_time,
+      activityID: item.activity_id,
+    }),
+  );
+  return temArr;
+};
 
 const userObject = (
   doc:
@@ -11,7 +25,9 @@ const userObject = (
 ) => {
   let user: User = {
     id: doc.id,
-    activitiesAndAccumulatedTime: doc.data().activities_and_accumulated_time,
+    activitiesAndAccumulatedTime: userActivitiesAndAccumulatedTime(
+      doc.data().activities_and_accumulated_time,
+    ),
     adminID: doc.data().admin_id,
     connectedActivities: doc.data().connected_activities,
     firstName: doc.data().first_name,
@@ -22,6 +38,7 @@ const userObject = (
     totalHoursMonth: doc.data().total_hours_month,
     totalHoursYear: doc.data().total_hours_year,
   };
+
   return user;
 };
 
@@ -34,8 +51,9 @@ export const getAllUsersData = async () => {
         "No users were found. Please create users before trying again!",
       );
 
-    let allUsers: Array<User> = querySnapshot.docs.map((doc) => {
-      return userObject(doc);
+    let allUsers: Array<User> = [];
+    querySnapshot.docs.forEach((doc) => {
+      allUsers.push(userObject(doc));
     });
 
     return Promise.resolve(allUsers);

@@ -1,14 +1,58 @@
 import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
+import {
+  mockAllUsersWithUnconfirmedTimeEntries,
+  mockAllUsersWithUnconfirmedAfterApprove,
+} from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
 
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
+jest.mock("@react-native-community/netinfo", () => ({
+  useNetInfo: () => ({
+    isConnected: true,
+  }),
+}));
 
+jest.mock("@react-native-firebase/firestore", () => () => ({
+  collection: () => ({
+    doc: () => ({
+      update: jest.fn(),
+    }),
+  }),
+}));
+
+const mockedNavigate = jest.fn();
+
+jest.mock("@react-navigation/native", () => {
+  const actualNav = jest.requireActual("@react-navigation/native");
+  return {
+    ...actualNav,
+    useNavigation: () => ({
+      navigate: mockedNavigate,
+    }),
+  };
+});
+
+jest.mock("@react-native-firebase/auth", () => {
+  return () => ({
+    auth: jest.fn(() => ({
+      currentUser: {
+        uid: "SuperadminID",
+      },
+    })),
+  });
+});
+let mockUsersUnconfirmedTE = mockAllUsersWithUnconfirmedTimeEntries;
+const mockOnApproveTimeEntries = jest.fn();
+const mockUsersWithUnconfirmedTimeEntries = jest.fn();
 jest.mock("../../context/SuperAdminHomePageContext", () => ({
   useSuperAdminHomePageFunction: () => ({
-    allUsersWithUnconfirmedTimeEntries: mockAllUsersWithUnconfirmedTimeEntries,
+    allUsersWithUnconfirmedTimeEntries: mockUsersUnconfirmedTE,
+  }),
+  useSuperAdminHomePageContext: () => ({
+    onApproveTimeEntriesSuperadmin: mockOnApproveTimeEntries,
+    usersWithUnconfirmedTimeEntries: mockUsersWithUnconfirmedTimeEntries,
   }),
 }));
 
@@ -52,7 +96,9 @@ describe("Testing SuperAdminHomePage screen ", () => {
     );
     expect(getByTestId("info-row-date").props.children).toBe("2022-07-10");
     expect(getByTestId("info-row-time").props.children).toBe("1.5");
-    expect(getByTestId("checkbox").props.isChecked).toBe(false);
+    expect(
+      getByTestId("checkbox-info-row-unapprovedTimeEntries2").props.isChecked,
+    ).toBe(false);
   });
 
   it("Checkbox should work ", async () => {
@@ -60,9 +106,66 @@ describe("Testing SuperAdminHomePage screen ", () => {
     const adminName = getAllByTestId("main-title-drop-down");
     fireEvent.press(adminName[1]);
 
-    const checkbox = getByTestId("checkbox");
+    const checkbox = getByTestId("checkbox-info-row-unapprovedTimeEntries2");
     expect(checkbox.props.isChecked).toBe(false);
     fireEvent.press(checkbox);
     expect(checkbox.props.isChecked).toBe(true);
+  });
+
+  // TODO:  Come back to this test when you get more idea why mockOnApproveTimeEntries doesn’t calls
+  // it("Time entry should disappear from the list after approve", async () => {
+  //   const { getAllByTestId, getByTestId, queryByTestId, debug } = render(
+  //     <SuperAdminHomePage />,
+  //   );
+  //   const adminName = getAllByTestId("main-title-drop-down");
+  //   fireEvent.press(adminName[0]);
+  //   expect(
+  //     getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
+  //   ).toBeTruthy();
+
+  //   const checkbox = getByTestId("checkbox-info-row-unapprovedTimeEntries3");
+  //   expect(checkbox).toBeTruthy();
+
+  //   fireEvent.press(checkbox);
+  //   const onCheck = [
+  //     {
+  //       id: "unapprovedTimeEntries3",
+  //       activityID: "activityID3",
+  //       adminID: "adminID3",
+  //       userID: "userID3",
+  //       activityTitle: "Activity Title 3",
+  //       date: "2022-04-10",
+  //       statusConfirmed: false,
+  //       time: 3.5,
+  //     },
+  //   ];
+
+  //   const onSaveButton = getByTestId("long-button-on-save");
+  //   fireEvent.press(onSaveButton);
+
+  //   await waitFor(() => {
+  //     debug();
+  //     console.log("Mock function calls:", mockOnApproveTimeEntries.mock.calls);
+
+  //     expect(mockOnApproveTimeEntries).toHaveBeenCalledWith(
+  //       onCheck,
+  //       "SuperadminID",
+  //     );
+
+  //   expect(
+  //     getByTestId("checkbox-info-row-unapprovedTimeEntries1"),
+  //   ).toBeTruthy();
+  //   expect(
+  //     queryByTestId("checkbox-info-row-unapprovedTimeEntries3"),
+  //   ).toBeNull();
+  //   });
+  // });
+
+  it("Should show text 'Inga admins att visa' if there no admin with not approved time entries ", async () => {
+    mockUsersUnconfirmedTE = [];
+    const { getByText, debug, queryByTestId } = render(<SuperAdminHomePage />);
+    debug();
+    expect(getByText("Inga admins att visa")).toBeTruthy();
+    expect(queryByTestId("unapproved-time-entries-drop-down")).toBeNull();
   });
 });

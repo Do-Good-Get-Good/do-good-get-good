@@ -2,6 +2,7 @@ import { StyleSheet, Text, View } from "react-native";
 import { Activity, TimeEntry } from "../../../utility/types";
 import colors from "../../../assets/theme/colors";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { Checkbox } from "../../Checkbox";
 
 type Props = {
   activityTitle: Activity["title"];
@@ -9,6 +10,7 @@ type Props = {
   time: TimeEntry["time"];
   checked: boolean;
   onCheck: () => void;
+  testID: string;
 };
 
 export const InfoRow = ({
@@ -17,6 +19,7 @@ export const InfoRow = ({
   time,
   onCheck,
   checked,
+  testID,
 }: Props) => {
   return (
     <View style={styles.container}>
@@ -29,16 +32,10 @@ export const InfoRow = ({
       <Text testID="info-row-time" style={{ flex: 0.2 }}>
         {time.toString()}
       </Text>
-      <BouncyCheckbox
-        testID="checkbox"
-        style={{ flex: 0.07 }}
-        size={20}
-        fillColor={colors.primary}
-        unfillColor={colors.background}
-        iconStyle={styles.iconStyle}
-        innerIconStyle={styles.innerIconStyle}
-        isChecked={checked}
-        onPress={onCheck}
+      <Checkbox
+        testID={`info-row-${testID}`}
+        onCheck={onCheck}
+        checked={checked}
       />
     </View>
   );
@@ -52,9 +49,4 @@ const styles = StyleSheet.create({
     paddingVertical: 10,
   },
   textName: { fontWeight: "bold", flex: 0.8 },
-  iconStyle: {
-    borderColor: colors.primary,
-    borderRadius: 5,
-  },
-  innerIconStyle: { borderWidth: 0.7, borderRadius: 5 },
 });

@@ -14,6 +14,10 @@ import { Icon } from "@rneui/base";
 import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
+import { SuperAdminStack } from "../utility/routeEnums";
+import { GoBackButton } from "./Buttons/GoBackButton";
+
 import { SearchBarComponent } from "./SearchBarComponent";
 
 type Props = {
@@ -30,11 +34,15 @@ export function ListOfAllUsers({ navigation }: Props) {
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
-    navigation.navigate("RolesAndConnection");
+    navigation.navigate(SuperAdminStack.RolesAndConnection);
   }
 
   return (
     <View style={styles.screenContainer}>
+      <GoBackButton
+        style={{ marginVertical: 5 }}
+        onPress={() => navigation.goBack()}
+      />
       <SearchBarComponent
         style={{ marginBottom: 25 }}
         arrayToSearch={allUsersInSystem ?? []}

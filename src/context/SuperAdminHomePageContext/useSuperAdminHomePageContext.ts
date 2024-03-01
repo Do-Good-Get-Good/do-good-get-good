@@ -5,16 +5,49 @@ import {
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
-import { find } from "lodash";
+
+import reject from "lodash/reject";
+import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
+import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
-  let findKeyValue = find(users, { id: userID }) && find(users, { id: userID });
+  let findKeyValue = users.find((user) => user.id === userID);
   return findKeyValue ?? ((await getUserData(userID)) as User);
 };
 
+const filterAfterChanges = (
+  prev: UserAndUnapprovedTimeEntriesType[],
+  timeEntryID: TimeEntry["id"],
+) =>
+  prev
+    .map((user) => ({
+      ...user,
+      unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
+        id: timeEntryID,
+      }) as TimeEntry[],
+    }))
+    .filter((user) => user.unapprovedTimeEntries.length > 0);
+
 export const useSuperAdminHomePageContext = () => {
+  const { onApproveTimeEntries } = useApproveTimeEntry();
   const context = useSuperAdminFunction();
   const allUsersInSystem = context?.allUsersInSystem ?? [];
+  const {
+    allUsersWithUnconfirmedTimeEntries,
+    setAllUsersWithUnconfirmedTimeEntries,
+  } = useSuperAdminHomePageFunction();
+
+  const onApproveTimeEntriesSuperadmin = async (
+    timeEntries: Array<TimeEntry>,
+    approvedBy: User["id"],
+  ) => {
+    let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
+    const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
+    afterApprove.forEach((timeEntry) => {
+      temArr = [...filterAfterChanges(temArr, timeEntry.id)];
+      setAllUsersWithUnconfirmedTimeEntries(temArr);
+    });
+  };
 
   const usersWithUnconfirmedTimeEntries = async (
     timeEntries: TimeEntry[],
@@ -32,10 +65,6 @@ export const useSuperAdminHomePageContext = () => {
 
       if (!isAlreadyAdded) {
         const userInfo = await findUserInfo(allUsersInSystem, item.userID);
-
-        //                  OPEN DISCUSSION!
-        // I don’t use adminID that comes with time entry document to show admin who has unapproved time entries. I use adminID from user object to see who is currently responsible for the user.
-        // I think that if an admin has changed then this new admin should take responsibility for user unapproved time entries too, even if they have been created while previous admin. Or what do you think?
 
         const adminInfo = await findUserInfo(
           allUsersInSystem,
@@ -59,5 +88,5 @@ export const useSuperAdminHomePageContext = () => {
     return tempArr;
   };
 
-  return { usersWithUnconfirmedTimeEntries };
+  return { onApproveTimeEntriesSuperadmin, usersWithUnconfirmedTimeEntries };
 };

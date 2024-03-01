@@ -86,3 +86,29 @@ const userThree: UserAndUnapprovedTimeEntriesType = {
 
 export const mockAllUsersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[] =
   [userOne, userTwo, userThree];
+
+export const mockAllUsersWithUnconfirmedAfterApprove: UserAndUnapprovedTimeEntriesType[] =
+  [
+    {
+      unapprovedTimeEntries: [
+        {
+          id: "unapprovedTimeEntries1",
+          activityID: "activityID1",
+          adminID: "adminID1",
+          userID: "userID1",
+          activityTitle: "Activity Title 1",
+          date: "2022-05-27",
+          statusConfirmed: false,
+          time: 0.5,
+        },
+      ],
+      adminID: "newAdminID",
+      userID: "userID3",
+      adminFirstName: "Admin4",
+      adminLastName: "Adminsson4",
+      userFirstName: "User1",
+      userLastName: "Usersson1",
+    },
+    userTwo,
+    userThree,
+  ];
