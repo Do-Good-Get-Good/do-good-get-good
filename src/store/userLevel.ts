@@ -13,7 +13,6 @@ class UserLevelStore {
 
   setUserLevel(level: Role | undefined) {
     this.userLevel = level;
-    // this.userLevel = Role.admin;
   }
 }
 

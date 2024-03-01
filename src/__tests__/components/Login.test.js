@@ -91,7 +91,7 @@ describe("Testing Login", () => {
     fireEvent.press(forgotPasswordButton);
   });
 
-  it("Trying to login with a space before  or after entering an e-mail its just takes away that space ", () => {
+  it("Should take away space if a user wrote one in the Login page at email field", () => {
     const { getByTestId } = render(<Login />);
 
     const inputEmail = getByTestId("input-email");
@@ -99,7 +99,7 @@ describe("Testing Login", () => {
     expect(inputEmail.props.value).toBe("can2@example.com");
     
   });
-  it("Trying to enter  a space in a password its just takes away that space ", () => {
+  it("Should take away space if a user wrote one in the Login page at password field", () => {
     
     const { getByTestId } = render(<Login />);
 
