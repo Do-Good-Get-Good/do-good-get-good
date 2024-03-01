@@ -3,7 +3,7 @@ import React from "react";
 import { render, fireEvent, waitFor, } from "@testing-library/react-native";
 
 import { CreateUserForm } from "../../components";
-import { Role } from "../../utilily/enums";
+import { Role } from "../../utility/enums";
 import userLevelStore from '../../store/userLevel'
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
