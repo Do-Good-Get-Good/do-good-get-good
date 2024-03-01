@@ -8,14 +8,14 @@ import Menu from "../components/Menu";
 import * as yup from "yup";
 import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
 
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
 import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
-import { User } from "../utilily/types";
+import { User } from "../utility/types";
 import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";

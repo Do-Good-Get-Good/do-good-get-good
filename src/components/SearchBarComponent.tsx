@@ -11,68 +11,56 @@ import {
 import { SearchIcon } from "../assets/icons/SearchIcon";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Activity, User } from "../utilily/types";
+import { Activity, User } from "../utility/types";
 
 type Props<T> = {
   style?: StyleProp<ViewStyle>;
   keys: Array<keyof T>;
   arrayToSearch: Array<T>;
-  onSearch: (value:Array<T>)=> void
+  onSearch: (value: Array<T>) => void;
 };
 
 function search<T>(input: string, data: T[], keys: Array<keyof T>) {
-  
-  return  data.filter((item) =>{
-    let valuesOfAllKeys = ''
-     keys.forEach((key) => valuesOfAllKeys +=  " " +`${item[key]}`)   
-     return  findByKey(input, valuesOfAllKeys)
- 
-
-  })
+  return data.filter((item) => {
+    let valuesOfAllKeys = "";
+    keys.forEach((key) => (valuesOfAllKeys += " " + `${item[key]}`));
+    return findByKey(input, valuesOfAllKeys);
+  });
 }
 
 const findByKey = (input: string, value: string) => {
+  const inputWords = input.trim().toLowerCase().split(" ");
+  const valueWords = value.trim().toLowerCase().split(" ");
 
-const inputWords = input.trim().toLowerCase().split(' ');
-const valueWords = value.trim().toLowerCase().split(' ');
-
-return inputWords.every(inputWord =>
-  valueWords.some(valueWord => valueWord.startsWith(inputWord))
-);
- 
+  return inputWords.every((inputWord) =>
+    valueWords.some((valueWord) => valueWord.startsWith(inputWord)),
+  );
 };
-
-
 
 export const SearchBarComponent = <T,>({
   arrayToSearch,
   style,
   keys,
-  onSearch
-
+  onSearch,
 }: Props<T>) => {
+  const [value, setValue] = useState("");
 
-  const [value, setValue]=useState('')
-
-
-  
-  const  onChangeText =(word: string)=>{
-    onSearch(search(word, arrayToSearch, keys))
-    setValue(word)
-  }
-
+  const onChangeText = (word: string) => {
+    onSearch(search(word, arrayToSearch, keys));
+    setValue(word);
+  };
 
   return (
     <View style={[styles.container, style]}>
       <TextInput
-      testID="searchbar-input"
+        testID="searchbar-input"
         returnKeyType="search"
         style={styles.textInput}
-        onChangeText={(word) => arrayToSearch && onChangeText(word)  }
+        onChangeText={(word) => arrayToSearch && onChangeText(word)}
         value={value}
         placeholder="Sök"
       />
-    
+
       <SearchIcon testID="search-button-pressed" />
     </View>
   );
@@ -104,5 +92,4 @@ const styles = StyleSheet.create({
     paddingLeft: 15,
     ...typography.b1,
   },
-
 });

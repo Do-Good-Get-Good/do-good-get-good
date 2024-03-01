@@ -1,10 +1,10 @@
 import reject from "lodash/reject";
 
-import { User } from "../../utilily/types";
+import { User } from "../../utility/types";
 
 import { updateUserArray } from "../../hooks/superAdmin/utils";
 
-import { Role } from "../../utilily/enums";
+import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
 import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/superAdminUpdatesUserInfo";

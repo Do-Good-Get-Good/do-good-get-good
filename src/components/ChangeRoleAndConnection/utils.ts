@@ -1,4 +1,4 @@
-import { User } from "../../utilily/types";
+import { User } from "../../utility/types";
 
 type Obj = { [key: string]: string };
 

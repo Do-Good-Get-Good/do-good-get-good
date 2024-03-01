@@ -1,6 +1,6 @@
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { Role } from "../../utilily/enums";
-import { roleTitles } from "../../utilily/utils";
+import { Role } from "../../utility/enums";
+import { roleTitles } from "../../utility/utils";
 import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 import { makePopupObjectOfAdminNameAndID } from "./utils";
 export enum ChagesType {
