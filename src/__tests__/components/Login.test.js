@@ -90,4 +90,23 @@ describe("Testing Login", () => {
     const forgotPasswordButton = getByText("Tryck här");
     fireEvent.press(forgotPasswordButton);
   });
+
+  it("Should take away space if a user wrote one in the Login page at email field", () => {
+    const { getByTestId } = render(<Login />);
+
+    const inputEmail = getByTestId("input-email");
+    fireEvent.changeText(inputEmail, '  can2@example.com');
+    expect(inputEmail.props.value).toBe("can2@example.com");
+    
+  });
+  it("Should take away space if a user wrote one in the Login page at password field", () => {
+    
+    const { getByTestId } = render(<Login />);
+
+    const inputPassword = getByTestId("input-password")
+    fireEvent.changeText(inputPassword, '  dfdfdf');
+    expect(inputPassword.props.value).toBe("dfdfdf");
+    
+  });
+
 });

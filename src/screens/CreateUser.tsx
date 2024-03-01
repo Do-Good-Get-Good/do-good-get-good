@@ -24,7 +24,8 @@ export type UserNewAccount = {
   email: string;
   confirmEmail?: string;
   password: string;
-  role?: Role | "Behörighet";
+  role: Role | "Behörighet";
+
 };
 
 type Props = {

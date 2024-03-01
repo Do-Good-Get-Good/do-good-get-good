@@ -148,9 +148,10 @@ export default function Login() {
             <View style={styles.loginFormView}>
               <View style={styles.inputView}>
                 <TextInput
+                 testID="input-email"
                   textContentType={"emailAddress"}
                   autoCapitalize="none"
-                  onChangeText={(text) => setEmail(text)}
+                  onChangeText={(text) => setEmail(text.trim())}
                   value={email}
                   keyboardType={"email-address"}
                   placeholder={"E-post"}
@@ -172,8 +173,9 @@ export default function Login() {
                 }}
               >
                 <TextInput
+                 testID="input-password"
                   textContentType={"password"}
-                  onChangeText={(text) => setPass(text)}
+                  onChangeText={(text) => setPass(text.trim())}
                   value={pass}
                   placeholder={"Lösenord"}
                   secureTextEntry={showPassword ? false : true}
