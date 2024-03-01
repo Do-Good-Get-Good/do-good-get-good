@@ -1,7 +1,7 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
-import { TimeEntry, User } from "../../utilily/types";
+import { TimeEntry, User } from "../../utility/types";
 import { format } from "date-fns";
 
 const userObject = (

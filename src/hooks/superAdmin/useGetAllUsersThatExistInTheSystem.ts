@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 
-import { Role } from "../../utilily/enums";
+import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 import { getAllUsersData } from "../../firebase-functions/getTS/get";
 

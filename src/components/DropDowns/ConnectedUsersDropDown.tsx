@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 
-import { User } from "../../utilily/types";
+import { User } from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";

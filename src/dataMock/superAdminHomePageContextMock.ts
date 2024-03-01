@@ -1,4 +1,4 @@
-import { UserAndUnapprovedTimeEntriesType } from "../utilily/types";
+import { UserAndUnapprovedTimeEntriesType } from "../utility/types";
 [
   {
     activityID: "4apGzTf4OrnkfIqSqKQH",

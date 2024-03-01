@@ -1,6 +1,6 @@
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import {
   Platform,
   StyleSheet,

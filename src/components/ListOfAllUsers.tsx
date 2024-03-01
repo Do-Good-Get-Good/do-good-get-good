@@ -11,7 +11,7 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
 
-import { User } from "../utilily/types";
+import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import { SearchBarComponent } from "./SearchBarComponent";
@@ -24,14 +24,14 @@ export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const allUsersInSystem = superAdminContext?.allUsersInSystem;
   const { onSelectUser } = useOnSelectUser();
-  const [searchArray,setSearchArray]=useState<User[]>(allUsersInSystem ?? [])
+  const [searchArray, setSearchArray] = useState<User[]>(
+    allUsersInSystem ?? [],
+  );
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
     navigation.navigate("RolesAndConnection");
   }
-
-
 
   return (
     <View style={styles.screenContainer}>
@@ -39,23 +39,23 @@ export function ListOfAllUsers({ navigation }: Props) {
         style={{ marginBottom: 25 }}
         arrayToSearch={allUsersInSystem ?? []}
         keys={["firstName", "lastName"]}
-        onSearch={  setSearchArray}
+        onSearch={setSearchArray}
       />
-      { searchArray.map((user, index) => (
-          <View key={user.id + index} style={styles.contrainer}>
-            <Text style={styles.firstAndLastNameText}>
-              {user.firstName + " " + user.lastName}
-            </Text>
-            <TouchableOpacity onPress={() => onPressUser(user)}>
-              <Icon
-                color={colors.dark}
-                name="pencil-outline"
-                type="material-community"
-                size={25}
-              />
-            </TouchableOpacity>
-          </View>
-        ))  }
+      {searchArray.map((user, index) => (
+        <View key={user.id + index} style={styles.contrainer}>
+          <Text style={styles.firstAndLastNameText}>
+            {user.firstName + " " + user.lastName}
+          </Text>
+          <TouchableOpacity onPress={() => onPressUser(user)}>
+            <Icon
+              color={colors.dark}
+              name="pencil-outline"
+              type="material-community"
+              size={25}
+            />
+          </TouchableOpacity>
+        </View>
+      ))}
     </View>
   );
 }

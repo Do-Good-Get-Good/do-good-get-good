@@ -5,7 +5,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { getAllActivitiesWithStatus } from "../../firebase-functions/get";
-import { Activity } from "../../utilily/types";
+import { Activity } from "../../utility/types";
 import { ICreateActivityContext } from "./CreateActivityContext.config";
 
 const CreateActivityContext = React.createContext<

@@ -1,5 +1,5 @@
 import { Role } from "react-native";
-import { User, UserObjectForSuperAdmin } from "../utilily/types";
+import { User, UserObjectForSuperAdmin } from "../utility/types";
 
 const userSuperadminMock: User = {
   id: "1",

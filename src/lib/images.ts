@@ -1,5 +1,5 @@
 import { ImageSourcePropType } from "react-native/Libraries/Image/Image";
-import { ActivityImages } from "../utilily/enums";
+import { ActivityImages } from "../utility/enums";
 
 export const placeholderImage = require("../assets/images/placeholder.png");
 

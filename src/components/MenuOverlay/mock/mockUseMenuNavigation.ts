@@ -3,7 +3,7 @@ import {
   AdminStack,
   SuperAdminStack,
   UserStack,
-} from "../../../utilily/routeEnums";
+} from "../../../utility/routeEnums";
 
 export const mockUserNav: Array<NavigationObject> = [
   {

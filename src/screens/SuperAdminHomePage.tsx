@@ -5,7 +5,7 @@ import { ScrollView, View } from "react-native";
 import { UserAndUnapprovedTimeEntriesDropDown } from "../components/DropDowns/UserAndUnapprovedTimeEntriesDropDown";
 import { useSuperAdminHomePageFunction } from "../context/SuperAdminHomePageContext";
 import groupBy from "lodash/groupBy";
-import { User, UserAndUnapprovedTimeEntriesType } from "../utilily/types";
+import { User, UserAndUnapprovedTimeEntriesType } from "../utility/types";
 import { useEffect, useState } from "react";
 
 const prepareAdminArray = (arr: UserAndUnapprovedTimeEntriesType[]) => {

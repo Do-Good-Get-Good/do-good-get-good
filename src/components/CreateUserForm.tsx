@@ -5,7 +5,7 @@ import { useForm } from "react-hook-form";
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
 
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField } from "./InputField";

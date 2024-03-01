@@ -1,5 +1,5 @@
 import { makeObservable, observable, action } from "mobx";
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 
 class UserLevelStore {
   userLevel: Role | undefined = undefined;

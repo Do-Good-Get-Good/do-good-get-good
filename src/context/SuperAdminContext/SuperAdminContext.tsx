@@ -1,6 +1,6 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import { User, UserObjectForSuperAdmin } from "../../utilily/types";
+import { User, UserObjectForSuperAdmin } from "../../utility/types";
 import { useSuperAdminContext } from "./useSuperAdminContext";
 
 type SuperAdminContextType = {

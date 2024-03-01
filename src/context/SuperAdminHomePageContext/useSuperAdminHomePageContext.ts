@@ -3,7 +3,7 @@ import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
-} from "../../utilily/types";
+} from "../../utility/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
 import { find } from "lodash";
 

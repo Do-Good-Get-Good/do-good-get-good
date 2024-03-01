@@ -11,7 +11,7 @@ import {
 } from "../../components/MenuOverlay/mock/mockUseMenuNavigation";
 
 import userLevelStore from "../../store/userLevel";
-import { Role } from "../../utilily/enums";
+import { Role } from "../../utility/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
