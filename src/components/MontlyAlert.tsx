@@ -9,8 +9,8 @@ export const MonthlyAlert= () => {
   async function onCreateTriggerNotification() {
     await notifee.requestPermission()
     const date = new Date(Date.now());
-    date.setHours(15);
-    date.setMinutes(38);
+    date.setHours(9);
+    date.setMinutes(1);
     const trigger: TimestampTrigger = {
       type: TriggerType.TIMESTAMP,
       timestamp: date.getTime(),
