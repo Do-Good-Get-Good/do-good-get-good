@@ -9,7 +9,7 @@ import MyUsers from "../components/MyUsers";
 import BottomLogo from "../components/BottomLogo";
 import colors from "../assets/theme/colors";
 import { Observer } from "mobx-react-lite";
-import { MonthlyAlert } from "../components/MontlyAlert";
+// import { MonthlyAlert } from "../components/MontlyAlert";
 
 
 const AdminPage = ({ navigation }) => {
@@ -19,7 +19,7 @@ const AdminPage = ({ navigation }) => {
       <ScrollView style={styles.container}>
         <Observer>{() => <ConfirmActivities />}</Observer>
         <MyUsers navigation={navigation} />
-        <MonthlyAlert/>
+        {/* <MonthlyAlert/> */}
         <BottomLogo />
       </ScrollView>
       <FloatingActionButton />
