@@ -1,6 +1,6 @@
 export enum ExportData {
-  rollingYear = "rolling-year",
-  datePeriod = "date-period",
-  allData = "all-data",
+  rollingYear = "Löpande 12 månader",
+  datePeriod = "Välj datum",
+  allData = "All data",
 }
 export const choseDateText = "Välj datum";

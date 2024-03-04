@@ -1,30 +1,33 @@
 import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../../components/Menu";
 import typography from "../../assets/theme/typography";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Linking,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { Icon, Dialog } from "@rneui/base";
 import { useState } from "react";
 import { subYears, format, toDate, parseISO } from "date-fns";
 import functions from "@react-native-firebase/functions";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { ExportData, choseDateText } from "./utility";
+import colors from "../../assets/theme/colors";
+import { DropDown } from "../../components/DropDowns/DropDown";
+import DatePicker from "../../components/DatePicker";
 
 export const DownloadUserTimeEntries = () => {
   const date = new Date();
 
-  const [exportType, setExportType] = useState<ExportData | string>(
-    choseDateText,
-  );
+  // const [exportType, setExportType] = useState<ExportData | undefined>(
+  //   undefined,
+  // );
   const [openDropDown, setOpenDropDown] = useState(false);
-  const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
-  const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
-  const [downloadingData, setDownloadingData] = useState(false);
-  const [excelDownloadURL, setExcelDownloadURL] = useState(null);
-
-  const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
-  const today = format(date, "yyyy-MM-dd");
-  const rollingYear = `${oneYearBack} - ${today}`;
-  const downloadData = functions().httpsCallable("downloadData");
+  // const [startDate, setStartDate] = useState(format(date, "yyyy-MM-dd"));
+  // const [endDate, setEndDate] = useState(format(date, "yyyy-MM-dd"));
 
   const IsDatePeriodValid = () => {
     if (toDate(parseISO(endDate)) < toDate(parseISO(startDate))) {
@@ -36,78 +39,78 @@ export const DownloadUserTimeEntries = () => {
     return true;
   };
 
-  const exportData = () => {
-    setExcelDownloadURL(null);
-    let datePeriod;
-    switch (exportType) {
-      case "rolling-year": {
-        datePeriod = {
-          startDate: oneYearBack,
-          endDate: today,
-        };
-        break;
-      }
-      case "date-period": {
-        datePeriod = {
-          startDate: startDate,
-          endDate: endDate,
-        };
-        break;
-      }
-      case "all-data": {
-        datePeriod = {
-          startDate: "1970-01-01",
-          endDate: today,
-        };
-      }
-      default:
-        break;
-    }
-    alertPopUp(datePeriod);
-    setDownloadingData(true);
-  };
+  // const exportData = () => {
+  //   setExcelDownloadURL(null);
+  //   let datePeriod;
+  //   switch (exportType) {
+  //     case "rolling-year": {
+  //       datePeriod = {
+  //         startDate: oneYearBack,
+  //         endDate: today,
+  //       };
+  //       break;
+  //     }
+  //     case "date-period": {
+  //       datePeriod = {
+  //         startDate: startDate,
+  //         endDate: endDate,
+  //       };
+  //       break;
+  //     }
+  //     case "all-data": {
+  //       datePeriod = {
+  //         startDate: "1970-01-01",
+  //         endDate: today,
+  //       };
+  //     }
+  //     default:
+  //       break;
+  //   }
+  //   AlertQuestion("Exportera data","Exporteringen av tidrapporteringsdata har påbörjats!\nDu kan nu välja att vänta kvar eller fortsätta att använda appen.\nNär allt är klart får du ett mail.", ()=>  stayInAppAndExportData(datePeriod),);
+  //   setDownloadingData(true);
+  // };
 
-  function stayInAppAndExportData(datePeriod) {
-    downloadData(datePeriod)
-      .then((res) => {
-        console.log(res.data.downloadURL);
-        setExcelDownloadURL(res.data.downloadURL);
-      })
-      .catch((error) => {
-        crashlytics().log(error);
-        setDownloadingData(false);
-        //   Alert.alert(
-        //     'Ett fel har inträffat!',
-        //     `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`,
-        //   );
-      });
-  }
+  // function stayInAppAndExportData(datePeriod) {
+  //   downloadData(datePeriod)
+  //     .then((res) => {
+  //       console.log(res.data.downloadURL);
+  //       setExcelDownloadURL(res.data.downloadURL);
+  //     })
+  //     .catch((error) => {
+  //       crashlytics().log(error);
+  //       setDownloadingData(false);
+  //       //   Alert.alert(
+  //       //     'Ett fel har inträffat!',
+  //       //     `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`,
+  //       //   );
+  //     });
+  // }
 
-  function alertPopUp(datePeriod) {
-    console.log(datePeriod);
+  // function alertPopUp(datePeriod) {
+  //   console.log(datePeriod);
 
-    let alertTitle = "Exportera data";
-    let alertMessage =
-      "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
-      "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
-      "När allt är klart får du ett mail.";
+  //   let alertTitle = "Exportera data";
+  //   let alertMessage =
+  //     "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
+  //     "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
+  //     "När allt är klart får du ett mail.";
 
-    Alert.alert(alertTitle, alertMessage, [
-      {
-        text: "Vänta kvar",
-        onPress: () => {
-          stayInAppAndExportData(datePeriod);
-        },
-      },
-      {
-        text: "Gå till startsidan",
-        onPress: () => {
-          downloadData(datePeriod);
-          navigation.navigate("HomePage");
-        },
-      },
-    ]);
-  }
+  //   Alert.alert(alertTitle, alertMessage, [
+  //     {
+  //       text: "Vänta kvar",
+  //       onPress: () => {
+  //         stayInAppAndExportData(datePeriod);
+  //       },
+  //     },
+  //     {
+  //       text: "Gå till startsidan",
+  //       onPress: () => {
+  //         downloadData(datePeriod);
+  //         navigation.navigate("HomePage");
+  //       },
+  //     },
+  //   ]);
+  // }
 
   function closeDropDown(value) {
     setOpenDropDown(false);
@@ -120,10 +123,14 @@ export const DownloadUserTimeEntries = () => {
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
       <View style={styles.container}>
-        <View style={styles.userChoiceWrapper}>
-          <Text style={styles.headerText}>Exportera data</Text>
-          <View style={{ marginBottom: 16, minWidth: 200, zIndex: 1 }}>
-            <TouchableOpacity
+        <Text style={styles.headerText}>Exportera data</Text>
+
+        <DropDown
+          mainTitle={exportType ?? choseDateText}
+          optionsList={ExportData}
+          onSelect={setExportType}
+        />
+        {/* <TouchableOpacity
               onPress={() => setOpenDropDown(!openDropDown)}
               style={styles.dropdownStyle(openDropDown)}
             >
@@ -140,8 +147,8 @@ export const DownloadUserTimeEntries = () => {
                 }
                 size={30}
               />
-            </TouchableOpacity>
-            {openDropDown && (
+            </TouchableOpacity> */}
+        {/* {openDropDown && (
               <View style={styles.dropdownItemBackground}>
                 <TouchableOpacity
                   onPress={() => closeDropDown("all-data")}
@@ -164,49 +171,49 @@ export const DownloadUserTimeEntries = () => {
                   <Text style={{ ...typography.button.sm }}>Välj datum</Text>
                 </TouchableOpacity>
               </View>
-            )}
-          </View>
-          {exportType === "date-period" && (
-            <>
-              <View style={styles.pickDateViewStyle}>
-                <View>
-                  <Text style={{ ...typography.b2 }}>Startdatum</Text>
-                  <DatePicker date={startDate} setDate={setStartDate} />
-                </View>
-                <View>
-                  <Text style={{ ...typography.b2 }}>Slutdatum</Text>
-                  <DatePicker date={endDate} setDate={setEndDate} />
-                </View>
+            )} */}
+
+        {exportType === ExportData.datePeriod && (
+          <>
+            <View style={styles.pickDateViewStyle}>
+              <View>
+                <Text style={{ ...typography.b2 }}>Startdatum</Text>
+                <DatePicker date={startDate} setDate={setStartDate} />
               </View>
-              {IsDatePeriodValid() === false && (
-                <Text
-                  style={{
-                    ...typography.b2,
-                    marginTop: 8,
-                    color: colors.error,
-                  }}
-                >
-                  Slutdatum kan inte vara tidigare än startdatum!
-                </Text>
-              )}
-            </>
-          )}
-          {exportType === "rolling-year" && (
-            <View style={styles.continuousDateStyle}>
-              <Text style={{ ...typography.b2 }}>
-                Exportering av data kommer att ske mellan följade datum.
-              </Text>
-              <Text>{rollingYear}</Text>
+              <View>
+                <Text style={{ ...typography.b2 }}>Slutdatum</Text>
+                <DatePicker date={endDate} setDate={setEndDate} />
+              </View>
             </View>
-          )}
-          {exportType === "all-data" && (
-            <View style={styles.continuousDateStyle}>
-              <Text style={{ ...typography.b2 }}>
-                All data kommer att exporteras
+            {IsDatePeriodValid() === false && (
+              <Text
+                style={{
+                  ...typography.b2,
+                  marginTop: 8,
+                  color: colors.error,
+                }}
+              >
+                Slutdatum kan inte vara tidigare än startdatum!
               </Text>
-            </View>
-          )}
-        </View>
+            )}
+          </>
+        )}
+        {exportType === ExportData.rollingYear && (
+          <View style={styles.continuousDateStyle}>
+            <Text style={{ ...typography.b2 }}>
+              Exportering av data kommer att ske mellan följade datum.
+            </Text>
+            <Text>{rollingYear}</Text>
+          </View>
+        )}
+        {exportType === ExportData.allData && (
+          <View style={styles.continuousDateStyle}>
+            <Text style={{ ...typography.b2 }}>
+              All data kommer att exporteras
+            </Text>
+          </View>
+        )}
+
         <View style={styles.downloadButtonWrapper}>
           {excelDownloadURL !== null && (
             <TouchableOpacity
@@ -226,7 +233,8 @@ export const DownloadUserTimeEntries = () => {
           <TouchableOpacity
             disabled={
               exportType === null ||
-              (exportType === "date-period" && IsDatePeriodValid() === false)
+              (exportType === ExportData.datePeriod &&
+                IsDatePeriodValid() === false)
                 ? true
                 : false
             }
@@ -238,7 +246,7 @@ export const DownloadUserTimeEntries = () => {
                 {
                   backgroundColor:
                     exportType === null ||
-                    (exportType === "date-period" &&
+                    (exportType === ExportData.datePeriod &&
                       IsDatePeriodValid() === false)
                       ? colors.disabled
                       : colors.primary,
@@ -264,9 +272,115 @@ export const DownloadUserTimeEntries = () => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  userChoiceWrapper: {
+    flex: 1,
+    width: "100%",
+    paddingTop: 16,
+    alignItems: "center",
+  },
   headerText: {
     alignSelf: "center",
     ...typography.title,
     marginBottom: 16,
   },
+  dropdownStyle: (openDropDown) => ({
+    flexDirection: "row",
+    height: 50,
+    backgroundColor: colors.background,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingVertical: 8,
+    paddingHorizontal: 16,
+    borderWidth: 1,
+    borderColor: openDropDown ? colors.dark : colors.background,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  }),
+  dropdownItemBackground: {
+    position: "absolute",
+    top: 50,
+    left: 0,
+    right: 0,
+    zIndex: 1,
+    backgroundColor: colors.background,
+    alignItems: "center",
+    justifyContent: "center",
+    borderBottomLeftRadius: 5,
+    borderBottomRightRadius: 5,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
+  },
+  dropdownItemStyle: {
+    paddingVertical: 10,
+    width: "100%",
+    alignItems: "center",
+  },
+  pickDateViewStyle: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+  },
+  datePicker: {
+    backgroundColor: colors.background,
+    fontSize: 14,
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 5,
+    width: 125,
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
+  continuousDateStyle: {
+    flexDirection: "column",
+    // alignItems: "center",
+    marginHorizontal: 20,
+  },
+  downloadButtonWrapper: {
+    width: "100%",
+    paddingBottom: 16,
+    paddingHorizontal: 16,
+  },
+  downloadButton: (exportType) => ({
+    height: 50,
+    backgroundColor: exportType !== null ? colors.primary : colors.disabled,
+    borderRadius: 5,
+    alignItems: "center",
+    justifyContent: "center",
+  }),
 });
