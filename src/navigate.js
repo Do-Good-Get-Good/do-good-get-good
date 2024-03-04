@@ -22,6 +22,7 @@ import { ActivityCardProvider } from "./context/ActivityCardContext";
 import { CreateActivityProvider } from "./context/CreateActivityContext/CreateActivityContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
 import { ActivityImagesProvider } from "./context/ActivityImagesContext/ActivityImagesContext";
+import { DownloadUserTimeEntries } from "./screens/DownloadUserTimeEntries";
 import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
@@ -83,9 +84,10 @@ export const SuperAdminStack = () => {
                           name="ChangeActivity"
                           component={ChangeActivity}
                         />
+
                         <Stack.Screen
-                          name="DownloadUserData"
-                          component={DownloadUserData}
+                          name="DownloadUserTimeEntries"
+                          component={DownloadUserTimeEntries}
                         />
                         <Stack.Screen
                           name="AllUsersInTheSystem"
