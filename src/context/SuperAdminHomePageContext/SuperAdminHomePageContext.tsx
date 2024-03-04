@@ -1,23 +1,22 @@
 import React, { useContext, useEffect, useState } from "react";
 
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-  UserObjectForSuperAdmin,
-} from "../../utility/types";
+import { UserAndUnapprovedTimeEntriesType } from "../../utility/types";
 import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
 import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 
 type SuperAdminHomePageContextType = {
   allUsersWithUnconfirmedTimeEntries: Array<UserAndUnapprovedTimeEntriesType>;
   getAllUserAndUnapprovedTimeEntries: () => void;
+  setAllUsersWithUnconfirmedTimeEntries: (
+    users: UserAndUnapprovedTimeEntriesType[],
+  ) => void;
 };
 
 const SuperAdminHomePageContext =
   React.createContext<SuperAdminHomePageContextType>({
     allUsersWithUnconfirmedTimeEntries: [],
     getAllUserAndUnapprovedTimeEntries: () => [],
+    setAllUsersWithUnconfirmedTimeEntries: () => [],
   });
 
 export const useSuperAdminHomePageFunction = () => {
@@ -48,6 +47,7 @@ export const SuperAdminHomePageContextProvider: React.FC<{
       value={{
         allUsersWithUnconfirmedTimeEntries,
         getAllUserAndUnapprovedTimeEntries,
+        setAllUsersWithUnconfirmedTimeEntries,
       }}
     >
       {children}

@@ -37,14 +37,14 @@ export type ActivitiesAndAccumulatedTime = {
 
 export type User = {
   id: string;
-  activitiesAndAccumulatedTime?: Array<ActivitiesAndAccumulatedTime>;
+  activitiesAndAccumulatedTime: Array<ActivitiesAndAccumulatedTime>;
   adminID?: User["id"];
   connectedActivities?: Array<Activity["id"]>;
   firstName: string;
   lastName: string;
   email?: string;
   role?: string;
-  timeEntries?: TimeEntry | Array<TimeEntry>;
+  timeEntries?: Array<TimeEntry>;
   //// TODO: (ckeck what is this checked)
   checked?: boolean;
   timeObject?: {};

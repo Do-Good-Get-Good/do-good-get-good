@@ -81,6 +81,11 @@ cd ..
 npx react-native run-android --variant=devDebug --appIdSuffix=dev
 ```
 
+- **ios** trouble, try
+- `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler` to ensure that your Bundler is up to date.
+- sometimes help with `gem update --system`
+- if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
+
 # We who have worked with the project
 
 ## Authors
@@ -100,8 +105,7 @@ npx react-native run-android --variant=devDebug --appIdSuffix=dev
 
 - Carina Grip (_Office Manager Technogarden Göteborg_)
 
-
 ### Test
-- `npm run test` to run all tests 
-- `npm run test` + test file name (Example: `npm run test SearchBarComponent.test.js`)
 
+- `npm run test` to run all tests
+- `npm run test` + test file name (Example: `npm run test SearchBarComponent.test.js`)
