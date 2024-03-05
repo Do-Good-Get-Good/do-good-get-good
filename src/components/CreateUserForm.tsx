@@ -1,4 +1,4 @@
-import { StyleSheet, ScrollView } from "react-native";
+import { ScrollView ,} from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
@@ -13,6 +13,8 @@ import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
 import { UserNewAccount } from "../screens/CreateUser";
 import { useState } from "react";
 import { ChangeUserRole } from "./ChangeUserRole";
+import React, { useRef } from 'react';
+import userLevelStore from "../store/userLevel";
 
 const schema: yup.ObjectSchema<UserNewAccount> = yup
   .object()
@@ -20,13 +22,13 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     name: yup
       .string()
       .trim()
-      .max(30)
+      .max(30,"* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Förnamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     surname: yup
       .string()
       .trim()
-      .max(30)
+      .max(30,"* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Efternamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     email: yup
@@ -48,7 +50,7 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     role: yup
       .mixed<Role>()
       .oneOf(Object.values(Role), "* Obligatorisk")
-      .required(),
+      .required()
   })
   .defined();
 
@@ -60,7 +62,15 @@ type Props = {
 
 export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   const navigation = useNavigation();
+  const { userLevel } = userLevelStore;
   const [showPassword, setShowPassword] = useState(false);
+  const scrollViewRef = useRef<ScrollView>(null);
+
+  const handleContentSizeChange = () => {
+    scrollViewRef.current?.scrollToEnd({ animated: true });
+  };
+
+  
 
   const {
     handleSubmit,
@@ -68,12 +78,12 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
     formState: { errors, isDirty },
   } = useForm<UserNewAccount>({
     defaultValues: {
-      name: user.name,
-      surname: user.name,
-      email: user.email,
-      confirmEmail: user.email,
-      password: user.password,
-      role: "Behörighet",
+      name: user?.name,
+      surname: user?.name,
+      email: user?.email,
+      confirmEmail: user?.email,
+      password: user?.password,
+      role:userLevel=== Role.superadmin? "Behörighet" : Role.user 
     },
     resolver: yupResolver(schema),
   });
@@ -83,7 +93,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
     surname,
     email,
     password,
-    role,
+    role 
   }: UserNewAccount) => {
     isDirty &&
       setUser({
@@ -99,8 +109,12 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   return (
     <>
       <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={handleContentSizeChange}
+    
         keyboardDismissMode={"on-drag"}
         style={{ flex: 1 }}
+        testID="scroll"
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
         <InputField
@@ -108,12 +122,14 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           control={control}
           error={errors.name}
           name={"name"}
+          testID={'name'}
         />
         <InputField
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
           name={"surname"}
+          testID={'surname'}
         />
         <InputField
           placeholderText={"E-mail"}
@@ -122,6 +138,8 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           name={"email"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
+          contextMenuHidden={true}
+          testID={'email'}
         />
 
         <InputField
@@ -131,22 +149,29 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           name={"confirmEmail"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
+          contextMenuHidden={true}
+          testID={'confirm-email'}
         />
         <InputField
+        
           placeholderText={"Lösenord"}
           control={control}
           error={errors.password}
           name={"password"}
           secureTextEntry={!showPassword}
+          testID={"password"}
           IconRight={
+          
             <VisibilityIcon
-              onPress={() => setShowPassword(!showPassword)}
+        
+             onPress={() => setShowPassword(!showPassword)}
               visibilityOn={showPassword}
             />
           }
         />
-
+        {userLevel === Role.superadmin && (
         <ChangeUserRole error={errors.role} control={control} />
+        )}
       </ScrollView>
       <BottomNavButtons
         primaryText="Nästa"
