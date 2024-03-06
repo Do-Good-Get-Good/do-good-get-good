@@ -6,7 +6,7 @@ import {
 } from "../../../utility/types";
 import { MainLabel } from "./MainLabel";
 import { useState } from "react";
-import { InfoRow } from "./InfoRow";
+import { InfoRow } from "../InfoRow";
 import colors from "../../../assets/theme/colors";
 import { includes, pull } from "lodash";
 
@@ -23,7 +23,7 @@ type Props = {
   setOnCheck: (onCheck: Array<TimeEntry>) => void;
   usersTimeEtries: UserAndUnapprovedTimeEntriesType[];
 };
-export const UserAndUnapprovedTimeEntriesDropDown = ({
+export const AdminAndUnapprovedTimeEntriesDropDown = ({
   usersTimeEtries,
   setOnCheck,
   onCheck,
@@ -61,7 +61,7 @@ export const UserAndUnapprovedTimeEntriesDropDown = ({
                     <InfoRow
                       key={entry.id}
                       testID={entry.id}
-                      activityTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
+                      mainTitle={`${user.userFirstName}\u00A0${user.userLastName}`}
                       time={entry.time}
                       date={entry.date}
                       checked={includes(onCheck, entry)}

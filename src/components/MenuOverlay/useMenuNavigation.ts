@@ -1,3 +1,4 @@
+import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
 
@@ -37,6 +38,7 @@ export const userNavigations: Array<NavigationObject> = [
 export const useMenuNavigation = (role: Role | undefined) => {
   const { getAllUserAndUnapprovedTimeEntries } =
     useSuperAdminHomePageFunction();
+  const { onShowAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
   useGetAllUsersThatExistInTheSystem(role);
 
@@ -54,6 +56,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Admin",
       screenName: AdminStack.AdminPage,
+      toDo: onShowAdminPage,
     },
   ];
 

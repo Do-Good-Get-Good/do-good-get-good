@@ -2,7 +2,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../../components/Menu";
 import BottomLogo from "../../components/BottomLogo";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { UserAndUnapprovedTimeEntriesDropDown } from "../../components/DropDowns/UserAndUnapprovedTimeEntriesDropDown";
+import { AdminAndUnapprovedTimeEntriesDropDown } from "../../components/DropDowns/AdminAndUnapprovedTimeEntriesDropDown";
 import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
 
 import { useEffect, useState } from "react";
@@ -47,7 +47,7 @@ export const SuperAdminHomePage = () => {
       <ScrollView style={{ paddingHorizontal: 16 }}>
         {allAdmins.length > 0 ? (
           allAdmins.map((admin, i) => (
-            <UserAndUnapprovedTimeEntriesDropDown
+            <AdminAndUnapprovedTimeEntriesDropDown
               key={i}
               setOnCheck={setOnCheck}
               onCheck={onCheck}

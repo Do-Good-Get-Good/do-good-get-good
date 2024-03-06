@@ -41,6 +41,22 @@ const userObject = (
 
   return user;
 };
+const timeEntryObject = (
+  doc:
+    | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+    | FirebaseFirestoreTypes.DocumentData,
+) => {
+  return {
+    id: doc.id,
+    activityID: doc.data().activity_id,
+    adminID: doc.data().admin_id,
+    userID: doc.data().user_id,
+    activityTitle: doc.data().activity_title,
+    date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
+    statusConfirmed: doc.data().status_confirmed,
+    time: doc.data().time,
+  };
+};
 
 export const getAllUsersData = async () => {
   try {
@@ -82,19 +98,45 @@ export const getAllUnconfirmedTimeEntries = async () => {
       .get();
 
     let timeEntries: Array<TimeEntry> = querySnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        activityID: doc.data().activity_id,
-        adminID: doc.data().admin_id,
-        userID: doc.data().user_id,
-        activityTitle: doc.data().activity_title,
-        date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
-        statusConfirmed: doc.data().status_confirmed,
-        time: doc.data().time,
-      };
+      return timeEntryObject(doc);
     });
 
     return Promise.resolve(timeEntries);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+export const getUserUnconfirmedTimeEntries = async (uid: User["id"]) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", uid)
+      .where("status_confirmed", "==", false)
+      .get();
+
+    let data = querySnapshot?.docs.map((doc) => {
+      return timeEntryObject(doc);
+    });
+    return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getAllUsersConnectedToAdmin = async (adminId: User["id"]) => {
+  try {
+    let userData = await firestore()
+      .collection("Users")
+      .where("admin_id", "==", adminId)
+      .get();
+
+    if (userData.empty)
+      throw new Error("There was an error fetching all user data");
+
+    let data = userData.docs.map((doc) => {
+      return userObject(doc);
+    });
+    return Promise.resolve(data);
   } catch (error) {
     return Promise.reject(error);
   }

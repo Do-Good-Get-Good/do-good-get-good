@@ -1,11 +1,11 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Activity, TimeEntry } from "../../../utility/types";
-import colors from "../../../assets/theme/colors";
+import { Activity, TimeEntry, User } from "../../utility/types";
+import colors from "../../assets/theme/colors";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
-import { Checkbox } from "../../Checkbox";
+import { Checkbox } from "../Checkbox";
 
 type Props = {
-  activityTitle: Activity["title"];
+  mainTitle: string;
   date: TimeEntry["date"];
   time: TimeEntry["time"];
   checked: boolean;
@@ -14,7 +14,7 @@ type Props = {
 };
 
 export const InfoRow = ({
-  activityTitle,
+  mainTitle,
   date,
   time,
   onCheck,
@@ -24,7 +24,7 @@ export const InfoRow = ({
   return (
     <View style={styles.container}>
       <Text testID="info-row-title" style={styles.textName}>
-        {activityTitle}
+        {mainTitle}
       </Text>
       <Text testID="info-row-date" style={{ flex: 0.5 }}>
         {date.toString()}
