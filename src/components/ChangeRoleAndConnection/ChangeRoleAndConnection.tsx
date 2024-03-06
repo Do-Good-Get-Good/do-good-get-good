@@ -33,6 +33,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
         userName={user?.firstName + " " + user?.lastName}
         role={getValues("role")}
         adminName={getValues("admin.fullName")}
+        userEmail={user?.email ?? "---"}
       />
 
       <View style={styles.containerTextButton}>

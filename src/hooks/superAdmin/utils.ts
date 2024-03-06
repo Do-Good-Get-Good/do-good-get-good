@@ -35,6 +35,7 @@ export const superAdminMakeUserObject = (
   selectedUser: User,
   allUsersInTheSystem: User[],
   allAdminsAndSuperAdmin: User[] | undefined,
+  // email: string
 ): UserObjectForSuperAdmin => {
   const hasUsers =
     selectedUser.role === Role.admin || selectedUser.role === Role.superadmin;
@@ -44,6 +45,8 @@ export const superAdminMakeUserObject = (
     arrayOfUsersIfAdmin: hasUsers
       ? findAllUsersConnectedToTheAdmin(selectedUser.id, allUsersInTheSystem)
       : undefined,
-    user: selectedUser,
+      user: selectedUser,
+
+    // user:{...selectedUser, email:email} ,
   };
 };

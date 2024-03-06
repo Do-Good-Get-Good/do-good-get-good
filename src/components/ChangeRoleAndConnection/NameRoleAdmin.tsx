@@ -24,15 +24,17 @@ type Props = {
   userName: string;
   role: Role;
   adminName: string;
+  userEmail:string;
 };
 
-export const NameRoleAdmin = ({ userName, role, adminName }: Props) => {
+export const NameRoleAdmin = ({ userName, role, adminName,userEmail }: Props) => {
   return (
     <>
       <Text style={styles.title}>{userName}</Text>
       <View style={styles.containerForRoleAndAdminText}>
         <TitleAndValue title="Nivå" value={roleTitles[role]} />
         <TitleAndValue title="Admin" value={adminName} />
+        <TitleAndValue title="User Email" value={userEmail} />
       </View>
     </>
   );
