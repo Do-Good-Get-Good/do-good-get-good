@@ -1,3 +1,4 @@
+import reject from "lodash/reject";
 import { getUserData } from "../../firebase-functions/get";
 import {
   TimeEntry,
@@ -46,3 +47,15 @@ export const makeListOfUserAndUnapprovedTimeEntries = async (
 
   return tempArr;
 };
+export const filterAfterApprovedTimeEntrirs = (
+  prev: UserAndUnapprovedTimeEntriesType[],
+  timeEntryID: TimeEntry["id"],
+) =>
+  prev
+    .map((user) => ({
+      ...user,
+      unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
+        id: timeEntryID,
+      }) as TimeEntry[],
+    }))
+    .filter((user) => user.unapprovedTimeEntries.length > 0);

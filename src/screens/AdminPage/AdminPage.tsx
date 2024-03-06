@@ -10,20 +10,21 @@ import BottomLogo from "../../components/BottomLogo";
 import colors from "../../assets/theme/colors";
 import { Observer } from "mobx-react-lite";
 import { UserAndUnapprovedTimeEntries } from "../../components/UserAndUpapprovedTimeEntries";
+import { useAdminFunction } from "../../context/AdminContext";
 
 //  <Observer>{() => <ConfirmActivities />}</Observer>
 
 type Props = {
-  route: any;
   navigation: any;
 };
 
 export const AdminPage = ({ navigation }: Props) => {
+  const { usersWithUnconfirmedTimeEntries } = useAdminFunction();
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
-        <UserAndUnapprovedTimeEntries />
+        <UserAndUnapprovedTimeEntries users={usersWithUnconfirmedTimeEntries} />
         <MyUsers navigation={navigation} />
         <BottomLogo />
       </ScrollView>

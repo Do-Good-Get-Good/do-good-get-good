@@ -1,6 +1,6 @@
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
+import { useSuperAdminHomePageContext } from "../../context/SuperAdminHomePageContext";
 
 import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import { Role } from "../../utility/enums";
@@ -36,9 +36,8 @@ export const userNavigations: Array<NavigationObject> = [
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
-  const { getAllUserAndUnapprovedTimeEntries } =
-    useSuperAdminHomePageFunction();
-  const { onShowAdminPage } = useAdminContext();
+  const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
+  const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
   useGetAllUsersThatExistInTheSystem(role);
 
@@ -56,7 +55,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Admin",
       screenName: AdminStack.AdminPage,
-      toDo: onShowAdminPage,
+      toDo: onShowUnApprovedTimeEntriesAdminPage,
     },
   ];
 

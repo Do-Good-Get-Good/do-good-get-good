@@ -1,5 +1,6 @@
 import auth from "@react-native-firebase/auth";
 import { useAdminFunction } from ".";
+
 import {
   getAllUsersConnectedToAdmin,
   getUserUnconfirmedTimeEntries,
@@ -9,7 +10,11 @@ import {
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
-import { makeListOfUserAndUnapprovedTimeEntries } from "../utility/functions";
+import {
+  filterAfterApprovedTimeEntrirs,
+  makeListOfUserAndUnapprovedTimeEntries,
+} from "../utility/functions";
+import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
 
 const getTimeEntriesAndUsers = async (
   adminUsers: User[],
@@ -30,11 +35,27 @@ const getTimeEntriesAndUsers = async (
 };
 
 export const useAdminContext = () => {
-  const { setUsersConnectedToAdmin, setUsersWithUnconfirmedTimeEntries } =
-    useAdminFunction();
+  const { onApproveTimeEntries } = useApproveTimeEntry();
+
+  const {
+    usersWithUnconfirmedTimeEntries,
+    setUsersConnectedToAdmin,
+    setUsersWithUnconfirmedTimeEntries,
+  } = useAdminFunction();
   const adminID = auth().currentUser?.uid;
 
-  const onShowAdminPage = async () => {
+  const onApproveTimeEntriesAdmin = async (timeEntries: Array<TimeEntry>) => {
+    if (adminID) {
+      let temArr = usersWithUnconfirmedTimeEntries ?? [];
+      const afterApprove = await onApproveTimeEntries(timeEntries, adminID);
+      afterApprove.forEach((timeEntry) => {
+        temArr = [...filterAfterApprovedTimeEntrirs(temArr, timeEntry.id)];
+        setUsersWithUnconfirmedTimeEntries(temArr);
+      });
+    }
+  };
+
+  const onShowUnApprovedTimeEntriesAdminPage = async () => {
     if (!adminID) return null;
 
     const adminUsers = await getAllUsersConnectedToAdmin(adminID);
@@ -46,5 +67,5 @@ export const useAdminContext = () => {
     setUsersWithUnconfirmedTimeEntries(usersAndUnapprovedTimeEntries);
   };
 
-  return { onShowAdminPage };
+  return { onShowUnApprovedTimeEntriesAdminPage, onApproveTimeEntriesAdmin };
 };

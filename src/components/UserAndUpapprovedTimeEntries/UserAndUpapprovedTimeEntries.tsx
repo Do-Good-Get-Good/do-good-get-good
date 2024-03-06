@@ -1,5 +1,8 @@
 import { useState } from "react";
-import { TimeEntry } from "../../utility/types";
+import {
+  TimeEntry,
+  UserAndUnapprovedTimeEntriesType,
+} from "../../utility/types";
 import { UserAndUnapprovedTimeEntriesRow } from "./UserAndUnapprovedTimeEntriesRow";
 import { useAdminFunction } from "../../context/AdminContext";
 import { StyleSheet, Text } from "react-native";
@@ -7,21 +10,29 @@ import { textAllTimeEntriesApproved } from "./utility";
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import { TitleAndOnCheckAll } from "../TitleAndOnCheckAll";
+import { LongButton } from "../Buttons/LongButton";
+import { AlertToApproveTimeEntries } from "../Alerts/AlertToApproveTimeEntries";
+import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 
-export const UserAndUnapprovedTimeEntries = () => {
+type Props = {
+  users: UserAndUnapprovedTimeEntriesType[];
+};
+
+export const UserAndUnapprovedTimeEntries = ({ users }: Props) => {
+  const { onApproveTimeEntriesAdmin } = useAdminContext();
   const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
-
-  const { usersWithUnconfirmedTimeEntries } = useAdminFunction();
+  const onApprove = () =>
+    AlertToApproveTimeEntries(() => onApproveTimeEntriesAdmin(onCheck));
 
   return (
     <>
       <TitleAndOnCheckAll
         onCheck={onCheck}
-        allUsersWithUnconfirmedTimeEntries={usersWithUnconfirmedTimeEntries}
+        allUsersWithUnconfirmedTimeEntries={users}
         setOnCheck={setOnCheck}
       />
-      {usersWithUnconfirmedTimeEntries.length > 0 ? (
-        usersWithUnconfirmedTimeEntries?.map((user, i) => (
+      {users.length > 0 ? (
+        users?.map((user, i) => (
           <UserAndUnapprovedTimeEntriesRow
             key={user.userID + i}
             onCheck={onCheck}
@@ -34,6 +45,13 @@ export const UserAndUnapprovedTimeEntries = () => {
           {textAllTimeEntriesApproved}
         </Text>
       )}
+      <LongButton
+        isDisabled={onCheck.length < 1}
+        style={{ marginTop: 20 }}
+        title="Godkänn"
+        onPress={onApprove}
+        testID="on-save"
+      />
     </>
   );
 };

@@ -6,7 +6,7 @@ import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get
 
 type SuperAdminHomePageContextType = {
   allUsersWithUnconfirmedTimeEntries: Array<UserAndUnapprovedTimeEntriesType>;
-  getAllUserAndUnapprovedTimeEntries: () => void;
+
   setAllUsersWithUnconfirmedTimeEntries: (
     users: UserAndUnapprovedTimeEntriesType[],
   ) => void;
@@ -15,7 +15,7 @@ type SuperAdminHomePageContextType = {
 const SuperAdminHomePageContext =
   React.createContext<SuperAdminHomePageContextType>({
     allUsersWithUnconfirmedTimeEntries: [],
-    getAllUserAndUnapprovedTimeEntries: () => [],
+
     setAllUsersWithUnconfirmedTimeEntries: () => [],
   });
 
@@ -26,27 +26,15 @@ export const useSuperAdminHomePageFunction = () => {
 export const SuperAdminHomePageContextProvider: React.FC<{
   children: React.ReactNode;
 }> = ({ children }) => {
-  const { usersWithUnconfirmedTimeEntries } = useSuperAdminHomePageContext();
   const [
     allUsersWithUnconfirmedTimeEntries,
     setAllUsersWithUnconfirmedTimeEntries,
   ] = useState<UserAndUnapprovedTimeEntriesType[]>([]);
 
-  const getAllUserAndUnapprovedTimeEntries = async () => {
-    const unconfirmedTimeEntries = await getAllUnconfirmedTimeEntries();
-
-    let usersAndUnconfirmedTimeEntries = await usersWithUnconfirmedTimeEntries(
-      unconfirmedTimeEntries,
-    );
-    usersAndUnconfirmedTimeEntries &&
-      setAllUsersWithUnconfirmedTimeEntries(usersAndUnconfirmedTimeEntries);
-  };
-
   return (
     <SuperAdminHomePageContext.Provider
       value={{
         allUsersWithUnconfirmedTimeEntries,
-        getAllUserAndUnapprovedTimeEntries,
         setAllUsersWithUnconfirmedTimeEntries,
       }}
     >
