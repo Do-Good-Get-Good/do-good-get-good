@@ -1,14 +1,21 @@
 import "react-native";
 import React from "react";
 import { render, fireEvent, waitFor, } from "@testing-library/react-native";
+import CreateUser from "../../screens/CreateUser";
 
 import { CreateUserForm } from "../../components";
 import { Role } from "../../utility/enums";
 import userLevelStore from '../../store/userLevel'
 
+
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-navigation/native");
+
+jest.mock('../../screens/CreateUser', () => ({
+  generateRandomPassword: jest.fn(() => 'randomPassword'),
+}));
+
 
 
 const mockGoBack = jest.fn();
@@ -178,36 +185,36 @@ describe("Testing CreateUserForm ", () => {
                   expect(textInput.props.contextMenuHidden).toBe(true);
             });
 
-            it('Should be enter a password',async () => {
-                  const { getByPlaceholderText,getByText, getByTestId, debug} = render(<CreateUserForm />);
-                  const inputField = getByPlaceholderText('Lösenord');
-                  fireEvent.changeText(inputField, '');
-                  expect(inputField.props.value).toBe('');
-                  const nextButton= getByText("Nästa")
-                  fireEvent.press(nextButton);
+            // it('Should generate a random password',async () => {
+            //       const { getByPlaceholderText,getByText, getByTestId} = render(<CreateUserForm />);
+            //       expect(jestfn()).toHaveBeenCalled()
+                 
+
+        
+            //       // const nextButton= getByText("Nästa")
+            //       // fireEvent.press(nextButton);
                
-                  await waitFor(() => {
-                    debug()
-                    const errorMessage = getByTestId("input-error-password")
-                    expect(errorMessage.props.children).toBe('* Lösenordet måste innehålla minst 6 tecken');
-                  })
-                });
+            //       // await waitFor(() => {
+            //       //   const errorMessage = getByTestId("input-error-password")
+            //       //   expect(errorMessage.props.children).toBe('* Lösenordet måste innehålla minst 6 tecken');
+            //       // })
+            //     });
 
-             it('Should toggles password visibility when icon is pressed',async () => {
+            //  it('Should toggles password visibility when icon is pressed',async () => {
 
-                    const { getByPlaceholderText,getByTestId,queryByTestId} = render(<CreateUserForm />);
-                    const inputField = getByPlaceholderText('Lösenord');
-                    expect(inputField.props.secureTextEntry).toBe(true);
+            //         const { getByPlaceholderText,getByTestId,queryByTestId} = render(<CreateUserForm />);
+            //         const inputField = getByPlaceholderText('Lösenord');
+            //         expect(inputField.props.secureTextEntry).toBe(true);
                   
       
-                    fireEvent.press(getByTestId('visibility-off-icon'));
-                    expect(inputField.props.secureTextEntry).toBe(false)
-                    expect(queryByTestId('visibility-off-icon'))
+            //         fireEvent.press(getByTestId('visibility-off-icon'));
+            //         expect(inputField.props.secureTextEntry).toBe(false)
+            //         expect(queryByTestId('visibility-off-icon'))
 
-                    fireEvent.press(getByTestId('visibility-icon'));
-                    expect(inputField.props.secureTextEntry).toBe(true);
+            //         fireEvent.press(getByTestId('visibility-icon'));
+            //         expect(inputField.props.secureTextEntry).toBe(true);
                    
-              });
+            //   });
 
            it('Should  select a role if superadmin otherwise show error',async () => {
                       superAdmin()
@@ -278,7 +285,7 @@ describe("Testing CreateUserForm ", () => {
                         fireEvent.changeText(getByPlaceholderText('Efternamn'), 'Andersson');
                         fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com');
                         fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
-                        fireEvent.changeText(getByPlaceholderText('Lösenord'), 'sdfghddd')
+                        // fireEvent.changeText(getByPlaceholderText('Lösenord'), 'randomPassword')
                         fireEvent.press(getByTestId("role-item"))
                         fireEvent.press(getByTestId("role-item-admin"));
                         const nextButton = getByText('Nästa');
@@ -286,7 +293,7 @@ describe("Testing CreateUserForm ", () => {
                           name:"John",
                           surname:"Andersson",
                           email:"test@example.com",
-                          password:"sdfghddd",
+                          password:"randomPassword",
                           role:"admin"
                         };
                         fireEvent.press(nextButton);

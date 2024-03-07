@@ -17,6 +17,7 @@ import typography from "../assets/theme/typography";
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 import { CreateUserForm } from "../components";
+import { Activity } from "../utility/types";
 
 export type UserNewAccount = {
   name: string;
@@ -43,8 +44,9 @@ const CreateUser = ({ route, navigation }: Props) => {
     name: "",
     surname: "",
     email: "",
-    password: "",
+    password:generateRandomPassword(),
     role: Role.user,
+  
   });
 
   // Step 2
@@ -57,7 +59,8 @@ const CreateUser = ({ route, navigation }: Props) => {
     photo: "",
     imageUrl: "",
   });
-  const [selectedActivity, setSelectedActivity] = useState(null);
+  enum NewActivity{newActivity="create-new"}
+  const [selectedActivity, setSelectedActivity] = useState<null|Activity|"create-new">(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
     <CreateUserForm user={user} setUser={setUser} nextPage={handleNextPage} />,
@@ -91,15 +94,22 @@ const CreateUser = ({ route, navigation }: Props) => {
   function handleGoBack() {
     back();
   }
+  function generateRandomPassword() {
+    const randomPassword = Math.random().toString(36).slice(-8);
+    return randomPassword;
+  }
 
   function handleCreateUser() {
-    createUserAndLinkSelectedActivity(
-      user,
-      selectedActivity,
-      setLoading,
-      navigation,
-    );
-  }
+    if (selectedActivity !== null &&  selectedActivity !== "create-new" &&'id' in selectedActivity) {
+        createUserAndLinkSelectedActivity(
+            user,
+            selectedActivity.id,
+            setLoading,
+            navigation,
+        );
+    }
+}
+
 
   function handleCreateUserAndNewActivity() {
     const newActivity = {
@@ -136,6 +146,7 @@ const CreateUser = ({ route, navigation }: Props) => {
         return "Koppla aktivitet till användaren";
     }
   }
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>

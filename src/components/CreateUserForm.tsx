@@ -1,4 +1,4 @@
-import { ScrollView ,} from "react-native";
+import { ScrollView} from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 
@@ -151,23 +151,6 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           keyboardType={"email-address"}
           contextMenuHidden={true}
           testID={'confirm-email'}
-        />
-        <InputField
-        
-          placeholderText={"Lösenord"}
-          control={control}
-          error={errors.password}
-          name={"password"}
-          secureTextEntry={!showPassword}
-          testID={"password"}
-          IconRight={
-          
-            <VisibilityIcon
-        
-             onPress={() => setShowPassword(!showPassword)}
-              visibilityOn={showPassword}
-            />
-          }
         />
         {userLevel === Role.superadmin && (
         <ChangeUserRole error={errors.role} control={control} />
