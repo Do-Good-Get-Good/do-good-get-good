@@ -1,10 +1,13 @@
 import { Text } from "@rneui/base";
 import { StyleSheet, View } from "react-native";
-import typography from "../assets/theme/typography";
+import typography from "../../assets/theme/typography";
 
-import { Checkbox } from "./Checkbox";
-import { TimeEntry, UserAndUnapprovedTimeEntriesType } from "../utility/types";
-import flatMap from "lodash/flatMap";
+import { Checkbox } from "../Checkbox";
+import {
+  TimeEntry,
+  UserAndUnapprovedTimeEntriesType,
+} from "../../utility/types";
+
 import { useCallback } from "react";
 
 const title = "Icke godkänd";
@@ -12,33 +15,28 @@ const checkBoxText = "Markera alla";
 
 type Props = {
   onCheck: Array<TimeEntry>;
-  allUsersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[];
+  allUnconfirmedTimeEntries: Array<TimeEntry>;
   setOnCheck: (onCheck: Array<TimeEntry>) => void;
 };
 
-const allUnconfirmedTimeEntries = (
-  users: UserAndUnapprovedTimeEntriesType[],
-) => [...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry))];
+// const allUnconfirmedTimeEntries = (
+//   users: UserAndUnapprovedTimeEntriesType[],
+// ) => [...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry))];
 
 export const TitleAndOnCheckAll = ({
   onCheck,
-  allUsersWithUnconfirmedTimeEntries,
+  allUnconfirmedTimeEntries,
   setOnCheck,
 }: Props) => {
   const isOnCheckAll = useCallback(() => {
     return (
-      onCheck.length ===
-        allUnconfirmedTimeEntries(allUsersWithUnconfirmedTimeEntries).length &&
+      onCheck.length === allUnconfirmedTimeEntries.length &&
       onCheck.length !== 0
     );
   }, [onCheck]);
 
   const onCheckAll = () => {
-    setOnCheck(
-      isOnCheckAll()
-        ? []
-        : allUnconfirmedTimeEntries(allUsersWithUnconfirmedTimeEntries),
-    );
+    setOnCheck(isOnCheckAll() ? [] : allUnconfirmedTimeEntries);
   };
 
   return (

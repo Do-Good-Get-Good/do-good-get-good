@@ -1,6 +1,7 @@
 import { useState } from "react";
 import {
   TimeEntry,
+  User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
 import { UserAndUnapprovedTimeEntriesRow } from "./UserAndUnapprovedTimeEntriesRow";
@@ -12,14 +13,17 @@ import colors from "../../assets/theme/colors";
 import { TitleAndOnCheckAll } from "../TitleAndOnCheckAll";
 import { LongButton } from "../Buttons/LongButton";
 import { AlertToApproveTimeEntries } from "../Alerts/AlertToApproveTimeEntries";
-import { useAdminContext } from "../../context/AdminContext/useAdminContext";
+import { getUnconfirmedTimeEntriesFromAllUsersAdminPage } from "../TitleAndOnCheckAll/utility";
 
 type Props = {
-  users: UserAndUnapprovedTimeEntriesType[];
+  users: User[];
+  onApproveTimeEntriesAdmin: (onCheck: TimeEntry[]) => void;
 };
 
-export const UserAndUnapprovedTimeEntries = ({ users }: Props) => {
-  const { onApproveTimeEntriesAdmin } = useAdminContext();
+export const UserAndUnapprovedTimeEntries = ({
+  users,
+  onApproveTimeEntriesAdmin,
+}: Props) => {
   const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
   const onApprove = () =>
     AlertToApproveTimeEntries(() => onApproveTimeEntriesAdmin(onCheck));
@@ -28,13 +32,15 @@ export const UserAndUnapprovedTimeEntries = ({ users }: Props) => {
     <>
       <TitleAndOnCheckAll
         onCheck={onCheck}
-        allUsersWithUnconfirmedTimeEntries={users}
+        allUnconfirmedTimeEntries={getUnconfirmedTimeEntriesFromAllUsersAdminPage(
+          users,
+        )}
         setOnCheck={setOnCheck}
       />
       {users.length > 0 ? (
         users?.map((user, i) => (
           <UserAndUnapprovedTimeEntriesRow
-            key={user.userID + i}
+            key={user.id + i}
             onCheck={onCheck}
             setOnCheck={setOnCheck}
             user={user}

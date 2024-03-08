@@ -16,20 +16,9 @@ import useLinkedActivities from "../hooks/useLinkedActivities";
 import { useActivitySuggestions } from "../hooks/useActivitySuggestions";
 import colors from "../assets/theme/colors";
 
-import { UserLevels } from "../lib/enums/userlevels";
-import userLevelStore from "../store/userLevel";
-import adminStore from "../store/adminStore";
-
 export const HomePage = ({ navigation }) => {
   const { timeObject, activities, isLoading } = useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
-  const { userLevel } = userLevelStore;
-
-  useEffect(() => {
-    if ([UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel)) {
-      adminStore.fetchAllUsers();
-    }
-  }, [userLevel]);
 
   return (
     <SafeAreaView style={styles.view}>

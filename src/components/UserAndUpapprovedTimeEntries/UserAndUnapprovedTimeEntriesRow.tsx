@@ -5,6 +5,7 @@ import { useState } from "react";
 import { includes, pull } from "lodash";
 import {
   TimeEntry,
+  User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
 import colors from "../../assets/theme/colors";
@@ -14,7 +15,7 @@ import { MainLabel } from "../DropDowns/AdminAndUnapprovedTimeEntriesDropDown/Ma
 type Props = {
   onCheck: Array<TimeEntry>;
   setOnCheck: (onCheck: Array<TimeEntry>) => void;
-  user: UserAndUnapprovedTimeEntriesType;
+  user: User;
 };
 export const UserAndUnapprovedTimeEntriesRow = ({
   user,
@@ -22,7 +23,7 @@ export const UserAndUnapprovedTimeEntriesRow = ({
   onCheck,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
-  const userName = `${user.userFirstName}\u00A0${user.userLastName}`;
+  const userName = `${user.firstName}\u00A0${user.lastName}`;
 
   const onCheckPress = (timeEntry: TimeEntry) => {
     setOnCheck(
@@ -41,7 +42,7 @@ export const UserAndUnapprovedTimeEntriesRow = ({
         >
           <MainLabel
             title={userName}
-            amountOfTimeEntries={user.unapprovedTimeEntries.length}
+            amountOfTimeEntries={user?.timeEntries?.length ?? 0}
             setIsOpen={() => setIsOpen(!isOpen)}
             isOpen={isOpen}
           />
@@ -49,17 +50,18 @@ export const UserAndUnapprovedTimeEntriesRow = ({
           {isOpen && (
             <View style={{ paddingBottom: 10 }}>
               <View style={styles.containerBorder}>
-                {user.unapprovedTimeEntries.map((entry) => (
-                  <InfoRow
-                    key={entry.id}
-                    testID={entry.id}
-                    mainTitle={entry.activityTitle}
-                    time={entry.time}
-                    date={entry.date}
-                    checked={includes(onCheck, entry)}
-                    onCheck={() => onCheckPress(entry)}
-                  />
-                ))}
+                {user.timeEntries &&
+                  user.timeEntries.map((entry) => (
+                    <InfoRow
+                      key={entry.id}
+                      testID={entry.id}
+                      mainTitle={entry.activityTitle}
+                      time={entry.time}
+                      date={entry.date}
+                      checked={includes(onCheck, entry)}
+                      onCheck={() => onCheckPress(entry)}
+                    />
+                  ))}
               </View>
             </View>
           )}

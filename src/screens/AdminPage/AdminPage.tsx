@@ -11,6 +11,7 @@ import colors from "../../assets/theme/colors";
 import { Observer } from "mobx-react-lite";
 import { UserAndUnapprovedTimeEntries } from "../../components/UserAndUpapprovedTimeEntries";
 import { useAdminFunction } from "../../context/AdminContext";
+import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 
 //  <Observer>{() => <ConfirmActivities />}</Observer>
 
@@ -19,12 +20,20 @@ type Props = {
 };
 
 export const AdminPage = ({ navigation }: Props) => {
-  const { usersWithUnconfirmedTimeEntries } = useAdminFunction();
+  const {
+    usersWithUnconfirmedTimeEntries,
+    usersWithFiveUnconfirmedTimeEntries,
+  } = useAdminFunction();
+  const { onApproveTimeEntriesAdmin } = useAdminContext();
+
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
       <ScrollView style={styles.container}>
-        <UserAndUnapprovedTimeEntries users={usersWithUnconfirmedTimeEntries} />
+        <UserAndUnapprovedTimeEntries
+          onApproveTimeEntriesAdmin={onApproveTimeEntriesAdmin}
+          users={usersWithUnconfirmedTimeEntries}
+        />
         <MyUsers navigation={navigation} />
         <BottomLogo />
       </ScrollView>

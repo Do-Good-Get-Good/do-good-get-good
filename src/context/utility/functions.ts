@@ -44,7 +44,6 @@ export const makeListOfUserAndUnapprovedTimeEntries = async (
       tempArr.push(obj);
     }
   }
-
   return tempArr;
 };
 export const filterAfterApprovedTimeEntrirs = (

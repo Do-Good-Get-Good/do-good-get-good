@@ -18,7 +18,7 @@ const userActivitiesAndAccumulatedTime = (
   return temArr;
 };
 
-const userObject = (
+export const userObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     | FirebaseFirestoreTypes.DocumentData,
@@ -41,7 +41,7 @@ const userObject = (
 
   return user;
 };
-const timeEntryObject = (
+export const timeEntryObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     | FirebaseFirestoreTypes.DocumentData,
@@ -106,7 +106,9 @@ export const getAllUnconfirmedTimeEntries = async () => {
     return Promise.reject(error);
   }
 };
-export const getUserUnconfirmedTimeEntries = async (uid: User["id"]) => {
+export const getUserUnconfirmedTimeEntries = async (
+  uid: User["id"],
+): Promise<TimeEntry[]> => {
   try {
     let querySnapshot = await firestore()
       .collection("timeentries")
@@ -123,6 +125,31 @@ export const getUserUnconfirmedTimeEntries = async (uid: User["id"]) => {
   }
 };
 
+export const getUsersFiveNewestTimeEntries = async (
+  userId: User["id"],
+): Promise<TimeEntry[]> => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", userId)
+      .where("status_confirmed", "==", true)
+      .orderBy("date", "desc")
+      .limit(5)
+      .get();
+
+    // if (!querySnapshot.empty) {
+    //   timeEntryData = querySnapshot.docs.map((doc) => doc.data());
+    // }
+    // return Promise.resolve(timeEntryData);
+
+    let data = querySnapshot?.docs.map((doc) => {
+      return timeEntryObject(doc);
+    });
+    return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
 export const getAllUsersConnectedToAdmin = async (adminId: User["id"]) => {
   try {
     let userData = await firestore()

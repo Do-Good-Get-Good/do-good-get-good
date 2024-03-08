@@ -17,6 +17,7 @@ import colors from "../../assets/theme/colors";
 import { prepareAdminArray, textIfEmptyList } from "./utility";
 import { SuperAdminLongButtons } from "../../components/SuperAdminLongButtons";
 import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
+import { getUnconfirmedTimeEntriesFromAllUsers } from "../../components/TitleAndOnCheckAll/utility";
 
 type AdminWithUsersUnapprovedTimeEntriesType = {
   adminID: User["adminID"];
@@ -41,7 +42,9 @@ export const SuperAdminHomePage = () => {
       <Menu />
       <TitleAndOnCheckAll
         onCheck={onCheck}
-        allUsersWithUnconfirmedTimeEntries={allUsersWithUnconfirmedTimeEntries}
+        allUnconfirmedTimeEntries={getUnconfirmedTimeEntriesFromAllUsers(
+          allUsersWithUnconfirmedTimeEntries,
+        )}
         setOnCheck={setOnCheck}
       />
       <ScrollView style={{ paddingHorizontal: 16 }}>

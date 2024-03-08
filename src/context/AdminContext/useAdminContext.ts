@@ -4,6 +4,7 @@ import { useAdminFunction } from ".";
 import {
   getAllUsersConnectedToAdmin,
   getUserUnconfirmedTimeEntries,
+  getUsersFiveNewestTimeEntries,
 } from "../../firebase-functions/getTS/get";
 import {
   TimeEntry,
@@ -15,56 +16,66 @@ import {
   makeListOfUserAndUnapprovedTimeEntries,
 } from "../utility/functions";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
+import adminStore from "../../store/adminStore";
+import { Role } from "../../utility/enums";
+import userLevelStore from "../../store/userLevel";
 
-const getTimeEntriesAndUsers = async (
-  adminUsers: User[],
-): Promise<UserAndUnapprovedTimeEntriesType[]> => {
-  let unapprovedTimeEntries: TimeEntry[] = [];
+const makeArrayWithTimeEntriesAndUsers = async (
+  usersConnectedToAdmin: User[],
+  getTimeEntries: (id: User["id"]) => Promise<TimeEntry[]>,
+) => {
+  let prevUsers: User[] = [];
 
-  for (const adminUser of adminUsers) {
-    const tempArr = await getUserUnconfirmedTimeEntries(adminUser.id);
-    tempArr && unapprovedTimeEntries.push(...tempArr);
+  for (const user of usersConnectedToAdmin) {
+    const tempArr = await getTimeEntries(user.id);
+
+    if (tempArr.length > 0) {
+      prevUsers.push({
+        ...user,
+        timeEntries: tempArr,
+      });
+    }
   }
-
-  const usersAndUnconfirmedTimeEntries =
-    await makeListOfUserAndUnapprovedTimeEntries(
-      unapprovedTimeEntries,
-      adminUsers,
-    );
-  return usersAndUnconfirmedTimeEntries;
+  return prevUsers;
 };
 
 export const useAdminContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
+  const { userLevel } = userLevelStore;
 
   const {
-    usersWithUnconfirmedTimeEntries,
-    setUsersConnectedToAdmin,
+    setUsersWithFiveUnconfirmedTimeEntries,
     setUsersWithUnconfirmedTimeEntries,
   } = useAdminFunction();
   const adminID = auth().currentUser?.uid;
 
   const onApproveTimeEntriesAdmin = async (timeEntries: Array<TimeEntry>) => {
     if (adminID) {
-      let temArr = usersWithUnconfirmedTimeEntries ?? [];
-      const afterApprove = await onApproveTimeEntries(timeEntries, adminID);
-      afterApprove.forEach((timeEntry) => {
-        temArr = [...filterAfterApprovedTimeEntrirs(temArr, timeEntry.id)];
-        setUsersWithUnconfirmedTimeEntries(temArr);
-      });
+      await onApproveTimeEntries(timeEntries, adminID).then(() =>
+        onShowUnApprovedTimeEntriesAdminPage(),
+      );
     }
   };
 
   const onShowUnApprovedTimeEntriesAdminPage = async () => {
-    if (!adminID) return null;
-
-    const adminUsers = await getAllUsersConnectedToAdmin(adminID);
-
-    const usersAndUnapprovedTimeEntries =
-      await getTimeEntriesAndUsers(adminUsers);
-
-    setUsersConnectedToAdmin(adminUsers);
-    setUsersWithUnconfirmedTimeEntries(usersAndUnapprovedTimeEntries);
+    if (
+      adminID &&
+      (userLevel === Role.superadmin || userLevel === Role.admin)
+    ) {
+      const adminUsers = await getAllUsersConnectedToAdmin(adminID);
+      const allTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
+        adminUsers,
+        getUserUnconfirmedTimeEntries,
+      );
+      const fiveTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
+        adminUsers,
+        getUsersFiveNewestTimeEntries,
+      );
+      // for this PR I leave this logic with admin store to keep branch smaller but in next branch it will be away
+      await adminStore.fetchAllUsers(adminUsers);
+      setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
+      setUsersWithFiveUnconfirmedTimeEntries(fiveTimeEntriesAndUsers);
+    }
   };
 
   return { onShowUnApprovedTimeEntriesAdminPage, onApproveTimeEntriesAdmin };

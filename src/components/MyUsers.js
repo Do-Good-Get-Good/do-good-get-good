@@ -12,13 +12,11 @@ import adminStore from "../store/adminStore";
 
 import { Observer } from "mobx-react-lite";
 import { Sort } from "../lib/enums/sort";
-import { useUsersTimeObjects } from "../hooks/useUsersTimeObjects";
 
 const MyUsers = ({ navigation }) => {
   const [expanded, setExpanded] = useState(false);
   const sortOptions = [Sort.Alphabetically, Sort.Inactive];
   const [sortBy, setSortBy] = useState(sortOptions[0]);
-  useUsersTimeObjects();
 
   const sortUsers = (sortOption) => {
     switch (sortOption) {

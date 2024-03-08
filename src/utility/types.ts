@@ -45,6 +45,7 @@ export type User = {
   email?: string;
   role?: string;
   timeEntries?: Array<TimeEntry>;
+
   //// TODO: (ckeck what is this checked)
   checked?: boolean;
   timeObject?: {};

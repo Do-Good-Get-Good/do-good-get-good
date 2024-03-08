@@ -35,12 +35,12 @@ const updateUser = (users, newInfo) => {
   return users;
 };
 
-const updateUserTimeEntries = (users, userId, timeEntries) => {
-  let userIndex = users.findIndex((user) => user.userID === userId);
-  users[userIndex].timeEntries = timeEntries;
+// const updateUserTimeEntries = (users, userId, timeEntries) => {
+//   let userIndex = users.findIndex((user) => user.userID === userId);
+//   users[userIndex].timeEntries = timeEntries;
 
-  return users;
-};
+//   return users;
+// };
 
 const connectActivityToUser = (users, userId, activityId) => {
   return users.map((user) => {
@@ -73,16 +73,16 @@ const disconnectActivityFromUser = (users, userId, activityId) => {
   });
 };
 
-const updateUserTimeObject = (users, userId, updatedTimeObject) => {
-  return users.map((user) => {
-    if (user.userID !== userId) return user;
+// const updateUserTimeObject = (users, userId, updatedTimeObject) => {
+//   return users.map((user) => {
+//     if (user.userID !== userId) return user;
 
-    return {
-      ...user,
-      timeObject: updatedTimeObject,
-    };
-  });
-};
+//     return {
+//       ...user,
+//       timeObject: updatedTimeObject,
+//     };
+//   });
+// };
 
 class AdminStore {
   constructor() {
@@ -95,37 +95,36 @@ class AdminStore {
     makeAutoObservable(this);
   }
 
-  async fetchAllUsers() {
+  async fetchAllUsers(usersConnectedToadmin) {
     if (!this.fetchUsers) return;
-    console.log("FETCHING");
-    let userArr = await getAllUsersConnectedToAdmin(auth().currentUser.uid);
-    userArr.map(async (user, index) => {
+    for (const user of usersConnectedToadmin) {
       try {
         let response = await getUsersFiveNewestTimeEntries(user.id);
         let userInfo = {
-          activitiesAndAccumulatedTime: user.activities_and_accumulated_time,
-          adminID: user.admin_id,
-          connectedActivities: user.connected_activities,
-          firstName: user.first_name,
-          lastName: user.last_name,
+          activitiesAndAccumulatedTime: user.activitiesAndAccumulatedTime,
+          adminID: user.adminID,
+          connectedActivities: user.connectedActivities,
+          firstName: user.firstName,
+          lastName: user.lastName,
           role: user.role,
-          timeEntries: response,
+          timeEntries: response ?? [],
           isOpen: false,
-          statusActive: user.status_active,
+          statusActive: user.statusActive,
           userID: user.id,
           timeObject: {
-            paidTime: user.total_hours_year,
-            currentForMonth: user.total_hours_month,
+            paidTime: user.totalHoursYear,
+            currentForMonth: user.totalHoursMonth,
           },
         };
         this.addNewUser(userInfo);
         runInAction(() => {
-          if (this.allUsers.length === userArr.length) this.loading = false;
+          if (this.allUsers.length === usersConnectedToadmin.length)
+            this.loading = false;
         });
       } catch (error) {
         console.log("MyUsers ", error);
       }
-    });
+    }
     this.fetchUsers = false;
   }
 
@@ -154,28 +153,28 @@ class AdminStore {
     this.updatedUserInfo = newInfo;
   }
 
-  updateUserTimeEntries(userIds) {
-    userIds.map(async (userId) => {
-      try {
-        let timeEntryData = await getUsersFiveNewestTimeEntries(userId);
-        runInAction(() => {
-          this.allUsers = updateUserTimeEntries(
-            this.allUsers,
-            userId,
-            timeEntryData,
-          );
-          this.users = updateUserTimeEntries(this.users, userId, timeEntryData);
-        });
-      } catch (error) {
-        console.log(error);
-      }
-    });
-  }
+  // updateUserTimeEntries(userIds) {
+  //   userIds.map(async (userId) => {
+  //     try {
+  //       let timeEntryData = await getUsersFiveNewestTimeEntries(userId);
+  //       runInAction(() => {
+  //         this.allUsers = updateUserTimeEntries(
+  //           this.allUsers,
+  //           userId,
+  //           timeEntryData,
+  //         );
+  //         this.users = updateUserTimeEntries(this.users, userId, timeEntryData);
+  //       });
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   });
+  // }
 
-  updateUserTimeObject(userId, timeObject) {
-    this.allUsers = updateUserTimeObject(this.allUsers, userId, timeObject);
-    this.users = updateUserTimeObject(this.users, userId, timeObject);
-  }
+  // updateUserTimeObject(userId, timeObject) {
+  //   this.allUsers = updateUserTimeObject(this.allUsers, userId, timeObject);
+  //   this.users = updateUserTimeObject(this.users, userId, timeObject);
+  // }
 
   connectActivityToUser(userId, activityId) {
     this.allUsers = connectActivityToUser(this.allUsers, userId, activityId);
