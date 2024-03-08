@@ -8,12 +8,10 @@ import FloatingActionButton from "../../components/FloatingActionButton";
 import MyUsers from "../../components/MyUsers";
 import BottomLogo from "../../components/BottomLogo";
 import colors from "../../assets/theme/colors";
-import { Observer } from "mobx-react-lite";
 import { UserAndUnapprovedTimeEntries } from "../../components/UserAndUpapprovedTimeEntries";
 import { useAdminFunction } from "../../context/AdminContext";
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
-
-//  <Observer>{() => <ConfirmActivities />}</Observer>
+import { Dialog } from "@rneui/base";
 
 type Props = {
   navigation: any;
@@ -23,6 +21,7 @@ export const AdminPage = ({ navigation }: Props) => {
   const {
     usersWithUnconfirmedTimeEntries,
     usersWithFiveUnconfirmedTimeEntries,
+    loading,
   } = useAdminFunction();
   const { onApproveTimeEntriesAdmin } = useAdminContext();
 
@@ -34,6 +33,9 @@ export const AdminPage = ({ navigation }: Props) => {
           onApproveTimeEntriesAdmin={onApproveTimeEntriesAdmin}
           users={usersWithUnconfirmedTimeEntries}
         />
+        {loading && (
+          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
+        )}
         <MyUsers navigation={navigation} />
         <BottomLogo />
       </ScrollView>

@@ -19,6 +19,7 @@ import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveT
 import adminStore from "../../store/adminStore";
 import { Role } from "../../utility/enums";
 import userLevelStore from "../../store/userLevel";
+import { useEffect, useState } from "react";
 
 const makeArrayWithTimeEntriesAndUsers = async (
   usersConnectedToAdmin: User[],
@@ -46,6 +47,7 @@ export const useAdminContext = () => {
   const {
     setUsersWithFiveUnconfirmedTimeEntries,
     setUsersWithUnconfirmedTimeEntries,
+    setLoading,
   } = useAdminFunction();
   const adminID = auth().currentUser?.uid;
 
@@ -67,16 +69,21 @@ export const useAdminContext = () => {
         adminUsers,
         getUserUnconfirmedTimeEntries,
       );
+      setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
       const fiveTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
         adminUsers,
         getUsersFiveNewestTimeEntries,
       );
       // for this PR I leave this logic with admin store to keep branch smaller but in next branch it will be away
       await adminStore.fetchAllUsers(adminUsers);
-      setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
+
       setUsersWithFiveUnconfirmedTimeEntries(fiveTimeEntriesAndUsers);
+      setLoading(false);
     }
   };
 
-  return { onShowUnApprovedTimeEntriesAdminPage, onApproveTimeEntriesAdmin };
+  return {
+    onShowUnApprovedTimeEntriesAdminPage,
+    onApproveTimeEntriesAdmin,
+  };
 };

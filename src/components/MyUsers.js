@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 
 import { format } from "date-fns";
-import { Icon, Dialog } from "@rneui/base";
+import { Icon } from "@rneui/base";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 
@@ -81,11 +81,6 @@ const MyUsers = ({ navigation }) => {
         <Observer>
           {() => (
             <>
-              {adminStore.loading && (
-                <Dialog.Loading
-                  loadingProps={{ color: "#84BD00" }}
-                ></Dialog.Loading>
-              )}
               {adminStore.users.map((user, index) => (
                 <View key={index}>
                   <TouchableOpacity
