@@ -142,6 +142,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           testID={'email'}
         />
 
+
         <InputField
           placeholderText={"Bekräfta E-mail"}
           control={control}

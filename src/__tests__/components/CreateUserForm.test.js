@@ -11,9 +11,11 @@ import userLevelStore from '../../store/userLevel'
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-navigation/native");
+const mockRandom = jest.spyOn(Math, 'random').mockReturnValue(0.5);
+    
 
 jest.mock('../../screens/CreateUser', () => ({
-  generateRandomPassword: jest.fn(() => 'randomPassword'),
+  generateRandomPassword: mockRandom
 }));
 
 
@@ -280,11 +282,21 @@ describe("Testing CreateUserForm ", () => {
                         superAdmin()
                         const  setUser=jest.fn();
                         const nextPage=jest.fn();
+                        // mockGenerateRandomPassword= jest.fn(() => 'randomPassword');
+                        // mockGenerateRandomPassword.mockReturnValue('randomPassword');
+      
+
                         const {getByPlaceholderText,getByTestId,getByText} = render(<CreateUserForm nextPage={nextPage} setUser={setUser} />);
+                        // console.log(generateRandomPassword,"message")
+                        // expect(generateRandomPassword).toHaveBeenCalled();
                         fireEvent.changeText(getByPlaceholderText('Förnamn'), 'John');
                         fireEvent.changeText(getByPlaceholderText('Efternamn'), 'Andersson');
                         fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com');
                         fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
+
+                        console.log( "password",mockRandom)
+
+                        // expect(mockGenerateRandomPassword).toBe("randomPassword")
                         // fireEvent.changeText(getByPlaceholderText('Lösenord'), 'randomPassword')
                         fireEvent.press(getByTestId("role-item"))
                         fireEvent.press(getByTestId("role-item-admin"));
@@ -293,7 +305,7 @@ describe("Testing CreateUserForm ", () => {
                           name:"John",
                           surname:"Andersson",
                           email:"test@example.com",
-                          password:"randomPassword",
+                          password:mockRandom,
                           role:"admin"
                         };
                         fireEvent.press(nextButton);
