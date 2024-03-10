@@ -5,10 +5,10 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Menu from "../../components/Menu";
 import FloatingActionButton from "../../components/FloatingActionButton";
 
-import MyUsers from "../../components/MyUsers";
+import { MyUsers } from "../../components/MyUsers";
 import BottomLogo from "../../components/BottomLogo";
 import colors from "../../assets/theme/colors";
-import { UserAndUnapprovedTimeEntries } from "../../components/UserAndUpapprovedTimeEntries";
+import { UserAndUnapprovedTimeEntries } from "../../components/DropDowns/UserAndUpapprovedTimeEntries";
 import { useAdminFunction } from "../../context/AdminContext";
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { Dialog } from "@rneui/base";
@@ -36,7 +36,7 @@ export const AdminPage = ({ navigation }: Props) => {
         {loading && (
           <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
         )}
-        <MyUsers navigation={navigation} />
+        <MyUsers users={usersWithFiveUnconfirmedTimeEntries} />
         <BottomLogo />
       </ScrollView>
       <FloatingActionButton />

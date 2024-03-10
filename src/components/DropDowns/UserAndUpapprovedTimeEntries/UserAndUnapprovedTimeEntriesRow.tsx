@@ -7,10 +7,10 @@ import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
-} from "../../utility/types";
-import colors from "../../assets/theme/colors";
-import { InfoRow } from "../DropDowns/InfoRow";
-import { MainLabel } from "../DropDowns/AdminAndUnapprovedTimeEntriesDropDown/MainLabel";
+} from "../../../utility/types";
+import colors from "../../../assets/theme/colors";
+import { InfoRow } from "../InfoRow";
+import { MainLabel } from "../AdminAndUnapprovedTimeEntriesDropDown/MainLabel";
 
 type Props = {
   onCheck: Array<TimeEntry>;

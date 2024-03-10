@@ -1,16 +1,17 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
 import { Activity, TimeEntry, User } from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import { Checkbox } from "../Checkbox";
 
 type Props = {
+  style?: StyleProp<ViewStyle>;
   mainTitle: string;
   date: TimeEntry["date"];
   time: TimeEntry["time"];
-  checked: boolean;
-  onCheck: () => void;
-  testID: string;
+  checked?: boolean;
+  onCheck?: () => void;
+  testID?: string;
 };
 
 export const InfoRow = ({
@@ -20,9 +21,10 @@ export const InfoRow = ({
   onCheck,
   checked,
   testID,
+  style,
 }: Props) => {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       <Text testID="info-row-title" style={styles.textName}>
         {mainTitle}
       </Text>
@@ -32,11 +34,13 @@ export const InfoRow = ({
       <Text testID="info-row-time" style={{ flex: 0.2 }}>
         {time.toString()}
       </Text>
-      <Checkbox
-        testID={`info-row-${testID}`}
-        onCheck={onCheck}
-        checked={checked}
-      />
+      {checked !== undefined && onCheck && (
+        <Checkbox
+          testID={`info-row-${testID}`}
+          onCheck={onCheck}
+          checked={checked}
+        />
+      )}
     </View>
   );
 };

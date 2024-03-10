@@ -1,7 +1,7 @@
 import "react-native";
 import React from "react";
 import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
-import MyUsers from "../../components/MyUsers";
+import { MyUsers } from "../../components/MyUsers";
 import { expect } from "@jest/globals";
 
 import adminStore from "../../store/adminStore";
