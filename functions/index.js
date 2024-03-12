@@ -9,7 +9,7 @@ const { downloadData } = require("./src/downloadData/downloadData");
 const { connectUsersToActivities } = require("./src/connectUsersToActivities");
 const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 const { changeAllActivityImages } = require("./src/changeAllActivityImages");
-
+const { updateRoleClaims } = require("./src/updateRoleClaims");
 const { firebaseConfig } = require("./config");
 
 admin.initializeApp(firebaseConfig);
@@ -19,6 +19,7 @@ exports.createUser = createUser;
 exports.deleteUser = deleteUser;
 exports.updateMonth = updateMonth;
 exports.updateYear = updateYear;
+exports.updateRoleClaims = updateRoleClaims;
 exports.assignAdminClaim = assignAdminClaim;
 exports.downloadData = downloadData;
 exports.connectUsersToActivities = connectUsersToActivities;
