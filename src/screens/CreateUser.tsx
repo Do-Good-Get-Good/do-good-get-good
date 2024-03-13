@@ -34,6 +34,10 @@ type Props = {
   navigation: any;
 };
 
+const  generateRandomPassword=()=> Math.random().toString(36).slice(-8);
+  
+
+
 const CreateUser = ({ route, navigation }: Props) => {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
 
@@ -63,13 +67,13 @@ const CreateUser = ({ route, navigation }: Props) => {
   const [selectedActivity, setSelectedActivity] = useState<null|Activity|"create-new">(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
-    <CreateUserForm user={user} setUser={setUser} nextPage={handleNextPage} />,
+    <CreateUserForm user={user} setUser={setUser} nextPage={()=>next()} />,
     <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
-      goBack={handleGoBack}
+      goBack={()=>back()}
       createUserAndNewActivity={handleCreateUserAndNewActivity}
       createUserAndLinkSelectedActivity={handleCreateUser}
     />,
@@ -87,18 +91,6 @@ const CreateUser = ({ route, navigation }: Props) => {
     }
   }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
-  function handleNextPage() {
-    next();
-  }
-
-  function handleGoBack() {
-    back();
-  }
-  function generateRandomPassword() {
-    const randomPassword = Math.random().toString(36).slice(-8);
-    return randomPassword;
-  }
-
   function handleCreateUser() {
     if (selectedActivity !== null &&  selectedActivity !== "create-new" &&'id' in selectedActivity) {
         createUserAndLinkSelectedActivity(
@@ -109,8 +101,6 @@ const CreateUser = ({ route, navigation }: Props) => {
         );
     }
 }
-
-
   function handleCreateUserAndNewActivity() {
     const newActivity = {
       active_status: true,
