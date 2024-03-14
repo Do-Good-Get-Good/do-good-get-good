@@ -26,6 +26,8 @@ import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
 import AdminPage from "./screens/AdminPage";
+import { Chat } from "./screens/Chat"
+
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -99,6 +101,7 @@ export const SuperAdminStack = () => {
                           name="SuperAdminHomePage"
                           component={SuperAdminHomePage}
                         />
+                        <Stack.Screen name="Chat" component={Chat}/>
                       </Stack.Navigator>
                     </NavigationContainer>
                   </SuperAdminHomePageContextProvider>
@@ -153,6 +156,7 @@ export const AdminStack = () => {
                       name="ChangeActivity"
                       component={ChangeActivity}
                     />
+                    <Stack.Screen name="Chat" component={Chat}/>
                   </Stack.Navigator>
                 </NavigationContainer>
               </TimeStatisticsProvider>
@@ -180,6 +184,7 @@ export const UserStack = () => {
               <Stack.Screen name="ActivityCard" component={ActivityCard} />
               <Stack.Screen name="Faq" component={Faq} />
               <Stack.Screen name="ConceptPage" component={ConceptPage} />
+             <Stack.Screen name="Chat" component={Chat}/>
             </Stack.Navigator>
           </NavigationContainer>
         </TimeStatisticsProvider>
