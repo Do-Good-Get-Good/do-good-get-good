@@ -2,6 +2,9 @@ const admin = require("firebase-admin");
 const functions = require("firebase-functions");
 const FieldValue = require("firebase-admin").firestore.FieldValue;
 
+const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
+const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+
 class UnauthenticatedError extends Error {
   constructor(message) {
     super(message);
@@ -30,6 +33,31 @@ function roleIsValid(role) {
   const validRoles = ["user", "admin", "superadmin"]; //To be adapted with your own list of roles
   return validRoles.includes(role);
 }
+
+function sendCustomVerificationEmail(email, displayName, link) {
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(SENDGRID_API_KEY);
+
+  const msg = {
+    to: email,
+    from: SENDGRID_FROM_EMAIL,
+    templateId: "d-b940b67bf681439babe6b023c5c22e7a",
+    dynamicTemplateData: {
+      firstName: displayName,
+      verificationLink: link,
+    },
+  };
+
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
+
 
 // Cloud functions below //
 exports.createUser = functions.https.onCall(async (data, context) => {
@@ -79,8 +107,20 @@ exports.createUser = functions.https.onCall(async (data, context) => {
     };
 
     const userRecord = await admin.auth().createUser(newUser);
-
+    
     const userId = userRecord.uid;
+
+    const verification = await admin.auth().generateEmailVerificationLink(userRecord.email)
+    .then((link) => {
+      // Construct email verification template, embed the link and send
+      // using custom SMTP server.
+      return sendCustomVerificationEmail(userRecord.email, userRecord.first_name, link);
+    })
+    .catch((error) => {
+      throw error;
+    });
+    //TODO: implement the logic to handle verified vs unverified emails.
+
 
     const claims = {};
     claims[role] = true;
