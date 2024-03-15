@@ -76,3 +76,31 @@ export type UserAndUnapprovedTimeEntriesType = {
   userLastName: User["lastName"];
   unapprovedTimeEntries: Array<TimeEntry>;
 };
+
+export type PostEmoji ={
+  emojiName: string
+  userID: string
+  }
+  
+  
+ export type Comment ={
+  id: string
+  comment: string 
+  userID: User['id']
+  }
+  
+  export type UserPost ={
+  id: string,
+  userID: User['id'],
+  userFirstName: User['firstName']
+  userLastName: User['lastName']
+  activityID?: Activity['id'],
+  activityCity?: Activity['city'],
+  activityTitle?: Activity['title'],
+  changed: boolean,
+  date: Date,
+  description: string,
+  emoji?: Array<PostEmoji>,
+  imageURL?: string
+  comments?: Array<Comment>
+  }
