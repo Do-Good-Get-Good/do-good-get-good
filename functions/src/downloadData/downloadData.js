@@ -167,6 +167,7 @@ function sendEmail(downloadURL, callerData) {
 
 exports.downloadData = functions.https.onCall(async (data, context) => {
   try {
+    console.log(data, " ------------------------------ data");
     //Checking that the user calling the Cloud Function is authenticated
     if (!context.auth) {
       throw new UnauthenticatedError(
@@ -178,6 +179,10 @@ exports.downloadData = functions.https.onCall(async (data, context) => {
     const callerUid = context.auth.uid; //uid of the user calling the Cloud Function
 
     const callerUserRecord = await admin.auth().getUser(callerUid);
+    console.log(
+      callerUserRecord.customClaims,
+      " -------------------------------- callerUserRecord.customClaims"
+    );
 
     if (
       !callerUserRecord.customClaims.superadmin ||
