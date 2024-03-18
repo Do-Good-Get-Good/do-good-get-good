@@ -94,14 +94,14 @@ export type PostEmoji ={
   userID: User['id'],
   userFirstName: User['firstName']
   userLastName: User['lastName']
-  activityID?: Activity['id'],
-  activityCity?: Activity['city'],
-  activityTitle?: Activity['title'],
+  activityID: Activity['id'],
+  activityCity: Activity['city'],
+  activityTitle: Activity['title'],
   changed: boolean,
   date: Date,
   description: string,
-  emoji?: Array<PostEmoji>,
-  imageURL?: string
+  emoji: Array<PostEmoji>,
+  imageURL: string
   comments?: Array<Comment>
   }
 
