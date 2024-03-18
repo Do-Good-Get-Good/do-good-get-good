@@ -1,15 +1,21 @@
 import React from "react";
 import {
-  SafeAreaView,StyleSheet,Text
+  SafeAreaView,ScrollView,StyleSheet,Text
 } from "react-native";
 import { ChatCard } from "../components/ChartCard/ChatCard";
+import BottomLogo from '../components/BottomLogo';
+import Menu from '../components/Menu';
+import typography from "../assets/theme/typography";
 
 export const Chat = () => {
   
   return (
     <SafeAreaView style={styles.container}>
-      <Text style= {styles.paragraph}> Chat Screen!</Text>  
-      <ChatCard/> 
+      <Menu/>
+      <ScrollView>
+        <ChatCard/> 
+      <BottomLogo/>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -19,10 +25,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'flex-start',
   },
-  paragraph:{
-  fontSize:16,
-  fontWeight:"bold",
-  textAlign: 'center',
-  }  
+  headerText: {
+    ...typography.h2,
+    fontWeight: '500',
+    marginTop: 30,
+  },
 });
 

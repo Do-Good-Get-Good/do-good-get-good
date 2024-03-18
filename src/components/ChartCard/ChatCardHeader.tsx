@@ -1,14 +1,14 @@
 import React from "react";
-import {
-  SafeAreaView,
-  StyleSheet,
+import {StyleSheet,
   Text,
   Image,
   View
 } from "react-native";
 import { UserPost } from "../../utility/types";
-import { Icon } from "@rneui/base";
-
+import { getImageForActivity } from "../../lib/images";
+import { LocationIcon } from "../../assets/icons/LocationIcon";
+import typography from "../../assets/theme/typography";
+import colors from "../../assets/theme/colors";
 
 type Props ={
   post: UserPost;
@@ -17,31 +17,23 @@ type Props ={
 export const ChatCardHeader = ({post }: Props) => {
 
   return (
-    <SafeAreaView style={styles.container}>
-      <Text> ChatCard Header!</Text> 
-      <View style={styles.detailsContainer}>
-      <Image  source={require('../../assets/images/activities/symbol_hands_heart-DEFAULT.png')}  style={styles.image}/>
-         <View style={styles.details}>
-      <Text>{post.activityTitle}</Text>
-      <Text>{post.userFirstName} {post.userLastName}</Text>
+    <View style={styles.container}>
+       <View style={styles.detailsContainer}>
+       <Image  source={getImageForActivity('symbol_hands_heart-DEFAULT') }  style={styles.image}/>
+        <View>
+           <Text style={styles.textTitle} >{post.activityTitle}</Text>
+           <Text style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
+           <View style={styles.locationContainer}>
+           <LocationIcon style={{paddingTop:3}} size={19}/>
+        <Text style={styles.textCity}>{post.activityCity}</Text></View>
         </View>
-      </View>
-      <View style={styles.locationContainer}>
-            <Icon
-                  type="material-community"
-                  name="map-marker-outline"
-                  size={20}
-                />
-            <Text>{post.activityCity}</Text>
-      </View>
-      {/* <Text>{post.activityCity}</Text> */}
-    </SafeAreaView>
+     </View>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
     container:{
-       justifyContent: 'center',
     },
     detailsContainer:{
       flexDirection:'row',
@@ -50,16 +42,25 @@ const styles = StyleSheet.create({
     image:{
       width: 60,
       height: 60,
-      marginRight: 20,
+      marginRight: 10,
       marginLeft: 20,
     },
-    details:{
-      flex:1
+    textTitle: {
+      ...typography.cardTitle,
+      marginLeft: 5,
+      color: colors.dark,
     },
+    textUserDetails:{
+      ...typography.b1,
+      marginLeft: 5,
+      color: colors.dark
+    },
+    textCity:{
+   ...typography.b2,
+      color: colors.dark,
+ 
+    }, 
     locationContainer:{
-      flexDirection:'row',
-      alignItems: 'center',
-      marginRight:20,
-      marginLeft:20
+      flexDirection:'row', 
     },     
 });

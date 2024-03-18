@@ -104,3 +104,12 @@ export type PostEmoji ={
   imageURL?: string
   comments?: Array<Comment>
   }
+
+  export type  ChatMessage ={
+    id: string,
+    userFirstName: User['firstName'],
+    userID: User['id'],
+  userLastName: User['lastName'],
+  message: string
+
+  }
