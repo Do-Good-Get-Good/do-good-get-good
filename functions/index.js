@@ -8,10 +8,9 @@ const { assignAdminClaim } = require("./src/assignAdminClaim");
 const { downloadData } = require("./src/downloadData/downloadData");
 const { connectUsersToActivities } = require("./src/connectUsersToActivities");
 const { updateActivityUserCount } = require("./src/updateActivityUserCount");
-const { updateRoleClaims } = require("./src/updateRoleClaims");
 const { firebaseConfig } = require("./config");
 const { adminGetUserEmail } = require("./src/adminGetUserEmail");
-
+const { updateUserRoleClaims } = require("./src/updateUserRoleClaims");
 admin.initializeApp(firebaseConfig);
 
 // Cloud functions
@@ -19,9 +18,9 @@ exports.createUser = createUser;
 exports.deleteUser = deleteUser;
 exports.updateMonth = updateMonth;
 exports.updateYear = updateYear;
-exports.updateRoleClaims = updateRoleClaims;
 exports.assignAdminClaim = assignAdminClaim;
 exports.downloadData = downloadData;
 exports.connectUsersToActivities = connectUsersToActivities;
 exports.updateActivityUserCount = updateActivityUserCount;
 exports.adminGetUserEmail = adminGetUserEmail;
+exports.updateUserRoleClaims = updateUserRoleClaims;
