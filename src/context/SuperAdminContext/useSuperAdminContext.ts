@@ -1,9 +1,6 @@
-import reject from "lodash/reject";
-
 import { User } from "../../utility/types";
 
 import { updateUserArray } from "../../hooks/superAdmin/utils";
-import functions from "@react-native-firebase/functions";
 import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
@@ -41,7 +38,6 @@ export const useSuperAdminContext = () => {
     connectedUsersChangedAdmin?: User[],
   ) => {
     if (makeChangesForSelectedUser?.user && data?.role) {
-      // functions().httpsCallable.,
       const changedData = {
         id: makeChangesForSelectedUser.user.id,
         firstName: makeChangesForSelectedUser.user.firstName,

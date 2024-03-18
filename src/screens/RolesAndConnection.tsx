@@ -18,7 +18,6 @@ import { User } from "../utility/types";
 import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
