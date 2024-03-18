@@ -19,7 +19,7 @@ export const ChatCardHeader = ({post }: Props) => {
   return (
     <View style={styles.container}>
        <View style={styles.detailsContainer}>
-       <Image  source={getImageForActivity('symbol_hands_heart-DEFAULT') }  style={styles.image}/>
+       <Image  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
         <View>
            <Text style={styles.textTitle} >{post.activityTitle}</Text>
            <Text style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>

@@ -21,7 +21,7 @@ export const ChatCard = () => {
     date: new Date(),
     description: "Det var so roligt!",
     emoji: [],
-    imageURL: "",
+    imageURL: "symbol_hands_heart-DEFAULT",
     comments: [],
   };
     
