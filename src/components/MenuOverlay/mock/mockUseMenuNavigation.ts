@@ -22,6 +22,10 @@ export const mockUserNav: Array<NavigationObject> = [
     title: "FAQ",
     screenName: "Faq" as UserStack,
   },
+  {
+    title: "Chat",
+    screenName: "Chat" as UserStack,
+  }
 ];
 
 export const adminNavigations: Array<NavigationObject> = [

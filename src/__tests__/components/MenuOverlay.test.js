@@ -96,6 +96,7 @@ describe("Testing MenuOverlay", () => {
     expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -113,6 +114,7 @@ describe("Testing MenuOverlay", () => {
     expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -127,6 +129,7 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Alla användare").length).toBe(1);
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -189,7 +192,18 @@ describe("Testing MenuOverlay", () => {
       fireEvent.press(faqButton);
       expect(mockedNavigate).toHaveBeenCalledWith("Faq");
     });
+    it("Chat button", () => {
+      const onClickMock = jest.fn();
+      user();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+      );
 
+      const ChatButton = getByTestId("menuLinkButton.Chat");
+      fireEvent.press(ChatButton);
+      expect(mockedNavigate).toHaveBeenCalledWith("Chat");
+    });
+    
     it("Admin button", () => {
       admin();
       const onClickMock = jest.fn();
