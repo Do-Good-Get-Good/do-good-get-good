@@ -86,6 +86,7 @@ android {
 
     namespace "se.technogarden.dogoodgetgood"
     defaultConfig {
+        resConfigs "sv"
         applicationId "se.technogarden.dogoodgetgood"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
