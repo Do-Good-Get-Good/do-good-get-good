@@ -17,6 +17,7 @@ import typography from "../assets/theme/typography";
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 import { CreateUserForm } from "../components";
+import { Activity } from "../utility/types";
 
 export type UserNewAccount = {
   name: string;
@@ -33,6 +34,10 @@ type Props = {
   navigation: any;
 };
 
+const  generateRandomPassword=()=> Math.random().toString(36).slice(-8);
+  
+
+
 const CreateUser = ({ route, navigation }: Props) => {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
 
@@ -43,8 +48,9 @@ const CreateUser = ({ route, navigation }: Props) => {
     name: "",
     surname: "",
     email: "",
-    password: "",
+    password:generateRandomPassword(),
     role: Role.user,
+  
   });
 
   // Step 2
@@ -57,16 +63,17 @@ const CreateUser = ({ route, navigation }: Props) => {
     photo: "",
     imageUrl: "",
   });
-  const [selectedActivity, setSelectedActivity] = useState(null);
+  enum NewActivity{newActivity="create-new"}
+  const [selectedActivity, setSelectedActivity] = useState<null|Activity|"create-new">(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
-    <CreateUserForm user={user} setUser={setUser} nextPage={handleNextPage} />,
+    <CreateUserForm user={user} setUser={setUser} nextPage={()=>next()} />,
     <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
-      goBack={handleGoBack}
+      goBack={()=>back()}
       createUserAndNewActivity={handleCreateUserAndNewActivity}
       createUserAndLinkSelectedActivity={handleCreateUser}
     />,
@@ -84,23 +91,16 @@ const CreateUser = ({ route, navigation }: Props) => {
     }
   }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
-  function handleNextPage() {
-    next();
-  }
-
-  function handleGoBack() {
-    back();
-  }
-
   function handleCreateUser() {
-    createUserAndLinkSelectedActivity(
-      user,
-      selectedActivity,
-      setLoading,
-      navigation,
-    );
-  }
-
+    if (selectedActivity !== null &&  selectedActivity !== "create-new" &&'id' in selectedActivity) {
+        createUserAndLinkSelectedActivity(
+            user,
+            selectedActivity.id,
+            setLoading,
+            navigation,
+        );
+    }
+}
   function handleCreateUserAndNewActivity() {
     const newActivity = {
       active_status: true,
@@ -136,6 +136,7 @@ const CreateUser = ({ route, navigation }: Props) => {
         return "Koppla aktivitet till användaren";
     }
   }
+  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
