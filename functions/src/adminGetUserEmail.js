@@ -6,15 +6,14 @@ const {
 } = require("./lib/customErrors");
 
 exports.adminGetUserEmail = functions.https.onCall(async (userID, context) => {
+  if (!context.auth) {
+    throw new UnauthenticatedError("The user is not authenticated.");
+  }
+
+  if (!context.auth.token.superadmin) {
+    throw new InvalidRoleError("Only Superadmin can see user email.");
+  }
   try {
-    if (!context.auth) {
-      throw new UnauthenticatedError("The user is not authenticated.");
-    }
-
-    if (!context.auth.token.superadmin) {
-      throw new InvalidRoleError("Only Superadmin can see user email.");
-    }
-
     const userRecord = await admin.auth().getUser(userID);
     return userRecord.email;
   } catch (error) {

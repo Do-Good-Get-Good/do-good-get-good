@@ -16,15 +16,14 @@ const setPrevRoleToFalse = (role) => {
 
 exports.updateUserRoleClaims = functions.https.onCall(
   async (changedUser, context) => {
+    if (!context.auth) {
+      throw new UnauthenticatedError("The user is not authenticated.");
+    }
+
+    if (!context.auth.token.superadmin) {
+      throw new InvalidRoleError("Only Superadmin can change user claims");
+    }
     try {
-      if (!context.auth) {
-        throw new UnauthenticatedError("The user is not authenticated.");
-      }
-
-      if (!context.auth.token.superadmin) {
-        throw new InvalidRoleError("Only Superadmin can change user claims");
-      }
-
       const userClaim = setPrevRoleToFalse(changedUser.role);
 
       await admin.auth().setCustomUserClaims(changedUser.id, userClaim);
