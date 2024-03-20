@@ -15,6 +15,7 @@ import { useEffect, useState } from "react";
 
 import { Overlay } from "@rneui/base";
 import { LongButton } from "../Buttons/LongButton";
+import { RadioButton } from "../Buttons/RadioButton";
 
 type OptionsListType = {
   [key: string]: string;
@@ -65,7 +66,12 @@ export const PopupWithRadioButtons = ({
                 exceptOf !== key && (
                   <View style={styles.containerTextAndRadioButtins} key={key}>
                     <Text testID={`popUpTextvalue.${key}`}>{value}</Text>
-                    <TouchableOpacity
+                    <RadioButton
+                      label=""
+                      selected={key === choice}
+                      onPress={() => setChoice(key)}
+                    />
+                    {/* <TouchableOpacity
                       testID={`popUpRadioButton.${key}`}
                       onPress={() => setChoice(key)}
                     >
@@ -74,7 +80,7 @@ export const PopupWithRadioButtons = ({
                           <View style={styles.smallCircul}></View>
                         )}
                       </View>
-                    </TouchableOpacity>
+                    </TouchableOpacity> */}
                   </View>
                 ),
             )}
@@ -102,13 +108,6 @@ const styles = StyleSheet.create({
     ...typography.title,
     margin: 12,
   },
-  smallCircul: {
-    width: 10,
-    height: 10,
-    borderRadius: 10 / 2,
-    margin: 4,
-    backgroundColor: colors.dark,
-  },
   okButton: {
     backgroundColor: colors.primary,
     borderRadius: 5,
@@ -121,14 +120,10 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-const radioButtonStyle = (
-  key: keyof OptionsListType,
-  choice: keyof OptionsListType,
-) => ({
-  width: 20,
-  height: 20,
-  borderRadius: 20 / 2,
-  backgroundColor: key === choice ? colors.primary : colors.background,
-  borderColor: colors.dark,
-  borderWidth: 1,
-});
+// const radioButtonStyle = (
+//   key: keyof OptionsListType,
+//   choice: keyof OptionsListType,
+// ) => ({
+//   backgroundColor: key === choice ? colors.primary : colors.background,
+ 
+// });

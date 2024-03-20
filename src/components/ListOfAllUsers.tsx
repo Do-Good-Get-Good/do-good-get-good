@@ -15,6 +15,7 @@ import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import { SearchBarComponent } from "./SearchBarComponent";
+import { RadioButton } from "./Buttons/RadioButton";
 
 type Props = {
   navigation: any;
@@ -22,6 +23,9 @@ type Props = {
 
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
+  const [selectedOption, setSelectedOption] = useState<boolean | null>(null);
+
+
   const allUsersInSystem = superAdminContext?.allUsersInSystem;
   const { onSelectUser } = useOnSelectUser();
   const [searchArray, setSearchArray] = useState<User[]>(
@@ -32,6 +36,11 @@ export function ListOfAllUsers({ navigation }: Props) {
     onSelectUser(selectedUser);
     navigation.navigate("RolesAndConnection");
   }
+  const handleSelectOption = (value: boolean) => {
+    setSelectedOption(value);
+    console.log(`Selected Option: ${value ? "Active Users" : "In Active"}`);
+  };
+
 
   return (
     <View style={styles.screenContainer}>
@@ -41,6 +50,19 @@ export function ListOfAllUsers({ navigation }: Props) {
         keys={["firstName", "lastName"]}
         onSearch={setSearchArray}
       />
+      <View style={styles.radioButton}>
+        <Text> Activa:</Text>
+        <RadioButton
+          label="Ja"
+          onPress={() => handleSelectOption(true)}
+          selected={selectedOption === true}
+        />
+        <RadioButton
+          label="Nej"
+          onPress={() => handleSelectOption(false)}
+          selected={selectedOption === false}
+        />
+      </View>
       {searchArray.map((user, index) => (
         <View key={user.id + index} style={styles.contrainer}>
           <Text style={styles.firstAndLastNameText}>
@@ -77,4 +99,8 @@ const styles = StyleSheet.create({
   firstAndLastNameText: {
     ...typography.b2,
   },
+  radioButton:{
+    flexDirection:'row',
+
+  }
 });
