@@ -33,6 +33,10 @@ export const userNavigations: Array<NavigationObject> = [
     title: "FAQ",
     screenName: UserStack.Faq,
   },
+  // {
+  //   title: "Chat",
+  //   screenName: UserStack.Chat,
+  // }
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
