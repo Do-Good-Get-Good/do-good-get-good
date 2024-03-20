@@ -1,5 +1,9 @@
 import firestore from "@react-native-firebase/firestore";
-import { TimeEntry, User } from "../../utility/types";
+import {
+  TimeEntry,
+  User,
+  UserAndUnapprovedTimeEntriesType,
+} from "../../utility/types";
 import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 
 export const incrementTotalHoursForMonthYearAccumulatedTime = (
@@ -40,5 +44,17 @@ export const confirmTimeEntry = async (
   } catch (error) {
     console.log("There was an error confirming the timeentry");
     return Promise.reject(error);
+  }
+};
+
+export const updateUserAsAdmin = async (user: User) => {
+  try {
+    await firestore().collection("Users").doc(user.id).update({
+      first_name: user.firstName,
+      last_name: user.lastName,
+      status_active: user.statusActive,
+    });
+  } catch (error) {
+    console.log(error);
   }
 };

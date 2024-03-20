@@ -146,12 +146,12 @@ class AdminStore {
     this.users = openSelectedUser(this.users, user);
   }
 
-  updateUser(newInfo) {
-    updateUserInfoFromAdminScreen(newInfo);
-    this.allUsers = updateUser(this.allUsers, newInfo);
-    this.users = updateUser(this.users, newInfo);
-    this.updatedUserInfo = newInfo;
-  }
+  // updateUser(newInfo) {
+  //   updateUserInfoFromAdminScreen(newInfo);
+  //   this.allUsers = updateUser(this.allUsers, newInfo);
+  //   this.users = updateUser(this.users, newInfo);
+  //   this.updatedUserInfo = newInfo;
+  // }
 
   // updateUserTimeEntries(userIds) {
   //   userIds.map(async (userId) => {

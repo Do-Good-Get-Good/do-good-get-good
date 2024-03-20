@@ -30,10 +30,7 @@ export const useChangeRoleAndConnectionButtons = () => {
 
   const onChangeUser = (user: User) => {
     navigation.navigate(AdminStack.ChangeUser, {
-      userName: user.firstName,
-      userSurname: user.lastName,
-      statusActive: user.statusActive,
-      userID: user.id,
+      user,
       prevRoute: SuperAdminStack.RolesAndConnection,
     });
   };

@@ -11,7 +11,8 @@ import colors from "../../assets/theme/colors";
 import { UserAndUnapprovedTimeEntries } from "../../components/DropDowns/UserAndUpapprovedTimeEntries";
 import { useAdminFunction } from "../../context/AdminContext";
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
-import { Dialog } from "@rneui/base";
+
+import { Spinner } from "../../components/Loading";
 
 type Props = {
   navigation: any;
@@ -33,9 +34,7 @@ export const AdminPage = ({ navigation }: Props) => {
           onApproveTimeEntriesAdmin={onApproveTimeEntriesAdmin}
           users={usersWithUnconfirmedTimeEntries}
         />
-        {loading && (
-          <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
-        )}
+        <Spinner loading={loading} />
         <MyUsers users={usersWithFiveUnconfirmedTimeEntries} />
         <BottomLogo />
       </ScrollView>

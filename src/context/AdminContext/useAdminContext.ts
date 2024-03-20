@@ -6,15 +6,7 @@ import {
   getUserUnconfirmedTimeEntries,
   getUsersFiveNewestTimeEntries,
 } from "../../firebase-functions/getTS/get";
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-} from "../../utility/types";
-import {
-  filterAfterApprovedTimeEntrirs,
-  makeListOfUserAndUnapprovedTimeEntries,
-} from "../utility/functions";
+import { TimeEntry, User } from "../../utility/types";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
 
 import { Role } from "../../utility/enums";

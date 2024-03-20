@@ -25,10 +25,7 @@ export const MyUserAndFiveAprovedTimeEntries = ({ user }: Props) => {
 
   const onChangeUser = () => {
     navigation.navigate(AdminStack.ChangeUser, {
-      userName: user.firstName,
-      userSurname: user.lastName,
-      statusActive: user.statusActive,
-      userID: user.id,
+      user,
     });
   };
 
