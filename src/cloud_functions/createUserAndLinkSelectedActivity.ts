@@ -1,14 +1,17 @@
 import functions from "@react-native-firebase/functions";
 import craschlytics from "@react-native-firebase/crashlytics";
 import { Alert } from "react-native";
+import { resetPass } from "../firebase-functions/updateTS/resetPasswordFunction";
 
 import adminStore from "../store/adminStore";
+import { Activity, User } from "../utility/types";
+import { UserNewAccount } from "../screens/CreateUser";
 
 export async function createUserAndLinkSelectedActivity(
-  user,
-  selectedActivity,
-  setLoading,
-  navigation
+  user:UserNewAccount,
+  activityId:Activity["id"],
+  setLoading: (loading:boolean)=>void,
+  navigation: any
 ) {
   try {
     setLoading(true);
@@ -19,7 +22,7 @@ export async function createUserAndLinkSelectedActivity(
       email: user.email,
       password: user.password,
       role: user.role,
-      activityId: selectedActivity.id,
+      activityId: activityId,
     });
 
     let newUser = res.data.createdUser;
@@ -37,19 +40,21 @@ export async function createUserAndLinkSelectedActivity(
         currentForMonth: newUser.total_hours_month,
       },
     };
-    console.log(res);
+    // console.log(res);
 
     // Save new user locally
     adminStore.addNewUser(userInfo);
 
+    const sendLinkToResetPasswordToUser= await resetPass(user.email);
     setLoading(false);
-
     alertUser(
-      `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!`,
+
+      `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!\n${sendLinkToResetPasswordToUser}`,
+      
       false,
       navigation
     );
-  } catch (error) {
+  } catch (error:any) {
     let message;
     if (error === "auth/email-already-exists") {
       message = `En användare med e-post '${user.email}' existerar redan`;
@@ -63,8 +68,8 @@ export async function createUserAndLinkSelectedActivity(
   }
 }
 
-function alertUser(message, error, navigation) {
-  Alert.alert("Skapa användare", message, [
+function alertUser(message:string, error:boolean, navigation:any) {
+ Alert.alert("Skapa användare", message, [
     {
       text: "OK",
       onPress: () => {

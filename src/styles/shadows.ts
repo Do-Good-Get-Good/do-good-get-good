@@ -1,5 +1,6 @@
-import { Platform, ViewStyle } from "react-native";
-import { StyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
+import { StyleSheet } from "react-native";
+import { Platform } from "react-native";
+
 type Props = {
   shadowOpacity?: number;
   shadowRadius?: number;
@@ -25,4 +26,22 @@ export const shadow = ({
       elevation: elevation,
     },
   }),
+});
+
+export const shadows = StyleSheet.create({
+  cardShadow: {
+    ...Platform.select({
+      ios: {
+        shadowOffset: {
+          height: 2,
+          width: 0,
+        },
+        shadowOpacity: 0.3,
+        shadowRadius: 1,
+      },
+      android: {
+        elevation: 2,
+      },
+    }),
+  },
 });
