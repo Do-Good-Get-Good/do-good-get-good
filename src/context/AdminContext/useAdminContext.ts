@@ -58,6 +58,7 @@ export const useAdminContext = () => {
       (userLevel === Role.superadmin || userLevel === Role.admin)
     ) {
       setLoading(true);
+      console.log("------onShowUnApprovedTimeEntriesAdminPage");
       const adminUsers = await getAllUsersConnectedToAdmin(adminID);
       usersAndUnapprovedTimeEntries(adminUsers);
       await usersAndFiveApprovedTimeEntries(adminUsers);

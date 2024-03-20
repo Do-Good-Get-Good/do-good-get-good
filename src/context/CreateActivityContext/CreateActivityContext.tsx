@@ -30,7 +30,7 @@ export const CreateActivityProvider = ({ children }: PropsWithChildren) => {
     city: "",
     photo: "",
     description: "",
-    popular: "",
+    popular: false,
     imageUrl: "",
   });
   const [changedOneActivity, setChangedOneActivity] = useState(false);
@@ -46,7 +46,7 @@ export const CreateActivityProvider = ({ children }: PropsWithChildren) => {
       place: "",
       photo: "",
       title: "",
-      popular: "",
+      popular: false,
       imageUrl: "",
     },
     statusActive: false,
