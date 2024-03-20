@@ -26,7 +26,7 @@ import { ActivityImagesProvider } from "./context/ActivityImagesContext/Activity
 import Faq from "./screens/Faq";
 import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
-import AdminPage from "./screens/AdminPage";
+import { AdminPage } from "./screens/AdminPage";
 import { Chat } from "./screens/Chat";
 
 const Stack = createNativeStackNavigator();
