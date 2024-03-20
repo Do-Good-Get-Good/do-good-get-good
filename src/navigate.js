@@ -39,72 +39,77 @@ export const SuperAdminStack = () => {
             <CreateActivityProvider>
               <TimeStatisticsProvider>
                 <SuperAdminProvider>
-                  <SuperAdminHomePageContextProvider>
-                    <NavigationContainer>
-                      <Stack.Navigator
-                        screenOptions={{
-                          headerShown: false,
-                        }}
-                      >
-                        <Stack.Screen name="HomePage" component={HomePage} />
-                        <Stack.Screen name="AdminPage" component={AdminPage} />
-                        <Stack.Screen
-                          name="MyTimePage"
-                          component={MyTimePage}
-                        />
-                        <Stack.Screen
-                          name="AdminActivityGallery"
-                          component={AdminActivityGallery}
-                        />
-                        <Stack.Screen
-                          name="CreateActivity"
-                          component={CreateActivity}
-                        />
-                        <Stack.Screen
-                          name="ActivityCard"
-                          component={ActivityCard}
-                        />
-                        <Stack.Screen
-                          name="ImagesGallery"
-                          component={ImagesGallery}
-                        />
-                        <Stack.Screen
-                          name="CreateUser"
-                          component={CreateUser}
-                        />
-                        <Stack.Screen
-                          name="ChangeUser"
-                          component={ChangeUser}
-                        />
-                        <Stack.Screen name="Faq" component={Faq} />
-                        <Stack.Screen
-                          name="ConceptPage"
-                          component={ConceptPage}
-                        />
-                        <Stack.Screen
-                          name="ChangeActivity"
-                          component={ChangeActivity}
-                        />
-                        <Stack.Screen
-                          name="DownloadUserData"
-                          component={DownloadUserData}
-                        />
-                        <Stack.Screen
-                          name="AllUsersInTheSystem"
-                          component={AllUsersInTheSystem}
-                        />
-                        <Stack.Screen
-                          name="RolesAndConnection"
-                          component={RolesAndConnection}
-                        />
-                        <Stack.Screen
-                          name="SuperAdminHomePage"
-                          component={SuperAdminHomePage}
-                        />
-                        <Stack.Screen name="Chat" component={Chat} />
-                      </Stack.Navigator>
-                    </NavigationContainer>
-                  </SuperAdminHomePageContextProvider>
+                  <AdminProvider>
+                    <SuperAdminHomePageContextProvider>
+                      <NavigationContainer>
+                        <Stack.Navigator
+                          screenOptions={{
+                            headerShown: false,
+                          }}
+                        >
+                          <Stack.Screen name="HomePage" component={HomePage} />
+                          <Stack.Screen
+                            name="AdminPage"
+                            component={AdminPage}
+                          />
+                          <Stack.Screen
+                            name="MyTimePage"
+                            component={MyTimePage}
+                          />
+                          <Stack.Screen
+                            name="AdminActivityGallery"
+                            component={AdminActivityGallery}
+                          />
+                          <Stack.Screen
+                            name="CreateActivity"
+                            component={CreateActivity}
+                          />
+                          <Stack.Screen
+                            name="ActivityCard"
+                            component={ActivityCard}
+                          />
+                          <Stack.Screen
+                            name="ImagesGallery"
+                            component={ImagesGallery}
+                          />
+                          <Stack.Screen
+                            name="CreateUser"
+                            component={CreateUser}
+                          />
+                          <Stack.Screen
+                            name="ChangeUser"
+                            component={ChangeUser}
+                          />
+                          <Stack.Screen name="Faq" component={Faq} />
+                          <Stack.Screen
+                            name="ConceptPage"
+                            component={ConceptPage}
+                          />
+                          <Stack.Screen
+                            name="ChangeActivity"
+                            component={ChangeActivity}
+                          />
+                          <Stack.Screen
+                            name="DownloadUserData"
+                            component={DownloadUserData}
+                          />
+                          <Stack.Screen
+                            name="AllUsersInTheSystem"
+                            component={AllUsersInTheSystem}
+                          />
+                          <Stack.Screen
+                            name="RolesAndConnection"
+                            component={RolesAndConnection}
+                          />
+                          <Stack.Screen
+                            name="SuperAdminHomePage"
+                            component={SuperAdminHomePage}
+                          />
+                          <Stack.Screen name="Chat" component={Chat} />
+                        </Stack.Navigator>
+                      </NavigationContainer>
+                    </SuperAdminHomePageContextProvider>
+                  </AdminProvider>
                 </SuperAdminProvider>
               </TimeStatisticsProvider>
             </CreateActivityProvider>
@@ -123,42 +128,47 @@ export const AdminStack = () => {
           <AdminGalleryProvider>
             <CreateActivityProvider>
               <TimeStatisticsProvider>
-                <NavigationContainer>
-                  <Stack.Navigator
-                    screenOptions={{
-                      headerShown: false,
-                    }}
-                  >
-                    <Stack.Screen name="HomePage" component={HomePage} />
-                    <Stack.Screen name="AdminPage" component={AdminPage} />
-                    <Stack.Screen name="MyTimePage" component={MyTimePage} />
-                    <Stack.Screen
-                      name="AdminActivityGallery"
-                      component={AdminActivityGallery}
-                    />
-                    <Stack.Screen
-                      name="CreateActivity"
-                      component={CreateActivity}
-                    />
-                    <Stack.Screen
-                      name="ActivityCard"
-                      component={ActivityCard}
-                    />
-                    <Stack.Screen
-                      name="ImagesGallery"
-                      component={ImagesGallery}
-                    />
-                    <Stack.Screen name="CreateUser" component={CreateUser} />
-                    <Stack.Screen name="ChangeUser" component={ChangeUser} />
-                    <Stack.Screen name="Faq" component={Faq} />
-                    <Stack.Screen name="ConceptPage" component={ConceptPage} />
-                    <Stack.Screen
-                      name="ChangeActivity"
-                      component={ChangeActivity}
-                    />
-                    <Stack.Screen name="Chat" component={Chat} />
-                  </Stack.Navigator>
-                </NavigationContainer>
+                <AdminProvider>
+                  <NavigationContainer>
+                    <Stack.Navigator
+                      screenOptions={{
+                        headerShown: false,
+                      }}
+                    >
+                      <Stack.Screen name="HomePage" component={HomePage} />
+                      <Stack.Screen name="AdminPage" component={AdminPage} />
+                      <Stack.Screen name="MyTimePage" component={MyTimePage} />
+                      <Stack.Screen
+                        name="AdminActivityGallery"
+                        component={AdminActivityGallery}
+                      />
+                      <Stack.Screen
+                        name="CreateActivity"
+                        component={CreateActivity}
+                      />
+                      <Stack.Screen
+                        name="ActivityCard"
+                        component={ActivityCard}
+                      />
+                      <Stack.Screen
+                        name="ImagesGallery"
+                        component={ImagesGallery}
+                      />
+                      <Stack.Screen name="CreateUser" component={CreateUser} />
+                      <Stack.Screen name="ChangeUser" component={ChangeUser} />
+                      <Stack.Screen name="Faq" component={Faq} />
+                      <Stack.Screen
+                        name="ConceptPage"
+                        component={ConceptPage}
+                      />
+                      <Stack.Screen
+                        name="ChangeActivity"
+                        component={ChangeActivity}
+                      />
+                      <Stack.Screen name="Chat" component={Chat} />
+                    </Stack.Navigator>
+                  </NavigationContainer>
+                </AdminProvider>
               </TimeStatisticsProvider>
             </CreateActivityProvider>
           </AdminGalleryProvider>
