@@ -95,38 +95,38 @@ class AdminStore {
     makeAutoObservable(this);
   }
 
-  async fetchAllUsers(usersConnectedToadmin) {
-    if (!this.fetchUsers) return;
-    for (const user of usersConnectedToadmin) {
-      try {
-        let response = await getUsersFiveNewestTimeEntries(user.id);
-        let userInfo = {
-          activitiesAndAccumulatedTime: user.activitiesAndAccumulatedTime,
-          adminID: user.adminID,
-          connectedActivities: user.connectedActivities,
-          firstName: user.firstName,
-          lastName: user.lastName,
-          role: user.role,
-          timeEntries: response ?? [],
-          isOpen: false,
-          statusActive: user.statusActive,
-          userID: user.id,
-          timeObject: {
-            paidTime: user.totalHoursYear,
-            currentForMonth: user.totalHoursMonth,
-          },
-        };
-        this.addNewUser(userInfo);
-        runInAction(() => {
-          if (this.allUsers.length === usersConnectedToadmin.length)
-            this.loading = false;
-        });
-      } catch (error) {
-        console.log("MyUsers ", error);
-      }
-    }
-    this.fetchUsers = false;
-  }
+  // async fetchAllUsers(usersConnectedToadmin) {
+  //   if (!this.fetchUsers) return;
+  //   for (const user of usersConnectedToadmin) {
+  //     try {
+  //       let response = await getUsersFiveNewestTimeEntries(user.id);
+  //       let userInfo = {
+  //         activitiesAndAccumulatedTime: user.activitiesAndAccumulatedTime,
+  //         adminID: user.adminID,
+  //         connectedActivities: user.connectedActivities,
+  //         firstName: user.firstName,
+  //         lastName: user.lastName,
+  //         role: user.role,
+  //         timeEntries: response ?? [],
+  //         isOpen: false,
+  //         statusActive: user.statusActive,
+  //         userID: user.id,
+  //         timeObject: {
+  //           paidTime: user.totalHoursYear,
+  //           currentForMonth: user.totalHoursMonth,
+  //         },
+  //       };
+  //       this.addNewUser(userInfo);
+  //       runInAction(() => {
+  //         if (this.allUsers.length === usersConnectedToadmin.length)
+  //           this.loading = false;
+  //       });
+  //     } catch (error) {
+  //       console.log("MyUsers ", error);
+  //     }
+  //   }
+  //   this.fetchUsers = false;
+  // }
 
   addNewUser(user) {
     this.allUsers.push(user);

@@ -34,7 +34,7 @@ export const MyUserAndFiveAprovedTimeEntries = ({ user }: Props) => {
 
   return (
     <View style={{ minHeight: 240, justifyContent: "space-between" }}>
-      <TimeStatistics timeObject={() => adaptUserToTimeStatistics(user)} />
+      <TimeStatistics timeObject={adaptUserToTimeStatistics(user)} />
       {user.timeEntries &&
         user.timeEntries.map((entry) => (
           <View key={entry.id}>

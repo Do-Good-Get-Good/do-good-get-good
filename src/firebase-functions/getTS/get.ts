@@ -137,11 +137,6 @@ export const getUsersFiveNewestTimeEntries = async (
       .limit(5)
       .get();
 
-    // if (!querySnapshot.empty) {
-    //   timeEntryData = querySnapshot.docs.map((doc) => doc.data());
-    // }
-    // return Promise.resolve(timeEntryData);
-
     let data = querySnapshot?.docs.map((doc) => {
       return timeEntryObject(doc);
     });

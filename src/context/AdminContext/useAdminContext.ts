@@ -16,29 +16,11 @@ import {
   makeListOfUserAndUnapprovedTimeEntries,
 } from "../utility/functions";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
-import adminStore from "../../store/adminStore";
+
 import { Role } from "../../utility/enums";
 import userLevelStore from "../../store/userLevel";
-import { useEffect, useState } from "react";
 
-const makeArrayWithTimeEntriesAndUsers = async (
-  usersConnectedToAdmin: User[],
-  getTimeEntries: (id: User["id"]) => Promise<TimeEntry[]>,
-) => {
-  let prevUsers: User[] = [];
-
-  for (const user of usersConnectedToAdmin) {
-    const tempArr = await getTimeEntries(user.id);
-
-    if (tempArr.length > 0) {
-      prevUsers.push({
-        ...user,
-        timeEntries: tempArr,
-      });
-    }
-  }
-  return prevUsers;
-};
+import { makeArrayWithTimeEntriesAndUsers } from "./utility";
 
 export const useAdminContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
@@ -59,25 +41,34 @@ export const useAdminContext = () => {
     }
   };
 
+  const usersAndUnapprovedTimeEntries = async (adminUsers: User[]) => {
+    const allTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
+      adminUsers,
+      getUserUnconfirmedTimeEntries,
+      true,
+    );
+    setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
+  };
+
+  const usersAndFiveApprovedTimeEntries = async (adminUsers: User[]) => {
+    setLoading(true);
+    const fiveTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
+      adminUsers,
+      getUsersFiveNewestTimeEntries,
+    );
+    setUsersWithFiveUnconfirmedTimeEntries(fiveTimeEntriesAndUsers);
+    setLoading(false);
+  };
+
   const onShowUnApprovedTimeEntriesAdminPage = async () => {
     if (
       adminID &&
       (userLevel === Role.superadmin || userLevel === Role.admin)
     ) {
+      setLoading(true);
       const adminUsers = await getAllUsersConnectedToAdmin(adminID);
-      const allTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
-        adminUsers,
-        getUserUnconfirmedTimeEntries,
-      );
-      setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
-      const fiveTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
-        adminUsers,
-        getUsersFiveNewestTimeEntries,
-      );
-      // for this PR I leave this logic with admin store to keep branch smaller but in next branch it will be away
-      await adminStore.fetchAllUsers(adminUsers);
-
-      setUsersWithFiveUnconfirmedTimeEntries(fiveTimeEntriesAndUsers);
+      usersAndUnapprovedTimeEntries(adminUsers);
+      await usersAndFiveApprovedTimeEntries(adminUsers);
       setLoading(false);
     }
   };
