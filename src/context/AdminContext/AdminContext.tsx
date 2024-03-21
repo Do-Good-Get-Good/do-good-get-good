@@ -13,6 +13,8 @@ type AdminContextType = {
   setUsersWithFiveUnconfirmedTimeEntries: (user: User[]) => void;
   loading: boolean;
   setLoading: (user: boolean) => void;
+  allUsersConnectedToadmin: User[];
+  setAllUsersConnectedToadmin: (users: User[]) => void;
 };
 
 const AdminContext = React.createContext<AdminContextType>({
@@ -22,6 +24,8 @@ const AdminContext = React.createContext<AdminContextType>({
   setUsersWithFiveUnconfirmedTimeEntries: () => [],
   loading: true,
   setLoading: () => [],
+  allUsersConnectedToadmin: [],
+  setAllUsersConnectedToadmin: () => [],
 });
 
 export const useAdminFunction = () => {
@@ -38,6 +42,9 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   const [usersWithUnconfirmedTimeEntries, setUsersWithUnconfirmedTimeEntries] =
     useState<User[]>([]);
   const [loading, setLoading] = useState(true);
+  const [allUsersConnectedToadmin, setAllUsersConnectedToadmin] = useState<
+    User[]
+  >([]);
 
   return (
     <AdminContext.Provider
@@ -46,6 +53,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
         usersWithUnconfirmedTimeEntries,
         setUsersWithUnconfirmedTimeEntries,
         setUsersWithFiveUnconfirmedTimeEntries,
+        allUsersConnectedToadmin,
+        setAllUsersConnectedToadmin,
         loading,
         setLoading,
       }}

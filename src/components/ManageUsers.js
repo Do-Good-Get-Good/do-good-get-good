@@ -14,7 +14,8 @@ import auth from "@react-native-firebase/auth";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-
+import { useAdminFunction } from "../context/AdminContext";
+import { useAdminContext } from "../context/AdminContext/useAdminContext";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
@@ -27,11 +28,11 @@ import adminStore from "../store/adminStore";
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
-  const userData = adminStore.allUsers;
+  const { allUsersConnectedToadmin } = useAdminFunction();
+  const { getAdminUsers } = useAdminContext();
 
   useEffect(() => {
     if (visible) {
-      adminStore.sortUsersAlphabetically(userData);
       fetchAllMyUsers();
       fetchAllOtherUsers();
     }
@@ -41,13 +42,18 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     };
   }, [visible]);
 
-  const fetchAllMyUsers = () => {
+  const fetchAllMyUsers = async () => {
     if (myUsers.length === 0) {
-      let users = userData.map((user) => {
+      let usersArray =
+        allUsersConnectedToadmin.length > 0
+          ? allUsersConnectedToadmin
+          : await getAdminUsers();
+
+      let users = usersArray.map((user) => {
         let connectedActivitiesArray = user.connectedActivities;
 
         let userInfo = {
-          userID: user.userID,
+          userID: user.id,
           fullName: `${user.firstName} ${user.lastName}`,
           checked: false,
         };

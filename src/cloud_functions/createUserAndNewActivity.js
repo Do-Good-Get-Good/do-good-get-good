@@ -14,7 +14,6 @@ export async function createUserAndNewActivity(
   try {
     setLoading(true);
     let createdActivityId = await addActivity(newActivity);
-    console.log(createdActivityId, " .  -------  createdActivityId");
     setAllActiveActvivitiesFB((prev) => [
       ...prev,
       {
@@ -49,10 +48,6 @@ export async function createUserAndNewActivity(
         createdUser,
         navigation,
         sendLinkToResetPasswordToUser,
-      );
-      console.log(
-        sendLinkToResetPasswordToUser,
-        " ------ sendLinkToResetPasswordToUser",
       );
     } catch (error) {
       craschlytics().log(

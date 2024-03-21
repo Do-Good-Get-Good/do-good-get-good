@@ -128,23 +128,23 @@ class AdminStore {
   //   this.fetchUsers = false;
   // }
 
-  addNewUser(user) {
-    this.allUsers.push(user);
-    this.filterUsersByActiveStatus(true);
-  }
+  // addNewUser(user) {
+  //   this.allUsers.push(user);
+  //   this.filterUsersByActiveStatus(true);
+  // }
 
-  filterUsersByActiveStatus(bool) {
-    this.users = filterUsersByActiveStatus(this.allUsers, bool);
-    this.sortUsersAlphabetically(this.users);
-  }
+  // filterUsersByActiveStatus(bool) {
+  //   this.users = filterUsersByActiveStatus(this.allUsers, bool);
+  //   this.sortUsersAlphabetically(this.users);
+  // }
 
-  sortUsersAlphabetically(userArray) {
-    userArray.sort((a, b) => a.firstName.localeCompare(b.firstName));
-  }
+  // sortUsersAlphabetically(userArray) {
+  //   userArray.sort((a, b) => a.firstName.localeCompare(b.firstName));
+  // }
 
-  openSelectedUser(user) {
-    this.users = openSelectedUser(this.users, user);
-  }
+  // openSelectedUser(user) {
+  //   this.users = openSelectedUser(this.users, user);
+  // }
 
   // updateUser(newInfo) {
   //   updateUserInfoFromAdminScreen(newInfo);
