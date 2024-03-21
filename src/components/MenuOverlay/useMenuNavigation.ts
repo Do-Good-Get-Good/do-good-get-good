@@ -42,7 +42,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
   const { getAllUserAndUnapprovedTimeEntries } =
     useSuperAdminHomePageFunction();
   const adminGalleryContext = useAdminGalleryFunction();
-  useGetAllUsersThatExistInTheSystem(role);
+  const {getAllUsersByStatus}  =useGetAllUsersThatExistInTheSystem(role);
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
@@ -65,6 +65,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Alla användare",
       screenName: SuperAdminStack.AllUsersInTheSystem,
+      toDo: ()=>getAllUsersByStatus(true)
     },
     {
       title: "Exportera data",

@@ -94,7 +94,6 @@ export const getUserByStatus = async (isActive: boolean = true) => {
     let users = querySnapshot.docs.map((doc) => {
       return userObject(doc);
     });
-
     return Promise.resolve(users);
   } catch (error) {
     return Promise.reject(error);

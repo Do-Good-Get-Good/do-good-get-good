@@ -2,7 +2,6 @@ import { StyleSheet, Text, TouchableOpacity,View } from "react-native";
 
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { useState } from "react";
 
 type Props = {
     label?:string,
@@ -11,12 +10,6 @@ type Props = {
     style?: any;
 };
 export const RadioButton = ({ label,onPress,selected }:Props) => {
-    const [selectedOption, setSelectedOption] = useState<boolean | null>(null);
-    // const [selectedOption, setSelectedOption] = useState<boolean>(selected || false);
-
-    const handleSelectOption = (value: boolean) => {
-      setSelectedOption(value);
-    };
 
   return (
     <View style={styles.labelStyle}>

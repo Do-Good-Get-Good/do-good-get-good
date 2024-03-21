@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState } from "react";
 
 import {
   StyleSheet,
@@ -15,7 +15,9 @@ import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import { SearchBarComponent } from "./SearchBarComponent";
-import { RadioButton } from "./Buttons/RadioButton";
+import { ActiveOrInActive } from "./ActiveOrInActive";
+import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
+import userLevelStore from "../store/userLevel";
 
 type Props = {
   navigation: any;
@@ -23,24 +25,31 @@ type Props = {
 
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
-  const [selectedOption, setSelectedOption] = useState<boolean | null>(null);
+  const [selectedOption, setSelectedOption] = useState<boolean >(true);
+  const { userLevel } = userLevelStore;
+  const {getAllUsersByStatus}  =useGetAllUsersThatExistInTheSystem(userLevel);
 
 
   const allUsersInSystem = superAdminContext?.allUsersInSystem;
   const { onSelectUser } = useOnSelectUser();
-  const [searchArray, setSearchArray] = useState<User[]>(
-    allUsersInSystem ?? [],
-  );
+  const [searchArray, setSearchArray] = useState<User[]>([]);
+
+  useEffect(()=>{
+    setSearchArray( allUsersInSystem ?? [])
+  },[allUsersInSystem])
+
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
     navigation.navigate("RolesAndConnection");
   }
-  const handleSelectOption = (value: boolean) => {
-    setSelectedOption(value);
-    console.log(`Selected Option: ${value ? "Active Users" : "In Active"}`);
-  };
 
+  const onGetInActiveUsers = async()=>{
+    setSelectedOption(false)
+    !searchArray.find((user )=> !user.statusActive) && await getAllUsersByStatus(false)
+  }
+
+ 
 
   return (
     <View style={styles.screenContainer}>
@@ -50,33 +59,24 @@ export function ListOfAllUsers({ navigation }: Props) {
         keys={["firstName", "lastName"]}
         onSearch={setSearchArray}
       />
-      <View style={styles.radioButton}>
-        <Text> Activa:</Text>
-        <RadioButton
-          label="Ja"
-          onPress={() => handleSelectOption(true)}
-          selected={selectedOption === true}
-        />
-        <RadioButton
-          label="Nej"
-          onPress={() => handleSelectOption(false)}
-          selected={selectedOption === false}
-        />
-      </View>
-      {searchArray.map((user, index) => (
-        <View key={user.id + index} style={styles.contrainer}>
-          <Text style={styles.firstAndLastNameText}>
-            {user.firstName + " " + user.lastName}
-          </Text>
-          <TouchableOpacity onPress={() => onPressUser(user)}>
-            <Icon
-              color={colors.dark}
-              name="pencil-outline"
-              type="material-community"
-              size={25}
-            />
-          </TouchableOpacity>
-        </View>
+       <ActiveOrInActive isActive={selectedOption} onYes={setSelectedOption} onNo={onGetInActiveUsers}/>
+      {searchArray
+    
+      
+      .map((user, index) => selectedOption === user.statusActive && (
+     <View key={user.id + index} style={styles.contrainer}>
+        <Text style={styles.firstAndLastNameText}>
+          {user.firstName + " " + user.lastName}
+        </Text>
+        <TouchableOpacity onPress={() => onPressUser(user)}>
+          <Icon
+            color={colors.dark}
+            name="pencil-outline"
+            type="material-community"
+            size={25}
+          />
+        </TouchableOpacity>
+      </View> 
       ))}
     </View>
   );
@@ -98,9 +98,5 @@ const styles = StyleSheet.create({
   },
   firstAndLastNameText: {
     ...typography.b2,
-  },
-  radioButton:{
-    flexDirection:'row',
-
-  }
+  }, 
 });

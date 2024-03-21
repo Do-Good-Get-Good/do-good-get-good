@@ -2,27 +2,31 @@ import { useEffect } from "react";
 
 import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { getAllUsersData } from "../../firebase-functions/getTS/get";
+import {  getUserByStatus } from "../../firebase-functions/getTS/get";
 
 export const useGetAllUsersThatExistInTheSystem = (
   userLevel: Role | undefined,
 ) => {
   const context = useSuperAdminFunction();
+  const allUsersInSystem = context?.allUsersInSystem ?? []
 
-  const getAllUsersThatExistInTheSystem = async () => {
+  const getAllUsersByStatus= async (isActive: boolean) => {
+    if (userLevel === Role.superadmin) {
     try {
-      let allUsers = await getAllUsersData();
-      allUsers && context?.setAllUsersInSystem(allUsers);
+  
+      const getUsers = await getUserByStatus(isActive)
+      getUsers && context?.setAllUsersInSystem([...allUsersInSystem ,...getUsers]);
+     
     } catch (error) {
       console.log("SuperAdminContext errorMessage ", error);
-    }
+    }}
   };
 
   useEffect(() => {
-    if (userLevel === Role.superadmin) {
-      getAllUsersThatExistInTheSystem();
-    } else {
+    if (userLevel !== Role.superadmin) {
       context?.setAllUsersInSystem(undefined);
     }
   }, [userLevel]);
+
+  return {getAllUsersByStatus}
 };
