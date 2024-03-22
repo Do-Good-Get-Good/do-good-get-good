@@ -12,14 +12,13 @@ export const SortBy = ({ setSortBy }: Props) => {
     <View style={styles.dropdown}>
       {Object.entries(Sort).map(([key, value]) => (
         <TouchableOpacity
-          testID={`insideSmallDropdown ${key}`}
           key={key}
           onPress={() => {
             setSortBy(value);
           }}
         >
           <View style={styles.dropdownItem}>
-            <Text testID={`insideSmallDropdownText ${key}`}>{value}</Text>
+            <Text testID={`inside-sort-by-dropdown-${key}`}>{value}</Text>
           </View>
         </TouchableOpacity>
       ))}

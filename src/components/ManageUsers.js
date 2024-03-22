@@ -8,7 +8,7 @@ import {
 } from "react-native";
 import React, { useEffect, useState } from "react";
 
-import { CheckBox, Overlay, Icon } from "@rneui/base";
+import { Overlay, Icon } from "@rneui/base";
 
 import auth from "@react-native-firebase/auth";
 
@@ -22,6 +22,7 @@ import {
   updateConnectedUsersOnActivity,
 } from "../firebase-functions/update";
 import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
+import { Checkbox } from "../components/Checkbox";
 
 import adminStore from "../store/adminStore";
 
@@ -49,7 +50,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           ? allUsersConnectedToadmin
           : await getAdminUsers();
 
-      let users = usersArray.map((user) => {
+      let users = usersArray?.map((user) => {
         let connectedActivitiesArray = user.connectedActivities;
 
         let userInfo = {
@@ -79,6 +80,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
       console.log(error);
     }
   };
+  // TODO: REFACTORE this page, especially this function. it make request to very connected user every time admin presses to save it, even if admin connected or disconnected only one user
 
   const connectOrRemoveActivityFromUsers = async () => {
     let connectedUsers = [];
@@ -89,16 +91,8 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             if (user.checked) {
               connectedUsers.push(user.userID);
               connectNewActivityToUser(user, currentActivityId.toString());
-              adminStore.connectActivityToUser(
-                user.userID,
-                currentActivityId.toString(),
-              );
             } else {
               removeActivityFromUser(user.userID, currentActivityId.toString());
-              adminStore.disconnectActivityFromUser(
-                user.userID,
-                currentActivityId.toString(),
-              );
             }
             res(true);
           } catch (error) {
@@ -107,21 +101,22 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
           }
         });
       }),
-    );
+    ).then(() => {
+      otherUsers.map((user) => {
+        let found = user.connectedActivities.find(
+          (activity) => activity === currentActivityId.toString(),
+        );
 
-    otherUsers.map((user) => {
-      let found = user.connectedActivities.find(
-        (activity) => activity === currentActivityId.toString(),
+        if (!found) return;
+        connectedUsers.push(user.id);
+      });
+
+      updateConnectedUsersOnActivity(
+        currentActivityId.toString(),
+        connectedUsers,
       );
-
-      if (!found) return;
-      connectedUsers.push(user.id);
     });
 
-    updateConnectedUsersOnActivity(
-      currentActivityId.toString(),
-      connectedUsers,
-    );
     closeModal();
   };
 
@@ -159,29 +154,23 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
         >
           Mina användare
         </Text>
-        {myUsers.length !== 0 &&
+        {myUsers?.length > 0 &&
           myUsers.map((user, index) => (
-            <TouchableOpacity
-              testID="test.userView"
-              style={styles.userView}
-              key={index}
-              onPress={() => checkOrUncheckUser(user)}
-            >
+            <View testID="test.userView" style={styles.userView} key={index}>
               <Text
                 testID={`test.userFullName${index}`}
                 style={styles.userViewText}
               >
                 {user.fullName}
               </Text>
-              <CheckBox
+              <Checkbox
+                testID={`${index}`}
+                onCheck={() => checkOrUncheckUser(user)}
                 checked={user.checked}
-                containerStyle={styles.checkBoxContainerStyle}
-                checkedColor={colors.primary}
-                disabled
               />
-            </TouchableOpacity>
+            </View>
           ))}
-        {myUsers.length === 0 && (
+        {myUsers?.length === 0 && (
           <Text testID="test.userView" style={styles.userViewText}>
             Du har inga användare kopplade till dig
           </Text>
@@ -290,6 +279,7 @@ const styles = StyleSheet.create({
   },
   userViewText: {
     ...typography.b2,
+    flex: 0.9,
   },
   checkBoxContainerStyle: {
     padding: 0,

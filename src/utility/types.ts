@@ -39,7 +39,7 @@ export type User = {
   id: string;
   activitiesAndAccumulatedTime: Array<ActivitiesAndAccumulatedTime>;
   adminID?: User["id"];
-  connectedActivities?: Array<Activity["id"]>;
+  connectedActivities: Array<Activity["id"]>;
   firstName: string;
   lastName: string;
   email?: string;

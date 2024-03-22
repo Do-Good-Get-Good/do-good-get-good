@@ -2,6 +2,7 @@ import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import {
   mockAllAdminsAndSuperAdmins,
   mockSelectedUser,
+  userSuperadminMock,
 } from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
 
@@ -67,10 +68,7 @@ describe("Testing RolesAndConnection screen ", () => {
     fireEvent.press(changeUserButton);
 
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
-      userName: "Super",
-      userSurname: "Supersson",
-      statusActive: true,
-      userID: "1",
+      user: userSuperadminMock,
       prevRoute: "RolesAndConnection",
     });
   });

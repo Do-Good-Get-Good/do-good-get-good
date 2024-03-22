@@ -26,6 +26,7 @@ export const MyUsers = ({ users }: Props) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Mina användare</Text>
         <DropDownTextAndIcon
+          testID={"sort-by"}
           title={sortBy}
           componentInsideDropDown={<SortBy setSortBy={setSortBy} />}
         />
@@ -33,6 +34,7 @@ export const MyUsers = ({ users }: Props) => {
 
       {usersSortBy().map((user) => (
         <DropDownTextAndIcon
+          testID={`${user.id}-my-users`}
           key={`${user.id}-my-users-drop-down`}
           title={`${user.firstName} ${user.lastName}`}
           isUnderlineOnPress={true}

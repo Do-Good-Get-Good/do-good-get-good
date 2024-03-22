@@ -42,17 +42,17 @@ class AdminStore {
     makeAutoObservable(this);
   }
 
-  connectActivityToUser(userId, activityId) {
-    this.allUsers = connectActivityToUser(this.allUsers, userId, activityId);
-  }
+  // connectActivityToUser(userId, activityId) {
+  //   this.allUsers = connectActivityToUser(this.allUsers, userId, activityId);
+  // }
 
-  disconnectActivityFromUser(userId, activityId) {
-    this.allUsers = disconnectActivityFromUser(
-      this.allUsers,
-      userId,
-      activityId,
-    );
-  }
+  // disconnectActivityFromUser(userId, activityId) {
+  //   this.allUsers = disconnectActivityFromUser(
+  //     this.allUsers,
+  //     userId,
+  //     activityId,
+  //   );
+  // }
 
   resetStore() {
     this.allUsers = [];

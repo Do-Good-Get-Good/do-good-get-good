@@ -37,10 +37,14 @@ export const DropDownTextAndIcon = ({
   return (
     <View style={styles.mainContainer}>
       <TouchableOpacity
+        testID={`dropdown-${testID}`}
         onPress={() => setIsOpen(!isOpen)}
         style={styles.container}
       >
-        <Text testID={testID} style={textWithUnderlineIfPressedStyle(isOpen)}>
+        <Text
+          testID={`dropdown-title-${testID}`}
+          style={textWithUnderlineIfPressedStyle(isOpen)}
+        >
           {title}
         </Text>
 

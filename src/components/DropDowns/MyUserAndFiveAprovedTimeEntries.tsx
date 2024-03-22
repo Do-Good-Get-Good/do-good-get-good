@@ -8,6 +8,7 @@ import { InfoRow } from "./InfoRow";
 import TimeStatistics from "../TimeStatistics";
 
 type Props = {
+  testID?: string;
   user: User;
 };
 
@@ -18,7 +19,7 @@ const adaptUserToTimeStatistics = (user: User) => [
   },
 ];
 
-export const MyUserAndFiveAprovedTimeEntries = ({ user }: Props) => {
+export const MyUserAndFiveAprovedTimeEntries = ({ testID, user }: Props) => {
   const navigation = useNavigation<{
     navigate: (nav: AdminStack, props: ChangeUserRouteProps) => void;
   }>();
@@ -30,7 +31,10 @@ export const MyUserAndFiveAprovedTimeEntries = ({ user }: Props) => {
   };
 
   return (
-    <View style={{ minHeight: 240, justifyContent: "space-between" }}>
+    <View
+      testID={`user-and-five-aproved-time-entries-${testID}`}
+      style={{ minHeight: 240, justifyContent: "space-between" }}
+    >
       <TimeStatistics timeObject={adaptUserToTimeStatistics(user)} />
       {user.timeEntries &&
         user.timeEntries.map((entry) => (

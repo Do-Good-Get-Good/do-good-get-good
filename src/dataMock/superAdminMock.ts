@@ -1,11 +1,18 @@
 import { Role } from "react-native";
 import { User, UserObjectForSuperAdmin } from "../utility/types";
 
-const userSuperadminMock: User = {
+export const userSuperadminMock: User = {
   id: "1",
   adminID: "adminID",
   firstName: "Super",
   lastName: "Supersson",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "superadmin" as Role,
   statusActive: true,
 };
@@ -15,6 +22,13 @@ const userAdminOneMock: User = {
   adminID: "1",
   firstName: "Admin4",
   lastName: "Adminsson4",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "admin" as Role,
   statusActive: true,
 };
@@ -24,6 +38,13 @@ const userAdminTwoMock: User = {
   adminID: "1",
   firstName: "Admin2",
   lastName: "Adminsson2",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "admin" as Role,
   statusActive: true,
 };
@@ -33,6 +54,13 @@ const userUserOneMock: User = {
   adminID: "1",
   firstName: "Johan",
   lastName: "Johansson",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "user" as Role,
   statusActive: true,
 };
@@ -42,6 +70,13 @@ const userUserTwoMock: User = {
   adminID: "2",
   firstName: "Johan2",
   lastName: "Johansson2",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "user" as Role,
   statusActive: true,
 };
@@ -51,6 +86,13 @@ const userSuperadminTwoMock: User = {
   adminID: "2",
   firstName: "Super2",
   lastName: "Supersson2",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "superadmin" as Role,
   statusActive: true,
 };
@@ -60,6 +102,13 @@ const userSuperadminThreeMock: User = {
   adminID: "6",
   firstName: "Super3",
   lastName: "Supersson3",
+  connectedActivities: ["activitiID"],
+  activitiesAndAccumulatedTime: [
+    {
+      accumulatedTime: 4,
+      activityID: "activitiID",
+    },
+  ],
   role: "superadmin" as Role,
   statusActive: false,
 };
