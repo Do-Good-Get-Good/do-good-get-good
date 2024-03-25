@@ -1,13 +1,25 @@
 # This is a basic workflow to help you get started with Actions
-name: Build Android Debug App
+name: Do Good Get Good unit tests
+
+# Controls when the workflow will run
 on:
+  # Triggers the workflow on push or pull request events but only for the main branch
+  pull_request:
+    branches: [main]
+
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+  # Allows this workflow to be called from other workflows
+  workflow_call:
 
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
-  build_android:
-    name: Building android apk
+  Tests:
+    name: Geting test status
+    # The type of runner that the job will run on
     runs-on: ubuntu-latest
+    # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
@@ -19,13 +31,11 @@ jobs:
       - uses: actions/setup-node@v2
         with:
           node-version: "20"
+
       - name: Install dependencies
         run: npm install
         working-directory: src/
-      - name: Build Android apk (debug)
-        run: ./gradlew assembleDebug
-        working-directory: src/android
-      - uses: actions/upload-artifact@v2
-        with:
-          name: android-apk
-          path: "**/*.apk"
+
+      - name: Run tests
+        run: npm test --ci
+        working-directory: src/
