@@ -1,6 +1,5 @@
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
-
 import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import { Role } from "../../utility/enums";
 import {
@@ -42,7 +41,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
   const { getAllUserAndUnapprovedTimeEntries } =
     useSuperAdminHomePageFunction();
   const adminGalleryContext = useAdminGalleryFunction();
-  useGetAllUsersThatExistInTheSystem(role);
+  const {onMenuPressed}  =useGetAllUsersThatExistInTheSystem(role);
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
@@ -65,6 +64,7 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Alla användare",
       screenName: SuperAdminStack.AllUsersInTheSystem,
+      toDo: ()=> onMenuPressed()
     },
     {
       title: "Exportera data",
