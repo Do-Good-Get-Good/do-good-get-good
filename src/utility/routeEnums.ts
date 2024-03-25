@@ -4,6 +4,7 @@ export enum UserStack {
   Faq = "Faq",
   ConceptPage = "ConceptPage",
   ActivityCard = "ActivityCard",
+  Chat = "Chat"
 }
 
 export enum AdminStack {

@@ -11,7 +11,6 @@ import {
 import { SearchIcon } from "../assets/icons/SearchIcon";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Activity, User } from "../utility/types";
 
 type Props<T> = {
   style?: StyleProp<ViewStyle>;
@@ -60,7 +59,6 @@ export const SearchBarComponent = <T,>({
         value={value}
         placeholder="Sök"
       />
-
       <SearchIcon testID="search-button-pressed" />
     </View>
   );

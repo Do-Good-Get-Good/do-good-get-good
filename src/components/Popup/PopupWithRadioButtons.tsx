@@ -1,20 +1,15 @@
 import {
-  Dimensions,
-  FlexStyle,
   ScrollView,
-  StyleProp,
   StyleSheet,
   Text,
-  TextStyle,
-  TouchableOpacity,
   View,
 } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { useEffect, useState } from "react";
-
 import { Overlay } from "@rneui/base";
 import { LongButton } from "../Buttons/LongButton";
+import { RadioButton } from "../Buttons/RadioButton";
 
 type OptionsListType = {
   [key: string]: string;
@@ -65,16 +60,12 @@ export const PopupWithRadioButtons = ({
                 exceptOf !== key && (
                   <View style={styles.containerTextAndRadioButtins} key={key}>
                     <Text testID={`popUpTextvalue.${key}`}>{value}</Text>
-                    <TouchableOpacity
-                      testID={`popUpRadioButton.${key}`}
+                    <RadioButton
+                        testID={`popUpRadioButton.${key}`}
+                      label=""
+                      selected={key === choice}
                       onPress={() => setChoice(key)}
-                    >
-                      <View style={radioButtonStyle(key, choice)}>
-                        {key === choice && (
-                          <View style={styles.smallCircul}></View>
-                        )}
-                      </View>
-                    </TouchableOpacity>
+                    />
                   </View>
                 ),
             )}
@@ -102,13 +93,6 @@ const styles = StyleSheet.create({
     ...typography.title,
     margin: 12,
   },
-  smallCircul: {
-    width: 10,
-    height: 10,
-    borderRadius: 10 / 2,
-    margin: 4,
-    backgroundColor: colors.dark,
-  },
   okButton: {
     backgroundColor: colors.primary,
     borderRadius: 5,
@@ -120,15 +104,4 @@ const styles = StyleSheet.create({
     maxHeight: "45%",
     borderRadius: 5,
   },
-});
-const radioButtonStyle = (
-  key: keyof OptionsListType,
-  choice: keyof OptionsListType,
-) => ({
-  width: 20,
-  height: 20,
-  borderRadius: 20 / 2,
-  backgroundColor: key === choice ? colors.primary : colors.background,
-  borderColor: colors.dark,
-  borderWidth: 1,
 });

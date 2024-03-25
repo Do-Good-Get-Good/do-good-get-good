@@ -1,15 +1,18 @@
 import "react-native";
 import React from "react";
 import { render, fireEvent, waitFor, } from "@testing-library/react-native";
-
 import { CreateUserForm } from "../../components";
 import { Role } from "../../utility/enums";
 import userLevelStore from '../../store/userLevel'
+
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-navigation/native");
 
+jest.mock("../../components/Menu", () => () => {
+  return <mockMenu />;
+});
 
 const mockGoBack = jest.fn();
 jest.mock("@react-navigation/native", () => ({
@@ -177,39 +180,7 @@ describe("Testing CreateUserForm ", () => {
                   const textInput = getByPlaceholderText('E-mail');
                   expect(textInput.props.contextMenuHidden).toBe(true);
             });
-
-            it('Should be enter a password',async () => {
-                  const { getByPlaceholderText,getByText, getByTestId, debug} = render(<CreateUserForm />);
-                  const inputField = getByPlaceholderText('Lösenord');
-                  fireEvent.changeText(inputField, '');
-                  expect(inputField.props.value).toBe('');
-                  const nextButton= getByText("Nästa")
-                  fireEvent.press(nextButton);
-               
-                  await waitFor(() => {
-                    debug()
-                    const errorMessage = getByTestId("input-error-password")
-                    expect(errorMessage.props.children).toBe('* Lösenordet måste innehålla minst 6 tecken');
-                  })
-                });
-
-             it('Should toggles password visibility when icon is pressed',async () => {
-
-                    const { getByPlaceholderText,getByTestId,queryByTestId} = render(<CreateUserForm />);
-                    const inputField = getByPlaceholderText('Lösenord');
-                    expect(inputField.props.secureTextEntry).toBe(true);
-                  
-      
-                    fireEvent.press(getByTestId('visibility-off-icon'));
-                    expect(inputField.props.secureTextEntry).toBe(false)
-                    expect(queryByTestId('visibility-off-icon'))
-
-                    fireEvent.press(getByTestId('visibility-icon'));
-                    expect(inputField.props.secureTextEntry).toBe(true);
-                   
-              });
-
-           it('Should  select a role if superadmin otherwise show error',async () => {
+          it('Should  select a role if superadmin otherwise show error',async () => {
                       superAdmin()
                       const { getByText,getByTestId} = render(<CreateUserForm />);
                       const nextButton= getByText("Nästa")
@@ -273,12 +244,19 @@ describe("Testing CreateUserForm ", () => {
                         superAdmin()
                         const  setUser=jest.fn();
                         const nextPage=jest.fn();
-                        const {getByPlaceholderText,getByTestId,getByText} = render(<CreateUserForm nextPage={nextPage} setUser={setUser} />);
+                        const user =    {name: "",
+                        surname: "",
+                        email: "",
+                        password:'randomPassword',
+                        role: Role.user} 
+                      
+                        const {getByPlaceholderText,getByTestId,getByText, debug} = render(<CreateUserForm user={user} nextPage={nextPage} setUser={setUser} />);
+            
                         fireEvent.changeText(getByPlaceholderText('Förnamn'), 'John');
                         fireEvent.changeText(getByPlaceholderText('Efternamn'), 'Andersson');
                         fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com');
                         fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
-                        fireEvent.changeText(getByPlaceholderText('Lösenord'), 'sdfghddd')
+
                         fireEvent.press(getByTestId("role-item"))
                         fireEvent.press(getByTestId("role-item-admin"));
                         const nextButton = getByText('Nästa');
@@ -286,14 +264,16 @@ describe("Testing CreateUserForm ", () => {
                           name:"John",
                           surname:"Andersson",
                           email:"test@example.com",
-                          password:"sdfghddd",
+                          password:"randomPassword",
                           role:"admin"
                         };
                         fireEvent.press(nextButton);
+                        debug()
                 
                         await waitFor(() => {
-                          expect(nextPage).toHaveBeenCalled();
                           expect(setUser).toHaveBeenCalledWith(userData);
+                          expect(nextPage).toHaveBeenCalled();
+                       
                         });                       
                       });
                       it("should navigate to the back page when Back button is pressed", async () => {
@@ -308,31 +288,36 @@ describe("Testing CreateUserForm ", () => {
                         admin()
                         const  setUser=jest.fn();
                         const nextPage=jest.fn();
-                        const {getByPlaceholderText,getByTestId,getByText,queryByTestId} = render(<CreateUserForm nextPage={nextPage} setUser={setUser} />);
+
+                        const user =    {name: "",
+                        surname: "",
+                        email: "",
+                        password:'randomPassword',
+                        role: Role.user} 
+                        
+                        const {getByPlaceholderText,getByText,queryByTestId} = render(<CreateUserForm user={user} nextPage={nextPage} setUser={setUser} />);
                         fireEvent.changeText(getByPlaceholderText('Förnamn'), 'John');
                         fireEvent.changeText(getByPlaceholderText('Efternamn'), 'Andersson');
                         fireEvent.changeText(getByPlaceholderText('E-mail'), 'test@example.com');
                         fireEvent.changeText(getByPlaceholderText('Bekräfta E-mail'), 'test@example.com'); 
-                        fireEvent.changeText(getByPlaceholderText('Lösenord'), 'sdfghddd')
                         expect(queryByTestId("role-item")).toBeNull();
                   
-                      
                         const nextButton = getByText('Nästa');
                         const userData= {
                           name:"John",
                           surname:"Andersson",
                           email:"test@example.com",
-                          password:"sdfghddd",
+                          password:"randomPassword",
                           role:"user"
                         };
                         fireEvent.press(nextButton);
                 
                         await waitFor(() => {
-                          expect(nextPage).toHaveBeenCalled();
                           expect(setUser).toHaveBeenCalledWith(userData);
+                          expect(nextPage).toHaveBeenCalled();
+                        
                         });                      
                       });
-                    
-                });
+                     });
               
   

@@ -1,12 +1,9 @@
-import { ScrollView ,} from "react-native";
+import { ScrollView} from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
-
 import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
-
 import { Role } from "../utility/enums";
-
 import { yupResolver } from "@hookform/resolvers/yup";
 import { InputField } from "./InputField";
 import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
@@ -63,14 +60,11 @@ type Props = {
 export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   const navigation = useNavigation();
   const { userLevel } = userLevelStore;
-  const [showPassword, setShowPassword] = useState(false);
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleContentSizeChange = () => {
     scrollViewRef.current?.scrollToEnd({ animated: true });
   };
-
-  
 
   const {
     handleSubmit,
@@ -141,7 +135,6 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           contextMenuHidden={true}
           testID={'email'}
         />
-
         <InputField
           placeholderText={"Bekräfta E-mail"}
           control={control}
@@ -152,27 +145,11 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           contextMenuHidden={true}
           testID={'confirm-email'}
         />
-        <InputField
-        
-          placeholderText={"Lösenord"}
-          control={control}
-          error={errors.password}
-          name={"password"}
-          secureTextEntry={!showPassword}
-          testID={"password"}
-          IconRight={
-          
-            <VisibilityIcon
-        
-             onPress={() => setShowPassword(!showPassword)}
-              visibilityOn={showPassword}
-            />
-          }
-        />
         {userLevel === Role.superadmin && (
         <ChangeUserRole error={errors.role} control={control} />
         )}
       </ScrollView>
+
       <BottomNavButtons
         primaryText="Nästa"
         secondaryText="Avbryt"
