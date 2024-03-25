@@ -8,11 +8,11 @@ type Props = {
   style?: ViewStyle | TextStyle;
 };
 
-export const Pencil = ({ onPress, style, testID }: Props) => {
+export const Pencil = ({ onPress, style, testID = "" }: Props) => {
   return (
     <Icon
       style={style}
-      testID={`pencil-icon-${testID}`}
+      testID={`pencil-icon${testID}`}
       color={colors.secondary}
       type="material-community"
       name="pencil-outline"

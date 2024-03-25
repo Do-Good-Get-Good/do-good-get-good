@@ -148,7 +148,7 @@ describe("Testing MyUsers component", () => {
     );
     fireEvent.press(getByText("Admin4 Adminsson4"));
 
-    fireEvent.press(getByTestId("pencil-icon-2"));
+    fireEvent.press(getByTestId("pencil-icon2"));
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
       user: mockUsersWithFiveConfirmedTimeEntries[0],
     });
@@ -163,7 +163,7 @@ describe("Testing MyUsers component", () => {
 
     fireEvent.press(getByText("Johan22 Johansson22"));
 
-    fireEvent.press(getByTestId("pencil-icon-04"));
+    fireEvent.press(getByTestId("pencil-icon04"));
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
       user: mockUsersWithFiveConfirmedTimeEntries[0],
     });
