@@ -12,7 +12,7 @@ import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import { SearchBarComponent } from "./SearchBarComponent";
-import { YesNoRadioButtons } from "./YesNoRadioButtons";
+import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
 import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import userLevelStore from "../store/userLevel";
 
