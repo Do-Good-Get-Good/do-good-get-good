@@ -31,7 +31,7 @@ export const InfoRow = ({
       <Text testID="info-row-date" style={{ flex: 0.5 }}>
         {date.toString()}
       </Text>
-      <Text testID="info-row-time" style={{ flex: 0.2 }}>
+      <Text testID="info-row-time" style={{ flex: 0.13 }}>
         {time.toString()}
       </Text>
       {checked !== undefined && onCheck && (
