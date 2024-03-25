@@ -12,7 +12,7 @@ type Props ={
 }
 
 
-export const ActiveOrInActive = ({isActive, onYes, onNo}:Props) => {
+export const YesNoRadioButtons = ({isActive, onYes, onNo}:Props) => {
   
   return (
     <View style={styles.radioButton}>

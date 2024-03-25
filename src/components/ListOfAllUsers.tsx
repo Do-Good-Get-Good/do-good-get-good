@@ -12,7 +12,7 @@ import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
 import { SearchBarComponent } from "./SearchBarComponent";
-import { ActiveOrInActive } from "./ActiveOrInActive";
+import { YesNoRadioButtons } from "./YesNoRadioButtons";
 import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import userLevelStore from "../store/userLevel";
 
@@ -52,7 +52,7 @@ export function ListOfAllUsers({ navigation }: Props) {
         keys={["firstName", "lastName"]}
         onSearch={setSearchArray}
       />
-       <ActiveOrInActive isActive={selectedOption} onYes={setSelectedOption} onNo={onGetInActiveUsers}/>
+       <YesNoRadioButtons  isActive={selectedOption} onYes={setSelectedOption} onNo={onGetInActiveUsers}/>
       {searchArray   
       .map((user, index) => selectedOption === user.statusActive && (
      <View key={user.id + index} style={styles.contrainer}>
