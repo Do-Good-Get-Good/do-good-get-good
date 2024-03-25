@@ -99,20 +99,31 @@ const userAnactive_4: User = {
       activityID: "activityID1",
     },
   ],
-  timeEntries: [],
+  timeEntries: [
+    {
+      id: "7",
+      activityID: "activityID5",
+      adminID: "adminID1",
+      userID: "04",
+      activityTitle: "activityTitle 5",
+      date: "2022-09-02",
+      statusConfirmed: true,
+      time: 2.5,
+    },
+  ],
   role: "user" as Role,
   statusActive: false,
 };
 
 export const mockUsersWithFiveConfirmedTimeEntries: User[] = [
-  userWithUnconfirmedTE_2,
-  userWithUnconfirmedTE_3,
+  userWithConfirmedTE_2,
+  userWithConfirmedTE_3,
   userAnactive_4,
 ];
 
 export const mockUsersWithUnconfirmedTimeEntries: User[] = [
-  userWithConfirmedTE_2,
-  userWithConfirmedTE_3,
+  userWithUnconfirmedTE_2,
+  userWithUnconfirmedTE_3,
 ];
 export const mockAllUsersConnectedToadmin: User[] = [
   {

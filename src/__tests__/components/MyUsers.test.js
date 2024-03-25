@@ -5,13 +5,7 @@ import { MyUsers } from "../../components/MyUsers";
 import { expect } from "@jest/globals";
 import { mockUsersWithFiveConfirmedTimeEntries } from "../../dataMock/adminContext";
 
-import { when } from "mobx";
-
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
 
 jest.mock("@react-native-firebase/auth", () => {
   const auth = jest.requireActual("@react-native-firebase/auth");
@@ -35,167 +29,143 @@ jest.mock("../../components/TimeStatistics", () => () => {
   return <mockTimeStatistics />;
 });
 
-const mockNavigation = {
-  navigate: jest.fn(),
-};
-
+const mockedNavigate = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    navigate: mockedNavigate,
+  }),
+}));
 describe("Testing MyUsers component", () => {
-  describe("Header view", () => {
-    it("can find the my users text", async () => {
-      const { getAllByText } = render(
-        <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
-      );
-      await waitFor(() => {
-        expect(getAllByText("Mina användare").length).toBe(1);
-      });
+  it("can find the my users text", async () => {
+    const { getAllByText } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+    await waitFor(() => {
+      expect(getAllByText("Mina användare").length).toBe(1);
     });
+  });
 
-    it("can find the default text inside the small dropdown", async () => {
-      const { getByTestId } = render(
-        <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+  it("can find the default text inside the small dropdown", async () => {
+    const { getByTestId } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+    await waitFor(() => {
+      expect(getByTestId("dropdown-title-sort-by").props.children).toEqual(
+        "A - Ö",
       );
-      await waitFor(() => {
-        expect(getByTestId("dropdown-title-sort-by").props.children).toEqual(
-          "A - Ö",
-        );
-      });
     });
+  });
 
-    it("can press the small dropdown to open", async () => {
-      const { getByTestId } = render(
-        <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
-      );
+  it("can press the small dropdown to open", async () => {
+    const { getByTestId } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
 
-      await waitFor(async () => {
-        const button = getByTestId("dropdown-sort-by");
-        fireEvent.press(button);
-        expect(
-          getByTestId("inside-sort-by-dropdown-Alphabetically").props.children,
-        ).toEqual("A - Ö");
+    await waitFor(async () => {
+      const button = getByTestId("dropdown-sort-by");
+      fireEvent.press(button);
+      expect(
+        getByTestId("inside-sort-by-dropdown-Alphabetically").props.children,
+      ).toEqual("A - Ö");
 
-        expect(
-          getByTestId("inside-sort-by-dropdown-Inactive").props.children,
-        ).toEqual("Inaktiva");
-      });
+      expect(
+        getByTestId("inside-sort-by-dropdown-Inactive").props.children,
+      ).toEqual("Inaktiva");
     });
+  });
 
-    it("can press on Inaktiva and then back to active inside the small dropdown and see inactive users and then active", async () => {
-      const { getByText, queryByText, debug } = render(
-        <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
-      );
+  it("can press on Inaktiva and then back to active inside the small dropdown and see inactive users and then active", async () => {
+    const { getByText, queryByText, getByTestId } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
 
-      expect(getByText("Admin4 Adminsson4"));
-      expect(getByText("Johan2 Johansson2"));
-      expect(queryByText("Johan22 Johansson22")).toBeNull();
+    expect(getByText("Admin4 Adminsson4")).toBeTruthy();
+    expect(getByText("Johan2 Johansson2")).toBeTruthy();
+    expect(queryByText("Johan22 Johansson22")).not.toBe();
 
-      fireEvent.press(getByText("dropdown-sort-by"));
-      fireEvent.press(getByText("inside-sort-by-dropdown-Inactive"));
+    fireEvent.press(getByTestId("dropdown-sort-by"));
+    fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));
 
-      expect(queryByText("dropdown-title-2-my-users"));
-      expect(queryByText("dropdown-title-3-my-users"));
-      expect(getByText("dropdown-title-04-my-users")).toBeNull();
+    expect(queryByText("Admin4 Adminsson4")).not.toBe();
+    expect(queryByText("Johan2 Johansson2")).not.toBe();
+    expect(getByText("Johan22 Johansson22")).toBeTruthy();
+  });
+
+  it("Can view active user timeentries", async () => {
+    const { getAllByTestId, getByText } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+
+    fireEvent.press(getByText("Admin4 Adminsson4"));
+
+    const timeEntryTitle = getAllByTestId("info-row-title");
+    const timeEntryDate = getAllByTestId("info-row-date");
+    const timeEntryTime = getAllByTestId("info-row-time");
+    expect(timeEntryTitle.length).toBe(5);
+
+    expect(timeEntryTitle[0].props.children).toBe("activityTitle 1");
+    expect(timeEntryDate[0].props.children).toBe("2023-05-02");
+    expect(timeEntryTime[0].props.children).toBe("2.5");
+
+    expect(timeEntryTitle[1].props.children).toBe("activityTitle 1");
+    expect(timeEntryDate[1].props.children).toBe("2023-07-17");
+    expect(timeEntryTime[1].props.children).toBe("3");
+
+    expect(timeEntryTitle[2].props.children).toBe("activityTitle 1");
+    expect(timeEntryDate[2].props.children).toBe("2023-08-10");
+    expect(timeEntryTime[2].props.children).toBe("3");
+
+    expect(timeEntryTitle[3].props.children).toBe("activityTitle 1");
+    expect(timeEntryDate[3].props.children).toBe("2023-09-02");
+    expect(timeEntryTime[3].props.children).toBe("2.5");
+
+    expect(timeEntryTitle[4].props.children).toBe("activityTitle 1");
+    expect(timeEntryDate[4].props.children).toBe("2023-11-17");
+    expect(timeEntryTime[4].props.children).toBe("0.5");
+  });
+
+  it("Can view unactive user timeentries", async () => {
+    const { getByTestId, getByText } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+    fireEvent.press(getByTestId("dropdown-sort-by"));
+    fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));
+
+    fireEvent.press(getByText("Johan22 Johansson22"));
+
+    const timeEntryTitle = getByTestId("info-row-title");
+    const timeEntryDate = getByTestId("info-row-date");
+    const timeEntryTime = getByTestId("info-row-time");
+
+    expect(timeEntryTitle.props.children).toBe("activityTitle 5");
+    expect(timeEntryDate.props.children).toBe("2022-09-02");
+    expect(timeEntryTime.props.children).toBe("2.5");
+  });
+
+  it("Can press edit icon on active users", async () => {
+    const { getByTestId, getByText } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+    fireEvent.press(getByText("Admin4 Adminsson4"));
+
+    fireEvent.press(getByTestId("pencil-icon-2"));
+    expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
+      user: mockUsersWithFiveConfirmedTimeEntries[0],
     });
+  });
 
-    //   it("Can view active user timeentries", async () => {
-    //     const { getByTestId } = render(<MyUsers />);
-    //     await when(() => adminStore.allUsers.length === 2);
+  it("Can press edit icon on active users", async () => {
+    const { getByTestId, getByText } = render(
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+    );
+    fireEvent.press(getByTestId("dropdown-sort-by"));
+    fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));
 
-    //     expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
+    fireEvent.press(getByText("Johan22 Johansson22"));
 
-    //     const userButton = getByTestId(`userDropdown 0`);
-
-    //     act(() => {
-    //       fireEvent.press(userButton);
-    //     });
-
-    //     const userTimeEntryTitle = getByTestId(`user timeEntry 0 title`);
-    //     const userTimeEntryDate = getByTestId(`user timeEntry 0 date`);
-    //     const userTimeEntryTime = getByTestId(`user timeEntry 0 time`);
-
-    //     expect(userTimeEntryTitle.children[0]).toEqual("title");
-    //     expect(userTimeEntryDate.children[0]).toEqual("2022-12-28");
-    //     expect(userTimeEntryTime.children[0]).toEqual("2 tim");
-    //   });
-
-    //   it("Can view inactive user timeentries", async () => {
-    //     const { getByTestId } = render(<MyUsers />);
-    //     await when(() => adminStore.allUsers.length === 2);
-
-    //     const button = getByTestId("smallDropdown");
-    //     fireEvent.press(button);
-
-    //     const button3 = getByTestId("insideSmallDropdown 1");
-    //     act(() => {
-    //       fireEvent.press(button3);
-    //     });
-    //     expect(getByTestId("dropdownText").props.children).toEqual("Inaktiva");
-
-    //     const userButton = getByTestId(`userDropdown 0`);
-
-    //     act(() => {
-    //       fireEvent.press(userButton);
-    //     });
-
-    //     const userTimeEntryTitle = getByTestId(`user timeEntry 0 title`);
-    //     const userTimeEntryDate = getByTestId(`user timeEntry 0 date`);
-    //     const userTimeEntryTime = getByTestId(`user timeEntry 0 time`);
-
-    //     expect(userTimeEntryTitle.children[0]).toEqual("title");
-    //     expect(userTimeEntryDate.children[0]).toEqual("2023-01-12");
-    //     expect(userTimeEntryTime.children[0]).toEqual("2 tim");
-    //   });
-
-    //   it("Can press edit icon on active users", async () => {
-    //     const { getByTestId } = render(<MyUsers navigation={mockNavigation} />);
-    //     await when(() => adminStore.allUsers.length === 2);
-
-    //     expect(getByTestId("dropdownText").props.children).toEqual("A - Ö");
-
-    //     const userButton = getByTestId(`userDropdown 0`);
-
-    //     act(() => {
-    //       fireEvent.press(userButton);
-    //       const editIcon = getByTestId("editIcon");
-    //       fireEvent.press(editIcon);
-    //     });
-
-    //     expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
-    //       sortBy: "A - Ö",
-    //       statusActive: true,
-    //       userID: 123,
-    //       userName: "Test1",
-    //       userSurname: "Lastname1",
-    //     });
-    //   });
-
-    //   it("Can press edit icon on inactive users", async () => {
-    //     const { getByTestId } = render(<MyUsers navigation={mockNavigation} />);
-    //     await when(() => adminStore.allUsers.length === 2);
-
-    //     const button = getByTestId("smallDropdown");
-    //     fireEvent.press(button);
-
-    //     const button3 = getByTestId("insideSmallDropdown 1");
-    //     act(() => {
-    //       fireEvent.press(button3);
-    //     });
-    //     expect(getByTestId("dropdownText").props.children).toEqual("Inaktiva");
-
-    //     const userButton = getByTestId(`userDropdown 0`);
-
-    //     act(() => {
-    //       fireEvent.press(userButton);
-    //       const editIcon = getByTestId("editIcon");
-    //       fireEvent.press(editIcon);
-    //     });
-
-    //     expect(mockNavigation.navigate).toHaveBeenCalledWith("ChangeUser", {
-    //       sortBy: "Inaktiva",
-    //       statusActive: false,
-    //       userID: 1234,
-    //       userName: "Test2",
-    //       userSurname: "Lastname2",
-    //     });
-    //   });
+    fireEvent.press(getByTestId("pencil-icon-04"));
+    expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
+      user: mockUsersWithFiveConfirmedTimeEntries[0],
+    });
   });
 });
