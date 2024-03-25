@@ -1,18 +1,12 @@
 import {
-  Dimensions,
-  FlexStyle,
   ScrollView,
-  StyleProp,
   StyleSheet,
   Text,
-  TextStyle,
-  TouchableOpacity,
   View,
 } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { useEffect, useState } from "react";
-
 import { Overlay } from "@rneui/base";
 import { LongButton } from "../Buttons/LongButton";
 import { RadioButton } from "../Buttons/RadioButton";
@@ -67,20 +61,11 @@ export const PopupWithRadioButtons = ({
                   <View style={styles.containerTextAndRadioButtins} key={key}>
                     <Text testID={`popUpTextvalue.${key}`}>{value}</Text>
                     <RadioButton
+                        testID={`popUpRadioButton.${key}`}
                       label=""
                       selected={key === choice}
                       onPress={() => setChoice(key)}
                     />
-                    {/* <TouchableOpacity
-                      testID={`popUpRadioButton.${key}`}
-                      onPress={() => setChoice(key)}
-                    >
-                      <View style={radioButtonStyle(key, choice)}>
-                        {key === choice && (
-                          <View style={styles.smallCircul}></View>
-                        )}
-                      </View>
-                    </TouchableOpacity> */}
                   </View>
                 ),
             )}
@@ -120,10 +105,3 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
 });
-// const radioButtonStyle = (
-//   key: keyof OptionsListType,
-//   choice: keyof OptionsListType,
-// ) => ({
-//   backgroundColor: key === choice ? colors.primary : colors.background,
- 
-// });

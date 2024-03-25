@@ -1,26 +1,25 @@
 import { StyleSheet, Text, TouchableOpacity,View } from "react-native";
-
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 
 type Props = {
+  testID?: string
     label?:string,
     onPress?: () => void;
     selected?: boolean;
     style?: any;
 };
-export const RadioButton = ({ label,onPress,selected }:Props) => {
 
+export const RadioButton = ({ label,onPress,selected, testID }:Props) => {
   return (
     <View style={styles.labelStyle}>
       <Text style={styles.label}>{label}</Text>
-      <TouchableOpacity onPress={onPress} style={styles.touchable}>
+      <TouchableOpacity testID={testID}onPress={onPress} style={styles.touchable}>
         <View style={[styles.radioButton, selected && styles.selected]}>
           {selected && <View style={styles.smallCircle} />}
         </View>
       </TouchableOpacity>
-    </View>
-     
+    </View>  
   );
 };
 const styles = StyleSheet.create({
@@ -55,5 +54,4 @@ const styles = StyleSheet.create({
       selected:{
         backgroundColor: colors.primary
       }
-  
 });

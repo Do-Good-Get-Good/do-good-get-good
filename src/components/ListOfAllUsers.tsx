@@ -1,16 +1,13 @@
 import React, {useEffect, useState } from "react";
-
 import {
   StyleSheet,
   View,
   Text,
-  Platform,
   TouchableOpacity,
 } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
-
 import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
@@ -22,22 +19,18 @@ import userLevelStore from "../store/userLevel";
 type Props = {
   navigation: any;
 };
-
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const [selectedOption, setSelectedOption] = useState<boolean >(true);
   const { userLevel } = userLevelStore;
   const {getAllUsersByStatus}  =useGetAllUsersThatExistInTheSystem(userLevel);
-
-
-  const allUsersInSystem = superAdminContext?.allUsersInSystem;
+  const allUsersInSystem = superAdminContext?.allUsersInSystem ?? [];
   const { onSelectUser } = useOnSelectUser();
   const [searchArray, setSearchArray] = useState<User[]>([]);
 
   useEffect(()=>{
     setSearchArray( allUsersInSystem ?? [])
   },[allUsersInSystem])
-
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
@@ -46,11 +39,11 @@ export function ListOfAllUsers({ navigation }: Props) {
 
   const onGetInActiveUsers = async()=>{
     setSelectedOption(false)
-    !searchArray.find((user )=> !user.statusActive) && await getAllUsersByStatus(false)
+    let isUnactiveUsersFetched =   allUsersInSystem?.find((user )=> !user.statusActive  ) !== undefined
+    !isUnactiveUsersFetched && await getAllUsersByStatus(false, allUsersInSystem)
+    
   }
-
  
-
   return (
     <View style={styles.screenContainer}>
       <SearchBarComponent
@@ -60,9 +53,7 @@ export function ListOfAllUsers({ navigation }: Props) {
         onSearch={setSearchArray}
       />
        <ActiveOrInActive isActive={selectedOption} onYes={setSelectedOption} onNo={onGetInActiveUsers}/>
-      {searchArray
-    
-      
+      {searchArray   
       .map((user, index) => selectedOption === user.statusActive && (
      <View key={user.id + index} style={styles.contrainer}>
         <Text style={styles.firstAndLastNameText}>
