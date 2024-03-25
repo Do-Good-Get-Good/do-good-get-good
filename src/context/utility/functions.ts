@@ -1,10 +1,11 @@
 import reject from "lodash/reject";
-import { getUserData } from "../../firebase-functions/get";
+
 import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
+import { getUserData } from "../../firebase-functions/getTS/get";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
   let findKeyValue = users.find((user) => user.id === userID);

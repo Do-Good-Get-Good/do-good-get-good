@@ -106,6 +106,7 @@ export const getAllUnconfirmedTimeEntries = async () => {
     return Promise.reject(error);
   }
 };
+
 export const getUserUnconfirmedTimeEntries = async (
   uid: User["id"],
 ): Promise<TimeEntry[]> => {
@@ -159,6 +160,24 @@ export const getAllUsersConnectedToAdmin = async (adminId: User["id"]) => {
       return userObject(doc);
     });
     return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getUserByStatus = async (isActive: boolean = true) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Users")
+      .where("status_active", "==", isActive)
+      .get();
+
+    if (querySnapshot.empty) throw new Error(`No users were found.`);
+
+    let users = querySnapshot.docs.map((doc) => {
+      return userObject(doc);
+    });
+    return Promise.resolve(users);
   } catch (error) {
     return Promise.reject(error);
   }

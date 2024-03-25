@@ -1,8 +1,6 @@
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useSuperAdminHomePageContext } from "../../context/SuperAdminHomePageContext";
-
-import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import { Role } from "../../utility/enums";
 import {
   AdminStack,
@@ -43,7 +41,6 @@ export const useMenuNavigation = (role: Role | undefined) => {
   const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
   const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
-  useGetAllUsersThatExistInTheSystem(role);
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
