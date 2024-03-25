@@ -9,9 +9,6 @@ export const useOnSelectUser = () => {
   const allAdminsAndSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allUsersInTheSystem = context?.allUsersInSystem;
 
-  // console.log(auth , ' ////////////////////////// auth')
- 
-
   const onSelectUser = async(selectedUser: User) => {
     //  const email= await auth()?.getUserByEmail(selectedUser.id)
     allUsersInTheSystem &&
@@ -24,6 +21,5 @@ export const useOnSelectUser = () => {
         ),
       );
   };
-
   return { onSelectUser };
 };

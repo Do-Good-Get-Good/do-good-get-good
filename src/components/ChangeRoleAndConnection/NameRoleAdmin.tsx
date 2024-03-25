@@ -34,7 +34,7 @@ export const NameRoleAdmin = ({ userName, role, adminName,userEmail }: Props) =>
       <View style={styles.containerForRoleAndAdminText}>
         <TitleAndValue title="Nivå" value={roleTitles[role]} />
         <TitleAndValue title="Admin" value={adminName} />
-        <TitleAndValue title="User Email" value={userEmail} />
+        {/* <TitleAndValue title="E-post" value={userEmail} /> */}
       </View>
     </>
   );
