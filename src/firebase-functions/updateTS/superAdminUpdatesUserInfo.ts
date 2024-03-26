@@ -3,7 +3,7 @@ import { User } from "../../utility/types";
 
 export const superAdminUpdatesUserInfo = async (user: User) => {
   try {
-    firestore().collection("Users").doc(user.id).update({
+    await firestore().collection("Users").doc(user.id).update({
       first_name: user.firstName,
       last_name: user.lastName,
       status_active: user.statusActive,
@@ -11,7 +11,9 @@ export const superAdminUpdatesUserInfo = async (user: User) => {
       admin_id: user.adminID,
     });
     console.log("Super admin update user data");
+    return { success: true };
   } catch (error) {
     console.log(error);
+    return { success: false };
   }
 };

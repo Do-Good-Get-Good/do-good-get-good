@@ -9,45 +9,54 @@ import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
 import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { UserName } from "../../screens/ChangeUser/updateUser";
+import { useCallback, useState } from "react";
+import { AlertInfo } from "../../components/Alerts/AlertInfo";
+
+const isSavingUpdatesSucceed = (succed: boolean) =>
+  succed ? "Dina ändringar has sparats" : "Något gick fel";
 
 export const useSuperAdminContext = () => {
   const context = useSuperAdminFunction();
 
-  const makeChangesForSelectedUser = context?.makeChangesForSelectedUser;
-  const allUsersInSystem = context?.allUsersInSystem;
+  const [onAlert, setOnAlert] = useState<string | null>(null);
 
-  const updateUserName = (changeOnlyName: UserName) => {
+  const makeChangesForSelectedUser = context?.makeChangesForSelectedUser;
+  const allUsersInSystem = context?.allUsersInSystem ?? [];
+
+  const onShowAlert = useCallback(() => {
+    return onAlert !== null && AlertInfo(onAlert, () => setOnAlert(null));
+  }, [onAlert]);
+
+  const updateUserName = async (changeOnlyName: UserName) => {
     if (makeChangesForSelectedUser?.user) {
       let tempUser: User = {
         ...makeChangesForSelectedUser?.user,
         firstName: changeOnlyName?.name,
         lastName: changeOnlyName?.surname,
       };
-
-      superAdminUpdatesUserInfo(tempUser).then(() =>
-        updateUserAfterChanges(tempUser),
-      );
+      updateUser(tempUser);
     }
   };
 
-  const updateUser = (changedUser: User) => {
-    superAdminUpdatesUserInfo(changedUser).then(() =>
-      updateUserAfterChanges(changedUser),
-    );
+  const updateUser = async (changedUser: User) => {
+    const result = await superAdminUpdatesUserInfo(changedUser);
+    result.success && updateUserAfterChanges(changedUser),
+      setOnAlert(isSavingUpdatesSucceed(result.success));
   };
 
   const onSaveChangedUser = (
-    data: UserInfo,
+    changes: UserInfo,
     connectedUsersChangedAdmin?: User[],
   ) => {
-    if (makeChangesForSelectedUser?.user && data?.role) {
+    if (makeChangesForSelectedUser?.user && changes?.role) {
       const changedData = {
+        ...makeChangesForSelectedUser.user,
         id: makeChangesForSelectedUser.user.id,
         firstName: makeChangesForSelectedUser.user.firstName,
         lastName: makeChangesForSelectedUser.user.lastName,
-        statusActive: data.isActive,
-        role: data?.role,
-        adminID: data.admin.id,
+        statusActive: changes.isActive,
+        role: changes?.role,
+        adminID: changes.admin.id,
       };
 
       updateUser(changedData);
@@ -66,7 +75,7 @@ export const useSuperAdminContext = () => {
 
     allUsersInSystem &&
       context?.setAllUsersInSystem(
-        updateUserArray(allUsersInSystem, changedUser),
+        updateUserArray(allUsersInSystem, changedUser) ?? [],
       );
   };
 
@@ -81,5 +90,6 @@ export const useSuperAdminContext = () => {
     onSaveChangedUser,
     updateUser,
     updateUserName,
+    onShowAlert,
   };
 };

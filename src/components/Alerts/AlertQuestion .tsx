@@ -1,4 +1,4 @@
-import { Alert, View } from "react-native";
+import { Alert } from "react-native";
 
 export const AlertQuestion = (
   title: string,

@@ -32,7 +32,7 @@ export const MyUsers = ({ users }: Props) => {
         />
       </View>
 
-      {usersSortBy().map((user) => (
+      {users.map((user) => (
         <DropDownTextAndIcon
           testID={`${user.id}-my-users`}
           key={`${user.id}-my-users-drop-down`}
