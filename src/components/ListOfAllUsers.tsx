@@ -1,4 +1,4 @@
-import React, {useEffect, useState } from "react";
+import React, {useCallback, useEffect, useState } from "react";
 import {
   StyleSheet,
   View,
@@ -28,6 +28,7 @@ export function ListOfAllUsers({ navigation }: Props) {
   const { onSelectUser } = useOnSelectUser();
   const [searchArray, setSearchArray] = useState<User[]>([]);
 
+
   useEffect(()=>{
     setSearchArray( allUsersInSystem ?? [])
   },[allUsersInSystem])
@@ -37,6 +38,7 @@ export function ListOfAllUsers({ navigation }: Props) {
     navigation.navigate("RolesAndConnection");
   }
 
+  
   const onGetInActiveUsers = async()=>{
     setSelectedOption(false)
     let isUnactiveUsersFetched =   allUsersInSystem?.find((user )=> !user.statusActive  ) !== undefined

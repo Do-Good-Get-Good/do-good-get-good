@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Platform,
   StyleProp,
@@ -49,6 +49,9 @@ export const SearchBarComponent = <T,>({
     setValue(word);
   };
 
+  useEffect(()=>{
+    setValue('')
+  },[arrayToSearch])
   return (
     <View style={[styles.container, style]}>
       <TextInput

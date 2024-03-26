@@ -9,10 +9,10 @@ export const useGetAllUsersThatExistInTheSystem = (
   userLevel: Role | undefined,
 ) => {
   const context = useSuperAdminFunction();
-  const allUsersInSystem = context?.allUsersInSystem ?? []
+
 
   const onMenuPressed =()=>{
-    getAllUsersByStatus(true, [])
+    userLevel === Role.superadmin   && getAllUsersByStatus(true, [])
   }
   const getAllUsersByStatus= async (isActive: boolean, prev: User[]) => {
 
