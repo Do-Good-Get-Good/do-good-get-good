@@ -33,7 +33,7 @@ export const MyUserAndFiveAprovedTimeEntries = ({ testID, user }: Props) => {
   return (
     <View
       testID={`user-and-five-aproved-time-entries-${testID}`}
-      style={{ minHeight: 240, justifyContent: "space-between" }}
+      style={styles.mainContainer}
     >
       <TimeStatistics timeObject={adaptUserToTimeStatistics(user)} />
       {user.timeEntries &&
@@ -47,16 +47,21 @@ export const MyUserAndFiveAprovedTimeEntries = ({ testID, user }: Props) => {
             />
           </View>
         ))}
-
-      <Pencil
-        testID={user.id}
-        style={styles.editUserIconView}
-        onPress={() => onChangeUser()}
-      />
+      <View style={styles.editUserIconView}>
+        <Pencil
+          style={styles.iconStyle}
+          testID={user.id}
+          onPress={() => onChangeUser()}
+        />
+      </View>
     </View>
   );
 };
 const styles = StyleSheet.create({
+  mainContainer: {
+    minHeight: 240,
+    justifyContent: "space-between",
+  },
   listItemContentStyle: {
     marginTop: -10,
     marginBottom: 10,
@@ -71,6 +76,7 @@ const styles = StyleSheet.create({
   editUserIconView: {
     bottom: 0,
     alignItems: "flex-end",
-    marginRight: 10,
+    flexDirection: "row-reverse",
   },
+  iconStyle: { maxWidth: 60, padding: 15 },
 });
