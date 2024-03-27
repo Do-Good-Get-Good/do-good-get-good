@@ -1,63 +1,57 @@
-import { getUserData } from "../../firebase-functions/getTS/get";
+import {
+  getAllUnconfirmedTimeEntries,
+  getUserData,
+} from "../../firebase-functions/getTS/get";
 import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
 import { useSuperAdminFunction } from "../SuperAdminContext";
-import { find } from "lodash";
-
-const findUserInfo = async (users: User[], userID: User["id"]) => {
-  let findKeyValue = find(users, { id: userID }) && find(users, { id: userID });
-  return findKeyValue ?? ((await getUserData(userID)) as User);
-};
+import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
+import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
+import {
+  filterAfterApprovedTimeEntrirs,
+  makeListOfUserAndUnapprovedTimeEntries,
+} from "../utility/functions";
 
 export const useSuperAdminHomePageContext = () => {
+  const { onApproveTimeEntries } = useApproveTimeEntry();
   const context = useSuperAdminFunction();
   const allUsersInSystem = context?.allUsersInSystem ?? [];
+  const {
+    allUsersWithUnconfirmedTimeEntries,
+    setAllUsersWithUnconfirmedTimeEntries,
+  } = useSuperAdminHomePageFunction();
 
-  const usersWithUnconfirmedTimeEntries = async (
-    timeEntries: TimeEntry[],
-  ): Promise<UserAndUnapprovedTimeEntriesType[]> => {
-    let tempArr: UserAndUnapprovedTimeEntriesType[] = [];
-
-    for (const item of timeEntries) {
-      const userEntry: TimeEntry[] = timeEntries.filter(
-        (entry) => entry.userID === item.userID,
-      );
-
-      const isAlreadyAdded = tempArr.some(
-        (u) => u.unapprovedTimeEntries[0].userID === item.userID,
-      );
-
-      if (!isAlreadyAdded) {
-        const userInfo = await findUserInfo(allUsersInSystem, item.userID);
-
-        //                  OPEN DISCUSSION!
-        // I don’t use adminID that comes with time entry document to show admin who has unapproved time entries. I use adminID from user object to see who is currently responsible for the user.
-        // I think that if an admin has changed then this new admin should take responsibility for user unapproved time entries too, even if they have been created while previous admin. Or what do you think?
-
-        const adminInfo = await findUserInfo(
-          allUsersInSystem,
-          userInfo.adminID ?? "",
-        );
-
-        const obj: UserAndUnapprovedTimeEntriesType = {
-          adminID: userInfo.adminID,
-          userID: userInfo.id,
-          adminFirstName: adminInfo?.firstName ?? "",
-          adminLastName: adminInfo?.lastName ?? "",
-          userFirstName: userInfo.firstName,
-          userLastName: userInfo.lastName,
-          unapprovedTimeEntries: userEntry,
-        };
-
-        tempArr.push(obj);
-      }
-    }
-
-    return tempArr;
+  const onApproveTimeEntriesSuperadmin = async (
+    timeEntries: Array<TimeEntry>,
+    approvedBy: User["id"],
+  ) => {
+    let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
+    const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
+    afterApprove.forEach((timeEntry) => {
+      temArr = [...filterAfterApprovedTimeEntrirs(temArr, timeEntry.id)];
+      setAllUsersWithUnconfirmedTimeEntries(temArr);
+    });
   };
 
-  return { usersWithUnconfirmedTimeEntries };
+  const getAllUserAndUnapprovedTimeEntries = async () => {
+    const unconfirmedTimeEntries = await getAllUnconfirmedTimeEntries();
+
+    let usersAndUnconfirmedTimeEntries = await usersWithUnconfirmedTimeEntries(
+      unconfirmedTimeEntries,
+    );
+    usersAndUnconfirmedTimeEntries &&
+      setAllUsersWithUnconfirmedTimeEntries(usersAndUnconfirmedTimeEntries);
+  };
+
+  const usersWithUnconfirmedTimeEntries = async (timeEntries: TimeEntry[]) =>
+    await makeListOfUserAndUnapprovedTimeEntries(timeEntries, allUsersInSystem);
+
+  return {
+    onApproveTimeEntriesSuperadmin,
+    usersWithUnconfirmedTimeEntries,
+    getAllUserAndUnapprovedTimeEntries,
+  };
 };

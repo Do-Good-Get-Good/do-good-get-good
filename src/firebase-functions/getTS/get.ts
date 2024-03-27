@@ -3,15 +3,31 @@ import firestore, {
 } from "@react-native-firebase/firestore";
 import { TimeEntry, User } from "../../utility/types";
 import { format } from "date-fns";
+import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 
-const userObject = (
+const userActivitiesAndAccumulatedTime = (
+  arr: FirebaseuserActivityAndAccumulatedTime[],
+): User["activitiesAndAccumulatedTime"] => {
+  let temArr: User["activitiesAndAccumulatedTime"] = [];
+  arr.forEach((item) =>
+    temArr.push({
+      accumulatedTime: item.accumulated_time,
+      activityID: item.activity_id,
+    }),
+  );
+  return temArr;
+};
+
+export const userObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     | FirebaseFirestoreTypes.DocumentData,
 ) => {
   let user: User = {
     id: doc.id,
-    activitiesAndAccumulatedTime: doc.data().activities_and_accumulated_time,
+    activitiesAndAccumulatedTime: userActivitiesAndAccumulatedTime(
+      doc.data().activities_and_accumulated_time,
+    ),
     adminID: doc.data().admin_id,
     connectedActivities: doc.data().connected_activities,
     firstName: doc.data().first_name,
@@ -22,7 +38,24 @@ const userObject = (
     totalHoursMonth: doc.data().total_hours_month,
     totalHoursYear: doc.data().total_hours_year,
   };
+
   return user;
+};
+export const timeEntryObject = (
+  doc:
+    | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
+    | FirebaseFirestoreTypes.DocumentData,
+) => {
+  return {
+    id: doc.id,
+    activityID: doc.data().activity_id,
+    adminID: doc.data().admin_id,
+    userID: doc.data().user_id,
+    activityTitle: doc.data().activity_title,
+    date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
+    statusConfirmed: doc.data().status_confirmed,
+    time: doc.data().time,
+  };
 };
 
 export const getAllUsersData = async () => {
@@ -34,8 +67,9 @@ export const getAllUsersData = async () => {
         "No users were found. Please create users before trying again!",
       );
 
-    let allUsers: Array<User> = querySnapshot.docs.map((doc) => {
-      return userObject(doc);
+    let allUsers: Array<User> = [];
+    querySnapshot.docs.forEach((doc) => {
+      allUsers.push(userObject(doc));
     });
 
     return Promise.resolve(allUsers);
@@ -64,16 +98,7 @@ export const getAllUnconfirmedTimeEntries = async () => {
       .get();
 
     let timeEntries: Array<TimeEntry> = querySnapshot.docs.map((doc) => {
-      return {
-        id: doc.id,
-        activityID: doc.data().activity_id,
-        adminID: doc.data().admin_id,
-        userID: doc.data().user_id,
-        activityTitle: doc.data().activity_title,
-        date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
-        statusConfirmed: doc.data().status_confirmed,
-        time: doc.data().time,
-      };
+      return timeEntryObject(doc);
     });
 
     return Promise.resolve(timeEntries);
@@ -81,6 +106,65 @@ export const getAllUnconfirmedTimeEntries = async () => {
     return Promise.reject(error);
   }
 };
+
+export const getUserUnconfirmedTimeEntries = async (
+  uid: User["id"],
+): Promise<TimeEntry[]> => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", uid)
+      .where("status_confirmed", "==", false)
+      .get();
+
+    let data = querySnapshot?.docs.map((doc) => {
+      return timeEntryObject(doc);
+    });
+    return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getUsersFiveNewestTimeEntries = async (
+  userId: User["id"],
+): Promise<TimeEntry[]> => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("timeentries")
+      .where("user_id", "==", userId)
+      .where("status_confirmed", "==", true)
+      .orderBy("date", "desc")
+      .limit(5)
+      .get();
+
+    let data = querySnapshot?.docs.map((doc) => {
+      return timeEntryObject(doc);
+    });
+    return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+export const getAllUsersConnectedToAdmin = async (adminId: User["id"]) => {
+  try {
+    let userData = await firestore()
+      .collection("Users")
+      .where("admin_id", "==", adminId)
+      .get();
+
+    if (userData.empty)
+      throw new Error("There was an error fetching all user data");
+
+    let data = userData.docs.map((doc) => {
+      return userObject(doc);
+    });
+    return Promise.resolve(data);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
 export const getUserByStatus = async (isActive: boolean = true) => {
   try {
     let querySnapshot = await firestore()
@@ -88,8 +172,7 @@ export const getUserByStatus = async (isActive: boolean = true) => {
       .where("status_active", "==", isActive)
       .get();
 
-    if (querySnapshot.empty)
-      throw new Error(`No users were found.`);
+    if (querySnapshot.empty) throw new Error(`No users were found.`);
 
     let users = querySnapshot.docs.map((doc) => {
       return userObject(doc);
@@ -99,4 +182,3 @@ export const getUserByStatus = async (isActive: boolean = true) => {
     return Promise.reject(error);
   }
 };
-

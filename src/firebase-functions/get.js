@@ -186,12 +186,11 @@ export const getUsersFiveNewestTimeEntries = async (userId) => {
       .orderBy("date", "desc")
       .limit(5)
       .get();
+    let timeEntryData = [];
 
-    if (querySnapshot.empty)
-      console.log(`User '${userId}' has no confirmed time entries.`);
-
-    let timeEntryData = querySnapshot.docs.map((doc) => doc.data());
-
+    if (!querySnapshot.empty) {
+      timeEntryData = querySnapshot.docs.map((doc) => doc.data());
+    }
     return Promise.resolve(timeEntryData);
   } catch (error) {
     return Promise.reject(error);

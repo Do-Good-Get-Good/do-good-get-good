@@ -49,9 +49,15 @@ export const SearchBarComponent = <T,>({
     setValue(word);
   };
 
+  const onBlur = () => {
+    setValue("");
+    onSearch(arrayToSearch);
+  };
+
   return (
     <View style={[styles.container, style]}>
       <TextInput
+        onBlur={() => onBlur()}
         testID="searchbar-input"
         returnKeyType="search"
         style={styles.textInput}
