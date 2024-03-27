@@ -30,20 +30,18 @@ export const useChangeRoleAndConnectionButtons = () => {
 
   const onChangeUser = (user: User) => {
     navigation.navigate(AdminStack.ChangeUser, {
-      userName: user.firstName,
-      userSurname: user.lastName,
-      statusActive: user.statusActive,
-      userID: user.id,
+      user,
       prevRoute: SuperAdminStack.RolesAndConnection,
     });
   };
 
   const changeRoleAndConnectionButtons: ChangeButtonsType[] = [
-    {
-      key: "role",
-      title: "Ändra nivå",
-      onPress: () => onChangeRole(),
-    },
+    // TODO: Uncoment this when it fixed to change user claims
+    // {
+    //   key: "role",
+    //   title: "Ändra nivå",
+    //   onPress: () => onChangeRole(),
+    // },
     {
       key: "admin",
       title: "Ändra admin",

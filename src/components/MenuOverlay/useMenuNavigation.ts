@@ -1,7 +1,6 @@
+import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-import { useSuperAdminHomePageFunction } from "../../context/SuperAdminHomePageContext";
-
-import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
+import { useSuperAdminHomePageContext } from "../../context/SuperAdminHomePageContext";
 import { Role } from "../../utility/enums";
 import {
   AdminStack,
@@ -32,13 +31,16 @@ export const userNavigations: Array<NavigationObject> = [
     title: "FAQ",
     screenName: UserStack.Faq,
   },
+  // {
+  //   title: "Chat",
+  //   screenName: UserStack.Chat,
+  // }
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
-  const { getAllUserAndUnapprovedTimeEntries } =
-    useSuperAdminHomePageFunction();
+  const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
+  const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
-  useGetAllUsersThatExistInTheSystem(role);
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
@@ -54,14 +56,11 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Admin",
       screenName: AdminStack.AdminPage,
+      toDo: onShowUnApprovedTimeEntriesAdminPage,
     },
   ];
 
   const superAdminNavigations: Array<NavigationObject> = [
-    {
-      title: "Alla användare",
-      screenName: SuperAdminStack.AllUsersInTheSystem,
-    },
     {
       title: "Exportera data",
       screenName: SuperAdminStack.DownloadUserData,

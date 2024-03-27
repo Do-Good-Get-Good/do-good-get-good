@@ -1,10 +1,7 @@
 import { Sort } from "../lib/enums/sort";
+import { User } from "./types";
 
 export type ChangeUserRouteProps = {
-  userName: string;
-  userSurname: string;
-  statusActive: boolean;
-  userID: string;
-  sortBy?: Sort;
+  user: User;
   prevRoute?: string;
 };
