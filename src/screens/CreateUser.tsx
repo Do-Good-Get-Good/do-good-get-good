@@ -18,6 +18,7 @@ import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUser
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 import { CreateUserForm } from "../components";
 import { Activity } from "../utility/types";
+import { useAdminContext } from "../context/AdminContext/useAdminContext";
 
 export type UserNewAccount = {
   name: string;
@@ -26,7 +27,6 @@ export type UserNewAccount = {
   confirmEmail?: string;
   password: string;
   role: Role | "Behörighet";
-
 };
 
 type Props = {
@@ -34,13 +34,11 @@ type Props = {
   navigation: any;
 };
 
-const  generateRandomPassword=()=> Math.random().toString(36).slice(-8);
-  
-
+const generateRandomPassword = () => Math.random().toString(36).slice(-8);
 
 const CreateUser = ({ route, navigation }: Props) => {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
-
+  const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const [loading, setLoading] = useState(false);
 
   // Step 1
@@ -48,9 +46,8 @@ const CreateUser = ({ route, navigation }: Props) => {
     name: "",
     surname: "",
     email: "",
-    password:generateRandomPassword(),
+    password: generateRandomPassword(),
     role: Role.user,
-  
   });
 
   // Step 2
@@ -63,17 +60,19 @@ const CreateUser = ({ route, navigation }: Props) => {
     photo: "",
     imageUrl: "",
   });
-  enum NewActivity{newActivity="create-new"}
-  const [selectedActivity, setSelectedActivity] = useState<null|Activity|"create-new">(null);
+
+  const [selectedActivity, setSelectedActivity] = useState<
+    null | Activity | "create-new"
+  >(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
-    <CreateUserForm user={user} setUser={setUser} nextPage={()=>next()} />,
+    <CreateUserForm user={user} setUser={setUser} nextPage={() => next()} />,
     <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
-      goBack={()=>back()}
+      goBack={() => back()}
       createUserAndNewActivity={handleCreateUserAndNewActivity}
       createUserAndLinkSelectedActivity={handleCreateUser}
     />,
@@ -91,17 +90,22 @@ const CreateUser = ({ route, navigation }: Props) => {
     }
   }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
-  function handleCreateUser() {
-    if (selectedActivity !== null &&  selectedActivity !== "create-new" &&'id' in selectedActivity) {
-        createUserAndLinkSelectedActivity(
-            user,
-            selectedActivity.id,
-            setLoading,
-            navigation,
-        );
+  async function handleCreateUser() {
+    if (
+      selectedActivity !== null &&
+      selectedActivity !== "create-new" &&
+      "id" in selectedActivity
+    ) {
+      await createUserAndLinkSelectedActivity(
+        user,
+        selectedActivity.id,
+        setLoading,
+        navigation,
+      );
+      await onShowUnApprovedTimeEntriesAdminPage();
     }
-}
-  function handleCreateUserAndNewActivity() {
+  }
+  async function handleCreateUserAndNewActivity() {
     const newActivity = {
       active_status: true,
       activity_city: activity.city,
@@ -112,6 +116,7 @@ const CreateUser = ({ route, navigation }: Props) => {
       activity_title: activity.title,
       tg_favorite: activity.favorite,
     };
+
     const newUser = {
       firstName: user.name,
       lastName: user.surname,
@@ -119,13 +124,14 @@ const CreateUser = ({ route, navigation }: Props) => {
       password: user.password,
       role: user.role,
     };
-    createUserAndNewActivity(
+    await createUserAndNewActivity(
       newActivity,
       newUser,
       setAllActiveActvivitiesFB,
       setLoading,
       navigation,
     );
+    await onShowUnApprovedTimeEntriesAdminPage();
   }
 
   function headerTitle() {
@@ -136,7 +142,6 @@ const CreateUser = ({ route, navigation }: Props) => {
         return "Koppla aktivitet till användaren";
     }
   }
-  
 
   return (
     <SafeAreaView style={{ flex: 1 }}>
@@ -145,7 +150,6 @@ const CreateUser = ({ route, navigation }: Props) => {
         <Text style={styles.header}>
           {headerTitle()}
           <Text style={styles.pageNumber}>
-            {"  "}
             {currentStepIndex + 1}/{steps.length}
           </Text>
         </Text>

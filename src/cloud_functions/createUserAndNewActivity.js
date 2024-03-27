@@ -2,14 +2,14 @@ import { Alert } from "react-native";
 import functions from "@react-native-firebase/functions";
 import craschlytics from "@react-native-firebase/crashlytics";
 import { addActivity } from "../firebase-functions/add";
-import adminStore from "../store/adminStore";
+import { resetPass } from "../firebase-functions/updateTS/resetPasswordFunction";
 
 export async function createUserAndNewActivity(
   newActivity,
   newUser,
   setAllActiveActvivitiesFB,
   setLoading,
-  navigation
+  navigation,
 ) {
   try {
     setLoading(true);
@@ -41,35 +41,23 @@ export async function createUserAndNewActivity(
 
       let createdUser = res.data.createdUser;
 
-      let userInfo = {
-        firstName: createdUser.first_name,
-        lastName: createdUser.last_name,
-        timeEntries: [],
-        isOpen: false,
-        statusActive: createdUser.status_active,
-        userID: createdUser.id,
-        timeObject: {
-          paidTime: createdUser.total_confirmed_hours,
-          timeForYear: createdUser.total_hours_year,
-          currentForMonth: createdUser.total_hours_month,
-        },
-      };
-      console.log(res);
-
-      // Save new user locally
-      adminStore.addNewUser(userInfo);
-
+      const sendLinkToResetPasswordToUser = await resetPass(newUser.email);
       setLoading(false);
-      alertPopUp(newActivity.activity_title, createdUser, navigation);
+      alertPopUp(
+        newActivity.activity_title,
+        createdUser,
+        navigation,
+        sendLinkToResetPasswordToUser,
+      );
     } catch (error) {
       craschlytics().log(
-        "Creating activity was successful, but creating user caused an error"
+        "Creating activity was successful, but creating user caused an error",
       );
       craschlytics().recordError(error);
       setLoading(false);
       Alert.alert(
         "Ett fel uppstod! Det gick inte att skapa användaren",
-        error.message
+        error.message,
       );
     }
   } catch (error) {
@@ -78,14 +66,14 @@ export async function createUserAndNewActivity(
     setLoading(false);
     Alert.alert(
       "Ett fel uppstod! Det gick inte att skapa aktiviteten",
-      error.message
+      error.message,
     );
   }
 }
 
-function alertPopUp(title, user, navigation) {
+function alertPopUp(title, user, navigation, messageAboutLink) {
   let alertTitle = "Skapa aktivitet och användare";
-  let alertMessage = `Aktiviteten '${title}' och användaren '${user.first_name} ${user.last_name}' har skapats!`;
+  let alertMessage = `Aktiviteten '${title}' och användaren '${user.first_name} ${user.last_name}' har skapats!\n${messageAboutLink}`;
 
   Alert.alert(alertTitle, alertMessage, [
     {

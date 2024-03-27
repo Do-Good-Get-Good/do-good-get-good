@@ -1,16 +1,15 @@
-import React, {useEffect, useState } from "react";
-import {
-  StyleSheet,
-  View,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { Icon } from "@rneui/base";
 import { User } from "../utility/types";
 import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
+
+import { SuperAdminStack } from "../utility/routeEnums";
+import { GoBackButton } from "./Buttons/GoBackButton";
+
 import { SearchBarComponent } from "./SearchBarComponent";
 import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
 import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
@@ -21,54 +20,67 @@ type Props = {
 };
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
-  const [selectedOption, setSelectedOption] = useState<boolean >(true);
+  const [selectedOption, setSelectedOption] = useState<boolean>(true);
   const { userLevel } = userLevelStore;
-  const {getAllUsersByStatus}  =useGetAllUsersThatExistInTheSystem(userLevel);
+  const { getAllUsersByStatus } = useGetAllUsersThatExistInTheSystem(userLevel);
   const allUsersInSystem = superAdminContext?.allUsersInSystem ?? [];
   const { onSelectUser } = useOnSelectUser();
   const [searchArray, setSearchArray] = useState<User[]>([]);
 
-  useEffect(()=>{
-    setSearchArray( allUsersInSystem ?? [])
-  },[allUsersInSystem])
+  useEffect(() => {
+    setSearchArray(allUsersInSystem ?? []);
+  }, [allUsersInSystem]);
 
   function onPressUser(selectedUser: User) {
     onSelectUser(selectedUser);
-    navigation.navigate("RolesAndConnection");
+    navigation.navigate(SuperAdminStack.RolesAndConnection);
   }
 
-  const onGetInActiveUsers = async()=>{
-    setSelectedOption(false)
-    let isUnactiveUsersFetched =   allUsersInSystem?.find((user )=> !user.statusActive  ) !== undefined
-    !isUnactiveUsersFetched && await getAllUsersByStatus(false, allUsersInSystem)
-    
-  }
- 
+  const onGetInActiveUsers = async () => {
+    setSelectedOption(false);
+    let isUnactiveUsersFetched =
+      allUsersInSystem?.find((user) => !user.statusActive) !== undefined;
+    !isUnactiveUsersFetched &&
+      (await getAllUsersByStatus(false, allUsersInSystem));
+  };
+
   return (
     <View style={styles.screenContainer}>
+      <GoBackButton
+        style={{ marginVertical: 5 }}
+        onPress={() => navigation.goBack()}
+      />
       <SearchBarComponent
-        style={{ marginBottom: 25 }}
         arrayToSearch={allUsersInSystem ?? []}
         keys={["firstName", "lastName"]}
         onSearch={setSearchArray}
       />
-       <YesNoRadioButtons  isActive={selectedOption} onYes={setSelectedOption} onNo={onGetInActiveUsers}/>
-      {searchArray   
-      .map((user, index) => selectedOption === user.statusActive && (
-     <View key={user.id + index} style={styles.contrainer}>
-        <Text style={styles.firstAndLastNameText}>
-          {user.firstName + " " + user.lastName}
-        </Text>
-        <TouchableOpacity onPress={() => onPressUser(user)}>
-          <Icon
-            color={colors.dark}
-            name="pencil-outline"
-            type="material-community"
-            size={25}
-          />
-        </TouchableOpacity>
-      </View> 
-      ))}
+      <YesNoRadioButtons
+        isActive={selectedOption}
+        onYes={setSelectedOption}
+        onNo={onGetInActiveUsers}
+      />
+      {searchArray.map(
+        (user, index) =>
+          selectedOption === user.statusActive && (
+            <TouchableOpacity
+              style={styles.contrainer}
+              key={user.id + index}
+              onPress={() => onPressUser(user)}
+            >
+              <Text style={styles.firstAndLastNameText}>
+                {user.firstName + " " + user.lastName}
+              </Text>
+
+              <Icon
+                color={colors.dark}
+                name="pencil-outline"
+                type="material-community"
+                size={25}
+              />
+            </TouchableOpacity>
+          ),
+      )}
     </View>
   );
 }
@@ -82,6 +94,7 @@ const styles = StyleSheet.create({
   },
   contrainer: {
     backgroundColor: colors.background,
+
     borderRadius: 3,
     flexDirection: "row",
     justifyContent: "space-between",
@@ -89,5 +102,5 @@ const styles = StyleSheet.create({
   },
   firstAndLastNameText: {
     ...typography.b2,
-  }, 
+  },
 });
