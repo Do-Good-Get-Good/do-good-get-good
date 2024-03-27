@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import {
   TimeEntry,
   User,
@@ -14,17 +14,24 @@ import { TitleAndOnCheckAll } from "../../TitleAndOnCheckAll";
 import { LongButton } from "../../Buttons/LongButton";
 import { AlertToApproveTimeEntries } from "../../Alerts/AlertToApproveTimeEntries";
 import { getUnconfirmedTimeEntriesFromAllUsersAdminPage } from "../../TitleAndOnCheckAll/utility";
+import tr from "date-fns/locale/tr";
 
 type Props = {
+  loading: boolean;
   users: User[];
   onApproveTimeEntriesAdmin: (onCheck: TimeEntry[]) => Promise<void>;
 };
 
 export const UserAndUnapprovedTimeEntries = ({
+  loading,
   users,
   onApproveTimeEntriesAdmin,
 }: Props) => {
   const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
+
+  useEffect(() => {
+    if (users || loading) setOnCheck([]);
+  }, [users, loading]);
 
   const onApprove = () =>
     AlertToApproveTimeEntries(() =>

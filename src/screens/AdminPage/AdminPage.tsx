@@ -33,6 +33,7 @@ export const AdminPage = ({ navigation }: Props) => {
         <UserAndUnapprovedTimeEntries
           onApproveTimeEntriesAdmin={onApproveTimeEntriesAdmin}
           users={usersWithUnconfirmedTimeEntries}
+          loading={loading}
         />
         <Spinner loading={loading} />
         <MyUsers users={usersWithFiveConfirmedTimeEntries} />
