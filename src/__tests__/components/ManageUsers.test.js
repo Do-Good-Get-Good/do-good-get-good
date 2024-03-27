@@ -8,7 +8,6 @@ import {
   waitForElementToBeRemoved,
 } from "@testing-library/react-native";
 import ManageUsers from "../../components/ManageUsers";
-import adminStore from "../../store/adminStore";
 import { mockAllUsersConnectedToadmin } from "../../dataMock/adminContext";
 
 import {

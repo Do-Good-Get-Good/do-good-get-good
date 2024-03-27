@@ -24,8 +24,6 @@ import {
 import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 import { Checkbox } from "../components/Checkbox";
 
-import adminStore from "../store/adminStore";
-
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
   const [otherUsers, setOtherUsers] = useState([]);
