@@ -6,14 +6,6 @@ const {
   InvalidRoleError,
 } = require("./lib/customErrors");
 
-const setPrevRoleToFalse = (role) => {
-  return {
-    admin: role === "admin",
-    superadmin: role === "superadmin",
-    user: role === "user",
-  };
-};
-
 exports.updateUserRoleClaims = functions.https.onCall(
   async (changedUser, context) => {
     if (!context.auth) {
@@ -24,9 +16,10 @@ exports.updateUserRoleClaims = functions.https.onCall(
       throw new InvalidRoleError("Only Superadmin can change user claims");
     }
     try {
-      const userClaim = setPrevRoleToFalse(changedUser.role);
+      const claims = {};
+      claims[changedUser.role] = true;
 
-      await admin.auth().setCustomUserClaims(changedUser.id, userClaim);
+      await admin.auth().setCustomUserClaims(changedUser.id, claims);
 
       return { success: true };
     } catch (error) {
