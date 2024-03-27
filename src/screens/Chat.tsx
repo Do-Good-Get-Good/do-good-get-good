@@ -12,10 +12,8 @@ export const Chat = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Menu/>
-      <ScrollView>
-        <ChatCard/> 
+      <ChatCard/> 
       <BottomLogo/>
-      </ScrollView>
     </SafeAreaView>
   );
 };
