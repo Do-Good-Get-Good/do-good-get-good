@@ -25,7 +25,8 @@ export const ChatCardHeader = ({post }: Props) => {
            <Text style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
            <View style={styles.locationContainer}>
            <LocationIcon style={{paddingTop:3}} size={19}/>
-        <Text style={styles.textCity}>{post.activityCity}</Text></View>
+        <Text style={styles.textCity}>{post.activityCity}</Text>
+        </View>
         </View>
      </View>
  
@@ -36,8 +37,7 @@ const styles = StyleSheet.create({
  
     detailsContainer:{
       flexDirection:'row',
-      alignItems: 'center',
-     
+      alignItems: 'center',   
     },
     image:{
       width: 60,

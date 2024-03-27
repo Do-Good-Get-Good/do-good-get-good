@@ -5,7 +5,8 @@ import { ChatCardHeader } from "./ChatCardHeader";
 
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-import { ChatCardImage } from "./ChartCardImage";
+import { ChatCardImage } from "./ChatCardImage";
+import { ChatCardDescription } from "./ChatCardDescription";
 
 
 
@@ -32,7 +33,8 @@ export const ChatCard = () => {
   return (
       <View style={styles.cardContainer}>
         <ChatCardHeader post={samplePost}/>
-        <ChatCardImage imageUrl={sampleImageUrl}/>  
+        <ChatCardDescription post={samplePost}/> 
+        <ChatCardImage imageUrl={sampleImageUrl}/> 
       </View> 
   );
 };
@@ -40,10 +42,11 @@ export const ChatCard = () => {
 const styles = StyleSheet.create({
     cardContainer:{
      ... shadows.cardShadow,
-      maxHeight: '70%',
+      maxHeight: 'auto',
       maxWidth:'80%',
       backgroundColor: colors.background,
       borderRadius:5,
+      overflow:'hidden'
     },
     
 });
