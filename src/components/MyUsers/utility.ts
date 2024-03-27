@@ -1,8 +1,9 @@
 import { User } from "../../utility/types";
 
-export const filterInactiveUsers = (users: User[]) => {
-  return users.filter((user) => user.statusActive === false);
+export const filterByStatusAndSortAlphabetically = (
+  users: User[],
+  isActive: boolean,
+) => {
+  let filteredUsers = users.filter((user) => user.statusActive === isActive);
+  return filteredUsers.sort((a, b) => a.firstName.localeCompare(b.firstName));
 };
-
-export const sortUsersAlphabetically = (userArray: User[]) =>
-  userArray.sort((a, b) => a.firstName.localeCompare(b.firstName));

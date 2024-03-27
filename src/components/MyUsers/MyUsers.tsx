@@ -2,7 +2,11 @@ import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Sort } from "../../lib/enums/sort";
 import { User } from "../../utility/types";
-import { filterInactiveUsers, sortUsersAlphabetically } from "./utility";
+import {
+  filterByStatusAndSortAlphabetically,
+  filterInactiveUsers,
+  sortUsersAlphabetically,
+} from "./utility";
 import { DropDownTextAndIcon } from "../DropDowns/DropDownTextAndIcon/DropDownTextAndIcon";
 import { SortBy } from "../DropDowns/SortBy";
 import { NoUsersText } from "./NoUsersText";
@@ -17,8 +21,8 @@ export const MyUsers = ({ users }: Props) => {
 
   const usersSortBy = useCallback(() => {
     return sortBy === Sort.Inactive
-      ? filterInactiveUsers(users)
-      : sortUsersAlphabetically(users);
+      ? filterByStatusAndSortAlphabetically(users, false)
+      : filterByStatusAndSortAlphabetically(users, true);
   }, [sortBy, users]);
 
   return (
@@ -32,7 +36,7 @@ export const MyUsers = ({ users }: Props) => {
         />
       </View>
 
-      {users.map((user) => (
+      {usersSortBy().map((user) => (
         <DropDownTextAndIcon
           testID={`${user.id}-my-users`}
           key={`${user.id}-my-users-drop-down`}

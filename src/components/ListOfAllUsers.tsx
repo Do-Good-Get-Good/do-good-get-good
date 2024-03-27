@@ -63,19 +63,22 @@ export function ListOfAllUsers({ navigation }: Props) {
       {searchArray.map(
         (user, index) =>
           selectedOption === user.statusActive && (
-            <View key={user.id + index} style={styles.contrainer}>
+            <TouchableOpacity
+              style={styles.contrainer}
+              key={user.id + index}
+              onPress={() => onPressUser(user)}
+            >
               <Text style={styles.firstAndLastNameText}>
                 {user.firstName + " " + user.lastName}
               </Text>
-              <TouchableOpacity onPress={() => onPressUser(user)}>
-                <Icon
-                  color={colors.dark}
-                  name="pencil-outline"
-                  type="material-community"
-                  size={25}
-                />
-              </TouchableOpacity>
-            </View>
+
+              <Icon
+                color={colors.dark}
+                name="pencil-outline"
+                type="material-community"
+                size={25}
+              />
+            </TouchableOpacity>
           ),
       )}
     </View>
