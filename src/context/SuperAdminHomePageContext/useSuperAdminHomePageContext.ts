@@ -15,19 +15,6 @@ import {
   makeListOfUserAndUnapprovedTimeEntries,
 } from "../utility/functions";
 
-// const filterAfterChanges = (
-//   prev: UserAndUnapprovedTimeEntriesType[],
-//   timeEntryID: TimeEntry["id"],
-// ) =>
-//   prev
-//     .map((user) => ({
-//       ...user,
-//       unapprovedTimeEntries: reject(user.unapprovedTimeEntries, {
-//         id: timeEntryID,
-//       }) as TimeEntry[],
-//     }))
-//     .filter((user) => user.unapprovedTimeEntries.length > 0);
-
 export const useSuperAdminHomePageContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
   const context = useSuperAdminFunction();

@@ -50,7 +50,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const { onSaveChangedUser, onShowAlert } = useSuperAdminContext();
+  const { onSaveChangedUser } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
     [],
@@ -76,7 +76,6 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     ]);
   };
 
-  onShowAlert();
   return (
     <SafeAreaView>
       <Menu />

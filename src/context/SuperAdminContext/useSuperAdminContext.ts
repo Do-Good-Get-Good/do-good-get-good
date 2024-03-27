@@ -9,7 +9,7 @@ import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
 import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { UserName } from "../../screens/ChangeUser/updateUser";
-import { useCallback, useState } from "react";
+
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
 
 const isSavingUpdatesSucceed = (succed: boolean) =>
@@ -18,14 +18,8 @@ const isSavingUpdatesSucceed = (succed: boolean) =>
 export const useSuperAdminContext = () => {
   const context = useSuperAdminFunction();
 
-  const [onAlert, setOnAlert] = useState<string | null>(null);
-
   const makeChangesForSelectedUser = context?.makeChangesForSelectedUser;
   const allUsersInSystem = context?.allUsersInSystem ?? [];
-
-  const onShowAlert = useCallback(() => {
-    return onAlert !== null && AlertInfo(onAlert, () => setOnAlert(null));
-  }, [onAlert]);
 
   const updateUserName = async (changeOnlyName: UserName) => {
     if (makeChangesForSelectedUser?.user) {
@@ -41,7 +35,7 @@ export const useSuperAdminContext = () => {
   const updateUser = async (changedUser: User) => {
     const result = await superAdminUpdatesUserInfo(changedUser);
     result.success && updateUserAfterChanges(changedUser),
-      setOnAlert(isSavingUpdatesSucceed(result.success));
+      AlertInfo(isSavingUpdatesSucceed(result.success));
   };
 
   const onSaveChangedUser = (
@@ -90,6 +84,5 @@ export const useSuperAdminContext = () => {
     onSaveChangedUser,
     updateUser,
     updateUserName,
-    onShowAlert,
   };
 };
