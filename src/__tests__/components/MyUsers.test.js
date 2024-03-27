@@ -81,13 +81,13 @@ describe("Testing MyUsers component", () => {
 
     expect(getByText("Admin4 Adminsson4")).toBeTruthy();
     expect(getByText("Johan2 Johansson2")).toBeTruthy();
-    expect(queryByText("Johan22 Johansson22")).not.toBe();
+    expect(queryByText("Johan22 Johansson22")).toBeNull();
 
     fireEvent.press(getByTestId("dropdown-sort-by"));
     fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));
 
-    expect(queryByText("Admin4 Adminsson4")).not.toBe();
-    expect(queryByText("Johan2 Johansson2")).not.toBe();
+    expect(queryByText("Admin4 Adminsson4")).toBeNull();
+    expect(queryByText("Johan2 Johansson2")).toBeNull();
     expect(getByText("Johan22 Johansson22")).toBeTruthy();
   });
 
