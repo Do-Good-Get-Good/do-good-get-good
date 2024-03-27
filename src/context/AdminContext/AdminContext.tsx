@@ -7,10 +7,10 @@ import {
 } from "../../utility/types";
 
 type AdminContextType = {
-  usersWithFiveUnconfirmedTimeEntries: User[];
+  usersWithFiveConfirmedTimeEntries: User[];
   usersWithUnconfirmedTimeEntries: User[];
   setUsersWithUnconfirmedTimeEntries: (user: User[]) => void;
-  setUsersWithFiveUnconfirmedTimeEntries: (user: User[]) => void;
+  setUsersWithFiveConfirmedTimeEntries: (user: User[]) => void;
   loading: boolean;
   setLoading: (user: boolean) => void;
   allUsersConnectedToadmin: User[];
@@ -18,10 +18,10 @@ type AdminContextType = {
 };
 
 const AdminContext = React.createContext<AdminContextType>({
-  usersWithFiveUnconfirmedTimeEntries: [],
+  usersWithFiveConfirmedTimeEntries: [],
   usersWithUnconfirmedTimeEntries: [],
   setUsersWithUnconfirmedTimeEntries: () => [],
-  setUsersWithFiveUnconfirmedTimeEntries: () => [],
+  setUsersWithFiveConfirmedTimeEntries: () => [],
   loading: true,
   setLoading: () => [],
   allUsersConnectedToadmin: [],
@@ -36,8 +36,8 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
   const [
-    usersWithFiveUnconfirmedTimeEntries,
-    setUsersWithFiveUnconfirmedTimeEntries,
+    usersWithFiveConfirmedTimeEntries,
+    setUsersWithFiveConfirmedTimeEntries,
   ] = useState<User[]>([]);
   const [usersWithUnconfirmedTimeEntries, setUsersWithUnconfirmedTimeEntries] =
     useState<User[]>([]);
@@ -49,10 +49,10 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   return (
     <AdminContext.Provider
       value={{
-        usersWithFiveUnconfirmedTimeEntries,
+        usersWithFiveConfirmedTimeEntries,
         usersWithUnconfirmedTimeEntries,
         setUsersWithUnconfirmedTimeEntries,
-        setUsersWithFiveUnconfirmedTimeEntries,
+        setUsersWithFiveConfirmedTimeEntries,
         allUsersConnectedToadmin,
         setAllUsersConnectedToadmin,
         loading,

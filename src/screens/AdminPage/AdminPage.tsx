@@ -21,7 +21,7 @@ type Props = {
 export const AdminPage = ({ navigation }: Props) => {
   const {
     usersWithUnconfirmedTimeEntries,
-    usersWithFiveUnconfirmedTimeEntries,
+    usersWithFiveConfirmedTimeEntries,
     loading,
   } = useAdminFunction();
   const { onApproveTimeEntriesAdmin } = useAdminContext();
@@ -35,7 +35,7 @@ export const AdminPage = ({ navigation }: Props) => {
           users={usersWithUnconfirmedTimeEntries}
         />
         <Spinner loading={loading} />
-        <MyUsers users={usersWithFiveUnconfirmedTimeEntries} />
+        <MyUsers users={usersWithFiveConfirmedTimeEntries} />
         <BottomLogo />
       </ScrollView>
       <FloatingActionButton />

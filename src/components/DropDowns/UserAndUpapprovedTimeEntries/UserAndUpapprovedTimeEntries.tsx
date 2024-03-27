@@ -17,7 +17,7 @@ import { getUnconfirmedTimeEntriesFromAllUsersAdminPage } from "../../TitleAndOn
 
 type Props = {
   users: User[];
-  onApproveTimeEntriesAdmin: (onCheck: TimeEntry[]) => void;
+  onApproveTimeEntriesAdmin: (onCheck: TimeEntry[]) => Promise<void>;
 };
 
 export const UserAndUnapprovedTimeEntries = ({
@@ -25,8 +25,11 @@ export const UserAndUnapprovedTimeEntries = ({
   onApproveTimeEntriesAdmin,
 }: Props) => {
   const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
+
   const onApprove = () =>
-    AlertToApproveTimeEntries(() => onApproveTimeEntriesAdmin(onCheck));
+    AlertToApproveTimeEntries(() =>
+      onApproveTimeEntriesAdmin(onCheck).then(() => setOnCheck([])),
+    );
 
   return (
     <>

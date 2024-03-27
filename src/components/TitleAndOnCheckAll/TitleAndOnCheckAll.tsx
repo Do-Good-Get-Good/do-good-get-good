@@ -19,10 +19,6 @@ type Props = {
   setOnCheck: (onCheck: Array<TimeEntry>) => void;
 };
 
-// const allUnconfirmedTimeEntries = (
-//   users: UserAndUnapprovedTimeEntriesType[],
-// ) => [...flatMap(users, (u) => u.unapprovedTimeEntries.map((entry) => entry))];
-
 export const TitleAndOnCheckAll = ({
   onCheck,
   allUnconfirmedTimeEntries,

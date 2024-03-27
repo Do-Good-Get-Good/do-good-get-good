@@ -19,7 +19,7 @@ export const useAdminContext = () => {
   const { userLevel } = userLevelStore;
 
   const {
-    setUsersWithFiveUnconfirmedTimeEntries,
+    setUsersWithFiveConfirmedTimeEntries,
     setUsersWithUnconfirmedTimeEntries,
     setAllUsersConnectedToadmin,
     setLoading,
@@ -28,7 +28,9 @@ export const useAdminContext = () => {
   const isGranted =
     adminID && (userLevel === Role.superadmin || userLevel === Role.admin);
 
-  const onApproveTimeEntriesAdmin = async (timeEntries: Array<TimeEntry>) => {
+  const onApproveTimeEntriesAdmin = async (
+    timeEntries: Array<TimeEntry>,
+  ): Promise<void> => {
     if (adminID) {
       await onApproveTimeEntries(timeEntries, adminID).then(() =>
         onShowUnApprovedTimeEntriesAdminPage(),
@@ -51,7 +53,7 @@ export const useAdminContext = () => {
       adminUsers,
       getUsersFiveNewestTimeEntries,
     );
-    setUsersWithFiveUnconfirmedTimeEntries(fiveTimeEntriesAndUsers);
+    setUsersWithFiveConfirmedTimeEntries(fiveTimeEntriesAndUsers);
     setLoading(false);
   };
 
