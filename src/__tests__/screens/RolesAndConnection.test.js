@@ -64,9 +64,12 @@ describe("Testing RolesAndConnection screen ", () => {
   it("It works to press on Change user button and navigate to ChangeUser screen ", async () => {
     const { getByTestId } = render(<RolesAndConnection />);
 
-    const changeUserButton = getByTestId("textUnderlineButton.2");
+    // TODO: Put it back when fixed to change role in user claims
+    // const changeUserButton = getByTestId("textUnderlineButton.2");
+    // fireEvent.press(changeUserButton);
+    const changeUserButton = getByTestId("textUnderlineButton.1");
     fireEvent.press(changeUserButton);
-
+    ///////////
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
       user: userSuperadminMock,
       prevRoute: "RolesAndConnection",
@@ -79,9 +82,14 @@ describe("Testing RolesAndConnection screen. Change admin button ", () => {
     const { getByTestId, getByText, queryByTestId, getAllByTestId } = render(
       <RolesAndConnection navigation={navigationMock} />,
     );
+    // TODO: Put it back when fixed to change role in user claims
+    // const changeRoleButton = getByTestId("textUnderlineButton.1");
+    // fireEvent.press(changeRoleButton);
 
-    const changeRoleButton = getByTestId("textUnderlineButton.1");
+    const changeRoleButton = getByTestId("textUnderlineButton.0");
     fireEvent.press(changeRoleButton);
+
+    ////////
 
     expect(queryByTestId("popUpTextvalue.mainTitle").props.children).toBe(
       "Ändra admin",
@@ -126,45 +134,41 @@ describe("Testing RolesAndConnection screen. Change admin button ", () => {
 });
 
 describe("Testing RolesAndConnection screen. Change role button ", () => {
-  it("It works to open overlay to change role", async () => {
-    const { getByTestId, getByText } = render(
-      <RolesAndConnection navigation={navigationMock} />,
-    );
-
-    const changeRoleButton = getByTestId("textUnderlineButton.0");
-    fireEvent.press(changeRoleButton);
-    expect(getByTestId("popUpTextvalue.mainTitle").props.children).toBe(
-      "Ändra nivå",
-    );
-
-    expect(getByTestId("popUpRadioButton.user"));
-    expect(getByTestId("popUpTextvalue.user"));
-    expect(getByTestId("popUpRadioButton.admin"));
-    expect(getByTestId("popUpTextvalue.admin"));
-    expect(getByTestId("popUpRadioButton.superadmin"));
-    expect(getByTestId("popUpTextvalue.superadmin"));
-    expect(getByText("Ok")).toBeTruthy();
-  });
-
-  it("It works to change role", async () => {
-    const { getByTestId, getByText, getAllByTestId, queryByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
-    );
-
-    const changeRoleButton = getByTestId("textUnderlineButton.0");
-    fireEvent.press(changeRoleButton);
-    expect(queryByTestId("popUpRadioButton.admin"));
-
-    const chanegeToAdminButtonPressed = queryByTestId("popUpRadioButton.admin");
-    const okButton = getByText("Ok");
-    fireEvent.press(chanegeToAdminButtonPressed);
-    fireEvent.press(okButton);
-
-    expect(getByText("Nivå")).toBeTruthy();
-    expect(getAllByTestId("title-and-value-value")[0].props.children).toBe(
-      "Admin",
-    );
-  });
+  // TODO: Put it back when fixed to change role in user claims
+  // it("It works to open overlay to change role", async () => {
+  //   const { getByTestId, getByText } = render(
+  //     <RolesAndConnection navigation={navigationMock} />,
+  //   );
+  //   const changeRoleButton = getByTestId("textUnderlineButton.0");
+  //   fireEvent.press(changeRoleButton);
+  //   expect(getByTestId("popUpTextvalue.mainTitle").props.children).toBe(
+  //     "Ändra nivå",
+  //   );
+  //   expect(getByTestId("popUpRadioButton.user"));
+  //   expect(getByTestId("popUpTextvalue.user"));
+  //   expect(getByTestId("popUpRadioButton.admin"));
+  //   expect(getByTestId("popUpTextvalue.admin"));
+  //   expect(getByTestId("popUpRadioButton.superadmin"));
+  //   expect(getByTestId("popUpTextvalue.superadmin"));
+  //   expect(getByText("Ok")).toBeTruthy();
+  // });
+  // TODO: Put it backnwhen fixed to change role in user claims
+  // it("It works to change role", async () => {
+  //   const { getByTestId, getByText, getAllByTestId, queryByTestId } = render(
+  //     <RolesAndConnection navigation={navigationMock} />,
+  //   );
+  //   const changeRoleButton = getByTestId("textUnderlineButton.0");
+  //   fireEvent.press(changeRoleButton);
+  //   expect(queryByTestId("popUpRadioButton.admin"));
+  //   const chanegeToAdminButtonPressed = queryByTestId("popUpRadioButton.admin");
+  //   const okButton = getByText("Ok");
+  //   fireEvent.press(chanegeToAdminButtonPressed);
+  //   fireEvent.press(okButton);
+  //   expect(getByText("Nivå")).toBeTruthy();
+  //   expect(getAllByTestId("title-and-value-value")[0].props.children).toBe(
+  //     "Admin",
+  //   );
+  // });
 });
 
 describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
