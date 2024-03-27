@@ -105,23 +105,23 @@ describe("Testing MyUsers component", () => {
 
     expect(timeEntryTitle[0].props.children).toBe("activityTitle 1");
     expect(timeEntryDate[0].props.children).toBe("2023-05-02");
-    expect(timeEntryTime[0].props.children).toBe("2.5");
+    expect(timeEntryTime[0].props.children).toBe("2.5 h");
 
     expect(timeEntryTitle[1].props.children).toBe("activityTitle 1");
     expect(timeEntryDate[1].props.children).toBe("2023-07-17");
-    expect(timeEntryTime[1].props.children).toBe("3");
+    expect(timeEntryTime[1].props.children).toBe("3 h");
 
     expect(timeEntryTitle[2].props.children).toBe("activityTitle 1");
     expect(timeEntryDate[2].props.children).toBe("2023-08-10");
-    expect(timeEntryTime[2].props.children).toBe("3");
+    expect(timeEntryTime[2].props.children).toBe("3 h");
 
     expect(timeEntryTitle[3].props.children).toBe("activityTitle 1");
     expect(timeEntryDate[3].props.children).toBe("2023-09-02");
-    expect(timeEntryTime[3].props.children).toBe("2.5");
+    expect(timeEntryTime[3].props.children).toBe("2.5 h");
 
     expect(timeEntryTitle[4].props.children).toBe("activityTitle 1");
     expect(timeEntryDate[4].props.children).toBe("2023-11-17");
-    expect(timeEntryTime[4].props.children).toBe("0.5");
+    expect(timeEntryTime[4].props.children).toBe("0.5 h");
   });
 
   it("Can view unactive user timeentries", async () => {
@@ -139,7 +139,7 @@ describe("Testing MyUsers component", () => {
 
     expect(timeEntryTitle.props.children).toBe("activityTitle 5");
     expect(timeEntryDate.props.children).toBe("2022-09-02");
-    expect(timeEntryTime.props.children).toBe("2.5");
+    expect(timeEntryTime.props.children).toBe("2.5 h");
   });
 
   it("Can press edit icon on active users", async () => {

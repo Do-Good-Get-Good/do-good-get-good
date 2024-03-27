@@ -95,7 +95,7 @@ describe("Testing SuperAdminHomePage screen ", () => {
       "User2\u00A0Usersson2",
     );
     expect(getByTestId("info-row-date").props.children).toBe("2022-07-10");
-    expect(getByTestId("info-row-time").props.children).toBe("1.5");
+    expect(getByTestId("info-row-time").props.children).toBe("1.5 h");
     expect(
       getByTestId("checkbox-info-row-unapprovedTimeEntries2").props.isChecked,
     ).toBe(false);
