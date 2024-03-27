@@ -30,7 +30,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
   return (
     <View>
       <NameRoleAdmin
-        userName={user?.firstName + " " + user?.lastName}
+        userName={`${user?.firstName ?? "-"} ${user?.lastName ?? "-"}`}
         role={getValues("role")}
         adminName={getValues("admin.fullName")}
       />
@@ -41,7 +41,16 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
             testID={`textUnderlineButton.${i}`}
             key={button.key}
             title={button.title}
-            onPress={() => button.onPress(user)}
+            onPress={() =>
+              button.onPress(
+                user && {
+                  ...user,
+                  role: getValues("role"),
+                  adminID: getValues("admin.id"),
+                  statusActive: getValues("isActive"),
+                },
+              )
+            }
           />
         ))}
         <Controller

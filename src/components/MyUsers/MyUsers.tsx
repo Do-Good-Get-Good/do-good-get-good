@@ -2,11 +2,7 @@ import React, { useCallback, useEffect, useState } from "react";
 import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
 import { Sort } from "../../lib/enums/sort";
 import { User } from "../../utility/types";
-import {
-  filterByStatusAndSortAlphabetically,
-  filterInactiveUsers,
-  sortUsersAlphabetically,
-} from "./utility";
+import { filterByStatusAndSortAlphabetically } from "./utility";
 import { DropDownTextAndIcon } from "../DropDowns/DropDownTextAndIcon/DropDownTextAndIcon";
 import { SortBy } from "../DropDowns/SortBy";
 import { NoUsersText } from "./NoUsersText";

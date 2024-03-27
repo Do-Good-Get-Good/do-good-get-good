@@ -21,17 +21,6 @@ export const useSuperAdminContext = () => {
   const makeChangesForSelectedUser = context?.makeChangesForSelectedUser;
   const allUsersInSystem = context?.allUsersInSystem ?? [];
 
-  const updateUserName = async (changeOnlyName: UserName) => {
-    if (makeChangesForSelectedUser?.user) {
-      let tempUser: User = {
-        ...makeChangesForSelectedUser?.user,
-        firstName: changeOnlyName?.name,
-        lastName: changeOnlyName?.surname,
-      };
-      updateUser(tempUser);
-    }
-  };
-
   const updateUser = async (changedUser: User) => {
     const result = await superAdminUpdatesUserInfo(changedUser);
     result.success && updateUserAfterChanges(changedUser),
@@ -83,6 +72,5 @@ export const useSuperAdminContext = () => {
     findAdminsAndSuperAdmins,
     onSaveChangedUser,
     updateUser,
-    updateUserName,
   };
 };

@@ -60,13 +60,18 @@ export const ChangeUser = ({ route, navigation }: Props) => {
   });
   const [loading, setLoading] = useState(false);
   const [changedStatus, setChangedStatus] = useState(user.statusActive);
-  const { updateUserName } = useSuperAdminContext();
+  const { updateUser } = useSuperAdminContext();
   const { updateUserAfterChanges } = useAdminUpdateUserInfoAndActivities();
 
   const onSubmit = async (changed: UserName) => {
     setLoading(true);
     if (prevRoute === SuperAdminStack.RolesAndConnection) {
-      updateUserName(changed);
+      updateUser({
+        ...user,
+        firstName: changed.name,
+        lastName: changed.surname,
+        statusActive: changedStatus,
+      });
     } else {
       if (isDirty || changedStatus !== user.statusActive) {
         await updateUserAfterChanges({
