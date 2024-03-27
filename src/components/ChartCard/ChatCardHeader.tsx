@@ -17,7 +17,7 @@ type Props ={
 export const ChatCardHeader = ({post }: Props) => {
 
   return (
-    <View style={styles.container}>
+    
        <View style={styles.detailsContainer}>
        <Image  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
         <View>
@@ -28,16 +28,16 @@ export const ChatCardHeader = ({post }: Props) => {
         <Text style={styles.textCity}>{post.activityCity}</Text></View>
         </View>
      </View>
-    </View>
+ 
   );
 };
 
 const styles = StyleSheet.create({
-    container:{
-    },
+ 
     detailsContainer:{
       flexDirection:'row',
-      alignItems: 'center'
+      alignItems: 'center',
+     
     },
     image:{
       width: 60,
