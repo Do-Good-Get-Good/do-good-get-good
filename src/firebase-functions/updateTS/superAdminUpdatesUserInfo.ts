@@ -15,7 +15,10 @@ export const superAdminUpdatesUserInfo = async (user: User) => {
       role: user.role,
       admin_id: user.adminID,
     });
+    console.log("Super admin update user data");
+    return { success: true };
   } catch (error) {
     console.log(error);
+    return { success: false };
   }
 };

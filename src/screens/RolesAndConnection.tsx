@@ -1,5 +1,5 @@
 import { StyleSheet, ScrollView, View } from "react-native";
-import React, { useState } from "react";
+import React, { useCallback, useState } from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
 
 import BottomLogo from "../components/BottomLogo";
@@ -18,6 +18,7 @@ import { User } from "../utility/types";
 import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
+import { AlertInfo } from "../components/Alerts/AlertInfo";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -63,8 +64,8 @@ export const RolesAndConnection = ({ navigation }: Props) => {
     resolver: yupResolver(schema),
   });
 
-  const onSave = (data: UserInfo) => {
-    onSaveChangedUser(data, usersWithChangedAdmin);
+  const onSave = (changes: UserInfo) => {
+    onSaveChangedUser(changes, usersWithChangedAdmin);
   };
 
   const onSaveUsersWithChangedAdmin = (user: User) => {
@@ -85,6 +86,7 @@ export const RolesAndConnection = ({ navigation }: Props) => {
           <ConnectedUsersDropDown
             onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
           />
+
           <LongButton
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}
