@@ -13,22 +13,15 @@ type Props ={
 export const ChatCardDescription = ({post }: Props) => {
   
   return (
-   <View style={styles.detailsContainer}>
     <Text style={styles.textDescription}>{post.description}</Text>
-   </View>
   );
 };
 
 const styles = StyleSheet.create({
 
-    detailsContainer:{
-        flexDirection:'row',
-        alignItems: 'center',
-        marginLeft:10,
-      },
       textDescription:{
-        ...typography.b1,
-        marginLeft: 5,
+        ...typography.b2,
+        marginLeft: 10,
         color: colors.dark
       }
  

@@ -5,7 +5,7 @@ import BottomNavButtons from "./BottomNavButtons";
 import { useNavigation } from "@react-navigation/native";
 import { Role } from "../utility/enums";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { InputField } from "./InputField";
+import { InputFieldWithController } from "./InputFieldWithController";
 import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
 import { UserNewAccount } from "../screens/CreateUser";
 import { useState } from "react";
@@ -111,21 +111,21 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
         testID="scroll"
         contentContainerStyle={{ paddingHorizontal: 16 }}
       >
-        <InputField
+        <InputFieldWithController
           placeholderText={"Förnamn"}
           control={control}
           error={errors.name}
           name={"name"}
           testID={'name'}
         />
-        <InputField
+        <InputFieldWithController
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
           name={"surname"}
           testID={'surname'}
         />
-        <InputField
+        <InputFieldWithController
           placeholderText={"E-mail"}
           control={control}
           error={errors.email}
@@ -135,7 +135,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           contextMenuHidden={true}
           testID={'email'}
         />
-        <InputField
+        <InputFieldWithController
           placeholderText={"Bekräfta E-mail"}
           control={control}
           error={errors.confirmEmail}

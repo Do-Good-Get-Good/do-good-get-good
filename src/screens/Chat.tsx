@@ -11,9 +11,11 @@ export const Chat = () => {
   
   return (
     <SafeAreaView style={styles.container}>
+      <ScrollView contentContainerStyle={styles.scrollViewContent}>
       <Menu/>
       <ChatCard/> 
       <BottomLogo/>
+      </ScrollView>
     </SafeAreaView>
   );
 };
@@ -27,6 +29,9 @@ const styles = StyleSheet.create({
     ...typography.h2,
     fontWeight: '500',
     marginTop: 30,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
   },
 });
 
