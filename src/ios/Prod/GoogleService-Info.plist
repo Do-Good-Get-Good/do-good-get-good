@@ -3,9 +3,9 @@
 <plist version="1.0">
 <dict>
 	<key>CLIENT_ID</key>
-	<string>771396788193-ulr56s5u8h19igrln08ailt9o1fagsce.apps.googleusercontent.com</string>
+	<string>771396788193-9q8uq5drvp61e2n74739jrg5fn4ibovm.apps.googleusercontent.com</string>
 	<key>REVERSED_CLIENT_ID</key>
-	<string>com.googleusercontent.apps.771396788193-ulr56s5u8h19igrln08ailt9o1fagsce</string>
+	<string>com.googleusercontent.apps.771396788193-9q8uq5drvp61e2n74739jrg5fn4ibovm</string>
 	<key>ANDROID_CLIENT_ID</key>
 	<string>771396788193-fie8vsnurehcc729tsekq3m7n2ieifab.apps.googleusercontent.com</string>
 	<key>API_KEY</key>
@@ -15,7 +15,7 @@
 	<key>PLIST_VERSION</key>
 	<string>1</string>
 	<key>BUNDLE_ID</key>
-	<string>org.name.src</string>
+	<string>se.technogarden.dogoodgetgood</string>
 	<key>PROJECT_ID</key>
 	<string>do-good-get-good-2f6cc</string>
 	<key>STORAGE_BUCKET</key>
@@ -31,6 +31,8 @@
 	<key>IS_SIGNIN_ENABLED</key>
 	<true></true>
 	<key>GOOGLE_APP_ID</key>
-	<string>1:771396788193:ios:b678aa026f7cdcfb7ebca0</string>
+	<string>1:771396788193:ios:20fef23351728e9f7ebca0</string>
+	<key>DATABASE_URL</key>
+	<string>https://do-good-get-good-2f6cc-default-rtdb.europe-west1.firebasedatabase.app</string>
 </dict>
 </plist>

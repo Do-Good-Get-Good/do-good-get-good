@@ -1,9 +1,14 @@
-import firestore from "@react-native-firebase/firestore";
 import { User } from "../../utility/types";
+import functions from "@react-native-firebase/functions";
+import firestore from "@react-native-firebase/firestore";
 
 export const superAdminUpdatesUserInfo = async (user: User) => {
   try {
-    await firestore().collection("Users").doc(user.id).update({
+    const updateUserRoleClaims = functions().httpsCallable(
+      "updateUserRoleClaims",
+    );
+    await updateUserRoleClaims(user);
+    firestore().collection("Users").doc(user.id).update({
       first_name: user.firstName,
       last_name: user.lastName,
       status_active: user.statusActive,

@@ -12,7 +12,6 @@ import { Role } from "../utility/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
-import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
 import { User } from "../utility/types";
