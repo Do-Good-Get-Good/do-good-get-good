@@ -10,19 +10,30 @@ import colors from "../../../assets/theme/colors";
    user:User
   }
 export const CommentInfo= ({comment,user}:props) => {
-  
   return (
-    <View >
-        <Text style={styles.textDescription}>{user.firstName} {user.lastName}:{' '} {comment.comment} </Text>    
+    <View style={styles.container}>
+        <Text style={styles.textDescription}>{user.firstName} {user.lastName} {' ' }</Text> 
+        <View>   
+        <Text style={styles.textComment}>{comment.comment}</Text>
+        </View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flexDirection:'row'
+  },
     textDescription:{
         flexDirection:'row',
         marginLeft:10 ,
         ...typography.b2,
-        color: colors.dark       
+        color: colors.dark,
+        fontWeight:'bold'     
     },
+    textComment:{
+      flexDirection:'row',
+        ...typography.b2,
+        color: colors.dark  
+    }
 });

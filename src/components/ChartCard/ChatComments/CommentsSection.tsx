@@ -11,17 +11,17 @@ import typography from "../../../assets/theme/typography";
 type Props ={
     comments:Comment[],
     users:User[],
+    onAddComment:(newComment:string)=>void
   }
-  
-export const CommentsSection = ({comments,users}: Props) => {
+export const CommentsSection = ({comments,users,onAddComment}: Props) => {
   const [newComment,setNewComment]=useState('')
-  const [enteredComment, setEnteredComment] = useState('');
-  const handleAddComment=()=>{
-    console.log("Button pressed")
-    setEnteredComment(newComment);
-    setNewComment('');
+  const handleAddComment = () => {
+    if (newComment.trim() !== "") {
+      onAddComment(newComment)
+      console.log("Added comment")
+      setNewComment('');
+    }
   }
-  
   return (
    <View>
     {comments.map((comment)=>{
@@ -29,7 +29,7 @@ export const CommentsSection = ({comments,users}: Props) => {
         if (!user) return null;
         return <CommentInfo key={comment.id} comment={comment} user={user}/>
     })}
-     {enteredComment ? <Text style={styles. newCommentView}>{enteredComment}</Text> : null}
+    <Text style={styles. newCommentView}>{newComment}</Text>
     <View style={styles.commentDetails}>
       <View >
       <InputField
