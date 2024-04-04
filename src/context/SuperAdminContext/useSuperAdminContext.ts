@@ -13,7 +13,7 @@ import { UserName } from "../../screens/ChangeUser/updateUser";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
 
 const isSavingUpdatesSucceed = (succed: boolean) =>
-  succed ? "Dina ändringar has sparats" : "Något gick fel";
+  succed ? "Dina ändringar har sparats" : "Något gick fel";
 
 export const useSuperAdminContext = () => {
   const context = useSuperAdminFunction();
