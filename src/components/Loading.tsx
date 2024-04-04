@@ -6,7 +6,12 @@ type Props = {
 export const Spinner = ({ loading = false }: Props) => {
   return (
     loading && (
-      <Dialog.Loading loadingProps={{ color: "#84BD00" }}></Dialog.Loading>
+      <Dialog.Loading
+        loadingStyle={{
+          position: "absolute",
+        }}
+        loadingProps={{ color: "#84BD00" }}
+      ></Dialog.Loading>
     )
   );
 };

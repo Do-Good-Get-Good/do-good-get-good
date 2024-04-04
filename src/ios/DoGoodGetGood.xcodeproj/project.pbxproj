@@ -14,8 +14,8 @@
 		1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
+		50D1FCED2BBC0CBC00CAB5E8 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 50D1FCEC2BBC0CBC00CAB5E8 /* GoogleService-Info.plist */; };
 		64B1239429AFC6A0009BFA97 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */; };
-		64CEDA3729AFB41B00D996F1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */; };
 		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -53,10 +53,10 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
 		41589E760962169460036461 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
+		50D1FCEC2BBC0CBC00CAB5E8 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		58595BD336CB2EC67B891AC4 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64B1239329AFC69F009BFA97 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		64D6637929A936AE0027F881 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<absolute>"; };
@@ -173,7 +173,7 @@
 		64CEDA3529AFB41B00D996F1 /* Prod */ = {
 			isa = PBXGroup;
 			children = (
-				64CEDA3629AFB41B00D996F1 /* GoogleService-Info.plist */,
+				50D1FCEC2BBC0CBC00CAB5E8 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
 			sourceTree = "<group>";
@@ -363,7 +363,7 @@
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
-				64CEDA3729AFB41B00D996F1 /* GoogleService-Info.plist in Resources */,
+				50D1FCED2BBC0CBC00CAB5E8 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

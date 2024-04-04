@@ -10,7 +10,7 @@ const { connectUsersToActivities } = require("./src/connectUsersToActivities");
 const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 const { firebaseConfig } = require("./config");
 const { adminGetUserEmail } = require("./src/adminGetUserEmail");
-const { updateUserRoleClaims } = require("./src/updateUserRoleClaims");
+const { updateUser } = require("./src/updateUser");
 admin.initializeApp(firebaseConfig);
 
 // Cloud functions
@@ -23,4 +23,4 @@ exports.downloadData = downloadData;
 exports.connectUsersToActivities = connectUsersToActivities;
 exports.updateActivityUserCount = updateActivityUserCount;
 exports.adminGetUserEmail = adminGetUserEmail;
-exports.updateUserRoleClaims = updateUserRoleClaims;
+exports.updateUser = updateUser;

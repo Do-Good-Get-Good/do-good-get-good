@@ -18,7 +18,7 @@ import { User } from "../utility/types";
 import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-import { AlertInfo } from "../components/Alerts/AlertInfo";
+import { Spinner } from "../components/Loading";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -49,7 +49,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const { onSaveChangedUser } = useSuperAdminContext();
+  const { onSaveChangedUser, loading } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
     [],
@@ -82,12 +82,15 @@ export const RolesAndConnection = ({ navigation }: Props) => {
       <ScrollView>
         <View style={styles.container}>
           <GoBackButton onPress={() => navigation.goBack()} />
+
           <ChangeRolesAndConnection control={control} getValues={getValues} />
+          <Spinner loading={loading} />
           <ConnectedUsersDropDown
             onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
           />
 
           <LongButton
+            isDisabled={loading}
             style={{ marginTop: 50 }}
             onPress={handleSubmit(onSave)}
             title={"Spara"}
