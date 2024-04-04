@@ -24,17 +24,18 @@ export function ListOfAllUsers({ navigation }: Props) {
   const { userLevel } = userLevelStore;
   const { getAllUsersByStatus } = useGetAllUsersThatExistInTheSystem(userLevel);
   const allUsersInSystem = superAdminContext?.allUsersInSystem ?? [];
-  const { onSelectUser } = useOnSelectUser();
+  const { onSelectUser, getUserEmail } = useOnSelectUser();
   const [searchArray, setSearchArray] = useState<User[]>([]);
 
   useEffect(() => {
     setSearchArray(allUsersInSystem ?? []);
   }, [allUsersInSystem]);
 
-  function onPressUser(selectedUser: User) {
-    onSelectUser(selectedUser);
+  const onPressUser = async (selectedUser: User) => {
+    const email = await getUserEmail(selectedUser.id);
+    onSelectUser({ ...selectedUser, email: email });
     navigation.navigate(SuperAdminStack.RolesAndConnection);
-  }
+  };
 
   const onGetInActiveUsers = async () => {
     setSelectedOption(false);
