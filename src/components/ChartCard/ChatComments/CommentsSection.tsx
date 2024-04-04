@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useCallback,useState } from "react";
 import {
   View,StyleSheet,Text, TextInput, Button
 } from "react-native";
@@ -22,13 +22,15 @@ export const CommentsSection = ({comments,users,onAddComment}: Props) => {
       setNewComment('');
     }
   }
+
+  const findUserNameAndComment = useCallback (()=> comments.map((comment)=>{
+      const user=users.find((user)=>user.id ===comment.userID)
+       return user && {user, comment}
+    }),[comments])
+    
   return (
    <View>
-    {comments.map((comment)=>{
-        const user=users.find((user)=>user.id ===comment.userID);
-        if (!user) return null;
-        return <CommentInfo key={comment.id} comment={comment} user={user}/>
-    })}
+    { findUserNameAndComment().map((item)=>item &&<CommentInfo key={item.comment.id} comment={item.comment} user={item.user}/>)}
     <Text style={styles. newCommentView}>{newComment}</Text>
     <View style={styles.commentDetails}>
       <View >

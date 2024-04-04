@@ -1,5 +1,5 @@
 import React from "react";
-import {View,StyleSheet,Text
+import {StyleSheet,Text
 } from "react-native";
 import { UserPost } from "../../utility/types";
 import typography from "../../assets/theme/typography";
@@ -7,13 +7,13 @@ import colors from "../../assets/theme/colors";
 
 
 type Props ={
-    post: UserPost;
-  }
+  description: UserPost['description'];
+}
 
-export const ChatCardDescription = ({post }: Props) => {
+export const ChatCardDescription = ({description }: Props) => {
   
   return (
-    <Text style={styles.textDescription}>{post.description}</Text>
+    <Text style={styles.textDescription}>{description}</Text>
   );
 };
 

@@ -4,51 +4,31 @@ import {
 } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
+import { DropDownOverlay } from "../DropDowns/DropDownOverlay";
 
-type Props ={
-    onEditPress:()=> void;
+type Props ={ 
     onDeletetPress:()=> void;
   }
 
-export const ChatCardEditMenu = ({onEditPress,onDeletetPress}:Props) => {
-    const [showMenu,setShowMenu]=useState(false)
+export const ChatCardEditMenu = ({onDeletetPress}:Props) => {
+    const [showMenu,setShowMenu]=useState(false)   
 
-    const toggleMenu=()=>{
-        setShowMenu(!showMenu)
-    }
+  const optionsList =[{
+    label: 'Delete',
+    onPress:()=>   onDeletetPress()
+  }
+]
   
-    const handleEditPress=()=>{
-        toggleMenu()
-        onEditPress()
-    }
-    
-    const handleDeletePress=()=>{
-        toggleMenu()
-        onDeletetPress()
-    }
   return (
-   <View style={styles.container}>
-    <TouchableOpacity onPress={toggleMenu}>
+    <TouchableOpacity  onPress={()=> setShowMenu(!showMenu)}>
         <Text style={styles.buttonText}>...</Text>
+        {showMenu &&< DropDownOverlay optionsList={optionsList} />
+    }
     </TouchableOpacity>
-    {showMenu && (
-        <View style={styles.menu}>
-            <TouchableOpacity onPress={handleEditPress}>
-                <Text style={styles.menuItem}>Edit</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={handleDeletePress}>
-                <Text style={styles.menuItem}>Delete</Text>
-            </TouchableOpacity>
-        </View>
-    )}
-   </View> 
   );
 };
 
 const styles = StyleSheet.create({
-    container:{
-        position:'relative'
-    },
     menu:{
         backgroundColor: colors.background,
     },

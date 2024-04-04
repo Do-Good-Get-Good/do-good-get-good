@@ -3,35 +3,28 @@ import {
   View,StyleSheet,Text,Image
 } from "react-native";
 import typography from "../../assets/theme/typography";
+const today = new Date();
+    
+const formattedDate = (date: Date): string => {
+  const diff =  date.getDate() - today.getDate();
+  switch (diff) {
+    case -1:
+      return 'Yesterday';
+    case 0:
+      return 'Today';
+    default:
+      return `${date.getDate().toString().padStart(2, '0')}.${(date.getMonth() + 1).toString().padStart(2, '0')}.${date.getFullYear()}`;
+  }
+};
 
-export const ChatCardDate = () => {
-    const currentDate = new Date();
-    const today = new Date();
-    const yesterday = new Date(today);
-    yesterday.setDate(yesterday.getDate() - 1);
-    const tomorrow = new Date(today);
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    const formattedDate = (date: Date): string => {
-        const diff = date.getDate() - currentDate.getDate();
-        if (diff === -1) {
-          return 'Yesterday';
-        } else if (diff === 0) {
-          return 'Today';
-        } else if (diff === 1) {
-          return 'Tomorrow';
-        } else {
-          const options: Intl.DateTimeFormatOptions = {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric'
-          };
-          return date.toLocaleDateString(undefined, options);
-        }
-    };   
+type Props ={
+  date:Date
+}
+
+export const ChatCardDate = ({date}:Props) => {
   return (
     <View>
-      <Text style={styles.textDate}>{formattedDate(currentDate)}</Text>
+      <Text style={styles.textDate}>{date &&formattedDate(date)}</Text>
     </View>
   );
 };

@@ -102,7 +102,7 @@ export type UserPost = {
   description: string;
   emoji: Array<PostEmoji>;
   imageURL: string;
-  comments?: Array<Comment>;
+  comments: Array<Comment>;
 };
 
 export type ChatMessage = {
