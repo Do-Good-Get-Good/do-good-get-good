@@ -69,3 +69,4 @@ ios/tmp.xcconfig
 /coverage
 
 #plist ios
+GoogleService-Info.plist
