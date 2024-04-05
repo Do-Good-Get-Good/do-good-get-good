@@ -13,7 +13,7 @@ export const CommentInfo= ({comment,user}:props) => {
   return (
     <View style={styles.container}>
         <Text style={styles.textDescription}>{user.firstName} {user.lastName} {' ' }</Text> 
-        <View>   
+        <View style={styles.commentContainer}>   
         <Text style={styles.textComment}>{comment.comment}</Text>
         </View>
     </View>
@@ -35,5 +35,9 @@ const styles = StyleSheet.create({
       flexDirection:'row',
         ...typography.b2,
         color: colors.dark  
-    }
+    },
+    commentContainer: {
+      flex: 1,
+      maxWidth: "auto", 
+    },
 });

@@ -46,8 +46,8 @@ export const ChatCard = ({post, users}:Props) => {
         <ChatCardEditMenu onDeletetPress={handleDelete}  />
         </View>
         <ChatCardImage imageUrl={post.imageURL}/> 
-        <ChatCardDescription description={post.description}/> 
-        <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>    
+        <ChatCardDescription description={post.description}/>
+        <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>  
       </View> 
     </View>
   );
@@ -56,15 +56,13 @@ export const ChatCard = ({post, users}:Props) => {
 const styles = StyleSheet.create({
     cardContainer:{
      ... shadows.cardShadow,
-      // maxHeight: 'auto',
       maxWidth:'80%',
       backgroundColor: colors.background,
       borderRadius:5,
-      // position: 'relative'
     },
     menuList:{
       flexDirection: "row",
       justifyContent: "space-between",
-      marginRight: 10,    
+      marginRight:2,    
     }
 });
