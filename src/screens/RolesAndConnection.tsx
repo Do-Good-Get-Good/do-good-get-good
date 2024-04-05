@@ -76,24 +76,15 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-
+      <GoBackButton onPress={() => navigation.goBack()} />
       <ScrollView>
         <View style={styles.container}>
-          <GoBackButton onPress={() => navigation.goBack()} />
-
           <ChangeRolesAndConnection control={control} getValues={getValues} />
           <Spinner loading={loading} />
           <ConnectedUsersDropDown
             onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
-          />
-
-          <LongButton
-            isDisabled={loading}
-            style={{ marginTop: 50 }}
-            onPress={handleSubmit(onSave)}
-            title={"Spara"}
           />
 
           <View style={styles.logoStyle}>
@@ -101,6 +92,12 @@ export const RolesAndConnection = ({ navigation }: Props) => {
           </View>
         </View>
       </ScrollView>
+      <LongButton
+        isDisabled={loading}
+        style={{ borderRadius: 0 }}
+        onPress={handleSubmit(onSave)}
+        title={"Spara"}
+      />
     </SafeAreaView>
   );
 };
