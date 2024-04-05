@@ -4,6 +4,7 @@ const functions = require("firebase-functions");
 const {
   UnauthenticatedError,
   InvalidRoleError,
+  NotPermittedError,
 } = require("./lib/customErrors");
 
 exports.updateUser = functions.https.onCall(async (changedUser, context) => {
@@ -13,6 +14,12 @@ exports.updateUser = functions.https.onCall(async (changedUser, context) => {
 
   if (!context.auth.token.superadmin) {
     throw new InvalidRoleError("Only Superadmin can change user claims");
+  }
+
+  if (changedUser.id === changedUser.adminID) {
+    throw new NotPermittedError(
+      "Superadmin cannot become admin of himself/herself."
+    );
   }
   try {
     const claims = {};
