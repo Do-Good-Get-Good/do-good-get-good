@@ -63,6 +63,10 @@ describe("Testing RolesAndConnection screen ", () => {
     expect(getAllByTestId("title-and-value-value")[1].props.children).toBe(
       "Admin Adminsson",
     );
+    expect(getByText("E-post")).toBeTruthy();
+    expect(getAllByTestId("title-and-value-value")[2].props.children).toBe(
+      "super.supersson@technogarden",
+    );
   });
 
   it("It works to press on Change user button and navigate to ChangeUser screen ", async () => {
