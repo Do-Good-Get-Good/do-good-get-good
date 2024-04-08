@@ -1,9 +1,6 @@
-import reject from "lodash/reject";
-
 import { User } from "../../utility/types";
 
 import { updateUserArray } from "../../hooks/superAdmin/utils";
-
 import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "./SuperAdminContext";
 import { UserInfo } from "../../screens/RolesAndConnection";
@@ -11,20 +8,24 @@ import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/sup
 import { UserName } from "../../screens/ChangeUser/updateUser";
 
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
+import { useState } from "react";
 
 const isSavingUpdatesSucceed = (succed: boolean) =>
   succed ? "Dina ändringar har sparats" : "Något gick fel";
 
 export const useSuperAdminContext = () => {
   const context = useSuperAdminFunction();
+  const [loading, setLoading] = useState(false);
 
   const makeChangesForSelectedUser = context?.makeChangesForSelectedUser;
   const allUsersInSystem = context?.allUsersInSystem ?? [];
 
   const updateUser = async (changedUser: User) => {
+    setLoading(true);
     const result = await superAdminUpdatesUserInfo(changedUser);
     result.success && updateUserAfterChanges(changedUser),
       AlertInfo(isSavingUpdatesSucceed(result.success));
+    setLoading(false);
   };
 
   const onSaveChangedUser = (
@@ -72,5 +73,6 @@ export const useSuperAdminContext = () => {
     findAdminsAndSuperAdmins,
     onSaveChangedUser,
     updateUser,
+    loading,
   };
 };

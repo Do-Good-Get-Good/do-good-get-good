@@ -26,6 +26,7 @@ import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGe
 import { useNavigation } from "@react-navigation/native";
 import { SuperAdminStack } from "../../utility/routeEnums";
 import auth from "@react-native-firebase/auth";
+import { Spinner } from "../../components/Loading";
 
 type AdminWithUsersUnapprovedTimeEntriesType = {
   adminID: User["adminID"];
@@ -41,19 +42,25 @@ export const SuperAdminHomePage = () => {
   >([]);
   const { userLevel } = userLevelStore;
   const { onGetAllActiveUsers } = useGetAllUsersThatExistInTheSystem(userLevel);
+  const [loading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<{
     navigate: (nav: SuperAdminStack) => void;
   }>();
   const { onApproveTimeEntriesSuperadmin } = useSuperAdminHomePageContext();
 
   const onAllUsers = async () => {
+    setLoading(true);
     await onGetAllActiveUsers();
     navigation.navigate(SuperAdminStack.AllUsersInTheSystem);
+    setLoading(false);
   };
 
-  const onApprove = () => {
-    if (superAdminID !== undefined)
-      onApproveTimeEntriesSuperadmin(onCheck, superAdminID);
+  const onApprove = async () => {
+    if (superAdminID !== undefined) {
+      setLoading(true);
+      await onApproveTimeEntriesSuperadmin(onCheck, superAdminID);
+      setLoading(false);
+    }
   };
 
   useEffect(() => {
@@ -71,6 +78,7 @@ export const SuperAdminHomePage = () => {
         )}
         setOnCheck={setOnCheck}
       />
+      <Spinner loading={loading} />
       <ScrollView style={{ paddingHorizontal: 16 }}>
         {allAdmins.length > 0 ? (
           allAdmins.map((admin, i) => (
