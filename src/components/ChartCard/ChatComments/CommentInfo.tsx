@@ -12,9 +12,9 @@ import colors from "../../../assets/theme/colors";
 export const CommentInfo= ({comment,user}:props) => {
   return (
     <View style={styles.container}>
-        <Text style={styles.textDescription}>{user.firstName} {user.lastName} {' ' }</Text> 
+        <Text style={styles.textDescription}>{user.firstName} {user.lastName}</Text> 
         <View style={styles.commentContainer}>   
-        <Text style={styles.textComment}>{comment.comment}</Text>
+        <Text numberOfLines={1} style={styles.textComment}>{comment.comment}</Text>
         </View>
     </View>
   );
@@ -33,7 +33,8 @@ const styles = StyleSheet.create({
     },
     textComment:{
       flexDirection:'row',
-        ...typography.b2,
+      padding:12,
+      ...typography.b2,
         color: colors.dark  
     },
     commentContainer: {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import {
-  Alert,
  StyleSheet,Text,TouchableOpacity,View
 } from "react-native";
 import colors from "../../assets/theme/colors";
@@ -13,14 +12,13 @@ type Props ={
 
 export const ChatCardEditMenu = ({onDeletetPress}:Props) => {
     const [showMenu,setShowMenu]=useState(false)   
-
   const optionsList =[{
     label: 'Delete',
     onPress: () => {
       onDeletetPress();
       setShowMenu(false); 
     }
-  }
+  } 
 ]
   
   return (
@@ -34,14 +32,15 @@ export const ChatCardEditMenu = ({onDeletetPress}:Props) => {
 const styles = StyleSheet.create({
     buttonText:{
         color:colors.dark,
-        ...typography.h3
+        ...typography.h3,
     },
     dropDownContainer:{
-      top:5,
-      position: 'relative',
+      top: 30,
+      left: 0,
       backgroundColor:colors.background,
       borderBottomLeftRadius: 5,
-      borderBottomRightRadius: 5
+      borderBottomRightRadius: 5,
+      minWidth:80 
     },
 });
 

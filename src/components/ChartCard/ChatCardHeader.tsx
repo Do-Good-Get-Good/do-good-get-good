@@ -20,13 +20,13 @@ export const ChatCardHeader = ({post }: Props) => {
     
        <View style={styles.detailsContainer}>
        <Image  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
-        <View>
-           <Text style={styles.textTitle} >{post.activityTitle}</Text>
-           <Text style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
+        <View  style={styles.textContainer}>
+           <Text style={styles.textTitle}>{post.activityTitle}</Text>
+           <Text numberOfLines={2} style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
            <View style={styles.locationContainer}>
            <LocationIcon style={{paddingTop:3}} size={19}/>
-        <Text style={styles.textCity}>{post.activityCity}</Text>
-        </View>
+           <Text style={styles.textCity}>{post.activityCity}</Text>
+           </View>
         </View>
      </View>
  
@@ -37,7 +37,7 @@ const styles = StyleSheet.create({
  
     detailsContainer:{
       flexDirection:'row',
-      alignItems: 'center',   
+      alignItems: 'center',  
     },
     image:{
       width: 60,
@@ -45,20 +45,23 @@ const styles = StyleSheet.create({
       marginRight: 10,
       marginLeft: 20,
     },
+    textContainer:{
+      flex:1,
+      flexWrap:'wrap'
+    },
     textTitle: {
       ...typography.cardTitle,
       marginLeft: 5,
-      color: colors.dark,
+      color: colors.dark ,
     },
     textUserDetails:{
       ...typography.b1,
       marginLeft: 5,
-      color: colors.dark
+      color: colors.dark,
     },
     textCity:{
    ...typography.b2,
       color: colors.dark,
- 
     }, 
     locationContainer:{
       flexDirection:'row', 

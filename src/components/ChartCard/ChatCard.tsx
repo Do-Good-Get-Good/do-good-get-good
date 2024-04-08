@@ -20,8 +20,7 @@ export const ChatCard = ({post, users}:Props) => {
   const [allComments, setAllComments] = useState<Comment[]>([]);
  
   const handleDelete=()=>{
-    Alert.alert("Delete button pressed")
-    
+    Alert.alert("Delete button pressed")  
   }
   const handleAddComment = (newComment: string) => {
     if (newComment.trim() !== "") {
@@ -41,7 +40,7 @@ export const ChatCard = ({post, users}:Props) => {
     <View>
       <ChatCardDate date={post.date}/>
       <View style={styles.cardContainer}>
-        <View style={styles.menuList}>
+        <View style={styles.headerAndMenu}>
         <ChatCardHeader post={post}/>
         <ChatCardEditMenu onDeletetPress={handleDelete}  />
         </View>
@@ -60,9 +59,11 @@ const styles = StyleSheet.create({
       backgroundColor: colors.background,
       borderRadius:5,
     },
-    menuList:{
+    headerAndMenu:{
       flexDirection: "row",
       justifyContent: "space-between",
-      marginRight:2,    
+      padding:4,
+      marginRight:10,
+      flex:1,
     }
 });
