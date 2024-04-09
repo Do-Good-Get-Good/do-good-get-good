@@ -17,37 +17,34 @@ type Props ={
 export const ChatCardHeader = ({post }: Props) => {
 
   return (
-    
        <View style={styles.detailsContainer}>
        <Image  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
         <View  style={styles.textContainer}>
            <Text style={styles.textTitle}>{post.activityTitle}</Text>
-           <Text numberOfLines={2} style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
+           <Text  style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>
            <View style={styles.locationContainer}>
            <LocationIcon style={{paddingTop:3}} size={19}/>
            <Text style={styles.textCity}>{post.activityCity}</Text>
            </View>
         </View>
      </View>
- 
   );
 };
 
 const styles = StyleSheet.create({
  
     detailsContainer:{
+      flex:1,
       flexDirection:'row',
       alignItems: 'center',  
     },
     image:{
-      width: 60,
-      height: 60,
+      maxWidth: 60,
+      maxHeight: 60,
       marginRight: 10,
-      marginLeft: 20,
     },
     textContainer:{
-      flex:1,
-      flexWrap:'wrap'
+      flex:0.9,
     },
     textTitle: {
       ...typography.cardTitle,

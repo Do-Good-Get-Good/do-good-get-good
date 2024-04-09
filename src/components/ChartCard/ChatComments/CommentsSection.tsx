@@ -16,13 +16,7 @@ type Props ={
   }
 export const CommentsSection = ({comments,users,onAddComment}: Props) => {
   const [newComment,setNewComment]=useState('')
-  // const handleAddComment = () => {
-  //   if (newComment.trim() !== "") {
-  //     onAddComment(newComment)
-  //     console.log("Added comment")
-  //     setNewComment('');
-  //   }
-  // }
+
 
   const findUserNameAndComment = useCallback (()=> comments.map((comment)=>{
       const user=users.find((user)=>user.id ===comment.userID)
@@ -30,19 +24,10 @@ export const CommentsSection = ({comments,users,onAddComment}: Props) => {
     }),[comments])
     
   return (
-   <View>
+   <View style={{}}>
     { findUserNameAndComment().map((item)=>item &&<CommentInfo key={item.comment.id} comment={item.comment} user={item.user}/>)}
     <LongButton style={styles.longButton} title="Skriv en kommentar" onPress={()=>(Alert.alert("Skriv en kommentar pressed"))}/>
-    {/* <View style={styles.commentDetails}>
-      <View >
-      <InputField
-       placeholder="Skriv en kommentar"
-       value={newComment}
-       onChangeText={setNewComment}
-       onSubmit={handleAddComment}
-      />
-      </View>
-    </View> */}
+ 
    </View>
   );
 };

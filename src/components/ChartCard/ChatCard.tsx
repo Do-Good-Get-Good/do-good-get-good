@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import {StyleSheet,View,Text, Alert
+import {StyleSheet,View,Text, Alert, TouchableOpacity
 } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
@@ -10,49 +10,50 @@ import { CommentsSection } from "./ChatComments/CommentsSection";
 import { Comment, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
+import { useNavigation } from "@react-navigation/native";
+import { UserStack } from "../../utility/routeEnums";
 
 type Props  = {
 post: UserPost
 users: User[]
+handleAddComment: ()=> void
 }
 
-export const ChatCard = ({post, users}:Props) => {
-  const [allComments, setAllComments] = useState<Comment[]>([]);
- 
+export const ChatCard = ({post, users, handleAddComment}:Props) => {
+  // const navigation = useNavigation<{
+  //   navigate: (nav: UserStack) => void;
+  // }>();
+
+  const handlePress = () => {
+    console.log("...         Cooment section expanded")
+    // navigation.navigate(UserStack.Faq)  
+  };
+
   const handleDelete=()=>{
     Alert.alert("Delete button pressed")  
   }
-  const handleAddComment = (newComment: string) => {
-    if (newComment.trim() !== "") {
-      const updatedComments = [
-        ...allComments,
-        {
-          id: (allComments.length + 1).toString(),
-          comment: newComment,
-          userID: "user1",
-        },
-      ];
-      setAllComments(updatedComments);
-    }
-  };
-
   return (
-    <View>
+    <TouchableOpacity testID="chat-card"  onPress={handlePress}>
+    <View style={styles.container}>
       <ChatCardDate date={post.date}/>
       <View style={styles.cardContainer}>
         <View style={styles.headerAndMenu}>
         <ChatCardHeader post={post}/>
-        <ChatCardEditMenu onDeletetPress={handleDelete}  />
+        <ChatCardEditMenu  onDeletetPress={handleDelete}  />
         </View>
-        <ChatCardImage imageUrl={post.imageURL}/> 
-        <ChatCardDescription description={post.description}/>
+      <ChatCardImage imageUrl={post.imageURL}/> 
+          <ChatCardDescription description={post.description}/>
         <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>  
       </View> 
     </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    marginVertical:10
+  },
     cardContainer:{
      ... shadows.cardShadow,
       maxWidth:'80%',
@@ -60,10 +61,10 @@ const styles = StyleSheet.create({
       borderRadius:5,
     },
     headerAndMenu:{
+      flex:0.3,
       flexDirection: "row",
       justifyContent: "space-between",
       padding:4,
       marginRight:10,
-      flex:1,
     }
 });

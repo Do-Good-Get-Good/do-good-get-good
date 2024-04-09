@@ -1,16 +1,15 @@
 import React, { useRef } from "react";
 import {
-  Alert,
-  SafeAreaView,ScrollView,StyleSheet
+  Alert,ScrollView,StyleSheet, Text, View
 } from "react-native";
 import { ChatCard } from "../components/ChartCard/ChatCard";
 import BottomLogo from '../components/BottomLogo';
 import Menu from '../components/Menu';
-import typography from "../assets/theme/typography";
 import { LongButton } from "../components/Buttons/LongButton";
 import { TextInput } from "react-native";
 import colors from "../assets/theme/colors";
 import {Comment, UserPost } from "../utility/types";
+import { SafeAreaView } from "react-native-safe-area-context";
 const sampleImageUrl = 'https://st2.depositphotos.com/2001755/5443/i/450/depositphotos_54431143-stock-photo-beautiful-landscape.jpg'
 const comments:Comment[] =[
   {id:'1',comment:"Fitst comment",userID:'user1'},
@@ -25,9 +24,11 @@ const samplePost:UserPost = {
   userID: "user1",
   userFirstName: "John",
   userLastName: "Johansson",
+  // userLastName: "Johanssgdffghlkjhgfdsfghjkkjbhnbvcon",
   activityID: "activity1",
   activityCity: "Göteborg",
-  activityTitle: "Blodgivining",
+  activityTitle: "Blodgivning",
+  // activityTitle: "Blodguytdgrgfcvhbkjhgbivininjjjjjjjcgfchghlofk[0uytrgdfcbg",
   changed: false,
   date: yesterday,
   description: "Det var so roligt!",
@@ -53,24 +54,27 @@ const users= [
     statusActive: false 
   }
 ];
+ 
 
 export const Chat = () => {
   const scrollViewRef = useRef<ScrollView>(null);
   const scrollToBottom = () => {
-    scrollViewRef.current?.scrollToEnd({ animated: true });
+    scrollViewRef.current?.scrollTo({ y:0});
   };
+  const handleAddComment =()=>{}
+
   return (
     <SafeAreaView style={styles.container}>
+     <Menu/>
      <ScrollView
-      ref={scrollViewRef}
-      onContentSizeChange={scrollToBottom}
      contentContainerStyle={styles.scrollViewContent}>
-      <Menu/>
-      <ChatCard post={samplePost} users={users} /> 
+      <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> 
+      <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> 
+      {/* <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> */}
       <LongButton style={styles.longButton} title="Lägg till upplevelse" onPress={()=>(Alert.alert("LongButton Pressed"))}/>
       <TextInput
       style={styles.inputField}
-      placeholder="Skriv ett meddelande"/>
+      placeholder="Skriv ett meddelande"/> 
       <BottomLogo/>
       </ScrollView>
     </SafeAreaView>
@@ -79,30 +83,22 @@ export const Chat = () => {
 
 const styles = StyleSheet.create({
   container:{
-    flex: 1,
+    flex:1,
+    flexGrow: 1
   },
-  scrollViewContent: {
-    flexGrow: 1,
-    paddingBottom: 100,
-    justifyContent: 'flex-end'
-},
+  scrollViewContent: {},
   longButton:{
-    marginTop:20,
+    margin:20,
       borderRadius:5,
-      marginRight:50,
-      height:40,
-      marginLeft:50,
-      marginBottom:20
    },
    inputField:{
     borderWidth:1,
     padding:6,
-    margin:2,
-    marginRight:30,
-    marginLeft:20,
+     marginHorizontal:20,
     backgroundColor:colors.background,
     borderColor:colors.dark,
-    color:colors.dark
+    color:colors.dark,
+    marginBottom: 50,
    }
 });
 

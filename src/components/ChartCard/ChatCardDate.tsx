@@ -24,7 +24,7 @@ type Props ={
 export const ChatCardDate = ({date}:Props) => {
   return (
     <View>
-      <Text style={styles.textDate}>{date &&formattedDate(date)}</Text>
+      <Text  style={styles.textDate}>{date &&formattedDate(date)}</Text>
     </View>
   );
 };
