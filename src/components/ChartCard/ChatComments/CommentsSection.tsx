@@ -17,14 +17,14 @@ type Props ={
 export const CommentsSection = ({comments,users,onAddComment}: Props) => {
   const [newComment,setNewComment]=useState('')
 
-
-  const findUserNameAndComment = useCallback (()=> comments.map((comment)=>{
-      const user=users.find((user)=>user.id ===comment.userID)
-       return user && {user, comment}
-    }),[comments])
-    
+  const findUserNameAndComment = useCallback(() => {
+    return (comments || []).map(comment => {
+        const user = users.find(user => user.id === comment.userID);
+        return user && { user, comment };
+    });
+}, [comments, users]);
   return (
-   <View style={{}}>
+   <View testID="comments-section" style={{}}>
     { findUserNameAndComment().map((item)=>item &&<CommentInfo key={item.comment.id} comment={item.comment} user={item.user}/>)}
     <LongButton style={styles.longButton} title="Skriv en kommentar" onPress={()=>(Alert.alert("Skriv en kommentar pressed"))}/>
  

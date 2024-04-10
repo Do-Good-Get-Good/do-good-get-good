@@ -13,7 +13,7 @@ type Props ={
 export const ChatCardDescription = ({description }: Props) => {
   
   return (
-    <Text style={styles.textDescription}>{description}</Text>
+    <Text testID="chat-card-description" style={styles.textDescription}>{description}</Text>
   );
 };
 

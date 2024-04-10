@@ -17,8 +17,8 @@ type Props ={
 export const ChatCardHeader = ({post }: Props) => {
 
   return (
-       <View style={styles.detailsContainer}>
-       <Image  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
+       <View testID="chat-card-header" style={styles.detailsContainer}>
+       <Image testID= "chat-card-header-image"  source={getImageForActivity(post.imageURL) }  style={styles.image}/>
         <View  style={styles.textContainer}>
            <Text style={styles.textTitle}>{post.activityTitle}</Text>
            <Text  style={styles.textUserDetails}>{post.userFirstName} {post.userLastName}</Text>

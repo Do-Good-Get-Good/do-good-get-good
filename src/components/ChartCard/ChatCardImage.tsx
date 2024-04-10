@@ -12,7 +12,7 @@ type Props ={
 export const ChatCardImage = ({imageUrl}: Props) => {
 
   return (
-    <Image  source={{ uri: imageUrl }} style={styles.image} />
+    <Image  testID="chat-card-image"  source={{ uri: imageUrl }} style={styles.image} />
   );
 };
 
