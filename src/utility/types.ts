@@ -97,6 +97,7 @@ export type UserPost = {
   activityID: Activity["id"];
   activityCity: Activity["city"];
   activityTitle: Activity["title"];
+  activityImage:  Activity['imageUrl']  |  Activity['photo'] ;
   changed: boolean;
   date: Date;
   description: string;

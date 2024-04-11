@@ -14,7 +14,8 @@ const sampleImageUrl = 'https://st2.depositphotos.com/2001755/5443/i/450/deposit
 const comments:Comment[] =[
   {id:'1',comment:"Fitst comment",userID:'user1'},
   {id:'2',comment:"Second comment",userID:'user2'},
-  {id:'3',comment:" Third commentvxfbfghgfjhjkhlk.;lk/l;",userID:'user1'}]
+  {id:'3',comment:" Third commentvxfbfghgfjhjkhlk.;lk/l;",userID:'user1'}
+]
 
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
@@ -24,11 +25,10 @@ const samplePost:UserPost = {
   userID: "user1",
   userFirstName: "John",
   userLastName: "Johansson",
-  // userLastName: "Johanssgdffghlkjhgfdsfghjkkjbhnbvcon",
   activityID: "activity1",
   activityCity: "Göteborg",
   activityTitle: "Blodgivning",
-  // activityTitle: "Blodguytdgrgfcvhbkjhgbivininjjjjjjjcgfchghlofk[0uytrgdfcbg",
+  activityImage: 'symbol_sport',
   changed: false,
   date: yesterday,
   description: "Det var so roligt!",

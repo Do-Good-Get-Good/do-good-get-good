@@ -25,13 +25,13 @@ export const ChatCard = ({post, users, handleAddComment}:Props) => {
   // }>();
 
   const handlePress = () => {
-    console.log("...         Cooment section expanded")
     // navigation.navigate(UserStack.Faq)  
   };
 
   const handleDelete=()=>{
     Alert.alert("Delete button pressed")  
   }
+
   return (
     <TouchableOpacity testID="chat-card"  onPress={handlePress}>
     <View style={styles.container}>
@@ -42,7 +42,7 @@ export const ChatCard = ({post, users, handleAddComment}:Props) => {
         <ChatCardEditMenu  onDeletetPress={handleDelete}  />
         </View>
       <ChatCardImage imageUrl={post.imageURL}/> 
-          <ChatCardDescription description={post.description}/>
+        <ChatCardDescription description={post.description}/>
         <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>  
       </View> 
     </View>
