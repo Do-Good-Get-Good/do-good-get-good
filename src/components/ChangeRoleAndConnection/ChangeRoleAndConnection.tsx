@@ -3,7 +3,7 @@ import React, { useEffect, useState } from "react";
 
 import { useChangeRoleAndConnectionButtons } from "./hooks/useChangeRoleAndConnectionButtons";
 import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
-import { NameRoleAdmin } from "./NameRoleAdmin";
+import { NameRoleAdminEmail } from "./NameRoleAdminEmail";
 
 import { ChagesType, ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
 import { Controller, UseFormGetValues } from "react-hook-form";
@@ -29,10 +29,11 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
 
   return (
     <View>
-      <NameRoleAdmin
+      <NameRoleAdminEmail
         userName={`${user?.firstName ?? "-"} ${user?.lastName ?? "-"}`}
         role={getValues("role")}
         adminName={getValues("admin.fullName")}
+        userEmail={user?.email}
       />
 
       <View style={styles.containerTextButton}>

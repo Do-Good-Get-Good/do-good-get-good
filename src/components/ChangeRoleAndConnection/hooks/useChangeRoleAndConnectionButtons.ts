@@ -36,12 +36,11 @@ export const useChangeRoleAndConnectionButtons = () => {
   };
 
   const changeRoleAndConnectionButtons: ChangeButtonsType[] = [
-    // TODO: Uncoment this when it fixed to change user claims
-    // {
-    //   key: "role",
-    //   title: "Ändra nivå",
-    //   onPress: () => onChangeRole(),
-    // },
+    {
+      key: "role",
+      title: "Ändra nivå",
+      onPress: () => onChangeRole(),
+    },
     {
       key: "admin",
       title: "Ändra admin",

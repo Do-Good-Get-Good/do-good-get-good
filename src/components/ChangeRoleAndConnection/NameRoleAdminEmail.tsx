@@ -3,6 +3,7 @@ import { Role } from "../../utility/enums";
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import { roleTitles } from "../../utility/utils";
+import { User } from "../../utility/types";
 
 type TitleAndValue = {
   title: string;
@@ -24,15 +25,22 @@ type Props = {
   userName: string;
   role: Role;
   adminName: string;
+  userEmail: User["email"];
 };
 
-export const NameRoleAdmin = ({ userName, role, adminName }: Props) => {
+export const NameRoleAdminEmail = ({
+  userName,
+  role,
+  adminName,
+  userEmail,
+}: Props) => {
   return (
     <>
       <Text style={styles.title}>{userName}</Text>
       <View style={styles.containerForRoleAndAdminText}>
         <TitleAndValue title="Nivå" value={roleTitles[role]} />
         <TitleAndValue title="Admin" value={adminName} />
+        <TitleAndValue title="E-post" value={userEmail ?? "---"} />
       </View>
     </>
   );
@@ -41,15 +49,16 @@ export const NameRoleAdmin = ({ userName, role, adminName }: Props) => {
 const styles = StyleSheet.create({
   containerForRoleAndAdminText: {
     backgroundColor: colors.background,
-
     ...typography.b2,
   },
   textForRoleAndAdmin: {
-    padding: 10,
+    paddingLeft: 10,
+    paddingBottom: 25,
   },
   textForRoleAndAdminTitle: {
     fontWeight: "700",
-    padding: 10,
+    paddingLeft: 10,
+    paddingBottom: 7,
   },
   title: {
     marginTop: 20,

@@ -7,6 +7,7 @@ export const userSuperadminMock: User = {
   firstName: "Super",
   lastName: "Supersson",
   connectedActivities: ["activitiID"],
+  email: "super.supersson@technogarden",
   activitiesAndAccumulatedTime: [
     {
       accumulatedTime: 4,

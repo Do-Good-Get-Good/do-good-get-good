@@ -12,14 +12,13 @@ import { Role } from "../utility/enums";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { LongButton } from "../components/Buttons/LongButton";
-import { superAdminUpdatesUserInfo } from "../firebase-functions/updateTS/superAdminUpdatesUserInfo";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
 import { User } from "../utility/types";
 import reject from "lodash/reject";
 import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-import { AlertInfo } from "../components/Alerts/AlertInfo";
+import { Spinner } from "../components/Loading";
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -50,7 +49,7 @@ type Props = {
 
 export const RolesAndConnection = ({ navigation }: Props) => {
   const superAdminContext = useSuperAdminFunction();
-  const { onSaveChangedUser } = useSuperAdminContext();
+  const { onSaveChangedUser, loading } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
     [],
@@ -77,21 +76,15 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-
+      <GoBackButton onPress={() => navigation.goBack()} />
       <ScrollView>
         <View style={styles.container}>
-          <GoBackButton onPress={() => navigation.goBack()} />
           <ChangeRolesAndConnection control={control} getValues={getValues} />
+          <Spinner loading={loading} />
           <ConnectedUsersDropDown
             onSaveUsersWithChangedAdmin={onSaveUsersWithChangedAdmin}
-          />
-
-          <LongButton
-            style={{ marginTop: 50 }}
-            onPress={handleSubmit(onSave)}
-            title={"Spara"}
           />
 
           <View style={styles.logoStyle}>
@@ -99,6 +92,12 @@ export const RolesAndConnection = ({ navigation }: Props) => {
           </View>
         </View>
       </ScrollView>
+      <LongButton
+        isDisabled={loading}
+        style={{ borderRadius: 0 }}
+        onPress={handleSubmit(onSave)}
+        title={"Spara"}
+      />
     </SafeAreaView>
   );
 };
