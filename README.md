@@ -73,12 +73,13 @@ Output will be in `src\android\app\build\outputs\apk\prod\release`
 
 - **Android** trouble, try
 
-```
-cd android
+``cd android
 ./gradlew clean
 ./gradlew build
 cd ..
-npx react-native run-android --variant=devDebug --appIdSuffix=dev
+to run Dev
+`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod `react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
+
 ```
 
 - **ios** trouble, try
@@ -109,3 +110,4 @@ npx react-native run-android --variant=devDebug --appIdSuffix=dev
 
 - `npm run test` to run all tests
 - `npm run test` + test file name (Example: `npm run test SearchBarComponent.test.js`)
+```
