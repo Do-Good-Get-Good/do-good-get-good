@@ -69,8 +69,6 @@ export const Chat = () => {
      <ScrollView
      contentContainerStyle={styles.scrollViewContent}>
       <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> 
-      <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> 
-      {/* <ChatCard post={samplePost} users={users} handleAddComment={handleAddComment} /> */}
       <LongButton style={styles.longButton} title="Lägg till upplevelse" onPress={()=>(Alert.alert("LongButton Pressed"))}/>
       <TextInput
       style={styles.inputField}

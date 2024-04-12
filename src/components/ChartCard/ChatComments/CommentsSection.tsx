@@ -15,7 +15,6 @@ type Props ={
     onAddComment:(newComment:string)=>void
   }
 export const CommentsSection = ({comments,users,onAddComment}: Props) => {
-  const [newComment,setNewComment]=useState('')
 
   const findUserNameAndComment = useCallback(() => {
     return (comments || []).map(comment => {
@@ -24,24 +23,14 @@ export const CommentsSection = ({comments,users,onAddComment}: Props) => {
     });
 }, [comments, users]);
   return (
-   <View testID="comments-section" style={{}}>
-    { findUserNameAndComment().map((item)=>item &&<CommentInfo key={item.comment.id} comment={item.comment} user={item.user}/>)}
+   <View>
+    { findUserNameAndComment().map((item)=>item &&<CommentInfo  key={item.comment.id} comment={item.comment} user={item.user}/>)}
     <LongButton style={styles.longButton} title="Skriv en kommentar" onPress={()=>(Alert.alert("Skriv en kommentar pressed"))}/>
- 
    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  commentDetails:{
-    flexDirection:'row',
-    justifyContent:'center',
-    borderWidth:1,
-    padding:2,
-    margin:10,
-    borderColor:colors.secondary,
-    color:colors.dark,
-  },
   longButton:{
     marginTop:20,
       borderRadius:5,
@@ -50,11 +39,5 @@ const styles = StyleSheet.create({
       marginLeft:20,
       marginBottom:20,
       ...typography.button
-   },
-  newCommentView: {
-    alignItems: 'center',
-    ...typography.b2,
-    marginLeft: 5,
-    color: colors.dark,
-},
+   }
 });

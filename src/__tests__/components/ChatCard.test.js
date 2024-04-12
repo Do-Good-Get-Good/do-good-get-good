@@ -1,7 +1,12 @@
 import "react-native";
 import React from "react";
-import {render,fireEvent } from "@testing-library/react-native";
+import {render,fireEvent,waitFor } from "@testing-library/react-native";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
+
+const comments=[
+  {id:'1',comment:"First comment",userID:'user1'},
+  {id:'2',comment:"Second comment",userID:'user2'}
+]
 const post = {
   description: "Test Description",
   date: new Date(),
@@ -11,15 +16,8 @@ const post = {
   userLastName: 'Doe',
   activityCity: 'Mock City',
   imageURL: 'sampleImageUrl',
-  comments:commentsList
+  comments:comments
 };
-
-
-const commentsList=[
-  {id:'1',comment:"Fitst comment",userID:'user1'},
-  {id:'2',comment:"Second comment",userID:'user2'},
-  {id:'3',comment:" Third commentvxfbfghgfjhjkhlk.;lk/l;",userID:'user1'}
-]
 
 const users = [ { 
   id: "user1", 
@@ -41,15 +39,6 @@ const users = [ {
 describe("Testing ChatCardComponent", () => {
  
   //TODO: add handleAddComment function when we add react function
-  test('Testing ChatCard component touchability', () => {
-    const { getByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
-    );
-    const chatCard= getByTestId('chat-card');
-    fireEvent.press(chatCard);
-    expect()
-   
-  });
 
   test('Testing ChatCardDate component to ensure it renders with correct date', () => {
     const { getByTestId } = render(
@@ -64,7 +53,6 @@ describe("Testing ChatCardComponent", () => {
     const { getByTestId, getByText } = render(
       <ChatCard post={post} users={users} handleAddComment={() => {}} />
     );
-
     const chatCardHeader = getByTestId('chat-card-header');
     expect(chatCardHeader).toBeTruthy();
     expect(getByText('Mock Activity')).toBeTruthy();
@@ -89,6 +77,7 @@ describe("Testing ChatCardComponent", () => {
     );
     expect(getByText('Test Description')).toBeTruthy();  
   });
+
   test('Testing ChatCardEditMenu component to ensure it renders correctly', () => {
     const { getByTestId,getByText,queryByTestId } = render(
       <ChatCard post={post} users={users} handleAddComment={() => {}} />
@@ -96,16 +85,27 @@ describe("Testing ChatCardComponent", () => {
     const chatCardMenu= getByTestId('chat-card-edit-menu');
     fireEvent.press(chatCardMenu);
     expect(getByText('Delete')).toBeTruthy();
-    fireEvent.press(getByText('Delete'))
+    fireEvent.press(getByText('Delete'));
   });
-  test('Testing CommentsSection component to ensure it renders correctly', () => {
-    const { getByTestId,getByText} = render(
+
+  test('Testing ChatCard component touchability', () => {
+    const { getByTestId } = render(
       <ChatCard post={post} users={users} handleAddComment={() => {}} />
     );
-    const commentsList= getByTestId('comments-section');
-    console.log(commentsList.lastName,"+++++++++++++++++++++++++commentlist")
-    expect(commentsList).toBeTruthy();
-    // expect(getByText('Erik Andersson First comment')).toBeTruthy();
-  
+    const chatCard= getByTestId('chat-card');
+    fireEvent.press(chatCard);
+  });
+
+  test('Testing CommentsSection component to ensure it renders data correctly', async() => {
+    const { getAllByTestId,getByText,debug} = render(
+      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+    );
+    await waitFor(() => {
+    const commentsSection = getAllByTestId('comment-user-name');
+    const commentsList = getAllByTestId('comment-text');
+    debug();
+    expect(commentsSection[0].props.children).toBe('Erik Andersson');
+    expect(commentsList[0].props.children).toBe('First comment');
+    })
   });
 });

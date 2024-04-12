@@ -18,12 +18,10 @@ export const ChatCardDescription = ({description }: Props) => {
 };
 
 const styles = StyleSheet.create({
-
       textDescription:{
         ...typography.b2,
         marginLeft: 10,
         color: colors.dark
       }
- 
 });
 

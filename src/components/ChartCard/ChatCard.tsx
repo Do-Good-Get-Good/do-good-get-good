@@ -11,7 +11,7 @@ import { Comment, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import { useNavigation } from "@react-navigation/native";
-import { UserStack } from "../../utility/routeEnums";
+// import { UserStack } from "../../utility/routeEnums";
 
 type Props  = {
 post: UserPost
@@ -20,6 +20,7 @@ handleAddComment: ()=> void
 }
 
 export const ChatCard = ({post, users, handleAddComment}:Props) => {
+  //TO DO create navigation for a screen
   // const navigation = useNavigation<{
   //   navigate: (nav: UserStack) => void;
   // }>();

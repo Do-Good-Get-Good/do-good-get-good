@@ -20,7 +20,6 @@ export const ChatCardEditMenu = ({onDeletetPress}:Props) => {
     }
   } 
 ]
-  
   return (
     <TouchableOpacity testID="chat-card-edit-menu"  onPress={()=> setShowMenu(!showMenu)}>
         <Text style={styles.buttonText}>...</Text>
