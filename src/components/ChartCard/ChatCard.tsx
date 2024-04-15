@@ -1,19 +1,18 @@
-import React from "react";
-import {StyleSheet,View,Text
+import React, { useState } from "react";
+import {StyleSheet,View,Text, TouchableOpacity
 } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
 import { ChatCardImage } from "./ChartCardImage";
-import { ActivityList } from "./ActivityList";
+import { ActivityListOverLay } from "./ActivityListOverLay";
 
 
 
-export const ChatCard = () => {
+
+export const ChatCard = () => { 
   const sampleImageUrl = 'https://st2.depositphotos.com/2001755/5443/i/450/depositphotos_54431143-stock-photo-beautiful-landscape.jpg'
-  
-
 
   const samplePost = {
     id: "1",
@@ -30,39 +29,13 @@ export const ChatCard = () => {
     imageURL: "symbol_hands_heart-DEFAULT",
     comments: [],
   };
-
-const activities = [
-  {id:'1',
-    title: "Blodgivning",
-    city: "Malmo",
-    photo: "activity1.jpg",
-  },
-  {
-    id:'2',
-    title: "Secondhand",
-    city: "Karlstad",
-    photo: "activity2.jpg",
-  },
-  {id:'3',
-    title: "Blodgivning",
-    city: "Malmo",
-    photo: "activity1.jpg",
-  },
-  {
-    id:'4',
-    title: "Secondhand",
-    city: "Karlstad",
-    photo: "activity2.jpg",
-  },
-  // Add more activities as needed
-];
     
   return (
       <View style={styles.cardContainer}>
         <ChatCardHeader post={samplePost}/>
         <ChatCardImage imageUrl={sampleImageUrl}/>
-        {/* <ActivityList activities={activities}/>    */}
-      </View> 
+        </View> 
+    
   );
 };
 
@@ -73,6 +46,6 @@ const styles = StyleSheet.create({
       maxWidth:'80%',
       backgroundColor: colors.background,
       borderRadius:5,
-    },
+    }
     
 });

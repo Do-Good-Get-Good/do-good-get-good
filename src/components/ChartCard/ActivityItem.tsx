@@ -2,7 +2,7 @@ import React from "react";
 import {StyleSheet,
   Text,
   Image,
-  View
+  View,
 } from "react-native";
 
 import { getImageForActivity } from "../../lib/images";
@@ -34,16 +34,14 @@ export const ActivityItem = ({activityItem }: Props) => {
 const styles = StyleSheet.create({
  
     detailsContainer:{
-      //  backgroundColor:colors.background,
        flexDirection:'row',
        marginVertical:10,
-       marginHorizontal:50,
-       borderRadius:70
+       marginHorizontal:30
     },
     image:{
       width: 60,
       height: 60,
-      marginStart:60
+      marginStart:40
     },
     textTitle: {
       ...typography.cardTitle,
