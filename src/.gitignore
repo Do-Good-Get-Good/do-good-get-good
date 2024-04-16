@@ -1,9 +1,4 @@
-# OSX
-#
-.DS_Store
-
 # Xcode
-#
 build/
 *.pbxuser
 !default.pbxuser
@@ -20,10 +15,11 @@ DerivedData
 *.hmap
 *.ipa
 *.xcuserstate
+project.xcworkspace
+/ios/Podfile.lock
 ios/.xcode.env.local
 
 # Android/IntelliJ
-#
 build/
 .idea
 .gradle
@@ -35,7 +31,6 @@ local.properties
 !debug.keystore
 
 # node.js
-#
 node_modules/
 npm-debug.log
 yarn-error.log
@@ -52,21 +47,54 @@ yarn-error.log
 **/fastlane/screenshots
 **/fastlane/test_output
 
-# Bundle artifact
+# BUCK
+buck-out/
+.buckd/
+*.keystore
+!debug.keystore
+
+# Bundle artifacts
 *.jsbundle
 
-# Ruby / CocoaPods
+# CocoaPods
 /ios/Pods/
 /vendor/bundle/
+
+# Expo
+.expo/
+web-build/
+src/android/.project
+
+src/.jest/
+
+junit.xml
+coverage/
+reports/
+
+### VisualStudioCode ###
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/*.code-snippets
+
+# Local History for Visual Studio Code
+.history/
+
+# Built Visual Studio Code Extensions
+*.vsix
+
+### VisualStudioCode Patch ###
+# Ignore all local history of files
+.history
+.ionide
+
+#plist ios
+GoogleService-Info.plist
 
 # Temporary files created by Metro to check the health of the file watcher
 .metro-health-check*
 
 # react-native-config codegen
 ios/tmp.xcconfig
-
-# testing
-/coverage
-
-#plist ios
-GoogleService-Info.plist
