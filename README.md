@@ -22,11 +22,9 @@ This app is a cross platform application built in React Native. Development focu
    3. Third, create a `local.properties` file in the root of the Android folder and write Android Studio SDKs file-path i.e. `sdk.dir = /Users/<name>/Library/Android/sdk`
 6. After that go to the source code in a command line tool like powershell or bash and do `npm install`.
 7. If you are running MacOS you also need to do the following for iOS to work:
-   ```
-   1. cd ios
-   2. bundle install
-   3. bundle exec pod install
-   ```
+   1. `cd ios`
+   2. `bundle install`
+   3. `bundle exec pod install`
 
 ### How to run the app
 
@@ -47,7 +45,11 @@ Production build: `npx react-native run-android --variant=prodDebug`
 
 **iOS:**
 
-Development build: run `npx react-native start`(in src folder) -> select ios by pressing "i" -> in a new terminal, run `react-native run-ios --scheme DoGoodGetGoodDev` (if does't work then try `npx react-native run-ios --scheme DoGoodGetGoodDev`)
+Development build: 
+- `cd src`
+- run `npx react-native start`
+- select ios by pressing "i"
+- open a new terminal and run `npx react-native run-ios --scheme DoGoodGetGoodDev` 
 
 Production build: `npx react-native run-ios`
 
@@ -57,34 +59,37 @@ Production build: `npx react-native run-ios`
 
 ## Android
 
-#### To get an AAB file
+### To get an AAB file
 
 Go to [GitHub Actions](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_apk_test.yml) and start the `Build Android AAB` workflow.
 When it's finished you'll be able to find the AAB on that workflow page under `Artifacts`.
 
-#### To get an APK file
+### To get an APK file
 
 Go to `src/` and run `npm install`
 Go to `src/Android`
 Run `./gradlew assembleProd`
 Output will be in `src\android\app\build\outputs\apk\prod\release`
 
-# Firebase emulator
 
-#### Trouble shooting
+## Trouble shooting
 
-- **Android** trouble, try
+### Android trouble
 
-``cd android
+Try
+```
+cd android
 ./gradlew clean
 ./gradlew build
 cd ..
 to run Dev
-`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod`react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
-
+`react-native run-android --mode=devDebug --appIdSuffix=dev` or try `npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod`react-native run-android --mode=prodDebug` 
+or try `npx react-native run-android --mode=prodDebug`
 ```
 
-- **ios** trouble, try
+### iOS trouble
+
+Try
 - `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler` to ensure that your Bundler is up to date.
 - sometimes help with `gem update --system`
 - if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
@@ -113,4 +118,3 @@ to run Dev
 
 - `npm run test` to run all tests
 - `npm run test` + test file name (Example: `npm run test SearchBarComponent.test.js`)
-```
