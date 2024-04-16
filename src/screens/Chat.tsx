@@ -10,37 +10,41 @@ import { LongButton } from "../components/Buttons/LongButton";
 import { ActivityListOverLay } from "../components/ChartCard/ActivityListOverLay";
 
 export const Chat = () => {
-  const [showActivityList, setShowActivityList] = useState(false);
-  const buttonPressing=()=>{
-    console.log("Button Pressed")
-    setShowActivityList(true);
-  }
+  // const [showActivityList, setShowActivityList] = useState(false);
+  // const buttonPressing=()=>{
+  //   console.log("Button Pressed")
+  //   setShowActivityList(true);
+  // }
 
-  const activities = [
-    {id:'1',
-      title: "Blodgivning",
-      city: "Malmo",
-      photo: "activity1.jpg",
-    },
-    {
-      id:'2',
-      title: "Secondhand",
-      city: "Karlstad",
-      photo: "activity2.jpg",
-    },
-    {id:'3',
-      title: "Blodgivning",
-      city: "Malmo",
-      photo: "activity1.jpg",
-    },
-    {
-      id:'4',
-      title: "Secondhand",
-      city: "Karlstad",
-      photo: "activity2.jpg",
-    },
+  // const activities = [
+  //   {id:'1',
+  //     title: "Blodgivning",
+  //     city: "Malmo",
+  //     photo: "activity1.jpg",
+  //   },
+  //   {
+  //     id:'2',
+  //     title: "Secondhand",
+  //     city: "Karlstad",
+  //     photo: "activity2.jpg",
+  //   },
+  //   {id:'3',
+  //     title: "Blodgivning",
+  //     city: "Malmo",
+  //     photo: "activity1.jpg",
+  //   },
+  //   {
+  //     id:'4',
+  //     title: "Secondhand",
+  //     city: "Karlstad",
+  //     photo: "activity2.jpg",
+  //   },
   
-  ];
+  // ];
+  // useEffect(() => {
+  //   // Reset the state when the component mounts
+  //   setShowActivityList(false);
+  // }, []);
 
   
   return (

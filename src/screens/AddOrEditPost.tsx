@@ -15,6 +15,7 @@ import { ActivityItem } from "../components/ChartCard/ActivityItem";
 import { LongButton } from "../components/Buttons/LongButton";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../utility/routeEnums";
+import { GoBackButton } from "../components/Buttons/GoBackButton";
 
 
 
@@ -58,20 +59,7 @@ export const AddOrEditPost = ({activity,post}:props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Menu/>
-      <View style={styles.titleAndBackButton}>
-        <TouchableOpacity
-          testID="buttonGoBack"
-          onPress={() =>{navigation.navigate(UserStack.Chat) }}
-        >
-          <Icon
-            name="arrow-back"
-            color={colors.dark}
-            size={30}
-            style={styles.backIconContainerStyle}
-          />
-        </TouchableOpacity>
-        <Text style={styles.textTitle}>Go till backa</Text>
-      </View>
+      <GoBackButton/>
       <ScrollView>
       <ChatCardHeader post={samplePost}/>
       <TouchableOpacity onPress={()=>{}}>
@@ -80,13 +68,14 @@ export const AddOrEditPost = ({activity,post}:props) => {
             <Text  style={styles.buttonText }>+</Text>
           </View>
         </TouchableOpacity>
-      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+      <View  style={styles.inputContainer}>
         <TextInput
         multiline
         value={text}
         onChangeText={setText}
         placeholder="Skriv dina tankar"
-        style={styles.inpuField}/>
+        style={styles.inpuField}
+        scrollEnabled={true}/>
       <LongButton
       title="Spara"
       onPress={()=>{}}
@@ -102,50 +91,42 @@ const styles = StyleSheet.create({
   container:{
     flex: 1,
   },
-  titleAndBackButton: {
-    flexDirection: "row",
-    marginRight: 16,
-    height: 50,
-    paddingBottom: 10,
-  },
-  backIconContainerStyle: {
-    width: 50,
-    height: 50,
-    justifyContent: "center",
-  },
-  textTitle: {
-    ...typography.b1,
-    fontWeight:'bold',
-    color: colors.dark,
-    alignSelf: "flex-end",
-  },
   imageText:{
-    ...typography.b2
+    ...typography.b2,
+    color:colors.secondary,
   },
   buttonText:{
-    fontSize: 100,color:colors.dark
+    fontSize: 60,
+    color:colors.secondary
   },
   image:{
      marginVertical:20,
-     width: 300, 
-     height: 300,
-     backgroundColor:colors.secondary,
+     minWidth: 300, 
+     minHeight: 200,
+     backgroundColor:colors.disabled,
      justifyContent: 'center', 
      alignItems: 'center',
      marginHorizontal:40,
   },
+  inputContainer:{
+    // flex: 1, 
+    justifyContent:'space-between',
+     alignItems: 'center'
+
+  },
   inpuField:{
+    flex: 1,
     marginVertical:20,
     borderWidth: 1, 
     borderColor: colors.dark,
-    width: '80%',
-    minHeight: 100,
-    padding: 10 ,
+    padding: 10,
+    marginBottom: 20,
   },
   longButton:{
+    alignSelf: 'stretch',
     marginVertical:10,
     marginHorizontal:10,
-    width:'80%'
+    
   }
   
 });
