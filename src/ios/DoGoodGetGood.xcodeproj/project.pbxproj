@@ -15,6 +15,7 @@
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
 		5051772F2BC6B74900010506 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5051772E2BC6B74900010506 /* GoogleService-Info.plist */; };
+		50E487AF2BCE745A001A0CE2 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5051772E2BC6B74900010506 /* GoogleService-Info.plist */; };
 		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -362,6 +363,7 @@
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
+				50E487AF2BCE745A001A0CE2 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -936,11 +938,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "iPhone SE (3rd generation)";
@@ -1023,11 +1021,7 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = (
-					"$(inherited)",
-					"-Wl",
-					"-ld_classic",
-				);
+				OTHER_LDFLAGS = "$(inherited)";
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "iPhone SE (3rd generation)";

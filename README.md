@@ -39,7 +39,9 @@ Now open a new terminal or tab and run one of the following commands:
 
 **Android:**
 
-Development build: `npx react-native run-android --variant=devDebug --appIdSuffix=dev`
+to run Dev
+`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`
+to run Prod `react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
 
 Production build: `npx react-native run-android --variant=prodDebug`
 
@@ -78,7 +80,7 @@ Output will be in `src\android\app\build\outputs\apk\prod\release`
 ./gradlew build
 cd ..
 to run Dev
-`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod `react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
+`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod`react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
 
 ```
 
@@ -86,6 +88,7 @@ to run Dev
 - `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler` to ensure that your Bundler is up to date.
 - sometimes help with `gem update --system`
 - if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
+- sometimes it helps to open Xcode and build by pressing Command+B
 
 # We who have worked with the project
 
