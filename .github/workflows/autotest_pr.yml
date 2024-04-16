@@ -3,10 +3,6 @@ name: Do Good Get Good unit tests
 
 # Controls when the workflow will run
 on:
-  # Triggers the workflow on push or pull request events but only for the main branch
-  push:
-    branches:
-      - main
   pull_request:
     branches: [main]
 
@@ -42,10 +38,3 @@ jobs:
       - name: Run tests
         run: npm test --ci
         working-directory: src/
-
-      - name: Collect code coverage
-        uses: romeovs/lcov-reporter-action@v0.3.1
-        with:
-          title: Code coverage
-          lcov-file: ./src/reports/coverage/lcov.info
-          github-token: ${{ github.token }}
