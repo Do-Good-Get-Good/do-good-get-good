@@ -178,6 +178,7 @@
 			path = Prod;
 			sourceTree = "<group>";
 		};
+
 		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXGroup;
 			children = (
@@ -195,10 +196,10 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
+				C058ADC12BC7D68800D47F72 /* Prod */,
+				C058ADB72BC7D53F00D47F72 /* Dev */,
 				64D239C829B0F43A00A948ED /* Config.xcconfig */,
-				64B1239229AFC69F009BFA97 /* Dev */,
 				64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */,
-				64CEDA3529AFB41B00D996F1 /* Prod */,
 				13B07FAE1A68108700A75B9A /* DoGoodGetGood */,
 				832341AE1AAA6A7D00B99B32 /* Libraries */,
 				00E356EF1AD99517003FC87E /* DoGoodGetGoodTests */,
@@ -220,6 +221,20 @@
 				64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C058ADB72BC7D53F00D47F72 /* Dev */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Dev;
+			sourceTree = "<group>";
+		};
+		C058ADC12BC7D68800D47F72 /* Prod */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Prod;
 			sourceTree = "<group>";
 		};
 		F9628818C64758E0011CF508 /* Pods */ = {
