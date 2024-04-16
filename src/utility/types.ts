@@ -97,12 +97,13 @@ export type UserPost = {
   activityID: Activity["id"];
   activityCity: Activity["city"];
   activityTitle: Activity["title"];
+  activityImage:  Activity['imageUrl']  |  Activity['photo'] ;
   changed: boolean;
   date: Date;
   description: string;
   emoji: Array<PostEmoji>;
   imageURL: string;
-  comments?: Array<Comment>;
+  comments: Array<Comment>;
 };
 
 export type ChatMessage = {

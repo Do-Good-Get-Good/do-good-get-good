@@ -1,49 +1,71 @@
-import React from "react";
-import {StyleSheet,View,Text
+import React, { useState } from "react";
+import {StyleSheet,View,Text, Alert, TouchableOpacity
 } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
-
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-import { ChatCardImage } from "./ChartCardImage";
+import { ChatCardImage } from "./ChatCardImage";
+import { ChatCardDescription } from "./ChatCardDescription";
+import { CommentsSection } from "./ChatComments/CommentsSection";
+import { Comment, User, UserPost } from "../../utility/types";
+import { ChatCardEditMenu } from "./ChatCardEditMenu";
+import { ChatCardDate } from "./ChatCardDate";
+import { useNavigation } from "@react-navigation/native";
+// import { UserStack } from "../../utility/routeEnums";
 
+type Props  = {
+post: UserPost
+users: User[]
+handleAddComment: ()=> void
+}
 
+export const ChatCard = ({post, users, handleAddComment}:Props) => {
+  //TO DO create navigation for a screen
+  // const navigation = useNavigation<{
+  //   navigate: (nav: UserStack) => void;
+  // }>();
 
-export const ChatCard = () => {
-  const sampleImageUrl = 'https://st2.depositphotos.com/2001755/5443/i/450/depositphotos_54431143-stock-photo-beautiful-landscape.jpg'
-
-
-  const samplePost = {
-    id: "1",
-    userID: "user1",
-    userFirstName: "John",
-    userLastName: "Johansson",
-    activityID: "activity1",
-    activityCity: "Göteborg",
-    activityTitle: "Blodgivning",
-    changed: false,
-    date: new Date(),
-    description: "Det var so roligt!",
-    emoji: [],
-    imageURL: "symbol_hands_heart-DEFAULT",
-    comments: [],
+  const handlePress = () => {
+    // navigation.navigate(UserStack.Faq)  
   };
-    
+
+  const handleDelete=()=>{
+    Alert.alert("Delete button pressed")  
+  }
+
   return (
+    <TouchableOpacity testID="chat-card"  onPress={handlePress}>
+    <View style={styles.container}>
+      <ChatCardDate date={post.date}/>
       <View style={styles.cardContainer}>
-        <ChatCardHeader post={samplePost}/>
-        <ChatCardImage imageUrl={sampleImageUrl}/>  
+        <View style={styles.headerAndMenu}>
+        <ChatCardHeader post={post}/>
+        <ChatCardEditMenu  onDeletetPress={handleDelete}  />
+        </View>
+      <ChatCardImage imageUrl={post.imageURL}/> 
+        <ChatCardDescription description={post.description}/>
+        <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>  
       </View> 
+    </View>
+    </TouchableOpacity>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    marginVertical:10
+  },
     cardContainer:{
      ... shadows.cardShadow,
-      maxHeight: '70%',
       maxWidth:'80%',
       backgroundColor: colors.background,
       borderRadius:5,
     },
-    
+    headerAndMenu:{
+      flex:0.3,
+      flexDirection: "row",
+      justifyContent: "space-between",
+      padding:4,
+      marginRight:10,
+    }
 });

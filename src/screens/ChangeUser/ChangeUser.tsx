@@ -17,12 +17,13 @@ import colors from "../../assets/theme/colors";
 import BottomNavButtons from "../../components/BottomNavButtons";
 import { UserName } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
-import { InputField } from "../../components/InputField";
+
 import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
 import { SuperAdminStack } from "../../utility/routeEnums";
 import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
 import { useAdminUpdateUserInfoAndActivities } from "../../context/AdminContext/useAdminUpdateUserInfoAndActivities";
 import { Spinner } from "../../components/Loading";
+import { InputFieldWithController } from "../../components/InputFieldWithController";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()
@@ -92,13 +93,13 @@ export const ChangeUser = ({ route, navigation }: Props) => {
       <Text style={styles.textMainTitle}>Ändra användare</Text>
 
       <ScrollView style={styles.container}>
-        <InputField
+        <InputFieldWithController
           placeholderText={"Förnamn"}
           control={control}
           error={errors.name}
           name={"name"}
         />
-        <InputField
+        <InputFieldWithController
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
