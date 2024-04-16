@@ -11,37 +11,42 @@ import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
 
 
-// const createPropsObject = (activity: Activity, user: User):UserPost => { let obj = {
-//   id: '',
-//   userID: user.id,
-//   userFirstName: user.firstName,
-//   userLastName: user.lastName,
-//   activityID: activity.id,
-//   activityCity:activity.city,
-//   activityTitle:activity.title,
-//   changed:false,
-//   date: new Date(),
-//   description:'',
-//   emoji: [],
-//   imageURL: '',
-//     comments: [
+const createPropsObject = (activity: Activity, user: User):UserPost => { let obj = {
+  id: '',
+  userID: user.id,
+  userFirstName: user.firstName,
+  userLastName: user.lastName,
+  activityID: activity.id,
+  activityCity:activity.city,
+  activityTitle:activity.title,
+  activityImage: activity.imageUrl ??  activity.photo ,
+  changed:false,
+  date: new Date(),
+  description:'',
+  emoji: [],
+  imageURL: '',
+    comments: [
 
-//     ]}
-// return obj
-// }
+    ]}
+return obj
+}
 
 
 
 type Props ={
-    activities: Activity[]
-    // user: User,
+    activities: Activity[],
+    visible: boolean
+    onActivityPress:(post: UserPost)=>void;
+    onBackdropPress: ()=> void,
+    user: User,
   }
   
-export const ActivityListOverLay = ({activities}: Props) => {
-  const [visible, setVisible] = useState(true);
+export const ActivityListOverLay = ({activities,onActivityPress, visible,user, onBackdropPress}: Props) => {
+
   const navigation = useNavigation<{
     navigate: (nav: UserStack) => void;
   }>();
+
 //   const handlePress=(activity: Activity)=>{
 //     setVisible(false)
 //     navigation.navigate(UserStack.AddOrEditPost, {
@@ -50,14 +55,10 @@ export const ActivityListOverLay = ({activities}: Props) => {
 
 //   }
 
-const handlePress=()=>{
-  setVisible(false)
-  console.log("Activity Item selected")
-  navigation.navigate(UserStack.AddOrEditPost)  
-}
 
   return (
     <Overlay
+    onBackdropPress={onBackdropPress}
     isVisible={visible}
     animationType="fade"
     overlayStyle={styles.overlayStyle}>
@@ -67,7 +68,7 @@ const handlePress=()=>{
     Vilken aktivitet vill du berätta om?
     </Text>
      {activities.map((activity, index) => (
-        <TouchableOpacity onPress={handlePress} style={styles.itemContainer} key={index}>
+        <TouchableOpacity onPress={()=>onActivityPress(createPropsObject(activity,user))} style={styles.itemContainer} key={index}>
           <ActivityItem activityItem={activity} />
         </TouchableOpacity>
       ))}
@@ -90,14 +91,12 @@ const styles = StyleSheet.create({
       },
       header: {
         ...typography.cardTitle,
-        marginLeft: 22,
-        marginTop: 14,
+        marginHorizontal:10,
+        marginVertical:4,
       },
       overlayStyle: {
         backgroundColor: colors.light,
         width: "90%",
         maxHeight: "60%",
-        borderRadius: 5,
-  
-      }
+        }
 });

@@ -19,7 +19,7 @@ export const ActivityItem = ({activityItem }: Props) => {
 
   return (
        <View style={styles.detailsContainer}>
-        <View>
+        <View  style={styles.textContainer}>
         <Text style={styles.textTitle} >{activityItem.title}</Text>
         <View style={styles.locationContainer}>
           <LocationIcon style={{paddingTop:3}} size={19}/>
@@ -36,12 +36,15 @@ const styles = StyleSheet.create({
     detailsContainer:{
        flexDirection:'row',
        marginVertical:10,
-       marginHorizontal:30
+       marginHorizontal:10
+    },
+    textContainer: {
+      flex: 1, 
     },
     image:{
-      width: 60,
-      height: 60,
-      marginStart:40
+      maxWidth: 60,
+      maxHeight: 60,
+      marginStart:20
     },
     textTitle: {
       ...typography.cardTitle,

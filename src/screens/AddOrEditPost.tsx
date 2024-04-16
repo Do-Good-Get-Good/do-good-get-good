@@ -8,7 +8,7 @@ import Menu from '../components/Menu';
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { Icon} from "@rneui/base";
-import { useRoute } from "@react-navigation/native";
+
 import { Activity, UserPost } from "../utility/types";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
 import { ActivityItem } from "../components/ChartCard/ActivityItem";
@@ -19,24 +19,17 @@ import { GoBackButton } from "../components/Buttons/GoBackButton";
 
 
 
-type props={
-  activity:Activity[]
-  post:UserPost
+type Props = {
+  route: any;
+  navigation: any;
+};
+type Params = {
+  post: UserPost
 }
 
-
-export const AddOrEditPost = ({activity,post}:props) => {
-  const route = useRoute();
-  // const { activity } = route.params;
-
-  const [text, setText] = useState('');
-
-
-  const navigation = useNavigation<{
-    navigate: (nav: UserStack) => void;
-  }>();
-
-
+export const AddOrEditPost = ({route,navigation}:Props) => {
+    const {post  }:Params = route.params;
+  const [text, setText] = useState(post.description);
 
 
   const samplePost = {
@@ -46,6 +39,7 @@ export const AddOrEditPost = ({activity,post}:props) => {
     userLastName: "Johansson",
     activityID: "activity1",
     activityCity: "Göteborg",
+    activityImage:'',
     activityTitle: "Blodgivning",
     changed: false,
     date: new Date(),
@@ -61,7 +55,7 @@ export const AddOrEditPost = ({activity,post}:props) => {
       <Menu/>
       <GoBackButton/>
       <ScrollView>
-      <ChatCardHeader post={samplePost}/>
+      {/* <ChatCardHeader post={samplePost}/> */}
       <TouchableOpacity onPress={()=>{}}>
           <View style={styles.image}>
             <Text style={styles.imageText}>Lägga till bild</Text>
@@ -96,38 +90,33 @@ const styles = StyleSheet.create({
     color:colors.secondary,
   },
   buttonText:{
-    fontSize: 60,
+    fontSize: 80,
     color:colors.secondary
   },
   image:{
      marginVertical:20,
      minWidth: 300, 
-     minHeight: 200,
+     minHeight: 250,
      backgroundColor:colors.disabled,
      justifyContent: 'center', 
      alignItems: 'center',
      marginHorizontal:40,
   },
   inputContainer:{
-    // flex: 1, 
     justifyContent:'space-between',
-     alignItems: 'center'
-
   },
   inpuField:{
     flex: 1,
     marginVertical:20,
-    borderWidth: 1, 
-    borderColor: colors.dark,
     padding: 10,
     marginBottom: 20,
+    ...typography.b1,
+    marginHorizontal:40
   },
   longButton:{
     alignSelf: 'stretch',
     marginVertical:10,
-    marginHorizontal:10,
-    
-  }
-  
+    marginHorizontal:30,  
+  } 
 });
 
