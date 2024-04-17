@@ -32,22 +32,27 @@ export const AddOrEditPost = ({route,navigation}:Props) => {
   const [text, setText] = useState(post.description);
 
 
-  const samplePost = {
-    id: "1",
-    userID: "user1",
-    userFirstName: "John",
-    userLastName: "Johansson",
-    activityID: "activity1",
-    activityCity: "Göteborg",
-    activityImage:'',
-    activityTitle: "Blodgivning",
-    changed: false,
-    date: new Date(),
-    description: "Det var so roligt!",
-    emoji: [],
-    imageURL: "symbol_hands_heart-DEFAULT",
-    comments: [],
-  };
+
+
+  
+
+
+  // const samplePost = {
+  //   id: "1",
+  //   userID: "user1",
+  //   userFirstName: "John",
+  //   userLastName: "Johansson",
+  //   activityID: "activity1",
+  //   activityCity: "Göteborg",
+  //   activityImage:'',
+  //   activityTitle: "Blodgivning",
+  //   changed: false,
+  //   date: dateString,
+  //   description: "Det var so roligt!",
+  //   emoji: [],
+  //   imageURL: "symbol_hands_heart-DEFAULT",
+  //   comments: [],
+  // };
 
   
   return (

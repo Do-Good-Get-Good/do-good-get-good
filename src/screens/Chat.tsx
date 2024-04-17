@@ -124,12 +124,26 @@ const onCreatePostButtonPressed =()=>{
 
   const omChooseActivity =(post: UserPost)=>{
 
-   navigation.navigate(UserStack.AddOrEditPost, {
-    post
-        }) 
-        setShowOverlay(false);
+
+    // Convert the date property to an ISO string
+    const postWithSerializableDate = {
+      ...post,
+      date: post.date.toISOString()
+  };
+
+  // Navigate to the AddOrEditPost screen with the modified post parameter
+  navigation.navigate(UserStack.AddOrEditPost, {
+      post: postWithSerializableDate
+  });
+
+  // Hide the activity overlay
+  setShowOverlay(false);
+
+  //  navigation.navigate(UserStack.AddOrEditPost, {
+  //   post
+  //       }) 
+  //       setShowOverlay(false);
   }
-console.log(activities)
   return (
     <SafeAreaView style={styles.container}>
      <Menu/>
