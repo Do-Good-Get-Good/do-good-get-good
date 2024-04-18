@@ -14,6 +14,8 @@ import { MenuFooter } from "./MenuFooter";
 import { useMenuNavigation } from "./useMenuNavigation";
 import { MenuLink } from "./MenuLink";
 import userLevelStore from "../../store/userLevel";
+import Config from "react-native-config";
+import { UserStack } from "../../utility/routeEnums";
 
 type Props = {
   openOverlay: () => void;
@@ -53,13 +55,14 @@ export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
       </TouchableOpacity>
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayItemStyling}>
-          {menuNavigation?.map((item, i) => (
-            <MenuLink
+          {menuNavigation?.map((item, i) => 
+              Config.NODE_ENV === "prod" && item.screenName=== UserStack.Chat? null :  <MenuLink
               key={item.screenName + i}
               openOverlay={openOverlay}
               navigatationObj={item}
             />
-          ))}
+           
+          )}
         </View>
 
         <MenuFooter
