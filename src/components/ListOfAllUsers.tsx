@@ -53,7 +53,7 @@ export function ListOfAllUsers({ navigation }: Props) {
     <View style={styles.screenContainer}>
       <GoBackButton
         style={{ marginVertical: 5 }}
-        onPress={() => navigation.goBack()}
+
       />
       <SearchBarComponent
         arrayToSearch={allUsersInSystem ?? []}

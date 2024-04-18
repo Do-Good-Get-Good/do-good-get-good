@@ -11,8 +11,6 @@
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
-		1AFD08122BCEAF5B0024D5D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD08112BCEAF5B0024D5D3 /* GoogleService-Info.plist */; };
-		1AFD08142BCEAF8C0024D5D3 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 1AFD08132BCEAF8C0024D5D3 /* GoogleService-Info.plist */; };
 		1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
@@ -26,6 +24,8 @@
 		64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		7E92B65B988129BEEC032CE8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BE50ED0E9E5AFC415F2367 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */; };
+		C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
 		E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
 		FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
@@ -52,8 +52,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DoGoodGetGood/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
-		1AFD08112BCEAF5B0024D5D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		1AFD08132BCEAF8C0024D5D3 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		41589E760962169460036461 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		58595BD336CB2EC67B891AC4 /* Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGood-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -68,6 +66,8 @@
 		97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; sourceTree = "<group>"; };
 		AE108FECF935428586ECE21F /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
 		BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C2006F8EFFB4AC5B3DC29A75 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
 		C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; sourceTree = "<group>"; };
@@ -162,23 +162,6 @@
 			name = Resources;
 			sourceTree = "<group>";
 		};
-		64B1239229AFC69F009BFA97 /* Dev */ = {
-			isa = PBXGroup;
-			children = (
-				1AFD08112BCEAF5B0024D5D3 /* GoogleService-Info.plist */,
-			);
-			path = Dev;
-			sourceTree = "<group>";
-		};
-		64CEDA3529AFB41B00D996F1 /* Prod */ = {
-			isa = PBXGroup;
-			children = (
-				1AFD08132BCEAF8C0024D5D3 /* GoogleService-Info.plist */,
-			);
-			path = Prod;
-			sourceTree = "<group>";
-		};
-
 		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXGroup;
 			children = (
@@ -207,6 +190,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				56B1D1E37AD34425A9C025BD /* Resources */,
 				F9628818C64758E0011CF508 /* Pods */,
+				C05462552BD11719001D6AED /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -223,9 +207,17 @@
 			name = Products;
 			sourceTree = "<group>";
 		};
+		C05462552BD11719001D6AED /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
+			sourceTree = "<group>";
+		};
 		C058ADB72BC7D53F00D47F72 /* Dev */ = {
 			isa = PBXGroup;
 			children = (
+				C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */,
 			);
 			path = Dev;
 			sourceTree = "<group>";
@@ -233,6 +225,7 @@
 		C058ADC12BC7D68800D47F72 /* Prod */ = {
 			isa = PBXGroup;
 			children = (
+				C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */,
 			);
 			path = Prod;
 			sourceTree = "<group>";
@@ -378,7 +371,7 @@
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
-				1AFD08142BCEAF8C0024D5D3 /* GoogleService-Info.plist in Resources */,
+				C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -387,12 +380,12 @@
 			buildActionMask = 2147483647;
 			files = (
 				64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */,
-				1AFD08122BCEAF5B0024D5D3 /* GoogleService-Info.plist in Resources */,
 				64CEDA5D29AFB8D500D996F1 /* Images.xcassets in Resources */,
 				64CEDA5E29AFB8D500D996F1 /* DIN-Bold.otf in Resources */,
 				64CEDA5F29AFB8D500D996F1 /* DIN-Light.otf in Resources */,
 				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
 				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
+				C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -953,7 +946,11 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "iPhone SE (3rd generation)";
@@ -1036,7 +1033,11 @@
 					"-DFOLLY_MOBILE=1",
 					"-DFOLLY_USE_LIBCPP=1",
 				);
-				OTHER_LDFLAGS = "$(inherited)";
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Wl",
+					"-ld_classic",
+				);
 				REACT_NATIVE_PATH = "${PODS_ROOT}/../../node_modules/react-native";
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "iPhone SE (3rd generation)";

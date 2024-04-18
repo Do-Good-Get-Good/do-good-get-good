@@ -43,11 +43,9 @@ const schema: yup.ObjectSchema<UserInfo> = yup
 
   .defined();
 
-type Props = {
-  navigation: any;
-};
 
-export const RolesAndConnection = ({ navigation }: Props) => {
+
+export const RolesAndConnection = ({  }) => {
   const superAdminContext = useSuperAdminFunction();
   const { onSaveChangedUser, loading } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
@@ -78,7 +76,7 @@ export const RolesAndConnection = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <GoBackButton onPress={() => navigation.goBack()} />
+      <GoBackButton  />
       <ScrollView>
         <View style={styles.container}>
           <ChangeRolesAndConnection control={control} getValues={getValues} />

@@ -28,6 +28,7 @@ import ConceptPage from "./screens/ConceptPage";
 import DownloadUserData from "./screens/DownloadUserData";
 import { AdminPage } from "./screens/AdminPage";
 import { Chat } from "./screens/Chat";
+import { AddOrEditPost } from "./screens/AddOrEditPost";
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -106,6 +107,7 @@ export const SuperAdminStack = () => {
                             component={SuperAdminHomePage}
                           />
                           <Stack.Screen name="Chat" component={Chat} />
+                          <Stack.Screen name=" AddOrEditPost" component={ AddOrEditPost} />
                         </Stack.Navigator>
                       </NavigationContainer>
                     </SuperAdminHomePageContextProvider>

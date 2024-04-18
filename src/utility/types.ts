@@ -99,7 +99,7 @@ export type UserPost = {
   activityTitle: Activity["title"];
   activityImage:  Activity['imageUrl']  |  Activity['photo'] ;
   changed: boolean;
-  date: Date;
+  date:  Date | string;
   description: string;
   emoji: Array<PostEmoji>;
   imageURL: string;
