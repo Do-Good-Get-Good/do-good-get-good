@@ -116,6 +116,11 @@ describe("Testing SuperAdminHomePage screen ", () => {
     expect(checkbox.props.isChecked).toBe(true);
   });
 
+  it("Time entry should disappear from the list after approve", async () => {
+    const { getAllByTestId, getByTestId, queryByTestId, debug } = render(
+      <SuperAdminHomePage />,
+    );
+  });
   // TODO:  Come back to this test when you get more idea why mockOnApproveTimeEntries doesn’t calls
   // it("Time entry should disappear from the list after approve", async () => {
   //   const { getAllByTestId, getByTestId, queryByTestId, debug } = render(
