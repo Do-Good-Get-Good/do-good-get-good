@@ -10,6 +10,7 @@ import { UserPost } from "../utility/types";
 import { LongButton } from "../components/Buttons/LongButton";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
+import { addChatPost } from "../firebase-functions/addTS/add";
 
 type Props = {
   route: any;
@@ -20,9 +21,24 @@ type Params = {
   toEdit: boolean
 }
 
-export const AddOrEditPost = ({route,navigation}:Props) => {
+export const AddOrEditPost = ({route}:Props) => {
     const {post, toEdit  }:Params = route.params;
-  const [text, setText] = useState(post.description);
+    const postTime = new Date()
+  const [description, setDescription] = useState(post.description);
+  const [imageURL, setImageURL]= useState(post.imageURL)
+
+  const onSaveButtonPressed = async()=>{
+   if(toEdit ) {
+    console.log('run edit function')
+  } else {
+    
+  await  addChatPost({...post, description, imageURL , date: postTime})
+  }
+   
+
+  }
+
+ 
   
   return (
     <SafeAreaView style={styles.container}>
@@ -39,14 +55,14 @@ export const AddOrEditPost = ({route,navigation}:Props) => {
       <View  style={styles.inputContainer}>
         <TextInput
         multiline
-        value={text}
-        onChangeText={setText}
+        value={description}
+        onChangeText={setDescription}
         placeholder="Skriv dina tankar"
         style={styles.inpuField}
         scrollEnabled={true}/>
       <LongButton
       title="Spara"
-      onPress={()=>{}}
+      onPress={()=>onSaveButtonPressed()}
       style={styles.longButton}/>
     </View>
       <BottomLogo/>
