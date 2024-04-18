@@ -190,6 +190,7 @@
 				2D16E6871FA4F8E400B85C8A /* Frameworks */,
 				56B1D1E37AD34425A9C025BD /* Resources */,
 				F9628818C64758E0011CF508 /* Pods */,
+				C05462552BD11719001D6AED /* Recovered References */,
 			);
 			indentWidth = 2;
 			sourceTree = "<group>";
@@ -204,6 +205,13 @@
 				64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */,
 			);
 			name = Products;
+			sourceTree = "<group>";
+		};
+		C05462552BD11719001D6AED /* Recovered References */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = "Recovered References";
 			sourceTree = "<group>";
 		};
 		C058ADB72BC7D53F00D47F72 /* Dev */ = {
@@ -731,7 +739,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
-				DEVELOPMENT_TEAM = KYM65YV587;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DoGoodGetGood/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -769,7 +777,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
-				DEVELOPMENT_TEAM = KYM65YV587;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				INFOPLIST_FILE = DoGoodGetGood/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
@@ -804,7 +812,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.1.1;
-				DEVELOPMENT_TEAM = KYM65YV587;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DoGoodGetGoodDev/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -836,7 +844,7 @@
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.1.1;
-				DEVELOPMENT_TEAM = KYM65YV587;
+				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				INFOPLIST_FILE = DoGoodGetGoodDev/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
