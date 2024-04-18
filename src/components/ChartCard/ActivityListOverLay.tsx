@@ -21,17 +21,14 @@ const createPropsObject = (activity: Activity, user: User):UserPost => { let obj
   activityTitle:activity.title,
   activityImage: activity.imageUrl ??  activity.photo ,
   changed:false,
-  date: new Date(),
+  date: new Date().toISOString(),
   description:'',
   emoji: [],
   imageURL: '',
-    comments: [
-
-    ]}
+  comments: []
+}
 return obj
 }
-
-
 
 type Props ={
     activities: Activity[],
@@ -46,15 +43,6 @@ export const ActivityListOverLay = ({activities,onActivityPress, visible,user, o
   const navigation = useNavigation<{
     navigate: (nav: UserStack) => void;
   }>();
-
-//   const handlePress=(activity: Activity)=>{
-//     setVisible(false)
-//     navigation.navigate(UserStack.AddOrEditPost, {
-// post : createPropsObject(activity,user )
-//     }) 
-
-//   }
-
 
   return (
     <Overlay
@@ -78,7 +66,6 @@ export const ActivityListOverLay = ({activities,onActivityPress, visible,user, o
 };
 
 const styles = StyleSheet.create({
-  
       itemContainer: {
         marginBottom: 10,
         backgroundColor:colors.background
@@ -98,5 +85,5 @@ const styles = StyleSheet.create({
         backgroundColor: colors.light,
         width: "90%",
         maxHeight: "60%",
-        }
+     }
 });

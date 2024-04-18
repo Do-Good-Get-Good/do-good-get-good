@@ -1,23 +1,15 @@
 import React, { useState } from "react";
 import {
-  Image,
   SafeAreaView,ScrollView,StyleSheet,Text, TextInput, TouchableOpacity, View
 } from "react-native";
 import BottomLogo from '../components/BottomLogo';
 import Menu from '../components/Menu';
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-import { Icon} from "@rneui/base";
-
-import { Activity, UserPost } from "../utility/types";
-import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
-import { ActivityItem } from "../components/ChartCard/ActivityItem";
+import { UserPost } from "../utility/types";
 import { LongButton } from "../components/Buttons/LongButton";
-import { useNavigation } from "@react-navigation/native";
-import { UserStack } from "../utility/routeEnums";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
-
-
+import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
 
 type Props = {
   route: any;
@@ -25,42 +17,19 @@ type Props = {
 };
 type Params = {
   post: UserPost
+  toEdit: boolean
 }
 
 export const AddOrEditPost = ({route,navigation}:Props) => {
-    const {post  }:Params = route.params;
+    const {post, toEdit  }:Params = route.params;
   const [text, setText] = useState(post.description);
-
-
-
-
-  
-
-
-  // const samplePost = {
-  //   id: "1",
-  //   userID: "user1",
-  //   userFirstName: "John",
-  //   userLastName: "Johansson",
-  //   activityID: "activity1",
-  //   activityCity: "Göteborg",
-  //   activityImage:'',
-  //   activityTitle: "Blodgivning",
-  //   changed: false,
-  //   date: dateString,
-  //   description: "Det var so roligt!",
-  //   emoji: [],
-  //   imageURL: "symbol_hands_heart-DEFAULT",
-  //   comments: [],
-  // };
-
   
   return (
     <SafeAreaView style={styles.container}>
       <Menu/>
       <GoBackButton/>
       <ScrollView>
-      {/* <ChatCardHeader post={samplePost}/> */}
+      <ChatCardHeader post={post} />
       <TouchableOpacity onPress={()=>{}}>
           <View style={styles.image}>
             <Text style={styles.imageText}>Lägga till bild</Text>

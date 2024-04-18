@@ -11,7 +11,6 @@ import colors from "../assets/theme/colors";
 import {Activity, Comment, UserPost } from "../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../components/ChartCard/ActivityListOverLay";
-import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../utility/routeEnums";
 
 
@@ -25,6 +24,7 @@ const comments:Comment[] =[
   const yesterday = new Date();
   yesterday.setDate(yesterday.getDate() - 1);
 
+
 const samplePost:UserPost = {
   id: "1",
   userID: "user1",
@@ -35,7 +35,7 @@ const samplePost:UserPost = {
   activityTitle: "Blodgivning",
   activityImage: 'symbol_sport',
   changed: false,
-  date: yesterday,
+  date: yesterday, 
   description: "Det var so roligt!",
   emoji: [],
   imageURL: sampleImageUrl,
@@ -111,9 +111,7 @@ export const Chat = ({navigation}: Props) => {
 
   };
 
-  // const handleGoBack = () => {
-  //   setShowOverlay(false);
-  // };
+
 const onCreatePostButtonPressed =()=>{
   // request to get activity 
  // setActivities()  then (   setShowOverlay(true); ) 
@@ -122,27 +120,12 @@ const onCreatePostButtonPressed =()=>{
 }
 
 
-  const omChooseActivity =(post: UserPost)=>{
-
-
-    // Convert the date property to an ISO string
-    const postWithSerializableDate = {
-      ...post,
-      date: post.date.toISOString()
-  };
-
-  // Navigate to the AddOrEditPost screen with the modified post parameter
+  const onChooseActivity =(post: UserPost)=>{
   navigation.navigate(UserStack.AddOrEditPost, {
-      post: postWithSerializableDate
+      post, toEdit : false
   });
-
-  // Hide the activity overlay
   setShowOverlay(false);
 
-  //  navigation.navigate(UserStack.AddOrEditPost, {
-  //   post
-  //       }) 
-  //       setShowOverlay(false);
   }
   return (
     <SafeAreaView style={styles.container}>
@@ -157,7 +140,7 @@ const onCreatePostButtonPressed =()=>{
         visible ={showOverlay}
         user={users[0]}
           activities={activities}
-          onActivityPress={omChooseActivity}
+          onActivityPress={onChooseActivity}
         />
 
       <TextInput
