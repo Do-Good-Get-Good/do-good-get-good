@@ -1,7 +1,7 @@
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
-import { TimeEntry, User } from "../../utility/types";
+import { Activity, TimeEntry, User } from "../../utility/types";
 import { format } from "date-fns";
 import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 
@@ -178,6 +178,15 @@ export const getUserByStatus = async (isActive: boolean = true) => {
       return userObject(doc);
     });
     return Promise.resolve(users);
+  } catch (error) {
+    return Promise.reject(error);
+  }
+};
+
+export const getActivityByID = async (activityID: Activity["id"]) => {
+  try {
+    let data = await firestore().collection("Activities").doc(activityID).get();
+    return Promise.resolve(data);
   } catch (error) {
     return Promise.reject(error);
   }
