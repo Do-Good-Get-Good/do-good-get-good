@@ -2,61 +2,9 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import { Activity, TimeEntry, User } from "../../utility/types";
-import { format } from "date-fns";
+
 import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
-
-const userActivitiesAndAccumulatedTime = (
-  arr: FirebaseuserActivityAndAccumulatedTime[],
-): User["activitiesAndAccumulatedTime"] => {
-  let temArr: User["activitiesAndAccumulatedTime"] = [];
-  arr.forEach((item) =>
-    temArr.push({
-      accumulatedTime: item.accumulated_time,
-      activityID: item.activity_id,
-    }),
-  );
-  return temArr;
-};
-
-export const userObject = (
-  doc:
-    | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
-) => {
-  let user: User = {
-    id: doc.id,
-    activitiesAndAccumulatedTime: userActivitiesAndAccumulatedTime(
-      doc.data().activities_and_accumulated_time,
-    ),
-    adminID: doc.data().admin_id,
-    connectedActivities: doc.data().connected_activities,
-    firstName: doc.data().first_name,
-    lastName: doc.data().last_name,
-    role: doc.data().role,
-    statusActive: doc.data().status_active,
-    totalConfirmedHours: doc.data().total_confirmed_hours,
-    totalHoursMonth: doc.data().total_hours_month,
-    totalHoursYear: doc.data().total_hours_year,
-  };
-
-  return user;
-};
-export const timeEntryObject = (
-  doc:
-    | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
-) => {
-  return {
-    id: doc.id,
-    activityID: doc.data().activity_id,
-    adminID: doc.data().admin_id,
-    userID: doc.data().user_id,
-    activityTitle: doc.data().activity_title,
-    date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
-    statusConfirmed: doc.data().status_confirmed,
-    time: doc.data().time,
-  };
-};
+import { activityObject, timeEntryObject, userObject } from "../adaptedObject";
 
 export const getAllUsersData = async () => {
   try {
@@ -183,10 +131,12 @@ export const getUserByStatus = async (isActive: boolean = true) => {
   }
 };
 
-export const getActivityByID = async (activityID: Activity["id"]) => {
+export const getActivityByID = async (
+  activityID: Activity["id"],
+): Promise<Activity> => {
   try {
     let data = await firestore().collection("Activities").doc(activityID).get();
-    return Promise.resolve(data);
+    return Promise.resolve(activityObject(data));
   } catch (error) {
     return Promise.reject(error);
   }
