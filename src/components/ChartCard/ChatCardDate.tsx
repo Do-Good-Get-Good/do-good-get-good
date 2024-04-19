@@ -8,11 +8,15 @@ const today = new Date();
 const formattedDate = (date: Date | string): string => {
   const formattedDate = typeof date === "string" ? new Date(date) : date;
 
+
   if (
-    !isNaN(formattedDate?.getTime()) &&
-    !isUndefined(formattedDate?.getTime())
+    formattedDate instanceof Date && // Check if formattedDate is a Date object
+    !isNaN(formattedDate.getTime())
+    // !isNaN(formattedDate?.getTime()) &&
+    // !isUndefined(formattedDate?.getTime())
   ) {
     const diff = formattedDate.getDate() - today.getDate();
+    console.log(diff)
 
     switch (diff) {
       case -1:

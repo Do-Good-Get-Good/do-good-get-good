@@ -1,11 +1,8 @@
 import React, { useState } from "react";
-
 import { StyleSheet, View, Text, Alert, TouchableOpacity } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-
-import { ActivityListOverLay } from "./ActivityListOverLay";
 import { ChatCardImage } from "./ChatCardImage";
 import { ChatCardDescription } from "./ChatCardDescription";
 import { CommentsSection } from "./ChatComments/CommentsSection";
