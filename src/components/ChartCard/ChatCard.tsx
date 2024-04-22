@@ -1,17 +1,18 @@
 import React, { useState } from "react";
+
 import {StyleSheet,View,Text, Alert, TouchableOpacity
 } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
+
+import { ActivityListOverLay } from "./ActivityListOverLay";
 import { ChatCardImage } from "./ChatCardImage";
 import { ChatCardDescription } from "./ChatCardDescription";
 import { CommentsSection } from "./ChatComments/CommentsSection";
 import { Comment, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
-import { useNavigation } from "@react-navigation/native";
-// import { UserStack } from "../../utility/routeEnums";
 
 type Props  = {
 post: UserPost
@@ -20,24 +21,17 @@ handleAddComment: ()=> void
 }
 
 export const ChatCard = ({post, users, handleAddComment}:Props) => {
-  //TO DO create navigation for a screen
-  // const navigation = useNavigation<{
-  //   navigate: (nav: UserStack) => void;
-  // }>();
-
-  const handlePress = () => {
-    // navigation.navigate(UserStack.Faq)  
-  };
 
   const handleDelete=()=>{
     Alert.alert("Delete button pressed")  
   }
 
   return (
-    <TouchableOpacity testID="chat-card"  onPress={handlePress}>
+    <View testID="chat-card"  >
     <View style={styles.container}>
       <ChatCardDate date={post.date}/>
-      <View style={styles.cardContainer}>
+      <TouchableOpacity style={styles.cardContainer}>
+
         <View style={styles.headerAndMenu}>
         <ChatCardHeader post={post}/>
         <ChatCardEditMenu  onDeletetPress={handleDelete}  />
@@ -45,9 +39,10 @@ export const ChatCard = ({post, users, handleAddComment}:Props) => {
       <ChatCardImage imageUrl={post.imageURL}/> 
         <ChatCardDescription description={post.description}/>
         <CommentsSection comments={post.comments } users={users} onAddComment={handleAddComment}/>  
-      </View> 
+      </TouchableOpacity> 
     </View>
-    </TouchableOpacity>
+    </View>
+
   );
 };
 
@@ -60,6 +55,7 @@ const styles = StyleSheet.create({
       maxWidth:'80%',
       backgroundColor: colors.background,
       borderRadius:5,
+
     },
     headerAndMenu:{
       flex:0.3,
@@ -68,4 +64,4 @@ const styles = StyleSheet.create({
       padding:4,
       marginRight:10,
     }
-});
+})

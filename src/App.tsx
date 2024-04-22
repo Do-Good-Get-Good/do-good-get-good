@@ -10,12 +10,12 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 
-import Login from "./components/Login";
 import BottomLogo from "./components/BottomLogo";
 
 import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
+import { Login } from "./components/Login";
 
 export default function App() {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();

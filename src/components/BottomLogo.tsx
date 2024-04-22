@@ -1,9 +1,20 @@
-import { StyleSheet, Image, View } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  View,
+  StyleProp,
+  FlexStyle,
+  TextStyle,
+} from "react-native";
 import React from "react";
 
-const BottomLogo = () => {
+type Props = {
+  style?: StyleProp<FlexStyle | TextStyle>;
+};
+
+const BottomLogo = ({ style }: Props) => {
   return (
-    <View style={styles.bottomLogoView}>
+    <View style={[styles.bottomLogoView, style]}>
       <Image
         testID="login.bottomLogo"
         source={require("../assets/images/Technogarden-logotyp-Large.png")}
