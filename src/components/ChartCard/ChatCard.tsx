@@ -24,7 +24,7 @@ export const ChatCard = ({ post, users, handleAddComment }: Props) => {
   return (
     <View testID="chat-card">
       <View style={styles.container}>
-        {/* <ChatCardDate date={post.date}/> */}
+        <ChatCardDate date={post.date}/>
         <TouchableOpacity style={styles.cardContainer}>
           <View style={styles.headerAndMenu}>
             <ChatCardHeader post={post} />

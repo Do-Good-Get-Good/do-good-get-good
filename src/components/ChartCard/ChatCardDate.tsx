@@ -10,13 +10,12 @@ const formattedDate = (date: Date | string): string => {
 
 
   if (
-    formattedDate instanceof Date && // Check if formattedDate is a Date object
+    formattedDate instanceof Date && 
     !isNaN(formattedDate.getTime())
-    // !isNaN(formattedDate?.getTime()) &&
-    // !isUndefined(formattedDate?.getTime())
+ 
   ) {
     const diff = formattedDate.getDate() - today.getDate();
-    console.log(diff)
+
 
     switch (diff) {
       case -1:
