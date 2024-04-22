@@ -13,6 +13,8 @@ import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
 import { addChatPost } from "../firebase-functions/addTS/add";
 import {launchImageLibrary,MediaType} from 'react-native-image-picker';
+import { PopUpPublishPost } from "../components/ChartCard/PopUpChat/PopUpPublish";
+import { PopUpExpirePost } from "../components/ChartCard/PopUpChat/PopUpExpirePost";
 
 
 type Props = {
@@ -29,6 +31,13 @@ export const AddOrEditPost = ({route}:Props) => {
   const postTime = new Date()
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL]= useState(post.imageURL)
+
+  const [showOverlay, setShowOverlay] = useState(false);
+
+  const handleButtonPress = () => {
+    console.log("Pop up Test button pressed");
+    setShowOverlay(true);
+  };
 
   const onSaveButtonPressed = async()=>{
    
@@ -51,8 +60,6 @@ export const AddOrEditPost = ({route}:Props) => {
         setImageURL(imageUri || '')}   
     });
   }
-
- 
 
 
   return (
@@ -83,6 +90,16 @@ export const AddOrEditPost = ({route}:Props) => {
       title="Spara"
       onPress={ ()=> imageURL !== '' && onSaveButtonPressed()}
       style={styles.longButton}/>
+      <LongButton
+      title="PopUp Test"
+      onPress={handleButtonPress}
+      style={styles.longButton}/>
+      <PopUpExpirePost
+       onBackdropPress={() => setShowOverlay(false)}
+       visible={showOverlay}/>
+        {/* <PopUpPublishPost
+       onBackdropPress={() => setShowOverlay(false)}
+       visible={showOverlay}/> */}
     </View>
       <BottomLogo/>
       </ScrollView>

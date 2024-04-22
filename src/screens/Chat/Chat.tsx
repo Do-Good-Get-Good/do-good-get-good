@@ -12,8 +12,6 @@ import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOver
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 
-const yesterday = new Date();
-yesterday.setDate(yesterday.getDate() - 1);
 
 const users = [
   {
@@ -79,17 +77,14 @@ export const Chat = ({ navigation, route }: Props) => {
   };
   const handleAddComment = () => {};
 
-  const handleButtonPress = () => {
-    console.log("Skapa inlagg pressed");
-    setShowOverlay(true);
-  };
-
   const onCreatePostButtonPressed = () => {
     // request to get activity
     // setActivities()  then (   setShowOverlay(true); )
     setActivities(activitiesFacke);
     setShowOverlay(true);
   };
+
+
 
   const onChooseActivity = (post: UserPost) => {
     navigation.navigate(UserStack.AddOrEditPost, {
