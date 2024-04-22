@@ -31,51 +31,39 @@ export const AddOrEditPost = ({route}:Props) => {
   const [imageURL, setImageURL]= useState(post.imageURL)
 
   const onSaveButtonPressed = async()=>{
+   
    if(toEdit ) {
     console.log('run edit function')
-  } else {
-    
+  } else {  
   await  addChatPost({...post, description, imageURL , date: postTime})
   }
-   
 
   }
 
-  // const [text, setText] = useState(post.description);
-  const [selectedImage, setSelectedImage] = useState('');
 
   const openImagePicker = () => {
     const options = {
       mediaType:'photo' as MediaType,
     };
-  
     launchImageLibrary(options, response => {
-      if (response.didCancel) {
-        console.log('User cancelled Gallery');
-      } else if (response.errorMessage) {
-        console.log('Camera Error: ', response.errorMessage);
-      } else {
+      if(!response.didCancel  && !response.errorMessage )  {
         let imageUri = response.assets?.[0]?.uri;
-        setSelectedImage(imageUri || '');
-        // console.log(imageUri);
-      }
+        setImageURL(imageUri || '')}   
     });
   }
 
-  const changeImage = () => {
-    setSelectedImage('');
-    openImagePicker();
-  };
-  
+ 
+
+
   return (
     <SafeAreaView style={styles.container}>
       <Menu/>
       <GoBackButton/>
       <ScrollView>
       <ChatCardHeader post={post} />
-      <TouchableOpacity  onPress={selectedImage ? changeImage : openImagePicker}>
-         {selectedImage ? (
-            <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+      <TouchableOpacity  onPress={ openImagePicker}>
+         {imageURL ? (
+            <Image source={{ uri: imageURL }} style={styles.selectedImage} />
           ) : (
             <View style={styles.image}>
               <Text style={styles.imageText}>Lägga till bild</Text>
@@ -93,7 +81,7 @@ export const AddOrEditPost = ({route}:Props) => {
         scrollEnabled={true}/>
       <LongButton
       title="Spara"
-      onPress={()=>onSaveButtonPressed()}
+      onPress={ ()=> imageURL !== '' && onSaveButtonPressed()}
       style={styles.longButton}/>
     </View>
       <BottomLogo/>
