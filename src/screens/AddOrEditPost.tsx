@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Image,
   SafeAreaView,ScrollView,StyleSheet,Text, TextInput, TouchableOpacity, View
 } from "react-native";
 import BottomLogo from '../components/BottomLogo';
@@ -10,6 +11,9 @@ import { UserPost } from "../utility/types";
 import { LongButton } from "../components/Buttons/LongButton";
 import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
+import {launchImageLibrary,MediaType} from 'react-native-image-picker';
+
+
 
 type Props = {
   route: any;
@@ -23,6 +27,30 @@ type Params = {
 export const AddOrEditPost = ({route,navigation}:Props) => {
     const {post, toEdit  }:Params = route.params;
   const [text, setText] = useState(post.description);
+  const [selectedImage, setSelectedImage] = useState('');
+
+  const openImagePicker = () => {
+    const options = {
+      mediaType:'photo' as MediaType,
+    };
+  
+    launchImageLibrary(options, response => {
+      if (response.didCancel) {
+        console.log('User cancelled Gallery');
+      } else if (response.errorMessage) {
+        console.log('Camera Error: ', response.errorMessage);
+      } else {
+        let imageUri = response.assets?.[0]?.uri;
+        setSelectedImage(imageUri || '');
+        // console.log(imageUri);
+      }
+    });
+  }
+
+  const changeImage = () => {
+    setSelectedImage('');
+    openImagePicker();
+  };
   
   return (
     <SafeAreaView style={styles.container}>
@@ -30,11 +58,15 @@ export const AddOrEditPost = ({route,navigation}:Props) => {
       <GoBackButton/>
       <ScrollView>
       <ChatCardHeader post={post} />
-      <TouchableOpacity onPress={()=>{}}>
-          <View style={styles.image}>
-            <Text style={styles.imageText}>Lägga till bild</Text>
-            <Text  style={styles.buttonText }>+</Text>
-          </View>
+      <TouchableOpacity  onPress={selectedImage ? changeImage : openImagePicker}>
+         {selectedImage ? (
+            <Image source={{ uri: selectedImage }} style={styles.selectedImage} />
+          ) : (
+            <View style={styles.image}>
+              <Text style={styles.imageText}>Lägga till bild</Text>
+              <Text style={styles.buttonText}>+</Text>
+            </View>
+          )}
         </TouchableOpacity>
       <View  style={styles.inputContainer}>
         <TextInput
@@ -91,6 +123,12 @@ const styles = StyleSheet.create({
     alignSelf: 'stretch',
     marginVertical:10,
     marginHorizontal:30,  
-  } 
+  } ,
+  selectedImage: {
+    minWidth: 300, 
+    minHeight: 250,
+    marginVertical: 20,
+    alignSelf: 'center',
+  }
 });
 
