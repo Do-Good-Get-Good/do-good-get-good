@@ -14,7 +14,6 @@ import colors from "../assets/theme/colors";
 import { borderStyle } from "../styles/borderStyle";
 import { placeholderTextStyle } from "../styles/placeholderTextStyle";
 
-
 type Props = {
   error?: FieldError;
   control: any;
@@ -27,8 +26,9 @@ type Props = {
   returnKeyType?: ReturnKeyTypeOptions;
   secureTextEntry?: boolean;
   autoCapitalize?: TextInputProps["autoCapitalize"];
-  contextMenuHidden?:boolean
-  testID?:string
+  contextMenuHidden?: boolean;
+  testID?: string;
+  toTrim?: boolean;
 };
 
 export const InputFieldWithController = ({
@@ -43,23 +43,23 @@ export const InputFieldWithController = ({
   returnKeyType = "next",
   secureTextEntry = false,
   autoCapitalize = "words",
-  contextMenuHidden=false,
-  testID
- 
+  contextMenuHidden = false,
+  testID,
+  toTrim,
 }: Props) => {
-
   return (
     <Controller
       name={name}
-      control={control} 
+      control={control}
       rules={{ required: required }}
       render={({ field: { onChange, onBlur, value } }) => (
         <>
           <View style={styles.containerInput}>
             <TextInput
+              testID={`input-${testID}`}
               style={[placeholderTextStyle(), borderStyle(error !== undefined)]}
               onBlur={onBlur}
-              onChangeText={(value) => onChange(value)}
+              onChangeText={(value) => onChange(toTrim ? value.trim() : value)}
               value={value}
               placeholder={placeholderText}
               placeholderTextColor={colors.dark}
@@ -74,7 +74,11 @@ export const InputFieldWithController = ({
               {IconRight && IconRight}
             </View>
           </View>
-          {error && <Text testID={`input-error-${testID}`} style={errorTextStyle()}>{error.message}</Text>}
+          {error && (
+            <Text testID={`input-error-${testID}`} style={errorTextStyle()}>
+              {error.message}
+            </Text>
+          )}
         </>
       )}
     />

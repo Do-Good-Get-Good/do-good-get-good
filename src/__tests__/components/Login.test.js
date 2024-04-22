@@ -1,18 +1,18 @@
 import "react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
-import Login from "../../components/Login";
+import { Login } from "../../components/Login";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
+// jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
+// jest.mock("@rneui/base/dist/Icon/", () => ({
+//   Icon: jest.fn(),
+// }));
 
-jest.mock("@rneui/base/dist/Overlay/", () => ({
-  Overlay: jest.fn(),
-}));
+// jest.mock("@rneui/base/dist/Overlay/", () => ({
+//   Overlay: jest.fn(),
+// }));
 
 jest.mock("@react-native-firebase/auth", () => () => ({
   auth: jest.fn(),
@@ -53,60 +53,75 @@ describe("Testing Login", () => {
     expect(errorText).toBeNull();
   });
 
-  it("Trying to login without entering an e-mail gives an error", () => {
+  it("Trying to login without entering an e-mail gives an error", async () => {
     const { getByText, getByPlaceholderText } = render(<Login />);
 
     fireEvent.changeText(getByPlaceholderText("Lösenord"), "Blomma123");
-
     const loginButton = getByText("Logga in");
-    fireEvent.press(loginButton);
-
-    getByText("* Du måste fylla i en e-post");
+    await waitFor(() => {
+      fireEvent.press(loginButton);
+      expect(getByText("Du måste fylla i e-post och lösenord")).toBeTruthy();
+    });
   });
 
-  it("Trying to login without entering a password gives an error", () => {
+  it("Trying to login without entering a password gives an error", async () => {
     const { getByText, getByPlaceholderText } = render(<Login />);
 
     fireEvent.changeText(getByPlaceholderText("E-post"), "test@test.com");
 
     const loginButton = getByText("Logga in");
-    fireEvent.press(loginButton);
+    await waitFor(() => {
+      fireEvent.press(loginButton);
 
-    getByText("* Du måste fylla i ett lösenord");
+      expect(getByText("* Du måste fylla i ett lösenord")).toBeTruthy();
+    });
   });
 
-  it("Trying to login without entering an e-mail or password gives an error", () => {
+  it("Trying to login without entering an e-mail or password gives an error", async () => {
     const { getByText } = render(<Login />);
 
     const loginButton = getByText("Logga in");
-    fireEvent.press(loginButton);
-
-    getByText("* Du måste fylla i e-post och lösenord");
+    await waitFor(() => {
+      fireEvent.press(loginButton);
+      expect(getByText("* Du måste fylla i ett lösenord")).toBeTruthy();
+      expect(getByText("Du måste fylla i e-post och lösenord")).toBeTruthy();
+    });
   });
 
-  it("Pressing the forgot password button works", () => {
-    const { getByText } = render(<Login />);
-
-    const forgotPasswordButton = getByText("Tryck här");
-    fireEvent.press(forgotPasswordButton);
+  it("Trying to login without valid email gives an error", async () => {
+    const { getByText, getByPlaceholderText } = render(<Login />);
+    fireEvent.changeText(getByPlaceholderText("E-post"), "test");
+    const loginButton = getByText("Logga in");
+    await waitFor(() => {
+      fireEvent.press(loginButton);
+      expect(getByText("* Ange en giltig e-mail")).toBeTruthy();
+    });
   });
 
   it("Should take away space if a user wrote one in the Login page at email field", () => {
     const { getByTestId } = render(<Login />);
 
     const inputEmail = getByTestId("input-email");
-    fireEvent.changeText(inputEmail, '  can2@example.com');
+    fireEvent.changeText(inputEmail, "  can2@example.com");
     expect(inputEmail.props.value).toBe("can2@example.com");
-    
   });
   it("Should take away space if a user wrote one in the Login page at password field", () => {
-    
     const { getByTestId } = render(<Login />);
 
-    const inputPassword = getByTestId("input-password")
-    fireEvent.changeText(inputPassword, '  dfdfdf');
+    const inputPassword = getByTestId("input-password");
+    fireEvent.changeText(inputPassword, "  dfdfdf");
     expect(inputPassword.props.value).toBe("dfdfdf");
-    
   });
 
+  it("Pressing the forgot password button works", async () => {
+    const { getByText, getByTestId } = render(<Login />);
+
+    const forgotPasswordButton = getByText("Tryck här");
+    fireEvent.press(forgotPasswordButton);
+    await waitFor(() => {
+      expect(getByTestId("resetPassModal.forgotPassDesc")).toBeTruthy();
+      expect(getByTestId("resetPassModal.emailInput")).toBeTruthy();
+      expect(getByText("Skicka")).toBeTruthy();
+    });
+  });
 });
