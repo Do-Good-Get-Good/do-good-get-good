@@ -11,17 +11,20 @@ import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { useNavigation } from "@react-navigation/native";
 
-
 type Props = {
   onPress?: () => void;
   style?: StyleProp<FlexStyle | TextStyle>;
 };
 export const GoBackButton = ({ onPress, style }: Props) => {
   const navigation = useNavigation();
+
   return (
     <TouchableOpacity
       testID="goBackButton"
-      onPress={()=>[ navigation.goBack(), onPress]}
+      onPress={() => {
+        navigation.goBack();
+        onPress && onPress();
+      }}
       style={[style, styles.container]}
     >
       <Icon
