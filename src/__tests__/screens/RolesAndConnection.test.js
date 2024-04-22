@@ -33,25 +33,27 @@ jest.mock("../../components/Menu", () => () => {
 });
 
 const mockedNavigate = jest.fn();
+const mockGoBack = jest.fn();
 jest.mock("@react-navigation/native", () => ({
   useNavigation: () => ({
     navigate: mockedNavigate,
+    goBack: mockGoBack,
   }),
 }));
-const navigationMock = { goBack: jest.fn() };
+
 describe("Testing RolesAndConnection screen ", () => {
   it("Go back button is showen and navigate back", async () => {
     const { getByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const button = getByTestId("goBackButton");
     fireEvent.press(button);
-    expect(navigationMock.goBack).toHaveBeenCalled();
+    expect(mockGoBack).toHaveBeenCalled();
   });
 
   it("It shows user name, role and admin ", async () => {
     const { getByText, getAllByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     expect(getByText("Super Supersson")).toBeTruthy();
     expect(getByText("Nivå")).toBeTruthy();
@@ -84,7 +86,7 @@ describe("Testing RolesAndConnection screen ", () => {
 describe("Testing RolesAndConnection screen. Change admin button ", () => {
   it("It works to open overlay to change admin", async () => {
     const { getByTestId, getByText, queryByTestId, getAllByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     const changeRoleButton = getByTestId("textUnderlineButton.1");
@@ -122,7 +124,7 @@ describe("Testing RolesAndConnection screen. Change admin button ", () => {
 
   it("Overlay should not show user that you are changing - as options to become admin, so that admin do not get itself as admin", async () => {
     const { queryByTestId, getByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const changeRoleButton = getByTestId("textUnderlineButton.1");
     fireEvent.press(changeRoleButton);
@@ -135,7 +137,7 @@ describe("Testing RolesAndConnection screen. Change admin button ", () => {
 describe("Testing RolesAndConnection screen. Change role button ", () => {
   it("It works to open overlay to change role", async () => {
     const { getByTestId, getByText } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const changeRoleButton = getByTestId("textUnderlineButton.0");
     fireEvent.press(changeRoleButton);
@@ -153,7 +155,7 @@ describe("Testing RolesAndConnection screen. Change role button ", () => {
 
   it("It works to change role", async () => {
     const { getByTestId, getByText, getAllByTestId, queryByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const changeRoleButton = getByTestId("textUnderlineButton.0");
     fireEvent.press(changeRoleButton);
@@ -172,7 +174,7 @@ describe("Testing RolesAndConnection screen. Change role button ", () => {
 describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
   it("Dropdown should be shown if user has role admin or superadmin", async () => {
     const { getByTestId, getAllByTestId, getByText } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(3);
@@ -189,7 +191,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
 
   it("Dropdown should be all closed before press", async () => {
     const { queryByText, queryAllByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     expect(queryAllByTestId("pencil-icon")).toHaveLength(0);
@@ -198,7 +200,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
 
   it("Dropdown. Should open only one dropdown when user press on it", async () => {
     const { getAllByTestId, getByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     const firtsDropboxItem = getAllByTestId("arrow-drop-down-icon")[0];
@@ -213,7 +215,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
   });
   it("Dropdown. Should show the same admin name  ", async () => {
     const { getAllByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const firtsDropboxItem1 = getAllByTestId("arrow-drop-down-icon")[0];
     fireEvent.press(firtsDropboxItem1);
@@ -236,7 +238,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
   });
   it("Dropdown. It should open an overlay with list of admins when user press on pencil icon. If the pressed user has role admin, then it should not be shown in the list because  user should not be an admin to himself/herself.", async () => {
     const { queryByTestId, getAllByTestId, getByText, getByTestId } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
     const firtsDropboxItem1 = getAllByTestId("arrow-drop-down-icon")[0];
     fireEvent.press(firtsDropboxItem1);
@@ -272,7 +274,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
 
   it("Should be possible to change user admin by pressing on another admin in overlay list", async () => {
     const { getAllByTestId, getByTestId, getByText } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     fireEvent.press(getAllByTestId("arrow-drop-down-icon")[0]);
@@ -295,7 +297,7 @@ describe("Testing RolesAndConnection screen. Connected users dropdown ", () => {
 
   it("Press to change admin of connected user. Update connectedUsersArray after saving changes", async () => {
     const { getAllByTestId, getByTestId, getByText } = render(
-      <RolesAndConnection navigation={navigationMock} />,
+      <RolesAndConnection navigation={mockGoBack} />,
     );
 
     expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(3);

@@ -18,14 +18,13 @@ type Props = {
 export const GoBackButton = ({ onPress, style }: Props) => {
   const navigation = useNavigation();
 
-  const onGoBackPressed = () => {
-    navigation.goBack();
-    onPress && onPress();
-  };
   return (
     <TouchableOpacity
       testID="goBackButton"
-      onPress={() => onGoBackPressed()}
+      onPress={() => {
+        navigation.goBack();
+        onPress && onPress();
+      }}
       style={[style, styles.container]}
     >
       <Icon
