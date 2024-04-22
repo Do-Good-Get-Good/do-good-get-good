@@ -4,16 +4,6 @@ import { render, fireEvent, waitFor } from "@testing-library/react-native";
 
 import { Login } from "../../components/Login";
 
-// jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-// jest.mock("@rneui/base/dist/Icon/", () => ({
-//   Icon: jest.fn(),
-// }));
-
-// jest.mock("@rneui/base/dist/Overlay/", () => ({
-//   Overlay: jest.fn(),
-// }));
-
 jest.mock("@react-native-firebase/auth", () => () => ({
   auth: jest.fn(),
   signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true)),
