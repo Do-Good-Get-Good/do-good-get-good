@@ -13,8 +13,8 @@ import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
 import { addChatPost } from "../firebase-functions/addTS/add";
 import {launchImageLibrary,MediaType} from 'react-native-image-picker';
-import { PopUpPublishPost } from "../components/ChartCard/PopUpChat/PopUpPublish";
-import { PopUpExpirePost } from "../components/ChartCard/PopUpChat/PopUpExpirePost";
+import { PopUpCustomAlert } from "../components/ChartCard/PopUpChat/PopUpCustomAlert";
+import { PopUpPost } from "../components/ChartCard/PopUpChat/PopUpPost";
 
 
 type Props = {
@@ -32,14 +32,21 @@ export const AddOrEditPost = ({route}:Props) => {
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL]= useState(post.imageURL)
 
-  const [showOverlay, setShowOverlay] = useState(false);
+  const [showPublishPopup, setShowPublishPopup] = useState(false);
+  const [showExpirePopup, setShowExpirePopup] = useState(false);
+  
 
   const handleButtonPress = () => {
-    console.log("Pop up Test button pressed");
-    setShowOverlay(true);
+    setShowPublishPopup(true);
+  };
+  const handlePublishYes = () => {
+    setShowPublishPopup(false);
+    setShowExpirePopup(true);
   };
 
   const onSaveButtonPressed = async()=>{
+
+    // setShowPublishPopup(true);
    
    if(toEdit ) {
     console.log('run edit function')
@@ -94,12 +101,19 @@ export const AddOrEditPost = ({route}:Props) => {
       title="PopUp Test"
       onPress={handleButtonPress}
       style={styles.longButton}/>
-      <PopUpExpirePost
-       onBackdropPress={() => setShowOverlay(false)}
-       visible={showOverlay}/>
-        {/* <PopUpPublishPost
-       onBackdropPress={() => setShowOverlay(false)}
-       visible={showOverlay}/> */}
+      <PopUpCustomAlert
+            onBackdropPress={() => setShowPublishPopup(false)}
+            message='Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.'
+            onYesPressed={handlePublishYes}
+            onNoPressed={() => setShowPublishPopup(false)}
+            visible={showPublishPopup} />
+
+      <PopUpPost
+            onBackdropPress={() => setShowExpirePopup(false)}
+            message='Den här upplevelsen raderas automatiskt efter ett år.'
+            visible={showExpirePopup}
+            buttonText="Okej"
+            onButtonPress={() => setShowExpirePopup(false)} />
     </View>
       <BottomLogo/>
       </ScrollView>
