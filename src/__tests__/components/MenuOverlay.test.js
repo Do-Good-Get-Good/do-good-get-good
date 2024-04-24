@@ -3,14 +3,15 @@ import React from "react";
 import { render, fireEvent } from "@testing-library/react-native";
 
 import { MenuOverlay } from "../../components/MenuOverlay";
-
-import { useUserLevelCheckFunction } from "../../context/UserLevelContext";
 import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigation";
 import {
   mockUserNav,
   adminNavigations,
   superAdminNavigations,
 } from "../../components/MenuOverlay/mock/mockUseMenuNavigation";
+
+import userLevelStore from "../../store/userLevel";
+import { Role } from "../../utility/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -43,10 +44,6 @@ jest.mock("@react-native-firebase/auth", () => {
   });
 });
 
-jest.mock("../../context/UserLevelContext", () => ({
-  useUserLevelCheckFunction: jest.fn(),
-}));
-
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     setGetAllUsers: jest.fn(),
@@ -63,17 +60,17 @@ jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
 }));
 
 const user = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("user");
+  userLevelStore.setUserLevel(Role.user);
   useMenuNavigation.mockReturnValueOnce(mockUserNav);
 };
 
 const admin = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("admin");
+  userLevelStore.setUserLevel(Role.admin);
   useMenuNavigation.mockReturnValueOnce([...mockUserNav, ...adminNavigations]);
 };
 
 const superAdmin = () => {
-  useUserLevelCheckFunction.mockReturnValueOnce("superadmin");
+  userLevelStore.setUserLevel(Role.superadmin);
   useMenuNavigation.mockReturnValueOnce([
     ...mockUserNav,
     ...adminNavigations,
@@ -99,6 +96,7 @@ describe("Testing MenuOverlay", () => {
     expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -116,6 +114,7 @@ describe("Testing MenuOverlay", () => {
     expect(superAdminPageLink).toBeNull();
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -127,9 +126,9 @@ describe("Testing MenuOverlay", () => {
     expect(getAllByText("Min tid").length).toBe(1);
     expect(getAllByText("Aktiviteter").length).toBe(1);
     expect(getAllByText("Admin").length).toBe(1);
-    expect(getAllByText("Alla användare").length).toBe(1);
     expect(getAllByText("Om konceptet").length).toBe(1);
     expect(getAllByText("FAQ").length).toBe(1);
+    expect(getAllByText("Chat").length).toBe(1);
     expect(getAllByText("Logga ut").length).toBe(1);
   });
 
@@ -148,13 +147,13 @@ describe("Testing MenuOverlay", () => {
     it("Home button", () => {
       const onClickMock = jest.fn();
       user();
-      const { getByTestId, debug } = render(
+      const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
       );
 
       const homeButton = getByTestId("menuLinkButton.HomePage");
       fireEvent.press(homeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("HomePage");
+      expect(mockedNavigate).toHaveBeenCalledWith("HomePage", {});
     });
 
     it("My time button", () => {
@@ -166,7 +165,7 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuLinkButton.MyTimePage");
       fireEvent.press(myTimeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
+      expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage", {});
     });
 
     it("Concept button", () => {
@@ -178,7 +177,7 @@ describe("Testing MenuOverlay", () => {
 
       const aboutButton = getByTestId("menuLinkButton.ConceptPage");
       fireEvent.press(aboutButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage");
+      expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage", {});
     });
 
     it("FAQ button", () => {
@@ -190,7 +189,18 @@ describe("Testing MenuOverlay", () => {
 
       const faqButton = getByTestId("menuLinkButton.Faq");
       fireEvent.press(faqButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("Faq");
+      expect(mockedNavigate).toHaveBeenCalledWith("Faq", {});
+    });
+    it("Chat button", () => {
+      const onClickMock = jest.fn();
+      user();
+      const { getByTestId } = render(
+        <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+      );
+
+      const ChatButton = getByTestId("menuLinkButton.Chat");
+      fireEvent.press(ChatButton);
+      expect(mockedNavigate).toHaveBeenCalledWith("Chat", {});
     });
 
     it("Admin button", () => {
@@ -203,7 +213,7 @@ describe("Testing MenuOverlay", () => {
       const adminButton = getByTestId("menuLinkButton.AdminPage");
       fireEvent.press(adminButton);
 
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage");
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage", {});
     });
 
     it("Activities button", () => {
@@ -217,7 +227,7 @@ describe("Testing MenuOverlay", () => {
         "menuLinkButton.AdminActivityGallery",
       );
       fireEvent.press(activitiesButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery", {});
     });
     it("Super admin button", () => {
       superAdmin();
@@ -231,7 +241,7 @@ describe("Testing MenuOverlay", () => {
       );
       fireEvent.press(superAdminButton);
 
-      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem");
+      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem", {});
     });
 
     it("Log out button", () => {

@@ -1,9 +1,9 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import typography from "../../assets/theme/typography";
-import { User } from "../../utilily/types";
+import { User } from "../../utility/types";
 
 type Props = {
-  userEmail: User["email"] | undefined;
+  userEmail: User["email"];
   signOutFunction: () => void;
 };
 

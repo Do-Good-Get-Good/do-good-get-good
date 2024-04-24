@@ -1,0 +1,57 @@
+import {
+  getAllUnconfirmedTimeEntries,
+  getUserData,
+} from "../../firebase-functions/getTS/get";
+import {
+  TimeEntry,
+  User,
+  UserAndUnapprovedTimeEntriesType,
+} from "../../utility/types";
+import { useSuperAdminFunction } from "../SuperAdminContext";
+import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
+import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
+import {
+  filterAfterApprovedTimeEntrirs,
+  makeListOfUserAndUnapprovedTimeEntries,
+} from "../utility/functions";
+
+export const useSuperAdminHomePageContext = () => {
+  const { onApproveTimeEntries } = useApproveTimeEntry();
+  const context = useSuperAdminFunction();
+  const allUsersInSystem = context?.allUsersInSystem ?? [];
+  const {
+    allUsersWithUnconfirmedTimeEntries,
+    setAllUsersWithUnconfirmedTimeEntries,
+  } = useSuperAdminHomePageFunction();
+
+  const onApproveTimeEntriesSuperadmin = async (
+    timeEntries: Array<TimeEntry>,
+    approvedBy: User["id"],
+  ) => {
+    let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
+    const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
+    afterApprove.forEach((timeEntry) => {
+      temArr = [...filterAfterApprovedTimeEntrirs(temArr, timeEntry.id)];
+      setAllUsersWithUnconfirmedTimeEntries(temArr);
+    });
+  };
+
+  const getAllUserAndUnapprovedTimeEntries = async () => {
+    const unconfirmedTimeEntries = await getAllUnconfirmedTimeEntries();
+
+    let usersAndUnconfirmedTimeEntries = await usersWithUnconfirmedTimeEntries(
+      unconfirmedTimeEntries,
+    );
+    usersAndUnconfirmedTimeEntries &&
+      setAllUsersWithUnconfirmedTimeEntries(usersAndUnconfirmedTimeEntries);
+  };
+
+  const usersWithUnconfirmedTimeEntries = async (timeEntries: TimeEntry[]) =>
+    await makeListOfUserAndUnapprovedTimeEntries(timeEntries, allUsersInSystem);
+
+  return {
+    onApproveTimeEntriesSuperadmin,
+    usersWithUnconfirmedTimeEntries,
+    getAllUserAndUnapprovedTimeEntries,
+  };
+};

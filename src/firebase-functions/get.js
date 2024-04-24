@@ -22,6 +22,7 @@ export const getUserLevel = async (userId) => {
   }
 };
 
+// getUserData exist in getTS. use that one instead and remove this one in the future
 export const getUserData = async (userId) => {
   try {
     let data = await firestore().collection("Users").doc(userId).get();
@@ -70,38 +71,6 @@ export const getAllUsersNotConnectedToAdmin = async (adminId, activityId) => {
     return Promise.resolve(otherUsers);
   } catch (error) {
     return Promise.reject(error);
-  }
-};
-
-export const getAllUsersData = async () => {
-  try {
-    let querySnapshot = await firestore().collection("Users").get();
-
-    if (querySnapshot.empty)
-      throw new Error(
-        "No users were found. Please create users before trying again!",
-      );
-
-    let allUsers = querySnapshot.docs.map((doc) => {
-      return {
-        activitiesAndAccumulatedTime:
-          doc.data().activities_and_accumulated_time,
-        adminId: doc.data().admin_id,
-        connectedActivities: doc.data().connected_activities,
-        docId: doc.id,
-        firstName: doc.data().first_name,
-        lastName: doc.data().last_name,
-        role: doc.data().role,
-        statusActive: doc.data().status_active,
-        totalConfirmedHours: doc.data().total_confirmed_hours,
-        totalHoursMonth: doc.data().total_hours_month,
-        totalHoursYear: doc.data().total_hours_year,
-      };
-    });
-
-    return Promise.resolve(allUsers);
-  } catch (error) {
-    Promise.reject(error);
   }
 };
 
@@ -217,12 +186,11 @@ export const getUsersFiveNewestTimeEntries = async (userId) => {
       .orderBy("date", "desc")
       .limit(5)
       .get();
+    let timeEntryData = [];
 
-    if (querySnapshot.empty)
-      console.log(`User '${userId}' has no confirmed time entries.`);
-
-    let timeEntryData = querySnapshot.docs.map((doc) => doc.data());
-
+    if (!querySnapshot.empty) {
+      timeEntryData = querySnapshot.docs.map((doc) => doc.data());
+    }
     return Promise.resolve(timeEntryData);
   } catch (error) {
     return Promise.reject(error);

@@ -1,16 +1,18 @@
+import { useAdminContext } from "../../context/AdminContext/useAdminContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-import { useSuperAdminFunction } from "../../context/SuperAdminContext";
-import { Role } from "../../utilily/enums";
+import { useSuperAdminHomePageContext } from "../../context/SuperAdminHomePageContext";
+import { Role } from "../../utility/enums";
 import {
   AdminStack,
   SuperAdminStack,
   UserStack,
-} from "../../utilily/routeEnums";
+} from "../../utility/routeEnums";
 
 export type NavigationObject = {
   title: string;
   screenName: SuperAdminStack | AdminStack | UserStack;
   toDo?: () => void;
+  params?: any;
 };
 
 export const userNavigations: Array<NavigationObject> = [
@@ -30,20 +32,21 @@ export const userNavigations: Array<NavigationObject> = [
     title: "FAQ",
     screenName: UserStack.Faq,
   },
+  {
+    title: "Chat",
+    screenName: UserStack.Chat,
+    params: { getChatData: true },
+  },
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {
+  const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
+  const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
-  const superAdminContext = useSuperAdminFunction();
 
   const toActivityGallery = () => {
     adminGalleryContext.chooseActiveOrNot(true);
     adminGalleryContext.setCleanUpSearchBarComponent(true);
-  };
-
-  const toUsersInTheSystem = () => {
-    superAdminContext.setGetAllUsers(true);
-    superAdminContext.userLevel(role);
   };
 
   const adminNavigations: Array<NavigationObject> = [
@@ -55,18 +58,19 @@ export const useMenuNavigation = (role: Role | undefined) => {
     {
       title: "Admin",
       screenName: AdminStack.AdminPage,
+      toDo: onShowUnApprovedTimeEntriesAdminPage,
     },
   ];
 
   const superAdminNavigations: Array<NavigationObject> = [
     {
-      title: "Alla användare",
-      screenName: SuperAdminStack.AllUsersInTheSystem,
-      toDo: toUsersInTheSystem,
-    },
-    {
       title: "Exportera data",
       screenName: SuperAdminStack.DownloadUserData,
+    },
+    {
+      title: "Super admin",
+      screenName: SuperAdminStack.SuperAdminHomePage,
+      toDo: getAllUserAndUnapprovedTimeEntries,
     },
   ];
 

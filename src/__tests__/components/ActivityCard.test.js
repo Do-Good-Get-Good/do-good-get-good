@@ -9,7 +9,9 @@ import ActivityCard from "../../screens/ActivityCard";
 jest.mock("@rneui/base/dist/Icon/", () => ({
   Icon: jest.fn(),
 }));
-
+jest.mock("@react-native-community/netinfo", () => ({
+  useNetInfo: jest.fn(),
+}));
 jest.mock("@react-navigation/native");
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");

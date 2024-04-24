@@ -15,9 +15,15 @@ import Menu from "../../components/Menu";
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import BottomNavButtons from "../../components/BottomNavButtons";
-import { UserName, onUpdateUser } from "./updateUser";
+import { UserName } from "./updateUser";
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
-import { InputField } from "../../components/InputField";
+
+import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
+import { SuperAdminStack } from "../../utility/routeEnums";
+import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
+import { useAdminUpdateUserInfoAndActivities } from "../../context/AdminContext/useAdminUpdateUserInfoAndActivities";
+import { Spinner } from "../../components/Loading";
+import { InputFieldWithController } from "../../components/InputFieldWithController";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()
@@ -43,28 +49,41 @@ type Props = {
 };
 
 export const ChangeUser = ({ route, navigation }: Props) => {
-  const { userName, userSurname, statusActive, userID, sortBy } = route.params;
+  const { user, prevRoute }: ChangeUserRouteProps = route.params;
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    formState: { errors, isDirty },
   } = useForm<UserName>({
-    defaultValues: { name: userName, surname: userSurname },
+    defaultValues: { name: user.firstName, surname: user.lastName },
     resolver: yupResolver(schema),
   });
-  const [changedStatus, setChangedStatus] = useState(statusActive);
+  const [loading, setLoading] = useState(false);
+  const [changedStatus, setChangedStatus] = useState(user.statusActive);
+  const { updateUser } = useSuperAdminContext();
+  const { updateUserAfterChanges } = useAdminUpdateUserInfoAndActivities();
 
-  const onSubmit = (data: UserName) => {
-    onUpdateUser(
-      data,
-      statusActive,
-      changedStatus,
-      userID,
-      userName,
-      userSurname,
-      sortBy,
-    );
+  const onSubmit = async (changed: UserName) => {
+    setLoading(true);
+    if (prevRoute === SuperAdminStack.RolesAndConnection) {
+      updateUser({
+        ...user,
+        firstName: changed.name,
+        lastName: changed.surname,
+        statusActive: changedStatus,
+      });
+    } else {
+      if (isDirty || changedStatus !== user.statusActive) {
+        await updateUserAfterChanges({
+          ...user,
+          firstName: changed.name,
+          lastName: changed.surname,
+          statusActive: changedStatus,
+        });
+      }
+    }
+    setLoading(false);
     navigation.goBack();
   };
 
@@ -74,13 +93,13 @@ export const ChangeUser = ({ route, navigation }: Props) => {
       <Text style={styles.textMainTitle}>Ändra användare</Text>
 
       <ScrollView style={styles.container}>
-        <InputField
+        <InputFieldWithController
           placeholderText={"Förnamn"}
           control={control}
           error={errors.name}
           name={"name"}
         />
-        <InputField
+        <InputFieldWithController
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
@@ -98,6 +117,7 @@ export const ChangeUser = ({ route, navigation }: Props) => {
             {changedStatus ? "Inaktivera användare" : "Aktivera användare"}
           </Text>
         </TouchableOpacity>
+        <Spinner loading={loading} />
       </ScrollView>
       <BottomNavButtons
         primaryText="Spara"

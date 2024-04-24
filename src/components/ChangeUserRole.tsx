@@ -1,17 +1,14 @@
-import { Icon } from "@rneui/base";
-
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import {
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
+  
 } from "react-native";
-import { InputField } from "./InputField";
 import { useState } from "react";
 import { error } from "firebase-functions/logger";
 import { Controller, FieldError } from "react-hook-form";
@@ -21,14 +18,13 @@ import { ArrowUpDown } from "../assets/icons/ArrowUpDown";
 type Props = {
   control: any;
   error?: FieldError;
+ 
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const userLevel = useUserLevelCheckFunction();
-  const [expanded, setExpanded] = useState(false);
+  const [expanded, setExpanded] = useState(false); 
   return (
-    <View style={{ marginTop: 10 }}>
-      {userLevel === Role.superadmin && (
+     <View style={{ marginTop: 10 }}>
         <Controller
           name="role"
           control={control}
@@ -49,7 +45,7 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
                   setExpanded(!expanded);
                 }}
               >
-                <Text style={styles.placeholderText}>{value}</Text>
+                <Text  testID={"role-item"}style={styles.placeholderText}>{value}</Text>
                 <ArrowUpDown
                   onPress={() => setExpanded(!expanded)}
                   expanded={expanded}
@@ -66,22 +62,19 @@ export const ChangeUserRole = ({ control, error = undefined }: Props) => {
                         [onChange(role), setExpanded(!expanded)];
                       }}
                     >
-                      <Text style={styles.dropdownItem}>{role}</Text>
+                      <Text testID={`role-item-${role}`} style={styles.dropdownItem}>{role}</Text>
                     </TouchableOpacity>
                   ))}
                 </View>
               )}
-              {error && <Text style={errorTextStyle()}>{error.message}</Text>}
+              {error && <Text  testID={"role-error"} style={errorTextStyle()}>{error.message}</Text>}
             </>
           )}
         />
-      )}
     </View>
   );
 };
 
-{
-}
 
 const styles = StyleSheet.create({
   input: {
@@ -109,6 +102,7 @@ const styles = StyleSheet.create({
     ...Platform.select({
       ios: {
         shadowOffset: {
+          width: 0,
           height: 1,
         },
         shadowOpacity: 0.2,

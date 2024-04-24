@@ -5,7 +5,7 @@ import React, {
   PropsWithChildren,
 } from "react";
 import { getAllActivitiesWithStatus } from "../../firebase-functions/get";
-import { Activity } from "../../utilily/types";
+import { Activity } from "../../utility/types";
 import { ICreateActivityContext } from "./CreateActivityContext.config";
 
 const CreateActivityContext = React.createContext<
@@ -30,7 +30,7 @@ export const CreateActivityProvider = ({ children }: PropsWithChildren) => {
     city: "",
     photo: "",
     description: "",
-    popular: "",
+    popular: false,
     imageUrl: "",
   });
   const [changedOneActivity, setChangedOneActivity] = useState(false);
@@ -46,7 +46,7 @@ export const CreateActivityProvider = ({ children }: PropsWithChildren) => {
       place: "",
       photo: "",
       title: "",
-      popular: "",
+      popular: false,
       imageUrl: "",
     },
     statusActive: false,

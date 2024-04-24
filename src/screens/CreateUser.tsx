@@ -9,15 +9,16 @@ import LoadingOverlay from "../components/LoadingOverlay";
 import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
 
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import { useUserLevelCheckFunction } from "../context/UserLevelContext";
 
 import { useMultistepPage } from "../hooks/useMultistepPage";
-import { Role } from "../utilily/enums";
+import { Role } from "../utility/enums";
 import typography from "../assets/theme/typography";
 
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 import { CreateUserForm } from "../components";
+import { Activity } from "../utility/types";
+import { useAdminContext } from "../context/AdminContext/useAdminContext";
 
 export type UserNewAccount = {
   name: string;
@@ -25,7 +26,7 @@ export type UserNewAccount = {
   email: string;
   confirmEmail?: string;
   password: string;
-  role?: Role | "Behörighet";
+  role: Role | "Behörighet";
 };
 
 type Props = {
@@ -33,9 +34,11 @@ type Props = {
   navigation: any;
 };
 
+const generateRandomPassword = () => Math.random().toString(36).slice(-8);
+
 const CreateUser = ({ route, navigation }: Props) => {
   const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
-
+  const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const [loading, setLoading] = useState(false);
 
   // Step 1
@@ -43,7 +46,7 @@ const CreateUser = ({ route, navigation }: Props) => {
     name: "",
     surname: "",
     email: "",
-    password: "",
+    password: generateRandomPassword(),
     role: Role.user,
   });
 
@@ -57,16 +60,19 @@ const CreateUser = ({ route, navigation }: Props) => {
     photo: "",
     imageUrl: "",
   });
-  const [selectedActivity, setSelectedActivity] = useState(null);
+
+  const [selectedActivity, setSelectedActivity] = useState<
+    null | Activity | "create-new"
+  >(null);
 
   const { step, steps, currentStepIndex, next, back } = useMultistepPage([
-    <CreateUserForm user={user} setUser={setUser} nextPage={handleNextPage} />,
+    <CreateUserForm user={user} setUser={setUser} nextPage={() => next()} />,
     <LinkActivityToNewUser
       activity={activity}
       setActivity={setActivity}
       selectedActivity={selectedActivity}
       setSelectedActivity={setSelectedActivity}
-      goBack={handleGoBack}
+      goBack={() => back()}
       createUserAndNewActivity={handleCreateUserAndNewActivity}
       createUserAndLinkSelectedActivity={handleCreateUser}
     />,
@@ -84,24 +90,22 @@ const CreateUser = ({ route, navigation }: Props) => {
     }
   }, [route.params?.image.photo, route.params?.image.imageUrl]);
 
-  function handleNextPage() {
-    next();
+  async function handleCreateUser() {
+    if (
+      selectedActivity !== null &&
+      selectedActivity !== "create-new" &&
+      "id" in selectedActivity
+    ) {
+      await createUserAndLinkSelectedActivity(
+        user,
+        selectedActivity.id,
+        setLoading,
+        navigation,
+      );
+      await onShowUnApprovedTimeEntriesAdminPage();
+    }
   }
-
-  function handleGoBack() {
-    back();
-  }
-
-  function handleCreateUser() {
-    createUserAndLinkSelectedActivity(
-      user,
-      selectedActivity,
-      setLoading,
-      navigation,
-    );
-  }
-
-  function handleCreateUserAndNewActivity() {
+  async function handleCreateUserAndNewActivity() {
     const newActivity = {
       active_status: true,
       activity_city: activity.city,
@@ -112,6 +116,7 @@ const CreateUser = ({ route, navigation }: Props) => {
       activity_title: activity.title,
       tg_favorite: activity.favorite,
     };
+
     const newUser = {
       firstName: user.name,
       lastName: user.surname,
@@ -119,13 +124,14 @@ const CreateUser = ({ route, navigation }: Props) => {
       password: user.password,
       role: user.role,
     };
-    createUserAndNewActivity(
+    await createUserAndNewActivity(
       newActivity,
       newUser,
       setAllActiveActvivitiesFB,
       setLoading,
       navigation,
     );
+    await onShowUnApprovedTimeEntriesAdminPage();
   }
 
   function headerTitle() {
@@ -144,7 +150,6 @@ const CreateUser = ({ route, navigation }: Props) => {
         <Text style={styles.header}>
           {headerTitle()}
           <Text style={styles.pageNumber}>
-            {"  "}
             {currentStepIndex + 1}/{steps.length}
           </Text>
         </Text>

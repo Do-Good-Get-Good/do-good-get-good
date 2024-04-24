@@ -6,29 +6,34 @@ import {
   AdminStack,
   SuperAdminStack,
   UserStack,
-} from "../../utilily/routeEnums";
+} from "../../utility/routeEnums";
 
 type Props = {
-  navigatationObj: NavigationObject;
+  navigationObj: NavigationObject;
   openOverlay: () => void;
 };
 
-export const MenuLink = ({ navigatationObj, openOverlay }: Props) => {
+export const MenuLink = ({ navigationObj, openOverlay }: Props) => {
   const navigation = useNavigation<{
-    navigate: (nav: SuperAdminStack | AdminStack | UserStack) => void;
+    navigate: (
+      nav: SuperAdminStack | AdminStack | UserStack,
+      params: any,
+    ) => void;
   }>();
 
   return (
     <TouchableOpacity
-      testID={`menuLinkButton.${navigatationObj.screenName}`}
+      testID={`menuLinkButton.${navigationObj.screenName}`}
       style={styles.menuOverlayLinkStyling}
       onPress={() => {
         openOverlay();
-        navigation.navigate(navigatationObj.screenName);
-        navigatationObj.toDo && navigatationObj;
+        navigation.navigate(navigationObj.screenName, {
+          ...navigationObj?.params,
+        });
+        navigationObj.toDo && navigationObj.toDo();
       }}
     >
-      <Text style={styles.menuOverlayLinkText}>{navigatationObj.title}</Text>
+      <Text style={styles.menuOverlayLinkText}>{navigationObj.title}</Text>
     </TouchableOpacity>
   );
 };

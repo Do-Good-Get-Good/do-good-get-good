@@ -6,7 +6,7 @@ import DropDownForSorting from "../components/DropDownForSorting";
 
 import RadioButton from "../components/RadioButton";
 import Suggestions from "../components/Suggestions";
-import SearchBarComponent from "../components/SearchBarComponent";
+import SearchBarComponentOld from "../components/SearchBarComponentOld";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../context/ActivityCardContext";
@@ -161,7 +161,7 @@ export function AdminActivityGallery({ navigation }) {
         style={{ paddingHorizontal: 16 }}
       >
         <Text style={styles.headerText}>Aktivitetsgalleri</Text>
-        <SearchBarComponent />
+        <SearchBarComponentOld />
         <View style={styles.radioButtonDropdownView}>
           <RadioButton style={styles.radioButtonContainer} />
           <View>

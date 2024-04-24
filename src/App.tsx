@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import {
   View,
   Text,
@@ -7,60 +7,18 @@ import {
   Linking,
 } from "react-native";
 
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-
-import auth from "@react-native-firebase/auth";
-import crashlytics from "@react-native-firebase/crashlytics";
-
-import { UserLevelProvider } from "./context/UserLevelContext";
-import { SuperAdminProvider } from "./context/SuperAdminContext";
-import { AdminGalleryProvider } from "./context/AdminGalleryContext";
-import { ActivityCardProvider } from "./context/ActivityCardContext";
-import { CreateActivityProvider } from "./context/CreateActivityContext/CreateActivityContext";
-import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
-import { ActivityImagesProvider } from "./context/ActivityImagesContext/ActivityImagesContext";
-
+import { SafeAreaView } from "react-native-safe-area-context";
 import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
 
-import Login from "./components/Login";
 import BottomLogo from "./components/BottomLogo";
 
 import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
+import { useAuthStateListener } from "./hooks/useAuthStateListener";
+import { Login } from "./components/Login";
 
 export default function App() {
-  // Set an initializing state whilst Firebase connects
-
-  const [initializing, setInitializing] = useState(true);
-  const [user, setUser] = useState();
-  const [userClaims, setUserClaims] = useState<{
-    superadmin?: string;
-    admin?: string;
-    user?: string;
-  }>();
-
-  // Handle user state changes
-  async function onAuthStateChanged(user: any) {
-    setUser(user);
-    if (user) {
-      try {
-        let userIdToken = await user.getIdTokenResult();
-        setUserClaims(userIdToken.claims);
-      } catch (error: any) {
-        crashlytics().log("There was an error getting the users ID Token");
-        crashlytics().recordError(error);
-        console.log(error);
-      }
-    } else {
-      setUserClaims(undefined);
-    }
-    if (initializing) setInitializing(false);
-  }
-
-  useEffect(() => {
-    const subscriber = auth().onAuthStateChanged(onAuthStateChanged);
-    return subscriber; // unsubscribe on unmount
-  }, []);
+  const { initializing, user, userClaims, signOut } = useAuthStateListener();
 
   if (initializing) return null;
 
@@ -73,57 +31,11 @@ export default function App() {
   }
 
   if (userClaims?.superadmin) {
-    // Render superadmin content
-    return (
-      <SafeAreaProvider>
-        <ActivityImagesProvider>
-          <ActivityCardProvider>
-            <AdminGalleryProvider>
-              <CreateActivityProvider>
-                <UserLevelProvider>
-                  <TimeStatisticsProvider>
-                    <SuperAdminProvider>
-                      <SuperAdminStack />
-                    </SuperAdminProvider>
-                  </TimeStatisticsProvider>
-                </UserLevelProvider>
-              </CreateActivityProvider>
-            </AdminGalleryProvider>
-          </ActivityCardProvider>
-        </ActivityImagesProvider>
-      </SafeAreaProvider>
-    );
+    return <SuperAdminStack />;
   } else if (userClaims?.admin) {
-    // Render admin content
-    return (
-      <SafeAreaProvider>
-        <ActivityImagesProvider>
-          <ActivityCardProvider>
-            <AdminGalleryProvider>
-              <CreateActivityProvider>
-                <UserLevelProvider>
-                  <TimeStatisticsProvider>
-                    <AdminStack />
-                  </TimeStatisticsProvider>
-                </UserLevelProvider>
-              </CreateActivityProvider>
-            </AdminGalleryProvider>
-          </ActivityCardProvider>
-        </ActivityImagesProvider>
-      </SafeAreaProvider>
-    );
+    return <AdminStack />;
   } else if (userClaims?.user) {
-    return (
-      <SafeAreaProvider>
-        <ActivityImagesProvider>
-          <UserLevelProvider>
-            <TimeStatisticsProvider>
-              <UserStack />
-            </TimeStatisticsProvider>
-          </UserLevelProvider>
-        </ActivityImagesProvider>
-      </SafeAreaProvider>
-    );
+    return <UserStack />;
   } else {
     return (
       <SafeAreaView style={styles.wrapper}>
@@ -137,10 +49,7 @@ export default function App() {
               dggg@technogarden.se
             </Text>
           </Text>
-          <TouchableOpacity
-            style={styles.logOutBtn}
-            onPress={() => auth().signOut()}
-          >
+          <TouchableOpacity style={styles.logOutBtn} onPress={signOut}>
             <Text style={styles.logOutBtnText}>Logga ut</Text>
           </TouchableOpacity>
         </View>
