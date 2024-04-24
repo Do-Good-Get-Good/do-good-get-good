@@ -21,6 +21,7 @@ import { launchImageLibrary, MediaType } from "react-native-image-picker";
 import { AlertQuestion } from "../components/Alerts/AlertQuestion ";
 import { AlertInfo } from "../components/Alerts/AlertInfo";
 import { useUserPostsActions } from "./Chat/useUserPostsActions";
+import { Spinner } from "../components/Loading";
 
 type Props = {
   route: any;
@@ -35,16 +36,17 @@ const alertToPublishPost =
 const alertToInformAboutExpire =
   "Den här upplevelsen raderas automatiskt efter ett år.";
 
-export const AddOrEditPost = ({ route }: Props) => {
+export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
-  const { addPost } = useUserPostsActions();
+  const { addPost, loading } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL] = useState(post.imageURL);
 
   const onPublishPost = async () =>
-    await addPost({ ...post, description, imageURL }).then(() =>
-      AlertInfo(alertToInformAboutExpire),
-    );
+    await addPost({ ...post, description, imageURL }).then(() => {
+      navigation.goBack();
+      AlertInfo(alertToInformAboutExpire);
+    });
 
   const onSaveButtonPressed = async () => {
     if (toEdit) {
@@ -82,7 +84,7 @@ export const AddOrEditPost = ({ route }: Props) => {
             </View>
           )}
         </TouchableOpacity>
-
+        <Spinner loading={loading} />
         <View style={styles.inputContainer}>
           <TextInput
             multiline
