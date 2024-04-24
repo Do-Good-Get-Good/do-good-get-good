@@ -13,8 +13,9 @@ import { GoBackButton } from "../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
 import { addChatPost } from "../firebase-functions/addTS/add";
 import {launchImageLibrary,MediaType} from 'react-native-image-picker';
-import { PopUpCustomAlert } from "../components/ChartCard/PopUpChat/PopUpCustomAlert";
-import { PopUpPost } from "../components/ChartCard/PopUpChat/PopUpPost";
+import { AlertQuestion } from "../components/Alerts/AlertQuestion ";
+import { AlertInfo } from "../components/Alerts/AlertInfo";
+
 
 
 type Props = {
@@ -25,6 +26,9 @@ type Params = {
   post: UserPost
   toEdit: boolean
 }
+const alertToPublishPost = 'Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.'
+const alertToInformAboutExpire = 'Den här upplevelsen raderas automatiskt efter ett år.'
+
 
 export const AddOrEditPost = ({route}:Props) => {
   const {post, toEdit  }:Params = route.params;
@@ -32,26 +36,16 @@ export const AddOrEditPost = ({route}:Props) => {
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL]= useState(post.imageURL)
 
-  const [showPublishPopup, setShowPublishPopup] = useState(false);
-  const [showExpirePopup, setShowExpirePopup] = useState(false);
   
-
-  const handleButtonPress = () => {
-    setShowPublishPopup(true);
-  };
-  const handlePublishYes = () => {
-    setShowPublishPopup(false);
-    setShowExpirePopup(true);
-  };
-
+const onPublishPost = async()=> await  addChatPost({...post, description, imageURL , date: postTime}).then(()=> AlertInfo(alertToInformAboutExpire))
+  
   const onSaveButtonPressed = async()=>{
-
-    // setShowPublishPopup(true);
    
    if(toEdit ) {
     console.log('run edit function')
   } else {  
-  await  addChatPost({...post, description, imageURL , date: postTime})
+    AlertQuestion('',alertToPublishPost, onPublishPost)
+     
   }
 
   }
@@ -97,23 +91,7 @@ export const AddOrEditPost = ({route}:Props) => {
       title="Spara"
       onPress={ ()=> imageURL !== '' && onSaveButtonPressed()}
       style={styles.longButton}/>
-      <LongButton
-      title="PopUp Test"
-      onPress={handleButtonPress}
-      style={styles.longButton}/>
-      <PopUpCustomAlert
-            onBackdropPress={() => setShowPublishPopup(false)}
-            message='Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.'
-            onYesPressed={handlePublishYes}
-            onNoPressed={() => setShowPublishPopup(false)}
-            visible={showPublishPopup} />
-
-      <PopUpPost
-            onBackdropPress={() => setShowExpirePopup(false)}
-            message='Den här upplevelsen raderas automatiskt efter ett år.'
-            visible={showExpirePopup}
-            buttonText="Okej"
-            onButtonPress={() => setShowExpirePopup(false)} />
+   
     </View>
       <BottomLogo/>
       </ScrollView>
