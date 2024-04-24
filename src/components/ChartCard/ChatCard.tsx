@@ -14,16 +14,17 @@ type Props = {
   post: UserPost;
   users: User[];
   handleAddComment: () => void;
+  currentUserId:string
 };
 
-export const ChatCard = ({ post, users, handleAddComment }: Props) => {
+export const ChatCard = ({ post, users, handleAddComment,currentUserId }: Props) => {
+   const isCurrentUser = post.userID=currentUserId
   const handleDelete = () => {
     Alert.alert("Delete button pressed");
   };
 
   return (
-    <View testID="chat-card">
-      <View style={styles.container}>
+    <View testID="chat-card"  style={styles.container}>
         <ChatCardDate date={post.date}/>
         <TouchableOpacity style={styles.cardContainer}>
           <View style={styles.headerAndMenu}>
@@ -39,7 +40,6 @@ export const ChatCard = ({ post, users, handleAddComment }: Props) => {
           />
         </TouchableOpacity>
       </View>
-    </View>
   );
 };
 

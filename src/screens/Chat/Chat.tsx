@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
 import BottomLogo from "../../components/BottomLogo";
@@ -11,6 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
+
 
 
 const users = [
@@ -72,9 +73,9 @@ export const Chat = ({ navigation, route }: Props) => {
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const scrollToBottom = () => {
-    scrollViewRef.current?.scrollTo({ y: 0 });
-  };
+
+
+
   const handleAddComment = () => {};
 
   const onCreatePostButtonPressed = () => {
@@ -97,13 +98,17 @@ export const Chat = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() => scrollViewRef?.current?.scrollToEnd({ animated: true })}
+>
         {posts.map((post, i) => (
           <ChatCard
             key={`${post.id}-${i}`}
             post={post}
             users={users}
             handleAddComment={handleAddComment}
+            currentUserId='user1'
           />
         ))}
         <LongButton
@@ -135,8 +140,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
   },
-  scrollViewContent: {},
-  longButton: {
+    longButton: {
     margin: 20,
     borderRadius: 5,
   },
