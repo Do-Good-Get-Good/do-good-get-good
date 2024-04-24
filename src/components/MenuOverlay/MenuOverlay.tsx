@@ -24,6 +24,7 @@ type Props = {
 
 export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
   const { userLevel } = userLevelStore;
+  const userEmail = auth()?.currentUser?.email;
   const menuNavigation = useMenuNavigation(userLevel ?? undefined);
   function signOutFunction() {
     auth()
@@ -35,7 +36,6 @@ export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
         console.error(error);
       });
   }
-
   return (
     <Overlay
       isVisible={isVisible}
@@ -55,18 +55,21 @@ export const MenuOverlay = ({ openOverlay, isVisible }: Props) => {
       </TouchableOpacity>
       <View style={styles.menuOverlay}>
         <View style={styles.menuOverlayItemStyling}>
-          {menuNavigation?.map((item, i) => 
-              Config.NODE_ENV === "prod" && item.screenName=== UserStack.Chat? null :  <MenuLink
-              key={item.screenName + i}
-              openOverlay={openOverlay}
-              navigatationObj={item}
-            />
-           
+          {menuNavigation?.map((item, i) =>
+            Config.NODE_ENV === "prod" &&
+            userEmail !== "admin@admin.com" &&
+            item.screenName === UserStack.Chat ? null : (
+              <MenuLink
+                key={item.screenName + i}
+                openOverlay={openOverlay}
+                navigationObj={item}
+              />
+            ),
           )}
         </View>
 
         <MenuFooter
-          userEmail={auth()?.currentUser?.email ?? undefined}
+          userEmail={userEmail ?? ""}
           signOutFunction={signOutFunction}
         />
       </View>

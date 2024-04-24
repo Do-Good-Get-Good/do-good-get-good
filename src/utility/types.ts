@@ -55,6 +55,7 @@ export type User = {
   totalHoursMonth?: number;
   totalHoursYear?: number;
   connectedUsers?: Array<User>;
+  userCount?: number;
 };
 
 export type UserObjectForSuperAdmin = {
@@ -97,9 +98,9 @@ export type UserPost = {
   activityID: Activity["id"];
   activityCity: Activity["city"];
   activityTitle: Activity["title"];
-  activityImage:  Activity['imageUrl']  |  Activity['photo'] ;
+  activityImage: Activity["imageUrl"] | Activity["photo"];
   changed: boolean;
-  date:  Date | string;
+  date: Date | string;
   description: string;
   emoji: Array<PostEmoji>;
   imageURL: string;
