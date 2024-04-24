@@ -17,6 +17,7 @@ type Props = {
 
 export const useChat = ({ getChatData }: Props) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
+  const [limit, setlimit] = useState(20);
   const [loggedInUser, setLoggedInUser] = useState<User | undefined>(undefined);
   const [activitiesConnectedToUser, setActivitiesConnectedToUser] = useState<
     Activity[]
@@ -27,8 +28,8 @@ export const useChat = ({ getChatData }: Props) => {
     let arr: UserPost[] = [];
     const subscriber = firestore()
       .collection("UserPosts")
-      .orderBy("date", "desc")
-      .limit(20)
+      .orderBy("date", "asc")
+      .limit(limit)
       .onSnapshot((documentSnapshot) => {
         documentSnapshot.docs.forEach((change) => {
           arr.push(userPostObject(change));
