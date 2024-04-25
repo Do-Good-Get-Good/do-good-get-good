@@ -7,7 +7,7 @@ import { Activity, User, UserPost } from "../../utility/types";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { userPostObject } from "../../firebase-functions/adaptedObject";
-import { ar } from "date-fns/locale";
+import { onSnapshotUserPosts } from "../../firebase-functions/onSnapshotsFunctions";
 
 const currentUser = auth().currentUser;
 
@@ -25,21 +25,8 @@ export const useChat = ({ getChatData }: Props) => {
   const [usersInChat, setUsersInChat] = useState<User[]>([]);
 
   useEffect(() => {
-    let arr: UserPost[] = [];
-    const subscriber = firestore()
-      .collection("UserPosts")
-      .orderBy("date", "asc")
-      .limit(limit)
-      .onSnapshot((documentSnapshot) => {
-        documentSnapshot?.docs.forEach((change) => {
-          arr.push(userPostObject(change));
-        });
-        setPosts(arr);
-        arr = [];
-        console.log(" onSnapshot UserPost");
-      });
-
-    return () => subscriber();
+    const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));
+    return () => subscriber && subscriber();
   }, [getChatData]);
 
   const getAllActivitiesConnectedToUser = async (

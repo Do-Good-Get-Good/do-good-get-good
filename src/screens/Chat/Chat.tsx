@@ -11,7 +11,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
-
+import { useUserPostsActions } from "./useUserPostsActions";
 
 const users = [
   {
@@ -67,6 +67,7 @@ type Props = {
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
   const { posts } = useChat(getChatData);
+  const { onDelete, loading } = useUserPostsActions();
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -83,8 +84,6 @@ export const Chat = ({ navigation, route }: Props) => {
     setActivities(activitiesFacke);
     setShowOverlay(true);
   };
-
-
 
   const onChooseActivity = (post: UserPost) => {
     navigation.navigate(UserStack.AddOrEditPost, {
@@ -103,6 +102,7 @@ export const Chat = ({ navigation, route }: Props) => {
             key={`${post.id}-${i}`}
             post={post}
             users={users}
+            onDelete={() => onDelete(post)}
             handleAddComment={handleAddComment}
           />
         ))}

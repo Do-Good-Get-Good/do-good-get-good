@@ -1,27 +1,25 @@
 import React, { useState } from "react";
 import {
-  Image,
   SafeAreaView,
   ScrollView,
   StyleSheet,
-  Text,
   TextInput,
-  TouchableOpacity,
   View,
 } from "react-native";
-import BottomLogo from "../components/BottomLogo";
-import Menu from "../components/Menu";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-import { UserPost } from "../utility/types";
-import { LongButton } from "../components/Buttons/LongButton";
-import { GoBackButton } from "../components/Buttons/GoBackButton";
-import { ChatCardHeader } from "../components/ChartCard/ChatCardHeader";
+import BottomLogo from "../../components/BottomLogo";
+import Menu from "../../components/Menu";
+import typography from "../../assets/theme/typography";
+import colors from "../../assets/theme/colors";
+import { UserPost } from "../../utility/types";
+import { LongButton } from "../../components/Buttons/LongButton";
+import { GoBackButton } from "../../components/Buttons/GoBackButton";
+import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
 import { launchImageLibrary, MediaType } from "react-native-image-picker";
-import { AlertQuestion } from "../components/Alerts/AlertQuestion ";
-import { AlertInfo } from "../components/Alerts/AlertInfo";
-import { useUserPostsActions } from "./Chat/useUserPostsActions";
-import { Spinner } from "../components/Loading";
+import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
+import { AlertInfo } from "../../components/Alerts/AlertInfo";
+import { useUserPostsActions } from "../Chat/useUserPostsActions";
+import { Spinner } from "../../components/Loading";
+import { AddImage } from "./AddImage";
 
 type Props = {
   route: any;
@@ -74,16 +72,7 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
       <GoBackButton />
       <ScrollView>
         <ChatCardHeader post={post} />
-        <TouchableOpacity onPress={openImagePicker}>
-          {imageURL ? (
-            <Image source={{ uri: imageURL }} style={styles.selectedImage} />
-          ) : (
-            <View style={styles.image}>
-              <Text style={styles.imageText}>Lägga till bild</Text>
-              <Text style={styles.buttonText}>+</Text>
-            </View>
-          )}
-        </TouchableOpacity>
+        <AddImage imageURL={imageURL} openImagePicker={openImagePicker} />
         <Spinner loading={loading} />
         <View style={styles.inputContainer}>
           <TextInput
@@ -110,23 +99,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  imageText: {
-    ...typography.b2,
-    color: colors.secondary,
-  },
-  buttonText: {
-    fontSize: 80,
-    color: colors.secondary,
-  },
-  image: {
-    marginVertical: 20,
-    minWidth: 300,
-    minHeight: 250,
-    backgroundColor: colors.disabled,
-    justifyContent: "center",
-    alignItems: "center",
-    marginHorizontal: 40,
-  },
+
   inputContainer: {
     justifyContent: "space-between",
   },
@@ -142,11 +115,5 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     marginVertical: 10,
     marginHorizontal: 30,
-  },
-  selectedImage: {
-    minWidth: 300,
-    minHeight: 250,
-    marginVertical: 20,
-    alignSelf: "center",
   },
 });

@@ -62,7 +62,7 @@ export const activityObject = (
     | FirebaseFirestoreTypes.DocumentData,
 ) => {
   return {
-    id: doc.data().id,
+    id: doc.id,
     title: doc.data().title,
     active: doc.data().active,
     city: doc.data().city,
@@ -76,15 +76,17 @@ export const activityObject = (
 };
 
 export const userPostObject = (
+  userFirstName: User["firstName"],
+  userLastName: User["lastName"],
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     | FirebaseFirestoreTypes.DocumentData,
 ) => {
   return {
-    id: doc.data().id,
+    id: doc.id,
     userID: doc.data().user_id,
-    userFirstName: doc.data().first_name,
-    userLastName: doc.data().last_name,
+    userFirstName: userFirstName,
+    userLastName: userLastName,
     activityID: doc.data().activity_id,
     activityCity: doc.data().activity_city,
     activityTitle: doc.data().activity_title,

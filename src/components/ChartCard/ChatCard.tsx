@@ -14,21 +14,23 @@ type Props = {
   post: UserPost;
   users: User[];
   handleAddComment: () => void;
+  onDelete: () => void;
 };
 
-export const ChatCard = ({ post, users, handleAddComment }: Props) => {
-  const handleDelete = () => {
-    Alert.alert("Delete button pressed");
-  };
-
+export const ChatCard = ({
+  post,
+  users,
+  handleAddComment,
+  onDelete,
+}: Props) => {
   return (
     <View testID="chat-card">
       <View style={styles.container}>
-        <ChatCardDate date={post.date}/>
+        <ChatCardDate date={post.date} />
         <TouchableOpacity style={styles.cardContainer}>
           <View style={styles.headerAndMenu}>
             <ChatCardHeader post={post} />
-            <ChatCardEditMenu onDeletetPress={handleDelete} />
+            <ChatCardEditMenu onDeletetPress={onDelete} />
           </View>
           <ChatCardImage imageUrl={post.imageURL} />
           <ChatCardDescription description={post.description} />
