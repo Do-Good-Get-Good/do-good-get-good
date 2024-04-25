@@ -7,7 +7,6 @@ import { Activity, User, UserPost } from "../../utility/types";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { userPostObject } from "../../firebase-functions/adaptedObject";
-import { ar } from "date-fns/locale";
 
 const currentUser = auth().currentUser;
 
@@ -26,6 +25,7 @@ export const useChat = ({ getChatData }: Props) => {
 
   useEffect(() => {
     let arr: UserPost[] = [];
+
     const subscriber = firestore()
       .collection("UserPosts")
       .orderBy("date", "asc")
@@ -42,6 +42,10 @@ export const useChat = ({ getChatData }: Props) => {
     return () => subscriber();
   }, [getChatData]);
 
+  useEffect(() => {
+    getUser();
+  }, [currentUser]);
+
   const getAllActivitiesConnectedToUser = async (
     connectedActivitiesID: User["connectedActivities"],
   ) => {
@@ -55,7 +59,10 @@ export const useChat = ({ getChatData }: Props) => {
   };
 
   const getUser = async () => {
-    currentUser && (await getUserData(currentUser?.uid));
+    if (currentUser) {
+      const getUserInfo = await getUserData(currentUser?.uid);
+      setLoggedInUser(getUserInfo);
+    }
   };
 
   return {

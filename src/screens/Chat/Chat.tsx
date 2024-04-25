@@ -12,8 +12,6 @@ import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOver
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 
-
-
 const users = [
   {
     id: "user1",
@@ -67,29 +65,20 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { posts } = useChat(getChatData);
-  const [message, setMessage] = useState('');
-
+  const { posts, loggedInUser } = useChat(getChatData);
+  const [message, setMessage] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
- 
-
-  const handleMessageChange = (text:string) => {
+  const handleMessageChange = (text: string) => {
     setMessage(text);
-
   };
 
   const handleMessageSubmit = () => {
     console.log("Submitted message:", message);
-    setMessage('');
+    setMessage("");
   };
-
-
-
-
-
 
   const handleAddComment = () => {};
 
@@ -99,8 +88,6 @@ export const Chat = ({ navigation, route }: Props) => {
     setActivities(activitiesFacke);
     setShowOverlay(true);
   };
-
-
 
   const onChooseActivity = (post: UserPost) => {
     navigation.navigate(UserStack.AddOrEditPost, {
@@ -115,43 +102,51 @@ export const Chat = ({ navigation, route }: Props) => {
       <Menu />
       <ScrollView
         ref={scrollViewRef}
-        onContentSizeChange={() => scrollViewRef?.current?.scrollToEnd({ animated: true })}>
-        {posts.map((post, i) => (
-          <ChatCard
-            key={`${post.id}-${i}`}
-            post={post}
-            users={users}
-            handleAddComment={handleAddComment}
-            currentUserId='user1'
-          />
-        ))}
+        onContentSizeChange={() =>
+          scrollViewRef?.current?.scrollToEnd({ animated: true })
+        }
+      >
+        {loggedInUser && (
+          <>
+            {posts.map((post, i) => (
+              <ChatCard
+                key={`${post.id}-${i}`}
+                post={post}
+                users={users}
+                handleAddComment={handleAddComment}
+                isCurrentUser={post.userID === loggedInUser?.id}
+              />
+            ))}
 
-      {/* <View style={styles.messageContainer}>
-        <Text style={styles.messageText}>{message}</Text>
-      </View> */}
-        <LongButton
-          style={styles.longButton}
-          title="Skapa inlägg"
-          onPress={onCreatePostButtonPressed}
-        />
+            {/* <View style={styles.messageContainer}>
+      <Text style={styles.messageText}>{message}</Text>
+    </View> */}
 
-        <ActivityListOverLay
-          onBackdropPress={() => setShowOverlay(false)}
-          visible={showOverlay}
-          user={users[0]}
-          activities={activities}
-          onActivityPress={onChooseActivity}
-        />
+            <LongButton
+              style={styles.longButton}
+              title="Skapa inlägg"
+              onPress={onCreatePostButtonPressed}
+            />
 
-        <TextInput
-          style={styles.inputField}
-          placeholder="Skriv ett meddelande"
-          // value={message}
-          // onChangeText={handleMessageChange}
-          // onSubmitEditing={handleMessageSubmit}
-          // returnKeyType="send" 
-        />
-        <BottomLogo />
+            <ActivityListOverLay
+              onBackdropPress={() => setShowOverlay(false)}
+              visible={showOverlay}
+              user={loggedInUser}
+              activities={activities}
+              onActivityPress={onChooseActivity}
+            />
+
+            <TextInput
+              style={styles.inputField}
+              placeholder="Skriv ett meddelande"
+              // value={message}
+              // onChangeText={handleMessageChange}
+              // onSubmitEditing={handleMessageSubmit}
+              // returnKeyType="send"
+            />
+            <BottomLogo />
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -162,7 +157,7 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
   },
-    longButton: {
+  longButton: {
     margin: 20,
     borderRadius: 5,
   },
@@ -178,8 +173,8 @@ const styles = StyleSheet.create({
 
   messageContainer: {
     padding: 10,
-    backgroundColor:colors.background,
-    maxWidth:'80%',
+    backgroundColor: colors.background,
+    maxWidth: "80%",
     borderRadius: 5,
   },
   messageText: {

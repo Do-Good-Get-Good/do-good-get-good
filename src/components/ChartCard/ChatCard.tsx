@@ -14,24 +14,26 @@ type Props = {
   post: UserPost;
   users: User[];
   handleAddComment: () => void;
-  currentUserId:string
+  isCurrentUser: boolean;
 };
 
-export const ChatCard = ({ post, users, handleAddComment,currentUserId }: Props) => {
-
-   const isCurrentUser = post.userID === currentUserId;
-
-   const containerStyle = isCurrentUser && styles.currentUserContainer;
-   const cardContainerStyle = isCurrentUser && styles.currentUserCardContainer;
-
-   const handleDelete = () => {
+export const ChatCard = ({
+  post,
+  users,
+  handleAddComment,
+  isCurrentUser,
+}: Props) => {
+  const handleDelete = () => {
     Alert.alert("Delete button pressed");
   };
 
   return (
-    <View testID="chat-card" style={[styles.container, containerStyle]}>
-      <ChatCardDate date={post.date}/>
-      <TouchableOpacity style={[styles.cardContainer, cardContainerStyle]}>
+    <View
+      testID="chat-card"
+      style={[styles.container, isCurrentUser && { alignItems: "flex-end" }]}
+    >
+      <ChatCardDate date={post.date} />
+      <TouchableOpacity style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
           {/* <ChatCardEditMenu onDeletetPress={handleDelete}/> */}
@@ -50,30 +52,23 @@ export const ChatCard = ({ post, users, handleAddComment,currentUserId }: Props)
 };
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     marginVertical: 10,
   },
-  currentUserContainer: {
-    alignItems: 'flex-end',
-  },
+
   cardContainer: {
     ...shadows.cardShadow,
-    maxWidth: "80%",
+    width: "80%",
     backgroundColor: colors.background,
     borderRadius: 5,
   },
-  currentUserCardContainer: {
-    ...shadows.cardShadow,
-    backgroundColor: colors.primary,
-    width:'80%'
-  },
+
   headerAndMenu: {
     flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 4,
     marginRight: 10,
-  }
+  },
 });
