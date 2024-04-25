@@ -36,7 +36,7 @@ const users = [
 const activitiesFacke: Activity[] = [
   {
     id: "1",
-    title: "Blodgivningvfddgdfg",
+    title: "Blodgivning",
     city: "Malmo",
     photo: "asgdxhasjdhas",
   },
@@ -68,10 +68,25 @@ type Props = {
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
   const { posts } = useChat(getChatData);
+  const [message, setMessage] = useState('');
 
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
+
+ 
+
+  const handleMessageChange = (text:string) => {
+    setMessage(text);
+
+  };
+
+  const handleMessageSubmit = () => {
+    console.log("Submitted message:", message);
+    setMessage('');
+  };
+
+
 
 
 
@@ -100,8 +115,7 @@ export const Chat = ({ navigation, route }: Props) => {
       <Menu />
       <ScrollView
         ref={scrollViewRef}
-        onContentSizeChange={() => scrollViewRef?.current?.scrollToEnd({ animated: true })}
->
+        onContentSizeChange={() => scrollViewRef?.current?.scrollToEnd({ animated: true })}>
         {posts.map((post, i) => (
           <ChatCard
             key={`${post.id}-${i}`}
@@ -111,6 +125,10 @@ export const Chat = ({ navigation, route }: Props) => {
             currentUserId='user1'
           />
         ))}
+
+      {/* <View style={styles.messageContainer}>
+        <Text style={styles.messageText}>{message}</Text>
+      </View> */}
         <LongButton
           style={styles.longButton}
           title="Skapa inlägg"
@@ -128,6 +146,10 @@ export const Chat = ({ navigation, route }: Props) => {
         <TextInput
           style={styles.inputField}
           placeholder="Skriv ett meddelande"
+          // value={message}
+          // onChangeText={handleMessageChange}
+          // onSubmitEditing={handleMessageSubmit}
+          // returnKeyType="send" 
         />
         <BottomLogo />
       </ScrollView>
@@ -152,5 +174,15 @@ const styles = StyleSheet.create({
     borderColor: colors.dark,
     color: colors.dark,
     marginBottom: 50,
+  },
+
+  messageContainer: {
+    padding: 10,
+    backgroundColor:colors.background,
+    maxWidth:'80%',
+    borderRadius: 5,
+  },
+  messageText: {
+    fontSize: 16,
   },
 });

@@ -18,34 +18,45 @@ type Props = {
 };
 
 export const ChatCard = ({ post, users, handleAddComment,currentUserId }: Props) => {
-   const isCurrentUser = post.userID=currentUserId
-  const handleDelete = () => {
+
+   const isCurrentUser = post.userID === currentUserId;
+
+   const containerStyle = isCurrentUser && styles.currentUserContainer;
+   const cardContainerStyle = isCurrentUser && styles.currentUserCardContainer;
+
+   const handleDelete = () => {
     Alert.alert("Delete button pressed");
   };
 
   return (
-    <View testID="chat-card"  style={styles.container}>
-        <ChatCardDate date={post.date}/>
-        <TouchableOpacity style={styles.cardContainer}>
-          <View style={styles.headerAndMenu}>
-            <ChatCardHeader post={post} />
-            <ChatCardEditMenu onDeletetPress={handleDelete} />
-          </View>
-          <ChatCardImage imageUrl={post.imageURL} />
-          <ChatCardDescription description={post.description} />
-          <CommentsSection
-            comments={post.comments}
-            users={users}
-            onAddComment={handleAddComment}
-          />
-        </TouchableOpacity>
-      </View>
+    <View testID="chat-card" style={[styles.container, containerStyle]}>
+      <ChatCardDate date={post.date}/>
+      <TouchableOpacity style={[styles.cardContainer, cardContainerStyle]}>
+        <View style={styles.headerAndMenu}>
+          <ChatCardHeader post={post} />
+          {/* <ChatCardEditMenu onDeletetPress={handleDelete}/> */}
+          {isCurrentUser && <ChatCardEditMenu onDeletePress={handleDelete} />}
+        </View>
+        <ChatCardImage imageUrl={post.imageURL} />
+        <ChatCardDescription description={post.description} />
+        <CommentsSection
+          comments={post.comments}
+          users={users}
+          onAddComment={handleAddComment}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+
   container: {
+    flex: 1,
     marginVertical: 10,
+  },
+  currentUserContainer: {
+    alignItems: 'flex-end',
   },
   cardContainer: {
     ...shadows.cardShadow,
@@ -53,11 +64,16 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderRadius: 5,
   },
+  currentUserCardContainer: {
+    ...shadows.cardShadow,
+    backgroundColor: colors.primary,
+    width:'80%'
+  },
   headerAndMenu: {
     flex: 0.3,
     flexDirection: "row",
     justifyContent: "space-between",
     padding: 4,
     marginRight: 10,
-  },
+  }
 });
