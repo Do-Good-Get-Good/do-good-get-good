@@ -36,7 +36,6 @@ export const ChatCard = ({
       <TouchableOpacity style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-          {/* <ChatCardEditMenu onDeletetPress={handleDelete}/> */}
           {isCurrentUser && <ChatCardEditMenu onDeletePress={handleDelete} />}
         </View>
         <ChatCardImage imageUrl={post.imageURL} />
