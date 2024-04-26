@@ -10,7 +10,8 @@ import { Activity, Comment, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
-import { useChat } from "./useChat";
+import { useChat } from "./useChat"; 
+
 
 const users = [
   {
@@ -31,32 +32,6 @@ const users = [
   },
 ];
 
-const activitiesFacke: Activity[] = [
-  {
-    id: "1",
-    title: "Blodgivning",
-    city: "Malmo",
-    photo: "asgdxhasjdhas",
-  },
-  {
-    id: "2",
-    title: "Secondhand",
-    city: "Karlstad",
-    photo: "sjashdjas",
-  },
-  {
-    id: "3",
-    title: "Blodgivning",
-    city: "Karlstad",
-    photo: "bondi_surfing.jpg",
-  },
-  {
-    id: "4",
-    title: "Blodgivare",
-    city: "GGöteborg",
-    photo: "machu_picchu.jpg",
-  },
-];
 
 type Props = {
   navigation: any;
@@ -65,28 +40,26 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { posts, loggedInUser } = useChat(getChatData);
-  const [message, setMessage] = useState("");
+  const { posts, loggedInUser ,getAllActivitiesConnectedToUser} = useChat(getChatData);
+  // const [message, setMessage] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const handleMessageChange = (text: string) => {
-    setMessage(text);
-  };
+  //TODO create a function to write a user message
 
-  const handleMessageSubmit = () => {
-    console.log("Submitted message:", message);
-    setMessage("");
-  };
+  // const handleMessageChange = (text: string) => {
+  //   setMessage(text);
+  // };
 
   const handleAddComment = () => {};
 
-  const onCreatePostButtonPressed = () => {
-    // request to get activity
-    // setActivities()  then (   setShowOverlay(true); )
-    setActivities(activitiesFacke);
+  const onCreatePostButtonPressed = async() => {
+    
+    const activities = await getAllActivitiesConnectedToUser(loggedInUser?.connectedActivities ?? []);
+    setActivities(activities);
     setShowOverlay(true);
+
   };
 
   const onChooseActivity = (post: UserPost) => {
@@ -117,17 +90,11 @@ export const Chat = ({ navigation, route }: Props) => {
                 isCurrentUser={post.userID === loggedInUser?.id}
               />
             ))}
-
-            {/* <View style={styles.messageContainer}>
-      <Text style={styles.messageText}>{message}</Text>
-    </View> */}
-
-            <LongButton
+             <LongButton
               style={styles.longButton}
               title="Skapa inlägg"
               onPress={onCreatePostButtonPressed}
             />
-
             <ActivityListOverLay
               onBackdropPress={() => setShowOverlay(false)}
               visible={showOverlay}
@@ -135,14 +102,9 @@ export const Chat = ({ navigation, route }: Props) => {
               activities={activities}
               onActivityPress={onChooseActivity}
             />
-
             <TextInput
               style={styles.inputField}
               placeholder="Skriv ett meddelande"
-              // value={message}
-              // onChangeText={handleMessageChange}
-              // onSubmitEditing={handleMessageSubmit}
-              // returnKeyType="send"
             />
             <BottomLogo />
           </>
@@ -169,15 +131,5 @@ const styles = StyleSheet.create({
     borderColor: colors.dark,
     color: colors.dark,
     marginBottom: 50,
-  },
-
-  messageContainer: {
-    padding: 10,
-    backgroundColor: colors.background,
-    maxWidth: "80%",
-    borderRadius: 5,
-  },
-  messageText: {
-    fontSize: 16,
   },
 });

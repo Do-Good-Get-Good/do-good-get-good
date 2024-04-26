@@ -19,6 +19,8 @@ const createPropsObject = (activity: Activity, user: User): UserPost => {
   let obj = {
     id: "",
     userID: user.id,
+    userFirstName: user.firstName,
+    userLastName: user.lastName,
     activityID: activity.id,
     activityCity: activity.city,
     activityTitle: activity.title,

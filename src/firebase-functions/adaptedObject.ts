@@ -63,15 +63,15 @@ export const activityObject = (
 ) => {
   return {
     id: doc.id,
-    title: doc.data().title,
-    active: doc.data().active,
-    city: doc.data().city,
-    place: doc.data().place,
-    description: doc.data().description,
-    photo: doc.data().photo,
-    popular: doc.data().popular,
+    title: doc.data().activity_title,
+    active: doc.data().active_status,
+    city: doc.data().activity_city,
+    place: doc.data().activity_place,
+    description: doc.data().activity_description,
+    photo: doc.data().activity_photo,
+    popular: doc.data().tg_favorite,
     imageUrl: doc.data().imageUrl,
-    userCount: doc.data().userCount,
+    userCount: doc.data().user_count,
   };
 };
 

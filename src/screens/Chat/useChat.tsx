@@ -50,11 +50,11 @@ export const useChat = ({ getChatData }: Props) => {
     connectedActivitiesID: User["connectedActivities"],
   ) => {
     let arr: Activity[] = [];
-    connectedActivitiesID.map(async (item) => {
+    const promises = connectedActivitiesID.map(async (item) => {
       let activityData = await getActivityByID(item);
       activityData && arr.push(activityData);
     });
-
+     await Promise.all(promises);
     return arr;
   };
 
