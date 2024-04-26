@@ -31,7 +31,7 @@ export const useChat = ({ getChatData }: Props) => {
       .orderBy("date", "asc")
       .limit(limit)
       .onSnapshot((documentSnapshot) => {
-        documentSnapshot.docs.forEach((change) => {
+        documentSnapshot?.docs.forEach((change) => {
           arr.push(userPostObject(change));
         });
         setPosts(arr);
