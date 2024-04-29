@@ -15,27 +15,27 @@ export const saveImageToChatImageStoreAndCreateUserPost = async (
       : post.imageURL;
   let filename = post.imageURL.substring(post.imageURL.lastIndexOf("/") + 1);
 
-  const ref = storage().ref(`chat-images/${filename}`);
-  const task = ref.putFile(uploadUri);
-
   try {
-    await task.then(async (response) => {
-      const fullPath = await storage()
-        .ref(response.metadata.fullPath)
-        .getDownloadURL();
+    await storage()
+      .ref(`chat-images/${filename}`)
+      .putFile(uploadUri)
+      .then(async (response) => {
+        const fullPath = await storage()
+          .ref(response.metadata.fullPath)
+          .getDownloadURL();
 
-      addChatPost({
-        ...post,
-        imageURL: fullPath,
-        date: postTime,
+        addChatPost({
+          ...post,
+          imageURL: fullPath,
+          date: postTime,
+        });
       });
-    });
   } catch (e) {
     console.error(e);
   }
 };
 
-export const addChatPost = async (post: UserPost) => {
+const addChatPost = async (post: UserPost) => {
   try {
     const res = await firestore().collection("UserPosts").add({
       user_id: post.userID,
@@ -43,6 +43,9 @@ export const addChatPost = async (post: UserPost) => {
       activity_city: post.activityCity,
       activity_title: post.activityTitle,
       activity_image: post.activityImage,
+
+      first_name:post. userFirstName,
+      last_name: post.userLastName,
       changed: post.changed,
       date: post.date,
       description: post.description,

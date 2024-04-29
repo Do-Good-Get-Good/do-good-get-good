@@ -78,16 +78,26 @@ describe("Testing ChatCardComponent", () => {
     expect(getByText('Test Description')).toBeTruthy();  
   });
 
-  test('Testing ChatCardEditMenu component to ensure it renders correctly', () => {
-    const { getByTestId,getByText,queryByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+
+  test('Testig ChatCard renders ChatCardEditMenu when isCurrentUser is true', () => {
+    const { getByTestId ,getByText} = render(
+      <ChatCard post={post} users={users} handleAddComment={() => {}} isCurrentUser={true} />
     );
-    const chatCardMenu= getByTestId('chat-card-edit-menu');
-    fireEvent.press(chatCardMenu);
+    const chatCardEditMenu = getByTestId('chat-card-edit-menu');
+    expect(chatCardEditMenu).toBeTruthy();
+    fireEvent.press(chatCardEditMenu);
     expect(getByText('Delete')).toBeTruthy();
     fireEvent.press(getByText('Delete'));
   });
 
+  test('Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false', () => {
+    const { queryByTestId } = render(
+      <ChatCard post={post} users={users} handleAddComment={() => {}} isCurrentUser={false} />
+    );
+    const chatCardEditMenu = queryByTestId('chat-card-edit-menu');
+    expect(chatCardEditMenu).toBeFalsy();
+  });
+  
   test('Testing ChatCard component touchability', () => {
     const { getByTestId } = render(
       <ChatCard post={post} users={users} handleAddComment={() => {}} />

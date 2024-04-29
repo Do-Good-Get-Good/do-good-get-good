@@ -4,7 +4,7 @@ import {StyleSheet,
   Image,
   View
 } from "react-native";
-import { UserPost } from "../../utility/types";
+import {UserPost } from "../../utility/types";
 import { getImageForActivity } from "../../lib/images";
 import { LocationIcon } from "../../assets/icons/LocationIcon";
 import typography from "../../assets/theme/typography";
@@ -14,7 +14,7 @@ type Props ={
   post: UserPost;
 }
 
-export const ChatCardHeader = ({post }: Props) => {
+export const ChatCardHeader = ({post}: Props) => {
   return (
        <View testID="chat-card-header" style={styles.detailsContainer}>
        <Image testID= "chat-card-header-image"  source={getImageForActivity(post?.activityImage ?? '') }  style={styles.image}/>
