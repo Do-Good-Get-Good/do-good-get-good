@@ -62,16 +62,16 @@ export const activityObject = (
     | FirebaseFirestoreTypes.DocumentData,
 ) => {
   return {
-    id: doc.data().id,
-    title: doc.data().title,
-    active: doc.data().active,
-    city: doc.data().city,
-    place: doc.data().place,
-    description: doc.data().description,
-    photo: doc.data().photo,
-    popular: doc.data().popular,
+    id: doc.id,
+    title: doc.data().activity_title,
+    active: doc.data().active_status,
+    city: doc.data().activity_city,
+    place: doc.data().activity_place,
+    description: doc.data().activity_description,
+    photo: doc.data().activity_photo,
+    popular: doc.data().tg_favorite,
     imageUrl: doc.data().imageUrl,
-    userCount: doc.data().userCount,
+    userCount: doc.data().user_count,
   };
 };
 
@@ -81,7 +81,7 @@ export const userPostObject = (
     | FirebaseFirestoreTypes.DocumentData,
 ) => {
   return {
-    id: doc.data().id,
+    id: doc.id,
     userID: doc.data().user_id,
     userFirstName: doc.data().first_name,
     userLastName: doc.data().last_name,

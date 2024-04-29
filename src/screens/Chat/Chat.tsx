@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
 import BottomLogo from "../../components/BottomLogo";
@@ -10,7 +10,7 @@ import { Activity, Comment, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
-import { useChat } from "./useChat";
+import { useChat } from "./useChat"; 
 
 
 const users = [
@@ -32,32 +32,6 @@ const users = [
   },
 ];
 
-const activitiesFacke: Activity[] = [
-  {
-    id: "1",
-    title: "Blodgivningvfddgdfg",
-    city: "Malmo",
-    photo: "asgdxhasjdhas",
-  },
-  {
-    id: "2",
-    title: "Secondhand",
-    city: "Karlstad",
-    photo: "sjashdjas",
-  },
-  {
-    id: "3",
-    title: "Blodgivning",
-    city: "Karlstad",
-    photo: "bondi_surfing.jpg",
-  },
-  {
-    id: "4",
-    title: "Blodgivare",
-    city: "GGöteborg",
-    photo: "machu_picchu.jpg",
-  },
-];
 
 type Props = {
   navigation: any;
@@ -66,25 +40,27 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { posts } = useChat(getChatData);
-
+  const { posts, loggedInUser ,getAllActivitiesConnectedToUser} = useChat(getChatData);
+  // const [message, setMessage] = useState("");
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  const scrollToBottom = () => {
-    scrollViewRef.current?.scrollTo({ y: 0 });
-  };
+  //TODO create a function to write a user message
+
+  // const handleMessageChange = (text: string) => {
+  //   setMessage(text);
+  // };
+
   const handleAddComment = () => {};
 
-  const onCreatePostButtonPressed = () => {
-    // request to get activity
-    // setActivities()  then (   setShowOverlay(true); )
-    setActivities(activitiesFacke);
+  const onCreatePostButtonPressed = async() => {
+    
+    const activities = await getAllActivitiesConnectedToUser(loggedInUser?.connectedActivities ?? []);
+    setActivities(activities);
     setShowOverlay(true);
+
   };
-
-
 
   const onChooseActivity = (post: UserPost) => {
     navigation.navigate(UserStack.AddOrEditPost, {
@@ -97,34 +73,42 @@ export const Chat = ({ navigation, route }: Props) => {
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
-      <ScrollView contentContainerStyle={styles.scrollViewContent}>
-        {posts.map((post, i) => (
-          <ChatCard
-            key={`${post.id}-${i}`}
-            post={post}
-            users={users}
-            handleAddComment={handleAddComment}
-          />
-        ))}
-        <LongButton
-          style={styles.longButton}
-          title="Skapa inlägg"
-          onPress={onCreatePostButtonPressed}
-        />
-
-        <ActivityListOverLay
-          onBackdropPress={() => setShowOverlay(false)}
-          visible={showOverlay}
-          user={users[0]}
-          activities={activities}
-          onActivityPress={onChooseActivity}
-        />
-
-        <TextInput
-          style={styles.inputField}
-          placeholder="Skriv ett meddelande"
-        />
-        <BottomLogo />
+      <ScrollView
+        ref={scrollViewRef}
+        onContentSizeChange={() =>
+          scrollViewRef?.current?.scrollToEnd({ animated: true })
+        }
+      >
+        {loggedInUser && (
+          <>
+            {posts.map((post, i) => (
+              <ChatCard
+                key={`${post.id}-${i}`}
+                post={post}
+                users={users}
+                handleAddComment={handleAddComment}
+                isCurrentUser={post.userID === loggedInUser?.id}
+              />
+            ))}
+             <LongButton
+              style={styles.longButton}
+              title="Skapa inlägg"
+              onPress={onCreatePostButtonPressed}
+            />
+            <ActivityListOverLay
+              onBackdropPress={() => setShowOverlay(false)}
+              visible={showOverlay}
+              user={loggedInUser}
+              activities={activities}
+              onActivityPress={onChooseActivity}
+            />
+            <TextInput
+              style={styles.inputField}
+              placeholder="Skriv ett meddelande"
+            />
+            <BottomLogo />
+          </>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -135,7 +119,6 @@ const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
   },
-  scrollViewContent: {},
   longButton: {
     margin: 20,
     borderRadius: 5,
