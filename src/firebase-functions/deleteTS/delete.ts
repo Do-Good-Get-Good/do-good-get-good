@@ -2,16 +2,15 @@ import firestore from "@react-native-firebase/firestore";
 import { UserPost } from "../../utility/types";
 import storage from "@react-native-firebase/storage";
 import crashlytics from "@react-native-firebase/crashlytics";
+import { log } from "firebase-functions/logger";
 
 export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
+  console.log(post.imageURL, " -----------------");
   try {
-    await storage()
-      .refFromURL(post.imageURL)
-      .delete()
-      .then(async () => {
-        await deleteUserPost(post.id);
-      });
+    await deleteUserPost(post.id);
+    await storage().refFromURL(post.imageURL).delete();
   } catch (error: any) {
+    console.log(error);
     crashlytics().log("There was an error to delete user post");
     crashlytics().recordError(error);
   }

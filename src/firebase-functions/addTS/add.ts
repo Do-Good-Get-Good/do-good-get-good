@@ -14,6 +14,8 @@ export const saveImageToChatImageStoreAndCreateUserPost = async (
       ? post.imageURL.replace("file://", "")
       : post.imageURL;
   let filename = post.imageURL.substring(post.imageURL.lastIndexOf("/") + 1);
+  console.log(post, "----- post");
+  console.log(uploadUri, "---uploadUri");
 
   try {
     await storage()
@@ -44,7 +46,7 @@ const addChatPost = async (post: UserPost) => {
       activity_title: post.activityTitle,
       activity_image: post.activityImage,
 
-      first_name:post. userFirstName,
+      first_name: post.userFirstName,
       last_name: post.userLastName,
       changed: post.changed,
       date: post.date,
