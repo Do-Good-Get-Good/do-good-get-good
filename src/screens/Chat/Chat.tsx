@@ -93,6 +93,16 @@ export const Chat = ({ navigation, route }: Props) => {
     setShowOverlay(false);
   };
 
+  // const issmaller = (post: UserPost) => {
+  //   const oneYearAgo = new Date();
+  //   oneYearAgo.setMinutes(oneYearAgo.getMinutes() - 5);
+  //   // const oneYearAgo = new Date(now.getTime() + 50000);
+  //   console.log(post.description);
+  //   console.log(post.date, " ---- post.date");
+  //   console.log(oneYearAgo, " ---- oneYearAgo");
+  //   console.log(post.date < oneYearAgo, " ---- oneYearAgo");
+  // };
+
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
