@@ -14,7 +14,7 @@ export const onSnapshotUserPosts = (
       .onSnapshot((querySnapshot) => {
         arr = [];
         querySnapshot.docs.forEach((doc) => {
-          arr.push(userPostObject("name", "surname", doc));
+          arr.push(userPostObject(doc));
         });
         setUserPost(arr);
       });

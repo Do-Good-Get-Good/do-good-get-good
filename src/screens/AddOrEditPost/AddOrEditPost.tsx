@@ -35,7 +35,7 @@ const alertToInformAboutExpire =
   "Den här upplevelsen raderas automatiskt efter ett år.";
 
 export const AddOrEditPost = ({ route, navigation }: Props) => {
-  const { post, toEdit }: Params = route.params;
+  const { post, toEdit}: Params = route.params;
   const { addPost, loading } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL] = useState(post.imageURL);

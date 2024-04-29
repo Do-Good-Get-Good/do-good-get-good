@@ -27,22 +27,46 @@ export const useChat = ({ getChatData }: Props) => {
   useEffect(() => {
     const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));
     return () => subscriber && subscriber();
+
+    // let arr: UserPost[] = [];
+
+    // const subscriber = firestore()
+    //   .collection("UserPosts")
+    //   .orderBy("date", "asc")
+    //   .limit(limit)
+    //   .onSnapshot((documentSnapshot) => {
+    //     documentSnapshot?.docs.forEach((change) => {
+    //       arr.push(userPostObject(change));
+    //     });
+    //     setPosts(arr);
+    //     arr = [];
+    //     console.log(" onSnapshot UserPost");
+    //   });
+
+    // return () => subscriber();
   }, [getChatData]);
+
+  useEffect(() => {
+    getUser();
+  }, [currentUser]);
 
   const getAllActivitiesConnectedToUser = async (
     connectedActivitiesID: User["connectedActivities"],
   ) => {
     let arr: Activity[] = [];
-    connectedActivitiesID.map(async (item) => {
+    const promises = connectedActivitiesID.map(async (item) => {
       let activityData = await getActivityByID(item);
       activityData && arr.push(activityData);
     });
-
+    await Promise.all(promises);
     return arr;
   };
 
   const getUser = async () => {
-    currentUser && (await getUserData(currentUser?.uid));
+    if (currentUser) {
+      const getUserInfo = await getUserData(currentUser?.uid);
+      setLoggedInUser(getUserInfo);
+    }
   };
 
   return {

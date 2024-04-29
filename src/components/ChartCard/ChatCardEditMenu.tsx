@@ -7,15 +7,16 @@ import typography from "../../assets/theme/typography";
 import { DropDownOverlay } from "../DropDowns/DropDownOverlay";
 
 type Props ={ 
-    onDeletetPress:()=> void;
+    onDeletePress:()=> void;
   }
 
-export const ChatCardEditMenu = ({onDeletetPress}:Props) => {
+export const ChatCardEditMenu = ({onDeletePress}:Props) => {
     const [showMenu,setShowMenu]=useState(false)   
-  const optionsList =[{
+  const optionsList =[
+  {
     label: 'Delete',
     onPress: () => {
-      onDeletetPress();
+      onDeletePress();
       setShowMenu(false); 
     }
   } 
@@ -35,7 +36,8 @@ const styles = StyleSheet.create({
     },
     dropDownContainer:{
       top: 30,
-      left: 0,
+      right:0,
+      // left: 0,
       backgroundColor:colors.background,
       borderBottomLeftRadius: 5,
       borderBottomRightRadius: 5,
