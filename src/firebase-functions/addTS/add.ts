@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import { UserPost } from "../../utility/types";
+import { ChatMessage, UserPost } from "../../utility/types";
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
@@ -43,7 +43,6 @@ const addChatPost = async (post: UserPost) => {
       activity_city: post.activityCity,
       activity_title: post.activityTitle,
       activity_image: post.activityImage,
-
       first_name:post. userFirstName,
       last_name: post.userLastName,
       changed: post.changed,
@@ -52,9 +51,28 @@ const addChatPost = async (post: UserPost) => {
       emoji: post.emoji,
       image_url: post.imageURL,
       comments: post.comments,
+      type:post.type
     });
     return res;
   } catch (error) {
     return Promise.reject(error);
   }
 };
+
+const addChatMessage = async (message:ChatMessage)=>{
+
+  try {
+    const res = await firestore().collection("UserPosts").add({
+      first_name: message.userFirstName,
+      user_id: message.userID,
+      last_name: message.userLastName,
+      message: message.message,
+      date:message.date,
+      type:message.type  
+    
+    });
+    return res;
+  } catch (error) {
+    return Promise.reject(error);
+  }
+}

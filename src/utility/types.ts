@@ -90,6 +90,14 @@ export type Comment = {
   userID: User["id"];
 };
 
+
+export enum Post {
+
+  post = 'post',
+  message='message'
+
+}
+
 export type UserPost = {
   id: string;
   userID: User["id"];
@@ -105,12 +113,15 @@ export type UserPost = {
   emoji: Array<PostEmoji>;
   imageURL: string;
   comments: Array<Comment>;
+  type:Post;
 };
 
 export type ChatMessage = {
   id: string;
+  date: Date | string;
   userFirstName: User["firstName"];
   userID: User["id"];
   userLastName: User["lastName"];
   message: string;
+  type?:Post.message
 };

@@ -6,12 +6,26 @@ import Menu from "../../components/Menu";
 import { LongButton } from "../../components/Buttons/LongButton";
 import { TextInput } from "react-native";
 import colors from "../../assets/theme/colors";
-import { Activity, Comment, UserPost } from "../../utility/types";
+import { Activity, ChatMessage, Comment, Post, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
+import { MessageCard } from "../../components/ChartCard/MessageCard";
+
+
+
+const post = {
+  id: '1',
+  userID: 'user1',
+  userFirstName: "Jerom",
+  userLastName: "Karlsson",
+  message: "Jag kommer att vara där nästa gång!",
+  date: new Date(),
+  comments: [],
+};
+
 
 const users = [
   {
@@ -47,8 +61,36 @@ export const Chat = ({ navigation, route }: Props) => {
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
+  const [message, setMessage] = useState<string>("");
 
-  const handleAddComment = () => {};
+  const handleAddComment=()=>{};
+ 
+
+
+  const handleAddMessage = async () => {
+
+
+    const newMessage: ChatMessage = {
+      id:'1',
+        userID: loggedInUser?.id || "",
+        userFirstName: loggedInUser?.firstName || "",
+        userLastName: loggedInUser?.lastName || "",
+        message: message.trim(), 
+        date: new Date(),
+        type: Post.message,
+      };
+
+      // try {
+      //     await addChatMessage(newMessage);
+      //     setMessage("");
+      //   } catch (error) {
+      //     console.error("Error adding message:", error);
+      //   }
+
+    console.log(newMessage);
+   setMessage("");
+  };
+
 
   const onCreatePostButtonPressed = async () => {
     const activities = await getAllActivitiesConnectedToUser(
@@ -87,6 +129,14 @@ export const Chat = ({ navigation, route }: Props) => {
                 isCurrentUser={post.userID === loggedInUser?.id}
               />
             ))}
+
+
+       {/* <MessageCard
+        post={post}
+        handleAddComment={handleAddComment}
+        onDelete={()=>{}}
+        isCurrentUser={post.userID === loggedInUser?.id}
+      /> */}
             <LongButton
               style={styles.longButton}
               title="Skapa inlägg"
@@ -102,6 +152,9 @@ export const Chat = ({ navigation, route }: Props) => {
             <TextInput
               style={styles.inputField}
               placeholder="Skriv ett meddelande"
+              value={message}
+              onChangeText={(text) => setMessage(text)}
+              onSubmitEditing={handleAddMessage} 
             />
             <BottomLogo />
           </>

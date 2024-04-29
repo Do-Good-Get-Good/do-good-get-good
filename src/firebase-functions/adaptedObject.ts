@@ -95,5 +95,6 @@ export const userPostObject = (
     emoji: doc.data().emoji,
     imageURL: doc.data().image_url,
     comments: doc.data().comments,
+    type: doc.data().type
   };
 };
