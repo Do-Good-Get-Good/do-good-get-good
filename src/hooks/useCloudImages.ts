@@ -19,7 +19,7 @@ const useCloudImages = () => {
 
     try {
       let result = await storage().ref("activity-images").listAll();
-      console.log("result");
+
       let imagesPromises = result.items.map(async (ref) => {
         const photo = ref.fullPath;
         const imageUrl = await storage().ref(photo).getDownloadURL();
