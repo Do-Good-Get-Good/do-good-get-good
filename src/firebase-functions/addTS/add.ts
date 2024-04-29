@@ -43,6 +43,9 @@ export const addChatPost = async (post: UserPost) => {
       activity_city: post.activityCity,
       activity_title: post.activityTitle,
       activity_image: post.activityImage,
+
+      first_name:post. userFirstName,
+      last_name: post.userLastName,
       changed: post.changed,
       date: post.date,
       description: post.description,
