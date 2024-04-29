@@ -14,6 +14,7 @@ type Props = {
   post: UserPost;
   users: User[];
   handleAddComment: () => void;
+  onDelete: () => void;
   isCurrentUser: boolean;
 };
 
@@ -21,12 +22,9 @@ export const ChatCard = ({
   post,
   users,
   handleAddComment,
+  onDelete,
   isCurrentUser,
 }: Props) => {
-  const handleDelete = () => {
-    Alert.alert("Delete button pressed");
-  };
-
   return (
     <View
       testID="chat-card"
@@ -36,7 +34,7 @@ export const ChatCard = ({
       <TouchableOpacity style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-          {isCurrentUser && <ChatCardEditMenu onDeletePress={handleDelete} />}
+          {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
         <ChatCardImage imageUrl={post.imageURL} />
         <ChatCardDescription description={post.description} />

@@ -10,8 +10,8 @@ import { Activity, Comment, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
-import { useChat } from "./useChat"; 
-
+import { useChat } from "./useChat";
+import { useUserPostsActions } from "./useUserPostsActions";
 
 const users = [
   {
@@ -32,7 +32,6 @@ const users = [
   },
 ];
 
-
 type Props = {
   navigation: any;
   route: any;
@@ -40,26 +39,23 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { posts, loggedInUser ,getAllActivitiesConnectedToUser} = useChat(getChatData);
-  // const [message, setMessage] = useState("");
+
+  const { onDelete, loading } = useUserPostsActions();
+  const { posts, loggedInUser, getAllActivitiesConnectedToUser } =
+    useChat(getChatData);
+
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
 
-  //TODO create a function to write a user message
-
-  // const handleMessageChange = (text: string) => {
-  //   setMessage(text);
-  // };
-
   const handleAddComment = () => {};
 
-  const onCreatePostButtonPressed = async() => {
-    
-    const activities = await getAllActivitiesConnectedToUser(loggedInUser?.connectedActivities ?? []);
+  const onCreatePostButtonPressed = async () => {
+    const activities = await getAllActivitiesConnectedToUser(
+      loggedInUser?.connectedActivities ?? [],
+    );
     setActivities(activities);
     setShowOverlay(true);
-
   };
 
   const onChooseActivity = (post: UserPost) => {
@@ -87,10 +83,11 @@ export const Chat = ({ navigation, route }: Props) => {
                 post={post}
                 users={users}
                 handleAddComment={handleAddComment}
+                onDelete={() => onDelete(post)}
                 isCurrentUser={post.userID === loggedInUser?.id}
               />
             ))}
-             <LongButton
+            <LongButton
               style={styles.longButton}
               title="Skapa inlägg"
               onPress={onCreatePostButtonPressed}

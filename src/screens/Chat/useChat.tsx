@@ -7,6 +7,7 @@ import { Activity, User, UserPost } from "../../utility/types";
 import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import { userPostObject } from "../../firebase-functions/adaptedObject";
+import { onSnapshotUserPosts } from "../../firebase-functions/onSnapshotsFunctions";
 
 const currentUser = auth().currentUser;
 
@@ -24,22 +25,25 @@ export const useChat = ({ getChatData }: Props) => {
   const [usersInChat, setUsersInChat] = useState<User[]>([]);
 
   useEffect(() => {
-    let arr: UserPost[] = [];
+    const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));
+    return () => subscriber && subscriber();
 
-    const subscriber = firestore()
-      .collection("UserPosts")
-      .orderBy("date", "asc")
-      .limit(limit)
-      .onSnapshot((documentSnapshot) => {
-        documentSnapshot?.docs.forEach((change) => {
-          arr.push(userPostObject(change));
-        });
-        setPosts(arr);
-        arr = [];
-        console.log(" onSnapshot UserPost");
-      });
+    // let arr: UserPost[] = [];
 
-    return () => subscriber();
+    // const subscriber = firestore()
+    //   .collection("UserPosts")
+    //   .orderBy("date", "asc")
+    //   .limit(limit)
+    //   .onSnapshot((documentSnapshot) => {
+    //     documentSnapshot?.docs.forEach((change) => {
+    //       arr.push(userPostObject(change));
+    //     });
+    //     setPosts(arr);
+    //     arr = [];
+    //     console.log(" onSnapshot UserPost");
+    //   });
+
+    // return () => subscriber();
   }, [getChatData]);
 
   useEffect(() => {
@@ -54,7 +58,7 @@ export const useChat = ({ getChatData }: Props) => {
       let activityData = await getActivityByID(item);
       activityData && arr.push(activityData);
     });
-     await Promise.all(promises);
+    await Promise.all(promises);
     return arr;
   };
 
