@@ -1,6 +1,7 @@
 import firestore from "@react-native-firebase/firestore";
 import { UserPost } from "../../utility/types";
 import storage from "@react-native-firebase/storage";
+import crashlytics from "@react-native-firebase/crashlytics";
 
 export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
   try {
@@ -10,8 +11,9 @@ export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
       .then(async () => {
         await deleteUserPost(post.id);
       });
-  } catch (error) {
-    console.log(error);
+  } catch (error: any) {
+    crashlytics().log("There was an error to delete user post");
+    crashlytics().recordError(error);
   }
 };
 
