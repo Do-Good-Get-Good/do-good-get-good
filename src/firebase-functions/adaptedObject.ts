@@ -98,3 +98,4 @@ export const userPostObject = (
     type: doc.data().type
   };
 };
+

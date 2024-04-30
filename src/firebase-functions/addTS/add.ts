@@ -1,35 +1,42 @@
 import { Platform } from "react-native";
-import { ChatMessage, UserPost } from "../../utility/types";
+import {  Post, User, UserPost } from "../../utility/types";
 import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 const postTime = new Date();
 
+const addImageToStorage =async (imageURL: string)=>{
+  const uploadUri =
+  Platform.OS === "ios"
+    ? imageURL.replace("file://", "")
+    : imageURL;
+let filename = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+
+let fullPath = ''
+
+await storage()
+.ref(`chat-images/${filename}`)
+.putFile(uploadUri)
+.then(async (response) => {
+  fullPath =  await storage()
+    .ref(response.metadata.fullPath)
+    .getDownloadURL();
+  });
+  return fullPath
+}
 export const saveImageToChatImageStoreAndCreateUserPost = async (
   post: UserPost,
 ) => {
-  const uploadUri =
-    Platform.OS === "ios"
-      ? post.imageURL.replace("file://", "")
-      : post.imageURL;
-  let filename = post.imageURL.substring(post.imageURL.lastIndexOf("/") + 1);
-
   try {
-    await storage()
-      .ref(`chat-images/${filename}`)
-      .putFile(uploadUri)
-      .then(async (response) => {
-        const fullPath = await storage()
-          .ref(response.metadata.fullPath)
-          .getDownloadURL();
+const fullPath = post?.imageURL  && await addImageToStorage(post?.imageURL )
 
         addChatPost({
           ...post,
-          imageURL: fullPath,
+          imageURL:  fullPath ,
           date: postTime,
         });
-      });
+  
   } catch (e) {
     console.error(e);
   }
@@ -37,42 +44,25 @@ export const saveImageToChatImageStoreAndCreateUserPost = async (
 
 const addChatPost = async (post: UserPost) => {
   try {
-    const res = await firestore().collection("UserPosts").add({
-      user_id: post.userID,
-      activity_id: post.activityID,
-      activity_city: post.activityCity,
-      activity_title: post.activityTitle,
-      activity_image: post.activityImage,
-      first_name:post. userFirstName,
-      last_name: post.userLastName,
-      changed: post.changed,
-      date: post.date,
-      description: post.description,
-      emoji: post.emoji,
-      image_url: post.imageURL,
-      comments: post.comments,
-      type:post.type
-    });
+    const postData = {
+      ...(post.userID && { user_id: post.userID }),
+      ...(post.activityID && { activity_id: post.activityID }),
+      ...(post.activityCity && { activity_city: post.activityCity }),
+      ...(post.activityTitle && { activity_title: post.activityTitle }),
+      ...(post.activityImage && { activity_image: post.activityImage }),
+      ...(post.userFirstName && { first_name: post.userFirstName }),
+      ...(post.userLastName && { last_name: post.userLastName }),
+      ...(post.changed && { changed: post.changed }),
+      ...(post.date && { date: post.date }),
+      ...(post.description && { description: post.description }),
+      ...(post.emoji && { emoji: post.emoji }),
+      ...(post.imageURL && { image_url: post.imageURL }),
+      ...(post.comments && { comments: post.comments }),
+    }
+    const res = await firestore().collection("UserPosts").add(postData);
     return res;
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
-const addChatMessage = async (message:ChatMessage)=>{
-
-  try {
-    const res = await firestore().collection("UserPosts").add({
-      first_name: message.userFirstName,
-      user_id: message.userID,
-      last_name: message.userLastName,
-      message: message.message,
-      date:message.date,
-      type:message.type  
-    
-    });
-    return res;
-  } catch (error) {
-    return Promise.reject(error);
-  }
-}
