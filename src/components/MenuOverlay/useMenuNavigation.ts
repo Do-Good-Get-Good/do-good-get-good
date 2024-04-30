@@ -12,6 +12,7 @@ export type NavigationObject = {
   title: string;
   screenName: SuperAdminStack | AdminStack | UserStack;
   toDo?: () => void;
+  params?: any;
 };
 
 export const userNavigations: Array<NavigationObject> = [
@@ -34,7 +35,8 @@ export const userNavigations: Array<NavigationObject> = [
   {
     title: "Chat",
     screenName: UserStack.Chat,
-  }
+    params: { getChatData: true },
+  },
 ];
 
 export const useMenuNavigation = (role: Role | undefined) => {

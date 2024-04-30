@@ -107,7 +107,10 @@ export const SuperAdminStack = () => {
                             component={SuperAdminHomePage}
                           />
                           <Stack.Screen name="Chat" component={Chat} />
-                          <Stack.Screen name=" AddOrEditPost" component={ AddOrEditPost} />
+                          <Stack.Screen
+                            name=" AddOrEditPost"
+                            component={AddOrEditPost}
+                          />
                         </Stack.Navigator>
                       </NavigationContainer>
                     </SuperAdminHomePageContextProvider>
@@ -168,6 +171,10 @@ export const AdminStack = () => {
                         component={ChangeActivity}
                       />
                       <Stack.Screen name="Chat" component={Chat} />
+                      <Stack.Screen
+                        name=" AddOrEditPost"
+                        component={AddOrEditPost}
+                      />
                     </Stack.Navigator>
                   </NavigationContainer>
                 </AdminProvider>
@@ -197,6 +204,7 @@ export const UserStack = () => {
               <Stack.Screen name="Faq" component={Faq} />
               <Stack.Screen name="ConceptPage" component={ConceptPage} />
               <Stack.Screen name="Chat" component={Chat} />
+              <Stack.Screen name=" AddOrEditPost" component={AddOrEditPost} />
             </Stack.Navigator>
           </NavigationContainer>
         </TimeStatisticsProvider>

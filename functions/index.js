@@ -11,6 +11,7 @@ const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 const { firebaseConfig } = require("./config");
 const { adminGetUserEmail } = require("./src/adminGetUserEmail");
 const { updateUser } = require("./src/updateUser");
+const { deletePostAfterOneYear } = require("./src/deletePostAfterOneYear");
 admin.initializeApp(firebaseConfig);
 
 // Cloud functions
@@ -24,3 +25,4 @@ exports.connectUsersToActivities = connectUsersToActivities;
 exports.updateActivityUserCount = updateActivityUserCount;
 exports.adminGetUserEmail = adminGetUserEmail;
 exports.updateUser = updateUser;
+exports.deletePostAfterOneYear = deletePostAfterOneYear;

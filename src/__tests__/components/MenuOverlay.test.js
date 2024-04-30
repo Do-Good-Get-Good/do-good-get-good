@@ -153,7 +153,7 @@ describe("Testing MenuOverlay", () => {
 
       const homeButton = getByTestId("menuLinkButton.HomePage");
       fireEvent.press(homeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("HomePage");
+      expect(mockedNavigate).toHaveBeenCalledWith("HomePage", {});
     });
 
     it("My time button", () => {
@@ -165,7 +165,7 @@ describe("Testing MenuOverlay", () => {
 
       const myTimeButton = getByTestId("menuLinkButton.MyTimePage");
       fireEvent.press(myTimeButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage");
+      expect(mockedNavigate).toHaveBeenCalledWith("MyTimePage", {});
     });
 
     it("Concept button", () => {
@@ -177,7 +177,7 @@ describe("Testing MenuOverlay", () => {
 
       const aboutButton = getByTestId("menuLinkButton.ConceptPage");
       fireEvent.press(aboutButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage");
+      expect(mockedNavigate).toHaveBeenCalledWith("ConceptPage", {});
     });
 
     it("FAQ button", () => {
@@ -189,7 +189,7 @@ describe("Testing MenuOverlay", () => {
 
       const faqButton = getByTestId("menuLinkButton.Faq");
       fireEvent.press(faqButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("Faq");
+      expect(mockedNavigate).toHaveBeenCalledWith("Faq", {});
     });
     it("Chat button", () => {
       const onClickMock = jest.fn();
@@ -200,9 +200,9 @@ describe("Testing MenuOverlay", () => {
 
       const ChatButton = getByTestId("menuLinkButton.Chat");
       fireEvent.press(ChatButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("Chat");
+      expect(mockedNavigate).toHaveBeenCalledWith("Chat", {});
     });
-    
+
     it("Admin button", () => {
       admin();
       const onClickMock = jest.fn();
@@ -213,7 +213,7 @@ describe("Testing MenuOverlay", () => {
       const adminButton = getByTestId("menuLinkButton.AdminPage");
       fireEvent.press(adminButton);
 
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage");
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminPage", {});
     });
 
     it("Activities button", () => {
@@ -227,7 +227,7 @@ describe("Testing MenuOverlay", () => {
         "menuLinkButton.AdminActivityGallery",
       );
       fireEvent.press(activitiesButton);
-      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery");
+      expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery", {});
     });
     it("Super admin button", () => {
       superAdmin();
@@ -241,7 +241,7 @@ describe("Testing MenuOverlay", () => {
       );
       fireEvent.press(superAdminButton);
 
-      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem");
+      expect(mockedNavigate).toHaveBeenCalledWith("AllUsersInTheSystem", {});
     });
 
     it("Log out button", () => {
