@@ -9,12 +9,11 @@ import {
 import BottomLogo from "../../components/BottomLogo";
 import Menu from "../../components/Menu";
 import typography from "../../assets/theme/typography";
-import colors from "../../assets/theme/colors";
 import { UserPost } from "../../utility/types";
 import { LongButton } from "../../components/Buttons/LongButton";
 import { GoBackButton } from "../../components/Buttons/GoBackButton";
 import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
-import ImagePicker from "react-native-image-crop-picker";
+
 import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
 import { useUserPostsActions } from "../Chat/useUserPostsActions";
@@ -54,23 +53,13 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
     }
   };
 
-  const openImagePicker = () => {
-    ImagePicker.openPicker({
-      mediaType: "photo",
-
-      cropping: true,
-    }).then((image) => {
-      setImageURL(image.sourceURL || "");
-    });
-  };
-
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
       <GoBackButton />
       <ScrollView>
         <ChatCardHeader post={post} />
-        <AddImage imageURL={imageURL} openImagePicker={openImagePicker} />
+        <AddImage imageURL={imageURL} setImageURL={setImageURL} />
         <Spinner loading={loading} />
         <View style={styles.inputContainer}>
           <TextInput

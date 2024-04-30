@@ -91,6 +91,7 @@ android {
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode project.env.get("RELEASE_NUMBER").toInteger();
         versionName project.env.get("APP_VERSION")
+        vectorDrawables.useSupportLibrary = true
     }
 
     flavorDimensions "default"
