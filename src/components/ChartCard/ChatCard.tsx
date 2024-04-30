@@ -14,45 +14,53 @@ type Props = {
   post: UserPost;
   users: User[];
   handleAddComment: () => void;
+  onDelete: () => void;
+  isCurrentUser: boolean;
 };
 
-export const ChatCard = ({ post, users, handleAddComment }: Props) => {
-  const handleDelete = () => {
-    Alert.alert("Delete button pressed");
-  };
-
+export const ChatCard = ({
+  post,
+  users,
+  handleAddComment,
+  onDelete,
+  isCurrentUser,
+}: Props) => {
   return (
-    <View testID="chat-card">
-      <View style={styles.container}>
-        <ChatCardDate date={post.date}/>
-        <TouchableOpacity style={styles.cardContainer}>
-          <View style={styles.headerAndMenu}>
-            <ChatCardHeader post={post} />
-            <ChatCardEditMenu onDeletetPress={handleDelete} />
-          </View>
-          <ChatCardImage imageUrl={post.imageURL} />
-          <ChatCardDescription description={post.description} />
-          <CommentsSection
-            comments={post.comments}
-            users={users}
-            onAddComment={handleAddComment}
-          />
-        </TouchableOpacity>
-      </View>
+    <View
+      testID="chat-card"
+      style={[styles.container, isCurrentUser && { alignItems: "flex-end" }]}
+    >
+      <ChatCardDate date={post.date} />
+      <TouchableOpacity style={[styles.cardContainer]}>
+        <View style={styles.headerAndMenu}>
+          <ChatCardHeader post={post} />
+          {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
+        </View>
+        <ChatCardImage imageUrl={post.imageURL} />
+        <ChatCardDescription description={post.description} />
+        <CommentsSection
+          comments={post.comments}
+          users={users}
+          onAddComment={handleAddComment}
+        />
+      </TouchableOpacity>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     marginVertical: 10,
   },
+
   cardContainer: {
     ...shadows.cardShadow,
-    maxWidth: "80%",
+    width: "80%",
     backgroundColor: colors.background,
     borderRadius: 5,
   },
+
   headerAndMenu: {
     flex: 0.3,
     flexDirection: "row",

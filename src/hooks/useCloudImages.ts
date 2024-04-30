@@ -43,7 +43,7 @@ const useCloudImages = () => {
 
   useEffect(() => {
     Cache.getData("Cloud_Images_Key").then((res) => {
-      if (!res) fetchImages();
+      if (!res || res.length === 0) fetchImages();
 
       setImages(res);
     });

@@ -93,8 +93,8 @@ export type Comment = {
 export type UserPost = {
   id: string;
   userID: User["id"];
-  userFirstName: User["firstName"];
-  userLastName: User["lastName"];
+  userFirstName?: User["firstName"];
+  userLastName?: User["lastName"];
   activityID: Activity["id"];
   activityCity: Activity["city"];
   activityTitle: Activity["title"];
