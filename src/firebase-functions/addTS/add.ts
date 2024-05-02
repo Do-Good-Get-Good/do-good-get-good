@@ -1,10 +1,8 @@
 import { Platform } from "react-native";
 import {  Post, User, UserPost } from "../../utility/types";
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
-const postTime = new Date();
+
 
 const addImageToStorage =async (imageURL: string)=>{
   const uploadUri =
@@ -29,12 +27,15 @@ export const saveImageToChatImageStoreAndCreateUserPost = async (
   post: UserPost,
 ) => {
   try {
+    const timestamp = firestore.Timestamp.now().toMillis(); 
+    const formattedDate = new Date(timestamp)
+  
 const fullPath = post?.imageURL  && await addImageToStorage(post?.imageURL )
 
         addChatPost({
           ...post,
           imageURL:  fullPath ,
-          date: postTime,
+          date: formattedDate,
         });
   
   } catch (e) {
@@ -43,6 +44,8 @@ const fullPath = post?.imageURL  && await addImageToStorage(post?.imageURL )
 };
 
 const addChatPost = async (post: UserPost) => {
+  const timestamp = firestore.Timestamp.now().toMillis(); 
+  const formattedDate = new Date(timestamp)
   try {
     const postData = {
       ...(post.userID && { user_id: post.userID }),
@@ -53,14 +56,14 @@ const addChatPost = async (post: UserPost) => {
       ...(post.userFirstName && { first_name: post.userFirstName }),
       ...(post.userLastName && { last_name: post.userLastName }),
       ...(post.changed && { changed: post.changed }),
-      ...(post.date && { date: post.date }),
       ...(post.description && { description: post.description }),
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.imageURL && { image_url: post.imageURL }),
       ...(post.comments && { comments: post.comments }),
+      date:  formattedDate    
     }
     const res = await firestore().collection("UserPosts").add(postData);
-    return res;
+   return res;
   } catch (error) {
     return Promise.reject(error);
   }

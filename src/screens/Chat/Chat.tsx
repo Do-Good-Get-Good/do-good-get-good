@@ -1,18 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { ChatCard } from "../../components/ChartCard/ChatCard";
 import BottomLogo from "../../components/BottomLogo";
 import Menu from "../../components/Menu";
 import { LongButton } from "../../components/Buttons/LongButton";
-import { TextInput } from "react-native";
-import colors from "../../assets/theme/colors";
 import { Activity, Comment, Post, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
-import { MessageCard } from "../../components/ChartCard/MessageCard";
 import { AllPosts } from "./AllPosts";
 import { ChatInputField } from "./ChatInputField";
 
