@@ -17,10 +17,12 @@ export const ChatCardImage = ({ imageUrl, size = 2.3 }: Props) => {
   };
 
   return (
-    <Image
-      testID="chat-card-image"
-      source={{ uri: imageUrl }}
-      style={imageStyle}
-    />
+    imageUrl && (
+      <Image
+        testID="chat-card-image"
+        source={{ uri: imageUrl }}
+        style={imageStyle}
+      />
+    )
   );
 };

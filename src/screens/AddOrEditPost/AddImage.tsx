@@ -9,8 +9,8 @@ import {
 import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import { UserPost } from "../../utility/types";
-import ImagePicker from "react-native-image-crop-picker";
 import { ChatCardImage } from "../../components/ChartCard/ChatCardImage";
+import { selectImage } from "./selectImage";
 
 type Props = {
   imageURL: UserPost["imageURL"];
@@ -18,29 +18,8 @@ type Props = {
 };
 
 export const AddImage = ({ imageURL, setImageURL }: Props) => {
-  const openImagePicker = async () => {
-    try {
-      const granted = await PermissionsAndroid.request(
-        PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-      );
-      if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-        ImagePicker.openPicker({
-          mediaType: "photo",
-          cropping: true,
-        }).then((image) => {
-          console.log("image ---   ", image);
-          setImageURL(image.sourceURL ?? image.path ?? "");
-        });
-      } else {
-        console.log("error on openImagePicker ");
-      }
-    } catch (err) {
-      console.warn(err);
-    }
-  };
-
   return (
-    <TouchableOpacity onPress={openImagePicker}>
+    <TouchableOpacity onPress={() => selectImage(setImageURL)}>
       {imageURL ? (
         <ChatCardImage size={1.6} imageUrl={imageURL} />
       ) : (
