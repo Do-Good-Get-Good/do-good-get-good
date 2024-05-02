@@ -3,7 +3,7 @@ import ImagePicker from "react-native-image-crop-picker";
 import ImageResizer from "@bam.tech/react-native-image-resizer";
 
 const resizeImage = (path: string, setImageURL: (url: string) => void) => {
-  ImageResizer.createResizedImage(path, 1000, 1000, "JPEG", 10)
+  ImageResizer.createResizedImage(path, 1000, 1000, "JPEG", 15)
     .then((response) => {
       let pathAfterResize =
         Platform.OS === "android" ? `file://${response.path}` : response.path;
