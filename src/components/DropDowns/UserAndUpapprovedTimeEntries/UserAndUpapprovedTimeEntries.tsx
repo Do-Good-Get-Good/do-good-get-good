@@ -1,11 +1,6 @@
 import { useEffect, useState } from "react";
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-} from "../../../utility/types";
+import { TimeEntry, User } from "../../../utility/types";
 import { UserAndUnapprovedTimeEntriesRow } from "./UserAndUnapprovedTimeEntriesRow";
-import { useAdminFunction } from "../../../context/AdminContext";
 import { StyleSheet, Text } from "react-native";
 import { textAllTimeEntriesApproved } from "./utility";
 import typography from "../../../assets/theme/typography";
@@ -14,7 +9,6 @@ import { TitleAndOnCheckAll } from "../../TitleAndOnCheckAll";
 import { LongButton } from "../../Buttons/LongButton";
 import { AlertToApproveTimeEntries } from "../../Alerts/AlertToApproveTimeEntries";
 import { getUnconfirmedTimeEntriesFromAllUsersAdminPage } from "../../TitleAndOnCheckAll/utility";
-import tr from "date-fns/locale/tr";
 
 type Props = {
   loading: boolean;

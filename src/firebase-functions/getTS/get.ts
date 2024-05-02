@@ -94,19 +94,21 @@ export const getUsersFiveNewestTimeEntries = async (
     return Promise.reject(error);
   }
 };
-export const getAllUsersConnectedToAdmin = async (adminId: User["id"]) => {
+export const getAllUsersConnectedToAdmin = async (
+  adminId: User["id"],
+): Promise<User[]> => {
   try {
     let userData = await firestore()
       .collection("Users")
       .where("admin_id", "==", adminId)
       .get();
 
-    if (userData.empty)
-      throw new Error("There was an error fetching all user data");
+    let data = userData?.docs
+      ? userData.docs.map((doc) => {
+          return userObject(doc);
+        })
+      : [];
 
-    let data = userData.docs.map((doc) => {
-      return userObject(doc);
-    });
     return Promise.resolve(data);
   } catch (error) {
     return Promise.reject(error);

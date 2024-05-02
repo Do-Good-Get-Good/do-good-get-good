@@ -1,6 +1,6 @@
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import typography from "../../assets/theme/typography";
-import { NavigationProp, useNavigation } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import { NavigationObject } from "./useMenuNavigation";
 import {
   AdminStack,
