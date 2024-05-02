@@ -62,7 +62,7 @@ export const InputFieldWithController = ({
               style={[placeholderTextStyle(), borderStyle(error !== undefined)]}
               onBlur={onBlur}
               onChangeText={(value) => onChange(toTrim ? value.trim() : value)}
-              value={toLowerCase ? value.toLowerCase() : value}
+              value={toLowerCase ? value?.toLowerCase() : value}
               placeholder={placeholderText}
               placeholderTextColor={colors.dark}
               returnKeyType={returnKeyType}
