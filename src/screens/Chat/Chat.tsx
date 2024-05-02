@@ -11,6 +11,7 @@ import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
 import { ChatInputField } from "./ChatInputField";
+import { ChatCardEmoji } from "../../components/ChartCard/ChatCardEmoji";
 
 
 
@@ -75,6 +76,7 @@ export const Chat = ({ navigation, route }: Props) => {
               onActivityPress={onChooseActivity}
             />
             <ChatInputField loggedInUser={loggedInUser} addPost={addPost} />
+            {/* <ChatCardEmoji/> */}
             <BottomLogo />
           </>
         )}
