@@ -1,4 +1,4 @@
-import { ScrollView} from "react-native";
+import { ScrollView } from "react-native";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import BottomNavButtons from "./BottomNavButtons";
@@ -10,7 +10,7 @@ import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
 import { UserNewAccount } from "../screens/CreateUser";
 import { useState } from "react";
 import { ChangeUserRole } from "./ChangeUserRole";
-import React, { useRef } from 'react';
+import React, { useRef } from "react";
 import userLevelStore from "../store/userLevel";
 
 const schema: yup.ObjectSchema<UserNewAccount> = yup
@@ -19,13 +19,13 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     name: yup
       .string()
       .trim()
-      .max(30,"* Förnamn kan innehålla max 30 tecken")
+      .max(30, "* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Förnamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     surname: yup
       .string()
       .trim()
-      .max(30,"* Förnamn kan innehålla max 30 tecken")
+      .max(30, "* Förnamn kan innehålla max 30 tecken")
       .min(1, "* Efternamn måste innehålla minst 1 tecken")
       .required("* Obligatorisk"),
     email: yup
@@ -47,7 +47,7 @@ const schema: yup.ObjectSchema<UserNewAccount> = yup
     role: yup
       .mixed<Role>()
       .oneOf(Object.values(Role), "* Obligatorisk")
-      .required()
+      .required(),
   })
   .defined();
 
@@ -77,7 +77,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
       email: user?.email,
       confirmEmail: user?.email,
       password: user?.password,
-      role:userLevel=== Role.superadmin? "Behörighet" : Role.user 
+      role: userLevel === Role.superadmin ? "Behörighet" : Role.user,
     },
     resolver: yupResolver(schema),
   });
@@ -87,7 +87,7 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
     surname,
     email,
     password,
-    role 
+    role,
   }: UserNewAccount) => {
     isDirty &&
       setUser({
@@ -105,7 +105,6 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
       <ScrollView
         ref={scrollViewRef}
         onContentSizeChange={handleContentSizeChange}
-    
         keyboardDismissMode={"on-drag"}
         style={{ flex: 1 }}
         testID="scroll"
@@ -116,37 +115,39 @@ export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
           control={control}
           error={errors.name}
           name={"name"}
-          testID={'name'}
+          testID={"name"}
         />
         <InputFieldWithController
           placeholderText={"Efternamn"}
           control={control}
           error={errors.surname}
           name={"surname"}
-          testID={'surname'}
+          testID={"surname"}
         />
         <InputFieldWithController
           placeholderText={"E-mail"}
+          toLowerCase={true}
           control={control}
           error={errors.email}
           name={"email"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
           contextMenuHidden={true}
-          testID={'email'}
+          testID={"email"}
         />
         <InputFieldWithController
           placeholderText={"Bekräfta E-mail"}
+          toLowerCase={true}
           control={control}
           error={errors.confirmEmail}
           name={"confirmEmail"}
           autoCapitalize={"none"}
           keyboardType={"email-address"}
           contextMenuHidden={true}
-          testID={'confirm-email'}
+          testID={"confirm-email"}
         />
         {userLevel === Role.superadmin && (
-        <ChangeUserRole error={errors.role} control={control} />
+          <ChangeUserRole error={errors.role} control={control} />
         )}
       </ScrollView>
 
