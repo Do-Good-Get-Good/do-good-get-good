@@ -5,10 +5,9 @@ import crashlytics from "@react-native-firebase/crashlytics";
 import { log } from "firebase-functions/logger";
 
 export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
-  console.log(post.imageURL, " -----------------");
   try {
+    post.imageURL && (await storage().refFromURL(post?.imageURL).delete());
     await deleteUserPost(post.id);
-    await storage().refFromURL(post.imageURL).delete();
   } catch (error: any) {
     console.log(error);
     crashlytics().log("There was an error to delete user post");

@@ -1,36 +1,18 @@
 import React, { useEffect, useRef, useState } from "react";
 import { ScrollView, StyleSheet, Text, View } from "react-native";
-import { ChatCard } from "../../components/ChartCard/ChatCard";
 import BottomLogo from "../../components/BottomLogo";
 import Menu from "../../components/Menu";
 import { LongButton } from "../../components/Buttons/LongButton";
-import { TextInput } from "react-native";
-import colors from "../../assets/theme/colors";
-import { Activity, Comment, UserPost } from "../../utility/types";
+import { Activity, Comment, Post, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
+import { AllPosts } from "./AllPosts";
+import { ChatInputField } from "./ChatInputField";
 
-const users = [
-  {
-    id: "user1",
-    activitiesAndAccumulatedTime: [],
-    connectedActivities: [],
-    firstName: "Erik",
-    lastName: "Andersson",
-    statusActive: true,
-  },
-  {
-    id: "user2",
-    activitiesAndAccumulatedTime: [],
-    connectedActivities: [],
-    firstName: "Jerom",
-    lastName: "Karlsson",
-    statusActive: false,
-  },
-];
+
 
 type Props = {
   navigation: any;
@@ -40,15 +22,13 @@ type Props = {
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
 
-  const { onDelete, loading } = useUserPostsActions();
-  const { posts, loggedInUser, getAllActivitiesConnectedToUser } =
-    useChat(getChatData);
-
+  const { onDelete, addPost, loading } = useUserPostsActions();
+  const { posts, loggedInUser, getAllActivitiesConnectedToUser } =useChat(getChatData);
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
   const scrollViewRef = useRef<ScrollView>(null);
-
-  const handleAddComment = () => {};
+  const handleAddComment=()=>{};
+ 
 
   const onCreatePostButtonPressed = async () => {
     const activities = await getAllActivitiesConnectedToUser(
@@ -77,16 +57,11 @@ export const Chat = ({ navigation, route }: Props) => {
       >
         {loggedInUser && (
           <>
-            {posts.map((post, i) => (
-              <ChatCard
-                key={`${post.id}-${i}`}
-                post={post}
-                users={users}
-                handleAddComment={handleAddComment}
-                onDelete={() => onDelete(post)}
-                isCurrentUser={post.userID === loggedInUser?.id}
-              />
-            ))}
+           <AllPosts 
+           posts={posts} 
+           handleAddComment={handleAddComment}
+           onDelete={onDelete}
+           loggedInUserID={loggedInUser.id}/>
             <LongButton
               style={styles.longButton}
               title="Skapa inlägg"
@@ -99,10 +74,7 @@ export const Chat = ({ navigation, route }: Props) => {
               activities={activities}
               onActivityPress={onChooseActivity}
             />
-            <TextInput
-              style={styles.inputField}
-              placeholder="Skriv ett meddelande"
-            />
+            <ChatInputField loggedInUser={loggedInUser} addPost={addPost} />
             <BottomLogo />
           </>
         )}
@@ -119,14 +91,5 @@ const styles = StyleSheet.create({
   longButton: {
     margin: 20,
     borderRadius: 5,
-  },
-  inputField: {
-    borderWidth: 1,
-    padding: 6,
-    marginHorizontal: 20,
-    backgroundColor: colors.background,
-    borderColor: colors.dark,
-    color: colors.dark,
-    marginBottom: 50,
-  },
+  }
 });

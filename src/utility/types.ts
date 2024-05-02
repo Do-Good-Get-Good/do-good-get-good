@@ -90,27 +90,25 @@ export type Comment = {
   userID: User["id"];
 };
 
+
+export enum Post {
+  post = 'post',
+  message='message'
+}
+
 export type UserPost = {
   id: string;
   userID: User["id"];
-  userFirstName?: User["firstName"];
-  userLastName?: User["lastName"];
-  activityID: Activity["id"];
-  activityCity: Activity["city"];
-  activityTitle: Activity["title"];
-  activityImage: Activity["imageUrl"] | Activity["photo"];
-  changed: boolean;
+  userFirstName: User["firstName"];
+  userLastName: User["lastName"];
+  activityID?: Activity["id"];
+  activityCity?: Activity["city"];
+  activityTitle?: Activity["title"];
+  activityImage?: Activity["imageUrl"] | Activity["photo"];
+  changed?: boolean;
   date: Date | string;
   description: string;
-  emoji: Array<PostEmoji>;
-  imageURL: string;
+  emoji?: Array<PostEmoji>;
+  imageURL?: string;
   comments: Array<Comment>;
-};
-
-export type ChatMessage = {
-  id: string;
-  userFirstName: User["firstName"];
-  userID: User["id"];
-  userLastName: User["lastName"];
-  message: string;
 };
