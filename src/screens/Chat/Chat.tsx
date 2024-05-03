@@ -76,7 +76,6 @@ export const Chat = ({ navigation, route }: Props) => {
               onActivityPress={onChooseActivity}
             />
             <ChatInputField loggedInUser={loggedInUser} addPost={addPost} />
-            {/* <ChatCardEmoji/> */}
             <BottomLogo />
           </>
         )}

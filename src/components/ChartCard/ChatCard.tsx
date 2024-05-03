@@ -9,6 +9,7 @@ import { CommentsSection } from "./ChatComments/CommentsSection";
 import { Comment, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
+import { ChatCardEmoji } from "./ChatCardEmoji";
 
 type Props = {
   post: UserPost;
@@ -38,6 +39,7 @@ export const ChatCard = ({
         </View>
         <ChatCardImage imageUrl={post.imageURL} />
         <ChatCardDescription description={post.description} />
+        {/* <ChatCardEmoji/> */}
         <CommentsSection
           comments={post.comments}
           users={users}
