@@ -21,7 +21,7 @@ export const CommentInfo= ({comment,user}:props) => {
 
 const styles = StyleSheet.create({
   container:{
-    flexDirection:'row'
+    // flexDirection:'row'
   },
     textDescription:{
         flexDirection:'row',

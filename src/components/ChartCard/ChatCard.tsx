@@ -38,13 +38,13 @@ export const ChatCard = ({
           {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
         <ChatCardImage imageUrl={post.imageURL} />
+        <ChatCardEmoji emoji={post.emoji}/>
         <ChatCardDescription description={post.description} />
-        {/* <ChatCardEmoji/> */}
-        <CommentsSection
+        {/* <CommentsSection
           comments={post.comments}
           users={users}
           onAddComment={handleAddComment}
-        />
+        /> */}
       </TouchableOpacity>
     </View>
   );

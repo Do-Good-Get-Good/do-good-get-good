@@ -21,7 +21,8 @@ const styles = StyleSheet.create({
       textDescription:{
         ...typography.b2,
         marginLeft: 10,
-        color: colors.dark
+        color: colors.dark,
+        marginVertical:10
       }
 });
 

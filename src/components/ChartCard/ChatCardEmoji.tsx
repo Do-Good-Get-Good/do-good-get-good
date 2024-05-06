@@ -4,16 +4,22 @@ import {
   StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
 import EmojiSelector from 'react-native-emoji-selector';
-
 import { EmojiList } from "./EmojiList";
+import { UserPost } from "../../utility/types";
 
 
+type Props ={
+  emoji: UserPost['emoji'];
+}
 
-export const ChatCardEmoji = () => {
+
+export const ChatCardEmoji = ({emoji }: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEmoji, setSelectedEmoji] = useState('');
     const [defaultEmoji, setDefaultEmoji] = useState('😊');
 
+
+  
     const emojis= [
       { emojiName: "😄", userID: "user1" },
       { emojiName: "😍", userID: "user2" },
@@ -60,7 +66,9 @@ export const ChatCardEmoji = () => {
 
   const onEmojiSelect = (emojiName:string) => {
       setSelectedEmoji(emojiName);
+      console.log(emojiName)
       setModalVisible(false);
+      // await addPost({ ...post, emojiName}
   }; 
   return (
 
@@ -68,8 +76,8 @@ export const ChatCardEmoji = () => {
     <TouchableOpacity onPress={onSelctedEmojiPress}>
         <Text style={styles.emojiSize}>{selectedEmoji || defaultEmoji}</Text> 
     </TouchableOpacity>
-    <EmojiList emojis={emojis} users={users} />
-    {/* <EmojiList emojis={emojis} /> */}
+    <View style={{ width: 20 }} />
+            <EmojiList emojis={emojis} users={users} />
     <Modal
         visible={modalVisible}
         animationType="slide"
@@ -88,7 +96,8 @@ const styles = StyleSheet.create({
     container:{
         flex:1,
         flexDirection:'row',
-        // flexWrap: 'wrap'
+        marginHorizontal:10,
+        flexWrap: 'wrap'
     },
     emojiSize:{
         fontSize:30
