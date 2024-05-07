@@ -1,17 +1,16 @@
 import React, { useState } from "react";
 import {
-  View,StyleSheet,Text,Image, Dimensions, TouchableOpacity, Alert, Modal, TouchableWithoutFeedback
+  View,StyleSheet,Text, TouchableOpacity, Modal, TouchableWithoutFeedback
 } from "react-native";
 import { PostEmoji, User } from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 
 type Props={
-    emojis:PostEmoji[],
-    users: User[];
+      emojis:PostEmoji[]
 }
 
-export const EmojiList = ({emojis,users}:Props) => {
+export const EmojiList = ({emojis}:Props) => {
 
     const [selectedEmoji, setSelectedEmoji] = useState<PostEmoji | null>(null);
 
@@ -20,16 +19,10 @@ export const EmojiList = ({emojis,users}:Props) => {
     };
 
     const gettingEmojiDetails = () => {
-        if (!selectedEmoji) return null;
     
         const emojiDetails = emojis
-          .map((emoji) => {
-            const user = users.find((user) => user.id === emoji.userID);
-            if (user) {
-              return `${emoji.emojiName}  ${user.firstName} ${user.lastName}`;
-            } else {
-              return emoji.emojiName;
-            }
+          .map((emoji) =>{
+            return `${emoji.emojiName}  ${emoji.userFirstName} ${emoji.userLastName}`;
           })
           .join("\n");
     
@@ -40,7 +33,7 @@ export const EmojiList = ({emojis,users}:Props) => {
             visible={selectedEmoji !== null}
             onRequestClose={() => setSelectedEmoji(null)}
           >
-            <TouchableWithoutFeedback onPress={() => setSelectedEmoji(null)}>
+           <TouchableWithoutFeedback onPress={() => setSelectedEmoji(null)}>
               <View style={styles.modalContainer}>
                 <View style={styles.modalContent}>
                   <Text style={styles.modalText}>{emojiDetails}</Text>
@@ -52,10 +45,8 @@ export const EmojiList = ({emojis,users}:Props) => {
       };
 
   return (
-
-<View style={styles.container}>
-      {emojis.map((emoji, index) => {
-        const user = users.find((user) => user.id === emoji.userID);
+    <View style={styles.container}>
+      {emojis.slice(0, 2).map((emoji, index) => {
         return (
           <TouchableOpacity
             key={index}
@@ -66,8 +57,29 @@ export const EmojiList = ({emojis,users}:Props) => {
           </TouchableOpacity>
         );
       })}
+      {emojis.length > 2 && (
+        <TouchableOpacity onPress={()=>{console.log("Remaining emojis")}}>
+        <Text style={styles.remainingCount}>
+          +{emojis.length - 2}
+        </Text>
+        </TouchableOpacity>
+      )}
       {gettingEmojiDetails()}
     </View>
+
+    // <View style={styles.container}>
+    //   {emojis.map((emoji, index) => {
+    //     return (
+    //       <TouchableOpacity
+    //         key={index}
+    //         style={styles.emojiContainer}
+    //         onPress={() => handleEmojiPress(emoji)}>
+    //         <Text style={styles.emoji}>{emoji.emojiName}</Text>
+    //       </TouchableOpacity>
+    //     );
+    //   })}
+    //   {gettingEmojiDetails()}
+    // </View>
   );
 };
 
@@ -81,8 +93,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
       },
       emoji: {
-        fontSize: 28,
-        marginRight: 5,
+        fontSize: 26,
       },
       modalContainer: {
         flex: 1,
@@ -97,5 +108,7 @@ const styles = StyleSheet.create({
       modalText: {
         ...typography.b2,
         fontWeight:'bold'
+      },remainingCount: {
+        ...typography.title
       }
 });

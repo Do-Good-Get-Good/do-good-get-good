@@ -6,6 +6,8 @@ import {
 import EmojiSelector from 'react-native-emoji-selector';
 import { EmojiList } from "./EmojiList";
 import { UserPost } from "../../utility/types";
+import { SmileIcon } from "../../assets/icons/SmileIcon";
+import { useUserPostsActions } from "../../screens/Chat/useUserPostsActions";
 
 
 type Props ={
@@ -16,68 +18,45 @@ type Props ={
 export const ChatCardEmoji = ({emoji }: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEmoji, setSelectedEmoji] = useState('');
-    const [defaultEmoji, setDefaultEmoji] = useState('😊');
-
-
+    // const { addPost} = useUserPostsActions();
   
     const emojis= [
-      { emojiName: "😄", userID: "user1" },
-      { emojiName: "😍", userID: "user2" },
-      { emojiName: "👍", userID: "user3" },
-      { emojiName: "😂", userID: "user2" },
-      { emojiName: "❤️", userID: "user3" },
-      { emojiName: "🔥", userID: "user1" },
-      
+      { emojiName: "😄", userID: "user1",userFirstName:'Erik',userLastName:"Andersson" },
+      { emojiName: "😍", userID: "user2" ,userFirstName:'Jerom',userLastName:"Karlsson" },
+      { emojiName: "👍", userID: "user3",userFirstName:'Jerom',userLastName:"Karlsson" },
+      { emojiName: "😂", userID: "user4",userFirstName:'Sara',userLastName:"Karlsson" },
+      { emojiName: "😍", userID: "user4",userFirstName:'Peter',userLastName:"Hans" }, 
+      { emojiName: "👍", userID: "user3",userFirstName:'Jerom',userLastName:"Karlsson" },
+      { emojiName: "😂", userID: "user4",userFirstName:'Sara',userLastName:"Karlsson" },
+      { emojiName: "😍", userID: "user4",userFirstName:'Peter',userLastName:"Hans" }    
     ];
-    const users = [
-      {
-        id: "user1",
-        activitiesAndAccumulatedTime: [],
-        connectedActivities: [],
-        firstName: "Erik",
-        lastName: "Andersson",
-        statusActive: true,
-      },
-      {
-        id: "user2",
-        activitiesAndAccumulatedTime: [],
-        connectedActivities: [],
-        firstName: "Jerom",
-        lastName: "Karlsson",
-        statusActive: false,
-      },
-      {
-        id: "user3",
-        activitiesAndAccumulatedTime: [],
-        connectedActivities: [],
-        firstName: "dsd",
-        lastName: "Karlssodscsn",
-        statusActive: false,
-      },
-    ];
-    
-    const onSelctedEmojiPress = () => {
+
+    const onSelectedEmojiPress = () => {
       if (!selectedEmoji) {
-          setModalVisible(true);
+        setModalVisible(true);
       } else {
-          setSelectedEmoji('');
+        setSelectedEmoji('');
       }
-  };
-
-  const onEmojiSelect = (emojiName:string) => {
+    };
+  
+    const onEmojiSelect = (emojiName: string) => {
       setSelectedEmoji(emojiName);
-      console.log(emojiName)
       setModalVisible(false);
-      // await addPost({ ...post, emojiName}
-  }; 
-  return (
-
+      console.log(emojiName)
+      // addPost(emoji?.push(emojiName))
+     
+    }; 
+    return (
     <View style={styles.container}>
-    <TouchableOpacity onPress={onSelctedEmojiPress}>
-        <Text style={styles.emojiSize}>{selectedEmoji || defaultEmoji}</Text> 
-    </TouchableOpacity>
+       <TouchableOpacity onPress={onSelectedEmojiPress}>
+        {selectedEmoji ? (
+          <Text style={styles.emojiSize}>{selectedEmoji}</Text>
+        ) : (
+          <SmileIcon onPress={onSelectedEmojiPress} />
+        )}
+      </TouchableOpacity>
     <View style={{ width: 20 }} />
-            <EmojiList emojis={emojis} users={users} />
+            <EmojiList emojis={emojis} />
     <Modal
         visible={modalVisible}
         animationType="slide"
@@ -87,6 +66,7 @@ export const ChatCardEmoji = ({emoji }: Props) => {
         <View style={styles.emoji}>
             <EmojiSelector onEmojiSelected={onEmojiSelect} />
         </View>
+        
     </Modal>
     </View>
   );
@@ -97,10 +77,11 @@ const styles = StyleSheet.create({
         flex:1,
         flexDirection:'row',
         marginHorizontal:10,
+        marginVertical:10,
         flexWrap: 'wrap'
     },
     emojiSize:{
-        fontSize:30
+        fontSize:28
     },
     emoji:{
         flex:1,

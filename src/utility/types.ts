@@ -81,7 +81,9 @@ export type UserAndUnapprovedTimeEntriesType = {
 
 export type PostEmoji = {
   emojiName: string;
-  userID: string;
+  userFirstName: User["firstName"];
+  userLastName: User["lastName"];
+  userID:  User["id"];
 };
 
 export type Comment = {

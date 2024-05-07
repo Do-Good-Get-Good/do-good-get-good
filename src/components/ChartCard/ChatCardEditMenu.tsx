@@ -19,7 +19,7 @@ export const ChatCardEditMenu = ({ onDeletePress }: Props) => {
         setShowMenu(false);
         AlertQuestion(
           "",
-          "Vill du ta bort den här aktiviteten?",
+          "Vill du ta bort den här post?",
           onDeletePress,
         );
       },

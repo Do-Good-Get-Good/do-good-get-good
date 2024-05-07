@@ -25,7 +25,7 @@ export const CommentsSection = ({comments,users,onAddComment}: Props) => {
   return (
    <View>
     { findUserNameAndComment().map((item)=>item &&<CommentInfo  key={item.comment.id} comment={item.comment} user={item.user}/>)}
-    <LongButton style={styles.longButton} title="Skriv en kommentar" onPress={()=>(Alert.alert("Skriv en kommentar pressed"))}/>
+    {/* <LongButton style={styles.longButton} title="Skriv en kommentar" onPress={()=>(Alert.alert("Skriv en kommentar pressed"))}/> */}
    </View>
   );
 };

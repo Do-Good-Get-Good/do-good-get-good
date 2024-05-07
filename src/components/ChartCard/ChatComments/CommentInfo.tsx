@@ -14,7 +14,6 @@ export const CommentInfo= ({comment,user}:props) => {
     <View style={styles.container}>
         <Text testID="comment-user-name" style={styles.textDescription}>{`${user.firstName} ${user.lastName}`}</Text> 
         <Text testID="comment-text" numberOfLines={1} style={styles.textComment}>{`${comment.comment}`}</Text>
-
     </View>
   );
 };
