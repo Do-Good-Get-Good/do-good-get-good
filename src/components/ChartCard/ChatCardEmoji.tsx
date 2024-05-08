@@ -5,58 +5,46 @@ import {
 } from "react-native";
 import EmojiSelector from 'react-native-emoji-selector';
 import { EmojiList } from "./EmojiList";
-import { UserPost } from "../../utility/types";
+import { PostEmoji, User, UserPost } from "../../utility/types";
 import { SmileIcon } from "../../assets/icons/SmileIcon";
-import { useUserPostsActions } from "../../screens/Chat/useUserPostsActions";
+
+const makeEmojiObject =(user: User, emojiName:PostEmoji['emojiName']) => ({ emojiName: emojiName, userID: user.id ,userFirstName: user.firstName,userLastName:user.lastName})
 
 
 type Props ={
   emoji: UserPost['emoji'];
+  loggedInUser: User
+  addEmoji: (emoji: PostEmoji)=>void
+  deleteEmoji:(emoji: PostEmoji)=>void
 }
 
 
-export const ChatCardEmoji = ({emoji }: Props) => {
+export const ChatCardEmoji = ({emoji , addEmoji, loggedInUser, deleteEmoji}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedEmoji, setSelectedEmoji] = useState('');
+    const [selectedEmoji, setSelectedEmoji] = useState( '');
     // const { addPost} = useUserPostsActions();
   
-    const emojis= [
-      { emojiName: "😄", userID: "user1",userFirstName:'Erik',userLastName:"Andersson" },
-      { emojiName: "😍", userID: "user2" ,userFirstName:'Jerom',userLastName:"Karlsson" },
-      { emojiName: "👍", userID: "user3",userFirstName:'Jerom',userLastName:"Karlsson" },
-      { emojiName: "😂", userID: "user4",userFirstName:'Sara',userLastName:"Karlsson" },
-      { emojiName: "😍", userID: "user4",userFirstName:'Peter',userLastName:"Hans" }, 
-      { emojiName: "👍", userID: "user3",userFirstName:'Jerom',userLastName:"Karlsson" },
-      { emojiName: "😂", userID: "user4",userFirstName:'Sara',userLastName:"Karlsson" },
-      { emojiName: "😍", userID: "user4",userFirstName:'Peter',userLastName:"Hans" }    
-    ];
 
-    const onSelectedEmojiPress = () => {
-      if (!selectedEmoji) {
-        setModalVisible(true);
-      } else {
-        setSelectedEmoji('');
-      }
-    };
   
-    const onEmojiSelect = (emojiName: string) => {
+    const onEmojiSelect = async (emojiName: PostEmoji['emojiName']) => {
+      addEmoji( makeEmojiObject(loggedInUser,emojiName))
       setSelectedEmoji(emojiName);
       setModalVisible(false);
-      console.log(emojiName)
+  
       // addPost(emoji?.push(emojiName))
      
     }; 
     return (
     <View style={styles.container}>
-       <TouchableOpacity onPress={onSelectedEmojiPress}>
-        {selectedEmoji ? (
+            {selectedEmoji ? (
+         <TouchableOpacity onPress={()=>deleteEmoji(makeEmojiObject(loggedInUser,selectedEmoji))}>
           <Text style={styles.emojiSize}>{selectedEmoji}</Text>
+          </TouchableOpacity>
         ) : (
-          <SmileIcon onPress={onSelectedEmojiPress} />
+       <SmileIcon onPress={()=>setModalVisible(true)} />
         )}
-      </TouchableOpacity>
-    <View style={{ width: 20 }} />
-            <EmojiList emojis={emojis} />
+    <View style={{ width:12 }} />
+            <EmojiList emojis={emoji ??[]} />
     <Modal
         visible={modalVisible}
         animationType="slide"
@@ -81,7 +69,7 @@ const styles = StyleSheet.create({
         flexWrap: 'wrap'
     },
     emojiSize:{
-        fontSize:28
+        fontSize:20
     },
     emoji:{
         flex:1,

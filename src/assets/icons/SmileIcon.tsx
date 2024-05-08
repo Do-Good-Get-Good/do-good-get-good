@@ -17,7 +17,7 @@ export const SmileIcon = ({ onPress, style, testID = "" }: Props) => {
       color={colors.secondary}
       type="feather"
       name="smile"
-      size={30}
+      size={24}
       onPress={() => onPress && onPress()}
     />
   );

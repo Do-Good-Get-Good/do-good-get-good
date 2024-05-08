@@ -34,6 +34,5 @@ const styles = StyleSheet.create({
       padding:12,
       ...typography.b2,
         color: colors.dark ,
-        flex:1 
     },
 });

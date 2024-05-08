@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import {
   View,StyleSheet,Text, TouchableOpacity, Modal, TouchableWithoutFeedback
 } from "react-native";
-import { PostEmoji, User } from "../../utility/types";
+import { PostEmoji} from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 
@@ -58,28 +58,12 @@ export const EmojiList = ({emojis}:Props) => {
         );
       })}
       {emojis.length > 2 && (
-        <TouchableOpacity onPress={()=>{console.log("Remaining emojis")}}>
         <Text style={styles.remainingCount}>
           +{emojis.length - 2}
         </Text>
-        </TouchableOpacity>
       )}
       {gettingEmojiDetails()}
     </View>
-
-    // <View style={styles.container}>
-    //   {emojis.map((emoji, index) => {
-    //     return (
-    //       <TouchableOpacity
-    //         key={index}
-    //         style={styles.emojiContainer}
-    //         onPress={() => handleEmojiPress(emoji)}>
-    //         <Text style={styles.emoji}>{emoji.emojiName}</Text>
-    //       </TouchableOpacity>
-    //     );
-    //   })}
-    //   {gettingEmojiDetails()}
-    // </View>
   );
 };
 
@@ -93,7 +77,7 @@ const styles = StyleSheet.create({
         flexDirection: "row",
       },
       emoji: {
-        fontSize: 26,
+        fontSize: 20,
       },
       modalContainer: {
         flex: 1,
@@ -107,8 +91,7 @@ const styles = StyleSheet.create({
       },
       modalText: {
         ...typography.b2,
-        fontWeight:'bold'
       },remainingCount: {
-        ...typography.title
+        ...typography.b1
       }
 });

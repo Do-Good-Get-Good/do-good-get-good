@@ -11,7 +11,9 @@ import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
 import { ChatInputField } from "./ChatInputField";
-import { ChatCardEmoji } from "../../components/ChartCard/ChatCardEmoji";
+import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
+import { addEmoji } from "../../firebase-functions/addTS/add";
+import { deleteEmoji } from "../../firebase-functions/deleteTS/delete";
 
 
 
@@ -19,6 +21,8 @@ type Props = {
   navigation: any;
   route: any;
 };
+
+
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
@@ -61,8 +65,10 @@ export const Chat = ({ navigation, route }: Props) => {
            <AllPosts 
            posts={posts} 
            handleAddComment={handleAddComment}
+           addEmoji={ addEmoji}
            onDelete={onDelete}
-           loggedInUserID={loggedInUser.id}/>
+           deleteEmoji={deleteEmoji}
+           loggedInUser={loggedInUser}/>
             <LongButton
               style={styles.longButton}
               title="Skapa inlägg"
