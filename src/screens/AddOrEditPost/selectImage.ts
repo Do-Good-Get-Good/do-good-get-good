@@ -1,6 +1,26 @@
-import { PermissionsAndroid, Platform } from "react-native";
+import { Alert, Linking, Platform } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
 import ImageResizer from "@bam.tech/react-native-image-resizer";
+import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
+import { AlertInfo } from "../../components/Alerts/AlertInfo";
+
+const permission =
+  Platform.OS === "ios"
+    ? PERMISSIONS.IOS.PHOTO_LIBRARY
+    : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+
+const showPermissionDeniedAlert = () =>
+  Alert.alert(
+    "Åtkomst nekad",
+    "Vi behöver denna behörighet för att använda foto. Vänligen ge det i appinställningarna.",
+    [{ text: "Cancel" }, { text: "Open Settings", onPress: openAppSettings }],
+    { cancelable: false },
+  );
+
+const somethingWhentWringAlert = () =>
+  AlertInfo(
+    "Något gick fel. Starta om appen och prova igen. Om det inte hjälper, kontakta din konsultchef.",
+  );
 
 const resizeImage = (path: string, setImageURL: (url: string) => void) => {
   ImageResizer.createResizedImage(path, 1000, 1000, "JPEG", 15)
@@ -10,37 +30,55 @@ const resizeImage = (path: string, setImageURL: (url: string) => void) => {
       setImageURL(pathAfterResize ?? "");
     })
     .catch((err) => {
+      somethingWhentWringAlert();
       console.log(err);
     });
 };
 
-const openImagePicke = (setImageURL: (url: string) => void) => {
-  ImagePicker.openPicker({
-    mediaType: "photo",
-    cropping: true,
-    freeStyleCropEnabled: true,
-  }).then((image) => {
-    resizeImage(image.path, setImageURL);
-  });
+const openImagePicker = async (setImageURL: (url: string) => void) => {
+  try {
+    await ImagePicker.openPicker({
+      mediaType: "photo",
+      cropping: true,
+      freeStyleCropEnabled: true,
+    }).then((image) => {
+      resizeImage(image.path, setImageURL);
+    });
+  } catch (err) {
+    somethingWhentWringAlert();
+    console.log(err);
+  }
 };
 
-const androidPermission = async (setImageURL: (url: string) => void) => {
+export const checkPermissionAndOpenImage = async (
+  setImageURL: (url: string) => void,
+) => {
   try {
-    const granted = await PermissionsAndroid.request(
-      PermissionsAndroid.PERMISSIONS.READ_EXTERNAL_STORAGE,
-    );
-    if (granted === PermissionsAndroid.RESULTS.GRANTED) {
-      openImagePicke(setImageURL);
+    const result = await check(permission);
+    if (result === RESULTS.GRANTED) {
+      openImagePicker(setImageURL);
     } else {
-      console.log("error on openImagePicker ");
+      requestPermission();
     }
   } catch (err) {
+    somethingWhentWringAlert();
     console.warn(err);
   }
 };
 
-export const selectImage = async (setImageURL: (url: string) => void) => {
-  Platform.OS === "android"
-    ? androidPermission(setImageURL)
-    : openImagePicke(setImageURL);
+const requestPermission = async () => {
+  try {
+    const result = permission && (await request(permission));
+    if (result === RESULTS?.GRANTED) {
+    } else {
+      showPermissionDeniedAlert();
+    }
+  } catch (err) {
+    somethingWhentWringAlert();
+    console.warn(err);
+  }
+};
+
+const openAppSettings = () => {
+  Linking.openSettings();
 };

@@ -10,7 +10,7 @@ import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
 import { UserPost } from "../../utility/types";
 import { ChatCardImage } from "../../components/ChartCard/ChatCardImage";
-import { selectImage } from "./selectImage";
+import { checkPermissionAndOpenImage } from "./selectImage";
 
 type Props = {
   imageURL: UserPost["imageURL"];
@@ -19,7 +19,7 @@ type Props = {
 
 export const AddImage = ({ imageURL, setImageURL }: Props) => {
   return (
-    <TouchableOpacity onPress={() => selectImage(setImageURL)}>
+    <TouchableOpacity onPress={() => checkPermissionAndOpenImage(setImageURL)}>
       {imageURL ? (
         <ChatCardImage size={1.6} imageUrl={imageURL} />
       ) : (
