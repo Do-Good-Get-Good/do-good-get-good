@@ -2,15 +2,16 @@ import React, { useState } from "react";
 import {
   View,StyleSheet,Text, TouchableOpacity, Modal, TouchableWithoutFeedback
 } from "react-native";
-import { PostEmoji} from "../../utility/types";
+import { PostEmoji, User} from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 
 type Props={
-  emojis:PostEmoji[]
+  emojis:PostEmoji[],
+  loggedInUserId:User['id']
 }
 
-export const EmojiList = ({emojis}:Props) => {
+export const EmojiList = ({emojis,loggedInUserId}:Props) => {
 
     const [selectedEmoji, setSelectedEmoji] = useState<PostEmoji | null>(null);
 
@@ -53,7 +54,7 @@ export const EmojiList = ({emojis}:Props) => {
             style={styles.emojiContainer}
             onPress={() => handleEmojiPress(emoji)}
           >
-            <Text style={styles.emoji}>{emoji.emojiName}</Text>
+            { emoji.userID ! == loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
           </TouchableOpacity>
         );
       })}

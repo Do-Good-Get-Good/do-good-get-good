@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
     Modal,
   StyleSheet, Text, TouchableOpacity, View
@@ -17,11 +17,31 @@ type Props ={
   deleteEmoji:(emoji: PostEmoji)=>void
 }
 
+const loggedinUserEmoji=(loggedInUserId:User['id'],emojis:UserPost['emoji']=[])=>{
+ const index=emojis?.findIndex(
+    (emoji) =>
+      emoji.userID === loggedInUserId
+  );
+  console.log(index && emojis[index]?.emojiName,"state+++++")
+  return index && emojis[index]?.emojiName
+}
 
-export const ChatCardEmoji = ({emoji , addEmoji, loggedInUser, deleteEmoji}: Props) => {
+
+
+
+export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedEmoji, setSelectedEmoji] = useState(emoji && emoji.length > 0 ? emoji[0].emojiName : '');
+    const [selectedEmoji, setSelectedEmoji] = useState('');
 
+    useEffect(() => {
+
+      const index=emoji?.findIndex(
+        (e) =>
+          e.userID === loggedInUser.id
+      );
+      setSelectedEmoji (emoji[index]?.emojiName??'')
+      
+    }, [loggedInUser?.id,emoji]);
   
     const onEmojiSelect = async (emojiName: PostEmoji['emojiName']) => {
       addEmoji( makeEmojiObject(loggedInUser,emojiName))
@@ -46,7 +66,7 @@ export const ChatCardEmoji = ({emoji , addEmoji, loggedInUser, deleteEmoji}: Pro
        <SmileIcon onPress={()=>setModalVisible(true)} />
         )}
     <View style={{ width:12 }} />
-            <EmojiList emojis={emoji ??[]} />
+            <EmojiList emojis={emoji ??[]} loggedInUserId={loggedInUser.id} />
     <Modal
         visible={modalVisible}
         animationType="slide"
