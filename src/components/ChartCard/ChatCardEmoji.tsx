@@ -10,7 +10,6 @@ import { SmileIcon } from "../../assets/icons/SmileIcon";
 
 const makeEmojiObject =(user: User, emojiName:PostEmoji['emojiName']) => ({ emojiName: emojiName, userID: user.id ,userFirstName: user.firstName,userLastName:user.lastName})
 
-
 type Props ={
   emoji: UserPost['emoji'];
   loggedInUser: User
@@ -21,25 +20,28 @@ type Props ={
 
 export const ChatCardEmoji = ({emoji , addEmoji, loggedInUser, deleteEmoji}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
-    const [selectedEmoji, setSelectedEmoji] = useState( '');
-    // const { addPost} = useUserPostsActions();
-  
+    const [selectedEmoji, setSelectedEmoji] = useState(emoji && emoji.length > 0 ? emoji[0].emojiName : '');
 
   
     const onEmojiSelect = async (emojiName: PostEmoji['emojiName']) => {
       addEmoji( makeEmojiObject(loggedInUser,emojiName))
       setSelectedEmoji(emojiName);
       setModalVisible(false);
-  
-      // addPost(emoji?.push(emojiName))
      
     }; 
+
+    const onEmojiDeselect = async (emojiName: PostEmoji['emojiName']) => {
+      deleteEmoji(makeEmojiObject(loggedInUser, emojiName));
+      setSelectedEmoji(''); 
+  };
+
+
     return (
     <View style={styles.container}>
             {selectedEmoji ? (
-         <TouchableOpacity onPress={()=>deleteEmoji(makeEmojiObject(loggedInUser,selectedEmoji))}>
-          <Text style={styles.emojiSize}>{selectedEmoji}</Text>
-          </TouchableOpacity>
+               <TouchableOpacity onPress={() => onEmojiDeselect(selectedEmoji)}>
+               <Text style={styles.emojiSize}>{selectedEmoji}</Text>
+              </TouchableOpacity>
         ) : (
        <SmileIcon onPress={()=>setModalVisible(true)} />
         )}

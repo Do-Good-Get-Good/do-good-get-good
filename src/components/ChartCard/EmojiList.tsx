@@ -7,7 +7,7 @@ import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 
 type Props={
-      emojis:PostEmoji[]
+  emojis:PostEmoji[]
 }
 
 export const EmojiList = ({emojis}:Props) => {

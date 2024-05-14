@@ -70,7 +70,6 @@ const addChatPost = async (post: UserPost) => {
 };
 
 export const addEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
-  
   try {
     await firestore().collection("UserPosts").doc(postID).update({
       emoji:  firestore.FieldValue.arrayUnion(emoji)
@@ -79,5 +78,4 @@ export const addEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
   } catch (error) {
     console.log(error)
   } 
-
 }
