@@ -7,6 +7,7 @@ import EmojiSelector from 'react-native-emoji-selector';
 import { EmojiList } from "./EmojiList";
 import { PostEmoji, User, UserPost } from "../../utility/types";
 import { SmileIcon } from "../../assets/icons/SmileIcon";
+import colors from "../../assets/theme/colors";
 
 const makeEmojiObject =(user: User, emojiName:PostEmoji['emojiName']) => ({ emojiName: emojiName, userID: user.id ,userFirstName: user.firstName,userLastName:user.lastName})
 
@@ -17,44 +18,29 @@ type Props ={
   deleteEmoji:(emoji: PostEmoji)=>void
 }
 
-const loggedinUserEmoji=(loggedInUserId:User['id'],emojis:UserPost['emoji']=[])=>{
- const index=emojis?.findIndex(
-    (emoji) =>
-      emoji.userID === loggedInUserId
-  );
-  console.log(index && emojis[index]?.emojiName,"state+++++")
-  return index && emojis[index]?.emojiName
-}
-
-
-
-
 export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEmoji, setSelectedEmoji] = useState('');
 
     useEffect(() => {
-
       const index=emoji?.findIndex(
         (e) =>
           e.userID === loggedInUser.id
       );
       setSelectedEmoji (emoji[index]?.emojiName??'')
       
-    }, [loggedInUser?.id,emoji]);
+    },[loggedInUser?.id,emoji]);
   
     const onEmojiSelect = async (emojiName: PostEmoji['emojiName']) => {
       addEmoji( makeEmojiObject(loggedInUser,emojiName))
       setSelectedEmoji(emojiName);
-      setModalVisible(false);
-     
+      setModalVisible(false); 
     }; 
 
     const onEmojiDeselect = async (emojiName: PostEmoji['emojiName']) => {
       deleteEmoji(makeEmojiObject(loggedInUser, emojiName));
       setSelectedEmoji(''); 
-  };
-
+    };
 
     return (
     <View style={styles.container}>
@@ -71,12 +57,22 @@ export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}:
         visible={modalVisible}
         animationType="slide"
         transparent={true}
-        onRequestClose={() => setModalVisible(false)}
+        onRequestClose={() => setModalVisible(false)}   
     >
-        <View style={styles.emoji}>
-            <EmojiSelector onEmojiSelected={onEmojiSelect} />
-        </View>
-        
+      <View style={styles.modalContainer}>
+          <View style={styles.emojiContainer}>
+          <TouchableOpacity onPress={() => setModalVisible(false)}>
+                <Text>Close</Text>
+            </TouchableOpacity>
+            <EmojiSelector
+              onEmojiSelected={onEmojiSelect}
+              columns={8} 
+              showTabs={true} 
+              placeholder="Search emoji..."
+              // showSectionTitles={true}
+            />
+          </View>  
+        </View>      
     </Modal>
     </View>
   );
@@ -93,7 +89,14 @@ const styles = StyleSheet.create({
     emojiSize:{
         fontSize:20
     },
-    emoji:{
-        flex:1,
-    }
+    modalContainer: {
+      flex: 1,
+      justifyContent: 'flex-end',
+      alignItems: 'center',
+    },
+    emojiContainer: {
+      maxHeight: '50%', 
+      maxWidth: '100%',
+      backgroundColor: colors.background
+    }  
 });

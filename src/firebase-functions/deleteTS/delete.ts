@@ -28,7 +28,6 @@ export const deleteEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
     await firestore().collection("UserPosts").doc(postID).update({
       emoji:  firestore.FieldValue.arrayRemove(emoji)
     }).then(() => {
-      console.log("Document successfully updated!");
       return true;
     }).catch((error) => {
       console.log(error);

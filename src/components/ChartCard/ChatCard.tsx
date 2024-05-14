@@ -21,8 +21,6 @@ type Props = {
   loggedInUser: User
 };
 
-
-
 export const ChatCard = ({
   post,
   users,

@@ -47,25 +47,20 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
 
   return (
     <View style={styles.container}>
-      {emojis.slice(0, 2).map((emoji, index) => {
-        return (
-          <TouchableOpacity
-            key={index}
-            style={styles.emojiContainer}
-            onPress={() => handleEmojiPress(emoji)}
-          >
-            { emoji.userID ! == loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
-          </TouchableOpacity>
-        );
-      })}
-      {emojis.length > 2 && (
-        <Text style={styles.remainingCount}>
-          +{emojis.length - 2}
-        </Text>
-      )}
-      {gettingEmojiDetails()}
-    </View>
-  );
+     {emojis.map((emoji, index) => (
+       <TouchableOpacity
+        key={index}
+        style={styles.emojiContainer}
+        onPress={() => handleEmojiPress(emoji)}>
+      { emoji.userID !== loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
+       </TouchableOpacity>
+    ))}
+    {emojis.length > 2 && (
+    <Text style={styles.remainingCount}>+{emojis.length - 2}</Text>
+    )}
+    {gettingEmojiDetails()}
+   </View>
+    );
 };
 
 const styles = StyleSheet.create({
