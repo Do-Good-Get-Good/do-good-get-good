@@ -28,22 +28,6 @@ export const useChat = ({ getChatData }: Props) => {
     const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));
     return () => subscriber && subscriber();
 
-    // let arr: UserPost[] = [];
-
-    // const subscriber = firestore()
-    //   .collection("UserPosts")
-    //   .orderBy("date", "asc")
-    //   .limit(limit)
-    //   .onSnapshot((documentSnapshot) => {
-    //     documentSnapshot?.docs.forEach((change) => {
-    //       arr.push(userPostObject(change));
-    //     });
-    //     setPosts(arr);
-    //     arr = [];
-    //     console.log(" onSnapshot UserPost");
-    //   });
-
-    // return () => subscriber();
   }, [getChatData]);
 
   useEffect(() => {

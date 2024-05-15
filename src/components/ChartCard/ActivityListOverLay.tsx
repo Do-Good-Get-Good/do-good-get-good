@@ -7,13 +7,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import { Activity, User, UserPost } from "../../utility/types";
+import { Activity, Post, User, UserPost } from "../../utility/types";
 import { ActivityItem } from "./ActivityItem";
 import { Overlay } from "@rneui/base";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { useNavigation } from "@react-navigation/native";
-import { UserStack } from "../../utility/routeEnums";
 
 const createPropsObject = (activity: Activity, user: User): UserPost => {
   let obj = {
@@ -31,6 +29,7 @@ const createPropsObject = (activity: Activity, user: User): UserPost => {
     emoji: [],
     imageURL: "",
     comments: [],
+    type:Post.post
   };
   return obj;
 };
@@ -50,9 +49,7 @@ export const ActivityListOverLay = ({
   user,
   onBackdropPress,
 }: Props) => {
-  const navigation = useNavigation<{
-    navigate: (nav: UserStack) => void;
-  }>();
+
 
   return (
     <Overlay

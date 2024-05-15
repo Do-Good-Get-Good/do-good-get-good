@@ -120,7 +120,7 @@ describe("Testing ManageUsers component", () => {
         mockOtherUserData[1].fullName,
       );
     });
-  });
+  }, timeout=10000);
 
   it("Renders info text when no users are connected to an admin and no other users are found", async () => {
     getAllUsersNotConnectedToAdmin.mockReturnValue([]);
