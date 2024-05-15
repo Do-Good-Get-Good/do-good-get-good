@@ -8,6 +8,8 @@ import { EmojiList } from "./EmojiList";
 import { PostEmoji, User, UserPost } from "../../utility/types";
 import { SmileIcon } from "../../assets/icons/SmileIcon";
 import colors from "../../assets/theme/colors";
+import { Overlay } from "@rneui/base/dist/Overlay";
+
 
 const makeEmojiObject =(user: User, emojiName:PostEmoji['emojiName']) => ({ emojiName: emojiName, userID: user.id ,userFirstName: user.firstName,userLastName:user.lastName})
 
@@ -53,50 +55,35 @@ export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}:
         )}
     <View style={{ width:12 }} />
             <EmojiList emojis={emoji ??[]} loggedInUserId={loggedInUser.id} />
-    <Modal
-        visible={modalVisible}
-        animationType="slide"
-        transparent={true}
-        onRequestClose={() => setModalVisible(false)}   
-    >
-      <View style={styles.modalContainer}>
-          <View style={styles.emojiContainer}>
-          <TouchableOpacity onPress={() => setModalVisible(false)}>
-                <Text>Close</Text>
-            </TouchableOpacity>
-            <EmojiSelector
+     <Overlay
+      isVisible={modalVisible}
+      transparent={true}
+      animationType='slide'
+      onBackdropPress={() => setModalVisible(false)}
+      overlayStyle={{ 
+     backgroundColor: colors.background, maxHeight: '70%'
+     
+      }}
+    ><View style={{ height: '90%',alignSelf:'flex-end', bottom:0}}>
+            <EmojiSelector   
               onEmojiSelected={onEmojiSelect}
               columns={8} 
               showTabs={true} 
               placeholder="Search emoji..."
-              // showSectionTitles={true}
-            />
-          </View>  
-        </View>      
-    </Modal>
+            /></View> 
+    </Overlay>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
     container:{
-        flex:1,
         flexDirection:'row',
         marginHorizontal:10,
-        marginVertical:10,
-        flexWrap: 'wrap'
+        marginVertical:10,  
+        flexWrap: 'wrap'    
     },
     emojiSize:{
         fontSize:20
     },
-    modalContainer: {
-      flex: 1,
-      justifyContent: 'flex-end',
-      alignItems: 'center',
-    },
-    emojiContainer: {
-      maxHeight: '50%', 
-      maxWidth: '100%',
-      backgroundColor: colors.background
-    }  
 });

@@ -12,6 +12,7 @@ type Props={
 }
 
 export const EmojiList = ({emojis,loggedInUserId}:Props) => {
+  
 
     const [selectedEmoji, setSelectedEmoji] = useState<PostEmoji | null>(null);
 
@@ -21,8 +22,7 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
 
     const gettingEmojiDetails = () => {
     
-        const emojiDetails = emojis
-          .map((emoji) =>{
+        const emojiDetails = emojis.filter(emoji => emoji.userID !== loggedInUserId).map((emoji) =>{
             return `${emoji.emojiName}  ${emoji.userFirstName} ${emoji.userLastName}`;
           })
           .join("\n");
