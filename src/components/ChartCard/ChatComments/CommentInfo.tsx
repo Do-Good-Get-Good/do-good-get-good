@@ -7,14 +7,14 @@ import colors from "../../../assets/theme/colors";
 
   type props={
    comment:Comment
-   user:User
   }
-export const CommentInfo= ({comment,user}:props) => {
+export const CommentInfo= ({comment}:props) => {
   return (
     <View style={styles.container}>
-        <Text testID="comment-user-name" style={styles.textDescription}>{`${user.firstName} ${user.lastName}`}</Text> 
+        <Text testID="comment-user-name" style={styles.textDescription}>{`${comment.userFirstName} ${comment.userLastName}`}</Text> 
         <Text testID="comment-text" numberOfLines={1} style={styles.textComment}>{`${comment.comment}`}</Text>
     </View>
+    
   );
 };
 

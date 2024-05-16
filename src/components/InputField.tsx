@@ -12,34 +12,40 @@ type Props ={
     onSubmit?:()=>void;
    
   }
-export const InputField = ({placeholder,value,onChangeText,onSubmit}: Props) => {
+  export const InputField = ({ placeholder, value, onChangeText, onSubmit }: Props) => {
+    return (
+      <View style={styles.container}>
+        <TextInput
+          placeholder={placeholder}
+          value={value}
+          onChangeText={onChangeText}
+          style={styles.input}
+        />
+        <TouchableOpacity onPress={onSubmit} style={styles.buttonArrow}>
+          <Icon name="arrow-upward" size={20} />
+        </TouchableOpacity>
+      </View>
+    );
+  };
   
-  return (
-    <View style={styles.container}>
-    <TextInput
-       placeholder={placeholder}
-       value={value}
-       onChangeText={onChangeText}
-    /> 
-    <View>
-    <TouchableOpacity onPress={onSubmit}>
-        <Icon style={styles.buttonArrow} name="arrow-upward" size={20}/>
-    </TouchableOpacity>
-    </View>
-    
-    </View>  
-  );
-};
-
-const styles = StyleSheet.create({
-    container:{
-        flexDirection:'row'
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.secondary,
+      borderRadius: 5,
+      paddingHorizontal: 10,
     },
-    buttonArrow:{
-        padding:2,
-        backgroundColor:colors.primary,
-        borderRadius:5,
-        marginLeft:100
-    }
-
-});
+    input: {
+      flex: 1, 
+      paddingVertical: 8, 
+    },
+    buttonArrow: {
+      padding: 2,
+      backgroundColor: colors.primary,
+      borderRadius: 5,
+      marginLeft: 5, 
+    },
+  });
+  

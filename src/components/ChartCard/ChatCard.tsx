@@ -10,6 +10,9 @@ import { PostEmoji, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import { ChatCardEmoji } from "./ChatCardEmoji";
+import { useNavigation } from "@react-navigation/native";
+import { UserStack } from "../../utility/routeEnums";
+import { CommentsSection } from "./ChatComments/CommentsSection";
 
 type Props = {
   post: UserPost;
@@ -28,14 +31,43 @@ export const ChatCard = ({
   deleteEmoji,
   loggedInUser
 }: Props) => {
-  const isCurrentUser = post.userID === loggedInUser.id
+
+  const isCurrentUser = post.userID === loggedInUser.id;
+  const navigation = useNavigation<{
+    navigate: (nav: UserStack,Props:{post:UserPost}) => void;
+  }>();
+
+  const handlePress = () => {
+   post && navigation.navigate(UserStack.ChatCardScreen,{post})  
+  };
+
+  const comments = [
+    {
+      id: "1",
+      comment: "This is the first comment",
+      userID: "user1",
+      userFirstName: "John",
+      userLastName: "Doe",
+    },
+    {
+      id: "2",
+      comment: "Another comment here",
+      userID: "user2",
+      userFirstName: "Alice",
+      userLastName: "Smith",
+    },
+    // Add more comments as needed
+  ];
+
+
+
   return (
     <View
       testID="chat-card"
       style={[styles.container, isCurrentUser && { alignItems: "flex-end" }]}
     >
       <ChatCardDate date={post.date} />
-      <TouchableOpacity style={[styles.cardContainer]}>
+      <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
           {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
@@ -46,14 +78,9 @@ export const ChatCard = ({
         <ChatCardEmoji loggedInUser={loggedInUser}
           deleteEmoji={ (emoji: PostEmoji)=>deleteEmoji( emoji, post.id)}
          addEmoji={(emoji: PostEmoji)=>addEmoji( emoji, post.id)} 
-         
         emoji={post.emoji}/>
         {/* To Do modify componnet based on changed comment type */}
-        {/* <CommentsSection
-          comments={[]}
-          users={users}
-          onAddComment={handleAddComment}
-        /> */}
+        {/* <CommentsSection comments={comments} addComment={()=>{}}/> */}
          </View>
       </TouchableOpacity>
     </View>

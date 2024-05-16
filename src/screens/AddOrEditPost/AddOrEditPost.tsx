@@ -86,8 +86,8 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal:20
   },
-
   inputContainer: {
     justifyContent: "space-between",
   },

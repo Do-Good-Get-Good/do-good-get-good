@@ -29,6 +29,7 @@ import DownloadUserData from "./screens/DownloadUserData";
 import { AdminPage } from "./screens/AdminPage";
 import { Chat } from "./screens/Chat";
 import { AddOrEditPost } from "./screens/AddOrEditPost";
+import { ChatCardScreen } from "./screens/Chat/ChatCardScreen";
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -108,9 +109,14 @@ export const SuperAdminStack = () => {
                           />
                           <Stack.Screen name="Chat" component={Chat} />
                           <Stack.Screen
-                            name=" AddOrEditPost"
+                            name="AddOrEditPost"
                             component={AddOrEditPost}
                           />
+                          <Stack.Screen
+                            name="ChatCardScreen"
+                            component={ChatCardScreen}
+                          />
+                    
                         </Stack.Navigator>
                       </NavigationContainer>
                     </SuperAdminHomePageContextProvider>
@@ -172,8 +178,12 @@ export const AdminStack = () => {
                       />
                       <Stack.Screen name="Chat" component={Chat} />
                       <Stack.Screen
-                        name=" AddOrEditPost"
+                        name="AddOrEditPost"
                         component={AddOrEditPost}
+                      />
+                      <Stack.Screen
+                        name="ChatCardScreen"
+                        component={ChatCardScreen}
                       />
                     </Stack.Navigator>
                   </NavigationContainer>
@@ -204,7 +214,8 @@ export const UserStack = () => {
               <Stack.Screen name="Faq" component={Faq} />
               <Stack.Screen name="ConceptPage" component={ConceptPage} />
               <Stack.Screen name="Chat" component={Chat} />
-              <Stack.Screen name=" AddOrEditPost" component={AddOrEditPost} />
+              <Stack.Screen name="AddOrEditPost" component={AddOrEditPost} />
+              <Stack.Screen name="ChatCardScreen" component={ChatCardScreen} />
             </Stack.Navigator>
           </NavigationContainer>
         </TimeStatisticsProvider>
