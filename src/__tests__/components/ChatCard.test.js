@@ -3,10 +3,6 @@ import React from "react";
 import {render,fireEvent,waitFor } from "@testing-library/react-native";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
 
-const comments=[
-  {id:'1',comment:"First comment",userID:'user1'},
-  {id:'2',comment:"Second comment",userID:'user2'}
-]
 const post = {
   description: "Test Description",
   date: new Date(),
@@ -14,27 +10,21 @@ const post = {
   activityImage: 'symbol_sport',
   userFirstName: 'John',
   userLastName: 'Doe',
+  userID:  "user1",
   activityCity: 'Mock City',
   imageURL: 'sampleImageUrl',
-  comments:comments
+  // comments:comments
 };
 
-const users = [ { 
+const loggedInUser = {
   id: "user1", 
   activitiesAndAccumulatedTime: [],
   connectedActivities: [],
   firstName: "Erik",
   lastName: "Andersson",
   statusActive: true 
-},
-{ 
-  id: "user2", 
-  activitiesAndAccumulatedTime: [],
-  connectedActivities: [],
-  firstName: "Jerom",
-  lastName: "Karlsson",
-  statusActive: false 
-}];
+};
+
 
 describe("Testing ChatCardComponent", () => {
  
@@ -42,7 +32,7 @@ describe("Testing ChatCardComponent", () => {
 
   test('Testing ChatCardDate component to ensure it renders with correct date', () => {
     const { getByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     const chatCardDate = getByTestId('chat-card-date');
     expect(chatCardDate).toBeTruthy();
@@ -51,7 +41,7 @@ describe("Testing ChatCardComponent", () => {
 
   test('Testing ChatCardHeadercomponent to ensure it renders with correct data', () => {
     const { getByTestId, getByText } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}  />
     );
     const chatCardHeader = getByTestId('chat-card-header');
     expect(chatCardHeader).toBeTruthy();
@@ -64,7 +54,7 @@ describe("Testing ChatCardComponent", () => {
 
   test('Testing ChatCardImage component to ensure it renders  with correct data', () => {
     const { getByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+      <ChatCard post={post} handleAddComment={() => {}}  onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}/>
     );
     const chatCardImage = getByTestId('chat-card-image');
     expect(chatCardImage).toBeTruthy();
@@ -72,27 +62,28 @@ describe("Testing ChatCardComponent", () => {
   });
 
   test('Testing ChatCardDescription component to ensure it renders with correct data', () => {
-    const { getByTestId,getByText } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+    const {getByText } = render(
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     expect(getByText('Test Description')).toBeTruthy();  
   });
 
-
-  test('Testig ChatCard renders ChatCardEditMenu when isCurrentUser is true', () => {
-    const { getByTestId ,getByText} = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} isCurrentUser={true} />
+  test('Testing ChatCardEditMenu component is rendered', () => {
+    const onDeleteMock = jest.fn();
+    const { getByTestId,getByText } = render(
+      <ChatCard post={post}  handleAddComment={() => {}} onDelete={onDeleteMock} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}  />
     );
     const chatCardEditMenu = getByTestId('chat-card-edit-menu');
     expect(chatCardEditMenu).toBeTruthy();
     fireEvent.press(chatCardEditMenu);
     expect(getByText('Delete')).toBeTruthy();
     fireEvent.press(getByText('Delete'));
+    expect(onDeleteMock).toBeTruthy();
   });
 
   test('Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false', () => {
     const { queryByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} isCurrentUser={false} />
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={!loggedInUser}  />
     );
     const chatCardEditMenu = queryByTestId('chat-card-edit-menu');
     expect(chatCardEditMenu).toBeFalsy();
@@ -100,12 +91,22 @@ describe("Testing ChatCardComponent", () => {
   
   test('Testing ChatCard component touchability', () => {
     const { getByTestId } = render(
-      <ChatCard post={post} users={users} handleAddComment={() => {}} />
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     const chatCard= getByTestId('chat-card');
     fireEvent.press(chatCard);
   });
-// ToDo adapt test after creating a new ChatCardScreen
+
+  test('Testing ChatCardEmoji component to ensure it renders ', () => {
+    const { getByTestId } = render(
+      <ChatCard post={post} handleAddComment={() => {}} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
+    );
+    const chatCardDate = getByTestId('chat-card-date');
+    expect(chatCardDate).toBeTruthy();
+  });
+
+
+// ToDo adapt test after creating a new ChatCardScreen and also write test for ChatCardEmoji
   // test('Testing CommentsSection component to ensure it renders data correctly', async() => {
   //   const { getAllByTestId,getByText,debug} = render(
   //     <ChatCard post={post} users={users} handleAddComment={() => {}} />

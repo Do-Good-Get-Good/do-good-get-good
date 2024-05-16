@@ -49,7 +49,6 @@ const styles = StyleSheet.create({
   dropDownContainer: {
     top: 30,
     right: 0,
-    // left: 0,
     backgroundColor: colors.background,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,

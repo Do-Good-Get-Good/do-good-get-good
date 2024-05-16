@@ -45,7 +45,7 @@ export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}:
     };
 
     return (
-    <View style={styles.container}>
+    <View testID="chat-card-emoji" style={styles.container}>
             {selectedEmoji ? (
                <TouchableOpacity onPress={() => onEmojiDeselect(selectedEmoji)}>
                <Text style={styles.emojiSize}>{selectedEmoji}</Text>
