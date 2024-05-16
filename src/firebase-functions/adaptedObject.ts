@@ -99,17 +99,3 @@ export const userPostObject = (
   };
 };
 
-//ToDo for adding emoji 
-// export const emojiObject = (
-//   doc:
-//     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-//     | FirebaseFirestoreTypes.DocumentData,
-// ) => {
-//   return {
-//     id: doc.id,
-//     userID: doc.data().user_id,
-//     userFirstName: doc.data().first_name,
-//     userLastName: doc.data().last_name,
-//   };
-// };
-
