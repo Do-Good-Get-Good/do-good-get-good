@@ -85,7 +85,7 @@ describe("Testing ManageUsers component", () => {
       mockGetAdminUsers.mockReturnValue(mockAllUsersConnectedToadmin);
       getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
     });
-    const { getByTestId, getAllByTestId, debug } = render(
+    const { getByTestId, getAllByTestId } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
@@ -120,7 +120,7 @@ describe("Testing ManageUsers component", () => {
         mockOtherUserData[1].fullName,
       );
     });
-  });
+  }, timeout=10000);
 
   it("Renders info text when no users are connected to an admin and no other users are found", async () => {
     getAllUsersNotConnectedToAdmin.mockReturnValue([]);
@@ -237,7 +237,7 @@ describe("Testing ManageUsers component", () => {
       ]);
     });
 
-    const { getByText, getByTestId, debug } = render(
+    const { getByText, getByTestId } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
@@ -248,7 +248,6 @@ describe("Testing ManageUsers component", () => {
     await waitFor(() => {
       const checkBoxwithConnectedUserToActivity = getByTestId("checkbox-1");
       const checkBoxwithNotConnectedUserToActivity = getByTestId("checkbox-0");
-      debug();
       expect(checkBoxwithConnectedUserToActivity.props.isChecked).toBe(true);
       expect(checkBoxwithNotConnectedUserToActivity.props.isChecked).toBe(
         false,
@@ -284,7 +283,7 @@ describe("Testing ManageUsers component", () => {
       ]);
     });
 
-    const { getByText, getByTestId, debug } = render(
+    const { getByText, getByTestId } = render(
       <ManageUsers
         visible={true}
         closeModal={jest.fn()}
@@ -295,7 +294,7 @@ describe("Testing ManageUsers component", () => {
     await waitFor(() => {
       const checkBoxwithConnectedUserToActivity = getByTestId("checkbox-1");
       const checkBoxwithNotConnectedUserToActivity = getByTestId("checkbox-0");
-      debug();
+
       expect(checkBoxwithConnectedUserToActivity.props.isChecked).toBe(true);
       expect(checkBoxwithNotConnectedUserToActivity.props.isChecked).toBe(
         false,

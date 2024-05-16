@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import { Post, User, UserPost } from "../../utility/types";
+import { Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 
@@ -63,5 +63,18 @@ const addChatPost = async (post: UserPost) => {
     return res;
   } catch (error) {
     return Promise.reject(error);
+  }
+};
+
+export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
+  try {
+    await firestore()
+      .collection("UserPosts")
+      .doc(postID)
+      .update({
+        emoji: firestore.FieldValue.arrayUnion(emoji),
+      });
+  } catch (error) {
+    console.log(error);
   }
 };
