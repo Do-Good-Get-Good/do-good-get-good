@@ -12,12 +12,12 @@ const permission =
 const showPermissionDeniedAlert = () =>
   Alert.alert(
     "Åtkomst nekad",
-    "Vi behöver denna behörighet för att använda foto. Vänligen ge det i appinställningarna.",
+    "Vi behöver behörighet för att använda foton. För att kunna fortsätta, vänligen ge det i appinställningar.",
     [{ text: "Cancel" }, { text: "Open Settings", onPress: openAppSettings }],
     { cancelable: false },
   );
 
-const somethingWhentWringAlert = () =>
+const somethingWentWrongAlert = () =>
   AlertInfo(
     "Något gick fel. Starta om appen och prova igen. Om det inte hjälper, kontakta din konsultchef.",
   );
@@ -30,7 +30,7 @@ const resizeImage = (path: string, setImageURL: (url: string) => void) => {
       setImageURL(pathAfterResize ?? "");
     })
     .catch((err) => {
-      somethingWhentWringAlert();
+      somethingWentWrongAlert();
       console.log(err);
     });
 };
@@ -45,7 +45,7 @@ const openImagePicker = async (setImageURL: (url: string) => void) => {
       resizeImage(image.path, setImageURL);
     });
   } catch (err) {
-    somethingWhentWringAlert();
+    somethingWentWrongAlert();
     console.log(err);
   }
 };
@@ -61,7 +61,7 @@ export const checkPermissionAndOpenImage = async (
       requestPermission();
     }
   } catch (err) {
-    somethingWhentWringAlert();
+    somethingWentWrongAlert();
     console.warn(err);
   }
 };
@@ -69,12 +69,11 @@ export const checkPermissionAndOpenImage = async (
 const requestPermission = async () => {
   try {
     const result = permission && (await request(permission));
-    if (result === RESULTS?.GRANTED) {
-    } else {
+    if (result !== RESULTS?.GRANTED) {
       showPermissionDeniedAlert();
     }
   } catch (err) {
-    somethingWhentWringAlert();
+    somethingWentWrongAlert();
     console.warn(err);
   }
 };
