@@ -2,7 +2,7 @@ import React from "react";
 import { StyleSheet, View, Text,TouchableOpacity } from "react-native";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-import {UserPost} from "../../utility/types";
+import {User, UserPost} from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import typography from "../../assets/theme/typography";
@@ -11,15 +11,16 @@ type Props = {
   message: UserPost
   handleAddComment: () => void;
   onDelete: () => void;
-  isCurrentUser: boolean;
+  loggedInUser: User
 };
 
 export const MessageCard = ({
   message,
   handleAddComment,
   onDelete,
-  isCurrentUser,
+  loggedInUser
 }: Props) => {
+  const isCurrentUser = message.userID === loggedInUser.id
   return (
     <View
       style={[
