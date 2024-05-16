@@ -1,6 +1,6 @@
 import { UserPost } from "../../utility/types";
 import { useState } from "react";
-import {  saveImageToChatImageStoreAndCreateUserPost } from "../../firebase-functions/addTS/add";
+import {   saveImageToChatImageStoreAndCreateUserPost } from "../../firebase-functions/addTS/add";
 import { deleteUserPostAndImageInStorage } from "../../firebase-functions/deleteTS/delete";
 import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
