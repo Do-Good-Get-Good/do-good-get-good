@@ -29,6 +29,7 @@ type Props = {
   contextMenuHidden?: boolean;
   testID?: string;
   toTrim?: boolean;
+  toLowerCase?: boolean;
 };
 
 export const InputFieldWithController = ({
@@ -46,6 +47,7 @@ export const InputFieldWithController = ({
   contextMenuHidden = false,
   testID,
   toTrim,
+  toLowerCase = false,
 }: Props) => {
   return (
     <Controller
@@ -60,7 +62,7 @@ export const InputFieldWithController = ({
               style={[placeholderTextStyle(), borderStyle(error !== undefined)]}
               onBlur={onBlur}
               onChangeText={(value) => onChange(toTrim ? value.trim() : value)}
-              value={value}
+              value={toLowerCase ? value?.toLowerCase() : value}
               placeholder={placeholderText}
               placeholderTextColor={colors.dark}
               returnKeyType={returnKeyType}

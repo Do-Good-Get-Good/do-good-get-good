@@ -41,7 +41,7 @@ export const AdminProvider: React.FC<{ children: React.ReactNode }> = ({
   ] = useState<User[]>([]);
   const [usersWithUnconfirmedTimeEntries, setUsersWithUnconfirmedTimeEntries] =
     useState<User[]>([]);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [allUsersConnectedToadmin, setAllUsersConnectedToadmin] = useState<
     User[]
   >([]);
