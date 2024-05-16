@@ -17,9 +17,9 @@ const showPermissionDeniedAlert = () =>
     { cancelable: false },
   );
 
-const somethingWentWrongAlert = () =>
+const showAlertSomethingWentWrong = (err: string) =>
   AlertInfo(
-    "Något gick fel. Starta om appen och prova igen. Om det inte hjälper, kontakta din konsultchef.",
+    `Något gick fel ${err}. Starta om appen och prova igen. Om det inte hjälper, skriva om det till feven.hall.selassie@technogarden.se`,
   );
 
 const resizeImage = (path: string, setImageURL: (url: string) => void) => {
@@ -30,7 +30,7 @@ const resizeImage = (path: string, setImageURL: (url: string) => void) => {
       setImageURL(pathAfterResize ?? "");
     })
     .catch((err) => {
-      somethingWentWrongAlert();
+      showAlertSomethingWentWrong("vid storleksändring av bildfunktionen");
       console.log(err);
     });
 };
@@ -45,7 +45,12 @@ const openImagePicker = async (setImageURL: (url: string) => void) => {
       resizeImage(image.path, setImageURL);
     });
   } catch (err) {
-    somethingWentWrongAlert();
+    if (
+      err instanceof Error &&
+      err.message !== "User cancelled image selection"
+    ) {
+      showAlertSomethingWentWrong("vid öppen bildfunktion");
+    }
     console.log(err);
   }
 };
@@ -61,7 +66,9 @@ export const checkPermissionAndOpenImage = async (
       requestPermission();
     }
   } catch (err) {
-    somethingWentWrongAlert();
+    showAlertSomethingWentWrong(
+      "vid kontrollera behörighet och öppna bildmappsfunktionen",
+    );
     console.warn(err);
   }
 };
@@ -73,7 +80,7 @@ const requestPermission = async () => {
       showPermissionDeniedAlert();
     }
   } catch (err) {
-    somethingWentWrongAlert();
+    showAlertSomethingWentWrong("vid begära tillstånd funktion");
     console.warn(err);
   }
 };
