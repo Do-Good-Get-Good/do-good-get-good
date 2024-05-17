@@ -36,6 +36,7 @@ type Props ={
       borderColor: colors.secondary,
       borderRadius: 5,
       paddingHorizontal: 10,
+      marginVertical:20
     },
     input: {
       flex: 1, 

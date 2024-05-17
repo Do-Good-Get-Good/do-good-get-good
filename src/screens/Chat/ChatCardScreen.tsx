@@ -37,46 +37,77 @@ type Props = {
       userFirstName: "Alice",
       userLastName: "Smith",
     },
+    {
+      id: "3",
+      comment: "This is the first comment",
+      userID: "user5",
+      userFirstName: "John",
+      userLastName: "Doe",
+    },
+    {
+      id: "4",
+      comment: "This is the first comment",
+      userID: "user7",
+      userFirstName: "John",
+      userLastName: "Doe",
+    },
   ];
+  const loggedInUser = {
+    id: "user1",
+    activitiesAndAccumulatedTime: [],
+    connectedActivities: [],
+    firstName: "John",
+    lastName: "Doe",
+    statusActive: false,
+  };
 
 export const ChatCardScreen = ({route,navigation}:Props) => {
-    const { post}: Params = route.params;
-
-
+  const { post}: Params = route.params;
+  
   return (
-    <SafeAreaView>
-        <Menu/>
-        <GoBackButton/>
-        <ScrollView>
-        <View style={styles.container}>
+    <SafeAreaView style={styles.safeArea}>
+    <Menu />
+    <GoBackButton />
+    <ScrollView contentContainerStyle={styles.scrollViewContent}>
+      <View style={styles.container}>
         <View style={styles.headerAndDate}>
-        <ChatCardHeader post={post} />
-        <ChatCardDate date={post.date} />
+          <ChatCardHeader post={post} />
+          <ChatCardDate date={post.date} />
         </View>
         <ChatCardImage imageUrl={post?.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
-        
         {/* <ChatCardEmoji
-            loggedInUser={}
-            deleteEmoji={(emoji) => {} }
-            addEmoji={(emoji) => {} }
-            emoji={post.emoji}
-          /> */}
-          <CommentsSection comments={comments} addComment={()=>{}}/>
-        </View>
-        <BottomLogo/>
-        </ScrollView>
-   </SafeAreaView>
+          loggedInUser={}
+          deleteEmoji={(emoji) => {} }
+          addEmoji={(emoji) => {} }
+          emoji={post.emoji}
+        /> */}
+        <CommentsSection
+          comments={comments}
+          addComment={() => {}}
+          loggedInUser={loggedInUser}
+          deleteComment={() => {}}
+        />
+      </View>
+      <BottomLogo />
+    </ScrollView>
+  </SafeAreaView>
   );
 };
 
 const styles = StyleSheet.create({
-    container:{
-        marginHorizontal:20
-    },
-    headerAndDate:{
-        flexDirection:'row',
-        justifyContent: 'space-between', 
-        alignItems: 'flex-end' 
-    }  
+  safeArea: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+  },
+  container: {
+    marginHorizontal: 20,
+  },
+  headerAndDate: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'flex-end',
+  },
 });

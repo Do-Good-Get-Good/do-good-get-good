@@ -1,5 +1,5 @@
 import firestore from "@react-native-firebase/firestore";
-import { PostEmoji, UserPost } from "../../utility/types";
+import { Comment, PostEmoji, UserPost } from "../../utility/types";
 import storage from "@react-native-firebase/storage";
 import crashlytics from "@react-native-firebase/crashlytics";
 
@@ -34,3 +34,14 @@ export const deleteEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
       return false;
     }); 
 }
+
+// export const deleteComment= async(comment: Comment, postID : UserPost['id'])=>{
+//   await firestore().collection("UserPosts").doc(postID).update({
+//     emoji:  firestore.FieldValue.arrayRemove(comment)
+//   }).then(() => {
+//     return true;
+//   }).catch((error) => {
+//     console.log(error);
+//     return false;
+//   }); 
+// }

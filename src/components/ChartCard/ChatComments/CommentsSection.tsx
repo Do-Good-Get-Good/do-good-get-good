@@ -2,56 +2,54 @@ import React, {useState } from "react";
 import {
   View,StyleSheet
 } from "react-native";
-import { UserPost } from "../../../utility/types";
+import { Comment, User, UserPost } from "../../../utility/types";
 import { CommentInfo } from "./CommentInfo";
 import { InputField } from "../../InputField";
 import typography from "../../../assets/theme/typography";
+import { ChatCardEditMenu } from "../ChatCardEditMenu";
 
 
 type Props ={
     comments:UserPost['comments'],
-    addComment:(newComment:string)=>void
+    loggedInUser: User
+    addComment: (comment: Comment)=>void
+    deleteComment:(comment: Comment)=>void
   }
-export const CommentsSection = ({comments,addComment}: Props) => {
+export const CommentsSection = ({comments,addComment,deleteComment,loggedInUser}: Props) => {
   const [textInputValue, setTextInputValue] = useState('');
 
-  const handleInputChange = (text: string) => {
-    setTextInputValue(text);
-  };
-
-  const handleSubmit = () => {
+  const onSubmitPress = () => {
     console.log('Submitted value:', textInputValue);
     setTextInputValue('')
   };
-  return (
+  const onDeletePress = () => {
+    console.log('comment delete button pressed');
+  };
 
-    <View>
-    {comments.map((comment) => (
-      <CommentInfo key={comment.id} comment={comment} />
-    ))}
-    <InputField
+
+  return (
+  <View>
+      {comments.map((comment) => (
+        <View key={comment.id} style={styles.commentContainer}>
+          <CommentInfo comment={comment} />
+          {comment.userID === loggedInUser.id && (
+            <ChatCardEditMenu onDeletePress={onDeletePress} />
+          )}
+        </View>
+      ))}
+      <InputField
         placeholder="Skriv en kommentar"
         value={textInputValue}
-        onChangeText={handleInputChange}
-        onSubmit={handleSubmit}
-    />
-  </View>
+        onChangeText={(text: string)=>setTextInputValue(text)}
+        onSubmit={onSubmitPress}
+      />
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
-  longButton:{
-    marginTop:20,
-      borderRadius:5,
-      marginRight:20,
-      height:30,
-      marginLeft:20,
-      marginBottom:20,
-      ...typography.button
-   },
-   commentsText:{
-     ...typography.b2,
-      textDecorationLine: 'underline',
-       marginHorizontal:10
-   }
+  commentContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  }
 });

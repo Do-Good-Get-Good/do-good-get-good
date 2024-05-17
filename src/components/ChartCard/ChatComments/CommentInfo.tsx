@@ -20,17 +20,15 @@ export const CommentInfo= ({comment}:props) => {
 
 const styles = StyleSheet.create({
   container:{
-    // flexDirection:'row'
+  //  marginVertical:4
   },
     textDescription:{
-        flexDirection:'row',
-        marginLeft:10 ,
+       marginHorizontal:10,
         ...typography.b2,
         color: colors.dark,
         fontWeight:'bold'     
     },
     textComment:{
-      flexDirection:'row',
       padding:12,
       ...typography.b2,
         color: colors.dark ,
