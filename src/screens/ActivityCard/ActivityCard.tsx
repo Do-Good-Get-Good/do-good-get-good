@@ -9,25 +9,27 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Menu from "../components/Menu";
+import Menu from "../../components/Menu";
 import { Icon, Overlay } from "@rneui/base";
 
-import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useActivityCardContext } from "../../context/ActivityCardContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
+import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 
-import colors from "../assets/theme/colors";
-import typography from "../assets/theme/typography";
-import BottomLogo from "../components/BottomLogo";
-import ManageUsers from "../components/ManageUsers";
-import { UserLevels } from "../lib/enums/userlevels";
-import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
-import userLevelStore from "../store/userLevel";
+import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
+import BottomLogo from "../../components/BottomLogo";
+import ManageUsers from "../../components/ManageUsers";
+import { UserLevels } from "../../lib/enums/userlevels";
+import { useActivityImages } from "../../context/ActivityImagesContext/ActivityImagesContext";
+import userLevelStore from "../../store/userLevel";
 
 type Props = {
   route: any;
   navigation: any;
 };
+
+//ActivityCardDetails screen is temporary solution for showing details about activity when user press on activity suggestion. We use to use for this ActivityCard screen. Activity card screen needs total refactoring together with conext it use.
 
 export function ActivityCard({ route, navigation }: Props) {
   const { admin, activityInfo, active, tgPopular } = route.params;

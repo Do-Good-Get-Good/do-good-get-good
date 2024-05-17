@@ -29,6 +29,7 @@ import DownloadUserData from "./screens/DownloadUserData";
 import { AdminPage } from "./screens/AdminPage";
 import { Chat } from "./screens/Chat";
 import { AddOrEditPost } from "./screens/AddOrEditPost";
+import { ActivityCardDetails } from "./screens/ActivityCard/ActivityCardDetails";
 
 const Stack = createNativeStackNavigator();
 export const SuperAdminStack = () => {
@@ -111,6 +112,10 @@ export const SuperAdminStack = () => {
                             name=" AddOrEditPost"
                             component={AddOrEditPost}
                           />
+                          <Stack.Screen
+                            name="ActivityCardDetails"
+                            component={ActivityCardDetails}
+                          />
                         </Stack.Navigator>
                       </NavigationContainer>
                     </SuperAdminHomePageContextProvider>
@@ -175,6 +180,10 @@ export const AdminStack = () => {
                         name=" AddOrEditPost"
                         component={AddOrEditPost}
                       />
+                      <Stack.Screen
+                        name="ActivityCardDetails"
+                        component={ActivityCardDetails}
+                      />
                     </Stack.Navigator>
                   </NavigationContainer>
                 </AdminProvider>
@@ -205,6 +214,10 @@ export const UserStack = () => {
               <Stack.Screen name="ConceptPage" component={ConceptPage} />
               <Stack.Screen name="Chat" component={Chat} />
               <Stack.Screen name=" AddOrEditPost" component={AddOrEditPost} />
+              <Stack.Screen
+                name="ActivityCardDetails"
+                component={ActivityCardDetails}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </TimeStatisticsProvider>
