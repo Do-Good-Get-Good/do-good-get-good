@@ -18,7 +18,7 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
 
   function lookDetails(activity, statusActive, statusPopular) {
     Keyboard.dismiss();
-    navigation.navigate("ActivityCard", {
+    navigation.navigate("ActivityCardDetails", {
       admin: false,
       activityInfo: activity,
       active: statusActive,

@@ -34,7 +34,6 @@ export const MyActivities = ({ activities, registeredTime }) => {
               <Text numberOfLines={2} style={styles.textTitle}>
                 {myActivity.title}
               </Text>
-
               <View
                 testID="viewId"
                 style={styles.mapIconAndCityText(myActivity)}
@@ -113,6 +112,7 @@ const styles = StyleSheet.create({
   },
   textTitleCityTime: {
     color: colors.dark,
+    flex: 1,
   },
   textTitle: {
     ...typography.cardTitle,

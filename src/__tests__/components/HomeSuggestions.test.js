@@ -70,19 +70,22 @@ describe("Testing HomeSuggestions", () => {
     const suggestionCard = getByTestId("lookDetails");
     expect(suggestionCard);
     fireEvent.press(suggestionCard);
-    expect(mockNavigation.navigate).toHaveBeenCalledWith("ActivityCard", {
-      active: undefined,
-      activityInfo: {
-        city: mockSuggestions[0].city,
-        description: mockSuggestions[0].description,
-        id: mockSuggestions[0].id,
-        photo: mockSuggestions[0].photo,
-        place: mockSuggestions[0].place,
-        popular: mockSuggestions[0].popular,
-        title: mockSuggestions[0].title,
+    expect(mockNavigation.navigate).toHaveBeenCalledWith(
+      "ActivityCardDetails",
+      {
+        active: undefined,
+        activityInfo: {
+          city: mockSuggestions[0].city,
+          description: mockSuggestions[0].description,
+          id: mockSuggestions[0].id,
+          photo: mockSuggestions[0].photo,
+          place: mockSuggestions[0].place,
+          popular: mockSuggestions[0].popular,
+          title: mockSuggestions[0].title,
+        },
+        admin: false,
+        tgPopular: true,
       },
-      admin: false,
-      tgPopular: true,
-    });
+    );
   });
 });

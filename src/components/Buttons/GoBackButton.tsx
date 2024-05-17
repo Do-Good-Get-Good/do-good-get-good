@@ -14,8 +14,9 @@ import { useNavigation } from "@react-navigation/native";
 type Props = {
   onPress?: () => void;
   style?: StyleProp<FlexStyle | TextStyle>;
+  text?: boolean;
 };
-export const GoBackButton = ({ onPress, style }: Props) => {
+export const GoBackButton = ({ onPress, style, text = true }: Props) => {
   const navigation = useNavigation();
 
   return (
@@ -33,7 +34,7 @@ export const GoBackButton = ({ onPress, style }: Props) => {
         type="material-community"
         size={25}
       />
-      <Text style={styles.textGoBackButton}>Gå tillbaka</Text>
+      {text && <Text style={styles.textGoBackButton}>Gå tillbaka</Text>}
     </TouchableOpacity>
   );
 };
