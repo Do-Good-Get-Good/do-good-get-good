@@ -1,29 +1,30 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  StyleSheet,TextInput,TouchableOpacity,View
+  StyleSheet,TextInput,View
 } from "react-native";
-import { Icon } from "@rneui/base";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { ArrowUpward } from "../assets/icons/ArrowUpward";
 
 type Props ={
-    placeholder:string,
-    value:string,
-    onChangeText:(text:string)=>void;
-    onSubmit?:()=>void;
-   
+    onSubmit: (text: string) => void;
   }
-  export const InputField = ({ placeholder, value, onChangeText, onSubmit }: Props) => {
+  const placeholder="Skriv en kommentar"
+  export const InputField = ({onSubmit }: Props) => {
+  const [textInputValue, setTextInputValue] = useState('');
+
+    const onSubmitComment = () => {
+      textInputValue.trim() !== '' && (onSubmit(textInputValue), setTextInputValue(''));
+    };
     return (
       <View style={styles.container}>
         <TextInput
           placeholder={placeholder}
-          value={value}
-          onChangeText={onChangeText}
-          style={styles.input}
+          value={textInputValue}
+          onChangeText={setTextInputValue}
+           style={styles.input}
         />
-        <TouchableOpacity onPress={onSubmit} style={styles.buttonArrow}>
-          <Icon name="arrow-upward" size={20} />
-        </TouchableOpacity>
+        <ArrowUpward style={styles.buttonArrow} onPress={onSubmitComment} />
       </View>
     );
   };
@@ -36,15 +37,17 @@ type Props ={
       borderColor: colors.secondary,
       borderRadius: 5,
       paddingHorizontal: 10,
-      marginVertical:20
+      marginVertical:20,
+      backgroundColor: colors.background,
     },
     input: {
       flex: 1, 
       paddingVertical: 8, 
+      fontFamily: typography.b1.fontFamily,
     },
     buttonArrow: {
       padding: 2,
-      backgroundColor: colors.primary,
+       borderWidth: 0.75,
       borderRadius: 5,
       marginLeft: 5, 
     },

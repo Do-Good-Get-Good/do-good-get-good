@@ -21,7 +21,6 @@ export const AllPosts= ({posts,handleAddComment,onDelete,loggedInUser, addEmoji,
     post?.imageURL ? <ChatCard
       key={`${post.id}-${i}`}
       post={post}
-      users={[]}
       handleAddComment={handleAddComment}
       onDelete={() => onDelete(post)}
       loggedInUser={loggedInUser}

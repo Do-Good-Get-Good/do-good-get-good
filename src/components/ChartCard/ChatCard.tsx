@@ -12,7 +12,6 @@ import { ChatCardDate } from "./ChatCardDate";
 import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
-import { CommentsSection } from "./ChatComments/CommentsSection";
 
 type Props = {
   post: UserPost;
@@ -34,32 +33,12 @@ export const ChatCard = ({
 
   const isCurrentUser = post.userID === loggedInUser.id;
   const navigation = useNavigation<{
-    navigate: (nav: UserStack,Props:{post:UserPost}) => void;
+    navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
   }>();
 
   const handlePress = () => {
-   post && navigation.navigate(UserStack.ChatCardScreen,{post})  
+   post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
   };
-
-  const comments = [
-    {
-      id: "1",
-      comment: "This is the first comment",
-      userID: "user1",
-      userFirstName: "John",
-      userLastName: "Doe",
-    },
-    {
-      id: "2",
-      comment: "Another comment here",
-      userID: "user2",
-      userFirstName: "Alice",
-      userLastName: "Smith",
-    },
-    // Add more comments as needed
-  ];
-
-
 
   return (
     <View

@@ -35,13 +35,13 @@ export const deleteEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
     }); 
 }
 
-// export const deleteComment= async(comment: Comment, postID : UserPost['id'])=>{
-//   await firestore().collection("UserPosts").doc(postID).update({
-//     emoji:  firestore.FieldValue.arrayRemove(comment)
-//   }).then(() => {
-//     return true;
-//   }).catch((error) => {
-//     console.log(error);
-//     return false;
-//   }); 
-// }
+export const deleteComment= async(comment: Comment, postID : UserPost['id'])=>{
+  await firestore().collection("UserPosts").doc(postID).update({
+    comments:  firestore.FieldValue.arrayRemove(comment)
+  }).then(() => {
+    return true;
+  }).catch((error) => {
+    console.log(error);
+    return false;
+  }); 
+}

@@ -80,13 +80,13 @@ export const addEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
   } 
 }
 
-// export const addComment = async(comment:Comment, postID : UserPost['id'])=>{
-//   try {
-//     await firestore().collection("UserPosts").doc(postID).update({
-//       emoji:  firestore.FieldValue.arrayUnion(comment)
-//     })
+export const addComment = async(comment:Comment, postID : UserPost['id'])=>{
+  try {
+    await firestore().collection("UserPosts").doc(postID).update({
+      comments:  firestore.FieldValue.arrayUnion(comment)
+    })
    
-//   } catch (error) {
-//     console.log(error)
-//   } 
-// }
+  } catch (error) {
+    console.log(error)
+  } 
+}

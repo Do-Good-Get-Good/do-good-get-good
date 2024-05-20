@@ -23,3 +23,16 @@ export const onSnapshotUserPosts = (
     console.log(error);
   }
 };
+
+export const onSnapshotSelectedPost =(postId: UserPost['id'] , setUserPost: (posts: UserPost| undefined) => void,)=>{
+  try {
+    return firestore()
+      .collection("UserPosts").doc(postId)
+      .onSnapshot((doc) => {
+      return setUserPost(userPostObject(doc)) 
+      });
+  } catch (error) {
+    setUserPost(undefined) 
+    console.log(error);
+  }
+}
