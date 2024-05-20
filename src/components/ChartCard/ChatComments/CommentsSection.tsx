@@ -6,6 +6,7 @@ import { Comment, User, UserPost } from "../../../utility/types";
 import { CommentInfo } from "./CommentInfo";
 import { InputField } from "../../InputField";
 import { ChatCardEditMenu } from "../ChatCardEditMenu";
+import { deleteComment } from "../../../firebase-functions/deleteTS/delete";
 
 
 const makeCommentObject = (user: User, comment:Comment['comment']) => ({
@@ -20,15 +21,17 @@ type Props ={
     loggedInUser: User
     addComment: (comment: Comment)=>void
     deleteComment: (comment: Comment)=>void
+    postID: UserPost['id']
   }
 
-export const CommentsSection = ({comments = [],addComment,loggedInUser}: Props) => {
+export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: Props) => {
   const handleCommentSubmit = async (comment: Comment['comment']) => {
     const newComment = makeCommentObject(loggedInUser, comment);
     addComment(newComment);
   };
 
-  const onDeletePress = () => {
+  const onDeletePress = (comment: Comment['comment']) => {
+    deleteComment(makeCommentObject(loggedInUser, comment),postID);
     console.log('comment delete button pressed');
   };
 
@@ -38,7 +41,7 @@ export const CommentsSection = ({comments = [],addComment,loggedInUser}: Props) 
         <View key={index} style={styles.commentContainer}>
           <CommentInfo comment={comment} />
           {comment.userID === loggedInUser.id && (
-            <ChatCardEditMenu onDeletePress={onDeletePress} />
+            <ChatCardEditMenu onDeletePress={() => onDeletePress(comment.comment)} />
           )}
         </View>
       ))}

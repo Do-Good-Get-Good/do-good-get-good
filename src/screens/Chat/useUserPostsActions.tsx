@@ -51,8 +51,5 @@ const deleteCommentFromPost = async (comment:Comment, postID : UserPost['id']) =
  await deleteComment(comment, postID)
  setLoading(false)
 }
-
-
-
   return { addPost, loading, onDeletePost, addCommentToPost , addEmojiToPost, deleteEmojiFromPost, deleteCommentFromPost};
 };

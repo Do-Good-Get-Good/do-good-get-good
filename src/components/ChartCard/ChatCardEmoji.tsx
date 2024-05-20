@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    Modal,
-  StyleSheet, Text, TouchableOpacity, View
+import {Modal,StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
 import EmojiSelector from 'react-native-emoji-selector';
 import { EmojiList } from "./EmojiList";
@@ -85,5 +83,5 @@ const styles = StyleSheet.create({
     },
     emojiSize:{
         fontSize:20
-    },
+    }
 });

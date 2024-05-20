@@ -61,6 +61,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
           addComment={(comment: Comment)=>addCommentToPost( comment, post.id)}
           loggedInUser={loggedInUser}
           deleteComment={(comment: Comment)=>deleteCommentFromPost( comment, post.id)}
+          postID={post.id}
         />
       </View>
       <BottomLogo />

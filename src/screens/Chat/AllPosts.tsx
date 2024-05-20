@@ -3,8 +3,6 @@ import { ChatCard } from "../../components/ChartCard/ChatCard";
 import { MessageCard } from "../../components/ChartCard/MessageCard";
 import {  Post, PostEmoji, User, UserPost } from "../../utility/types";
 
-
-
 type Props={
     posts: UserPost[] 
     handleAddComment: ()=> void;
@@ -26,6 +24,7 @@ export const AllPosts= ({posts,handleAddComment,onDelete,loggedInUser, addEmoji,
       loggedInUser={loggedInUser}
       addEmoji={addEmoji}
       deleteEmoji={deleteEmoji}
+      commentsCount={post.comments.length}
     /> :<MessageCard
         key={`${post.id}-${i}`}
         message={post }

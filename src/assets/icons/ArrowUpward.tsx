@@ -13,8 +13,7 @@ export const ArrowUpward = ({ onPress,  style }: Props) => {
       style={style}
       testID={'arrow-upward'}
       color="#5B6770"
-      name="arrow-upward" size={20} 
-     
+      name="arrow-upward" size={20}  
     />
     </TouchableOpacity>
   );

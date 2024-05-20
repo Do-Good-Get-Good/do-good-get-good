@@ -1,17 +1,17 @@
 import React from "react";
-import { StyleSheet, View,TouchableOpacity } from "react-native";
+import { StyleSheet, View,TouchableOpacity, Text } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
 import { ChatCardImage } from "./ChatCardImage";
 import { ChatCardDescription } from "./ChatCardDescription";
-// import { CommentsSection } from "./ChatComments/CommentsSection";
 import { PostEmoji, User, UserPost } from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
+import typography from "../../assets/theme/typography";
 
 type Props = {
   post: UserPost;
@@ -20,6 +20,7 @@ type Props = {
   addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
   deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
   loggedInUser: User
+  commentsCount: number;
 };
 
 export const ChatCard = ({
@@ -28,7 +29,8 @@ export const ChatCard = ({
   onDelete,
   addEmoji,
   deleteEmoji,
-  loggedInUser
+  loggedInUser,
+  commentsCount
 }: Props) => {
 
   const isCurrentUser = post.userID === loggedInUser.id;
@@ -54,12 +56,17 @@ export const ChatCard = ({
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
         <View style={styles.commentsAndEmojiContainer}>
-        <ChatCardEmoji loggedInUser={loggedInUser}
-          deleteEmoji={ (emoji: PostEmoji)=>deleteEmoji( emoji, post.id)}
-         addEmoji={(emoji: PostEmoji)=>addEmoji( emoji, post.id)} 
-        emoji={post.emoji}/>
-        {/* To Do modify componnet based on changed comment type */}
-        {/* <CommentsSection comments={comments} addComment={()=>{}}/> */}
+        <ChatCardEmoji
+            loggedInUser={loggedInUser}
+            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
+            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
+            emoji={post.emoji}
+          />
+        {commentsCount > 0 ? (
+            <Text style={styles.comments}>{commentsCount} kommentarer</Text>
+          ) : (
+            <Text style={styles.comments}>Inga Kommentarer</Text>
+          )}
          </View>
       </TouchableOpacity>
     </View>
@@ -90,4 +97,7 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingHorizontal: 10, 
   },  
+  comments:{
+    ...typography.b2,
+  }
 });

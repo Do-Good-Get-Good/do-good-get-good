@@ -55,9 +55,6 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
       { emoji.userID !== loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
        </TouchableOpacity>
     ))}
-    {emojis.length > 2 && (
-    <Text style={styles.remainingCount}>+{emojis.length - 2}</Text>
-    )}
     {gettingEmojiDetails()}
    </View>
     );
@@ -87,7 +84,5 @@ const styles = StyleSheet.create({
       },
       modalText: {
         ...typography.b2,
-      },remainingCount: {
-        ...typography.b1
       }
 });
