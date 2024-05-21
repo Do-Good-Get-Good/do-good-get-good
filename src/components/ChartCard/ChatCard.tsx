@@ -12,10 +12,11 @@ import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
 import typography from "../../assets/theme/typography";
+import userLevelStore from "../../store/userLevel";
+import { Role } from "../../utility/enums";
 
 type Props = {
   post: UserPost;
-  handleAddComment: () => void;
   onDelete: () => void;
   addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
   deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
@@ -25,18 +26,19 @@ type Props = {
 
 export const ChatCard = ({
   post,
-  handleAddComment,
   onDelete,
   addEmoji,
   deleteEmoji,
   loggedInUser,
   commentsCount
 }: Props) => {
-
+  const { userLevel } = userLevelStore;
   const isCurrentUser = post.userID === loggedInUser.id;
   const navigation = useNavigation<{
     navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
   }>();
+
+  const isMenuShow = isCurrentUser && userLevel === Role.superadmin
 
   const handlePress = () => {
    post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
@@ -51,7 +53,7 @@ export const ChatCard = ({
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-          {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
+          { isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
@@ -61,11 +63,12 @@ export const ChatCard = ({
             deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
             addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
             emoji={post.emoji}
+            showAllEmojis={false}
           />
         {commentsCount > 0 ? (
-            <Text style={styles.comments}>{commentsCount} kommentarer</Text>
+            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
           ) : (
-            <Text style={styles.comments}>Inga Kommentarer</Text>
+            <Text style={styles.comments}>0 Kommentarer</Text>
           )}
          </View>
       </TouchableOpacity>
@@ -95,9 +98,10 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'space-between',
-    paddingHorizontal: 10, 
+    paddingHorizontal: 8, 
   },  
   comments:{
     ...typography.b2,
+    textDecorationLine: 'underline'
   }
 });

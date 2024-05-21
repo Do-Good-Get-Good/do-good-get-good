@@ -7,6 +7,8 @@ import { CommentInfo } from "./CommentInfo";
 import { InputField } from "../../InputField";
 import { ChatCardEditMenu } from "../ChatCardEditMenu";
 import { deleteComment } from "../../../firebase-functions/deleteTS/delete";
+import userLevelStore from "../../../store/userLevel";
+import { Role } from "../../../utility/enums";
 
 
 const makeCommentObject = (user: User, comment:Comment['comment']) => ({
@@ -25,6 +27,7 @@ type Props ={
   }
 
 export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: Props) => {
+  const { userLevel } = userLevelStore;
   const handleCommentSubmit = async (comment: Comment['comment']) => {
     const newComment = makeCommentObject(loggedInUser, comment);
     addComment(newComment);
@@ -34,13 +37,14 @@ export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: 
     deleteComment(makeCommentObject(loggedInUser, comment),postID);
     console.log('comment delete button pressed');
   };
+  
 
   return (
   <View>
       {comments.map((comment, index) => (
         <View key={index} style={styles.commentContainer}>
           <CommentInfo comment={comment} />
-          {comment.userID === loggedInUser.id && (
+          {comment.userID === loggedInUser.id && userLevel === Role.superadmin && (
             <ChatCardEditMenu onDeletePress={() => onDeletePress(comment.comment)} />
           )}
         </View>

@@ -55,6 +55,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
           deleteEmoji={(emoji: PostEmoji)=>deleteEmojiFromPost( emoji, post.id) }
           addEmoji={(emoji: PostEmoji)=>addEmojiToPost( emoji, post.id) }
           emoji={post.emoji}
+          showAllEmojis={true}
         />
         <CommentsSection
           comments={post.comments}
