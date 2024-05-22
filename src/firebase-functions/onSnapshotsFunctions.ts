@@ -13,7 +13,7 @@ export const onSnapshotUserPosts = (
       .limit(20)
       .onSnapshot((querySnapshot) => {
         arr = [];
-        querySnapshot.docs.forEach((doc) => {
+        querySnapshot?.docs.forEach((doc) => {
           arr.push(userPostObject(doc));
         });
         setUserPost(arr);

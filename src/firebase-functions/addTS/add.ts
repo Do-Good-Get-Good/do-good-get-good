@@ -3,49 +3,46 @@ import {  Comment, Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 
-
-const addImageToStorage =async (imageURL: string)=>{
+const addImageToStorage = async (imageURL: string) => {
   const uploadUri =
-  Platform.OS === "ios"
-    ? imageURL.replace("file://", "")
-    : imageURL;
-let filename = imageURL.substring(imageURL.lastIndexOf("/") + 1);
+    Platform.OS === "ios" ? imageURL.replace("file://", "") : imageURL;
+  let filename = imageURL.substring(imageURL.lastIndexOf("/") + 1);
 
-let fullPath = ''
+  let fullPath = "";
 
-await storage()
-.ref(`chat-images/${filename}`)
-.putFile(uploadUri)
-.then(async (response) => {
-  fullPath =  await storage()
-    .ref(response.metadata.fullPath)
-    .getDownloadURL();
-  });
-  return fullPath
-}
+  await storage()
+    .ref(`chat-images/${filename}`)
+    .putFile(uploadUri)
+    .then(async (response) => {
+      fullPath = await storage()
+        .ref(response.metadata.fullPath)
+        .getDownloadURL();
+    });
+  return fullPath;
+};
 export const saveImageToChatImageStoreAndCreateUserPost = async (
   post: UserPost,
 ) => {
   try {
-    const timestamp = firestore.Timestamp.now().toMillis(); 
-    const formattedDate = new Date(timestamp)
-  
-const fullPath = post?.imageURL  && await addImageToStorage(post?.imageURL )
+    const timestamp = firestore.Timestamp.now().toMillis();
+    const formattedDate = new Date(timestamp);
 
-        addChatPost({
-          ...post,
-          imageURL:  fullPath ,
-          date: formattedDate,
-        });
-  
+    const fullPath =
+      post?.imageURL && (await addImageToStorage(post?.imageURL));
+
+    addChatPost({
+      ...post,
+      imageURL: fullPath,
+      date: formattedDate,
+    });
   } catch (e) {
     console.error(e);
   }
 };
 
 const addChatPost = async (post: UserPost) => {
-  const timestamp = firestore.Timestamp.now().toMillis(); 
-  const formattedDate = new Date(timestamp)
+  const timestamp = firestore.Timestamp.now().toMillis();
+  const formattedDate = new Date(timestamp);
   try {
     const postData = {
       ...(post.userID && { user_id: post.userID }),
@@ -60,21 +57,23 @@ const addChatPost = async (post: UserPost) => {
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.imageURL && { image_url: post.imageURL }),
       ...(post.comments && { comments: post.comments }),
-      date:  formattedDate    
-    }
+      date: formattedDate,
+    };
     const res = await firestore().collection("UserPosts").add(postData);
-   return res;
+    return res;
   } catch (error) {
     return Promise.reject(error);
   }
 };
 
-export const addEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
+export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
   try {
-    await firestore().collection("UserPosts").doc(postID).update({
-      emoji:  firestore.FieldValue.arrayUnion(emoji)
-    })
-   
+    await firestore()
+      .collection("UserPosts")
+      .doc(postID)
+      .update({
+        emoji: firestore.FieldValue.arrayUnion(emoji),
+      });
   } catch (error) {
     console.log(error)
   } 
