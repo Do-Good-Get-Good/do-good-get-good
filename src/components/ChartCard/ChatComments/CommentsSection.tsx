@@ -27,25 +27,24 @@ type Props ={
   }
 
 export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: Props) => {
+
   const { userLevel } = userLevelStore;
   const handleCommentSubmit = async (comment: Comment['comment']) => {
     const newComment = makeCommentObject(loggedInUser, comment);
     addComment(newComment);
   };
 
-  const onDeletePress = (comment: Comment['comment']) => {
-    deleteComment(makeCommentObject(loggedInUser, comment),postID);
-    console.log('comment delete button pressed');
+  const onDeletePress = (comment: Comment) => {
+    deleteComment( comment,postID);
   };
   
-
   return (
   <View>
       {comments.map((comment, index) => (
         <View key={index} style={styles.commentContainer}>
           <CommentInfo comment={comment} />
-          {comment.userID === loggedInUser.id && userLevel === Role.superadmin && (
-            <ChatCardEditMenu onDeletePress={() => onDeletePress(comment.comment)} />
+          {(comment.userID === loggedInUser.id || userLevel === Role.superadmin)  && (
+            <ChatCardEditMenu onDeletePress={() => onDeletePress(comment)} />
           )}
         </View>
       ))}
@@ -59,6 +58,7 @@ export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: 
 const styles = StyleSheet.create({
   commentContainer: {
     flexDirection: 'row',
-    justifyContent: 'space-between'
+    justifyContent: 'space-between',
+    marginHorizontal:10
   }
 });

@@ -1,8 +1,8 @@
-import { View } from "react-native"
+import { StyleSheet, View } from "react-native"
 import { ChatCardHeader } from "../../../components/ChartCard/ChatCardHeader"
-import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate"
 import { ChatCardImage } from "../../../components/ChartCard/ChatCardImage"
 import { UserPost } from "../../../utility/types"
+import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate"
 
 type Props={
     post:UserPost
@@ -10,8 +10,23 @@ type Props={
 
 export const ChatCardWithActivity =({post}:Props)=>{
     return <>
-    <View>
-    <ChatCardHeader post={post} />
-    <ChatCardImage imageUrl={post?.imageURL ?? ''}/>
+    <View style={styles.container}>
+        <View style={styles.headerAndDate}>
+          <ChatCardHeader post={post} />
+          <ChatCardDate date={post.date} />
+        </View>
+        <ChatCardImage imageUrl={post?.imageURL ?? ''} />
     </View></>
 }
+
+
+const styles = StyleSheet.create({
+    container: {
+        marginHorizontal: 20,
+      },
+      headerAndDate: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+      },
+  });
+  

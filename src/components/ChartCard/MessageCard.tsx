@@ -16,6 +16,7 @@ type Props = {
   loggedInUser: User
   addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
   deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
+  commentsCount: number;
 };
 
 export const MessageCard = ({
@@ -23,7 +24,8 @@ export const MessageCard = ({
   onDelete,
   loggedInUser,
   addEmoji,
-  deleteEmoji
+  deleteEmoji,
+  commentsCount
 }: Props) => {
 
 
@@ -43,7 +45,7 @@ export const MessageCard = ({
       ]}
     >
       <ChatCardDate date={message.date} />
-      <TouchableOpacity  onPress={()=>{}} style={[styles.cardContainer]}>
+      <TouchableOpacity  onPress={handlePress} style={[styles.cardContainer]}>
         <View style={styles.contentContainer}>
           <View style={styles.nameAndMessageContainer}>
             <Text style={styles.userName}>
@@ -53,6 +55,7 @@ export const MessageCard = ({
           </View>
           {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
+        <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji
             loggedInUser={loggedInUser}
             deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, message.id)}
@@ -60,6 +63,12 @@ export const MessageCard = ({
             emoji={message.emoji}
             showAllEmojis={false}
           />
+           {commentsCount > 0 ? (
+            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+          ) : (
+            <Text style={styles.comments}>0 Kommentarer</Text>
+          )}
+          </View>
       </TouchableOpacity>
     </View>
   );
@@ -96,5 +105,15 @@ const styles = StyleSheet.create({
     
       messageText: {
        ...typography.b2
+      },
+      commentsAndEmojiContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8, 
+      },
+      comments:{
+        ...typography.b2,
+        textDecorationLine: 'underline'
       }
 });
