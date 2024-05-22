@@ -27,9 +27,10 @@ export const AllPosts= ({posts,handleAddComment,onDelete,loggedInUser, addEmoji,
     /> :<MessageCard
         key={`${post.id}-${i}`}
         message={post }
-        handleAddComment={handleAddComment}
         onDelete={() => onDelete(post)}
         loggedInUser={loggedInUser}
+        addEmoji={addEmoji}
+        deleteEmoji={deleteEmoji}
         />  
       )}
     </>

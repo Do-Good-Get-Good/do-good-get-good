@@ -3,18 +3,18 @@ import {
   View,StyleSheet,Text, ScrollView
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Menu from "../../components/Menu";
-import BottomLogo from "../../components/BottomLogo";
-import { GoBackButton } from "../../components/Buttons/GoBackButton";
-import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
-import { Comment, PostEmoji, User, UserPost } from "../../utility/types";
-import { ChatCardImage } from "../../components/ChartCard/ChatCardImage";
-import { ChatCardDescription } from "../../components/ChartCard/ChatCardDescription";
-import { ChatCardDate } from "../../components/ChartCard/ChatCardDate";
-import { ChatCardEmoji } from "../../components/ChartCard/ChatCardEmoji";
-import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
-import { useUserPostsActions } from "./useUserPostsActions";
-import { onSnapshotSelectedPost } from "../../firebase-functions/onSnapshotsFunctions";
+import Menu from "../../../components/Menu";
+import BottomLogo from "../../../components/BottomLogo";
+import { GoBackButton } from "../../../components/Buttons/GoBackButton";
+import { ChatCardHeader } from "../../../components/ChartCard/ChatCardHeader";
+import { Comment, PostEmoji, User, UserPost } from "../../../utility/types";
+import { ChatCardImage } from "../../../components/ChartCard/ChatCardImage";
+import { ChatCardDescription } from "../../../components/ChartCard/ChatCardDescription";
+import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate";
+import { ChatCardEmoji } from "../../../components/ChartCard/ChatCardEmoji";
+import { CommentsSection } from "../../../components/ChartCard/ChatComments/CommentsSection";
+import { useUserPostsActions } from "../useUserPostsActions";
+import { onSnapshotSelectedPost } from "../../../firebase-functions/onSnapshotsFunctions";
 
 
 type Props = {
@@ -85,6 +85,5 @@ const styles = StyleSheet.create({
   headerAndDate: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    alignItems: 'flex-end',
   },
 });

@@ -2,24 +2,38 @@ import React from "react";
 import { StyleSheet, View, Text,TouchableOpacity } from "react-native";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-import {User, UserPost} from "../../utility/types";
+import {PostEmoji, User, UserPost} from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import typography from "../../assets/theme/typography";
+import { ChatCardEmoji } from "./ChatCardEmoji";
+import { useNavigation } from "@react-navigation/native";
+import { UserStack } from "../../utility/routeEnums";
 
 type Props = {
   message: UserPost
-  handleAddComment: () => void;
   onDelete: () => void;
   loggedInUser: User
+  addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
+  deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
 };
 
 export const MessageCard = ({
   message,
-  handleAddComment,
   onDelete,
-  loggedInUser
+  loggedInUser,
+  addEmoji,
+  deleteEmoji
 }: Props) => {
+
+
+  const navigation = useNavigation<{
+    navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
+  }>()
+
+  const handlePress = () => {
+    message && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: message.id ,loggedInUser})  
+   };
   const isCurrentUser = message.userID === loggedInUser.id
   return (
     <View
@@ -29,7 +43,7 @@ export const MessageCard = ({
       ]}
     >
       <ChatCardDate date={message.date} />
-      <TouchableOpacity style={[styles.cardContainer]}>
+      <TouchableOpacity  onPress={()=>{}} style={[styles.cardContainer]}>
         <View style={styles.contentContainer}>
           <View style={styles.nameAndMessageContainer}>
             <Text style={styles.userName}>
@@ -39,6 +53,13 @@ export const MessageCard = ({
           </View>
           {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
+        <ChatCardEmoji
+            loggedInUser={loggedInUser}
+            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, message.id)}
+            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, message.id)}
+            emoji={message.emoji}
+            showAllEmojis={false}
+          />
       </TouchableOpacity>
     </View>
   );

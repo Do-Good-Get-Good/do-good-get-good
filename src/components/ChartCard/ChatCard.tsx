@@ -38,7 +38,7 @@ export const ChatCard = ({
     navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
   }>();
 
-  const isMenuShow = isCurrentUser && userLevel === Role.superadmin
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin
 
   const handlePress = () => {
    post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
