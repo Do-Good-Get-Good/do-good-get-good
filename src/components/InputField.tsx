@@ -39,6 +39,7 @@ type Props ={
       paddingHorizontal: 10,
       marginVertical:20,
       backgroundColor: colors.background,
+      marginHorizontal:10
     },
     input: {
       flex: 1, 

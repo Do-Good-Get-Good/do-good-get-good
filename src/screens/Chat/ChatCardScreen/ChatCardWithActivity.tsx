@@ -3,6 +3,7 @@ import { ChatCardHeader } from "../../../components/ChartCard/ChatCardHeader"
 import { ChatCardImage } from "../../../components/ChartCard/ChatCardImage"
 import { UserPost } from "../../../utility/types"
 import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate"
+import colors from "../../../assets/theme/colors"
 
 type Props={
     post:UserPost
@@ -23,6 +24,7 @@ export const ChatCardWithActivity =({post}:Props)=>{
 const styles = StyleSheet.create({
     container: {
         marginHorizontal: 20,
+        // backgroundColor:colors.background
       },
       headerAndDate: {
         flexDirection: 'row',

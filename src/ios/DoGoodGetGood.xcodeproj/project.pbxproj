@@ -14,10 +14,6 @@
 		1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
-		50A494FA2BEA2F6500482327 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 50A494F92BEA2F6500482327 /* PrivacyInfo.xcprivacy */; };
-		50A494FB2BEA2F6500482327 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 50A494F92BEA2F6500482327 /* PrivacyInfo.xcprivacy */; };
-		50CF1CD32BF640C7007E430A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 50CF1CD22BF640C7007E430A /* PrivacyInfo.xcprivacy */; };
-		50CF1CD42BF640C7007E430A /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 50CF1CD22BF640C7007E430A /* PrivacyInfo.xcprivacy */; };
 		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -30,6 +26,8 @@
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */; };
 		C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */; };
+		C0F2499E2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0F2499D2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy */; };
+		C0F2499F2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C0F2499D2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
 		E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
 		FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
@@ -56,8 +54,6 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DoGoodGetGood/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
-		50A494F92BEA2F6500482327 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../../../../Desktop/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
-		50CF1CD22BF640C7007E430A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../../../../Desktop/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -72,6 +68,7 @@
 		BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C0F2499D2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../../../Desktop/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; sourceTree = "<group>"; };
 		CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -181,8 +178,7 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				50A494F92BEA2F6500482327 /* PrivacyInfo.xcprivacy */,
-				50CF1CD22BF640C7007E430A /* PrivacyInfo.xcprivacy */,
+				C0F2499D2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy */,
 				C058ADC12BC7D68800D47F72 /* Prod */,
 				C058ADB72BC7D53F00D47F72 /* Dev */,
 				64D239C829B0F43A00A948ED /* Config.xcconfig */,
@@ -368,11 +364,10 @@
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
 				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 				2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */,
-				50CF1CD32BF640C7007E430A /* PrivacyInfo.xcprivacy in Resources */,
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
-				50A494FA2BEA2F6500482327 /* PrivacyInfo.xcprivacy in Resources */,
+				C0F2499E2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */,
 				C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -384,11 +379,10 @@
 				64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */,
 				64CEDA5D29AFB8D500D996F1 /* Images.xcassets in Resources */,
 				64CEDA5E29AFB8D500D996F1 /* DIN-Bold.otf in Resources */,
-				50CF1CD42BF640C7007E430A /* PrivacyInfo.xcprivacy in Resources */,
 				64CEDA5F29AFB8D500D996F1 /* DIN-Light.otf in Resources */,
 				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
 				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
-				50A494FB2BEA2F6500482327 /* PrivacyInfo.xcprivacy in Resources */,
+				C0F2499F2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */,
 				C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
