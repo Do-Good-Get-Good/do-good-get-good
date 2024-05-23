@@ -43,7 +43,7 @@ const useLinkedActivities = () => {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
   }, []);
 
