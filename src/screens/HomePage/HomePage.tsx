@@ -16,6 +16,7 @@ import useLinkedActivities from "../../hooks/useLinkedActivities";
 import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
 import colors from "../../assets/theme/colors";
 import { LinkedActivities, Props } from "./type";
+import { Disclaimer } from "../../components/Disclaimer";
 
 export const HomePage = ({ navigation }: Props) => {
   const { timeObject, activities, isLoading }: LinkedActivities =
@@ -25,6 +26,7 @@ export const HomePage = ({ navigation }: Props) => {
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
+      <Disclaimer />
       <ScrollView style={styles.container}>
         {isLoading && <ActivityIndicator size={30} color={colors.primary} />}
         {activities.length !== 0 && timeObject.length !== 0 && (

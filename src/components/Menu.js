@@ -13,7 +13,6 @@ import { useNavigation } from "@react-navigation/native";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Disclaimer } from "./Disclaimer";
 
 import Config from "react-native-config";
 
@@ -47,7 +46,6 @@ const Menu = () => {
           barStyle="dark-content"
           animated
         />
-        <Disclaimer />
         <View style={styles.headerLogo}>
           <Pressable
             onPress={() => {
