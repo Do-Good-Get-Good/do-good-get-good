@@ -31,7 +31,7 @@ export const AllPosts= ({posts,handleAddComment,onDelete,loggedInUser, addEmoji,
         loggedInUser={loggedInUser}
         addEmoji={addEmoji}
         deleteEmoji={deleteEmoji}
-        commentsCount={post.comments.length}
+        commentsCount={post.comments?.length ?? 0}
         />  
       )}
     </>

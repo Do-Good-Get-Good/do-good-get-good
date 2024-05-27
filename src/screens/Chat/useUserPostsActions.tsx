@@ -8,7 +8,7 @@ import { AlertInfo } from "../../components/Alerts/AlertInfo";
 const alertToPublishPost =
   "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.";
 const alertToInformAboutExpire =
-  "Den här upplevelsen raderas automatiskt efter ett år.";
+  "Den här inlägg raderas automatiskt efter ett år.";
 
 export const useUserPostsActions = () => {
   const [loading, setLoading] = useState(false);

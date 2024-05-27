@@ -16,6 +16,7 @@ import { useUserPostsActions } from "../useUserPostsActions";
 import { onSnapshotSelectedPost } from "../../../firebase-functions/onSnapshotsFunctions";
 import { ChatCardWithActivity } from "./ChatCardWithActivity";
 import typography from "../../../assets/theme/typography";
+import colors from "../../../assets/theme/colors";
 
 
 type Props = {
@@ -53,6 +54,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
               <ChatCardDate date={post.date} />
             </View>
           )}
+          <View style={styles.emojiDetails}>
           <ChatCardDescription description={post.description} />
           <ChatCardEmoji
             loggedInUser={loggedInUser}
@@ -61,6 +63,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
             emoji={post.emoji}
             showAllEmojis={true}
           />
+          </View>
           <CommentsSection
             comments={post.comments}
             addComment={(comment: Comment) => addCommentToPost(comment, post.id)}
@@ -85,10 +88,17 @@ const styles = StyleSheet.create({
   username: {
     ...typography.b1, 
     fontWeight: 'bold',
+    marginHorizontal:10,
   },
   postDetails:{
     flexDirection:'row',
     justifyContent:'space-between',
-    marginHorizontal:10
+    marginHorizontal:10,
+    backgroundColor:colors.background,
+  },
+  emojiDetails:{
+    backgroundColor:colors.background,
+    marginHorizontal:10,
+    marginBottom:20
   }
 });

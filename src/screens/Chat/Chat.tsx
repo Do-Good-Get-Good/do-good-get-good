@@ -10,8 +10,6 @@ import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
-import { ChatInputField } from "./ChatInputField";
-
 
 
 type Props = {
@@ -66,13 +64,13 @@ export const Chat = ({ navigation, route }: Props) => {
               onPress={onCreatePostButtonPressed}
             />
             <ActivityListOverLay
+            navigation={navigation}
               onBackdropPress={() => setShowOverlay(false)}
               visible={showOverlay}
               user={loggedInUser}
               activities={activities}
               onActivityPress={onChooseActivity}
             />
-            <ChatInputField loggedInUser={loggedInUser} addPost={addPost} />
             <BottomLogo />
           </>
         )}

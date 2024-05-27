@@ -44,7 +44,7 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       <Menu />
       <GoBackButton />
-      <ScrollView>
+      <ScrollView showsVerticalScrollIndicator={false}>
         <ChatCardHeader post={post} />
         <AddImage imageURL={imageURL} setImageURL={setImageURL} />
         <Spinner loading={loading} />
@@ -54,13 +54,14 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
             value={description}
             onChangeText={setDescription}
             placeholder="Skriv dina tankar"
-            style={styles.inpuField}
+            style={styles.inputField}
             scrollEnabled={true}
           />
-          <LongButton
+           <LongButton
             title="Spara"
-            onPress={() => imageURL !== "" && onSaveButtonPressed()}
+            onPress={onSaveButtonPressed}
             style={styles.longButton}
+            isDisabled={imageURL === "" || description === ''}
           />
         </View>
         <BottomLogo />
@@ -77,13 +78,12 @@ const styles = StyleSheet.create({
   inputContainer: {
     justifyContent: "space-between",
   },
-  inpuField: {
+  inputField: {
     flex: 1,
     marginVertical: 20,
     padding: 10,
     marginBottom: 20,
     ...typography.b1,
-    marginHorizontal: 40,
   },
   longButton: {
     alignSelf: "stretch",

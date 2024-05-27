@@ -9,6 +9,10 @@ import typography from "../../assets/theme/typography";
 import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
+import userLevelStore from "../../store/userLevel";
+import { Role } from "../../utility/enums";
+
+
 
 type Props = {
   message: UserPost
@@ -28,7 +32,7 @@ export const MessageCard = ({
   commentsCount
 }: Props) => {
 
-
+  const { userLevel } = userLevelStore;
   const navigation = useNavigation<{
     navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
   }>()
@@ -36,7 +40,9 @@ export const MessageCard = ({
   const handlePress = () => {
     message && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: message.id ,loggedInUser})  
    };
-  const isCurrentUser = message.userID === loggedInUser.id
+  const isCurrentUser = message.userID === loggedInUser.id;
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin
+ 
   return (
     <View
       style={[
@@ -53,7 +59,7 @@ export const MessageCard = ({
             </Text>
             <Text style={styles.messageText}>{message.description}</Text>
           </View>
-          {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
+          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
         <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji

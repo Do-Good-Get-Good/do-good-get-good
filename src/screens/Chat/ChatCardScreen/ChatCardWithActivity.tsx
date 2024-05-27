@@ -23,12 +23,13 @@ export const ChatCardWithActivity =({post}:Props)=>{
 
 const styles = StyleSheet.create({
     container: {
-        marginHorizontal: 20,
-        // backgroundColor:colors.background
+        marginHorizontal: 10,
+        backgroundColor:colors.background
       },
       headerAndDate: {
         flexDirection: 'row',
         justifyContent: 'space-between',
+        marginHorizontal: 10,
       },
   });
   
