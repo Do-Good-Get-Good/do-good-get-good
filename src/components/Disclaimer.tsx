@@ -56,6 +56,7 @@ export const Disclaimer = () => {
 
   return (
     <Overlay
+      testID="disclaimer-overlay"
       isVisible={!isContinue}
       animationType="fade"
       overlayStyle={{

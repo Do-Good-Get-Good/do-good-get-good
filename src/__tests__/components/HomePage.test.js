@@ -1,7 +1,6 @@
 import "react-native";
 import React from "react";
-import { render } from "@testing-library/react-native";
-
+import { render, waitFor } from "@testing-library/react-native";
 import { HomePage } from "../../screens/HomePage";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -46,22 +45,66 @@ jest.mock("../../hooks/useActivitySuggestions", () => ({
 }));
 
 jest.mock("../../components/MyActivities", () => ({
-  MyActivities: () => <></>,
+  MyActivities: () => <mockView></mockView>,
 }));
 
 jest.mock("../../components/TimeStatistics", () => () => {
-  return <></>;
+  return <mockView></mockView>;
 });
 
 jest.mock("../../components/NewestTimeEntries", () => () => {
-  return <></>;
+  return <mockView></mockView>;
 });
 
 jest.mock("../../components/HomeSuggestions", () => () => {
-  return <></>;
+  return <mockView></mockView>;
 });
 
+jest.mock("@react-native-firebase/auth", () => () => ({
+  auth: jest.fn(),
+}));
+
+let mockPrivacyPolicyKey = "false";
+jest.mock("@react-native-async-storage/async-storage", () => {
+  const actualAsyncStorage = jest.requireActual(
+    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+  );
+
+  return {
+    ...actualAsyncStorage,
+    getItem: jest.fn((key) => {
+      if (key === "@Is_Approved_Privacy_Policy_Key") {
+        return Promise.resolve(mockPrivacyPolicyKey);
+      }
+      return actualAsyncStorage.getItem(key);
+    }),
+    setItem: jest.fn(),
+    removeItem: jest.fn(),
+    // Add other AsyncStorage methods as needed
+  };
+});
+const setMockPrivacyPolicyKey = (value) => {
+  mockPrivacyPolicyKey = value;
+};
+
 describe("Testing HomePage", () => {
+  it("Should not show Disclaimer if user approved it already", async () => {
+    setMockPrivacyPolicyKey("true");
+
+    const { queryByTestId } = render(<HomePage />);
+    await waitFor(() => {
+      expect(queryByTestId("disclaimer-overlay")).toBeNull();
+    });
+  });
+
+  it("Should show Disclaimer if user did not approve it yet", async () => {
+    setMockPrivacyPolicyKey("false");
+    const { getByTestId } = render(<HomePage />);
+    await waitFor(() => {
+      expect(getByTestId("disclaimer-overlay")).toBeTruthy();
+    });
+  });
+
   it("Can find the 'Förslag & inspiration' text", () => {
     const { getByText } = render(<HomePage />);
 
