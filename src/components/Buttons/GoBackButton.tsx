@@ -41,6 +41,7 @@ export const GoBackButton = ({ onPress, style, text = true }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    marginVertical:6
   },
   textGoBackButton: {
     marginLeft: 10,

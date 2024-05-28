@@ -1,14 +1,12 @@
 import { Comment, PostEmoji, UserPost } from "../../utility/types";
 import { useState } from "react";
-import {   addComment, addEmoji, saveImageToChatImageStoreAndCreateUserPost } from "../../firebase-functions/addTS/add";
+import { addComment, addEmoji, saveImageToChatImageStoreAndCreateUserPost } from "../../firebase-functions/addTS/add";
 import { deleteComment, deleteEmoji, deleteUserPostAndImageInStorage } from "../../firebase-functions/deleteTS/delete";
 import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
-import { AlertInfo } from "../../components/Alerts/AlertInfo";
 
-const alertToPublishPost =
-  "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.";
-const alertToInformAboutExpire =
-  "Den här inlägg raderas automatiskt efter ett år.";
+  const alertMessage = "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.\n\
+  Den här inlägg raderas automatiskt efter ett år.";
+
 
 export const useUserPostsActions = () => {
   const [loading, setLoading] = useState(false);
@@ -16,13 +14,12 @@ export const useUserPostsActions = () => {
   const onAddRequest = async(post: UserPost, afterPostAdded?: ()=> void)=>  {
     setLoading(true);
     await saveImageToChatImageStoreAndCreateUserPost(post).then(()=>{
-      afterPostAdded && afterPostAdded()
-      AlertInfo(alertToInformAboutExpire)})
+      afterPostAdded && afterPostAdded()})
       setLoading(false)
   } 
 
   const addPost = async (post: UserPost, afterPostAdded?: ()=> void) => {
-     AlertQuestion("", alertToPublishPost,()=> onAddRequest(post, afterPostAdded));
+     AlertQuestion("", alertMessage,()=> onAddRequest(post, afterPostAdded));
   };
 
   const onDeletePost = async (post: UserPost ) => {

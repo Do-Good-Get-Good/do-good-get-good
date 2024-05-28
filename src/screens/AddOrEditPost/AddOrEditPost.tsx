@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   View,
 } from "react-native";
@@ -45,8 +46,17 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
       <Menu />
       <GoBackButton />
       <ScrollView showsVerticalScrollIndicator={false}>
-        <ChatCardHeader post={post} />
-        <AddImage imageURL={imageURL} setImageURL={setImageURL} />
+      {!post.activityID && (
+          <Text style={styles.userName}>
+            {post.userFirstName} {post.userLastName}
+          </Text>
+        )}
+      {post.activityID && (
+          <>
+            <ChatCardHeader post={post} />
+            <AddImage imageURL={imageURL} setImageURL={setImageURL} />
+          </>
+        )}
         <Spinner loading={loading} />
         <View style={styles.inputContainer}>
           <TextInput
@@ -81,6 +91,7 @@ const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     marginVertical: 20,
+    marginHorizontal:20,
     padding: 10,
     marginBottom: 20,
     ...typography.b1,
@@ -89,5 +100,10 @@ const styles = StyleSheet.create({
     alignSelf: "stretch",
     marginVertical: 10,
     marginHorizontal: 30,
+  },
+  userName: {
+    ...typography.cardTitle,
+    marginHorizontal:40,
+    marginVertical: 20,
   },
 });

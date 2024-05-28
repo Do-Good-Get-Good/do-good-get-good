@@ -55,7 +55,7 @@ export const ActivityListOverLay = ({
   const handleNoActivityPress = () => {
     navigation.navigate(UserStack.AddOrEditPost, {
       post: { userFirstName: user.firstName,
-        userLastName: user.lastName,description: '', userID: user.id},
+        userLastName: user.lastName,description: '', userID: user.id,  activityID: null},
       toEdit: false,
     });
     onBackdropPress();

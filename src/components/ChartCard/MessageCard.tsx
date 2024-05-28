@@ -47,7 +47,7 @@ export const MessageCard = ({
     <View
       style={[
         styles.container,
-        isCurrentUser && { alignItems: "flex-end" },
+        isCurrentUser && { alignItems: 'center' },
       ]}
     >
       <ChatCardDate date={message.date} />
@@ -84,11 +84,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginVertical: 10,
+        alignItems:'center'
       },
     
       cardContainer: {
         ...shadows.cardShadow,
-        width: "80%",
+        width: "90%",
         backgroundColor: colors.background,
         borderRadius: 5,
       },

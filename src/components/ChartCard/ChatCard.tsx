@@ -47,7 +47,7 @@ export const ChatCard = ({
   return (
     <View
       testID="chat-card"
-      style={[styles.container, isCurrentUser && { alignItems: "flex-end" }]}
+      style={[styles.container, isCurrentUser && { alignItems: 'center' }]}
     >
       <ChatCardDate date={post.date} />
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
@@ -80,10 +80,11 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10,
+    alignItems:'center'
   },
   cardContainer: {
     ...shadows.cardShadow,
-    width: "80%",
+    width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
   },
