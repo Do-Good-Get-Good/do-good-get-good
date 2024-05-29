@@ -21,7 +21,10 @@ const post = {
   userID:  "user1",
   activityCity: 'Mock City',
   imageURL: 'sampleImageUrl',
-  // comments:comments
+  emoji: [{ emojiName: '😊', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' }],
+  comments : [
+    { id: 1, comment: 'First comment', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' },
+  ]
 };
 
 const loggedInUser = {
@@ -112,26 +115,71 @@ describe("Testing ChatCardComponent", () => {
     const chatCard= getByTestId('chat-card');
     fireEvent.press(chatCard);
   });
+  test('Rendering ChatCard with ChatCardEmoji', () => {
+    const { getByTestId } = render(
+      <ChatCard
+        post={post}
+        onDelete={() => {}}
+        addEmoji={() => {}}
+        deleteEmoji={() => {}}
+        loggedInUser={loggedInUser}
+        commentsCount={0}
+      />
+    );
 
-  // test('Testing ChatCardEmoji component to ensure it renders ', () => {
-  //   const { getByTestId } = render(
-  //     <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
-  //   );
-  //   const chatCardDate = getByTestId('chat-card-date');
-  //   expect(chatCardDate).toBeTruthy();
-  // });
+    const chatCardEmoji = getByTestId('chat-card-emoji');
+    expect(chatCardEmoji).toBeTruthy();
+  });
 
+  test('Adding Emoji in ChatCardEmoji', () => {
+    const addEmojiMock = jest.fn();
+    const deleteEmojiMock = jest.fn();
+    const { getByTestId,getByText } = render(
+      <ChatCard
+        post={post}
+        onDelete={() => {}}
+        addEmoji={addEmojiMock} 
+        deleteEmoji={() => {}}
+        loggedInUser={loggedInUser}
+        commentsCount={0}
+      />
+    );
+  
+    const chatCardEmoji = getByTestId('chat-card-emoji');
+    fireEvent.press(chatCardEmoji); 
+    expect(addEmojiMock).toBeTruthy();
+    expect(getByText('😊')).toBeTruthy();  
+  });
 
-// ToDo adapt test after creating a new ChatCardScreen and also write test for ChatCardEmoji
+  test('Deleting Emoji in ChatCardEmoji', () => {
+    const deleteEmojiMock = jest.fn();
+    const { getByTestId, getByText } = render(
+      <ChatCard
+        post={post}
+        onDelete={() => {}}
+        addEmoji={() => {}}
+        deleteEmoji={deleteEmojiMock}
+        loggedInUser={loggedInUser}
+        commentsCount={0}
+      />
+    );
+    const chatCardEmoji = getByTestId('chat-card-emoji');
+    const emojiValue = chatCardEmoji.children[2].props.emojis[0].emojiName;
+    console.log(emojiValue, "+++++++++++");
+    fireEvent.press(getByText(emojiValue));
+    expect(deleteEmojiMock).toBeTruthy()
+  });
+  
+
   // test('Testing CommentsSection component to ensure it renders data correctly', async() => {
   //   const { getAllByTestId,getByText,debug} = render(
-  //     <ChatCard post={post} users={users} handleAddComment={() => {}} />
+  //     <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
   //   );
   //   await waitFor(() => {
   //   const commentsSection = getAllByTestId('comment-user-name');
   //   const commentsList = getAllByTestId('comment-text');
   //   debug();
-  //   expect(commentsSection[0].props.children).toBe('Erik Andersson');
+  //   expect(commentsSection[0].props.children).toBe('John Doe');
   //   expect(commentsList[0].props.children).toBe('First comment');
   //   })
   // });
