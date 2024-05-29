@@ -1,4 +1,3 @@
-import React from "react";
 import {
   View,
   Text,
@@ -16,9 +15,11 @@ import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
+import { usePushNotificationChat } from "./hooks/usePushNotificationChat";
 
 export default function App() {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
+  const { linking } = usePushNotificationChat();
 
   if (initializing) return null;
 
@@ -31,11 +32,11 @@ export default function App() {
   }
 
   if (userClaims?.superadmin) {
-    return <SuperAdminStack />;
+    return <SuperAdminStack linking={linking} />;
   } else if (userClaims?.admin) {
-    return <AdminStack />;
+    return <AdminStack linking={linking} />;
   } else if (userClaims?.user) {
-    return <UserStack />;
+    return <UserStack linking={linking} />;
   } else {
     return (
       <SafeAreaView style={styles.wrapper}>

@@ -32,7 +32,7 @@ import { AddOrEditPost } from "./screens/AddOrEditPost";
 import { ActivityCardDetails } from "./screens/ActivityCard/ActivityCardDetails";
 
 const Stack = createNativeStackNavigator();
-export const SuperAdminStack = () => {
+export const SuperAdminStack = (linking) => {
   return (
     <SafeAreaProvider>
       <ActivityImagesProvider>
@@ -43,7 +43,7 @@ export const SuperAdminStack = () => {
                 <SuperAdminProvider>
                   <AdminProvider>
                     <SuperAdminHomePageContextProvider>
-                      <NavigationContainer>
+                      <NavigationContainer linking={linking}>
                         <Stack.Navigator
                           screenOptions={{
                             headerShown: false,
@@ -130,7 +130,7 @@ export const SuperAdminStack = () => {
   );
 };
 
-export const AdminStack = () => {
+export const AdminStack = (linking) => {
   return (
     <SafeAreaProvider>
       <ActivityImagesProvider>
@@ -139,7 +139,7 @@ export const AdminStack = () => {
             <CreateActivityProvider>
               <TimeStatisticsProvider>
                 <AdminProvider>
-                  <NavigationContainer>
+                  <NavigationContainer linking={linking}>
                     <Stack.Navigator
                       screenOptions={{
                         headerShown: false,
@@ -196,12 +196,12 @@ export const AdminStack = () => {
   );
 };
 
-export const UserStack = () => {
+export const UserStack = (linking) => {
   return (
     <SafeAreaProvider>
       <ActivityImagesProvider>
         <TimeStatisticsProvider>
-          <NavigationContainer>
+          <NavigationContainer linking={linking}>
             <Stack.Navigator
               screenOptions={{
                 headerShown: false,

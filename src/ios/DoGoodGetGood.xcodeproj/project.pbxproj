@@ -58,6 +58,8 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
 		50A494F92BEA2F6500482327 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../../../../Desktop/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		50CF1CD22BF640C7007E430A /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../../../../Desktop/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		50F6AC882C05C9A400370596 /* DoGoodGetGoodDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DoGoodGetGoodDebug.entitlements; path = DoGoodGetGood/DoGoodGetGoodDebug.entitlements; sourceTree = "<group>"; };
+		50F6AC892C05C9B200370596 /* DoGoodGetGoodDevDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoGoodGetGoodDevDebug.entitlements; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -129,6 +131,7 @@
 		13B07FAE1A68108700A75B9A /* DoGoodGetGood */ = {
 			isa = PBXGroup;
 			children = (
+				50F6AC882C05C9A400370596 /* DoGoodGetGoodDebug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -167,6 +170,7 @@
 		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXGroup;
 			children = (
+				50F6AC892C05C9B200370596 /* DoGoodGetGoodDevDebug.entitlements */,
 			);
 			path = DoGoodGetGoodDev;
 			sourceTree = "<group>";
@@ -740,6 +744,7 @@
 				APP_VERSION = 1.1.2;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DoGoodGetGood/DoGoodGetGoodDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 16;
@@ -813,6 +818,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DoGoodGetGoodDev/DoGoodGetGoodDevDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.1.1;
