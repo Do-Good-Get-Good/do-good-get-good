@@ -3,26 +3,30 @@ import { StyleSheet, ScrollView, Text, ActivityIndicator } from "react-native";
 
 import { SafeAreaView } from "react-native-safe-area-context";
 
-import Menu from "../components/Menu";
-import TimeStatistics from "../components/TimeStatistics";
-import { MyActivities } from "../components/MyActivities";
-import NewestTimeEntries from "../components/NewestTimeEntries";
-import HomeSuggestions from "../components/HomeSuggestions";
-import BottomLogo from "../components/BottomLogo";
+import Menu from "../../components/Menu";
+import TimeStatistics from "../../components/TimeStatistics";
+import { MyActivities } from "../../components/MyActivities";
+import NewestTimeEntries from "../../components/NewestTimeEntries";
+import HomeSuggestions from "../../components/HomeSuggestions";
+import BottomLogo from "../../components/BottomLogo";
 
-import typography from "../assets/theme/typography";
+import typography from "../../assets/theme/typography";
 
-import useLinkedActivities from "../hooks/useLinkedActivities";
-import { useActivitySuggestions } from "../hooks/useActivitySuggestions";
-import colors from "../assets/theme/colors";
+import useLinkedActivities from "../../hooks/useLinkedActivities";
+import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
+import colors from "../../assets/theme/colors";
+import { LinkedActivities, Props } from "./type";
+import { Disclaimer } from "../../components/Disclaimer";
 
-export const HomePage = ({ navigation }) => {
-  const { timeObject, activities, isLoading } = useLinkedActivities();
+export const HomePage = ({ navigation }: Props) => {
+  const { timeObject, activities, isLoading }: LinkedActivities =
+    useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
 
   return (
     <SafeAreaView style={styles.view}>
       <Menu />
+      <Disclaimer />
       <ScrollView style={styles.container}>
         {isLoading && <ActivityIndicator size={30} color={colors.primary} />}
         {activities.length !== 0 && timeObject.length !== 0 && (

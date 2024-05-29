@@ -54,6 +54,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = DoGoodGetGood/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
+		1A92BBE82C0714970076E00B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -178,7 +179,8 @@
 		83CBB9F61A601CBA00E9B192 = {
 			isa = PBXGroup;
 			children = (
-				C0F2499D2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy */,
+
+				1A92BBE82C0714970076E00B /* PrivacyInfo.xcprivacy */,
 				C058ADC12BC7D68800D47F72 /* Prod */,
 				C058ADB72BC7D53F00D47F72 /* Dev */,
 				64D239C829B0F43A00A948ED /* Config.xcconfig */,
@@ -367,7 +369,6 @@
 				D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */,
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
-				C0F2499E2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */,
 				C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -382,7 +383,6 @@
 				64CEDA5F29AFB8D500D996F1 /* DIN-Light.otf in Resources */,
 				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
 				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
-				C0F2499F2BFF24E800DCCBCD /* PrivacyInfo.xcprivacy in Resources */,
 				C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
