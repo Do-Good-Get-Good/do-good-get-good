@@ -1,4 +1,4 @@
-[![CI](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml/badge.svg?branch=main)](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests.yml)
+[![Unit tests](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests_branch.yml/badge.svg)](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/autotests_branch.yml)
 
 # Do Good Get Good
 
