@@ -5,7 +5,8 @@ export enum UserStack {
   ConceptPage = "ConceptPage",
   ActivityCard = "ActivityCard",
   Chat = "Chat",
-  AddOrEditPost=" AddOrEditPost"
+  AddOrEditPost="AddOrEditPost",
+  ChatCardScreen="ChatCardScreen"
 }
 
 export enum AdminStack {

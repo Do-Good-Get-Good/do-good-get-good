@@ -90,7 +90,7 @@ export const userPostObject = (
     activityTitle: doc.data().activity_title,
     activityImage: doc.data().activity_image,
     changed: doc.data().changed,
-    date: doc.data().date.toDate(),
+    date: format(doc.data().date.toDate(), "yyyy-MM-dd"),
     description: doc.data().description,
     emoji: doc.data().emoji,
     imageURL: doc.data().image_url,

@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from "react";
-import {
-    Modal,
-  StyleSheet, Text, TouchableOpacity, View
+import {Modal,StyleSheet, Text, TouchableOpacity, View
 } from "react-native";
 import EmojiSelector from 'react-native-emoji-selector';
 import { EmojiList } from "./EmojiList";
@@ -18,9 +16,10 @@ type Props ={
   loggedInUser: User
   addEmoji: (emoji: PostEmoji)=>void
   deleteEmoji:(emoji: PostEmoji)=>void
+  showAllEmojis?: boolean;
 }
 
-export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}: Props) => {
+export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji,showAllEmojis}: Props) => {
     const [modalVisible, setModalVisible] = useState(false);
     const [selectedEmoji, setSelectedEmoji] = useState('');
 
@@ -54,7 +53,7 @@ export const ChatCardEmoji = ({emoji =[] , addEmoji, loggedInUser, deleteEmoji}:
        <SmileIcon onPress={()=>setModalVisible(true)} />
         )}
     <View style={{ width:12 }} />
-            <EmojiList emojis={emoji ??[]} loggedInUserId={loggedInUser.id} />
+            <EmojiList emojis={emoji ??[]} loggedInUserId={loggedInUser.id} showAll={showAllEmojis} />
      <Overlay
       isVisible={modalVisible}
       transparent={true}
@@ -85,5 +84,5 @@ const styles = StyleSheet.create({
     },
     emojiSize:{
         fontSize:20
-    },
+    }
 });

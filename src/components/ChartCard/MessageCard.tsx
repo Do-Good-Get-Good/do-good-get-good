@@ -2,34 +2,56 @@ import React from "react";
 import { StyleSheet, View, Text,TouchableOpacity } from "react-native";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
-import {User, UserPost} from "../../utility/types";
+import {PostEmoji, User, UserPost} from "../../utility/types";
 import { ChatCardEditMenu } from "./ChatCardEditMenu";
 import { ChatCardDate } from "./ChatCardDate";
 import typography from "../../assets/theme/typography";
+import { ChatCardEmoji } from "./ChatCardEmoji";
+import { useNavigation } from "@react-navigation/native";
+import { UserStack } from "../../utility/routeEnums";
+import userLevelStore from "../../store/userLevel";
+import { Role } from "../../utility/enums";
+
+
 
 type Props = {
   message: UserPost
-  handleAddComment: () => void;
   onDelete: () => void;
   loggedInUser: User
+  addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
+  deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
+  commentsCount: number;
 };
 
 export const MessageCard = ({
   message,
-  handleAddComment,
   onDelete,
-  loggedInUser
+  loggedInUser,
+  addEmoji,
+  deleteEmoji,
+  commentsCount
 }: Props) => {
-  const isCurrentUser = message.userID === loggedInUser.id
+
+  const { userLevel } = userLevelStore;
+  const navigation = useNavigation<{
+    navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
+  }>()
+
+  const handlePress = () => {
+    message && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: message.id ,loggedInUser})  
+   };
+  const isCurrentUser = message.userID === loggedInUser.id;
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin
+ 
   return (
     <View
       style={[
         styles.container,
-        isCurrentUser && { alignItems: "flex-end" },
+        isCurrentUser && { alignItems: 'center' },
       ]}
     >
       <ChatCardDate date={message.date} />
-      <TouchableOpacity style={[styles.cardContainer]}>
+      <TouchableOpacity  onPress={handlePress} style={[styles.cardContainer]}>
         <View style={styles.contentContainer}>
           <View style={styles.nameAndMessageContainer}>
             <Text style={styles.userName}>
@@ -37,8 +59,22 @@ export const MessageCard = ({
             </Text>
             <Text style={styles.messageText}>{message.description}</Text>
           </View>
-          {isCurrentUser && <ChatCardEditMenu onDeletePress={onDelete} />}
+          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
         </View>
+        <View style={styles.commentsAndEmojiContainer}>
+        <ChatCardEmoji
+            loggedInUser={loggedInUser}
+            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, message.id)}
+            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, message.id)}
+            emoji={message.emoji}
+            showAllEmojis={false}
+          />
+           {commentsCount > 0 ? (
+            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+          ) : (
+            <Text style={styles.comments}>0 Kommentarer</Text>
+          )}
+          </View>
       </TouchableOpacity>
     </View>
   );
@@ -48,11 +84,12 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         marginVertical: 10,
+        alignItems:'center'
       },
     
       cardContainer: {
         ...shadows.cardShadow,
-        width: "80%",
+        width: "90%",
         backgroundColor: colors.background,
         borderRadius: 5,
       },
@@ -75,5 +112,15 @@ const styles = StyleSheet.create({
     
       messageText: {
        ...typography.b2
+      },
+      commentsAndEmojiContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-between',
+        paddingHorizontal: 8, 
+      },
+      comments:{
+        ...typography.b2,
+        textDecorationLine: 'underline'
       }
 });

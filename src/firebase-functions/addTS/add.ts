@@ -1,5 +1,5 @@
 import { Platform } from "react-native";
-import { Post, PostEmoji, User, UserPost } from "../../utility/types";
+import {  Comment, Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 
@@ -75,6 +75,17 @@ export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
         emoji: firestore.FieldValue.arrayUnion(emoji),
       });
   } catch (error) {
-    console.log(error);
-  }
-};
+    console.log(error)
+  } 
+}
+
+export const addComment = async(comment:Comment, postID : UserPost['id'])=>{
+  try {
+    await firestore().collection("UserPosts").doc(postID).update({
+      comments:  firestore.FieldValue.arrayUnion(comment)
+    })
+   
+  } catch (error) {
+    console.log(error)
+  } 
+}

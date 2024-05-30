@@ -22,7 +22,6 @@ export const useChat = ({ getChatData }: Props) => {
   const [activitiesConnectedToUser, setActivitiesConnectedToUser] = useState<
     Activity[]
   >([]);
-  const [usersInChat, setUsersInChat] = useState<User[]>([]);
 
   useEffect(() => {
     const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));

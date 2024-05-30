@@ -8,10 +8,11 @@ import typography from "../../assets/theme/typography";
 
 type Props={
   emojis:PostEmoji[],
-  loggedInUserId:User['id']
+  loggedInUserId:User['id'],
+  showAll?: boolean
 }
 
-export const EmojiList = ({emojis,loggedInUserId}:Props) => {
+export const EmojiList = ({emojis,loggedInUserId,showAll}:Props) => {
   
 
     const [selectedEmoji, setSelectedEmoji] = useState<PostEmoji | null>(null);
@@ -44,22 +45,26 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
           </Modal>
         );
       };
+      const nonUserEmojis = emojis.filter(emoji => emoji.userID !== loggedInUserId);
+      const displayedEmojis = showAll ? nonUserEmojis : nonUserEmojis.slice(0, 2);
+      const remainingCount = nonUserEmojis.length - displayedEmojis.length;
 
   return (
+
     <View style={styles.container}>
-     {emojis.map((emoji, index) => (
-       <TouchableOpacity
-        key={index}
-        style={styles.emojiContainer}
-        onPress={() => handleEmojiPress(emoji)}>
-      { emoji.userID !== loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
-       </TouchableOpacity>
-    ))}
-    {emojis.length > 2 && (
-    <Text style={styles.remainingCount}>+{emojis.length - 2}</Text>
-    )}
-    {gettingEmojiDetails()}
-   </View>
+      {displayedEmojis.map((emoji, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.emojiContainer}
+          onPress={() => handleEmojiPress(emoji)}>
+          <Text style={styles.emoji}>{emoji.emojiName}</Text>
+        </TouchableOpacity>
+      ))}
+      {!showAll && remainingCount > 0 && (
+        <Text style={styles.remainingCount}>+{remainingCount}</Text>
+      )}
+      {gettingEmojiDetails()}
+    </View>
     );
 };
 
@@ -87,7 +92,8 @@ const styles = StyleSheet.create({
       },
       modalText: {
         ...typography.b2,
-      },remainingCount: {
-        ...typography.b1
+      },
+      remainingCount: {
+        fontSize: 18,
       }
 });

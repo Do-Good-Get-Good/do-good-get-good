@@ -7,9 +7,10 @@ import { AlertQuestion } from "../Alerts/AlertQuestion ";
 
 type Props = {
   onDeletePress: () => void;
+  textWhatItemToDelete?: string
 };
 
-export const ChatCardEditMenu = ({ onDeletePress }: Props) => {
+export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post' }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const optionsList = [
@@ -19,7 +20,7 @@ export const ChatCardEditMenu = ({ onDeletePress }: Props) => {
         setShowMenu(false);
         AlertQuestion(
           "",
-          "Vill du ta bort den här post?",
+          `Vill du ta bort den här ${textWhatItemToDelete}?`,
           onDeletePress,
         );
       },

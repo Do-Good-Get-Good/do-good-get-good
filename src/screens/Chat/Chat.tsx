@@ -10,9 +10,6 @@ import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
-import { ChatInputField } from "./ChatInputField";
-import { addEmoji } from "../../firebase-functions/addTS/add";
-import { deleteEmoji } from "../../firebase-functions/deleteTS/delete";
 
 
 type Props = {
@@ -22,7 +19,7 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { onDelete, addPost, loading } = useUserPostsActions();
+  const { onDeletePost, addPost, loading, addEmojiToPost,deleteEmojiFromPost } = useUserPostsActions();
   const { posts, loggedInUser, getAllActivitiesConnectedToUser } =useChat(getChatData);
   const [showOverlay, setShowOverlay] = useState(false);
   const [activities, setActivities] = useState<Activity[]>([]);
@@ -57,9 +54,9 @@ export const Chat = ({ navigation, route }: Props) => {
            <AllPosts 
            posts={posts} 
            handleAddComment={handleAddComment}
-           addEmoji={ addEmoji}
-           onDelete={onDelete}
-           deleteEmoji={deleteEmoji}
+           addEmoji={ addEmojiToPost}
+           onDelete={onDeletePost}
+           deleteEmoji={deleteEmojiFromPost}
            loggedInUser={loggedInUser}/>
             <LongButton
               style={styles.longButton}
@@ -67,13 +64,13 @@ export const Chat = ({ navigation, route }: Props) => {
               onPress={onCreatePostButtonPressed}
             />
             <ActivityListOverLay
+            navigation={navigation}
               onBackdropPress={() => setShowOverlay(false)}
               visible={showOverlay}
               user={loggedInUser}
               activities={activities}
               onActivityPress={onChooseActivity}
             />
-            <ChatInputField loggedInUser={loggedInUser} addPost={addPost} />
             <BottomLogo />
           </>
         )}

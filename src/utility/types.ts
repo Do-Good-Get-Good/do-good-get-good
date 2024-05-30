@@ -87,11 +87,11 @@ export type PostEmoji = {
 };
 
 export type Comment = {
-  id: string;
   comment: string;
   userID: User["id"];
+  userFirstName: User["firstName"];
+  userLastName: User["lastName"];
 };
-
 
 export enum Post {
   post = 'post',

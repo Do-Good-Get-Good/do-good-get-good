@@ -1,45 +1,56 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  StyleSheet,TextInput,TouchableOpacity,View
+  StyleSheet,TextInput,View
 } from "react-native";
-import { Icon } from "@rneui/base";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { ArrowUpward } from "../assets/icons/ArrowUpward";
 
 type Props ={
-    placeholder:string,
-    value:string,
-    onChangeText:(text:string)=>void;
-    onSubmit?:()=>void;
-   
+    onSubmit: (text: string) => void;
   }
-export const InputField = ({placeholder,value,onChangeText,onSubmit}: Props) => {
+  const placeholder="Skriv en kommentar"
+  export const InputField = ({onSubmit }: Props) => {
+  const [textInputValue, setTextInputValue] = useState('');
+
+    const onSubmitComment = () => {
+      textInputValue.trim() !== '' && (onSubmit(textInputValue), setTextInputValue(''));
+    };
+    return (
+      <View style={styles.container}>
+        <TextInput
+          placeholder={placeholder}
+          value={textInputValue}
+          onChangeText={setTextInputValue}
+           style={styles.input}
+        />
+        <ArrowUpward style={styles.buttonArrow} onPress={onSubmitComment} />
+      </View>
+    );
+  };
   
-  return (
-    <View style={styles.container}>
-    <TextInput
-       placeholder={placeholder}
-       value={value}
-       onChangeText={onChangeText}
-    /> 
-    <View>
-    <TouchableOpacity onPress={onSubmit}>
-        <Icon style={styles.buttonArrow} name="arrow-upward" size={20}/>
-    </TouchableOpacity>
-    </View>
-    
-    </View>  
-  );
-};
-
-const styles = StyleSheet.create({
-    container:{
-        flexDirection:'row'
+  const styles = StyleSheet.create({
+    container: {
+      flexDirection: 'row',
+      alignItems: 'center',
+      borderWidth: 1,
+      borderColor: colors.secondary,
+      borderRadius: 5,
+      paddingHorizontal: 10,
+      marginVertical:20,
+      backgroundColor: colors.background,
+      marginHorizontal:10
     },
-    buttonArrow:{
-        padding:2,
-        backgroundColor:colors.primary,
-        borderRadius:5,
-        marginLeft:100
-    }
-
-});
+    input: {
+      flex: 1, 
+      paddingVertical: 8, 
+      fontFamily: typography.b1.fontFamily,
+    },
+    buttonArrow: {
+      padding: 2,
+       borderWidth: 0.75,
+      borderRadius: 5,
+      marginLeft: 5, 
+    },
+  });
+  
