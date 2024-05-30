@@ -224,7 +224,6 @@ export const UserStack = () => {
               <Stack.Screen name="Chat" component={Chat} />
               <Stack.Screen name="AddOrEditPost" component={AddOrEditPost} />
               <Stack.Screen name="ChatCardScreen" component={ChatCardScreen} />
-              <Stack.Screen name=" AddOrEditPost" component={AddOrEditPost} />
               <Stack.Screen name="ActivityCardDetails"component={ActivityCardDetails}/>
             </Stack.Navigator>
           </NavigationContainer>

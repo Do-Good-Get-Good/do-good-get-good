@@ -24,24 +24,27 @@ const deleteUserPost = async (postID: UserPost["id"]) => {
   }
 };
 
-export const deleteEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{
-    await firestore().collection("UserPosts").doc(postID).update({
-      emoji:  firestore.FieldValue.arrayRemove(emoji)
-    }).then(() => {
+export const deleteEmoji = async(emoji: PostEmoji, postID : UserPost['id'])=>{ 
+    try {
+      await firestore().collection("UserPosts").doc(postID).update({
+        emoji: firestore.FieldValue.arrayRemove(emoji)
+      });
       return true;
-    }).catch((error) => {
+    } catch (error) {
       console.log(error);
       return false;
-    }); 
+    }
 }
 
 export const deleteComment= async(comment: Comment, postID : UserPost['id'])=>{
+
+try {
   await firestore().collection("UserPosts").doc(postID).update({
-    comments:  firestore.FieldValue.arrayRemove(comment)
-  }).then(() => {
-    return true;
-  }).catch((error) => {
-    console.log(error);
-    return false;
-  }); 
+    comments: firestore.FieldValue.arrayRemove(comment)
+  });
+  return true;
+} catch (error) {
+  console.log(error);
+  return false;
+}
 }
