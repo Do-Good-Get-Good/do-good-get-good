@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import messaging from "@react-native-firebase/messaging";
 import { Linking, ActivityIndicator } from "react-native";
 import { PermissionsAndroid } from "react-native";
-import { createStackNavigator } from "@react-navigation/stack";
 
 const NAVIGATION_IDS = ["chat", "chatCard"];
 
@@ -62,6 +61,7 @@ const linking = {
     const unsubscribe = messaging().onNotificationOpenedApp((remoteMessage) => {
       const url = buildDeepLinkFromNotificationData(remoteMessage.data);
       if (typeof url === "string") {
+        console.log(url, " ----- url");
         listener(url);
       }
     });
