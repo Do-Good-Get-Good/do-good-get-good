@@ -21,9 +21,10 @@ const post = {
   userID:  "user1",
   activityCity: 'Mock City',
   imageURL: 'sampleImageUrl',
-  emoji: [{ emojiName: '😊', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' }],
+  emoji: [{ emojiName: '😊', userID: 'user1', userFirstName: 'Erik', userLastName: 'Andersson' }],
   comments : [
     { id: 1, comment: 'First comment', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' },
+    { id: 2, comment: 'Second comment', userID: 'user3', userFirstName: 'Erik', userLastName: 'Andersson' }
   ]
 };
 
@@ -36,12 +37,11 @@ const loggedInUser = {
   statusActive: true 
 };
 
-
 describe("Testing ChatCardComponent", () => {
   
-  test('Testing ChatCardDate component to ensure it renders with correct date', () => {
+  it('Testing ChatCardDate component to ensure it renders with correct date', () => {
     const { getByTestId } = render(
-      <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} commentsCount={0} />
+      <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     const chatCardDate = getByTestId('chat-card-date');
     expect(chatCardDate).toBeTruthy();
@@ -49,16 +49,16 @@ describe("Testing ChatCardComponent", () => {
   });
 
 
-  test('Testing ChatCardDate component to ensure it renders with correct date', () => {
+  it('Testing ChatCardDate component to ensure it renders with correct date', () => {
     const { getByTestId } = render(
-      <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} commentsCount={0} />
+      <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     const chatCardDate = getByTestId('chat-card-date');
     expect(chatCardDate).toBeTruthy();
     expect(chatCardDate.props.children).toEqual('Today');
   });
 
-  test('Testing ChatCardHeadercomponent to ensure it renders with correct data', () => {
+  it('Testing ChatCardHeadercomponent to ensure it renders with correct data', () => {
     const { getByTestId, getByText } = render(
       <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}  />
     );
@@ -71,7 +71,7 @@ describe("Testing ChatCardComponent", () => {
     expect(activityImage.props.source.testUri).toBe( "../../../assets/images/activities/symbol_sport.png" )
   });
 
-  test('Testing ChatCardImage component to ensure it renders  with correct data', () => {
+  it('Testing ChatCardImage component to ensure it renders  with correct data', () => {
     const { getByTestId } = render(
       <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}/>
     );
@@ -80,14 +80,14 @@ describe("Testing ChatCardComponent", () => {
     expect(chatCardImage.props.source.uri).toBe(post.imageURL);
   });
 
-  test('Testing ChatCardDescription component to ensure it renders with correct data', () => {
+  it('Testing ChatCardDescription component to ensure it renders with correct data', () => {
     const {getByText } = render(
       <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     expect(getByText('Test Description')).toBeTruthy();  
   });
 
-  test('Testing ChatCardEditMenu component is rendered', () => {
+  it('Testing ChatCardEditMenu component is rendered', () => {
     const onDeleteMock = jest.fn();
     const { getByTestId,getByText } = render(
       <ChatCard post={post} onDelete={onDeleteMock} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser}  />
@@ -100,7 +100,7 @@ describe("Testing ChatCardComponent", () => {
     expect(onDeleteMock).toBeTruthy();
   });
 
-  test('Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false', () => {
+  it('Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false', () => {
     const { queryByTestId } = render(
       <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={!loggedInUser}  />
     );
@@ -108,14 +108,14 @@ describe("Testing ChatCardComponent", () => {
     expect(chatCardEditMenu).toBeFalsy();
   });
   
-  test('Testing ChatCard component touchability', () => {
+  it('Testing ChatCard component touchability', () => {
     const { getByTestId } = render(
       <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
     );
     const chatCard= getByTestId('chat-card');
     fireEvent.press(chatCard);
   });
-  test('Rendering ChatCard with ChatCardEmoji', () => {
+  it('Rendering ChatCard with ChatCardEmoji', () => {
     const { getByTestId } = render(
       <ChatCard
         post={post}
@@ -131,7 +131,7 @@ describe("Testing ChatCardComponent", () => {
     expect(chatCardEmoji).toBeTruthy();
   });
 
-  test('Adding Emoji in ChatCardEmoji', () => {
+  it('Adding Emoji in ChatCardEmoji', () => {
     const addEmojiMock = jest.fn();
     const deleteEmojiMock = jest.fn();
     const { getByTestId,getByText } = render(
@@ -151,36 +151,39 @@ describe("Testing ChatCardComponent", () => {
     expect(getByText('😊')).toBeTruthy();  
   });
 
-  test('Deleting Emoji in ChatCardEmoji', () => {
+  it('Deleting Emoji in ChatCardEmoji', () => {
     const deleteEmojiMock = jest.fn();
-    const { getByTestId, getByText } = render(
+    const addEmojiMock = jest.fn();
+
+    const { getByText,queryByText } = render(
       <ChatCard
         post={post}
         onDelete={() => {}}
-        addEmoji={() => {}}
+        addEmoji={addEmojiMock}
         deleteEmoji={deleteEmojiMock}
         loggedInUser={loggedInUser}
-        commentsCount={0}
+        commentsCount={post.comments.length}
       />
     );
-    const chatCardEmoji = getByTestId('chat-card-emoji');
-    const emojiValue = chatCardEmoji.children[2].props.emojis[0].emojiName;
-    console.log(emojiValue, "+++++++++++");
-    fireEvent.press(getByText(emojiValue));
-    expect(deleteEmojiMock).toBeTruthy()
-  });
-  
 
-  // test('Testing CommentsSection component to ensure it renders data correctly', async() => {
-  //   const { getAllByTestId,getByText,debug} = render(
-  //     <ChatCard post={post} onDelete={() => {}} addEmoji={() => {}} deleteEmoji={() => {}} loggedInUser={loggedInUser} />
-  //   );
-  //   await waitFor(() => {
-  //   const commentsSection = getAllByTestId('comment-user-name');
-  //   const commentsList = getAllByTestId('comment-text');
-  //   debug();
-  //   expect(commentsSection[0].props.children).toBe('John Doe');
-  //   expect(commentsList[0].props.children).toBe('First comment');
-  //   })
-  // });
+    const emojiText = getByText('😊');
+    fireEvent.press(emojiText);
+    expect(deleteEmojiMock).toHaveBeenCalled();
+    expect(queryByText('😊')).toBeNull();
+  });
+
+  it('Testing comments count in ChatCard', () => {
+    const { getByText } = render(
+      <ChatCard 
+        post={post} 
+        onDelete={() => {}} 
+        addEmoji={() => {}} 
+        deleteEmoji={() => {}} 
+        loggedInUser={loggedInUser} 
+        commentsCount={post.comments.length} 
+      />
+    );
+    const commentsCountText = getByText("2 Kommentarer");
+    expect(commentsCountText).toBeTruthy();
+  });
 });
