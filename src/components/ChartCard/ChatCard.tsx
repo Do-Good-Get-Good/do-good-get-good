@@ -36,6 +36,7 @@ export const ChatCard = ({
   const isCurrentUser = post.userID === loggedInUser.id;
   const navigation = useNavigation<{
     navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
+  
   }>();
 
   const isMenuShow = isCurrentUser || userLevel === Role.superadmin
@@ -43,6 +44,10 @@ export const ChatCard = ({
   const handlePress = () => {
    post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
   };
+
+  const editPress = () => {
+    console.log("Edit button pressed")
+   };
 
   return (
     <View
@@ -53,7 +58,7 @@ export const ChatCard = ({
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} />}
+          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}/>}
         </View>
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
@@ -87,6 +92,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
+    position: 'relative',
   },
   headerAndMenu: {
     flex: 0.3,
@@ -94,6 +100,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 4,
     marginRight: 10,
+    zIndex: 1,
   },
   commentsAndEmojiContainer: {
     flexDirection: 'row',

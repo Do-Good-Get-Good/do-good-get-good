@@ -7,13 +7,22 @@ import { AlertQuestion } from "../Alerts/AlertQuestion ";
 
 type Props = {
   onDeletePress: () => void;
+  onEditPress:()=>void;
   textWhatItemToDelete?: string
 };
 
-export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post' }: Props) => {
+export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post',onEditPress }: Props) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const optionsList = [
+    {
+      label: "Edit",
+      onPress: () => {
+        setShowMenu(false);
+        onEditPress()
+      },
+    },
+    
     {
       label: "Delete",
       onPress: () => {
@@ -27,22 +36,27 @@ export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post'
     },
   ];
   return (
-    <TouchableOpacity
-      testID="chat-card-edit-menu"
-      onPress={() => setShowMenu(!showMenu)}
-    >
-      <Text style={styles.buttonText}>...</Text>
+    <View style={styles.container}>
+      <TouchableOpacity
+        testID="chat-card-edit-menu"
+        onPress={() => setShowMenu(!showMenu)}
+      >
+        <Text style={styles.buttonText}>...</Text>
+      </TouchableOpacity>
       {showMenu && (
         <DropDownOverlay
           optionsList={optionsList}
           style={styles.dropDownContainer}
         />
       )}
-    </TouchableOpacity>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'relative',
+  },
   buttonText: {
     color: colors.dark,
     ...typography.h3,
@@ -53,6 +67,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     borderBottomLeftRadius: 5,
     borderBottomRightRadius: 5,
-    minWidth: 80,
+    minWidth:80,
+    zIndex: 1, 
   },
 });

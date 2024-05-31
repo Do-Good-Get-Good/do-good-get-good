@@ -39,26 +39,35 @@ export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: 
   };
   
   return (
-  <View>
-      {comments.map((comment, index) => (
-        <View key={index} style={styles.commentContainer}>
-          <CommentInfo comment={comment} />
-          {(comment.userID === loggedInUser.id || userLevel === Role.superadmin)  && (
-            <ChatCardEditMenu textWhatItemToDelete={'kommentar'} onDeletePress={() => onDeletePress(comment)} />
-          )}
-        </View>
-      ))}
-      <InputField
-        onSubmit={handleCommentSubmit}
-      />
-    </View>
+    <View style={styles.commentsSection}>
+    {comments.map((comment, index) => (
+      <View key={index} style={styles.commentContainer}>
+        <CommentInfo comment={comment} />
+        {(comment.userID === loggedInUser.id || userLevel === Role.superadmin) && (
+          <View style={styles.menuContainer}>
+            <ChatCardEditMenu textWhatItemToDelete={'kommentar'} onDeletePress={() => onDeletePress(comment)} onEditPress={()=>{}} />
+          </View>
+        )}
+      </View>
+    ))}
+    <InputField onSubmit={handleCommentSubmit} />
+  </View>
   );
 };
 
 const styles = StyleSheet.create({
+
+  commentsSection: {
+    marginHorizontal: 10,
+  },
   commentContainer: {
     flexDirection: 'row',
     justifyContent: 'space-between',
-    marginHorizontal:10
+    marginVertical: 5,
+    position: 'relative',
+    zIndex: 1,
+  },
+  menuContainer: {
+    zIndex: 2
   }
 });

@@ -59,7 +59,7 @@ export const MessageCard = ({
             </Text>
             <Text style={styles.messageText}>{message.description}</Text>
           </View>
-          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
+          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={()=>{}} />}
         </View>
         <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji
@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
         width: "90%",
         backgroundColor: colors.background,
         borderRadius: 5,
+        position: 'relative',
       },
     
       contentContainer: {
@@ -100,6 +101,7 @@ const styles = StyleSheet.create({
         alignItems: "center",
         paddingHorizontal: 10,
         paddingVertical: 8,
+        zIndex: 1,
       },
       nameAndMessageContainer: {
         // flex: 1,
