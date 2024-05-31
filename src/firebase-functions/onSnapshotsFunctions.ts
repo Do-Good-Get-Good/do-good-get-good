@@ -13,10 +13,6 @@ export const onSnapshotUserPosts = (
       .orderBy("date", "desc")
       .limit(limit)
       .onSnapshot((querySnapshot) => {
-        console.log(
-          querySnapshot.docChanges().length,
-          "----------- querySnapshot",
-        );
         arr = [];
         querySnapshot?.docs.forEach((doc) => {
           arr.push(userPostObject(doc));

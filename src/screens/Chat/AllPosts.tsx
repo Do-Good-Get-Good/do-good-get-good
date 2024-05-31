@@ -1,8 +1,9 @@
-import React, { useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
 import { MessageCard } from "../../components/ChartCard/MessageCard";
-import { Post, PostEmoji, User, UserPost } from "../../utility/types";
+import { PostEmoji, User, UserPost } from "../../utility/types";
 import { FlatList } from "react-native";
+import chatStore from "../../store/chat";
 
 type Props = {
   setlimit: () => void;
@@ -22,35 +23,43 @@ export const AllPosts = ({
   setlimit,
 }: Props) => {
   const ref = useRef<FlatList>(null);
+  const { isScrollToEnd } = chatStore;
+
+  useEffect(() => {
+    isScrollToEnd && ref.current?.scrollToOffset({ offset: 0, animated: true });
+  }, [isScrollToEnd]);
+
   return (
-    <FlatList
-      inverted
-      ref={ref}
-      data={posts}
-      onEndReached={setlimit}
-      onEndReachedThreshold={0.3}
-      keyExtractor={(post) => post.id.toString()}
-      renderItem={({ item }) =>
-        item?.imageURL ? (
-          <ChatCard
-            post={item}
-            onDelete={() => onDelete(item)}
-            loggedInUser={loggedInUser}
-            addEmoji={addEmoji}
-            deleteEmoji={deleteEmoji}
-            commentsCount={item.comments.length}
-          />
-        ) : (
-          <MessageCard
-            message={item}
-            onDelete={() => onDelete(item)}
-            loggedInUser={loggedInUser}
-            addEmoji={addEmoji}
-            deleteEmoji={deleteEmoji}
-            commentsCount={item.comments?.length ?? 0}
-          />
-        )
-      }
-    />
+    <>
+      <FlatList
+        inverted
+        ref={ref}
+        data={posts}
+        onEndReached={setlimit}
+        onEndReachedThreshold={0.3}
+        keyExtractor={(post) => post.id.toString()}
+        renderItem={({ item }) =>
+          item?.imageURL ? (
+            <ChatCard
+              post={item}
+              onDelete={() => onDelete(item)}
+              loggedInUser={loggedInUser}
+              addEmoji={addEmoji}
+              deleteEmoji={deleteEmoji}
+              commentsCount={item.comments.length}
+            />
+          ) : (
+            <MessageCard
+              message={item}
+              onDelete={() => onDelete(item)}
+              loggedInUser={loggedInUser}
+              addEmoji={addEmoji}
+              deleteEmoji={deleteEmoji}
+              commentsCount={item.comments?.length ?? 0}
+            />
+          )
+        }
+      />
+    </>
   );
 };

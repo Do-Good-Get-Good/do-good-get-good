@@ -1,21 +1,13 @@
 import React from "react";
-import { View, StyleSheet, Text, Image } from "react-native";
+import { View, StyleSheet, Text, Image, ViewStyle } from "react-native";
 import typography from "../../assets/theme/typography";
-import { isUndefined } from "lodash";
-import { format } from "date-fns";
 const today = new Date();
 
 const formattedDate = (date: Date | string): string => {
   const formattedDate = typeof date === "string" ? new Date(date) : date;
 
-
-  if (
-    formattedDate instanceof Date && 
-    !isNaN(formattedDate.getTime())
- 
-  ) {
+  if (formattedDate instanceof Date && !isNaN(formattedDate.getTime())) {
     const diff = formattedDate.getDate() - today.getDate();
-
 
     switch (diff) {
       case -1:
@@ -36,7 +28,7 @@ type Props = {
 
 export const ChatCardDate = ({ date }: Props) => {
   return (
-    <View>
+    <View style={styles.container}>
       <Text testID="chat-card-date" style={styles.textDate}>
         {date && formattedDate(date)}
       </Text>
@@ -45,6 +37,10 @@ export const ChatCardDate = ({ date }: Props) => {
 };
 
 const styles = StyleSheet.create({
+  container: {
+    alignSelf: "flex-start",
+    marginLeft: 20,
+  },
   textDate: {
     ...typography.b2,
   },

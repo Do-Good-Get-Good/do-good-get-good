@@ -18,14 +18,8 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const {
-    onDeletePost,
-    addPost,
-    loading,
-
-    addEmojiToPost,
-    deleteEmojiFromPost,
-  } = useUserPostsActions();
+  const { onDeletePost, loading, addEmojiToPost, deleteEmojiFromPost } =
+    useUserPostsActions();
   const { posts, loggedInUser, setlimit, getAllActivitiesConnectedToUser } =
     useChat(getChatData);
   const [showOverlay, setShowOverlay] = useState(false);
@@ -73,7 +67,6 @@ export const Chat = ({ navigation, route }: Props) => {
             activities={activities}
             onActivityPress={onChooseActivity}
           />
-          <BottomLogo />
         </>
       )}
     </SafeAreaView>
@@ -86,7 +79,9 @@ const styles = StyleSheet.create({
     flexGrow: 1,
   },
   longButton: {
-    margin: 20,
+    marginHorizontal: 20,
+    marginVertical: 10,
+
     borderRadius: 5,
   },
 });
