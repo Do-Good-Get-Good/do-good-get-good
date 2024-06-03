@@ -13,7 +13,6 @@ import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
 
 
-
 type Props = {
   message: UserPost
   onDelete: () => void;
@@ -63,14 +62,17 @@ export const MessageCard = ({
       <ChatCardDate date={message.date} />
       <TouchableOpacity  onPress={handlePress} style={[styles.cardContainer]}>
         <View style={styles.contentContainer}>
-          <View style={styles.nameAndMessageContainer}>
+          <View style={styles.nameAndEditContainer}>
+          <View style={styles.nameContainer}>
             <Text style={styles.userName}>
               {`${message.userFirstName} ${message.userLastName}`}
             </Text>
+          </View>
+          {message.changed && <Text style={styles.changedText}>ändrats</Text>}
+          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={editPress} showEditOption={true} isCurrentUser={isCurrentUser} />}
+          </View>
             <Text style={styles.messageText}>{message.description}</Text>
           </View>
-          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={editPress} />}
-        </View>
         <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji
             loggedInUser={loggedInUser}
@@ -96,7 +98,6 @@ const styles = StyleSheet.create({
         marginVertical: 10,
         alignItems:'center'
       },
-    
       cardContainer: {
         ...shadows.cardShadow,
         width: "90%",
@@ -104,24 +105,24 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         position: 'relative',
       },
-    
       contentContainer: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
         paddingHorizontal: 10,
         paddingVertical: 8,
         zIndex: 1,
       },
-      nameAndMessageContainer: {
-        // flex: 1,
+      nameAndEditContainer: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
       },
-    
+      nameContainer: {
+        flex: 1,
+      },
       userName: {
         ...typography.b2,
         fontWeight: "bold",
-      },
-    
+      }, 
+      
       messageText: {
        ...typography.b2
       },
@@ -134,5 +135,10 @@ const styles = StyleSheet.create({
       comments:{
         ...typography.b2,
         textDecorationLine: 'underline'
-      }
+      },
+      changedText:{
+        ...typography.b2,
+        marginHorizontal:10,
+        marginTop:10
+     }
 });

@@ -7,7 +7,6 @@ import Menu from "../../../components/Menu";
 import BottomLogo from "../../../components/BottomLogo";
 import { GoBackButton } from "../../../components/Buttons/GoBackButton";
 import { Comment, PostEmoji, User, UserPost } from "../../../utility/types";
-import { ChatCardImage } from "../../../components/ChartCard/ChatCardImage";
 import { ChatCardDescription } from "../../../components/ChartCard/ChatCardDescription";
 import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate";
 import { ChatCardEmoji } from "../../../components/ChartCard/ChatCardEmoji";
@@ -52,7 +51,6 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
             <View style={styles.postDetails}>
               <Text style={styles.username}>{post.userFirstName} {post.userLastName}</Text>
               <ChatCardDate date={post.date} />
-              {/* <Text style={styles.changedText}>ändrats</Text> */}
             </View>
           )}
           <View style={styles.emojiDetails}>
@@ -101,5 +99,8 @@ const styles = StyleSheet.create({
     backgroundColor:colors.background,
     marginHorizontal:10,
     marginBottom:20
-  }
+  },
+  changedText:{
+    ...typography.b2
+  }  
 });

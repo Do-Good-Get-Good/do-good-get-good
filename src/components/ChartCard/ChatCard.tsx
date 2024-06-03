@@ -32,6 +32,7 @@ export const ChatCard = ({
   loggedInUser,
   commentsCount
 }: Props) => {
+
   const { userLevel } = userLevelStore;
   const isCurrentUser = post.userID === loggedInUser.id;
   const navigation = useNavigation<{
@@ -64,8 +65,8 @@ export const ChatCard = ({
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-         <Text style={styles.changedText}>ändrats</Text>
-          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}/>}
+          {post.changed && <Text style={styles.changedText}>ändrats</Text>}
+          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}  showEditOption={true} isCurrentUser={isCurrentUser}/>}
         </View>
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
@@ -123,6 +124,5 @@ const styles = StyleSheet.create({
      ...typography.b2,
      marginHorizontal:10,
      marginVertical:6
-
   }
 });

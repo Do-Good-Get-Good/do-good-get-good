@@ -8,21 +8,26 @@ import { AlertQuestion } from "../Alerts/AlertQuestion ";
 type Props = {
   onDeletePress: () => void;
   onEditPress:()=>void;
-  textWhatItemToDelete?: string
+  textWhatItemToDelete?: string;
+  showEditOption:boolean;
+  isCurrentUser?: boolean;
 };
 
-export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post',onEditPress }: Props) => {
+export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post',onEditPress,showEditOption,isCurrentUser}: Props) => {
   const [showMenu, setShowMenu] = useState(false);
 
   const optionsList = [
-    {
-      label: "Edit",
-      onPress: () => {
-        setShowMenu(false);
-        onEditPress()
-      },
-    },
-    
+    ...(showEditOption && isCurrentUser
+      ? [
+          {
+            label: "Edit",
+            onPress: () => {
+              setShowMenu(false);
+              onEditPress();
+            },
+          },
+        ]
+      : []),
     {
       label: "Delete",
       onPress: () => {
@@ -30,11 +35,12 @@ export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post'
         AlertQuestion(
           "",
           `Vill du ta bort den här ${textWhatItemToDelete}?`,
-          onDeletePress,
+          onDeletePress
         );
       },
     },
   ];
+
   return (
     <View style={styles.container}>
       <TouchableOpacity

@@ -77,12 +77,13 @@ export const updatePostInFirestore = async (post: UserPost) => {
       ...(post.activityImage && { activity_image: post.activityImage }),
       ...(post.userFirstName && { first_name: post.userFirstName }),
       ...(post.userLastName && { last_name: post.userLastName }),
-      ...(post.changed && { changed: true}),
+      // ...(post.changed && { changed: true}),
       ...(post.description && { description: post.description }),
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.imageURL && { image_url: post.imageURL }),
       ...(post.comments && { comments: post.comments }),
-      ...(post.date && { date: convertToDateStamp})
+      ...(post.date && { date: convertToDateStamp}),
+      changed:true
     };
 
     await firestore().collection("UserPosts").doc(post.id).update(postData);
