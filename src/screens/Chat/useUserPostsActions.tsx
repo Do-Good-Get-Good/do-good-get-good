@@ -3,9 +3,11 @@ import { useState } from "react";
 import { addComment, addEmoji, saveImageToChatImageStoreAndCreateUserPost } from "../../firebase-functions/addTS/add";
 import { deleteComment, deleteEmoji, deleteUserPostAndImageInStorage } from "../../firebase-functions/deleteTS/delete";
 import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
+import { updatePostInFirestore } from "../../firebase-functions/updateTS/update";
 
   const alertMessage = "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.\n\
   Den här inlägg raderas automatiskt efter ett år.";
+  const alertUpdateMessage= "Vill du spara ändringarna."
 
 
 export const useUserPostsActions = () => {
@@ -20,6 +22,16 @@ export const useUserPostsActions = () => {
 
   const addPost = async (post: UserPost, afterPostAdded?: ()=> void) => {
      AlertQuestion("", alertMessage,()=> onAddRequest(post, afterPostAdded));
+  };
+  const onUpdateRequest = async (post: UserPost, afterPostUpdated?: () => void) => {
+    setLoading(true);
+    await updatePostInFirestore(post).then(() => {
+      afterPostUpdated && afterPostUpdated();
+    });
+    setLoading(false);
+  };
+  const updatePost = async (post: UserPost, afterPostUpdated?: () => void) => {
+    AlertQuestion("", alertUpdateMessage, () =>  onUpdateRequest(post, afterPostUpdated));
   };
 
   const onDeletePost = async (post: UserPost ) => {
@@ -47,6 +59,7 @@ const deleteCommentFromPost = async (comment:Comment, postID : UserPost['id']) =
   setLoading(true)
  await deleteComment(comment, postID)
  setLoading(false)
+
 }
-  return { addPost, loading, onDeletePost, addCommentToPost , addEmojiToPost, deleteEmojiFromPost, deleteCommentFromPost};
+  return { addPost, loading, onDeletePost, addCommentToPost , addEmojiToPost, deleteEmojiFromPost, deleteCommentFromPost,updatePost};
 };

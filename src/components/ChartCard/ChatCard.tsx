@@ -39,6 +39,12 @@ export const ChatCard = ({
   
   }>();
 
+  const navigationEdit = useNavigation<{
+    navigate: (nav: UserStack,Props:{post:UserPost,toEdit:boolean}) => void;
+  
+  }>();
+
+
   const isMenuShow = isCurrentUser || userLevel === Role.superadmin
 
   const handlePress = () => {
@@ -46,7 +52,7 @@ export const ChatCard = ({
   };
 
   const editPress = () => {
-    console.log("Edit button pressed")
+    post && navigationEdit.navigate(UserStack.AddOrEditPost,{post: post,toEdit:true})  
    };
 
   return (
@@ -58,6 +64,7 @@ export const ChatCard = ({
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
+         <Text style={styles.changedText}>ändrats</Text>
           { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}/>}
         </View>
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
@@ -111,5 +118,11 @@ const styles = StyleSheet.create({
   comments:{
     ...typography.b2,
     textDecorationLine: 'underline'
+  },
+  changedText:{
+     ...typography.b2,
+     marginHorizontal:10,
+     marginVertical:6
+
   }
 });

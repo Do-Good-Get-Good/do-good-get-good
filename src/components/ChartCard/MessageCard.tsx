@@ -37,9 +37,19 @@ export const MessageCard = ({
     navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
   }>()
 
+  const navigationEdit = useNavigation<{
+    navigate: (nav: UserStack,Props:{post:UserPost,toEdit:boolean}) => void;
+  
+  }>();
+
   const handlePress = () => {
     message && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: message.id ,loggedInUser})  
    };
+
+   const editPress = () => {
+    message && navigationEdit.navigate(UserStack.AddOrEditPost,{post: message,toEdit:true})  
+   };
+
   const isCurrentUser = message.userID === loggedInUser.id;
   const isMenuShow = isCurrentUser || userLevel === Role.superadmin
  
@@ -59,7 +69,7 @@ export const MessageCard = ({
             </Text>
             <Text style={styles.messageText}>{message.description}</Text>
           </View>
-          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={()=>{}} />}
+          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={editPress} />}
         </View>
         <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji
