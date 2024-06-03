@@ -83,7 +83,7 @@ export const useUserPostsActions = () => {
     onDeletePost,
     addCommentToPost,
     addEmojiToPost,
-    deleteEmojiFromPost,
+    deleteEmojiFromPost,updatePost,
     deleteCommentFromPost,
   };
 };
