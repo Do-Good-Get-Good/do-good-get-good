@@ -17,11 +17,8 @@ type Props = {
 
 export const useChat = ({ getChatData }: Props) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
-  const [limit, setlimit] = useState(3);
+  const [limit, setlimit] = useState(20);
   const [loggedInUser, setLoggedInUser] = useState<User | undefined>(undefined);
-  const [activitiesConnectedToUser, setActivitiesConnectedToUser] = useState<
-    Activity[]
-  >([]);
 
   useEffect(() => {
     const subscriber = onSnapshotUserPosts((posts) => setPosts(posts), limit);
@@ -55,7 +52,6 @@ export const useChat = ({ getChatData }: Props) => {
     getUser,
     getAllActivitiesConnectedToUser,
     posts,
-    activitiesConnectedToUser,
     loggedInUser,
     setlimit,
     limit,

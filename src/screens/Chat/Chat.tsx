@@ -10,6 +10,7 @@ import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
+import { Spinner } from "../../components/Loading";
 
 type Props = {
   navigation: any;
@@ -18,7 +19,7 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData } = route.params;
-  const { onDeletePost, loading, addEmojiToPost, deleteEmojiFromPost } =
+  const { onDeletePost, addEmojiToPost, loading, deleteEmojiFromPost } =
     useUserPostsActions();
   const { posts, loggedInUser, setlimit, getAllActivitiesConnectedToUser } =
     useChat(getChatData);
@@ -47,7 +48,7 @@ export const Chat = ({ navigation, route }: Props) => {
       {loggedInUser && (
         <>
           <AllPosts
-            setlimit={() => setlimit((limit) => (limit += 2))}
+            setlimit={() => setlimit((limit) => (limit += 20))}
             posts={posts}
             addEmoji={addEmojiToPost}
             onDelete={onDeletePost}
@@ -59,6 +60,7 @@ export const Chat = ({ navigation, route }: Props) => {
             title="Skapa inlägg"
             onPress={onCreatePostButtonPressed}
           />
+          <Spinner loading={loading} />
           <ActivityListOverLay
             navigation={navigation}
             onBackdropPress={() => setShowOverlay(false)}
