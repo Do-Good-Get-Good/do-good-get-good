@@ -4,13 +4,14 @@ import { UserPost } from "../utility/types";
 
 export const onSnapshotUserPosts = (
   setUserPost: (posts: UserPost[]) => void,
+  limit: number,
 ) => {
   let arr: UserPost[] = [];
   try {
     return firestore()
       .collection("UserPosts")
-      .orderBy("date", "asc")
-      .limit(20)
+      .orderBy("date", "desc")
+      .limit(limit)
       .onSnapshot((querySnapshot) => {
         arr = [];
         querySnapshot?.docs.forEach((doc) => {
@@ -24,15 +25,19 @@ export const onSnapshotUserPosts = (
   }
 };
 
-export const onSnapshotSelectedPost =(postId: UserPost['id'] , setUserPost: (posts: UserPost| undefined) => void,)=>{
+export const onSnapshotSelectedPost = (
+  postId: UserPost["id"],
+  setUserPost: (posts: UserPost | undefined) => void,
+) => {
   try {
     return firestore()
-      .collection("UserPosts").doc(postId)
+      .collection("UserPosts")
+      .doc(postId)
       .onSnapshot((doc) => {
-      return setUserPost(userPostObject(doc)) 
+        return setUserPost(userPostObject(doc));
       });
   } catch (error) {
-    setUserPost(undefined) 
+    setUserPost(undefined);
     console.log(error);
   }
-}
+};
