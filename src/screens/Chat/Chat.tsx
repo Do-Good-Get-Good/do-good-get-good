@@ -10,7 +10,6 @@ import { UserStack } from "../../utility/routeEnums";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
 import { AllPosts } from "./AllPosts";
-import { Spinner } from "../../components/Loading";
 
 type Props = {
   navigation: any;
@@ -41,7 +40,6 @@ export const Chat = ({ navigation, route }: Props) => {
     });
     setShowOverlay(false);
   };
-
   return (
     <SafeAreaView style={styles.container}>
       <Menu />
@@ -60,7 +58,6 @@ export const Chat = ({ navigation, route }: Props) => {
             title="Skapa inlägg"
             onPress={onCreatePostButtonPressed}
           />
-          <Spinner loading={loading} />
           <ActivityListOverLay
             navigation={navigation}
             onBackdropPress={() => setShowOverlay(false)}

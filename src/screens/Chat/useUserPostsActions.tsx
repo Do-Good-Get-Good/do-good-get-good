@@ -64,6 +64,7 @@ export const useUserPostsActions = () => {
     await deleteComment(comment, postID);
     setLoading(false);
   };
+
   return {
     addPost,
     loading,

@@ -5,8 +5,6 @@ import {
 } from "../../firebase-functions/getTS/get";
 import { Activity, User, UserPost } from "../../utility/types";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { userPostObject } from "../../firebase-functions/adaptedObject";
 import { onSnapshotUserPosts } from "../../firebase-functions/onSnapshotsFunctions";
 
 const currentUser = auth().currentUser;
