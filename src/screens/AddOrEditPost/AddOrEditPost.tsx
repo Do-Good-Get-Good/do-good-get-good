@@ -17,6 +17,7 @@ import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
 import { useUserPostsActions } from "../Chat/useUserPostsActions";
 import { Spinner } from "../../components/Loading";
 import { AddImage } from "./AddImage";
+import chatStore from "../../store/chat";
 
 type Props = {
   route: any;
@@ -31,14 +32,23 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
   const { addPost, loading,updatePost } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
+  const { setIsScrollToEnd } = chatStore;
   const [imageURL, setImageURL] = useState(post.imageURL);
 
+  const navigateBackAndShowBottom = () => {
+    navigation.goBack();
+    setIsScrollToEnd(true);
+  };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
       await updatePost({ ...post, description, imageURL }, navigation.goBack);
    
     } else {
-      await addPost({ ...post, description, imageURL }, navigation.goBack);
+      await addPost(
+        { ...post, description, imageURL },
+        navigateBackAndShowBottom,
+      );
+      setIsScrollToEnd(false);
     }
   };
 
@@ -47,12 +57,12 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
       <Menu />
       <GoBackButton />
       <ScrollView showsVerticalScrollIndicator={false}>
-      {!post.activityID && (
+        {!post.activityID && (
           <Text style={styles.userName}>
             {post.userFirstName} {post.userLastName}
           </Text>
         )}
-      {post.activityID && (
+        {post.activityID && (
           <>
             <ChatCardHeader post={post} />
             <AddImage imageURL={imageURL} setImageURL={setImageURL} />
@@ -68,11 +78,11 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
             style={styles.inputField}
             scrollEnabled={true}
           />
-           <LongButton
+          <LongButton
             title="Spara"
             onPress={onSaveButtonPressed}
             style={styles.longButton}
-            isDisabled={imageURL === "" || description === ''}
+            isDisabled={imageURL === "" || description === ""}
           />
         </View>
         <BottomLogo />
@@ -84,7 +94,7 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    marginHorizontal:20
+    marginHorizontal: 20,
   },
   inputContainer: {
     justifyContent: "space-between",
@@ -92,7 +102,7 @@ const styles = StyleSheet.create({
   inputField: {
     flex: 1,
     marginVertical: 20,
-    marginHorizontal:20,
+    marginHorizontal: 20,
     padding: 10,
     marginBottom: 20,
     ...typography.b1,
@@ -104,7 +114,7 @@ const styles = StyleSheet.create({
   },
   userName: {
     ...typography.cardTitle,
-    marginHorizontal:40,
+    marginHorizontal: 40,
     marginVertical: 20,
   },
 });
