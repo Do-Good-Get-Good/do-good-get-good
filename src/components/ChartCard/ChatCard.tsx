@@ -59,14 +59,14 @@ export const ChatCard = ({
   return (
     <View
       testID="chat-card"
-      style={[styles.container, isCurrentUser && { alignItems: 'center' }]}
+      style={styles.container}
     >
       <ChatCardDate date={post.date} />
       <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
           {post.changed && <Text style={styles.changedText}>ändrats</Text>}
-          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}  showEditOption={true} isCurrentUser={isCurrentUser}/>}
+          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}  isCurrentUser={isCurrentUser}/>}
         </View>
         <ChatCardImage imageUrl={post.imageURL ?? ''} />
         <ChatCardDescription description={post.description} />
@@ -78,11 +78,7 @@ export const ChatCard = ({
             emoji={post.emoji}
             showAllEmojis={false}
           />
-        {commentsCount > 0 ? (
             <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-          ) : (
-            <Text style={styles.comments}>0 Kommentarer</Text>
-          )}
          </View>
       </TouchableOpacity>
     </View>

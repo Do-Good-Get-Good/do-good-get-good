@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
 import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
+import { ChatCardDescription } from "./ChatCardDescription";
 
 
 type Props = {
@@ -46,6 +47,7 @@ export const MessageCard = ({
    };
 
    const editPress = () => {
+    console.log("Edit button")
     message && navigationEdit.navigate(UserStack.AddOrEditPost,{post: message,toEdit:true})  
    };
 
@@ -53,26 +55,25 @@ export const MessageCard = ({
   const isMenuShow = isCurrentUser || userLevel === Role.superadmin
  
   return (
+  
     <View
-      style={[
-        styles.container,
-        isCurrentUser && { alignItems: 'center' },
-      ]}
+    testID="chat-message"
+      style={
+        styles.container
+      }
     >
       <ChatCardDate date={message.date} />
       <TouchableOpacity  onPress={handlePress} style={[styles.cardContainer]}>
-        <View style={styles.contentContainer}>
-          <View style={styles.nameAndEditContainer}>
-          <View style={styles.nameContainer}>
+       <View style={styles.nameTextChangedMenuContainer}>
             <Text style={styles.userName}>
               {`${message.userFirstName} ${message.userLastName}`}
             </Text>
-          </View>
-          {message.changed && <Text style={styles.changedText}>ändrats</Text>}
-          {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} onEditPress={editPress} showEditOption={true} isCurrentUser={isCurrentUser} />}
-          </View>
-            <Text style={styles.messageText}>{message.description}</Text>
-          </View>
+          <View style={{ flexDirection:'row',}}>
+            {message.changed && <Text style={styles.changedText}>ändrats</Text>}
+           <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress} isCurrentUser={isCurrentUser} />
+          </View>  
+         </View>
+         <ChatCardDescription description={message.description} />
         <View style={styles.commentsAndEmojiContainer}>
         <ChatCardEmoji
             loggedInUser={loggedInUser}
@@ -81,11 +82,7 @@ export const MessageCard = ({
             emoji={message.emoji}
             showAllEmojis={false}
           />
-           {commentsCount > 0 ? (
             <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-          ) : (
-            <Text style={styles.comments}>0 Kommentarer</Text>
-          )}
           </View>
       </TouchableOpacity>
     </View>
@@ -94,51 +91,42 @@ export const MessageCard = ({
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         marginVertical: 10,
-        alignItems:'center'
+        alignItems:'center',
+      flex: 1,
       },
       cardContainer: {
         ...shadows.cardShadow,
-        width: "90%",
+          width: "90%",
         backgroundColor: colors.background,
         borderRadius: 5,
-        position: 'relative',
       },
-      contentContainer: {
-        paddingHorizontal: 10,
-        paddingVertical: 8,
-        zIndex: 1,
-      },
-      nameAndEditContainer: {
+      nameTextChangedMenuContainer: {
+       paddingHorizontal: 10,
         flexDirection: 'row',
-        justifyContent: 'space-between',
-        alignItems: 'center',
-      },
-      nameContainer: {
-        flex: 1,
+        justifyContent:'space-between',
       },
       userName: {
         ...typography.b2,
         fontWeight: "bold",
+        paddingVertical: 8,
+
       }, 
       
-      messageText: {
-       ...typography.b2
-      },
       commentsAndEmojiContainer: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
         paddingHorizontal: 8, 
+        position: 'relative'
       },
       comments:{
         ...typography.b2,
-        textDecorationLine: 'underline'
+        textDecorationLine: 'underline',
       },
       changedText:{
         ...typography.b2,
-        marginHorizontal:10,
-        marginTop:10
+         marginHorizontal:10,
+         marginTop:5
      }
 });

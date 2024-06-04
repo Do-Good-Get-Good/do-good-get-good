@@ -51,6 +51,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
             <View style={styles.postDetails}>
               <Text style={styles.username}>{post.userFirstName} {post.userLastName}</Text>
               <ChatCardDate date={post.date} />
+              <Text style={styles.changedText}>ändrats</Text>
             </View>
           )}
           <View style={styles.emojiDetails}>

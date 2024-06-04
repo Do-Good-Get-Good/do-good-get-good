@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { ChatCard } from "../../components/ChartCard/ChatCard";
 import { MessageCard } from "../../components/ChartCard/MessageCard";
 import { PostEmoji, User, UserPost } from "../../utility/types";
-import { FlatList } from "react-native";
+import { FlatList, View } from "react-native";
 import chatStore from "../../store/chat";
 
 type Props = {
@@ -30,7 +30,6 @@ export const AllPosts = ({
   }, [isScrollToEnd]);
 
   return (
-    <>
       <FlatList
         inverted
         ref={ref}
@@ -49,7 +48,7 @@ export const AllPosts = ({
               commentsCount={item.comments.length}
             />
           ) : (
-            <MessageCard
+           <MessageCard
               message={item}
               onDelete={() => onDelete(item)}
               loggedInUser={loggedInUser}
@@ -60,6 +59,5 @@ export const AllPosts = ({
           )
         }
       />
-    </>
   );
 };

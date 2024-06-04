@@ -45,7 +45,7 @@ export const CommentsSection = ({comments = [],addComment,loggedInUser,postID}: 
         <CommentInfo comment={comment} />
         {(comment.userID === loggedInUser.id || userLevel === Role.superadmin) && (
           <View style={styles.menuContainer}>
-            <ChatCardEditMenu textWhatItemToDelete={'kommentar'} onDeletePress={() => onDeletePress(comment)} onEditPress={()=>{}} showEditOption={false}/>
+            <ChatCardEditMenu  textWhatItemToDelete={'kommentar'} onDeletePress={() => onDeletePress(comment)} />
           </View>
         )}
       </View>
