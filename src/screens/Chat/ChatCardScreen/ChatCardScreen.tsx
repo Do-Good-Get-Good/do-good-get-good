@@ -16,6 +16,10 @@ import { onSnapshotSelectedPost } from "../../../firebase-functions/onSnapshotsF
 import { ChatCardWithActivity } from "./ChatCardWithActivity";
 import typography from "../../../assets/theme/typography";
 import colors from "../../../assets/theme/colors";
+import { ChatCardEditMenu } from "../../../components/ChartCard/ChatCardEditMenu";
+import userLevelStore from "../../../store/userLevel";
+import { Role } from "../../../utility/enums";
+
 
 
 type Props = {
@@ -29,6 +33,8 @@ type Props = {
   
 
 export const ChatCardScreen = ({route,navigation}:Props) => {
+  const { onDeletePost} =useUserPostsActions();
+  const { userLevel } = userLevelStore;
   const { postID, loggedInUser}: Params = route.params;
   const [post, setPost] = useState<UserPost | undefined>(undefined);
   const {  loading, deleteCommentFromPost, addCommentToPost, deleteEmojiFromPost, addEmojiToPost } = useUserPostsActions();
@@ -38,11 +44,22 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
     return () => subscriber && subscriber();
 
   }, [postID]);
+
+  const onDelete = async (post: UserPost) => {
+    await  onDeletePost(post)
+    navigation.goBack();
+  };
+  
+  const isCurrentUser = post?.userID === loggedInUser.id;
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
   
   return (
     <SafeAreaView style={styles.safeArea}>
       <Menu />
-      <GoBackButton />
+      <View style={styles.headerContainer}>
+        <GoBackButton />
+        {isMenuShow &&<ChatCardEditMenu onDeletePress={() => post && onDelete(post)} isCurrentUser={isCurrentUser} />}
+      </View>
       {post && (
         <ScrollView contentContainerStyle={styles.scrollViewContent}>
           {post.imageURL ? (
@@ -79,6 +96,12 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
 };
 
 const styles = StyleSheet.create({
+  headerContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    marginHorizontal: 10,
+    zIndex:1
+  },
   safeArea: {
     flex: 1,
   },

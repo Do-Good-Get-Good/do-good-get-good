@@ -22,7 +22,7 @@ export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
   }
 };
 
-const deleteUserPost = async (postID: UserPost["id"]) => {
+export const deleteUserPost = async (postID: UserPost["id"]) => {
   try {
     const res = await firestore().collection("UserPosts").doc(postID).delete();
     return res;

@@ -17,7 +17,7 @@ type Props = {
   onEditPress?: () => void;
   textWhatItemToDelete?: string;
   isCurrentUser?: boolean;
-  isMessageChanged: boolean;
+  isMessageChanged?: boolean;
 };
 
 export const ChatCardEditMenu = ({
