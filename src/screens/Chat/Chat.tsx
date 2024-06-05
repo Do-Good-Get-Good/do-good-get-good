@@ -1,6 +1,6 @@
 import React, { useRef, useState } from "react";
-import { FlatList, ScrollView, StyleSheet } from "react-native";
-import BottomLogo from "../../components/BottomLogo";
+import { StyleSheet } from "react-native";
+
 import Menu from "../../components/Menu";
 import { LongButton } from "../../components/Buttons/LongButton";
 import { Activity, UserPost } from "../../utility/types";
@@ -17,7 +17,7 @@ type Props = {
 };
 
 export const Chat = ({ navigation, route }: Props) => {
-  const { getChatData } = route.params;
+  const { getChatData, isScrollToEnd } = route.params;
   const { onDeletePost, addEmojiToPost, loading, deleteEmojiFromPost } =
     useUserPostsActions();
   const { posts, loggedInUser, setlimit, getAllActivitiesConnectedToUser } =
@@ -38,6 +38,7 @@ export const Chat = ({ navigation, route }: Props) => {
       post,
       toEdit: false,
     });
+    route.params.isScrollToEnd = false;
     setShowOverlay(false);
   };
   return (
@@ -52,6 +53,7 @@ export const Chat = ({ navigation, route }: Props) => {
             onDelete={onDeletePost}
             deleteEmoji={deleteEmojiFromPost}
             loggedInUser={loggedInUser}
+            isScrollToEnd={isScrollToEnd}
           />
           <LongButton
             style={styles.longButton}

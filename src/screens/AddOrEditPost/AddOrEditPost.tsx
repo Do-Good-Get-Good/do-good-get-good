@@ -17,7 +17,7 @@ import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
 import { useUserPostsActions } from "../Chat/useUserPostsActions";
 import { Spinner } from "../../components/Loading";
 import { AddImage } from "./AddImage";
-import chatStore from "../../store/chat";
+import { UserStack } from "../../utility/routeEnums";
 
 type Props = {
   route: any;
@@ -32,12 +32,13 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
   const { addPost, loading } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
-  const { setIsScrollToEnd } = chatStore;
   const [imageURL, setImageURL] = useState(post.imageURL);
 
   const navigateBackAndShowBottom = () => {
-    navigation.goBack();
-    setIsScrollToEnd(true);
+    navigation.navigate(UserStack.Chat, {
+      getChatData: true,
+      isScrollToEnd: true,
+    });
   };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
@@ -47,7 +48,6 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
         { ...post, description, imageURL },
         navigateBackAndShowBottom,
       );
-      setIsScrollToEnd(false);
     }
   };
 

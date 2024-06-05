@@ -1,5 +1,5 @@
-import React from "react";
-import { StyleSheet, View,TouchableOpacity, Text } from "react-native";
+import React, { memo } from "react";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
@@ -18,69 +18,80 @@ import { Role } from "../../utility/enums";
 type Props = {
   post: UserPost;
   onDelete: () => void;
-  addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
-  deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
-  loggedInUser: User
+  addEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  deleteEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  loggedInUser: User;
   commentsCount: number;
 };
 
-export const ChatCard = ({
-  post,
-  onDelete,
-  addEmoji,
-  deleteEmoji,
-  loggedInUser,
-  commentsCount
-}: Props) => {
-  const { userLevel } = userLevelStore;
-  const isCurrentUser = post.userID === loggedInUser.id;
-  const navigation = useNavigation<{
-    navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
-  }>();
+const ChatCard = memo(
+  ({
+    post,
+    onDelete,
+    addEmoji,
+    deleteEmoji,
+    loggedInUser,
+    commentsCount,
+  }: Props) => {
+    const { userLevel } = userLevelStore;
+    const isCurrentUser = post.userID === loggedInUser.id;
+    const navigation = useNavigation<{
+      navigate: (
+        nav: UserStack,
+        Props: { postID: UserPost["id"]; loggedInUser: User },
+      ) => void;
+    }>();
 
-  const isMenuShow = isCurrentUser || userLevel === Role.superadmin
+    const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
 
-  const handlePress = () => {
-   post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
-  };
+    const handlePress = () => {
+      post &&
+        loggedInUser &&
+        navigation.navigate(UserStack.ChatCardScreen, {
+          postID: post.id,
+          loggedInUser,
+        });
+    };
 
-  return (
-    <View
-      testID="chat-card"
-      style={[styles.container, isCurrentUser && { alignItems: 'center' }]}
-    >
-      <ChatCardDate date={post.date} />
-      <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
-        <View style={styles.headerAndMenu}>
-          <ChatCardHeader post={post} />
-          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} />}
-        </View>
-        <ChatCardImage imageUrl={post.imageURL ?? ''} />
-        <ChatCardDescription description={post.description} />
-        <View style={styles.commentsAndEmojiContainer}>
-        <ChatCardEmoji
-            loggedInUser={loggedInUser}
-            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
-            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
-            emoji={post.emoji}
-            showAllEmojis={false}
-          />
-        {commentsCount > 0 ? (
-            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-          ) : (
-            <Text style={styles.comments}>0 Kommentarer</Text>
-          )}
-         </View>
-      </TouchableOpacity>
-    </View>
-  );
-};
+    return (
+      <View
+        testID="chat-card"
+        style={[styles.container, isCurrentUser && { alignItems: "center" }]}
+      >
+        <ChatCardDate date={post.date} />
+        <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
+          <View style={styles.headerAndMenu}>
+            <ChatCardHeader post={post} />
+            {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
+          </View>
+          <ChatCardImage imageUrl={post.imageURL ?? ""} />
+          <ChatCardDescription description={post.description} />
+          <View style={styles.commentsAndEmojiContainer}>
+            <ChatCardEmoji
+              loggedInUser={loggedInUser}
+              deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
+              addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
+              emoji={post.emoji}
+              showAllEmojis={false}
+            />
+            {commentsCount > 0 ? (
+              <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+            ) : (
+              <Text style={styles.comments}>0 Kommentarer</Text>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
+export default ChatCard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10,
-    alignItems:'center'
+    alignItems: "center",
   },
   cardContainer: {
     ...shadows.cardShadow,
@@ -96,13 +107,13 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   commentsAndEmojiContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8, 
-  },  
-  comments:{
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
+  },
+  comments: {
     ...typography.b2,
-    textDecorationLine: 'underline'
-  }
+    textDecorationLine: "underline",
+  },
 });
