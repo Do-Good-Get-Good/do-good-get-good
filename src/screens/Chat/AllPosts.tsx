@@ -1,6 +1,6 @@
 import React, { useEffect, useRef } from "react";
-import { ChatCard } from "../../components/ChartCard/ChatCard";
-import { MessageCard } from "../../components/ChartCard/MessageCard";
+import ChatCard from "../../components/ChartCard/ChatCard";
+import MessageCard from "../../components/ChartCard/MessageCard";
 import { PostEmoji, User, UserPost } from "../../utility/types";
 import { FlatList } from "react-native";
 
@@ -36,6 +36,8 @@ export const AllPosts = ({
         ref={ref}
         data={posts}
         onEndReached={setlimit}
+        maxToRenderPerBatch={10}
+        removeClippedSubviews={true}
         onEndReachedThreshold={0.3}
         keyExtractor={(post) => post.id.toString()}
         renderItem={({ item }) =>
