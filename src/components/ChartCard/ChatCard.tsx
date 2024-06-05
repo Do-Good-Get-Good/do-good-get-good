@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View,TouchableOpacity, Text } from "react-native";
+import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
@@ -18,9 +18,9 @@ import { Role } from "../../utility/enums";
 type Props = {
   post: UserPost;
   onDelete: () => void;
-  addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
-  deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
-  loggedInUser: User
+  addEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  deleteEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  loggedInUser: User;
   commentsCount: number;
 };
 
@@ -30,56 +30,70 @@ export const ChatCard = ({
   addEmoji,
   deleteEmoji,
   loggedInUser,
-  commentsCount
+  commentsCount,
 }: Props) => {
-
   const { userLevel } = userLevelStore;
   const isCurrentUser = post.userID === loggedInUser.id;
   const navigation = useNavigation<{
-    navigate: (nav: UserStack,Props:{postID:UserPost['id'], loggedInUser: User}) => void;
-  
+    navigate: (
+      nav: UserStack,
+      Props: { postID: UserPost["id"]; loggedInUser: User },
+    ) => void;
   }>();
 
   const navigationEdit = useNavigation<{
-    navigate: (nav: UserStack,Props:{post:UserPost,toEdit:boolean}) => void;
-  
+    navigate: (
+      nav: UserStack,
+      Props: { post: UserPost; toEdit: boolean },
+    ) => void;
   }>();
 
-
-  const isMenuShow = isCurrentUser || userLevel === Role.superadmin
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
 
   const handlePress = () => {
-   post && loggedInUser && navigation.navigate(UserStack.ChatCardScreen,{postID: post.id ,loggedInUser})  
+    post &&
+      loggedInUser &&
+      navigation.navigate(UserStack.ChatCardScreen, {
+        postID: post.id,
+        loggedInUser,
+      });
   };
 
   const editPress = () => {
-    post && navigationEdit.navigate(UserStack.AddOrEditPost,{post: post,toEdit:true})  
-   };
+    post &&
+      navigationEdit.navigate(UserStack.AddOrEditPost, {
+        post: post,
+        toEdit: true,
+      });
+  };
 
   return (
-    <View
-      testID="chat-card"
-      style={styles.container}
-    >
+    <View testID="chat-card" style={styles.container}>
       <ChatCardDate date={post.date} />
-      <TouchableOpacity  onPress={handlePress}style={[styles.cardContainer]}>
+      <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
         <View style={styles.headerAndMenu}>
           <ChatCardHeader post={post} />
-          {post.changed && <Text style={styles.changedText}>ändrats</Text>}
-          { isMenuShow && <ChatCardEditMenu  onDeletePress={onDelete} onEditPress={editPress}  isCurrentUser={isCurrentUser}/>}
+          {isMenuShow && (
+            <ChatCardEditMenu
+              isMessageChanged={post.changed ?? false}
+              onDeletePress={onDelete}
+              onEditPress={editPress}
+              isCurrentUser={isCurrentUser}
+            />
+          )}
         </View>
-        <ChatCardImage imageUrl={post.imageURL ?? ''} />
+        <ChatCardImage imageUrl={post.imageURL ?? ""} />
         <ChatCardDescription description={post.description} />
         <View style={styles.commentsAndEmojiContainer}>
-        <ChatCardEmoji
+          <ChatCardEmoji
             loggedInUser={loggedInUser}
             deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
             addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
             emoji={post.emoji}
             showAllEmojis={false}
           />
-            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-         </View>
+          <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );
@@ -89,14 +103,14 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     marginVertical: 10,
-    alignItems:'center'
+    alignItems: "center",
   },
   cardContainer: {
     ...shadows.cardShadow,
     width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
-    position: 'relative',
+    position: "relative",
   },
   headerAndMenu: {
     flex: 0.3,
@@ -107,18 +121,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   commentsAndEmojiContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    paddingHorizontal: 8, 
-  },  
-  comments:{
-    ...typography.b2,
-    textDecorationLine: 'underline'
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 8,
   },
-  changedText:{
-     ...typography.b2,
-     marginHorizontal:10,
-     marginVertical:6
-  }
+  comments: {
+    ...typography.b2,
+    textDecorationLine: "underline",
+  },
 });

@@ -30,34 +30,34 @@ export const AllPosts = ({
   }, [isScrollToEnd]);
 
   return (
-      <FlatList
-        inverted
-        ref={ref}
-        data={posts}
-        onEndReached={setlimit}
-        onEndReachedThreshold={0.3}
-        keyExtractor={(post) => post.id.toString()}
-        renderItem={({ item }) =>
-          item?.imageURL ? (
-            <ChatCard
-              post={item}
-              onDelete={() => onDelete(item)}
-              loggedInUser={loggedInUser}
-              addEmoji={addEmoji}
-              deleteEmoji={deleteEmoji}
-              commentsCount={item.comments.length}
-            />
-          ) : (
-           <MessageCard
-              message={item}
-              onDelete={() => onDelete(item)}
-              loggedInUser={loggedInUser}
-              addEmoji={addEmoji}
-              deleteEmoji={deleteEmoji}
-              commentsCount={item.comments?.length ?? 0}
-            />
-          )
-        }
-      />
+    <FlatList
+      inverted
+      ref={ref}
+      data={posts}
+      onEndReached={setlimit}
+      onEndReachedThreshold={0.3}
+      keyExtractor={(post) => post.id.toString()}
+      renderItem={({ item }) =>
+        item?.imageURL ? (
+          <ChatCard
+            post={item}
+            onDelete={() => onDelete(item)}
+            loggedInUser={loggedInUser}
+            addEmoji={addEmoji}
+            deleteEmoji={deleteEmoji}
+            commentsCount={item.comments.length}
+          />
+        ) : (
+          <MessageCard
+            message={item}
+            onDelete={() => onDelete(item)}
+            loggedInUser={loggedInUser}
+            addEmoji={addEmoji}
+            deleteEmoji={deleteEmoji}
+            commentsCount={item.comments?.length ?? 0}
+          />
+        )
+      }
+    />
   );
 };
