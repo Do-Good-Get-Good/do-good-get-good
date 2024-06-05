@@ -3,7 +3,6 @@ import { ChatCard } from "../../components/ChartCard/ChatCard";
 import { MessageCard } from "../../components/ChartCard/MessageCard";
 import { PostEmoji, User, UserPost } from "../../utility/types";
 import { FlatList } from "react-native";
-import chatStore from "../../store/chat";
 
 type Props = {
   setlimit: () => void;
@@ -12,6 +11,7 @@ type Props = {
   loggedInUser: User;
   addEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
   deleteEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  isScrollToEnd: boolean;
 };
 
 export const AllPosts = ({
@@ -21,9 +21,9 @@ export const AllPosts = ({
   addEmoji,
   deleteEmoji,
   setlimit,
+  isScrollToEnd,
 }: Props) => {
   const ref = useRef<FlatList>(null);
-  const { isScrollToEnd } = chatStore;
 
   useEffect(() => {
     isScrollToEnd && ref.current?.scrollToOffset({ offset: 0, animated: true });
