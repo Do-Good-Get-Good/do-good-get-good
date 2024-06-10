@@ -34,7 +34,7 @@ export const onSnapshotSelectedPost = (
       .collection("UserPosts")
       .doc(postId)
       .onSnapshot((doc) => {
-        return setUserPost(userPostObject(doc));
+        return setUserPost(doc?.data()? userPostObject(doc) : undefined);
       });
   } catch (error) {
     setUserPost(undefined);

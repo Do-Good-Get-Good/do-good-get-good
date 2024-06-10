@@ -66,6 +66,7 @@ const addChatPost = async (post: UserPost) => {
   }
 };
 
+
 export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
   try {
     await firestore()

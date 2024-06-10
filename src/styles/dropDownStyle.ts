@@ -6,7 +6,6 @@ export const dropDownStyle = StyleSheet.create({
     dropdown: {
       width: "100%",
       position: "absolute",
-  
       top: 45,
       backgroundColor: "#FFFFFF",
       ...shadow({ shadowOpacity: 0.2, shadowOffsetHeight: 2 }),

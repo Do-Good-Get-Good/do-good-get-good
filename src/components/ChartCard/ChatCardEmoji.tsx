@@ -79,8 +79,7 @@ const styles = StyleSheet.create({
     container:{
         flexDirection:'row',
         marginHorizontal:10,
-        marginVertical:10,  
-        flexWrap: 'wrap'    
+        marginVertical:10,    
     },
     emojiSize:{
         fontSize:20

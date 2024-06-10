@@ -24,67 +24,81 @@ type Props = {
   commentsCount: number;
 };
 
-const ChatCard = memo(
-  ({
-    post,
-    onDelete,
-    addEmoji,
-    deleteEmoji,
-    loggedInUser,
-    commentsCount,
-  }: Props) => {
-    const { userLevel } = userLevelStore;
-    const isCurrentUser = post.userID === loggedInUser.id;
-    const navigation = useNavigation<{
-      navigate: (
-        nav: UserStack,
-        Props: { postID: UserPost["id"]; loggedInUser: User },
-      ) => void;
-    }>();
+ const ChatCard = memo(({
+  post,
+  onDelete,
+  addEmoji,
+  deleteEmoji,
+  loggedInUser,
+  commentsCount,
+}: Props) => {
+  const { userLevel } = userLevelStore;
+  const isCurrentUser = post.userID === loggedInUser.id;
+  const navigation = useNavigation<{
+    navigate: (
+      nav: UserStack,
+      Props: { postID: UserPost["id"]; loggedInUser: User },
+    ) => void;
+  }>();
 
-    const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
+  const navigationEdit = useNavigation<{
+    navigate: (
+      nav: UserStack,
+      Props: { post: UserPost; toEdit: boolean },
+    ) => void;
+  }>();
 
-    const handlePress = () => {
-      post &&
-        loggedInUser &&
-        navigation.navigate(UserStack.ChatCardScreen, {
-          postID: post.id,
-          loggedInUser,
-        });
-    };
+  const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
 
-    return (
-      <View
-        testID="chat-card"
-        style={[styles.container, isCurrentUser && { alignItems: "center" }]}
-      >
-        <ChatCardDate date={post.date} />
-        <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
-          <View style={styles.headerAndMenu}>
-            <ChatCardHeader post={post} />
-            {isMenuShow && <ChatCardEditMenu onDeletePress={onDelete} />}
-          </View>
-          <ChatCardImage imageUrl={post.imageURL ?? ""} />
-          <ChatCardDescription description={post.description} />
-          <View style={styles.commentsAndEmojiContainer}>
-            <ChatCardEmoji
-              loggedInUser={loggedInUser}
-              deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
-              addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
-              emoji={post.emoji}
-              showAllEmojis={false}
+  const handlePress = () => {
+    post &&
+      loggedInUser &&
+      navigation.navigate(UserStack.ChatCardScreen, {
+        postID: post.id,
+        loggedInUser,
+      });
+  };
+
+  const editPress = () => {
+    post &&
+      navigationEdit.navigate(UserStack.AddOrEditPost, {
+        post: post,
+        toEdit: true,
+      });
+  };
+
+  return (
+    <View testID="chat-card" style={styles.container}>
+      <ChatCardDate date={post.date} />
+      <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
+        <View style={styles.headerAndMenu}>
+          <ChatCardHeader post={post} />
+          {isMenuShow && (
+            <ChatCardEditMenu
+              isMessageChanged={post.changed ?? false}
+              onDeletePress={onDelete}
+              onEditPress={editPress}
+              isCurrentUser={isCurrentUser}
             />
-            {commentsCount > 0 ? (
-              <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-            ) : (
-              <Text style={styles.comments}>0 Kommentarer</Text>
-            )}
-          </View>
-        </TouchableOpacity>
-      </View>
-    );
-  },
-);
+          )}
+        </View>
+        <ChatCardImage imageUrl={post.imageURL ?? ""} />
+        <ChatCardDescription description={post.description} />
+        <View style={styles.commentsAndEmojiContainer}>
+          <ChatCardEmoji
+            loggedInUser={loggedInUser}
+            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
+            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
+            emoji={post.emoji}
+            showAllEmojis={false}
+          />
+          <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+        </View>
+      </TouchableOpacity>
+    </View>
+  );
+});
+
 
 export default ChatCard;
 const styles = StyleSheet.create({
@@ -98,6 +112,7 @@ const styles = StyleSheet.create({
     width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
+    position: "relative",
   },
   headerAndMenu: {
     flex: 0.3,
@@ -105,6 +120,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     padding: 4,
     marginRight: 10,
+    zIndex: 1,
   },
   commentsAndEmojiContainer: {
     flexDirection: "row",
