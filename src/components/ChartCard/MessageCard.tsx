@@ -22,7 +22,6 @@ type Props = {
   commentsCount: number;
 };
 
-
  const MessageCard = memo( ({
   message,
   onDelete,
@@ -107,14 +106,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
-
   cardContainer: {
     ...shadows.cardShadow,
     width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
   },
-
   nameTextChangedMenuContainer: {
     paddingHorizontal: 10,
     flexDirection: "row",
@@ -138,6 +135,5 @@ const styles = StyleSheet.create({
     ...typography.b2,
     textDecorationLine: "underline",
     zIndex: 1,
-
   },
 });
