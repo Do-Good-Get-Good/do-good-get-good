@@ -77,7 +77,6 @@ export const updatePostInFirestore = async (post: UserPost) => {
       ...(post.activityImage && { activity_image: post.activityImage }),
       ...(post.userFirstName && { first_name: post.userFirstName }),
       ...(post.userLastName && { last_name: post.userLastName }),
-      // ...(post.changed && { changed: true}),
       ...(post.description && { description: post.description }),
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.imageURL && { image_url: post.imageURL }),
