@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
 import { ChatCardHeader } from "./ChatCardHeader";
 import { shadows } from "../../styles/shadows";
@@ -24,7 +24,7 @@ type Props = {
   commentsCount: number;
 };
 
-export const ChatCard = ({
+ const ChatCard = memo(({
   post,
   onDelete,
   addEmoji,
@@ -97,8 +97,10 @@ export const ChatCard = ({
       </TouchableOpacity>
     </View>
   );
-};
+});
 
+
+export default ChatCard;
 const styles = StyleSheet.create({
   container: {
     flex: 1,

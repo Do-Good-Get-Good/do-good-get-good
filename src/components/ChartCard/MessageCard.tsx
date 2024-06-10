@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { shadows } from "../../styles/shadows";
 import colors from "../../assets/theme/colors";
@@ -22,7 +22,8 @@ type Props = {
   commentsCount: number;
 };
 
-export const MessageCard = ({
+
+ const MessageCard = memo( ({
   message,
   onDelete,
   loggedInUser,
@@ -96,7 +97,9 @@ export const MessageCard = ({
       </TouchableOpacity>
     </View>
   );
-};
+})
+
+export default MessageCard
 
 const styles = StyleSheet.create({
   container: {
@@ -104,12 +107,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
     flex: 1,
   },
+
   cardContainer: {
     ...shadows.cardShadow,
     width: "90%",
     backgroundColor: colors.background,
     borderRadius: 5,
   },
+
   nameTextChangedMenuContainer: {
     paddingHorizontal: 10,
     flexDirection: "row",
@@ -123,7 +128,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingVertical: 8,
   },
-
   commentsAndEmojiContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -134,5 +138,6 @@ const styles = StyleSheet.create({
     ...typography.b2,
     textDecorationLine: "underline",
     zIndex: 1,
+
   },
 });
