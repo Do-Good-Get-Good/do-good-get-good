@@ -37,6 +37,7 @@ const styles = StyleSheet.create({
       changedText:{
         ...typography.b2,
         textAlign:'right',
+        color: colors.secondary
       }
   });
   

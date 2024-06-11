@@ -31,6 +31,14 @@ jest.mock("@react-native-firebase/firestore", () => {
   jest.mock("@react-native-firebase/crashlytics", () => () => ({
     crashlytics: jest.fn(),
   }));
+  jest.mock("../../components/ChartCard/ChatCardEditMenu", () => {
+    return ({ textWhatItemToDelete, onDeletePress }) => (
+      <mockChatCardEditMenu
+        textWhatItemToDelete={textWhatItemToDelete}
+        onDeletePress={onDeletePress}
+      />
+    );
+  });
 
 const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
@@ -47,11 +55,20 @@ const loggedInUser = {
     statusActive: true 
   };
   
+constdifferentUser = {
+  id: "user3", 
+  activitiesAndAccumulatedTime: [],
+  connectedActivities: [],
+  firstName: "Jane",
+  lastName: "Smith",
+  statusActive: true 
+};
+
 
 const comments = [
-    { comment: 'First comment', userID: '1', userFirstName: 'John', userLastName: 'Doe' },
-    { comment: 'Second comment', userID: '2', userFirstName: 'Jane', userLastName: 'Smith' },
-    { comment: 'Third comment', userID: '2', userFirstName: 'Erik', userLastName: 'Andersson' }
+    { comment: 'First comment', userID: '2', userFirstName: 'John', userLastName: 'Doe' },
+    { comment: 'Second comment', userID: '3', userFirstName: 'Jane', userLastName: 'Smith' },
+    { comment: 'Third comment', userID: '1', userFirstName: 'Erik', userLastName: 'Andersson' }
   ];
 
 
@@ -96,22 +113,19 @@ describe("Testing CommentsSection Component", () => {
           userLastName: loggedInUser.lastName
         });
       });
-      it('allows logged in user to delete their own comment', async () => {
-        const { getByTestId,getByText,debug} = render(
+
+      it('does not allow logged in user to see delete menu for others\' comments', () => {
+        const { queryByText } = render(
           <CommentsSection
             comments={comments}
             addComment={mockAddComment}
             deleteComment={mockDeleteComment}
-            loggedInUser={loggedInUser}
+            loggedInUser={differentUser}
             postID="post1"
           />
         );
-
-        expect(getByText('Erik Andersson')).toBeTruthy();
-        expect(getByText('Third comment')).toBeTruthy();
-        // debug()
-        // const editMenu= getByTestId("chat-card-edit-menu")
     
+        expect(get('...')).toBeFalsy();
       });
-    
+      
 });
