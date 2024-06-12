@@ -1,17 +1,14 @@
 import React from "react";
-import {render,fireEvent } from "@testing-library/react-native";
+import {render,fireEvent,waitFor } from "@testing-library/react-native";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
 import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
-
-jest.mock("../../components/ChartCard/ChatCardEditMenu", () => () => {
-    return <mockChatCardEditMenu />;
-  });
 
 
 jest.mock("@react-native-firebase/firestore", () => {
     return jest.fn();
   });
+
   jest.mock('@react-native-firebase/storage', () => {
     return {
       ref: jest.fn(() => ({
@@ -20,6 +17,11 @@ jest.mock("@react-native-firebase/firestore", () => {
       })),
     };
   });
+  
+  jest.mock("@react-native-firebase/crashlytics", () => () => ({
+    crashlytics: jest.fn(),
+  }));
+
   jest.mock("../../context/SuperAdminContext", () => ({
     useSuperAdminFunction: () => ({
       setGetAllUsers: jest.fn(),
@@ -27,23 +29,15 @@ jest.mock("@react-native-firebase/firestore", () => {
     }),
   }));
   
-
-  jest.mock("@react-native-firebase/crashlytics", () => () => ({
-    crashlytics: jest.fn(),
-  }));
-  jest.mock("../../components/ChartCard/ChatCardEditMenu", () => {
-    return ({ textWhatItemToDelete, onDeletePress }) => (
-      <mockChatCardEditMenu
-        textWhatItemToDelete={textWhatItemToDelete}
-        onDeletePress={onDeletePress}
-      />
-    );
-  });
-
 const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
+
 const superAdmin = () => {
     userLevelStore.setUserLevel(Role.superadmin);
+  };
+
+  const user = () => {
+    userLevelStore.setUserLevel(Role.user);
   };
 
 const loggedInUser = {
@@ -54,25 +48,24 @@ const loggedInUser = {
     lastName: "Andersson",
     statusActive: true 
   };
-  
-constdifferentUser = {
-  id: "user3", 
-  activitiesAndAccumulatedTime: [],
-  connectedActivities: [],
-  firstName: "Jane",
-  lastName: "Smith",
-  statusActive: true 
+  const anotherUser = {
+    id: "user4",
+    activitiesAndAccumulatedTime: [],
+    connectedActivities: [],
+    firstName: "Alex",
+    lastName: "Johnson",
+    statusActive: true
 };
-
-
+  
 const comments = [
-    { comment: 'First comment', userID: '2', userFirstName: 'John', userLastName: 'Doe' },
-    { comment: 'Second comment', userID: '3', userFirstName: 'Jane', userLastName: 'Smith' },
-    { comment: 'Third comment', userID: '1', userFirstName: 'Erik', userLastName: 'Andersson' }
+    { comment: 'First comment', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' },
+    { comment: 'Second comment', userID: 'user3', userFirstName: 'Jane', userLastName: 'Smith' },
+    { comment: 'Third comment', userID: 'user1', userFirstName: 'Erik', userLastName: 'Andersson' }
   ];
 
 
 describe("Testing CommentsSection Component", () => {
+  user()
     it('renders comments correctly', () => {
         const { getByText } = render(
           <CommentsSection
@@ -88,6 +81,8 @@ describe("Testing CommentsSection Component", () => {
         expect(getByText('First comment')).toBeTruthy();
         expect(getByText('Jane Smith')).toBeTruthy();
         expect(getByText('Second comment')).toBeTruthy();
+        expect(getByText('Erik Andersson')).toBeTruthy();
+        expect(getByText('Third comment')).toBeTruthy();
       });
 
       it('should add a comment', () => {
@@ -114,18 +109,75 @@ describe("Testing CommentsSection Component", () => {
         });
       });
 
-      it('does not allow logged in user to see delete menu for others\' comments', () => {
-        const { queryByText } = render(
+      it('shows delete option only for logged in user comment', () => {
+        user()
+        const { getByTestId,getByText} = render(
+          <CommentsSection
+          comments={comments}
+          addComment={mockAddComment}
+          deleteComment={mockDeleteComment}
+          loggedInUser={loggedInUser}
+          postID="post1"
+        />
+        );
+        const editMenu = getByTestId('chat-card-edit-menu');
+        expect(editMenu).toBeTruthy(); 
+      });  
+
+      it('Superadmin can delete any comment', () => {
+        superAdmin();
+        const { getAllByTestId} = render(
+          <CommentsSection
+          comments={comments}
+          addComment={mockAddComment}
+          deleteComment={mockDeleteComment}
+          loggedInUser={loggedInUser}
+          postID="post1"
+        />
+        );
+        const editMenu = getAllByTestId('chat-card-edit-menu');
+        expect(editMenu).toHaveLength(3);          
+      });  
+      it('Delete option not visible for others comments', () => {
+        user(); 
+        const { queryByTestId } = render(
           <CommentsSection
             comments={comments}
             addComment={mockAddComment}
             deleteComment={mockDeleteComment}
-            loggedInUser={differentUser}
+            loggedInUser={anotherUser}
             postID="post1"
           />
         );
+        
+        const editMenu = queryByTestId('chat-card-edit-menu');
+        expect(editMenu).toBeFalsy(); 
+    });
+    it('Delete a comment', async () => {
+      user(); 
+      const { getByTestId, getByText,debug } = render(
+        <CommentsSection
+          comments={comments}
+          addComment={mockAddComment}
+          deleteComment={mockDeleteComment}
+          loggedInUser={loggedInUser}
+          postID="post1"
+        />
+      );
     
-        expect(get('...')).toBeFalsy();
-      });
-      
+      const deleteMenu = getByTestId('chat-card-edit-menu');
+      fireEvent.press(deleteMenu);
+      const deleteButton = getByText("Ta bort");
+      fireEvent.press(deleteButton); 
+      expect(mockDeleteComment).toBeTruthy();
+      await waitFor(() => {
+      expect(mockDeleteComment).toHaveBeenCalledWith({
+        comment: 'Third comment',
+        userID: loggedInUser.id, 
+        userFirstName: loggedInUser.firstName,
+        userLastName: loggedInUser.lastName,
+      }, 'post1');
+    });  
+  }); 
+    
 });
