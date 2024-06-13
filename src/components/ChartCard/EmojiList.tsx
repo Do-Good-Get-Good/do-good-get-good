@@ -82,8 +82,9 @@ const styles = StyleSheet.create({
       },
       modalContainer: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: "60%", 
       },
       modalContent: {
         backgroundColor:colors.background,

@@ -68,7 +68,7 @@ export const ChatCardScreen = ({route,navigation}:Props) => {
             <View style={styles.postDetails}>
               <Text style={styles.username}>{post.userFirstName} {post.userLastName}</Text>
               <ChatCardDate date={post.date} />
-              <Text style={styles.changedText}>ändrats</Text>
+              {post.changed && <Text style={styles.changedText}>ändrats</Text>}
             </View>
           )}
           <View style={styles.emojiDetails}>
@@ -125,6 +125,7 @@ const styles = StyleSheet.create({
     marginBottom:20
   },
   changedText:{
-    ...typography.b2
+    ...typography.b2,
+    color: colors.secondary
   }  
 });

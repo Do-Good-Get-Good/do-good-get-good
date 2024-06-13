@@ -14,9 +14,10 @@ import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import { updatePostInFirestore } from "../../firebase-functions/updateTS/update";
 
 const alertMessage =
-  "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg.\n\
-  Den här inlägg raderas automatiskt efter ett år.";
-  const alertUpdateMessage= "Vill du spara ändringarna."
+  "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg. nlägget raderas automatiskt efter ett år.";
+  
+
+const alertUpdateMessage= "Vill du spara ändringarna."
 
 export const useUserPostsActions = () => {
   const [loading, setLoading] = useState(false);
