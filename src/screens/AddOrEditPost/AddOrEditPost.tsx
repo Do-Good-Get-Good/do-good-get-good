@@ -42,7 +42,7 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
   };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
-      await updatePost({ ...post, description, imageURL }, navigation.goBack);
+      await updatePost({ ...post, description},imageURL , navigation.goBack);
    
     } else {
       await addPost(
