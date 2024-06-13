@@ -107,6 +107,7 @@ Try
 - Jimmy Merilainen (_Mobile application developer_)
 - Kristoffer Johnsson (_Software tester_)
 - Rebecka Eldén (_User eXperience_)
+- Jaya Badarawada (_Mobile application developer_)
 
 ### Mentors
 

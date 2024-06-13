@@ -76,6 +76,7 @@ export const updatePostInFirestore = async (post: UserPost, updatedImage: UserPo
   const convertToDateStamp = typeof post.date === 'string'
   ? parse(post.date, "yyyy-MM-dd", new Date())
   : post.date;
+
   let img = post.imageURL
   if( updatedImage && post.imageURL && updatedImage !== post.imageURL){
     img  = await updateImage(updatedImage, post.imageURL)
@@ -89,12 +90,12 @@ export const updatePostInFirestore = async (post: UserPost, updatedImage: UserPo
       ...(post.activityImage && { activity_image: post.activityImage }),
       ...(post.userFirstName && { first_name: post.userFirstName }),
       ...(post.userLastName && { last_name: post.userLastName }),
-      ...(post.description && { description: post.description }),
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.comments && { comments: post.comments }),
       ...(post.date && { date: convertToDateStamp}),
+      ...(img && {   image_url: img, }),
       changed:true,
-      image_url: img
+     description: post.description 
     };
 
     await firestore().collection("UserPosts").doc(post.id).update(postData);
