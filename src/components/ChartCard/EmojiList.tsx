@@ -5,6 +5,7 @@ import {
 import { PostEmoji, User} from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
+import { shadows } from "../../styles/shadows";
 
 type Props={
   emojis:PostEmoji[],
@@ -30,7 +31,6 @@ export const EmojiList = ({emojis,loggedInUserId,showAll}:Props) => {
     
         return (
             <Modal
-            animationType="slide"
             transparent={true}
             visible={selectedEmoji !== null}
             onRequestClose={() => setSelectedEmoji(null)}
@@ -85,11 +85,15 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center',
         marginTop: "60%", 
+      
       },
       modalContent: {
         backgroundColor:colors.background,
         padding: 20,
+        marginLeft: 20,
         borderRadius: 5,
+         borderWidth: 1,
+     borderColor: colors.disabled
       },
       modalText: {
         ...typography.b2,

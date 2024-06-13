@@ -29,15 +29,16 @@ export const useUserPostsActions = () => {
     });
     setLoading(false);
   };
-  const onUpdateRequest = async (post: UserPost, afterPostUpdated?: () => void) => {
+  const onUpdateRequest = async (post: UserPost,updatedImage: UserPost['imageURL'], afterPostUpdated?: () => void) => {
     setLoading(true);
-    await updatePostInFirestore(post).then(() => {
+    
+    await updatePostInFirestore(post, updatedImage).then(() => {
       afterPostUpdated && afterPostUpdated();
     });
     setLoading(false);
   };
-  const updatePost = async (post: UserPost, afterPostUpdated?: () => void) => {
-    AlertQuestion("", alertUpdateMessage, () =>  onUpdateRequest(post, afterPostUpdated));
+  const updatePost = async (post: UserPost,updatedImage: UserPost['imageURL'], afterPostUpdated?: () => void) => {
+    AlertQuestion("", alertUpdateMessage, () =>  onUpdateRequest(post,updatedImage, afterPostUpdated));
   };
 
   const addPost = async (post: UserPost, afterPostAdded?: () => void) => {
@@ -84,7 +85,8 @@ export const useUserPostsActions = () => {
     onDeletePost,
     addCommentToPost,
     addEmojiToPost,
-    deleteEmojiFromPost,updatePost,
+    deleteEmojiFromPost,
+    updatePost,
     deleteCommentFromPost,
   };
 };
