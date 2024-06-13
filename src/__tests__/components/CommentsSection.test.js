@@ -3,7 +3,7 @@ import {render,fireEvent,waitFor } from "@testing-library/react-native";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
 import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
-import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
+
 
 jest.mock("@react-native-firebase/firestore", () => {
     return jest.fn();
@@ -29,7 +29,6 @@ jest.mock("@react-native-firebase/firestore", () => {
     }),
   }));
 
-  
 const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
 
@@ -62,12 +61,7 @@ const comments = [
     { comment: 'First comment', userID: 'user2', userFirstName: 'John', userLastName: 'Doe' },
     { comment: 'Second comment', userID: 'user3', userFirstName: 'Jane', userLastName: 'Smith' },
     { comment: 'Third comment', userID: 'user1', userFirstName: 'Erik', userLastName: 'Andersson' }
-  ];
-
-
-  
-
-  
+  ]; 
 
 describe("Testing CommentsSection Component", () => {
   user()
@@ -172,8 +166,6 @@ describe("Testing CommentsSection Component", () => {
     
       const deleteMenu = getByTestId('chat-card-edit-menu');
       fireEvent.press(deleteMenu);
-    
-    
       const deleteButton = getByTestId("dropdown-overlay-ta bort");
       fireEvent.press(deleteButton); 
 
@@ -185,12 +177,8 @@ describe("Testing CommentsSection Component", () => {
       //     'Vill du ta bort den här kommentar?', 
       //     // expect.any(Array)
       //   );
-    
- 
-     
+  
       // expect(mockDeleteComment).toBeTruthy();
- 
-     
     //   expect(mockDeleteComment).toHaveBeenCalledWith({
     //     comment: 'Third comment',
     //     userID: loggedInUser.id, 
