@@ -10,8 +10,8 @@ export const useOnSelectUser = () => {
 
   const getUserEmail = async (userID: User["id"]) => {
     try {
-      const userEmail = functions().httpsCallable("adminGetUserEmail");
-      const res = await userEmail(userID);
+      const userEmail = functions().httpsCallable("adminGetUserEmailSecondGen");
+      const res = await userEmail({ userID: userID });
       return res.data;
     } catch (error) {
       console.log(error, "-----");

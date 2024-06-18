@@ -7,8 +7,8 @@ const {
   createRegionWorksheet,
   createActivityWorksheet,
 } = require("./worksheetFunctions");
-const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
-const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+// const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
+// const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
 
 const PRECONDITION_ERROR_TYPE = [
   "NotAnAdminError",
