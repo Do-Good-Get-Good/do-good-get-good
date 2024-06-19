@@ -5,7 +5,10 @@ const { updateMonth } = require("./src/updateMonth");
 const { updateYear } = require("./src/updateYear");
 // const { assignAdminClaim } = require("./src/assignAdminClaim");
 const { downloadData } = require("./src/downloadData/downloadData");
-const { connectUsersToActivities } = require("./src/connectUsersToActivities");
+// const { connectUsersToActivities } = require("./src/connectUsersToActivities");
+const {
+  connectUsersToActivitiesSecondGen,
+} = require("./src/connectUsersToActivitiesSecondGen");
 const { updateActivityUserCount } = require("./src/updateActivityUserCount");
 const { firebaseConfig } = require("./config");
 const {
@@ -22,7 +25,8 @@ exports.updateMonth = updateMonth;
 exports.updateYear = updateYear;
 // exports.assignAdminClaim = assignAdminClaim;
 exports.downloadData = downloadData;
-exports.connectUsersToActivities = connectUsersToActivities;
+// exports.connectUsersToActivities = connectUsersToActivities;
+exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
 exports.updateActivityUserCount = updateActivityUserCount;
 exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
 exports.updateUser = updateUser;
