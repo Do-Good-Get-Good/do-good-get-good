@@ -7,7 +7,6 @@ const {
 } = require("./lib/customErrors");
 
 exports.adminGetUserEmailSecondGen = onCall(async (request) => {
-  logger.log(request, "---------- request");
   if (!request.auth) {
     throw new UnauthenticatedError("The user is not authenticated.");
   }
@@ -15,8 +14,7 @@ exports.adminGetUserEmailSecondGen = onCall(async (request) => {
     throw new InvalidRoleError("Only Superadmin can see user email.");
   }
   try {
-    // const userRecord = await getAuth().getUser(request.data.userID);
-    const userRecord = await getAuth().getUser("LSP0Q85vzAT1oM9WwlW9RB79Q8q2");
+    const userRecord = await getAuth().getUser(request.data.userID);
 
     return userRecord.email;
   } catch (error) {
