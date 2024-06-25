@@ -14,10 +14,9 @@ import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import { updatePostInFirestore } from "../../firebase-functions/updateTS/update";
 
 const alertMessage =
-  "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg. nlägget raderas automatiskt efter ett år.";
-  
+  "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg. Inlägget raderas automatiskt efter ett år.";
 
-const alertUpdateMessage= "Vill du spara ändringarna."
+const alertUpdateMessage = "Vill du spara ändringarna.";
 
 export const useUserPostsActions = () => {
   const [loading, setLoading] = useState(false);
@@ -29,16 +28,26 @@ export const useUserPostsActions = () => {
     });
     setLoading(false);
   };
-  const onUpdateRequest = async (post: UserPost,updatedImage: UserPost['imageURL'], afterPostUpdated?: () => void) => {
+  const onUpdateRequest = async (
+    post: UserPost,
+    updatedImage: UserPost["imageURL"],
+    afterPostUpdated?: () => void,
+  ) => {
     setLoading(true);
-    
+
     await updatePostInFirestore(post, updatedImage).then(() => {
       afterPostUpdated && afterPostUpdated();
     });
     setLoading(false);
   };
-  const updatePost = async (post: UserPost,updatedImage: UserPost['imageURL'], afterPostUpdated?: () => void) => {
-    AlertQuestion("", alertUpdateMessage, () =>  onUpdateRequest(post,updatedImage, afterPostUpdated));
+  const updatePost = async (
+    post: UserPost,
+    updatedImage: UserPost["imageURL"],
+    afterPostUpdated?: () => void,
+  ) => {
+    AlertQuestion("", alertUpdateMessage, () =>
+      onUpdateRequest(post, updatedImage, afterPostUpdated),
+    );
   };
 
   const addPost = async (post: UserPost, afterPostAdded?: () => void) => {
