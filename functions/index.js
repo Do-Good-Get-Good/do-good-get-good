@@ -1,5 +1,6 @@
 const { initializeApp } = require("firebase-admin/app");
-const { createUser } = require("./src/createUser");
+// const { createUser } = require("./src/createUser");
+const { createUserSecondGen } = require("./src/createUserSecondGen");
 const { deleteUser } = require("./src/deleteUser");
 const { updateMonth } = require("./src/updateMonth");
 const { updateYear } = require("./src/updateYear");
@@ -19,11 +20,13 @@ const { deletePostAfterOneYear } = require("./src/deletePostAfterOneYear");
 initializeApp(firebaseConfig);
 
 // Cloud functions
-exports.createUser = createUser;
+// exports.assignAdminClaim = assignAdminClaim;
+// exports.createUser = createUser;
+exports.createUserSecondGen = createUserSecondGen;
 exports.deleteUser = deleteUser;
 exports.updateMonth = updateMonth;
 exports.updateYear = updateYear;
-// exports.assignAdminClaim = assignAdminClaim;
+
 exports.downloadData = downloadData;
 // exports.connectUsersToActivities = connectUsersToActivities;
 exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
