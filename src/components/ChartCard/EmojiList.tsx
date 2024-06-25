@@ -5,13 +5,15 @@ import {
 import { PostEmoji, User} from "../../utility/types";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
+import { shadows } from "../../styles/shadows";
 
 type Props={
   emojis:PostEmoji[],
-  loggedInUserId:User['id']
+  loggedInUserId:User['id'],
+  showAll?: boolean
 }
 
-export const EmojiList = ({emojis,loggedInUserId}:Props) => {
+export const EmojiList = ({emojis,loggedInUserId,showAll}:Props) => {
   
 
     const [selectedEmoji, setSelectedEmoji] = useState<PostEmoji | null>(null);
@@ -29,7 +31,6 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
     
         return (
             <Modal
-            animationType="slide"
             transparent={true}
             visible={selectedEmoji !== null}
             onRequestClose={() => setSelectedEmoji(null)}
@@ -44,22 +45,26 @@ export const EmojiList = ({emojis,loggedInUserId}:Props) => {
           </Modal>
         );
       };
+      const nonUserEmojis = emojis.filter(emoji => emoji.userID !== loggedInUserId);
+      const displayedEmojis = showAll ? nonUserEmojis : nonUserEmojis.slice(0, 2);
+      const remainingCount = nonUserEmojis.length - displayedEmojis.length;
 
   return (
+
     <View style={styles.container}>
-     {emojis.map((emoji, index) => (
-       <TouchableOpacity
-        key={index}
-        style={styles.emojiContainer}
-        onPress={() => handleEmojiPress(emoji)}>
-      { emoji.userID !== loggedInUserId && <Text style={styles.emoji}>{emoji.emojiName}</Text>}
-       </TouchableOpacity>
-    ))}
-    {emojis.length > 2 && (
-    <Text style={styles.remainingCount}>+{emojis.length - 2}</Text>
-    )}
-    {gettingEmojiDetails()}
-   </View>
+      {displayedEmojis.map((emoji, index) => (
+        <TouchableOpacity
+          key={index}
+          style={styles.emojiContainer}
+          onPress={() => handleEmojiPress(emoji)}>
+          <Text style={styles.emoji}>{emoji.emojiName}</Text>
+        </TouchableOpacity>
+      ))}
+      {!showAll && remainingCount > 0 && (
+        <Text style={styles.remainingCount}>+{remainingCount}</Text>
+      )}
+      {gettingEmojiDetails()}
+    </View>
     );
 };
 
@@ -77,17 +82,23 @@ const styles = StyleSheet.create({
       },
       modalContainer: {
         flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
+        justifyContent: 'center',
+        alignItems: 'center',
+        marginTop: "60%", 
+      
       },
       modalContent: {
         backgroundColor:colors.background,
         padding: 20,
+        marginLeft: 20,
         borderRadius: 5,
+         borderWidth: 1,
+     borderColor: colors.disabled
       },
       modalText: {
         ...typography.b2,
-      },remainingCount: {
-        ...typography.b1
+      },
+      remainingCount: {
+        fontSize: 18,
       }
 });

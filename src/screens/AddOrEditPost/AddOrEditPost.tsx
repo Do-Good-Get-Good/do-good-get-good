@@ -3,6 +3,7 @@ import {
   SafeAreaView,
   ScrollView,
   StyleSheet,
+  Text,
   TextInput,
   View,
 } from "react-native";
@@ -16,6 +17,7 @@ import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
 import { useUserPostsActions } from "../Chat/useUserPostsActions";
 import { Spinner } from "../../components/Loading";
 import { AddImage } from "./AddImage";
+import { UserStack } from "../../utility/routeEnums";
 
 type Props = {
   route: any;
@@ -28,15 +30,25 @@ type Params = {
 
 export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
-  const { addPost, loading } = useUserPostsActions();
+  const { addPost, loading,updatePost } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL] = useState(post.imageURL);
 
+  const navigateBackAndShowBottom = () => {
+    navigation.navigate(UserStack.Chat, {
+      getChatData: true,
+      isScrollToEnd: true,
+    });
+  };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
-      console.log("run edit function");
+      await updatePost({ ...post, description},imageURL , navigation.goBack);
+   
     } else {
-      await addPost({ ...post, description, imageURL }, navigation.goBack);
+      await addPost(
+        { ...post, description, imageURL },
+        navigateBackAndShowBottom,
+      );
     }
   };
 
@@ -44,9 +56,18 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
     <SafeAreaView style={styles.container}>
       <Menu />
       <GoBackButton />
-      <ScrollView>
-        <ChatCardHeader post={post} />
-        <AddImage imageURL={imageURL} setImageURL={setImageURL} />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {!post.activityID && (
+          <Text style={styles.userName}>
+            {post.userFirstName} {post.userLastName}
+          </Text>
+        )}
+        {post.activityID && (
+          <>
+            <ChatCardHeader post={post} />
+            <AddImage imageURL={imageURL} setImageURL={setImageURL} />
+          </>
+        )}
         <Spinner loading={loading} />
         <View style={styles.inputContainer}>
           <TextInput
@@ -54,13 +75,14 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
             value={description}
             onChangeText={setDescription}
             placeholder="Skriv dina tankar"
-            style={styles.inpuField}
+            style={styles.inputField}
             scrollEnabled={true}
           />
           <LongButton
             title="Spara"
-            onPress={() => imageURL !== "" && onSaveButtonPressed()}
+            onPress={onSaveButtonPressed}
             style={styles.longButton}
+            isDisabled={imageURL === "" || description === ""}
           />
         </View>
         <BottomLogo />
@@ -72,22 +94,27 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginHorizontal: 20,
   },
-
   inputContainer: {
     justifyContent: "space-between",
   },
-  inpuField: {
+  inputField: {
     flex: 1,
     marginVertical: 20,
+    marginHorizontal: 20,
     padding: 10,
     marginBottom: 20,
     ...typography.b1,
-    marginHorizontal: 40,
   },
   longButton: {
     alignSelf: "stretch",
     marginVertical: 10,
     marginHorizontal: 30,
+  },
+  userName: {
+    ...typography.cardTitle,
+    marginHorizontal: 40,
+    marginVertical: 20,
   },
 });

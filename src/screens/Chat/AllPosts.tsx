@@ -1,41 +1,67 @@
-import React from "react";
-import { ChatCard } from "../../components/ChartCard/ChatCard";
-import { MessageCard } from "../../components/ChartCard/MessageCard";
-import {  Post, PostEmoji, User, UserPost } from "../../utility/types";
+import React, { useEffect, useRef } from "react";
+import ChatCard from "../../components/ChartCard/ChatCard";
+import MessageCard from "../../components/ChartCard/MessageCard";
+import { PostEmoji, User, UserPost } from "../../utility/types";
+import { FlatList } from "react-native";
 
+type Props = {
+  setlimit: () => void;
+  posts: UserPost[];
+  onDelete: (post: UserPost) => void;
+  loggedInUser: User;
+  addEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  deleteEmoji: (emoji: PostEmoji, postID: UserPost["id"]) => void;
+  isScrollToEnd: boolean;
+};
 
+export const AllPosts = ({
+  posts,
+  onDelete,
+  loggedInUser,
+  addEmoji,
+  deleteEmoji,
+  setlimit,
+  isScrollToEnd,
+}: Props) => {
+  const ref = useRef<FlatList>(null);
 
-type Props={
-    posts: UserPost[] 
-    handleAddComment: ()=> void;
-    onDelete:(post:UserPost )=>void;
-    loggedInUser: User
-    addEmoji: (emoji: PostEmoji, postID : UserPost['id'])=>void
-    deleteEmoji:(emoji: PostEmoji, postID : UserPost['id'])=>void
-}
+  useEffect(() => {
+    isScrollToEnd && ref.current?.scrollToOffset({ offset: 0, animated: true });
+  }, [isScrollToEnd]);
 
-export const AllPosts= ({posts,handleAddComment,onDelete,loggedInUser, addEmoji, deleteEmoji} :Props) => {
-
-  return (<>
-  {posts?.map((post, i) =>
-    post?.imageURL ? <ChatCard
-      key={`${post.id}-${i}`}
-      post={post}
-      users={[]}
-      handleAddComment={handleAddComment}
-      onDelete={() => onDelete(post)}
-      loggedInUser={loggedInUser}
-      addEmoji={addEmoji}
-      deleteEmoji={deleteEmoji}
-    /> :<MessageCard
-        key={`${post.id}-${i}`}
-        message={post }
-        handleAddComment={handleAddComment}
-        onDelete={() => onDelete(post)}
-        loggedInUser={loggedInUser}
-        />  
-      )}
+  return (
+    <>
+      <FlatList
+        inverted
+        ref={ref}
+        data={posts}
+        onEndReached={setlimit}
+        maxToRenderPerBatch={10}
+        removeClippedSubviews={true}
+        onEndReachedThreshold={0.3}
+        keyExtractor={(post) => post.id.toString()}
+        renderItem={({ item }) =>
+          item?.imageURL ? (
+            <ChatCard
+              post={item}
+              onDelete={() => onDelete(item)}
+              loggedInUser={loggedInUser}
+              addEmoji={addEmoji}
+              deleteEmoji={deleteEmoji}
+              commentsCount={item.comments.length}
+            />
+          ) : (
+            <MessageCard
+              message={item}
+              onDelete={() => onDelete(item)}
+              loggedInUser={loggedInUser}
+              addEmoji={addEmoji}
+              deleteEmoji={deleteEmoji}
+              commentsCount={item.comments?.length ?? 0}
+            />
+          )
+        }
+      />
     </>
   );
 };
-

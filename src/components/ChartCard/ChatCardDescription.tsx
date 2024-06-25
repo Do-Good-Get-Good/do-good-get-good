@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
         ...typography.b2,
         marginLeft: 10,
         color: colors.dark,
-       marginVertical:10
+       marginVertical:10,
       }
 });
 

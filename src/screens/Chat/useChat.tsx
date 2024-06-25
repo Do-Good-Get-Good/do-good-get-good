@@ -5,8 +5,6 @@ import {
 } from "../../firebase-functions/getTS/get";
 import { Activity, User, UserPost } from "../../utility/types";
 import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
-import { userPostObject } from "../../firebase-functions/adaptedObject";
 import { onSnapshotUserPosts } from "../../firebase-functions/onSnapshotsFunctions";
 
 const currentUser = auth().currentUser;
@@ -19,16 +17,11 @@ export const useChat = ({ getChatData }: Props) => {
   const [posts, setPosts] = useState<UserPost[]>([]);
   const [limit, setlimit] = useState(20);
   const [loggedInUser, setLoggedInUser] = useState<User | undefined>(undefined);
-  const [activitiesConnectedToUser, setActivitiesConnectedToUser] = useState<
-    Activity[]
-  >([]);
-  const [usersInChat, setUsersInChat] = useState<User[]>([]);
 
   useEffect(() => {
-    const subscriber = onSnapshotUserPosts((posts) => setPosts(posts));
+    const subscriber = onSnapshotUserPosts((posts) => setPosts(posts), limit);
     return () => subscriber && subscriber();
-
-  }, [getChatData]);
+  }, [getChatData, limit]);
 
   useEffect(() => {
     getUser();
@@ -57,7 +50,8 @@ export const useChat = ({ getChatData }: Props) => {
     getUser,
     getAllActivitiesConnectedToUser,
     posts,
-    activitiesConnectedToUser,
     loggedInUser,
+    setlimit,
+    limit,
   };
 };

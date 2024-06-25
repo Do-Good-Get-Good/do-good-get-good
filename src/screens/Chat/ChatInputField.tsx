@@ -52,6 +52,5 @@ const styles = StyleSheet.create({
         borderColor: colors.dark,
         color: colors.dark,
         marginBottom: 50,
-      }
-    
+      } 
     });

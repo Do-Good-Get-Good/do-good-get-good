@@ -40,7 +40,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.disabled,
     justifyContent: "center",
     alignItems: "center",
-    marginHorizontal: 40,
+    marginHorizontal: 10,
   },
 
   imageText: {

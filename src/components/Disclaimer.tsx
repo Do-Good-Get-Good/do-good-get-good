@@ -39,7 +39,7 @@ const openLink = () => {
 };
 
 export const Disclaimer = () => {
-  const [isContinue, setIsContinue] = useState(false);
+  const [isContinue, setIsContinue] = useState(true);
   const signOut = () => auth().signOut();
 
   const onPressYes = async () => {
