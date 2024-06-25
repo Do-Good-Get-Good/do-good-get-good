@@ -8,11 +8,11 @@ export const AlertQuestion = (
 ) =>
   Alert.alert(title, question, [
     {
-      text: "Nej",
-      onPress: onPressNo,
-    },
-    {
       text: "Ja",
       onPress: () => onPressYes(),
+    },
+    {
+      text: "Nej",
+      onPress: onPressNo,
     },
   ]);
