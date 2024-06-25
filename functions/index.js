@@ -16,21 +16,26 @@ const {
   adminGetUserEmailSecondGen,
 } = require("./src/adminGetUserEmailSecondGen");
 const { updateUser } = require("./src/updateUser");
-const { deletePostAfterOneYear } = require("./src/deletePostAfterOneYear");
+// const { deletePostAfterOneYear } = require("./src/deletePostAfterOneYear");
+const {
+  deletePostAfterOneYearSecondGen,
+} = require("./src/deletePostAfterOneYearSecondGen");
 initializeApp(firebaseConfig);
 
 // Cloud functions
 // exports.assignAdminClaim = assignAdminClaim;
-// exports.createUser = createUser;
+
 exports.createUserSecondGen = createUserSecondGen;
+exports.deletePostAfterOneYearSecondGen = deletePostAfterOneYearSecondGen;
+exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
+exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
+
 exports.deleteUser = deleteUser;
 exports.updateMonth = updateMonth;
 exports.updateYear = updateYear;
 
 exports.downloadData = downloadData;
-// exports.connectUsersToActivities = connectUsersToActivities;
-exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
+
 exports.updateActivityUserCount = updateActivityUserCount;
-exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
+
 exports.updateUser = updateUser;
-exports.deletePostAfterOneYear = deletePostAfterOneYear;
