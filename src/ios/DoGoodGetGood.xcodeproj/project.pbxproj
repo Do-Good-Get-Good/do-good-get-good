@@ -727,12 +727,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F326B97D9F797D00EAC2F921 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig */;
 			buildSettings = {
-				APP_VERSION = 1.1.2;
+				APP_VERSION = 1.3.0;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = DoGoodGetGood/Info.plist;
@@ -742,7 +742,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -751,7 +751,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				RELEASE_NUMBER = 1.1.2;
+				RELEASE_NUMBER = 1.3.0;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -765,12 +765,12 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */;
 			buildSettings = {
-				APP_VERSION = 1.1.2;
+				APP_VERSION = 1.3.0;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
-				CURRENT_PROJECT_VERSION = 16;
+				CURRENT_PROJECT_VERSION = 19;
 				DEVELOPMENT_TEAM = 5GHCN7CPFY;
 				INFOPLIST_FILE = DoGoodGetGood/Info.plist;
 				INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.business";
@@ -779,7 +779,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.1.3;
+				MARKETING_VERSION = 1.3.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -788,7 +788,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				RELEASE_NUMBER = 1.1.2;
+				RELEASE_NUMBER = 1.3.0;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
