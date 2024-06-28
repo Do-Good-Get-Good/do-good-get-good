@@ -1,8 +1,6 @@
 const { initializeApp } = require("firebase-admin/app");
-// const { createUser } = require("./src/createUser");
 const { createUserSecondGen } = require("./src/createUserSecondGen");
-const { updateMonth } = require("./src/updateMonth");
-const { updateYear } = require("./src/updateYear");
+const { updateYearSecondGen } = require("./src/updateYearSecondGen");
 const { downloadData } = require("./src/downloadData/downloadData");
 const {
   connectUsersToActivitiesSecondGen,
@@ -19,7 +17,7 @@ initializeApp(firebaseConfig);
 const {
   updateActivityUserCountSecondGen,
 } = require("./src/updateActivityUserCountSecondGen");
-
+const { updateMonthSecondGen } = require("./src/updateMonthSecondGen");
 // Cloud functions
 // exports.assignAdminClaim = assignAdminClaim;
 // exports.deleteUser = deleteUser;
@@ -30,7 +28,8 @@ exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
 exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
 exports.updateActivityUserCountSecondGen = updateActivityUserCountSecondGen;
 
-exports.updateMonth = updateMonth;
-exports.updateYear = updateYear;
+exports.updateMonthSecondGen = updateMonthSecondGen;
+
+exports.updateYearSecondGen = updateYearSecondGen;
 exports.downloadData = downloadData;
 exports.updateUser = updateUser;
