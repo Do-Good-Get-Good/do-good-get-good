@@ -6,7 +6,7 @@ const dotenv = require("dotenv");
 dotenv.config();
 
 //locate all functions closest to users
-// setGlobalOptions({ region: "europe-north1" });
+setGlobalOptions({ region: "europe-north1" });
 
 // Define parameters
 const serviceAccountFilePath = process.env.SERVICE_ACCOUNT_FILE_PATH;

@@ -9,7 +9,6 @@ const { firebaseConfig } = require("./config");
 const {
   adminGetUserEmailSecondGen,
 } = require("./src/adminGetUserEmailSecondGen");
-const { updateUser } = require("./src/updateUser");
 const {
   deletePostAfterOneYearSecondGen,
 } = require("./src/deletePostAfterOneYearSecondGen");
@@ -18,6 +17,7 @@ const {
   updateActivityUserCountSecondGen,
 } = require("./src/updateActivityUserCountSecondGen");
 const { updateMonthSecondGen } = require("./src/updateMonthSecondGen");
+const { updateUserSecondGen } = require("./src/updateUserSecondGen");
 // Cloud functions
 // exports.assignAdminClaim = assignAdminClaim;
 // exports.deleteUser = deleteUser;
@@ -29,7 +29,6 @@ exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
 exports.updateActivityUserCountSecondGen = updateActivityUserCountSecondGen;
 
 exports.updateMonthSecondGen = updateMonthSecondGen;
-
+exports.updateUserSecondGen = updateUserSecondGen;
 exports.updateYearSecondGen = updateYearSecondGen;
 exports.downloadData = downloadData;
-exports.updateUser = updateUser;
