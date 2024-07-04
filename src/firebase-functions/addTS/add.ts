@@ -3,7 +3,7 @@ import {  Comment, Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 
-const addImageToStorage = async (imageURL: string) => {
+export const addImageToStorage = async (imageURL: string): Promise<string>  => {
   const uploadUri =
     Platform.OS === "ios" ? imageURL.replace("file://", "") : imageURL;
   let filename = imageURL.substring(imageURL.lastIndexOf("/") + 1);
@@ -65,6 +65,7 @@ const addChatPost = async (post: UserPost) => {
     return Promise.reject(error);
   }
 };
+
 
 export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
   try {

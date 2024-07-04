@@ -38,7 +38,7 @@ export const ChatCardDate = ({ date }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "flex-start",
+   alignSelf: "flex-start",
     marginLeft: 20,
   },
   textDate: {

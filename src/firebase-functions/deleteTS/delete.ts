@@ -3,9 +3,9 @@ import { Comment, PostEmoji, UserPost } from "../../utility/types";
 import storage from "@react-native-firebase/storage";
 import crashlytics from "@react-native-firebase/crashlytics";
 
-const deleteImage = async (post: UserPost) => {
+export const deleteImage = async (postImageURL: UserPost['imageURL']) => {
   try {
-    post.imageURL && (await storage().refFromURL(post?.imageURL).delete());
+    postImageURL && (await storage().refFromURL(postImageURL).delete());
   } catch (error) {
     console.log(error);
   }
@@ -13,7 +13,7 @@ const deleteImage = async (post: UserPost) => {
 
 export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
   try {
-    await deleteImage(post);
+    await deleteImage(post.imageURL);
     await deleteUserPost(post.id);
   } catch (error: any) {
     console.log(error);
@@ -22,7 +22,7 @@ export const deleteUserPostAndImageInStorage = async (post: UserPost) => {
   }
 };
 
-const deleteUserPost = async (postID: UserPost["id"]) => {
+export const deleteUserPost = async (postID: UserPost["id"]) => {
   try {
     const res = await firestore().collection("UserPosts").doc(postID).delete();
     return res;

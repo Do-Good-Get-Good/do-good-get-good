@@ -77,7 +77,7 @@ export const ActivityListOverLay = ({
             onPress={handleNoActivityPress}
             style={styles.noActivityContainer}
           >
-            <Text style={styles.noActivityText}>Ingen aktivitet</Text>
+          <Text style={styles.noActivityText}>Fritt inlägg</Text>
           </TouchableOpacity>
           <Text style={styles.header}>
           Välj från dina aktiviteter.
@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
   noActivityText: {
-    ...typography.cardTitle,
+    ...typography.b2,
     color: colors.dark
   },
 });

@@ -30,7 +30,7 @@ type Params = {
 
 export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
-  const { addPost, loading } = useUserPostsActions();
+  const { addPost, loading,updatePost } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL] = useState(post.imageURL);
 
@@ -42,7 +42,8 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
   };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
-      console.log("run edit function");
+      await updatePost({ ...post, description},imageURL , navigation.goBack);
+   
     } else {
       await addPost(
         { ...post, description, imageURL },

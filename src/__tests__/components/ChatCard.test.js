@@ -137,6 +137,7 @@ describe("Testing ChatCardComponent", () => {
 
   it("Testing ChatCardEditMenu component is rendered", () => {
     const onDeleteMock = jest.fn();
+    const onEditeMock = jest.fn();
     const { getByTestId, getByText } = render(
       <ChatCard
         post={post}
@@ -149,9 +150,12 @@ describe("Testing ChatCardComponent", () => {
     const chatCardEditMenu = getByTestId("chat-card-edit-menu");
     expect(chatCardEditMenu).toBeTruthy();
     fireEvent.press(chatCardEditMenu);
-    expect(getByText("Delete")).toBeTruthy();
-    fireEvent.press(getByText("Delete"));
+    expect(getByText("Ta bort")).toBeTruthy();
+    fireEvent.press(getByText("Ta bort"));
     expect(onDeleteMock).toBeTruthy();
+    fireEvent.press(chatCardEditMenu);
+    expect(getByText("Ändra")).toBeTruthy();
+    expect( onEditeMock).toBeTruthy();
   });
 
   it("Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false", () => {

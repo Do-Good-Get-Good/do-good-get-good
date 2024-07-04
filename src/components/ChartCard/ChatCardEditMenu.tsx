@@ -1,44 +1,70 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { DropDownOverlay } from "../DropDowns/DropDownOverlay";
+import { DropDownOverlay, Option } from "../DropDowns/DropDownOverlay";
 import { AlertQuestion } from "../Alerts/AlertQuestion ";
 
 type Props = {
   onDeletePress: () => void;
-  textWhatItemToDelete?: string
+  onEditPress?: () => void;
+  textWhatItemToDelete?: string;
+  isCurrentUser?: boolean;
+  isMessageChanged?: boolean;
 };
 
-export const ChatCardEditMenu = ({ onDeletePress , textWhatItemToDelete = 'post' }: Props) => {
+export const ChatCardEditMenu = ({
+  onDeletePress,
+  textWhatItemToDelete = "post",
+  onEditPress,
+  isCurrentUser = false,
+  isMessageChanged,
+}: Props) => {
   const [showMenu, setShowMenu] = useState(false);
+  const isEditButtonVisible = onEditPress && isCurrentUser;
 
-  const optionsList = [
-    {
-      label: "Delete",
-      onPress: () => {
-        setShowMenu(false);
-        AlertQuestion(
-          "",
-          `Vill du ta bort den här ${textWhatItemToDelete}?`,
-          onDeletePress,
-        );
-      },
+  const editOption: Option = {
+    label: "Ändra",
+    onPress: () => {
+      setShowMenu(false);
+      onEditPress && onEditPress();
     },
-  ];
+  };
+
+  const deleteOption: Option = {
+    label: "Ta bort",
+    onPress: () => {
+      setShowMenu(false);
+      AlertQuestion(
+        "",
+        `Vill du ta bort den här ${textWhatItemToDelete}?`,
+        onDeletePress,
+      );
+    },
+  };
+
+  const optionsList: Option[] = isEditButtonVisible
+    ? [editOption, deleteOption]
+    : [deleteOption];
+
   return (
-    <TouchableOpacity
-      testID="chat-card-edit-menu"
-      onPress={() => setShowMenu(!showMenu)}
-    >
-      <Text style={styles.buttonText}>...</Text>
-      {showMenu && (
-        <DropDownOverlay
-          optionsList={optionsList}
-          style={styles.dropDownContainer}
-        />
-      )}
-    </TouchableOpacity>
+    <View style={{ flexDirection: "row" }}>
+      {isMessageChanged && <Text style={styles.changedText}>ändrats</Text>}
+      <TouchableOpacity
+        testID="chat-card-edit-menu"
+        onPress={() => setShowMenu(!showMenu)}
+      >
+        <Text style={styles.buttonText}>...</Text>
+      </TouchableOpacity>
+      {showMenu && <DropDownOverlay optionsList={optionsList} />}
+    </View>
   );
 };
 
@@ -47,12 +73,10 @@ const styles = StyleSheet.create({
     color: colors.dark,
     ...typography.h3,
   },
-  dropDownContainer: {
-    top: 30,
-    right: 0,
-    backgroundColor: colors.background,
-    borderBottomLeftRadius: 5,
-    borderBottomRightRadius: 5,
-    minWidth: 80,
+  changedText: {
+    ...typography.b2,
+    marginHorizontal: 10,
+    color: colors.secondary,
+    marginTop: 5,
   },
 });
