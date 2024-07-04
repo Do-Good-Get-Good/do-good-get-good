@@ -18,9 +18,6 @@ const {
 } = require("./src/updateActivityUserCountSecondGen");
 const { updateMonthSecondGen } = require("./src/updateMonthSecondGen");
 const { updateUserSecondGen } = require("./src/updateUserSecondGen");
-// Cloud functions
-// exports.assignAdminClaim = assignAdminClaim;
-// exports.deleteUser = deleteUser;
 
 exports.createUserSecondGen = createUserSecondGen;
 exports.deletePostAfterOneYearSecondGen = deletePostAfterOneYearSecondGen;
