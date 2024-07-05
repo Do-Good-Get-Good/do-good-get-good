@@ -12,17 +12,31 @@ import { Icon } from "@rneui/base";
 import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { Activity } from "../utility/types";
+import { useNavigation } from "@react-navigation/native";
+import { UserStack } from "../utility/routeEnums";
+import { shadow } from "../styles/shadows";
+import { InfoIcon } from "../assets/icons/InfoIcon";
+import { LocationIcon } from "../assets/icons/LocationIcon";
 
-const HomeSuggestions = ({ navigation, suggestions }) => {
+type Props = {
+  suggestions: Activity[];
+};
+const HomeSuggestions = ({ suggestions }: Props) => {
   const { getImageForActivity } = useActivityImages();
+  const navigation = useNavigation<{
+    navigate: (
+      nav: UserStack,
+      Props: {
+        activityInfo: Activity;
+      },
+    ) => void;
+  }>();
 
-  function lookDetails(activity, statusActive, statusPopular) {
+  function lookDetails(activity: Activity) {
     Keyboard.dismiss();
-    navigation.navigate("ActivityCardDetails", {
-      admin: false,
+    navigation.navigate(UserStack.ActivityCardDetails, {
       activityInfo: activity,
-      active: statusActive,
-      tgPopular: statusPopular,
     });
   }
 
@@ -34,9 +48,7 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
           testID="lookDetails"
           style={styles.insideActivityContainer}
           activeOpacity={0.4}
-          onPress={() =>
-            lookDetails(suggestion, suggestion.active, suggestion.popular)
-          }
+          onPress={() => lookDetails(suggestion)}
         >
           <View style={styles.textTitleCityDescriptipn}>
             <View style={{ flexDirection: "row", marginBottom: 6 }}>
@@ -49,15 +61,8 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
                 <Text numberOfLines={2} style={styles.textTitle}>
                   {suggestion.title}
                 </Text>
-
                 <View style={styles.iconsAndTextCityContainer}>
-                  <Icon
-                    type="material-community"
-                    name="map-marker-outline"
-                    color={colors.dark}
-                    size={25}
-                  />
-
+                  <LocationIcon />
                   <Text style={styles.textCity}>{suggestion.city}</Text>
                 </View>
               </View>
@@ -71,13 +76,7 @@ const HomeSuggestions = ({ navigation, suggestions }) => {
               />
             </View>
             <View style={styles.iconsAndTextDescriptionContainer}>
-              <Icon
-                type="material-community"
-                name="information-outline"
-                color={colors.dark}
-                size={25}
-                style={styles.iconDescription}
-              />
+              <InfoIcon />
               <Text numberOfLines={2} style={styles.textDescription}>
                 {suggestion.description}
               </Text>
@@ -106,18 +105,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     borderWidth: 1,
     borderColor: colors.background,
-    ...Platform.select({
-      ios: {
-        shadowOffset: {
-          hight: 2,
-        },
-        shadowOpacity: 0.5,
-        shadowRadius: 2,
-      },
-      android: {
-        elevation: 2,
-      },
-    }),
+    ...shadow({ shadowRadius: 2, elevation: 2 }),
   },
   image: {
     width: 100,

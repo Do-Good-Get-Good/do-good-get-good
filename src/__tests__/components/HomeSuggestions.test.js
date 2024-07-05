@@ -28,10 +28,12 @@ jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   })),
 }));
 
-const mockNavigation = {
-  navigate: jest.fn(),
-};
-
+const mockNavigate = jest.fn();
+jest.mock("@react-navigation/native", () => ({
+  useNavigation: () => ({
+    navigate: mockNavigate,
+  }),
+}));
 const mockSuggestions = [
   {
     id: 123,
@@ -47,10 +49,7 @@ const mockSuggestions = [
 describe("Testing HomeSuggestions", () => {
   it("Renders the suggestion card correctl and can press on it", () => {
     const { getByText, getByTestId } = render(
-      <HomeSuggestions
-        navigation={mockNavigation}
-        suggestions={mockSuggestions}
-      />,
+      <HomeSuggestions suggestions={mockSuggestions} />,
     );
 
     const title = getByText("title");
@@ -70,22 +69,16 @@ describe("Testing HomeSuggestions", () => {
     const suggestionCard = getByTestId("lookDetails");
     expect(suggestionCard);
     fireEvent.press(suggestionCard);
-    expect(mockNavigation.navigate).toHaveBeenCalledWith(
-      "ActivityCardDetails",
-      {
-        active: undefined,
-        activityInfo: {
-          city: mockSuggestions[0].city,
-          description: mockSuggestions[0].description,
-          id: mockSuggestions[0].id,
-          photo: mockSuggestions[0].photo,
-          place: mockSuggestions[0].place,
-          popular: mockSuggestions[0].popular,
-          title: mockSuggestions[0].title,
-        },
-        admin: false,
-        tgPopular: true,
+    expect(mockNavigate).toHaveBeenCalledWith("ActivityCardDetails", {
+      activityInfo: {
+        city: mockSuggestions[0].city,
+        description: mockSuggestions[0].description,
+        id: mockSuggestions[0].id,
+        photo: mockSuggestions[0].photo,
+        place: mockSuggestions[0].place,
+        popular: mockSuggestions[0].popular,
+        title: mockSuggestions[0].title,
       },
-    );
+    });
   });
 });
