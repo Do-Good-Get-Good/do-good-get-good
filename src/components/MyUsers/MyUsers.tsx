@@ -39,6 +39,7 @@ export const MyUsers = ({ users }: Props) => {
           key={`${user.id}-my-users-drop-down`}
           title={`${user.firstName} ${user.lastName}`}
           isUnderlineOnPress={true}
+          containerstyle={{ zIndex: -1 }}
           componentInsideDropDown={
             <MyUserAndFiveAprovedTimeEntries user={user} />
           }
