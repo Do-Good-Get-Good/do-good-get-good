@@ -26,6 +26,7 @@ export const MyUsers = ({ users }: Props) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Mina användare</Text>
         <DropDownTextAndIcon
+          containerstyle={{ zIndex: 2 }}
           testID={"sort-by"}
           title={sortBy}
           componentInsideDropDown={<SortBy setSortBy={setSortBy} />}
