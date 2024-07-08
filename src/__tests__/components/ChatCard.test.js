@@ -10,6 +10,10 @@ jest.mock("@react-navigation/native", () => ({
   }),
 }));
 
+jest.mock("react-native-outside-press", () => {
+  return ({ children }) => children;
+});
+
 const post = {
   description: "Test Description",
   date: new Date(),
@@ -155,7 +159,7 @@ describe("Testing ChatCardComponent", () => {
     expect(onDeleteMock).toBeTruthy();
     fireEvent.press(chatCardEditMenu);
     expect(getByText("Ändra")).toBeTruthy();
-    expect( onEditeMock).toBeTruthy();
+    expect(onEditeMock).toBeTruthy();
   });
 
   it("Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false", () => {

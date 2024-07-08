@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import colors from "../../assets/theme/colors";
 import { shadow } from "../../styles/shadows";
+import OutsidePressHandler from "react-native-outside-press";
 
 export type Option = {
   label: string;
@@ -18,21 +19,28 @@ export type Option = {
 type Props = {
   style?: StyleProp<FlexStyle | TextStyle>;
   optionsList: Option[];
+  onOutsidePress: () => void;
 };
-export const DropDownOverlay = ({ optionsList, style }: Props) => {
+export const DropDownOverlay = ({
+  optionsList,
+  style,
+  onOutsidePress,
+}: Props) => {
   return (
     <View style={[style, styles.dropdown]}>
-      {optionsList.map((optionItem, index) => (
-        <TouchableOpacity
-          key={index}
-          onPress={optionItem.onPress}
-          testID={`dropdown-overlay-${optionItem.label.toLowerCase()}`}
-        >
-          <View style={styles.dropdownItem}>
-            <Text>{optionItem.label}</Text>
-          </View>
-        </TouchableOpacity>
-      ))}
+      <OutsidePressHandler onOutsidePress={() => onOutsidePress()}>
+        {optionsList.map((optionItem, index) => (
+          <TouchableOpacity
+            key={index}
+            onPress={optionItem.onPress}
+            testID={`dropdown-overlay-${optionItem.label.toLowerCase()}`}
+          >
+            <View style={styles.dropdownItem}>
+              <Text>{optionItem.label}</Text>
+            </View>
+          </TouchableOpacity>
+        ))}
+      </OutsidePressHandler>
     </View>
   );
 };

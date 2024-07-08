@@ -63,7 +63,12 @@ export const ChatCardEditMenu = ({
       >
         <Text style={styles.buttonText}>...</Text>
       </TouchableOpacity>
-      {showMenu && <DropDownOverlay optionsList={optionsList} />}
+      {showMenu && (
+        <DropDownOverlay
+          onOutsidePress={() => setShowMenu(false)}
+          optionsList={optionsList}
+        />
+      )}
     </View>
   );
 };

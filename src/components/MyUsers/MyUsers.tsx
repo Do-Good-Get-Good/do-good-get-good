@@ -28,6 +28,7 @@ export const MyUsers = ({ users }: Props) => {
         <DropDownTextAndIcon
           testID={"sort-by"}
           title={sortBy}
+          isOnOutsidePress={true}
           componentInsideDropDown={<SortBy setSortBy={setSortBy} />}
         />
       </View>
