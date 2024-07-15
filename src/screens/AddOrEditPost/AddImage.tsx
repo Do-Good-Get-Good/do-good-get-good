@@ -24,7 +24,7 @@ export const AddImage = ({ imageURL, setImageURL }: Props) => {
         <ChatCardImage size={1.6} imageUrl={imageURL} />
       ) : (
         <View style={styles.image}>
-          <Text style={styles.imageText}>Lägga till bild</Text>
+          <Text style={styles.imageText}>Lägg till bild</Text>
           <Text style={styles.buttonText}>+</Text>
         </View>
       )}
