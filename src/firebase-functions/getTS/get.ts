@@ -135,11 +135,12 @@ export const getUserByStatus = async (isActive: boolean = true) => {
 
 export const getActivityByID = async (
   activityID: Activity["id"],
-): Promise<Activity> => {
+): Promise<Activity | null> => {
   try {
     let data = await firestore().collection("Activities").doc(activityID).get();
     return Promise.resolve(activityObject(data));
   } catch (error) {
-    return Promise.reject(error);
+    console.log("getActivityByID: ", error);
+    return null;
   }
 };
