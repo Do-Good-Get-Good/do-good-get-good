@@ -1,7 +1,8 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { format } from "date-fns";
-import { FirebaseuserActivityAndAccumulatedTime } from "./typeFirebase";
+
 import { User } from "../utility/types";
+import { FirebaseuserActivityAndAccumulatedTime } from "../utility/firebaseTypes";
 
 const userActivitiesAndAccumulatedTime = (
   arr: FirebaseuserActivityAndAccumulatedTime[],
@@ -95,7 +96,6 @@ export const userPostObject = (
     emoji: doc.data().emoji,
     imageURL: doc.data().image_url,
     comments: doc.data().comments,
-    type: doc.data().type
+    type: doc.data().type,
   };
 };
-

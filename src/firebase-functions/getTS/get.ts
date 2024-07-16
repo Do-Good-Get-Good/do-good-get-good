@@ -2,8 +2,6 @@ import firestore, {
   FirebaseFirestoreTypes,
 } from "@react-native-firebase/firestore";
 import { Activity, TimeEntry, User } from "../../utility/types";
-
-import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 import { activityObject, timeEntryObject, userObject } from "../adaptedObject";
 
 export const getAllUsersData = async () => {
@@ -141,6 +139,31 @@ export const getActivityByID = async (
     return Promise.resolve(activityObject(data));
   } catch (error) {
     console.log("getActivityByID: ", error);
+    return null;
+  }
+};
+
+export const getActivityInformation = async (activityId: Activity["id"]) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .doc(activityId)
+      .get();
+
+    let activity = null;
+    if (querySnapshot?.data()) {
+      activity = {
+        id: activityId,
+        title: querySnapshot?.data()?.activity_title,
+        city: querySnapshot?.data()?.activity_city,
+        photo: querySnapshot?.data()?.activity_photo,
+        imageUrl: querySnapshot?.data()?.imageUrl,
+      };
+    }
+
+    return Promise.resolve(activity);
+  } catch (error) {
+    console.log(Promise.reject(error));
     return null;
   }
 };

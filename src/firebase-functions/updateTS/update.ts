@@ -5,10 +5,11 @@ import {
   UserAndUnapprovedTimeEntriesType,
   UserPost,
 } from "../../utility/types";
-import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
+
 import { parse } from "date-fns";
 import { addImageToStorage } from "../addTS/add";
 import { deleteImage } from "../deleteTS/delete";
+import { FirebaseuserActivityAndAccumulatedTime } from "../../utility/firebaseTypes";
 
 export const incrementTotalHoursForMonthYearAccumulatedTime = (
   userId: User["id"],
@@ -63,23 +64,24 @@ export const updateUserAsAdmin = async (user: User) => {
   }
 };
 
+const updateImage = async (updatedImage: string, oldImage: string) => {
+  const fbStorageImagePath = await addImageToStorage(updatedImage);
+  await deleteImage(oldImage);
+  return fbStorageImagePath;
+};
 
-const updateImage = async(updatedImage: string, oldImage: string) =>{
-  const fbStorageImagePath =  await addImageToStorage(updatedImage)
-  await deleteImage(oldImage)
-  return fbStorageImagePath 
-}
+export const updatePostInFirestore = async (
+  post: UserPost,
+  updatedImage: UserPost["imageURL"],
+) => {
+  const convertToDateStamp =
+    typeof post.date === "string"
+      ? parse(post.date, "yyyy-MM-dd", new Date())
+      : post.date;
 
-
-export const updatePostInFirestore = async (post: UserPost, updatedImage: UserPost['imageURL'] ) => {
-  
-  const convertToDateStamp = typeof post.date === 'string'
-  ? parse(post.date, "yyyy-MM-dd", new Date())
-  : post.date;
-
-  let img = post.imageURL
-  if( updatedImage && post.imageURL && updatedImage !== post.imageURL){
-    img  = await updateImage(updatedImage, post.imageURL)
+  let img = post.imageURL;
+  if (updatedImage && post.imageURL && updatedImage !== post.imageURL) {
+    img = await updateImage(updatedImage, post.imageURL);
   }
   try {
     const postData = {
@@ -92,10 +94,10 @@ export const updatePostInFirestore = async (post: UserPost, updatedImage: UserPo
       ...(post.userLastName && { last_name: post.userLastName }),
       ...(post.emoji && { emoji: post.emoji }),
       ...(post.comments && { comments: post.comments }),
-      ...(post.date && { date: convertToDateStamp}),
-      ...(img && {   image_url: img, }),
-      changed:true,
-     description: post.description 
+      ...(post.date && { date: convertToDateStamp }),
+      ...(img && { image_url: img }),
+      changed: true,
+      description: post.description,
     };
 
     await firestore().collection("UserPosts").doc(post.id).update(postData);
