@@ -6,9 +6,8 @@ import {
 } from "../../firebase-functions/updateTS/update";
 import { getUserData } from "../../firebase-functions/getTS/get";
 import auth from "@react-native-firebase/auth";
-import { FirebaseuserActivityAndAccumulatedTime } from "../../firebase-functions/typeFirebase";
-import { useCallback, useState } from "react";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
+import { FirebaseuserActivityAndAccumulatedTime } from "../../utility/firebaseTypes";
 
 let today = new Date();
 

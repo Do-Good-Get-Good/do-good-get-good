@@ -27,13 +27,13 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-jest.mock("../../hooks/useLinkedActivities", () => () => {
-  return {
-    timeObject: jest.fn(),
-    activities: jest.fn(),
-    loading: jest.fn(),
-  };
-});
+jest.mock("../../hooks/useLinkedActivities", () => ({
+  useLinkedActivities: () => ({
+    timeObject: [],
+    activities: [],
+    isLoading: false,
+  }),
+}));
 
 jest.mock("../../hooks/useActivitySuggestions", () => ({
   useActivitySuggestions: () => {

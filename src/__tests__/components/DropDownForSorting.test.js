@@ -10,7 +10,9 @@ jest.mock("@rneui/base/dist/Icon/", () => ({
 }));
 
 jest.mock("@react-navigation/native");
-
+jest.mock("react-native-outside-press", () => {
+  return ({ children }) => children;
+});
 describe("Testing DropDownForSorting", () => {
   let mockChoice = undefined;
 

@@ -91,7 +91,8 @@ export const getActivityInformation = async (activityId) => {
 
     return Promise.resolve(activity);
   } catch (error) {
-    return Promise.reject(error);
+    console.log(Promise.reject(error));
+    return null;
   }
 };
 

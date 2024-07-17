@@ -12,7 +12,7 @@ import BottomLogo from "../../components/BottomLogo";
 
 import typography from "../../assets/theme/typography";
 
-import useLinkedActivities from "../../hooks/useLinkedActivities";
+import { useLinkedActivities } from "../../hooks/useLinkedActivities";
 import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
 import colors from "../../assets/theme/colors";
 import { LinkedActivities, Props } from "./type";

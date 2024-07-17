@@ -8,12 +8,11 @@ const formattedDate = (date: Date | string): string => {
 
   if (formattedDate instanceof Date && !isNaN(formattedDate.getTime())) {
     const diff = formattedDate.getDate() - today.getDate();
-
     switch (diff) {
       case -1:
-        return "Yesterday";
+        return "Igår";
       case 0:
-        return "Today";
+        return "Idag";
       default:
         return `${formattedDate.getDate().toString().padStart(2, "0")}.${(formattedDate.getMonth() + 1).toString().padStart(2, "0")}.${formattedDate.getFullYear()}`;
     }
@@ -38,7 +37,7 @@ export const ChatCardDate = ({ date }: Props) => {
 
 const styles = StyleSheet.create({
   container: {
-   alignSelf: "flex-start",
+    alignSelf: "flex-start",
     marginLeft: 20,
   },
   textDate: {

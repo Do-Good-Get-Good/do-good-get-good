@@ -1,3 +1,4 @@
+import { Role } from "./enums";
 import { User } from "./types";
 
 // This represents the entire object that we receive from firebase.
@@ -17,4 +18,22 @@ export type UserClaims = {
   iss?: string;
   sub?: string;
   user_id?: User["id"];
+};
+
+export type FirebaseuserActivityAndAccumulatedTime = {
+  accumulated_time: number;
+  activity_id: string;
+};
+
+export type FirebaseUser = {
+  activities_and_accumulated_time: FirebaseuserActivityAndAccumulatedTime[];
+  admin_id: string;
+  connected_activities: string[];
+  first_name: string;
+  last_name: string;
+  role: Role;
+  status_active: boolean;
+  total_confirmed_hours: number;
+  total_hours_month: number;
+  total_hours_year: number;
 };

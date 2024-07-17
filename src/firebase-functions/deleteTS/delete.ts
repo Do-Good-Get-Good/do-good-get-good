@@ -1,9 +1,17 @@
 import firestore from "@react-native-firebase/firestore";
-import { Comment, PostEmoji, UserPost } from "../../utility/types";
+import {
+  Activity,
+  Comment,
+  PostEmoji,
+  User,
+  UserPost,
+} from "../../utility/types";
 import storage from "@react-native-firebase/storage";
 import crashlytics from "@react-native-firebase/crashlytics";
+import { connectTestActivityIfUserHasNoActivity } from "../addTS/add";
+import { getUserData } from "../getTS/get";
 
-export const deleteImage = async (postImageURL: UserPost['imageURL']) => {
+export const deleteImage = async (postImageURL: UserPost["imageURL"]) => {
   try {
     postImageURL && (await storage().refFromURL(postImageURL).delete());
   } catch (error) {
@@ -60,6 +68,31 @@ export const deleteComment = async (
     return true;
   } catch (error) {
     console.log(error);
+    return false;
+  }
+};
+
+export const deleteActivityConnectionFromUser = async (
+  activityID: Activity["id"],
+  userID: User["id"],
+) => {
+  try {
+    await firestore()
+      .collection("Users")
+      .doc(userID)
+      .update({
+        connected_activities: firestore.FieldValue.arrayRemove(activityID),
+      })
+      .then(async () => {
+        let user = await getUserData(userID);
+        if (user.connectedActivities.length === 0) {
+          await connectTestActivityIfUserHasNoActivity(userID);
+        }
+      });
+
+    return true;
+  } catch (error) {
+    console.log("deleteActivityConnectionFromUser: ", error);
     return false;
   }
 };
