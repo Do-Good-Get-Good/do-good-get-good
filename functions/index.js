@@ -1,28 +1,31 @@
-const admin = require("firebase-admin");
-
-const { createUser } = require("./src/createUser");
-const { deleteUser } = require("./src/deleteUser");
-const { updateMonth } = require("./src/updateMonth");
-const { updateYear } = require("./src/updateYear");
-const { assignAdminClaim } = require("./src/assignAdminClaim");
+const { initializeApp } = require("firebase-admin/app");
+const { createUserSecondGen } = require("./src/createUserSecondGen");
+const { updateYearSecondGen } = require("./src/updateYearSecondGen");
 const { downloadData } = require("./src/downloadData/downloadData");
-const { connectUsersToActivities } = require("./src/connectUsersToActivities");
-const { updateActivityUserCount } = require("./src/updateActivityUserCount");
+const {
+  connectUsersToActivitiesSecondGen,
+} = require("./src/connectUsersToActivitiesSecondGen");
 const { firebaseConfig } = require("./config");
-const { adminGetUserEmail } = require("./src/adminGetUserEmail");
-const { updateUser } = require("./src/updateUser");
-const { deletePostAfterOneYear } = require("./src/deletePostAfterOneYear");
-admin.initializeApp(firebaseConfig);
+const {
+  adminGetUserEmailSecondGen,
+} = require("./src/adminGetUserEmailSecondGen");
+const {
+  deletePostAfterOneYearSecondGen,
+} = require("./src/deletePostAfterOneYearSecondGen");
+initializeApp(firebaseConfig);
+const {
+  updateActivityUserCountSecondGen,
+} = require("./src/updateActivityUserCountSecondGen");
+const { updateMonthSecondGen } = require("./src/updateMonthSecondGen");
+const { updateUserSecondGen } = require("./src/updateUserSecondGen");
 
-// Cloud functions
-exports.createUser = createUser;
-exports.deleteUser = deleteUser;
-exports.updateMonth = updateMonth;
-exports.updateYear = updateYear;
-exports.assignAdminClaim = assignAdminClaim;
+exports.createUserSecondGen = createUserSecondGen;
+exports.deletePostAfterOneYearSecondGen = deletePostAfterOneYearSecondGen;
+exports.connectUsersToActivitiesSecondGen = connectUsersToActivitiesSecondGen;
+exports.adminGetUserEmailSecondGen = adminGetUserEmailSecondGen;
+exports.updateActivityUserCountSecondGen = updateActivityUserCountSecondGen;
+
+exports.updateMonthSecondGen = updateMonthSecondGen;
+exports.updateUserSecondGen = updateUserSecondGen;
+exports.updateYearSecondGen = updateYearSecondGen;
 exports.downloadData = downloadData;
-exports.connectUsersToActivities = connectUsersToActivities;
-exports.updateActivityUserCount = updateActivityUserCount;
-exports.adminGetUserEmail = adminGetUserEmail;
-exports.updateUser = updateUser;
-exports.deletePostAfterOneYear = deletePostAfterOneYear;
