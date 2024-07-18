@@ -24,6 +24,8 @@
 		64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
 		7E92B65B988129BEEC032CE8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 11BE50ED0E9E5AFC415F2367 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodDev.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
+		932DD2D01C0518929AF4A914 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 20093458C3C50DF1BF8A2576 /* PrivacyInfo.xcprivacy */; };
+		AEAD8C9245F95C703660AB55 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 6D064F406BEE183F7D61C146 /* PrivacyInfo.xcprivacy */; };
 		C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */; };
 		C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
@@ -53,11 +55,15 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
 		1A92BBE82C0714970076E00B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		20093458C3C50DF1BF8A2576 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		508DC5F72C48000A00C38BF2 /* DoGoodGetGoodDevDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = DoGoodGetGoodDevDebug.entitlements; sourceTree = "<group>"; };
+		508DC5F82C48009300C38BF2 /* DoGoodGetGoodDebug.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = DoGoodGetGoodDebug.entitlements; path = DoGoodGetGood/DoGoodGetGoodDebug.entitlements; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
 		64D6637929A936AE0027F881 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<absolute>"; };
 		69CF90BE52EC466F0CF45100 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.debug.xcconfig"; sourceTree = "<group>"; };
+		6D064F406BEE183F7D61C146 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		70563D5B07364418ABFAD8F7 /* DIN-Light.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Light.otf"; path = "../assets/fonts/DIN-Light.otf"; sourceTree = "<group>"; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = DoGoodGetGood/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; sourceTree = "<group>"; };
@@ -124,12 +130,14 @@
 		13B07FAE1A68108700A75B9A /* DoGoodGetGood */ = {
 			isa = PBXGroup;
 			children = (
+				508DC5F82C48009300C38BF2 /* DoGoodGetGoodDebug.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				6D064F406BEE183F7D61C146 /* PrivacyInfo.xcprivacy */,
 			);
 			name = DoGoodGetGood;
 			sourceTree = "<group>";
@@ -162,6 +170,8 @@
 		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXGroup;
 			children = (
+				508DC5F72C48000A00C38BF2 /* DoGoodGetGoodDevDebug.entitlements */,
+				20093458C3C50DF1BF8A2576 /* PrivacyInfo.xcprivacy */,
 			);
 			path = DoGoodGetGoodDev;
 			sourceTree = "<group>";
@@ -366,6 +376,7 @@
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
 				C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */,
+				AEAD8C9245F95C703660AB55 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +391,7 @@
 				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
 				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
 				C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */,
+				932DD2D01C0518929AF4A914 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -730,6 +742,7 @@
 				APP_VERSION = 1.3.0;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DoGoodGetGood/DoGoodGetGoodDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 19;
@@ -803,6 +816,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = DoGoodGetGoodDev/DoGoodGetGoodDevDebug.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1.1.1;
