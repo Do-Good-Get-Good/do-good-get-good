@@ -96,30 +96,26 @@ function MyTimeEntries() {
           }}
         />
       </View>
-
-      {data.length === 0 && (
+      {data.length > 0 ? (
+        <FlatList
+          style={{ flex: 1 }}
+          data={data}
+          onEndReached={() => loadMoreEntries()}
+          onEndReachedThreshold={0.25}
+          keyExtractor={(item) => item.timeEntryID}
+          renderItem={({ item }) => (
+            <TimeEntry
+              key={item.timeEntryID}
+              entry={item}
+              setActivity={setActivity}
+              toggleOverlay={toggleOverlay}
+            />
+          )}
+        />
+      ) : (
         <Text style={{ ...typography.b2 }}>
           Du har inte loggat någon tid ännu!
         </Text>
-      )}
-      {data.length !== 0 && (
-        <View style={{ flex: 1 }}>
-          <FlatList
-            style={{ height: "100%" }}
-            data={data}
-            onEndReached={() => loadMoreEntries()}
-            onEndReachedThreshold={0.25}
-            keyExtractor={(item) => item.timeEntryID}
-            renderItem={({ item }) => (
-              <TimeEntry
-                key={item.timeEntryID}
-                entry={item}
-                setActivity={setActivity}
-                toggleOverlay={toggleOverlay}
-              />
-            )}
-          />
-        </View>
       )}
       <CalendarView
         visible={visible}
@@ -139,11 +135,7 @@ const styles = StyleSheet.create({
     flex: 1,
     marginBottom: 8,
     zIndex: 4,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "flex-start",
-    marginHorizontal: -16,
+    marginHorizontal: 16,
   },
   title: {
     flex: 1,
@@ -155,40 +147,5 @@ const styles = StyleSheet.create({
     marginTop: 16,
     paddingBottom: 16,
     zIndex: 1,
-  },
-  textVissaAll: {
-    flex: 1,
-    letterSpacing: 1,
-    backgroundColor: colors.light,
-    marginVertical: 1,
-    borderRadius: 5,
-    borderWidth: 1,
-    borderColor: colors.light,
-    textAlign: "center",
-    paddingTop: 12,
-    paddingHorizontal: Platform.OS === "ios" ? 56 : 58,
-    overflow: "hidden",
-    ...typography.button.lg,
-    fontWeight: "500",
-    color: colors.dark,
-  },
-  activityIside: {
-    flexDirection: "row",
-    backgroundColor: colors.background,
-    alignItems: "center",
-    paddingVertical: 2.5,
-    paddingHorizontal: 8,
-    marginHorizontal: 8,
-  },
-  buttonBorderStyle: {
-    borderRadius: 5,
-    height: 55,
-    width: 200,
-    alignItems: "center",
-    marginTop: 12,
-  },
-  errorText: {
-    fontSize: 20,
-    color: colors.error,
   },
 });
