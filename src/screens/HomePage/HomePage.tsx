@@ -17,11 +17,13 @@ import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
 import colors from "../../assets/theme/colors";
 import { LinkedActivities, Props } from "./type";
 import { Disclaimer } from "../../components/Disclaimer";
+import { useNotificationPermission } from "../../hooks/useNotificationPermission";
 
 export const HomePage = ({ navigation }: Props) => {
   const { timeObject, activities, isLoading }: LinkedActivities =
     useLinkedActivities();
   const { suggestions, loading } = useActivitySuggestions();
+  useNotificationPermission();
 
   return (
     <SafeAreaView style={styles.view}>

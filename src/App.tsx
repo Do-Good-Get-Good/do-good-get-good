@@ -16,9 +16,11 @@ import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
+import { useForegroundgNotifi } from "./hooks/useForegroundgNotifi";
 
 export default function App() {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
+  useForegroundgNotifi();
 
   if (initializing) return null;
 
