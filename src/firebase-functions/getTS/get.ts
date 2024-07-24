@@ -26,7 +26,7 @@ export const getAllUsersData = async () => {
   }
 };
 
-export const getUserData = async (userId: User["id"]) => {
+export const getUserData = async (userId: User["id"]): Promise<User> => {
   try {
     let data = await firestore().collection("Users").doc(userId).get();
     let user = userObject(data);

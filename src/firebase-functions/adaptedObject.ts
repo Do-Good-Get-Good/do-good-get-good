@@ -20,7 +20,7 @@ export const userObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
     | FirebaseFirestoreTypes.DocumentData,
-) => {
+): User => {
   let user: User = {
     id: doc.id,
     activitiesAndAccumulatedTime: userActivitiesAndAccumulatedTime(
@@ -35,6 +35,7 @@ export const userObject = (
     totalConfirmedHours: doc.data().total_confirmed_hours,
     totalHoursMonth: doc.data().total_hours_month,
     totalHoursYear: doc.data().total_hours_year,
+    ...(doc.data().tokens && { tokens: doc.data().tokens }),
   };
 
   return user;
@@ -95,7 +96,6 @@ export const userPostObject = (
     emoji: doc.data().emoji,
     imageURL: doc.data().image_url,
     comments: doc.data().comments,
-    type: doc.data().type
+    type: doc.data().type,
   };
 };
-

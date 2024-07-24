@@ -56,6 +56,7 @@ export type User = {
   totalHoursYear?: number;
   connectedUsers?: Array<User>;
   userCount?: number;
+  tokens?: Array<Token>;
 };
 
 export type UserObjectForSuperAdmin = {
@@ -113,4 +114,8 @@ export type UserPost = {
   emoji?: Array<PostEmoji>;
   imageURL?: string;
   comments: Array<Comment>;
+};
+export type Token = {
+  token: string;
+  timestamp: Date | string;
 };

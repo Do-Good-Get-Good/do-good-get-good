@@ -1,6 +1,6 @@
 import messaging from "@react-native-firebase/messaging";
 import { useEffect } from "react";
-import { PermissionsAndroid, Platform } from "react-native";
+import { Platform } from "react-native";
 import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
 import { useSaveTokenToDatabase } from "./useSaveTokenToDatabase";
 
@@ -20,8 +20,6 @@ const permission =
   Platform.OS === "android"
     ? check(PERMISSIONS.ANDROID.POST_NOTIFICATIONS)
     : iosPermission();
-
-// const permission = PERMISSIONS.ANDROID.POST_NOTIFICATIONS;
 
 export const useNotificationPermission = () => {
   const { getAndRefreshToken } = useSaveTokenToDatabase();
