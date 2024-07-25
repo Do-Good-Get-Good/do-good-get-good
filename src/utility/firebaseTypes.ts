@@ -1,4 +1,4 @@
-import { ActivitiesAndAccumulatedTime, Activity, User } from "./types";
+import { ActivitiesAndAccumulatedTime, Activity, Token, User } from "./types";
 
 // This represents the entire object that we receive from firebase.
 // Not all objects in the model is used, but felt better to handle them, then to ignore them.
@@ -48,6 +48,5 @@ export type FirebaseUserType = {
   total_confirmed_hours: User["totalConfirmedHours"];
   first_name: User["firstName"];
   last_name: User["lastName"];
-  get_push_notifi?: boolean;
-  tokens?: string[];
+  tokens?: Token[];
 };

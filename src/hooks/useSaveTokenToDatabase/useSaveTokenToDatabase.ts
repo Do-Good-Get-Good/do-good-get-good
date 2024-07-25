@@ -1,4 +1,4 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
+import auth from "@react-native-firebase/auth";
 import firestore from "@react-native-firebase/firestore";
 import messaging from "@react-native-firebase/messaging";
 import { Token } from "../../utility/types";
@@ -12,8 +12,7 @@ export const useSaveTokenToDatabase = () => {
   };
 
   const getAndRefreshToken = async () => {
-    const timestamp = new Date(firestore.Timestamp.now().toMillis());
-
+    const timestamp = new Date(firestore.Timestamp.now().toDate());
     await messaging()
       .getToken()
       .then((token) => {

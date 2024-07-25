@@ -117,5 +117,5 @@ export type UserPost = {
 };
 export type Token = {
   token: string;
-  timestamp: Date | string;
+  timestamp: Date;
 };
