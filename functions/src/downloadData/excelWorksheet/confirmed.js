@@ -19,7 +19,7 @@ function populateExcelSheetWithData(
   let { activities, users } = excelData;
 
   let entries = [];
-  confirmedTimeEntries.map((timeEntry) => {
+  confirmedTimeEntries.forEach((timeEntry) => {
     let user = users.find((user) => user.id === timeEntry.user_id);
 
     let activity = activities.find(
@@ -29,13 +29,13 @@ function populateExcelSheetWithData(
     const date = timeEntry.date.toDate();
 
     const entryData = {
-      activityId: timeEntry.activity_id,
-      year: date.getFullYear(),
-      month: months.short[date.getMonth()],
-      user: `${user.first_name} ${user.last_name}`,
-      activity: activity.activity_title,
-      city: activity.activity_city,
-      time: timeEntry.time,
+      activityId: timeEntry?.activity_id ?? "",
+      year: date.getFullYear() ?? "",
+      month: months.short[date.getMonth()] ?? "",
+      user: user ? `${user.first_name} ${user.last_name}` : "",
+      activity: activity?.activity_title ?? timeEntry.activity_title ?? "",
+      city: activity?.activity_city ?? "",
+      time: timeEntry?.time ?? "",
     };
 
     entries.push(entryData);
@@ -52,7 +52,7 @@ function populateExcelSheetWithData(
 
   sortArrayByDate(userTimeEntries, "short");
 
-  userTimeEntries.map((entry) => {
+  userTimeEntries.forEach((entry) => {
     let wsData = {
       date: type === "YEAR" ? entry.year : `${entry.year} - ${entry.month}`,
       user: entry.user,
@@ -74,7 +74,7 @@ function createNewHeader(worksheet) {
   const cell5 = worksheet.getCell(`E${rowCount + 2}`);
   const cellArr = [cell1, cell2, cell3, cell4, cell5];
 
-  cellArr.map((cell, index) => {
+  cellArr.forEach((cell, index) => {
     if (index === 0) cell.value = "Månad";
     else cell.value = worksheet.columns[index].header;
     cell.font = { bold: true };
@@ -85,7 +85,6 @@ exports.createWorksheet = (workbook, excelData) => {
   const worksheet = workbook.addWorksheet("Godkända");
 
   const { timeEntries } = excelData;
-
   let confirmedTimeEntries = filterTimeEntries(timeEntries, true);
 
   if (confirmedTimeEntries.length === 0) {

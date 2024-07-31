@@ -29,13 +29,13 @@ function populateExcelSheetWithRegionData(worksheet, excelData) {
         }
       });
 
-      const date = timeEntry.date.toDate();
+      const date = timeEntry?.date?.toDate();
 
       const entryData = {
-        year: date.getFullYear(),
-        month: months.short[date.getMonth()],
-        city: activity.activity_city,
-        time: timeEntry.time,
+        year: date?.getFullYear() ?? "",
+        month: date ? months.short[date.getMonth()] : "",
+        city: activity?.activity_city ?? "",
+        time: timeEntry?.time ?? "",
       };
 
       entries.push(entryData);

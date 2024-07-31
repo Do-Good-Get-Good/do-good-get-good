@@ -83,7 +83,7 @@ export type PostEmoji = {
   emojiName: string;
   userFirstName: User["firstName"];
   userLastName: User["lastName"];
-  userID:  User["id"];
+  userID: User["id"];
 };
 
 export type Comment = {
@@ -94,8 +94,8 @@ export type Comment = {
 };
 
 export enum Post {
-  post = 'post',
-  message='message'
+  post = "post",
+  message = "message",
 }
 
 export type UserPost = {
