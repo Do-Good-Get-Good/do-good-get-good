@@ -1,8 +1,8 @@
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
+const { getFirestore } = require("firebase-admin/firestore");
+const { onDocumentCreated } = require("firebase-functions/v2/firestore");
 
 async function getAllCollectionData(collection) {
-  let response = await admin.firestore().collection(collection).get();
+  let response = await getFirestore().collection(collection).get();
   return response.docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 }
 
@@ -11,8 +11,7 @@ async function updateUsersConnectedToActivities(activities) {
     activities.map((activity) => {
       return new Promise(async (res) => {
         try {
-          await admin
-            .firestore()
+          await getFirestore()
             .collection("Activities")
             .doc(activity.id)
             .update({
@@ -29,9 +28,9 @@ async function updateUsersConnectedToActivities(activities) {
   );
 }
 
-exports.connectUsersToActivities = functions.firestore
-  .document("Activities/{activityId}")
-  .onCreate(async (snap, context) => {
+exports.connectUsersToActivitiesSecondGen = onDocumentCreated(
+  "Activities/{activityId}",
+  async (event) => {
     let users = await getAllCollectionData("Users");
     let activities = await getAllCollectionData("Activities");
 
@@ -56,4 +55,5 @@ exports.connectUsersToActivities = functions.firestore
     });
 
     await updateUsersConnectedToActivities(newActivityData);
-  });
+  }
+);
