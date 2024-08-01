@@ -1,27 +1,29 @@
-import auth from "@react-native-firebase/auth";
-import firestore from "@react-native-firebase/firestore";
 import messaging from "@react-native-firebase/messaging";
 import { Token } from "../../utility/types";
-import { updateTokens } from "../../firebase-functions/updateTS/update";
+import functions from "@react-native-firebase/functions";
 
 export const useSaveTokenToDatabase = () => {
-  const userId = auth()?.currentUser?.uid;
-
-  const saveToken = async (token: Token) => {
-    userId && (await updateTokens(token, userId));
+  const saveToken = async (token: Token["token"]) => {
+    try {
+      const updateToken = functions().httpsCallableFromUrl(
+        "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/updateTokensSecondGen",
+      );
+      await updateToken(token);
+    } catch (error) {
+      console.log(error, "-----");
+    }
   };
 
   const getAndRefreshToken = async () => {
-    const timestamp = new Date(firestore.Timestamp.now().toDate());
     await messaging()
       .getToken()
       .then((token) => {
-        return saveToken({ token, timestamp: timestamp });
+        return saveToken(token);
       });
 
     // Listen to whether the token changes
     return messaging().onTokenRefresh((token) => {
-      saveToken({ token, timestamp: timestamp });
+      saveToken(token);
     });
   };
 

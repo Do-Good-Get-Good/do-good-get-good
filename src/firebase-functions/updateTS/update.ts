@@ -106,19 +106,3 @@ export const updatePostInFirestore = async (
     return Promise.reject(error);
   }
 };
-
-export const updateTokens = async (updatedToken: Token, userId: User["id"]) => {
-  const userInfo = await getUserData(userId);
-  let tokens = userInfo.tokens ?? [];
-  const tokenIndex = tokens.findIndex((t) => t.token === updatedToken.token);
-
-  if (tokenIndex !== -1) {
-    tokens[tokenIndex].timestamp = updatedToken.timestamp;
-  } else {
-    tokens.push(updatedToken);
-  }
-
-  await firestore().collection("Users").doc(userId).update({
-    tokens: tokens,
-  });
-};
