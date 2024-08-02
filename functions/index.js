@@ -22,6 +22,9 @@ const {
   sendReminderNotificationToAdminsSecondGen,
 } = require("./src/sendReminderNotificationToAdminsSecondGen");
 const { updateTokensSecondGen } = require("./src/updateTokensSecondGen");
+const {
+  sendNotifiAboutApprovedTimeEntrySecondGen,
+} = require("./src/sendNotifiAboutApprovedTimeEntrySecondGen");
 
 exports.createUserSecondGen = createUserSecondGen;
 exports.deletePostAfterOneYearSecondGen = deletePostAfterOneYearSecondGen;
@@ -36,3 +39,5 @@ exports.downloadData = downloadData;
 exports.sendReminderNotificationToAdminsSecondGen =
   sendReminderNotificationToAdminsSecondGen;
 exports.updateTokensSecondGen = updateTokensSecondGen;
+exports.sendNotifiAboutApprovedTimeEntrySecondGen =
+  sendNotifiAboutApprovedTimeEntrySecondGen;

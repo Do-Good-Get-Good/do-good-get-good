@@ -10,7 +10,7 @@ import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 import { parse } from "date-fns";
 import { addImageToStorage } from "../addTS/add";
 import { deleteImage } from "../deleteTS/delete";
-import { getUserData } from "../getTS/get";
+import functions from "@react-native-firebase/functions";
 
 export const incrementTotalHoursForMonthYearAccumulatedTime = (
   userId: User["id"],
@@ -33,19 +33,28 @@ export const incrementTotalHoursForMonthYearAccumulatedTime = (
 };
 
 export const confirmTimeEntry = async (
-  timeEntryID: TimeEntry["id"],
+  timeEntry: TimeEntry,
   approvedBy: User["id"],
 ) => {
   try {
     let response = await firestore()
       .collection("timeentries")
-      .doc(timeEntryID)
+      .doc(timeEntry.id)
       .update({
         status_confirmed: true,
         approved_by: approvedBy,
+      })
+      .then(async () => {
+        const notifiAboutApprovedTimeEntry = functions().httpsCallableFromUrl(
+          "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/sendNotifiAboutApprovedTimeEntrySecondGen",
+        );
+
+        await notifiAboutApprovedTimeEntry(timeEntry);
       });
+
     // Normaly you need to use incrementTotalHoursForMonthYearAccumulatedTime after you run confirmTimeEntry. look useApproveTimeEntry
     // TODO: Make incrementTotalHoursForMonthYearAccumulatedTime as cloud function
+
     return Promise.resolve(response);
   } catch (error) {
     console.log("There was an error confirming the timeentry");

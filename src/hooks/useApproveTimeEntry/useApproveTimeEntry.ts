@@ -70,7 +70,7 @@ export const useApproveTimeEntry = () => {
       for (const timeEntry of timeEntries) {
         const user = await getUserData(timeEntry.userID);
         if (user && uid !== user.id) {
-          await confirmTimeEntry(timeEntry.id, approvedBy);
+          await confirmTimeEntry(timeEntry, approvedBy);
           await addTotalConfirmedHoursAfterApproveTimeEntries(timeEntry, user);
 
           approvedTimeEnties.push(timeEntry);
