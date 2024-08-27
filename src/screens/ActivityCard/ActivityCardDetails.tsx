@@ -4,19 +4,19 @@ import {
   ScrollView,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from "react-native";
 import Menu from "../../components/Menu";
-import { Icon } from "@rneui/base";
 import colors from "../../assets/theme/colors";
 import BottomLogo from "../../components/BottomLogo";
 import { GoBackButton } from "../../components/Buttons/GoBackButton";
 import typography from "../../assets/theme/typography";
 import { getImageForActivity } from "../../lib/images";
-import { MapMarkerIcon } from "../../assets/icons/MapMarkerIcon";
-import { BuildingIcon } from "../../assets/icons/BuildingIcon";
 import { iconsAndText } from "./iconsAndText";
+import { Activity } from "../../utility/types";
+type Params = {
+  activityInfo: Activity;
+};
 
 type Props = {
   route: any;
@@ -26,8 +26,8 @@ type Props = {
 // press on activity suggestion. We use to use for this ActivityCard screen. Activity
 // card screen needs total refactoring together with conext it use.
 
-export const ActivityCardDetails = ({ route, navigation }: Props) => {
-  const { admin, activityInfo, active, tgPopular } = route.params;
+export const ActivityCardDetails = ({ route }: Props) => {
+  const { activityInfo }: Params = route.params;
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
