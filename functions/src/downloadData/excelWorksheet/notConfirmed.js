@@ -37,7 +37,7 @@ exports.createWorksheet = (workbook, excelData) => {
     makeRowTextBold(worksheet, 1);
 
     let excelArray = [];
-    unconfirmedTimeEntries.map((timeEntry) => {
+    unconfirmedTimeEntries.forEach((timeEntry) => {
       let user = users.find((user) => user.id === timeEntry.user_id);
       let admin = users.find((admin) => admin.id === timeEntry.admin_id);
       let activity = activities.find(
@@ -48,10 +48,10 @@ exports.createWorksheet = (workbook, excelData) => {
 
       excelArray.push({
         month: months.long[date.getMonth()],
-        admin: `${admin.first_name} ${admin.last_name}`,
-        user: `${user.first_name} ${user.last_name}`,
-        activity: activity.activity_title,
-        city: activity.activity_city,
+        admin: admin ? `${admin.first_name} ${admin.last_name}` : "",
+        user: user ? `${user.first_name} ${user.last_name}` : "",
+        activity: activity?.activity_title ?? timeEntry.activity_title ?? "",
+        city: activity?.activity_city ?? "",
         date: dateFns.format(date, "yyyy-MM-dd"),
         time: timeEntry.time,
       });
