@@ -2,3 +2,4 @@ node_modules/
 ServiceAccount/
 functions/firebase-debug.log
 .env*
+*.log
