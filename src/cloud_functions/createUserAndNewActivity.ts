@@ -9,6 +9,11 @@ import {
   FirebaseActivityType,
   FirebaseUserType,
 } from "../utility/firebaseTypes";
+import Config from "react-native-config";
+const project =
+  Config.NODE_ENV === "prod"
+    ? "do-good-get-good-2f6cc"
+    : "dev-do-good-get-good";
 
 export const createUserAndNewActivity = async (
   newActivity: FirebaseActivityType,
@@ -57,7 +62,7 @@ const createNewUser = async (
 ) => {
   try {
     const createUser = functions().httpsCallableFromUrl(
-      "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/createUserSecondGen",
+      `https://europe-north1-${project}.cloudfunctions.net/createUserSecondGen`,
     );
 
     const res = await createUser({
