@@ -1,11 +1,4 @@
-import {
-  useState,
-  createContext,
-  useContext,
-  FC,
-  ReactNode,
-  useEffect,
-} from "react";
+import { useState, createContext, useContext, PropsWithChildren } from "react";
 import { Role } from "../utility/enums";
 
 type UserLevelContextType = {
@@ -21,14 +14,8 @@ export const useUserLevel = () => {
   return useContext(UserLevelContext);
 };
 
-export const UserLevelProvider: FC<{ children: ReactNode }> = ({
-  children,
-}) => {
+export const UserLevelProvider = ({ children }: PropsWithChildren) => {
   const [userLevel, setUserLevel] = useState<Role | undefined>();
-
-  useEffect(() => {
-    console.log("UserLevel: ", userLevel);
-  }, [userLevel, setUserLevel]);
 
   return (
     <UserLevelContext.Provider value={{ userLevel, setUserLevel }}>
