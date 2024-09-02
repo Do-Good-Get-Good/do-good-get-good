@@ -6,6 +6,7 @@ import {
   TextStyle,
   TouchableOpacity,
   View,
+  ViewStyle,
 } from "react-native";
 import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
 import { useState } from "react";
@@ -18,7 +19,10 @@ type Props = {
   isUnderlineOnPress?: boolean;
   componentInsideDropDown: React.JSX.Element;
   openAsOverView?: boolean;
+
   isOnOutsidePress?: boolean;
+
+  containerstyle?: ViewStyle;
 };
 
 export const DropDownTextAndIcon = ({
@@ -27,6 +31,7 @@ export const DropDownTextAndIcon = ({
   isUnderlineOnPress = false,
   componentInsideDropDown,
   isOnOutsidePress,
+  containerstyle,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -40,7 +45,7 @@ export const DropDownTextAndIcon = ({
   return (
     <OutsidePressHandler
       onOutsidePress={() => isOnOutsidePress && setIsOpen(false)}
-      style={styles.mainContainer}
+      style={{ ...styles.mainContainer, ...containerstyle }}
     >
       <TouchableOpacity
         testID={`dropdown-${testID}`}
@@ -66,7 +71,6 @@ export const DropDownTextAndIcon = ({
 };
 const styles = StyleSheet.create({
   mainContainer: {
-    zIndex: -1,
     backgroundColor: colors.background,
     borderRadius: 5,
     borderWidth: 2,

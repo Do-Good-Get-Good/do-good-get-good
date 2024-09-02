@@ -37,7 +37,8 @@ type Props = {
 const generateRandomPassword = () => Math.random().toString(36).slice(-8);
 
 const CreateUser = ({ route, navigation }: Props) => {
-  const { setAllActiveActvivitiesFB } = useCreateActivityFunction();
+  const { setAllActiveActvivitiesFB, activeActivities } =
+    useCreateActivityFunction();
   const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const [loading, setLoading] = useState(false);
 
@@ -118,19 +119,21 @@ const CreateUser = ({ route, navigation }: Props) => {
     };
 
     const newUser = {
-      firstName: user.name,
-      lastName: user.surname,
+      name: user.name,
+      surname: user.surname,
       email: user.email,
       password: user.password,
       role: user.role,
     };
+    setLoading(true);
     await createUserAndNewActivity(
       newActivity,
       newUser,
+      activeActivities,
       setAllActiveActvivitiesFB,
-      setLoading,
       navigation,
     );
+    setLoading(false);
     await onShowUnApprovedTimeEntriesAdminPage();
   }
 

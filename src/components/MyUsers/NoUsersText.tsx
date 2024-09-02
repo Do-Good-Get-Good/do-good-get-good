@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
     ...typography.b2,
     textAlign: "center",
     marginTop: 20,
+    zIndex: -1,
     color: colors.dark,
   },
 });

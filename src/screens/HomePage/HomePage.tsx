@@ -51,7 +51,7 @@ export const HomePage = ({ navigation }: Props) => {
             style={{ marginTop: 10 }}
           />
         )}
-        <HomeSuggestions suggestions={suggestions} navigation={navigation} />
+        <HomeSuggestions suggestions={suggestions} />
 
         <BottomLogo />
       </ScrollView>

@@ -7,7 +7,7 @@ import {
 import { getUserData } from "../../firebase-functions/getTS/get";
 import auth from "@react-native-firebase/auth";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
-import { FirebaseuserActivityAndAccumulatedTime } from "../../utility/firebaseTypes";
+import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
 
 let today = new Date();
 
@@ -19,7 +19,7 @@ const isCurrenYear = (timeEntryYear: number) =>
 // TODO: we should fix it so that it runs automatically on cloud
 const incremenAccumulatedTime = (user: User, timeEntry: TimeEntry) => {
   let activitiesAndAccumulatedTime = user.activitiesAndAccumulatedTime;
-  let addaptedArrayForFirebase: FirebaseuserActivityAndAccumulatedTime[] = [];
+  let addaptedArrayForFirebase: FirebaseActivitiesAndAccumulatedTime[] = [];
 
   activitiesAndAccumulatedTime.forEach((item) => {
     addaptedArrayForFirebase.push({
@@ -39,7 +39,7 @@ const addTotalConfirmedHoursAfterApproveTimeEntries = async (
   timeEntry: TimeEntry,
   user: User,
 ): Promise<void> => {
-  const accumulatedTime: FirebaseuserActivityAndAccumulatedTime[] =
+  const accumulatedTime: FirebaseActivitiesAndAccumulatedTime[] =
     incremenAccumulatedTime(user, timeEntry);
 
   const timeEntryMonth = new Date(timeEntry.date).getMonth();

@@ -2,10 +2,10 @@ import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { format } from "date-fns";
 
 import { User } from "../utility/types";
-import { FirebaseuserActivityAndAccumulatedTime } from "../utility/firebaseTypes";
+import { FirebaseActivitiesAndAccumulatedTime } from "../utility/firebaseTypes";
 
 const userActivitiesAndAccumulatedTime = (
-  arr: FirebaseuserActivityAndAccumulatedTime[],
+  arr: FirebaseActivitiesAndAccumulatedTime[],
 ): User["activitiesAndAccumulatedTime"] => {
   let temArr: User["activitiesAndAccumulatedTime"] = [];
   arr.forEach((item) =>

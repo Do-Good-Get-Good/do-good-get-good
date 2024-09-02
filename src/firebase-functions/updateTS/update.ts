@@ -9,13 +9,13 @@ import {
 import { parse } from "date-fns";
 import { addImageToStorage } from "../addTS/add";
 import { deleteImage } from "../deleteTS/delete";
-import { FirebaseuserActivityAndAccumulatedTime } from "../../utility/firebaseTypes";
+import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
 
 export const incrementTotalHoursForMonthYearAccumulatedTime = (
   userId: User["id"],
   confirmedHours: number,
   hoursThisYear: number,
-  activitiesAndTime: FirebaseuserActivityAndAccumulatedTime[],
+  activitiesAndTime: FirebaseActivitiesAndAccumulatedTime[],
 ) => {
   try {
     firestore()

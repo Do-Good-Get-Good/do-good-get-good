@@ -26,6 +26,7 @@ export const MyUsers = ({ users }: Props) => {
       <View style={styles.header}>
         <Text style={styles.headerText}>Mina användare</Text>
         <DropDownTextAndIcon
+          containerstyle={{ zIndex: 2 }}
           testID={"sort-by"}
           title={sortBy}
           isOnOutsidePress={true}
@@ -39,6 +40,7 @@ export const MyUsers = ({ users }: Props) => {
           key={`${user.id}-my-users-drop-down`}
           title={`${user.firstName} ${user.lastName}`}
           isUnderlineOnPress={true}
+          containerstyle={{ zIndex: -1 }}
           componentInsideDropDown={
             <MyUserAndFiveAprovedTimeEntries user={user} />
           }

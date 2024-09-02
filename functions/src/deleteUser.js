@@ -1,13 +1,15 @@
-const admin = require("firebase-admin");
-const functions = require("firebase-functions");
+//TODO: Should we delete this function? We don't use it right now
 
-exports.deleteUser = functions.auth.user().onDelete((user, context) => {
-  let userUid = user.uid;
+// const admin = require("firebase-admin");
+// const functions = require("firebase-functions");
 
-  admin
-    .firestore()
-    .collection("Users")
-    .doc(userUid)
-    .delete()
-    .then(() => console.log(`Deleted user '${userUid}' successfully!`));
-});
+// exports.deleteUser = functions.auth.user().onDelete((user, context) => {
+//   let userUid = user.uid;
+
+//   admin
+//     .firestore()
+//     .collection("Users")
+//     .doc(userUid)
+//     .delete()
+//     .then(() => console.log(`Deleted user '${userUid}' successfully!`));
+// });

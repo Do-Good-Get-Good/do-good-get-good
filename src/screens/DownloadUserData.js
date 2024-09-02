@@ -34,7 +34,9 @@ const DownloadUserData = ({ navigation }) => {
   const oneYearBack = format(subYears(date, 1), "yyyy-MM-dd");
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
-  const downloadData = functions().httpsCallable("downloadData");
+  const downloadData = functions().httpsCallableFromUrl(
+    "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/downloadDataSecondGen",
+  );
 
   const IsDatePeriodValid = () => {
     if (toDate(parseISO(endDate)) < toDate(parseISO(startDate))) {
@@ -77,11 +79,15 @@ const DownloadUserData = ({ navigation }) => {
     setDownloadingData(true);
   };
 
-  function stayInAppAndExportData(datePeriod) {
-    downloadData(datePeriod)
+  async function stayInAppAndExportData(datePeriod) {
+    await downloadData(datePeriod)
       .then((res) => {
-        console.log(res.data.downloadURL);
-        setExcelDownloadURL(res.data.downloadURL);
+        if (res.data.downloadURL !== "") {
+          setExcelDownloadURL(res.data.downloadURL);
+        } else {
+          Alert.alert("", `${res.data.message}`);
+          setDownloadingData(false);
+        }
       })
       .catch((error) => {
         crashlytics().log(error);
@@ -94,29 +100,31 @@ const DownloadUserData = ({ navigation }) => {
   }
 
   function alertPopUp(datePeriod) {
-    console.log(datePeriod);
+    stayInAppAndExportData(datePeriod);
 
-    let alertTitle = "Exportera data";
-    let alertMessage =
-      "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
-      "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
-      "När allt är klart får du ett mail.";
+    // TODO: Right now it doesn't work to send data with email. Uncomment this part when the problem with email is solved
 
-    Alert.alert(alertTitle, alertMessage, [
-      {
-        text: "Vänta kvar",
-        onPress: () => {
-          stayInAppAndExportData(datePeriod);
-        },
-      },
-      {
-        text: "Gå till startsidan",
-        onPress: () => {
-          downloadData(datePeriod);
-          navigation.navigate("HomePage");
-        },
-      },
-    ]);
+    // let alertTitle = "Exportera data";
+    // let alertMessage =
+    //   "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
+    //   "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
+    //   "När allt är klart får du ett mail.";
+
+    // Alert.alert(alertTitle, alertMessage, [
+    //   {
+    //     text: "Vänta kvar",
+    //     onPress: () => {
+    //       stayInAppAndExportData(datePeriod);
+    //     },
+    //   },
+    //   {
+    //     text: "Gå till startsidan",
+    //     onPress: () => {
+    //       downloadData(datePeriod);
+    //       navigation.navigate("HomePage");
+    //     },
+    //   },
+    // ]);
   }
 
   function closeDropDown(value) {

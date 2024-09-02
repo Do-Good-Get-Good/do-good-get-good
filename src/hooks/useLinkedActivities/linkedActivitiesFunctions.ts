@@ -3,10 +3,9 @@ import firestore, {
 } from "@react-native-firebase/firestore";
 import { ActivityInfo, TimeObject } from "../../screens/HomePage/type";
 import {
-  FirebaseUser,
-  FirebaseuserActivityAndAccumulatedTime,
+  FirebaseUserType,
+  FirebaseActivitiesAndAccumulatedTime,
 } from "../../utility/firebaseTypes";
-import { User } from "../../utility/types";
 import { connectTestActivityIfUserHasNoActivity } from "../../firebase-functions/addTS/add";
 import auth from "@react-native-firebase/auth";
 import { deleteActivityConnectionFromUser } from "../../firebase-functions/deleteTS/delete";
@@ -18,9 +17,9 @@ export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
   setActivityIdAndAccumTime: (ActivityIdAndAccumTime: TimeObject[]) => void,
 ) => {
   let tempArr: TimeObject[] = [];
-  const activityIdAndTime: FirebaseUser["activities_and_accumulated_time"] =
+  const activityIdAndTime: FirebaseUserType["activities_and_accumulated_time"] =
     snapshotData?.data()?.activities_and_accumulated_time;
-  const userConnectedActivities: FirebaseUser["connected_activities"] =
+  const userConnectedActivities: FirebaseUserType["connected_activities"] =
     snapshotData?.data()?.connected_activities;
 
   await connectTestActivityIfActivityConnectedArrIsEmpty(
@@ -42,8 +41,8 @@ export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
 
 const makeTimeObject = async (
   snapshotData: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  data: FirebaseuserActivityAndAccumulatedTime,
-  userConnectedActivities: FirebaseUser["connected_activities"],
+  data: FirebaseActivitiesAndAccumulatedTime,
+  userConnectedActivities: FirebaseUserType["connected_activities"],
 ) => {
   const isActivityConnected = userConnectedActivities.findIndex(
     (x) => x === data.activity_id,
@@ -68,7 +67,7 @@ const makeTimeObject = async (
 };
 
 const connectTestActivityIfActivityConnectedArrIsEmpty = async (
-  userConnectedActivities: FirebaseUser["connected_activities"],
+  userConnectedActivities: FirebaseUserType["connected_activities"],
 ) => {
   if (userConnectedActivities.length < 1 && userID) {
     await connectTestActivityIfUserHasNoActivity(userID);
