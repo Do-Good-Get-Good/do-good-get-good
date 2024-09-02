@@ -117,7 +117,7 @@ export const SuperAdminStack = () => {
                             name="ChatCardScreen"
                             component={ChatCardScreen}
                           />
-                         <Stack.Screen
+                          <Stack.Screen
                             name="ActivityCardDetails"
                             component={ActivityCardDetails}
                           />
@@ -188,7 +188,7 @@ export const AdminStack = () => {
                       <Stack.Screen
                         name="ChatCardScreen"
                         component={ChatCardScreen}
-                        />
+                      />
                       <Stack.Screen
                         name="ActivityCardDetails"
                         component={ActivityCardDetails}
@@ -224,7 +224,10 @@ export const UserStack = () => {
               <Stack.Screen name="Chat" component={Chat} />
               <Stack.Screen name="AddOrEditPost" component={AddOrEditPost} />
               <Stack.Screen name="ChatCardScreen" component={ChatCardScreen} />
-              <Stack.Screen name="ActivityCardDetails"component={ActivityCardDetails}/>
+              <Stack.Screen
+                name="ActivityCardDetails"
+                component={ActivityCardDetails}
+              />
             </Stack.Navigator>
           </NavigationContainer>
         </TimeStatisticsProvider>

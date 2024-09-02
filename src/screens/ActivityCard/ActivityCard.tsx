@@ -22,7 +22,7 @@ import BottomLogo from "../../components/BottomLogo";
 import ManageUsers from "../../components/ManageUsers";
 import { UserLevels } from "../../lib/enums/userlevels";
 import { useActivityImages } from "../../context/ActivityImagesContext/ActivityImagesContext";
-import userLevelStore from "../../store/userLevel";
+import { useUserLevel } from "../../context/useUserLevel";
 
 type Props = {
   route: any;
@@ -39,7 +39,7 @@ export function ActivityCard({ route, navigation }: Props) {
   const { activityHasChangedID } = useCreateActivityFunction();
   const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
   const { getImageForActivity } = useActivityImages();
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
 
   const [activity, setActivity] = useState({
     id: "",

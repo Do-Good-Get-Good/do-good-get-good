@@ -12,8 +12,8 @@ import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
 import { UserStack } from "../../utility/routeEnums";
 import typography from "../../assets/theme/typography";
-import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
+import { useUserLevel } from "../../context/useUserLevel";
 
 type Props = {
   post: UserPost;
@@ -24,81 +24,82 @@ type Props = {
   commentsCount: number;
 };
 
- const ChatCard = memo(({
-  post,
-  onDelete,
-  addEmoji,
-  deleteEmoji,
-  loggedInUser,
-  commentsCount,
-}: Props) => {
-  const { userLevel } = userLevelStore;
-  const isCurrentUser = post.userID === loggedInUser.id;
-  const navigation = useNavigation<{
-    navigate: (
-      nav: UserStack,
-      Props: { postID: UserPost["id"]; loggedInUser: User },
-    ) => void;
-  }>();
+const ChatCard = memo(
+  ({
+    post,
+    onDelete,
+    addEmoji,
+    deleteEmoji,
+    loggedInUser,
+    commentsCount,
+  }: Props) => {
+    const { userLevel } = useUserLevel();
+    const isCurrentUser = post.userID === loggedInUser.id;
+    const navigation = useNavigation<{
+      navigate: (
+        nav: UserStack,
+        Props: { postID: UserPost["id"]; loggedInUser: User },
+      ) => void;
+    }>();
 
-  const navigationEdit = useNavigation<{
-    navigate: (
-      nav: UserStack,
-      Props: { post: UserPost; toEdit: boolean },
-    ) => void;
-  }>();
+    const navigationEdit = useNavigation<{
+      navigate: (
+        nav: UserStack,
+        Props: { post: UserPost; toEdit: boolean },
+      ) => void;
+    }>();
 
-  const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
+    const isMenuShow = isCurrentUser || userLevel === Role.superadmin;
 
-  const handlePress = () => {
-    post &&
-      loggedInUser &&
-      navigation.navigate(UserStack.ChatCardScreen, {
-        postID: post.id,
-        loggedInUser,
-      });
-  };
+    const handlePress = () => {
+      post &&
+        loggedInUser &&
+        navigation.navigate(UserStack.ChatCardScreen, {
+          postID: post.id,
+          loggedInUser,
+        });
+    };
 
-  const editPress = () => {
-    post &&
-      navigationEdit.navigate(UserStack.AddOrEditPost, {
-        post: post,
-        toEdit: true,
-      });
-  };
+    const editPress = () => {
+      post &&
+        navigationEdit.navigate(UserStack.AddOrEditPost, {
+          post: post,
+          toEdit: true,
+        });
+    };
 
-  return (
-    <View testID="chat-card" style={styles.container}>
-      <ChatCardDate date={post.date} />
-      <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
-        <View style={styles.headerAndMenu}>
-          <ChatCardHeader post={post} />
-          {isMenuShow && (
-            <ChatCardEditMenu
-              isMessageChanged={post.changed ?? false}
-              onDeletePress={onDelete}
-              onEditPress={editPress}
-              isCurrentUser={isCurrentUser}
+    return (
+      <View testID="chat-card" style={styles.container}>
+        <ChatCardDate date={post.date} />
+        <TouchableOpacity onPress={handlePress} style={[styles.cardContainer]}>
+          <View style={styles.headerAndMenu}>
+            <ChatCardHeader post={post} />
+            {isMenuShow && (
+              <ChatCardEditMenu
+                isMessageChanged={post.changed ?? false}
+                onDeletePress={onDelete}
+                onEditPress={editPress}
+                isCurrentUser={isCurrentUser}
+              />
+            )}
+          </View>
+          <ChatCardImage imageUrl={post.imageURL ?? ""} />
+          <ChatCardDescription description={post.description} />
+          <View style={styles.commentsAndEmojiContainer}>
+            <ChatCardEmoji
+              loggedInUser={loggedInUser}
+              deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
+              addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
+              emoji={post.emoji}
+              showAllEmojis={false}
             />
-          )}
-        </View>
-        <ChatCardImage imageUrl={post.imageURL ?? ""} />
-        <ChatCardDescription description={post.description} />
-        <View style={styles.commentsAndEmojiContainer}>
-          <ChatCardEmoji
-            loggedInUser={loggedInUser}
-            deleteEmoji={(emoji: PostEmoji) => deleteEmoji(emoji, post.id)}
-            addEmoji={(emoji: PostEmoji) => addEmoji(emoji, post.id)}
-            emoji={post.emoji}
-            showAllEmojis={false}
-          />
-          <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
-        </View>
-      </TouchableOpacity>
-    </View>
-  );
-});
-
+            <Text style={styles.comments}>{commentsCount} Kommentarer</Text>
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
+  },
+);
 
 export default ChatCard;
 const styles = StyleSheet.create({

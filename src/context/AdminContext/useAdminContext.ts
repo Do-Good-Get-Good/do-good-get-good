@@ -10,13 +10,13 @@ import { TimeEntry, User } from "../../utility/types";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
 
 import { Role } from "../../utility/enums";
-import userLevelStore from "../../store/userLevel";
 
 import { makeArrayWithTimeEntriesAndUsers } from "./utility";
+import { useUserLevel } from "../useUserLevel";
 
 export const useAdminContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
 
   const {
     setUsersWithFiveConfirmedTimeEntries,
