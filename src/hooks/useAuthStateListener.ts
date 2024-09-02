@@ -5,11 +5,13 @@ import crashlytics from "@react-native-firebase/crashlytics";
 import { UserClaims } from "../utility/firebaseTypes";
 
 import { Role } from "../utility/enums";
-import userLevelStore from "../store/userLevel";
 import intersection from "lodash/intersection";
 import head from "lodash/head";
+import { useUserLevel } from "../context/useUserLevel";
 
 export const useAuthStateListener = () => {
+  const { setUserLevel } = useUserLevel();
+
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [userClaims, setUserClaims] = useState<UserClaims | undefined>(
@@ -29,7 +31,7 @@ export const useAuthStateListener = () => {
           Object.keys(Role),
         );
         const role = Role[head(searchUserRoleInClaims) as keyof typeof Role];
-        userLevelStore.setUserLevel(role);
+        setUserLevel(role);
       } catch (error: any) {
         crashlytics().log("There was an error getting the users ID Token");
         crashlytics().recordError(error);
