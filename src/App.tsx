@@ -18,7 +18,7 @@ import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
 import { EventProvider } from "react-native-outside-press";
 
-export default function App() {
+const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
 
   if (initializing) return null;
@@ -70,7 +70,9 @@ export default function App() {
       </SafeAreaView>
     );
   }
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   wrapper: {

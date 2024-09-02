@@ -1,8 +1,8 @@
-import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import React, { PropsWithChildren } from "react";
+import { render, fireEvent } from "@testing-library/react-native";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
-import userLevelStore from "../../store/userLevel";
 import { Role } from "../../utility/enums";
+import { UserLevelProvider } from "../../context/useUserLevel";
 
 jest.mock("@react-native-firebase/firestore", () => {
   return jest.fn();
@@ -28,20 +28,16 @@ jest.mock("../../context/SuperAdminContext", () => ({
   }),
 }));
 
+let mockUserLevel = Role.user;
+
+jest.mock("../../context/useUserLevel", () => ({
+  useUserLevel: () => ({
+    userLevel: mockUserLevel,
+  }),
+}));
+
 const mockAddComment = jest.fn();
 const mockDeleteComment = jest.fn();
-
-jest.mock("react-native-outside-press", () => {
-  return ({ children }) => children;
-});
-
-const superAdmin = () => {
-  userLevelStore.setUserLevel(Role.superadmin);
-};
-
-const user = () => {
-  userLevelStore.setUserLevel(Role.user);
-};
 
 const loggedInUser = {
   id: "user1",
@@ -82,8 +78,8 @@ const comments = [
 ];
 
 describe("Testing CommentsSection Component", () => {
-  user();
   it("renders comments correctly", () => {
+    mockUserLevel = Role.user;
     const { getByText } = render(
       <CommentsSection
         comments={comments}
@@ -92,6 +88,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
+      { wrapper: UserLevelProvider },
     );
 
     expect(getByText("John Doe")).toBeTruthy();
@@ -127,8 +124,8 @@ describe("Testing CommentsSection Component", () => {
   });
 
   it("shows delete option only for logged in user comment", () => {
-    user();
-    const { getByTestId, getByText } = render(
+    mockUserLevel = Role.user;
+    const { getByTestId } = render(
       <CommentsSection
         comments={comments}
         addComment={mockAddComment}
@@ -136,13 +133,14 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
+      { wrapper: UserLevelProvider },
     );
     const editMenu = getByTestId("chat-card-edit-menu");
     expect(editMenu).toBeTruthy();
   });
 
   it("Superadmin should see delete option for all comments", () => {
-    superAdmin();
+    mockUserLevel = Role.superadmin;
     const { getAllByTestId } = render(
       <CommentsSection
         comments={comments}
@@ -151,12 +149,13 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
+      { wrapper: UserLevelProvider },
     );
     const editMenu = getAllByTestId("chat-card-edit-menu");
     expect(editMenu).toHaveLength(3);
   });
   it("Delete option not visible for others comments", () => {
-    user();
+    mockUserLevel = Role.user;
     const { queryByTestId } = render(
       <CommentsSection
         comments={comments}
@@ -165,14 +164,15 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={anotherUser}
         postID="post1"
       />,
+      { wrapper: UserLevelProvider },
     );
 
     const editMenu = queryByTestId("chat-card-edit-menu");
     expect(editMenu).toBeFalsy();
   });
   it("Should delete comment when user who wrote it pressing delete", async () => {
-    user();
-    const { getByTestId, getByText, debug } = render(
+    mockUserLevel = Role.user;
+    const { getByTestId } = render(
       <CommentsSection
         comments={comments}
         addComment={mockAddComment}
@@ -180,6 +180,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
+      { wrapper: UserLevelProvider },
     );
 
     const deleteMenu = getByTestId("chat-card-edit-menu");

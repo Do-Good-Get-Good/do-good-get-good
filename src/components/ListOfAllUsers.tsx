@@ -13,8 +13,8 @@ import { GoBackButton } from "./Buttons/GoBackButton";
 import { SearchBarComponent } from "./SearchBarComponent";
 import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
 import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
-import userLevelStore from "../store/userLevel";
 import { Spinner } from "./Loading";
+import { useUserLevel } from "../context/useUserLevel";
 
 type Props = {
   navigation: any;
@@ -22,7 +22,7 @@ type Props = {
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const [selectedOption, setSelectedOption] = useState<boolean>(true);
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
   const { getAllUsersByStatus } = useGetAllUsersThatExistInTheSystem(userLevel);
   const allUsersInSystem = superAdminContext?.allUsersInSystem ?? [];
   const { onSelectUser, getUserEmail } = useOnSelectUser();
@@ -51,10 +51,7 @@ export function ListOfAllUsers({ navigation }: Props) {
 
   return (
     <View style={styles.screenContainer}>
-      <GoBackButton
-        style={{ marginVertical: 5 }}
-
-      />
+      <GoBackButton style={{ marginVertical: 5 }} />
       <SearchBarComponent
         arrayToSearch={allUsersInSystem ?? []}
         keys={["firstName", "lastName"]}
