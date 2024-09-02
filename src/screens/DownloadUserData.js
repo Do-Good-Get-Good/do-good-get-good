@@ -22,6 +22,12 @@ import Menu from "../components/Menu";
 import DatePicker from "../components/DatePicker";
 import OutsidePressHandler from "react-native-outside-press";
 
+import Config from "react-native-config";
+const project =
+  Config.NODE_ENV === "prod"
+    ? "do-good-get-good-2f6cc"
+    : "dev-do-good-get-good";
+
 const DownloadUserData = ({ navigation }) => {
   const date = new Date();
   const [exportType, setExportType] = useState(null);
@@ -35,7 +41,7 @@ const DownloadUserData = ({ navigation }) => {
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
   const downloadData = functions().httpsCallableFromUrl(
-    "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/downloadDataSecondGen",
+    `https://europe-north1-${project}.cloudfunctions.net/downloadDataSecondGen`,
   );
 
   const IsDatePeriodValid = () => {

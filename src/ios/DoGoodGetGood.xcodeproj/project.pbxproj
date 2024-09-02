@@ -12,8 +12,10 @@
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = AE108FECF935428586ECE21F /* DIN-Medium.ttf */; };
+		21F79C4FF3F4E7EC78BB7B1D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4ACCD7D7BF8635B81E32E475 /* PrivacyInfo.xcprivacy */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
+		53566BF56B24AC1A10AC742B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A737956BC0A1925284776CD9 /* PrivacyInfo.xcprivacy */; };
 		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -27,7 +29,9 @@
 		C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */; };
 		C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
+		E70C096A51F778D3A376C774 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C699F3FC4313A9E56FF313C4 /* PrivacyInfo.xcprivacy */; };
 		E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
+		F2262AD8F3AB16DE91E33283 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D3025B6273893783B1048512 /* PrivacyInfo.xcprivacy */; };
 		FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
 /* End PBXBuildFile section */
 
@@ -53,6 +57,7 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = DoGoodGetGood/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = DoGoodGetGood/main.m; sourceTree = "<group>"; };
 		1A92BBE82C0714970076E00B /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; lastKnownFileType = text.xml; path = PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
+		4ACCD7D7BF8635B81E32E475 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		64CEDA6B29AFB8D500D996F1 /* DoGoodGetGoodDev.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = DoGoodGetGoodDev.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		64D239C829B0F43A00A948ED /* Config.xcconfig */ = {isa = PBXFileReference; lastKnownFileType = text.xcconfig; path = Config.xcconfig; sourceTree = "<group>"; };
@@ -63,13 +68,16 @@
 		855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; sourceTree = "<group>"; };
 		8E44F55844C541FB8CA47488 /* DIN-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Regular.otf"; path = "../assets/fonts/DIN-Regular.otf"; sourceTree = "<group>"; };
 		97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; sourceTree = "<group>"; };
+		A737956BC0A1925284776CD9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AE108FECF935428586ECE21F /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
 		BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		C699F3FC4313A9E56FF313C4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; sourceTree = "<group>"; };
 		CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		D3025B6273893783B1048512 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; name = PrivacyInfo.xcprivacy; path = ../DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		ECF05F1E0B76ACF3D6C6CAFC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Bold.otf"; path = "../assets/fonts/DIN-Bold.otf"; sourceTree = "<group>"; };
@@ -130,6 +138,7 @@
 				13B07FB61A68108700A75B9A /* Info.plist */,
 				81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */,
 				13B07FB71A68108700A75B9A /* main.m */,
+				4ACCD7D7BF8635B81E32E475 /* PrivacyInfo.xcprivacy */,
 			);
 			name = DoGoodGetGood;
 			sourceTree = "<group>";
@@ -162,6 +171,7 @@
 		64CEDA5229AFB8BD00D996F1 /* DoGoodGetGoodDev */ = {
 			isa = PBXGroup;
 			children = (
+				D3025B6273893783B1048512 /* PrivacyInfo.xcprivacy */,
 			);
 			path = DoGoodGetGoodDev;
 			sourceTree = "<group>";
@@ -366,6 +376,7 @@
 				E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */,
 				1D644CFFA32E4114A8B3F2E3 /* DIN-Medium.ttf in Resources */,
 				C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */,
+				21F79C4FF3F4E7EC78BB7B1D /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -380,6 +391,7 @@
 				64CEDA6029AFB8D500D996F1 /* DIN-Regular.otf in Resources */,
 				64CEDA6129AFB8D500D996F1 /* DIN-Medium.ttf in Resources */,
 				C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */,
+				F2262AD8F3AB16DE91E33283 /* PrivacyInfo.xcprivacy in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -727,7 +739,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = F326B97D9F797D00EAC2F921 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.debug.xcconfig */;
 			buildSettings = {
-				APP_VERSION = 1.3.0;
+				APP_VERSION = 1.5.0;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -742,7 +754,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -751,7 +763,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				RELEASE_NUMBER = 1.3.0;
+				RELEASE_NUMBER = 21;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
@@ -765,7 +777,7 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */;
 			buildSettings = {
-				APP_VERSION = 1.3.0;
+				APP_VERSION = 1.5.0;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_IDENTITY = "Apple Development";
@@ -779,7 +791,7 @@
 					"$(inherited)",
 					"@executable_path/Frameworks",
 				);
-				MARKETING_VERSION = 1.3.0;
+				MARKETING_VERSION = 1.5.0;
 				OTHER_LDFLAGS = (
 					"$(inherited)",
 					"-ObjC",
@@ -788,7 +800,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood;
 				PRODUCT_NAME = DoGoodGetGood;
 				PROVISIONING_PROFILE_SPECIFIER = "";
-				RELEASE_NUMBER = 1.3.0;
+				RELEASE_NUMBER = 21;
 				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
 				SUPPORTS_MACCATALYST = NO;
 				SWIFT_VERSION = 5.0;
@@ -822,6 +834,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
@@ -853,6 +868,9 @@
 				PRODUCT_BUNDLE_IDENTIFIER = se.technogarden.dogoodgetgood.dev;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
+				SUPPORTED_PLATFORMS = "iphoneos iphonesimulator";
+				SUPPORTS_MACCATALYST = NO;
+				SUPPORTS_XR_DESIGNED_FOR_IPHONE_IPAD = NO;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = 1;
 				VERSIONING_SYSTEM = "apple-generic";
