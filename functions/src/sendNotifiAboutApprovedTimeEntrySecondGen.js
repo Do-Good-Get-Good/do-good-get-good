@@ -1,5 +1,5 @@
 const { getFirestore } = require("firebase-admin/firestore");
-const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { onDocumentUpdated } = require("firebase-functions/v2/firestore");
 const { getMessaging } = require("firebase-admin/messaging");
 const { addMonths, compareAsc } = require("date-fns");
 
@@ -21,49 +21,45 @@ const filterAwayOldToken = (tokens) => {
       filtedTokens.push(token);
     }
   });
-  console.log(filtedTokens, "------------- filtedTokens");
   return filtedTokens;
 };
 
 const sendPushNotifiToEveryToken = async (tokens, approvedTimeEnty) => {
-  const activityTittle = approvedTimeEnty.activityTitle ?? "";
-  const activityTime = approvedTimeEnty.time ?? "";
-  console.log(approvedTimeEnty, "------------- approvedTimeEnty");
+  const activityTittle = approvedTimeEnty.activity_title
+    ? approvedTimeEnty.activity_title
+    : "";
+  const activityTime = approvedTimeEnty.time ? approvedTimeEnty.time : "";
+
   await getMessaging().sendEachForMulticast({
     tokens: tokens,
     notification: {
-      title: "Tidsregistreringen är godkänd",
+      title: "En tidsregistrering har godkänts",
       body: `${activityTime} tim för aktiviteten ${activityTittle} är godkänd!`,
     },
   });
 };
 
-exports.sendNotifiAboutApprovedTimeEntrySecondGen = onCall(
-  { region: "europe-north1" },
-  async (request) => {
-    if (!request.auth) {
-      throw new UnauthenticatedError(
-        "The user is not authenticated. Only authenticated Admin users can create new users."
-      );
-    }
+exports.sendNotifiAboutApprovedTimeEntrySecondGen = onDocumentUpdated(
+  "timeentries/{timeentriesId}",
+  async (event) => {
+    const isTheSameUser =
+      event.data.before.data().user_id === event.data.after.data().user_id;
+    const isChangedToApprovedTimeEnty =
+      !event.data.before.data().status_confirmed &&
+      event.data.after.data().status_confirmed;
 
-    const token = request.auth.token;
+    if (isTheSameUser && isChangedToApprovedTimeEnty)
+      try {
+        const approvedTimeEnty = event.data.after.data();
+        const userTockens = await getUserTokens(approvedTimeEnty.user_id);
 
-    if (!token.admin && !token.superadmin) {
-      throw new NotAnAdminError("Only Admin users can create new users.");
-    }
-    console.log(request.data, "------------- request.data");
-    try {
-      const approvedTimeEnty = request.data;
-      const userTockens = await getUserTokens(approvedTimeEnty.userID);
-
-      if (userTockens.length > 0)
-        await sendPushNotifiToEveryToken(userTockens, approvedTimeEnty);
-    } catch (error) {
-      console.error(
-        "Error sendNitificationToUserAboutApprovedTimeEnty ",
-        error
-      );
-    }
+        if (userTockens.length > 0)
+          await sendPushNotifiToEveryToken(userTockens, approvedTimeEnty);
+      } catch (error) {
+        console.error(
+          "Error sendNitificationToUserAboutApprovedTimeEnty ",
+          error
+        );
+      }
   }
 );
