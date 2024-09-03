@@ -78,14 +78,6 @@ const comments = [
   },
 ];
 
-jest.mock("react-native-outside-press", () => {
-  const React = require("react");
-  return {
-    __esModule: true,
-    default: ({ children }) =>
-      React.createElement(React.Fragment, null, children),
-  };
-});
 describe("Testing CommentsSection Component", () => {
   it("renders comments correctly", () => {
     mockUserLevel = Role.user;

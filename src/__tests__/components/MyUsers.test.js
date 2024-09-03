@@ -25,10 +25,6 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
   }),
 }));
 
-jest.mock("react-native-outside-press", () => {
-  return ({ children }) => children;
-});
-
 jest.mock("../../components/TimeStatistics", () => () => {
   return <mockTimeStatistics />;
 });

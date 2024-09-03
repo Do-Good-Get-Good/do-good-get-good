@@ -97,6 +97,9 @@
       "global": {
         "lines": 1
       }
-    }
+    },
+    "setupFiles": [
+      "./setupJestMock.js"
+    ]
   }
 }
