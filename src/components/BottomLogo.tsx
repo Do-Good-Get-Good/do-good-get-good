@@ -1,12 +1,12 @@
-import {
-  StyleSheet,
-  Image,
-  View,
-  StyleProp,
-  FlexStyle,
-  TextStyle,
-} from "react-native";
 import React from "react";
+import {
+  FlexStyle,
+  Image,
+  StyleProp,
+  StyleSheet,
+  TextStyle,
+  View,
+} from "react-native";
 
 type Props = {
   style?: StyleProp<FlexStyle | TextStyle>;

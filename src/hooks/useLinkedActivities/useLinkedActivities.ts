@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { useEffect, useState } from "react";
 import { ActivityInfo, TimeObject } from "../../screens/HomePage/type";
 import {
   checkConnectedActivitiesAndPrepareAccumTimeArr,
@@ -24,12 +24,12 @@ export const useLinkedActivities = () => {
           setLoading(true);
           await checkConnectedActivitiesAndPrepareAccumTimeArr(
             snapshot,
-            setActivityIdAndAccumTime,
+            setActivityIdAndAccumTime
           );
         },
         (error) => {
           console.log(error);
-        },
+        }
       );
   }, []);
 
@@ -41,7 +41,7 @@ export const useLinkedActivities = () => {
       makeActivityInfoObjectArr(
         activityIdAndAccumTime,
         setActivityInfo,
-        setLoading,
+        setLoading
       );
     }
   }, [activityIdAndAccumTime]);

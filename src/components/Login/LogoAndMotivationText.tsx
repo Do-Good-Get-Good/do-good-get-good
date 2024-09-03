@@ -1,6 +1,6 @@
 import { Image, StyleSheet, Text, View } from "react-native";
-import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
 
 const motivationTexts = [
   "Du är riktigt grym!",

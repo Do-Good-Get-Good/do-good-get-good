@@ -1,4 +1,4 @@
-import { useState, createContext, useContext, PropsWithChildren } from "react";
+import { createContext, PropsWithChildren, useContext, useState } from "react";
 import { Role } from "../utility/enums";
 
 type UserLevelContextType = {

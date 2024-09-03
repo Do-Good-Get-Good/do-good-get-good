@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View, TouchableOpacity } from "react-native";
-import { Icon } from "@rneui/base";
 import { useRoute } from "@react-navigation/native";
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import typography from "../assets/theme/typography";
+import { Icon } from "@rneui/base";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 export function DropDownSmall({}) {
   const creactActivityContext = useCreateActivityFunction();

@@ -1,16 +1,10 @@
-import { StyleSheet, View } from "react-native";
-
-import { useState } from "react";
-
 import { includes, pull } from "lodash";
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-} from "../../../utility/types";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import colors from "../../../assets/theme/colors";
-import { InfoRow } from "../InfoRow";
+import { TimeEntry, User } from "../../../utility/types";
 import { MainLabel } from "../AdminAndUnapprovedTimeEntriesDropDown/MainLabel";
+import { InfoRow } from "../InfoRow";
 
 type Props = {
   onCheck: Array<TimeEntry>;
@@ -29,7 +23,7 @@ export const UserAndUnapprovedTimeEntriesRow = ({
     setOnCheck(
       includes(onCheck, timeEntry)
         ? [...pull(onCheck, timeEntry)]
-        : [...onCheck, timeEntry],
+        : [...onCheck, timeEntry]
     );
   };
 

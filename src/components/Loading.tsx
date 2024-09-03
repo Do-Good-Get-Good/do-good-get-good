@@ -1,5 +1,4 @@
 import { Dialog } from "@rneui/base";
-import colors from "../assets/theme/colors";
 import { Overlay } from "@rneui/themed";
 
 type Props = {

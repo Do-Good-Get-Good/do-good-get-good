@@ -1,13 +1,13 @@
 import { useNetInfo } from "@react-native-community/netinfo";
-import { TimeEntry, User } from "../../utility/types";
+import auth from "@react-native-firebase/auth";
+import { AlertInfo } from "../../components/Alerts/AlertInfo";
+import { getUserData } from "../../firebase-functions/getTS/get";
 import {
   confirmTimeEntry,
   incrementTotalHoursForMonthYearAccumulatedTime,
 } from "../../firebase-functions/updateTS/update";
-import { getUserData } from "../../firebase-functions/getTS/get";
-import auth from "@react-native-firebase/auth";
-import { AlertInfo } from "../../components/Alerts/AlertInfo";
 import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
+import { TimeEntry, User } from "../../utility/types";
 
 let today = new Date();
 
@@ -37,7 +37,7 @@ const incremenAccumulatedTime = (user: User, timeEntry: TimeEntry) => {
 // TODO: we should fix it so that it runs automatically on cloud
 const addTotalConfirmedHoursAfterApproveTimeEntries = async (
   timeEntry: TimeEntry,
-  user: User,
+  user: User
 ): Promise<void> => {
   const accumulatedTime: FirebaseActivitiesAndAccumulatedTime[] =
     incremenAccumulatedTime(user, timeEntry);
@@ -51,7 +51,7 @@ const addTotalConfirmedHoursAfterApproveTimeEntries = async (
     user.id,
     incrementMonth,
     incrementYear,
-    accumulatedTime,
+    accumulatedTime
   );
 };
 const ifTryToApproveOwnTimeEntries = "Du kan inte godkänna dina egna tider";
@@ -62,7 +62,7 @@ export const useApproveTimeEntry = () => {
 
   const onApproveTimeEntries = async (
     timeEntries: TimeEntry[],
-    approvedBy: User["id"],
+    approvedBy: User["id"]
   ): Promise<TimeEntry[]> => {
     let approvedTimeEnties: TimeEntry[] = [];
     if (inetInfo.isConnected) {

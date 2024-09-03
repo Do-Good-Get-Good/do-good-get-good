@@ -1,7 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import RadioButton from "../../components/RadioButton";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
@@ -45,7 +44,7 @@ describe("Testing Radio Button", () => {
     useAdminGalleryFunction().word.mockReturnValue("");
     useAdminGalleryFunction().setSearchWordHasNoMatch.mockReturnValue(false);
     useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
-      true,
+      true
     );
     useAdminGalleryFunction().chooseActiveOrNot.mockReturnValue(true);
   });
@@ -58,7 +57,7 @@ describe("Testing Radio Button", () => {
     useCreateActivityFunction().word.mockReturnValue("");
     useCreateActivityFunction().setSearchWordHasNoMatch.mockReturnValue(false);
     useAdminGalleryFunction().setCleanUpSearchBarComponent.mockReturnValue(
-      true,
+      true
     );
   });
 });

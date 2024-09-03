@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
 import { Icon, Tooltip } from "@rneui/base";
-
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
@@ -14,12 +12,12 @@ const InfoModal = ({ screen, tooltipWidth }) => {
     switch (screen) {
       case "homepage":
         setInfoText(
-          "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år",
+          "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år"
         );
         break;
       case "imageGallery":
         setInfoText(
-          "Välj en bild som bäst representerar aktiviteten som den ska tillhöra.",
+          "Välj en bild som bäst representerar aktiviteten som den ska tillhöra."
         );
         break;
     }

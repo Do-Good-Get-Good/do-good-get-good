@@ -1,9 +1,9 @@
-import { useState } from "react";
-import { ChagesType } from "../ChangeRoleOrAdminPopup";
 import { useNavigation } from "@react-navigation/native";
+import { useState } from "react";
 import { AdminStack, SuperAdminStack } from "../../../utility/routeEnums";
 import { User } from "../../../utility/types";
 import { ChangeUserRouteProps } from "../../../utility/typesRouteProps";
+import { ChagesType } from "../ChangeRoleOrAdminPopup";
 
 type ChangeButtonsType = {
   key: string;

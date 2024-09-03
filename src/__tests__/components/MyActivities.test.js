@@ -1,13 +1,13 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import { MyActivities } from "../../components/MyActivities";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
   );
   return {
     ...actualAsyncStorage,
@@ -80,7 +80,7 @@ describe("Testing MyActivities", () => {
 
   it("can click on the Logga tid button", () => {
     const { getAllByText, getAllByTestId } = render(
-      <MyActivities activities={activities} />,
+      <MyActivities activities={activities} />
     );
     expect(getAllByText("Logga tid").length).toBe(2);
     const button = getAllByTestId("logTimeButton");
@@ -90,7 +90,7 @@ describe("Testing MyActivities", () => {
 
   it("More padding between title and city if title.length <= 16", () => {
     const { getAllByText, getAllByTestId } = render(
-      <MyActivities activities={activities} />,
+      <MyActivities activities={activities} />
     );
     const view = getAllByTestId("viewId");
     expect(view[1].props.style.paddingTop).toEqual(25);
@@ -98,7 +98,7 @@ describe("Testing MyActivities", () => {
   });
   it("Less padding between title and city if title.length > 16", () => {
     const { getAllByText, getAllByTestId } = render(
-      <MyActivities activities={activities} />,
+      <MyActivities activities={activities} />
     );
     const view = getAllByTestId("viewId");
     expect(view[0].props.style.paddingTop).toEqual(5);

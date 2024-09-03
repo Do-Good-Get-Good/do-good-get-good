@@ -1,22 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { View, StyleSheet, Text, ScrollView } from "react-native";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Menu from "../../../components/Menu";
+import colors from "../../../assets/theme/colors";
+import typography from "../../../assets/theme/typography";
 import BottomLogo from "../../../components/BottomLogo";
 import { GoBackButton } from "../../../components/Buttons/GoBackButton";
-import { Comment, PostEmoji, User, UserPost } from "../../../utility/types";
-import { ChatCardDescription } from "../../../components/ChartCard/ChatCardDescription";
 import { ChatCardDate } from "../../../components/ChartCard/ChatCardDate";
+import { ChatCardDescription } from "../../../components/ChartCard/ChatCardDescription";
+import { ChatCardEditMenu } from "../../../components/ChartCard/ChatCardEditMenu";
 import { ChatCardEmoji } from "../../../components/ChartCard/ChatCardEmoji";
 import { CommentsSection } from "../../../components/ChartCard/ChatComments/CommentsSection";
-import { useUserPostsActions } from "../useUserPostsActions";
-import { onSnapshotSelectedPost } from "../../../firebase-functions/onSnapshotsFunctions";
-import { ChatCardWithActivity } from "./ChatCardWithActivity";
-import typography from "../../../assets/theme/typography";
-import colors from "../../../assets/theme/colors";
-import { ChatCardEditMenu } from "../../../components/ChartCard/ChatCardEditMenu";
-import { Role } from "../../../utility/enums";
+import Menu from "../../../components/Menu";
 import { useUserLevel } from "../../../context/useUserLevel";
+import { onSnapshotSelectedPost } from "../../../firebase-functions/onSnapshotsFunctions";
+import { Role } from "../../../utility/enums";
+import { Comment, PostEmoji, User, UserPost } from "../../../utility/types";
+import { useUserPostsActions } from "../useUserPostsActions";
+import { ChatCardWithActivity } from "./ChatCardWithActivity";
 
 type Props = {
   route: any;

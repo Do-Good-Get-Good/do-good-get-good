@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useCallback } from "react";
-import { Text, StyleSheet, View, Platform, FlatList } from "react-native";
-import CalendarView from "./CalendarView";
-import typography from "../assets/theme/typography";
+import auth from "@react-native-firebase/auth";
+import React, { useEffect, useState } from "react";
+import { FlatList, StyleSheet, Text, View } from "react-native";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { getUserTimeEntriesOrderByDate } from "../firebase-functions/get";
+import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
+import CalendarView from "./CalendarView";
 import DropDownForSorting from "./DropDownForSorting";
 import TimeEntry from "./TimeEntry";
-import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
-import { getUserTimeEntriesOrderByDate } from "../firebase-functions/get";
-
-import auth from "@react-native-firebase/auth";
 
 function MyTimeEntries() {
   const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(30);
@@ -53,7 +52,7 @@ function MyTimeEntries() {
       try {
         let data = await getUserTimeEntriesOrderByDate(
           auth().currentUser.uid,
-          startPoint,
+          startPoint
         );
         let entries = [...dataAfterScroll, ...data];
         setDataAfterScroll(entries);

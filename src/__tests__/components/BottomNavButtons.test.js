@@ -1,7 +1,6 @@
-import "react-native";
-import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-
+import React from "react";
+import "react-native";
 import BottomNavButtons from "../../components/BottomNavButtons";
 
 describe("Testing BottomNavButtons", () => {
@@ -12,7 +11,7 @@ describe("Testing BottomNavButtons", () => {
         secondaryText="Secondary"
         primaryFunc={() => {}}
         secondaryFunc={() => {}}
-      />,
+      />
     );
     const primaryButton = getByText("Primary");
     const secondaryButton = getByText("Secondary");

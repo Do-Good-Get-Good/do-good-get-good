@@ -1,9 +1,9 @@
-import "react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import "react-native";
 import { CreateUserForm } from "../../components";
-import { Role } from "../../utility/enums";
 import { UserLevelProvider } from "../../context/useUserLevel";
+import { Role } from "../../utility/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -39,7 +39,7 @@ describe("Testing CreateUserForm ", () => {
 
   it("Should be minimum one letter in name", async () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(
-      <CreateUserForm />,
+      <CreateUserForm />
     );
     const inputField = getByPlaceholderText("Förnamn");
     fireEvent.changeText(inputField, "");
@@ -48,7 +48,7 @@ describe("Testing CreateUserForm ", () => {
     fireEvent.press(nextButton);
     await waitFor(() => {
       expect(
-        getByText("* Förnamn måste innehålla minst 1 tecken"),
+        getByText("* Förnamn måste innehålla minst 1 tecken")
       ).toBeTruthy();
     });
   });
@@ -58,10 +58,10 @@ describe("Testing CreateUserForm ", () => {
     const inputField = getByPlaceholderText("Förnamn");
     fireEvent.changeText(
       inputField,
-      "This is a name with more than 30 characters",
+      "This is a name with more than 30 characters"
     );
     expect(inputField.props.value).toBe(
-      "This is a name with more than 30 characters",
+      "This is a name with more than 30 characters"
     );
     const nextButton = getByText("Nästa");
     fireEvent.press(nextButton);
@@ -93,7 +93,7 @@ describe("Testing CreateUserForm ", () => {
     fireEvent.press(nextButton);
     await waitFor(() => {
       expect(
-        getByText("* Efternamn måste innehålla minst 1 tecken"),
+        getByText("* Efternamn måste innehålla minst 1 tecken")
       ).toBeTruthy();
     });
   });
@@ -103,10 +103,10 @@ describe("Testing CreateUserForm ", () => {
     const inputField = getByPlaceholderText("Efternamn");
     fireEvent.changeText(
       inputField,
-      "This is a password with more than 30 characters",
+      "This is a password with more than 30 characters"
     );
     expect(inputField.props.value).toBe(
-      "This is a password with more than 30 characters",
+      "This is a password with more than 30 characters"
     );
     const nextButton = getByText("Nästa");
     fireEvent.press(nextButton);
@@ -124,7 +124,7 @@ describe("Testing CreateUserForm ", () => {
 
   it("Should be Write an email address", async () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(
-      <CreateUserForm />,
+      <CreateUserForm />
     );
     const inputField = getByPlaceholderText("E-mail");
     fireEvent.changeText(inputField, "");
@@ -139,7 +139,7 @@ describe("Testing CreateUserForm ", () => {
 
   it("Should be Write an valid email address", async () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(
-      <CreateUserForm />,
+      <CreateUserForm />
     );
     const inputField = getByPlaceholderText("E-mail");
     fireEvent.changeText(inputField, "hghjhghghjh");
@@ -154,7 +154,7 @@ describe("Testing CreateUserForm ", () => {
 
   it("Should display error message when emails do not match", async () => {
     const { getByPlaceholderText, getByText, getByTestId } = render(
-      <CreateUserForm />,
+      <CreateUserForm />
     );
     const emailInput = getByPlaceholderText("E-mail");
     const confirmEmailInput = getByPlaceholderText("Bekräfta E-mail");
@@ -276,7 +276,7 @@ describe("Testing CreateUserForm ", () => {
 
     const { getByPlaceholderText, getByTestId, getByText, debug } = render(
       <CreateUserForm user={user} nextPage={nextPage} setUser={setUser} />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
 
     fireEvent.changeText(getByPlaceholderText("Förnamn"), "John");
@@ -284,7 +284,7 @@ describe("Testing CreateUserForm ", () => {
     fireEvent.changeText(getByPlaceholderText("E-mail"), "test@example.com");
     fireEvent.changeText(
       getByPlaceholderText("Bekräfta E-mail"),
-      "test@example.com",
+      "test@example.com"
     );
 
     fireEvent.press(getByTestId("role-item"));
@@ -329,14 +329,14 @@ describe("Testing CreateUserForm ", () => {
 
     const { getByPlaceholderText, getByText, queryByTestId } = render(
       <CreateUserForm user={user} nextPage={nextPage} setUser={setUser} />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
     fireEvent.changeText(getByPlaceholderText("Förnamn"), "John");
     fireEvent.changeText(getByPlaceholderText("Efternamn"), "Andersson");
     fireEvent.changeText(getByPlaceholderText("E-mail"), "test@example.com");
     fireEvent.changeText(
       getByPlaceholderText("Bekräfta E-mail"),
-      "test@example.com",
+      "test@example.com"
     );
     expect(queryByTestId("role-item")).toBeNull();
 

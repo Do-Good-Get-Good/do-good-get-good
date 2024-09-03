@@ -1,28 +1,25 @@
+import auth from "@react-native-firebase/auth";
+import { Icon, Overlay } from "@rneui/base";
+import React, { useEffect, useState } from "react";
 import {
+  Pressable,
   ScrollView,
   StyleSheet,
   Text,
-  View,
-  Pressable,
   TouchableOpacity,
+  View,
 } from "react-native";
-import React, { useEffect, useState } from "react";
-
-import { Overlay, Icon } from "@rneui/base";
-
-import auth from "@react-native-firebase/auth";
-
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import { Checkbox } from "../components/Checkbox";
 import { useAdminFunction } from "../context/AdminContext";
 import { useAdminContext } from "../context/AdminContext/useAdminContext";
+import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
   updateConnectedUsersOnActivity,
 } from "../firebase-functions/update";
-import { getAllUsersNotConnectedToAdmin } from "../firebase-functions/get";
-import { Checkbox } from "../components/Checkbox";
 
 const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
   const [myUsers, setMyUsers] = useState([]);
@@ -71,7 +68,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
     try {
       let otherUsers = await getAllUsersNotConnectedToAdmin(
         auth().currentUser.uid,
-        currentActivityId.toString(),
+        currentActivityId.toString()
       );
       setOtherUsers(otherUsers);
     } catch (error) {
@@ -98,11 +95,11 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
             res(false);
           }
         });
-      }),
+      })
     ).then(() => {
       otherUsers.map((user) => {
         let found = user.connectedActivities.find(
-          (activity) => activity === currentActivityId.toString(),
+          (activity) => activity === currentActivityId.toString()
         );
 
         if (!found) return;
@@ -111,7 +108,7 @@ const ManageUsers = ({ visible, closeModal, currentActivityId }) => {
 
       updateConnectedUsersOnActivity(
         currentActivityId.toString(),
-        connectedUsers,
+        connectedUsers
       );
     });
 

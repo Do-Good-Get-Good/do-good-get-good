@@ -1,18 +1,15 @@
 import auth from "@react-native-firebase/auth";
 import { useAdminFunction } from ".";
-
 import {
   getAllUsersConnectedToAdmin,
   getUserUnconfirmedTimeEntries,
   getUsersFiveNewestTimeEntries,
 } from "../../firebase-functions/getTS/get";
-import { TimeEntry, User } from "../../utility/types";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
-
 import { Role } from "../../utility/enums";
-
-import { makeArrayWithTimeEntriesAndUsers } from "./utility";
+import { TimeEntry, User } from "../../utility/types";
 import { useUserLevel } from "../useUserLevel";
+import { makeArrayWithTimeEntriesAndUsers } from "./utility";
 
 export const useAdminContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
@@ -29,11 +26,11 @@ export const useAdminContext = () => {
     adminID && (userLevel === Role.superadmin || userLevel === Role.admin);
 
   const onApproveTimeEntriesAdmin = async (
-    timeEntries: Array<TimeEntry>,
+    timeEntries: Array<TimeEntry>
   ): Promise<void> => {
     if (adminID) {
       await onApproveTimeEntries(timeEntries, adminID).then(() =>
-        onShowUnApprovedTimeEntriesAdminPage(),
+        onShowUnApprovedTimeEntriesAdminPage()
       );
     }
   };
@@ -42,7 +39,7 @@ export const useAdminContext = () => {
     const allTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
       adminUsers,
       getUserUnconfirmedTimeEntries,
-      true,
+      true
     );
     setUsersWithUnconfirmedTimeEntries(allTimeEntriesAndUsers);
   };
@@ -51,7 +48,7 @@ export const useAdminContext = () => {
     setLoading(true);
     const fiveTimeEntriesAndUsers = await makeArrayWithTimeEntriesAndUsers(
       adminUsers,
-      getUsersFiveNewestTimeEntries,
+      getUsersFiveNewestTimeEntries
     );
     setUsersWithFiveConfirmedTimeEntries(fiveTimeEntriesAndUsers);
     setLoading(false);

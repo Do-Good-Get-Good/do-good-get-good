@@ -1,5 +1,6 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { getAllActivitiesWithStatus } from "../firebase-functions/get";
+
 const AdminGalleryContext = React.createContext();
 
 export const useAdminGalleryFunction = () => {

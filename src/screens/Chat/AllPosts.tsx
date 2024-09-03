@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from "react";
+import { FlatList } from "react-native";
 import ChatCard from "../../components/ChartCard/ChatCard";
 import MessageCard from "../../components/ChartCard/MessageCard";
 import { PostEmoji, User, UserPost } from "../../utility/types";
-import { FlatList } from "react-native";
 
 type Props = {
   setlimit: () => void;

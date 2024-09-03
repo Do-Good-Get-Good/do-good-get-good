@@ -1,21 +1,16 @@
 import firestore from "@react-native-firebase/firestore";
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-  UserPost,
-} from "../../utility/types";
+import { TimeEntry, User, UserPost } from "../../utility/types";
 
 import { parse } from "date-fns";
+import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
 import { addImageToStorage } from "../addTS/add";
 import { deleteImage } from "../deleteTS/delete";
-import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
 
 export const incrementTotalHoursForMonthYearAccumulatedTime = (
   userId: User["id"],
   confirmedHours: number,
   hoursThisYear: number,
-  activitiesAndTime: FirebaseActivitiesAndAccumulatedTime[],
+  activitiesAndTime: FirebaseActivitiesAndAccumulatedTime[]
 ) => {
   try {
     firestore()
@@ -33,7 +28,7 @@ export const incrementTotalHoursForMonthYearAccumulatedTime = (
 
 export const confirmTimeEntry = async (
   timeEntryID: TimeEntry["id"],
-  approvedBy: User["id"],
+  approvedBy: User["id"]
 ) => {
   try {
     let response = await firestore()
@@ -72,7 +67,7 @@ const updateImage = async (updatedImage: string, oldImage: string) => {
 
 export const updatePostInFirestore = async (
   post: UserPost,
-  updatedImage: UserPost["imageURL"],
+  updatedImage: UserPost["imageURL"]
 ) => {
   const convertToDateStamp =
     typeof post.date === "string"

@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import ImagesGallery from "../../screens/ImagesGallery";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -53,7 +53,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. Button 'Save' exist and navigate back  ", () => {
     const { getAllByText, getByText } = render(
-      <ImagesGallery navigation={navigation} route={route} />,
+      <ImagesGallery navigation={navigation} route={route} />
     );
     expect(getAllByText("Spara").length).toBe(1);
     const saveButton = getByText("Spara");
@@ -65,7 +65,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. Button 'Back' exist and navigate back  ", () => {
     const { getAllByText, getByText } = render(
-      <ImagesGallery navigation={navigation} route={route} />,
+      <ImagesGallery navigation={navigation} route={route} />
     );
     expect(getAllByText("Avbryt").length).toBe(1);
     const backButton = getByText("Avbryt");
@@ -75,7 +75,7 @@ describe("Testing ImagesGallery", () => {
 
   it("ImagesGallery. When you press on image the border around image should become 7  ", () => {
     const { getAllByTestId } = render(
-      <ImagesGallery navigation={navigation} route={route} />,
+      <ImagesGallery navigation={navigation} route={route} />
     );
     const pressOnImage = getAllByTestId("pressOnImage");
     const image = getAllByTestId("imageInImageGallery");

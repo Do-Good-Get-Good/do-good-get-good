@@ -1,23 +1,21 @@
+import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
   Image,
-  TouchableOpacity,
-  Platform,
   Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-import { Icon } from "@rneui/base";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
-import { Activity } from "../utility/types";
-import { useNavigation } from "@react-navigation/native";
-import { UserStack } from "../utility/routeEnums";
-import { shadow } from "../styles/shadows";
 import { InfoIcon } from "../assets/icons/InfoIcon";
 import { LocationIcon } from "../assets/icons/LocationIcon";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { shadow } from "../styles/shadows";
+import { UserStack } from "../utility/routeEnums";
+import { Activity } from "../utility/types";
 
 type Props = {
   suggestions: Activity[];
@@ -29,7 +27,7 @@ const HomeSuggestions = ({ suggestions }: Props) => {
       nav: UserStack,
       Props: {
         activityInfo: Activity;
-      },
+      }
     ) => void;
   }>();
 
@@ -71,7 +69,7 @@ const HomeSuggestions = ({ suggestions }: Props) => {
                 style={styles.image}
                 source={getImageForActivity(
                   suggestion.photo,
-                  suggestion.imageUrl,
+                  suggestion.imageUrl
                 )}
               />
             </View>

@@ -1,3 +1,5 @@
+import { useNavigation } from "@react-navigation/native";
+import { Icon } from "@rneui/base";
 import {
   FlexStyle,
   StyleProp,
@@ -6,10 +8,8 @@ import {
   TextStyle,
   TouchableOpacity,
 } from "react-native";
-import { Icon } from "@rneui/base";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { useNavigation } from "@react-navigation/native";
 
 type Props = {
   onPress?: () => void;
@@ -41,7 +41,7 @@ export const GoBackButton = ({ onPress, style, text = true }: Props) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
-    marginVertical:6
+    marginVertical: 6,
   },
   textGoBackButton: {
     marginLeft: 10,

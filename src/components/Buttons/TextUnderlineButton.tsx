@@ -1,11 +1,4 @@
-import {
-  FlexStyle,
-  StyleProp,
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-} from "react-native";
+import { StyleSheet, Text, TextStyle, TouchableOpacity } from "react-native";
 
 type Props = {
   testID?: string;

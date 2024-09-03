@@ -1,80 +1,87 @@
-import colors from "../assets/theme/colors";
-import typography from "../assets/theme/typography";
-import { Role } from "../utility/enums";
+import { useState } from "react";
+import { Controller, FieldError } from "react-hook-form";
 import {
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  
 } from "react-native";
-import { useState } from "react";
-import { error } from "firebase-functions/logger";
-import { Controller, FieldError } from "react-hook-form";
-import { errorTextStyle } from "../styles/errorTextStyle";
 import { ArrowUpDown } from "../assets/icons/ArrowUpDown";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { errorTextStyle } from "../styles/errorTextStyle";
+import { Role } from "../utility/enums";
 
 type Props = {
   control: any;
   error?: FieldError;
- 
 };
 
 export const ChangeUserRole = ({ control, error = undefined }: Props) => {
-  const [expanded, setExpanded] = useState(false); 
+  const [expanded, setExpanded] = useState(false);
   return (
-     <View style={{ marginTop: 10 }}>
-        <Controller
-          name="role"
-          control={control}
-          render={({ field: { onChange, onBlur, value } }) => (
-            <>
-              <TouchableOpacity
-                onBlur={onBlur}
-                style={[
-                  styles.input,
-                  styles.dropdownShadow,
-                  styles.dropdown,
-                  {
-                    borderWidth: 1,
-                    borderColor: expanded ? colors.dark : colors.background,
-                  },
-                ]}
-                onPress={() => {
-                  setExpanded(!expanded);
-                }}
+    <View style={{ marginTop: 10 }}>
+      <Controller
+        name="role"
+        control={control}
+        render={({ field: { onChange, onBlur, value } }) => (
+          <>
+            <TouchableOpacity
+              onBlur={onBlur}
+              style={[
+                styles.input,
+                styles.dropdownShadow,
+                styles.dropdown,
+                {
+                  borderWidth: 1,
+                  borderColor: expanded ? colors.dark : colors.background,
+                },
+              ]}
+              onPress={() => {
+                setExpanded(!expanded);
+              }}
+            >
+              <Text testID={"role-item"} style={styles.placeholderText}>
+                {value}
+              </Text>
+              <ArrowUpDown
+                onPress={() => setExpanded(!expanded)}
+                expanded={expanded}
+              />
+            </TouchableOpacity>
+            {expanded && (
+              <View
+                style={[styles.listItemContentStyle, styles.dropdownShadow]}
               >
-                <Text  testID={"role-item"}style={styles.placeholderText}>{value}</Text>
-                <ArrowUpDown
-                  onPress={() => setExpanded(!expanded)}
-                  expanded={expanded}
-                />
-              </TouchableOpacity>
-              {expanded && (
-                <View
-                  style={[styles.listItemContentStyle, styles.dropdownShadow]}
-                >
-                  {Object.values(Role).map((role, index) => (
-                    <TouchableOpacity
-                      key={index}
-                      onPress={() => {
-                        [onChange(role), setExpanded(!expanded)];
-                      }}
+                {Object.values(Role).map((role, index) => (
+                  <TouchableOpacity
+                    key={index}
+                    onPress={() => {
+                      [onChange(role), setExpanded(!expanded)];
+                    }}
+                  >
+                    <Text
+                      testID={`role-item-${role}`}
+                      style={styles.dropdownItem}
                     >
-                      <Text testID={`role-item-${role}`} style={styles.dropdownItem}>{role}</Text>
-                    </TouchableOpacity>
-                  ))}
-                </View>
-              )}
-              {error && <Text  testID={"role-error"} style={errorTextStyle()}>{error.message}</Text>}
-            </>
-          )}
-        />
+                      {role}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            )}
+            {error && (
+              <Text testID={"role-error"} style={errorTextStyle()}>
+                {error.message}
+              </Text>
+            )}
+          </>
+        )}
+      />
     </View>
   );
 };
-
 
 const styles = StyleSheet.create({
   input: {

@@ -1,7 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import SearchBarComponentOld from "../../components/SearchBarComponentOld";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
@@ -37,7 +36,7 @@ describe("Testing SearchBarComponent", () => {
 
   it("SearchBarComponent send searching word when you press on the button for active array", () => {
     const { getByTestId, getByPlaceholderText } = render(
-      <SearchBarComponentOld />,
+      <SearchBarComponentOld />
     );
     const button = getByTestId("searchButtonPressed");
     const input = getByPlaceholderText("Sök");
@@ -49,7 +48,7 @@ describe("Testing SearchBarComponent", () => {
 
   it("SearchBarComponent send searching word when you press on the button for inactive array ", () => {
     const { getByTestId, getByPlaceholderText } = render(
-      <SearchBarComponentOld />,
+      <SearchBarComponentOld />
     );
     useAdminGalleryFunction().activeOrInactiveActivity = true;
     const button = getByTestId("searchButtonPressed");

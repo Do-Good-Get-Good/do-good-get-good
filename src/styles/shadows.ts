@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { Platform } from "react-native";
+import { Platform, StyleSheet } from "react-native";
 
 type Props = {
   shadowOpacity?: number;

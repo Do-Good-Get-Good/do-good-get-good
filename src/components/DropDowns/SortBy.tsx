@@ -1,4 +1,4 @@
-import {  Text, TouchableOpacity, View } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { Sort } from "../../lib/enums/sort";
 
 import { dropDownStyle } from "../../styles/dropDownStyle";
@@ -25,4 +25,3 @@ export const SortBy = ({ setSortBy }: Props) => {
     </View>
   );
 };
-

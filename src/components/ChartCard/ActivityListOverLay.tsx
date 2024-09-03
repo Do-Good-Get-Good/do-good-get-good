@@ -1,17 +1,17 @@
+import { Overlay } from "@rneui/base";
 import React from "react";
 import {
-  View,
+  ScrollView,
   StyleSheet,
   Text,
-  ScrollView,
   TouchableOpacity,
+  View,
 } from "react-native";
-import { Activity, Post, User, UserPost } from "../../utility/types";
-import { ActivityItem } from "./ActivityItem";
-import { Overlay } from "@rneui/base";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import { UserStack } from "../../utility/routeEnums";
+import { Activity, Post, User, UserPost } from "../../utility/types";
+import { ActivityItem } from "./ActivityItem";
 
 const createPropsObject = (activity: Activity, user: User): UserPost => {
   let obj = {
@@ -29,7 +29,7 @@ const createPropsObject = (activity: Activity, user: User): UserPost => {
     emoji: [],
     imageURL: "",
     comments: [],
-    type:Post.post
+    type: Post.post,
   };
   return obj;
 };
@@ -49,13 +49,17 @@ export const ActivityListOverLay = ({
   visible,
   user,
   onBackdropPress,
-  navigation
+  navigation,
 }: Props) => {
-
   const handleNoActivityPress = () => {
     navigation.navigate(UserStack.AddOrEditPost, {
-      post: { userFirstName: user.firstName,
-        userLastName: user.lastName,description: '', userID: user.id,  activityID: null},
+      post: {
+        userFirstName: user.firstName,
+        userLastName: user.lastName,
+        description: "",
+        userID: user.id,
+        activityID: null,
+      },
       toEdit: false,
     });
     onBackdropPress();
@@ -77,11 +81,9 @@ export const ActivityListOverLay = ({
             onPress={handleNoActivityPress}
             style={styles.noActivityContainer}
           >
-          <Text style={styles.noActivityText}>Fritt inlägg</Text>
+            <Text style={styles.noActivityText}>Fritt inlägg</Text>
           </TouchableOpacity>
-          <Text style={styles.header}>
-          Välj från dina aktiviteter.
-          </Text>
+          <Text style={styles.header}>Välj från dina aktiviteter.</Text>
           {activities.map((activity, index) => (
             <TouchableOpacity
               onPress={() => onActivityPress(createPropsObject(activity, user))}
@@ -123,10 +125,10 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
     padding: 10,
     borderRadius: 5,
-    alignItems: 'center',
+    alignItems: "center",
   },
   noActivityText: {
     ...typography.b2,
-    color: colors.dark
+    color: colors.dark,
   },
 });

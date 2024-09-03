@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
+import "react-native";
 import ChatCard from "../../components/ChartCard/ChatCard";
 
 const mockNavigate = jest.fn();
@@ -97,7 +97,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCardDate = getByTestId("chat-card-date");
     expect(chatCardDate).toBeTruthy();
@@ -112,7 +112,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCardDate = getByTestId("chat-card-date");
     expect(chatCardDate).toBeTruthy();
@@ -127,7 +127,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
 
     const chatCardDate = getByTestId("chat-card-date");
@@ -143,7 +143,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCardHeader = getByTestId("chat-card-header");
     expect(chatCardHeader).toBeTruthy();
@@ -152,7 +152,7 @@ describe("Testing ChatCardComponent", () => {
     expect(getByText("John Doe")).toBeTruthy();
     const activityImage = getByTestId("chat-card-header-image");
     expect(activityImage.props.source.testUri).toBe(
-      "../../../assets/images/activities/symbol_sport.png",
+      "../../../assets/images/activities/symbol_sport.png"
     );
   });
 
@@ -164,7 +164,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCardImage = getByTestId("chat-card-image");
     expect(chatCardImage).toBeTruthy();
@@ -179,7 +179,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     expect(getByText("Test Description")).toBeTruthy();
   });
@@ -194,7 +194,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCardEditMenu = getByTestId("chat-card-edit-menu");
     expect(chatCardEditMenu).toBeTruthy();
@@ -215,7 +215,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={!loggedInUser}
-      />,
+      />
     );
     const chatCardEditMenu = queryByTestId("chat-card-edit-menu");
     expect(chatCardEditMenu).toBeFalsy();
@@ -229,7 +229,7 @@ describe("Testing ChatCardComponent", () => {
         addEmoji={() => {}}
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
-      />,
+      />
     );
     const chatCard = getByTestId("chat-card");
     fireEvent.press(chatCard);
@@ -243,7 +243,7 @@ describe("Testing ChatCardComponent", () => {
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
         commentsCount={0}
-      />,
+      />
     );
 
     const chatCardEmoji = getByTestId("chat-card-emoji");
@@ -261,7 +261,7 @@ describe("Testing ChatCardComponent", () => {
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
         commentsCount={0}
-      />,
+      />
     );
 
     const chatCardEmoji = getByTestId("chat-card-emoji");
@@ -282,7 +282,7 @@ describe("Testing ChatCardComponent", () => {
         deleteEmoji={deleteEmojiMock}
         loggedInUser={loggedInUser}
         commentsCount={post.comments.length}
-      />,
+      />
     );
 
     const emojiText = getByText("😊");
@@ -300,7 +300,7 @@ describe("Testing ChatCardComponent", () => {
         deleteEmoji={() => {}}
         loggedInUser={loggedInUser}
         commentsCount={post.comments.length}
-      />,
+      />
     );
     const commentsCountText = getByText("2 Kommentarer");
     expect(commentsCountText).toBeTruthy();

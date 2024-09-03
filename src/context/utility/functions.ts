@@ -1,11 +1,10 @@
 import reject from "lodash/reject";
-
+import { getUserData } from "../../firebase-functions/getTS/get";
 import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
-import { getUserData } from "../../firebase-functions/getTS/get";
 
 const findUserInfo = async (users: User[], userID: User["id"]) => {
   let findKeyValue = users.find((user) => user.id === userID);
@@ -14,17 +13,17 @@ const findUserInfo = async (users: User[], userID: User["id"]) => {
 
 export const makeListOfUserAndUnapprovedTimeEntries = async (
   timeEntries: TimeEntry[],
-  users: User[],
+  users: User[]
 ): Promise<UserAndUnapprovedTimeEntriesType[]> => {
   let tempArr: UserAndUnapprovedTimeEntriesType[] = [];
 
   for (const item of timeEntries) {
     const userEntry: TimeEntry[] = timeEntries.filter(
-      (entry) => entry.userID === item.userID,
+      (entry) => entry.userID === item.userID
     );
 
     const isAlreadyAdded = tempArr.some(
-      (u) => u.unapprovedTimeEntries[0].userID === item.userID,
+      (u) => u.unapprovedTimeEntries[0].userID === item.userID
     );
 
     if (!isAlreadyAdded) {
@@ -49,7 +48,7 @@ export const makeListOfUserAndUnapprovedTimeEntries = async (
 };
 export const filterAfterApprovedTimeEntrirs = (
   prev: UserAndUnapprovedTimeEntriesType[],
-  timeEntryID: TimeEntry["id"],
+  timeEntryID: TimeEntry["id"]
 ) =>
   prev
     .map((user) => ({

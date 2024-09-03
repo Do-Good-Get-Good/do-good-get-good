@@ -37,7 +37,7 @@ export const updateTotalHoursMonthForUser = (uid, updateValue) => {
     });
   } catch (error) {
     throw new Error(
-      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`
     );
   }
 };
@@ -53,7 +53,7 @@ export const incrementTotalConfirmedHoursForUser = (userId, time) => {
   } catch (error) {
     console.log(
       "There was an error incrementing 'total_confirmed_hours'",
-      error,
+      error
     );
   }
 };
@@ -73,7 +73,7 @@ export const incrementYearlyTotalHoursForUser = (userId, time) => {
 
 export const updateUsersActivitiesAndAccumulatedTime = (
   userId,
-  activitiesAndTime,
+  activitiesAndTime
 ) => {
   try {
     firestore().collection("Users").doc(userId).update({
@@ -82,7 +82,7 @@ export const updateUsersActivitiesAndAccumulatedTime = (
   } catch (error) {
     console.log(
       "There was an error updating 'activities_and_accumulated_time'",
-      error,
+      error
     );
   }
 };

@@ -1,35 +1,28 @@
+import auth from "@react-native-firebase/auth";
+import { Icon, Overlay } from "@rneui/base";
+import { format } from "date-fns";
+import { sv } from "date-fns/locale";
+import toDate from "date-fns/toDate";
 import React, { useEffect, useState } from "react";
 import {
+  Platform,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform,
-  ScrollView,
 } from "react-native";
-
-import { Overlay, Icon } from "@rneui/base";
-
 import { Calendar, LocaleConfig } from "react-native-calendars";
-
-import { format } from "date-fns";
-import toDate from "date-fns/toDate";
-import { sv } from "date-fns/locale";
-
-import auth from "@react-native-firebase/auth";
-
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
 import errorMessage from "../assets/recyclingStyles/errorMessage";
-
-import { deleteTimeEntry } from "../firebase-functions/delete";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 import { addTimeEntry } from "../firebase-functions/add";
+import { deleteTimeEntry } from "../firebase-functions/delete";
 import {
-  updateTotalHoursMonthForUser,
   updateTimeEntry,
+  updateTotalHoursMonthForUser,
 } from "../firebase-functions/update";
-
 import { Arithmetic } from "../lib/enums/arithmetic";
 
 export const calculateNewHours = (hours, registeredTime, arithmetic) => {
@@ -170,7 +163,7 @@ const CalendarView = ({
         let updateValue = calculateNewHours(
           hours,
           registeredTime,
-          Arithmetic.Add,
+          Arithmetic.Add
         );
         updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();
@@ -202,7 +195,7 @@ const CalendarView = ({
             let updateValue = calculateNewHours(
               newTime,
               registeredTime,
-              Arithmetic.Add,
+              Arithmetic.Add
             );
             updateTotalHoursMonthForUser(uid, updateValue);
           } else if (activity.time > hours) {
@@ -210,7 +203,7 @@ const CalendarView = ({
             let updateValue = calculateNewHours(
               newTime,
               registeredTime,
-              Arithmetic.Sub,
+              Arithmetic.Sub
             );
             updateTotalHoursMonthForUser(uid, updateValue);
           }
@@ -237,7 +230,7 @@ const CalendarView = ({
         let updateValue = calculateNewHours(
           activity.time,
           registeredTime,
-          Arithmetic.Sub,
+          Arithmetic.Sub
         );
         updateTotalHoursMonthForUser(uid, updateValue);
         toggleVisibility();

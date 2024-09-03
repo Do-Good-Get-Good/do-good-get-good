@@ -1,19 +1,17 @@
 import React, { useEffect, useState } from "react";
-import { Text, StyleSheet, View, ScrollView } from "react-native";
-
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import BottomLogo from "../components/BottomLogo";
 import DropDownForSorting from "../components/DropDownForSorting";
-
+import Menu from "../components/Menu";
 import RadioButton from "../components/RadioButton";
-import Suggestions from "../components/Suggestions";
 import SearchBarComponentOld from "../components/SearchBarComponentOld";
+import Suggestions from "../components/Suggestions";
+import { useActivityCardContext } from "../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import { useActivityCardContext } from "../context/ActivityCardContext";
-import Menu from "../components/Menu";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-import BottomLogo from "../components/BottomLogo";
 
 export function AdminActivityGallery({ navigation }) {
   const adminGalleryContext = useAdminGalleryFunction();
@@ -53,7 +51,7 @@ export function AdminActivityGallery({ navigation }) {
           createActivityContext.changedActivity.id != ""
         ) {
           var indexActive = arrayOfActiveActivities.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id,
+            (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (
@@ -73,7 +71,7 @@ export function AdminActivityGallery({ navigation }) {
           var arrayInactive = inactiveActivities;
 
           var indexInactive = arrayInactive.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id,
+            (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (indexInactive != -1) {
@@ -88,7 +86,7 @@ export function AdminActivityGallery({ navigation }) {
           createActivityContext.changedActivity.id != ""
         ) {
           var indexInactive2 = inactiveActivities.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id,
+            (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (
@@ -107,7 +105,7 @@ export function AdminActivityGallery({ navigation }) {
 
           var arrayStatusActive = arrayOfActiveActivities;
           var indexOfActiveActivities = arrayStatusActive.findIndex(
-            (x) => x.id === createActivityContext.changedActivity.id,
+            (x) => x.id === createActivityContext.changedActivity.id
           );
 
           if (indexOfActiveActivities != -1) {

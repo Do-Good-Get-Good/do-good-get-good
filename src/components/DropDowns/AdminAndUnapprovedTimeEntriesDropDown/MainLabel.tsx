@@ -1,5 +1,4 @@
 import { StyleSheet, Text, View } from "react-native";
-import { User } from "../../../utility/types";
 import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
 
 type Props = {
