@@ -20,7 +20,11 @@ function HeadlessCheck({ isHeadless }) {
   }
 
   // Render the app component on foreground launch
-  return <App />;
+  return (
+    <UserLevelProvider>
+      <App />
+    </UserLevelProvider>
+  );
 }
 
 AppRegistry.registerComponent(appName, () => HeadlessCheck);

@@ -29,7 +29,10 @@ async function updateUsersConnectedToActivities(activities) {
 }
 
 exports.connectUsersToActivitiesSecondGen = onDocumentCreated(
-  "Activities/{activityId}",
+  {
+    document: "Activities/{activityId}",
+    region: "europe-north1",
+  },
   async (event) => {
     let users = await getAllCollectionData("Users");
     let activities = await getAllCollectionData("Activities");

@@ -18,7 +18,7 @@ import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
 import { useForegroundgNotifi } from "./hooks/useForegroundgNotifi";
 
-export default function App() {
+const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
   useForegroundgNotifi();
 
@@ -59,7 +59,9 @@ export default function App() {
       </SafeAreaView>
     );
   }
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   wrapper: {

@@ -21,12 +21,12 @@ import { prepareAdminArray, textIfEmptyList } from "./utility";
 import { SuperAdminLongButtons } from "../../components/SuperAdminLongButtons";
 import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
 import { getUnconfirmedTimeEntriesFromAllUsers } from "../../components/TitleAndOnCheckAll/utility";
-import userLevelStore from "../../store/userLevel";
 import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
 import { useNavigation } from "@react-navigation/native";
 import { SuperAdminStack } from "../../utility/routeEnums";
 import auth from "@react-native-firebase/auth";
 import { Spinner } from "../../components/Loading";
+import { useUserLevel } from "../../context/useUserLevel";
 
 type AdminWithUsersUnapprovedTimeEntriesType = {
   adminID: User["adminID"];
@@ -40,7 +40,7 @@ export const SuperAdminHomePage = () => {
   const [allAdmins, setAllAdmins] = useState<
     Array<AdminWithUsersUnapprovedTimeEntriesType>
   >([]);
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
   const { onGetAllActiveUsers } = useGetAllUsersThatExistInTheSystem(userLevel);
   const [loading, setLoading] = useState<boolean>(false);
   const navigation = useNavigation<{

@@ -17,10 +17,11 @@ const deleteImageInStore = async (imgPath) => {
     });
 };
 
-// when you deploy onSchedul function, just comment awaty setGlobalOptions({ region: "europe-north1" }); at config file.  More info at README
+// onSchedule don't suport region europe-north1.  More info at README
 
 exports.deletePostAfterOneYearSecondGen = onSchedule(
-  "0 0 1 1,4,7,10 *",
+  { schedule: "0 0 1 1,4,7,10 *", region: "europe-west1" },
+
   async (event) => {
     const oneYearAgo = new Date();
     oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);

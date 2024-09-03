@@ -1,7 +1,10 @@
 const { initializeApp } = require("firebase-admin/app");
 const { createUserSecondGen } = require("./src/createUserSecondGen");
 const { updateYearSecondGen } = require("./src/updateYearSecondGen");
-const { downloadData } = require("./src/downloadData/downloadData");
+
+const {
+  downloadDataSecondGen,
+} = require("./src/downloadData/downloadDataSecondGen");
 const {
   connectUsersToActivitiesSecondGen,
 } = require("./src/connectUsersToActivitiesSecondGen");
@@ -35,9 +38,10 @@ exports.updateActivityUserCountSecondGen = updateActivityUserCountSecondGen;
 exports.updateMonthSecondGen = updateMonthSecondGen;
 exports.updateUserSecondGen = updateUserSecondGen;
 exports.updateYearSecondGen = updateYearSecondGen;
-exports.downloadData = downloadData;
+
 exports.sendReminderNotificationToAdminsSecondGen =
   sendReminderNotificationToAdminsSecondGen;
 exports.updateTokensSecondGen = updateTokensSecondGen;
 exports.sendNotifiAboutApprovedTimeEntrySecondGen =
   sendNotifiAboutApprovedTimeEntrySecondGen;
+exports.downloadDataSecondGen = downloadDataSecondGen;

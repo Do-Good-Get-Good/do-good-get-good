@@ -65,12 +65,22 @@ Production build: `npx react-native run-ios`
 Go to [GitHub Actions](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_apk_test.yml) and start the `Build Android AAB` workflow.
 When it's finished you'll be able to find the AAB on that workflow page under `Artifacts`.
 
+To see all tasks `./gradlew tasks`
+
 ### To get an APK file
 
 Go to `src/` and run `npm install`
 Go to `src/Android`
 Run `./gradlew assembleProd`
 Output will be in `src\android\app\build\outputs\apk\prod\release`
+
+### To get an Release file
+
+Go to .env, .env.dev, .env.prod and change there APP_VERSION and RELEASE_NUMBER (RELEASE_NUMBER have to be int)
+Go to `src/` and run `npm install`
+Go to `src/Android`
+To build file fore release `./gradlew bundleRelease`
+To get created file src/android/app/build/outputs/bundle/prodRelease
 
 ## Trouble shooting
 
@@ -111,7 +121,6 @@ Try
 - Jaya Badarawada (_Mobile application developer_)
 - Kristoffer Johnsson (_Software tester_)
 - Rebecka Eldén (_User eXperience_)
-
 
 ### Mentors
 
