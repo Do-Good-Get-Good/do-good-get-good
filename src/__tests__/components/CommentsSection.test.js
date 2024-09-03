@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
 import { Role } from "../../utility/enums";
 import { UserLevelProvider } from "../../context/useUserLevel";
+import { EventProvider } from "react-native-outside-press";
 
 jest.mock("@react-native-firebase/firestore", () => {
   return jest.fn();
@@ -185,6 +186,7 @@ describe("Testing CommentsSection Component", () => {
 
     const deleteMenu = getByTestId("chat-card-edit-menu");
     fireEvent.press(deleteMenu);
+
     const deleteButton = getByTestId("dropdown-overlay-ta bort");
     fireEvent.press(deleteButton);
 

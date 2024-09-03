@@ -29,6 +29,7 @@ export const MyUsers = ({ users }: Props) => {
           containerstyle={{ zIndex: 2 }}
           testID={"sort-by"}
           title={sortBy}
+          isOnOutsidePress={true}
           componentInsideDropDown={<SortBy setSortBy={setSortBy} />}
         />
       </View>

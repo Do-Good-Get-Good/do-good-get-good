@@ -1,3 +1,5 @@
+import { Role } from "./enums";
+
 import { ActivitiesAndAccumulatedTime, Activity, User } from "./types";
 
 // This represents the entire object that we receive from firebase.
@@ -30,7 +32,7 @@ export type FirebaseActivityType = {
   tg_favorite: Activity["popular"];
 };
 
-type FirebaseActivitiesAndAccumulatedTime = {
+export type FirebaseActivitiesAndAccumulatedTime = {
   accumulated_time: ActivitiesAndAccumulatedTime["accumulatedTime"];
   activity_id: ActivitiesAndAccumulatedTime["activityID"];
 };

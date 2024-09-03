@@ -10,6 +10,39 @@ jest.mock("@react-navigation/native", () => ({
   }),
 }));
 
+const today = new Date();
+
+const yesterday = new Date(today);
+yesterday.setDate(today.getDate() - 1);
+
+const longerThanYesterday = new Date("2024-07-06");
+
+const longerThanYesterdayPost = {
+  description: "Test Description",
+  date: longerThanYesterday,
+  activityTitle: "Mock Activity",
+  activityImage: "symbol_sport",
+  userFirstName: "John",
+  userLastName: "Doe",
+  userID: "user1",
+  activityCity: "Mock City",
+  imageURL: "sampleImageUrl",
+  emoji: [],
+};
+
+const yesterdayPost = {
+  description: "Test Description",
+  date: yesterday,
+  activityTitle: "Mock Activity",
+  activityImage: "symbol_sport",
+  userFirstName: "John",
+  userLastName: "Doe",
+  userID: "user1",
+  activityCity: "Mock City",
+  imageURL: "sampleImageUrl",
+  emoji: [],
+};
+
 const post = {
   description: "Test Description",
   date: new Date(),
@@ -56,10 +89,10 @@ const loggedInUser = {
 };
 
 describe("Testing ChatCardComponent", () => {
-  it("Testing ChatCardDate component to ensure it renders with correct date", () => {
+  it("Testing ChatCardDate component should show text Igår if post is done yesturday", () => {
     const { getByTestId } = render(
       <ChatCard
-        post={post}
+        post={yesterdayPost}
         onDelete={() => {}}
         addEmoji={() => {}}
         deleteEmoji={() => {}}
@@ -68,10 +101,10 @@ describe("Testing ChatCardComponent", () => {
     );
     const chatCardDate = getByTestId("chat-card-date");
     expect(chatCardDate).toBeTruthy();
-    expect(chatCardDate.props.children).toEqual("Today");
+    expect(chatCardDate.props.children).toEqual("Igår");
   });
 
-  it("Testing ChatCardDate component to ensure it renders with correct date", () => {
+  it("Testing ChatCardDate component should show text Idag if post is done today", () => {
     const { getByTestId } = render(
       <ChatCard
         post={post}
@@ -83,7 +116,23 @@ describe("Testing ChatCardComponent", () => {
     );
     const chatCardDate = getByTestId("chat-card-date");
     expect(chatCardDate).toBeTruthy();
-    expect(chatCardDate.props.children).toEqual("Today");
+    expect(chatCardDate.props.children).toEqual("Idag");
+  });
+
+  it("Testing ChatCardDate component should show the full date if post is done the longer than yesturday", () => {
+    const { getByTestId } = render(
+      <ChatCard
+        post={longerThanYesterdayPost}
+        onDelete={() => {}}
+        addEmoji={() => {}}
+        deleteEmoji={() => {}}
+        loggedInUser={loggedInUser}
+      />,
+    );
+
+    const chatCardDate = getByTestId("chat-card-date");
+    expect(chatCardDate).toBeTruthy();
+    expect(chatCardDate.props.children).toEqual("06.07.2024");
   });
 
   it("Testing ChatCardHeadercomponent to ensure it renders with correct data", () => {
@@ -155,7 +204,7 @@ describe("Testing ChatCardComponent", () => {
     expect(onDeleteMock).toBeTruthy();
     fireEvent.press(chatCardEditMenu);
     expect(getByText("Ändra")).toBeTruthy();
-    expect( onEditeMock).toBeTruthy();
+    expect(onEditeMock).toBeTruthy();
   });
 
   it("Testing ChatCard does not render ChatCardEditMenu when isCurrentUser is false", () => {

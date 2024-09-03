@@ -14,11 +14,14 @@ import { subYears, format, toDate, parseISO } from "date-fns";
 import { Icon, Dialog } from "@rneui/base";
 import functions from "@react-native-firebase/functions";
 import crashlytics from "@react-native-firebase/crashlytics";
+
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
 import Menu from "../components/Menu";
 import DatePicker from "../components/DatePicker";
+import OutsidePressHandler from "react-native-outside-press";
+
 import Config from "react-native-config";
 const project =
   Config.NODE_ENV === "prod"
@@ -163,7 +166,10 @@ const DownloadUserData = ({ navigation }) => {
               />
             </TouchableOpacity>
             {openDropDown && (
-              <View style={styles.dropdownItemBackground}>
+              <OutsidePressHandler
+                onOutsidePress={() => setOpenDropDown(false)}
+                style={styles.dropdownItemBackground}
+              >
                 <TouchableOpacity
                   onPress={() => closeDropDown("all-data")}
                   style={styles.dropdownItemStyle}
@@ -184,7 +190,7 @@ const DownloadUserData = ({ navigation }) => {
                 >
                   <Text style={{ ...typography.button.sm }}>Välj datum</Text>
                 </TouchableOpacity>
-              </View>
+              </OutsidePressHandler>
             )}
           </View>
           {exportType === "date-period" && (

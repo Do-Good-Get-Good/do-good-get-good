@@ -16,6 +16,7 @@ import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
+import { EventProvider } from "react-native-outside-press";
 
 const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
@@ -31,11 +32,23 @@ const App = () => {
   }
 
   if (userClaims?.superadmin) {
-    return <SuperAdminStack />;
+    return (
+      <EventProvider>
+        <SuperAdminStack />
+      </EventProvider>
+    );
   } else if (userClaims?.admin) {
-    return <AdminStack />;
+    return (
+      <EventProvider>
+        <AdminStack />
+      </EventProvider>
+    );
   } else if (userClaims?.user) {
-    return <UserStack />;
+    return (
+      <EventProvider>
+        <UserStack />
+      </EventProvider>
+    );
   } else {
     return (
       <SafeAreaView style={styles.wrapper}>
