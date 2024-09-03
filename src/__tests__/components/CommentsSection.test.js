@@ -181,7 +181,7 @@ describe("Testing CommentsSection Component", () => {
   });
   it("Should delete comment when user who wrote it pressing delete", async () => {
     mockUserLevel = Role.user;
-    const { getByTestId, debug } = render(
+    const { getByTestId } = render(
       <CommentsSection
         comments={comments}
         addComment={mockAddComment}
@@ -197,7 +197,6 @@ describe("Testing CommentsSection Component", () => {
 
     const deleteButton = getByTestId("dropdown-overlay-ta bort");
     fireEvent.press(deleteButton);
-    debug();
 
     // TODO: mock alert to test delet function
 
