@@ -1,8 +1,9 @@
 import React, { PropsWithChildren } from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { render, fireEvent, waitFor } from "@testing-library/react-native";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
 import { Role } from "../../utility/enums";
 import { UserLevelProvider } from "../../context/useUserLevel";
+import { EventProvider } from "react-native-outside-press";
 
 jest.mock("@react-native-firebase/firestore", () => {
   return jest.fn();
@@ -77,6 +78,14 @@ const comments = [
   },
 ];
 
+jest.mock("react-native-outside-press", () => {
+  const React = require("react");
+  return {
+    __esModule: true,
+    default: ({ children }) =>
+      React.createElement(React.Fragment, null, children),
+  };
+});
 describe("Testing CommentsSection Component", () => {
   it("renders comments correctly", () => {
     mockUserLevel = Role.user;
@@ -172,7 +181,7 @@ describe("Testing CommentsSection Component", () => {
   });
   it("Should delete comment when user who wrote it pressing delete", async () => {
     mockUserLevel = Role.user;
-    const { getByTestId } = render(
+    const { getByTestId, debug } = render(
       <CommentsSection
         comments={comments}
         addComment={mockAddComment}
@@ -185,8 +194,10 @@ describe("Testing CommentsSection Component", () => {
 
     const deleteMenu = getByTestId("chat-card-edit-menu");
     fireEvent.press(deleteMenu);
+
     const deleteButton = getByTestId("dropdown-overlay-ta bort");
     fireEvent.press(deleteButton);
+    debug();
 
     // TODO: mock alert to test delet function
 
