@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import MyTimeEntries from "../../components/MyTimeEntries";
 import useTimeEntriesWithLimit from "../../hooks/useTimeEntriesWithLimit";
 

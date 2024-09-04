@@ -1,5 +1,5 @@
-import { LongButton } from "./Buttons/LongButton";
 import { AlertToApproveTimeEntries } from "./Alerts/AlertToApproveTimeEntries";
+import { LongButton } from "./Buttons/LongButton";
 
 type Props = {
   isDisabled: boolean;

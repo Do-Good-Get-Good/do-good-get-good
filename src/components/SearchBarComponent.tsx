@@ -4,13 +4,12 @@ import {
   StyleProp,
   StyleSheet,
   TextInput,
-  TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
 import { SearchIcon } from "../assets/icons/SearchIcon";
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 type Props<T> = {
   style?: StyleProp<ViewStyle>;
@@ -32,7 +31,7 @@ const findByKey = (input: string, value: string) => {
   const valueWords = value.trim().toLowerCase().split(" ");
 
   return inputWords.every((inputWord) =>
-    valueWords.some((valueWord) => valueWord.startsWith(inputWord)),
+    valueWords.some((valueWord) => valueWord.startsWith(inputWord))
   );
 };
 

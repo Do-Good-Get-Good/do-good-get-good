@@ -1,20 +1,18 @@
+import { Icon } from "@rneui/base";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon } from "@rneui/base";
-import { User } from "../utility/types";
-import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-
-import { SuperAdminStack } from "../utility/routeEnums";
-import { GoBackButton } from "./Buttons/GoBackButton";
-
-import { SearchBarComponent } from "./SearchBarComponent";
-import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
-import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
-import { Spinner } from "./Loading";
 import { useUserLevel } from "../context/useUserLevel";
+import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
+import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
+import { SuperAdminStack } from "../utility/routeEnums";
+import { User } from "../utility/types";
+import { GoBackButton } from "./Buttons/GoBackButton";
+import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
+import { Spinner } from "./Loading";
+import { SearchBarComponent } from "./SearchBarComponent";
 
 type Props = {
   navigation: any;
@@ -82,7 +80,7 @@ export function ListOfAllUsers({ navigation }: Props) {
                 size={25}
               />
             </TouchableOpacity>
-          ),
+          )
       )}
     </View>
   );

@@ -1,5 +1,5 @@
-import { Platform, Text, View } from "react-native";
 import React from "react";
+import { Platform, Text, View } from "react-native";
 
 const DevRelease = () => {
   return (

@@ -1,6 +1,7 @@
 import React from "react";
-import { View, StyleSheet, Text, Image, ViewStyle } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import typography from "../../assets/theme/typography";
+
 const today = new Date();
 
 const formattedDate = (date: Date | string): string => {

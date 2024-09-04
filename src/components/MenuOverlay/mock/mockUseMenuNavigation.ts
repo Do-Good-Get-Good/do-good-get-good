@@ -1,9 +1,9 @@
-import { NavigationObject } from "../useMenuNavigation";
 import {
   AdminStack,
   SuperAdminStack,
   UserStack,
 } from "../../../utility/routeEnums";
+import { NavigationObject } from "../useMenuNavigation";
 
 export const mockUserNav: Array<NavigationObject> = [
   {
@@ -25,7 +25,7 @@ export const mockUserNav: Array<NavigationObject> = [
   {
     title: "Chat",
     screenName: "Chat" as UserStack,
-  }
+  },
 ];
 
 export const adminNavigations: Array<NavigationObject> = [

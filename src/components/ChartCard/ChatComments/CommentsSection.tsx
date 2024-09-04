@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
-import { Comment, User, UserPost } from "../../../utility/types";
-import { CommentInfo } from "./CommentInfo";
-import { InputField } from "../../InputField";
-import { ChatCardEditMenu } from "../ChatCardEditMenu";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { useUserLevel } from "../../../context/useUserLevel";
 import { deleteComment } from "../../../firebase-functions/deleteTS/delete";
 import { Role } from "../../../utility/enums";
-import { useUserLevel } from "../../../context/useUserLevel";
+import { Comment, User, UserPost } from "../../../utility/types";
+import { InputField } from "../../InputField";
+import { ChatCardEditMenu } from "../ChatCardEditMenu";
+import { CommentInfo } from "./CommentInfo";
 
 const makeCommentObject = (user: User, comment: Comment["comment"]) => ({
   comment: comment,

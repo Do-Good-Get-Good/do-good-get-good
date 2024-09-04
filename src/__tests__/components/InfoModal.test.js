@@ -1,7 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import InfoModal from "../../components/InfoModal";
 
 jest.mock("@rneui/base/dist/Icon/", () => ({
@@ -16,7 +15,7 @@ const imageGalleryInfoText =
 describe("Testing InfoModal", () => {
   it("Renders homepage tooltip info correctly", async () => {
     const { getByTestId } = render(
-      <InfoModal screen="homepage" tooltipWidth={250} />,
+      <InfoModal screen="homepage" tooltipWidth={250} />
     );
 
     const icon = getByTestId("InfoModal.viewAroundIcon");
@@ -27,7 +26,7 @@ describe("Testing InfoModal", () => {
   });
   it("Renders image gallery tooltip info correctly", async () => {
     const { getByTestId } = render(
-      <InfoModal screen="imageGallery" tooltipWidth={200} />,
+      <InfoModal screen="imageGallery" tooltipWidth={200} />
     );
 
     const icon = getByTestId("InfoModal.viewAroundIcon");

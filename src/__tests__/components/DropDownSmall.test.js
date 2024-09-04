@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import { DropDownSmall } from "../../components/DropDownSmall";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -48,7 +48,7 @@ describe("Testing DropDownSmall", () => {
       name: "CreateActivity",
     });
     const { getByTestId, getAllByTestId, getAllByText } = render(
-      <DropDownSmall />,
+      <DropDownSmall />
     );
 
     expect(getAllByTestId("dropDownPressed").length).toBe(1);
@@ -102,7 +102,7 @@ describe("Testing DropDownSmall", () => {
       name: "AdminActivityGallery",
     });
     const { getByTestId, getAllByTestId, getAllByText } = render(
-      <DropDownSmall />,
+      <DropDownSmall />
     );
 
     const dropDownButton = getByTestId("dropDownPressed");
@@ -122,7 +122,7 @@ describe("Testing DropDownSmall", () => {
       name: "AdminActivityGallery",
     });
     const { getByTestId, getAllByTestId, getAllByText } = render(
-      <DropDownSmall />,
+      <DropDownSmall />
     );
 
     const dropDownButton = getByTestId("dropDownPressed");
@@ -139,7 +139,7 @@ describe("Testing DropDownSmall", () => {
 
   it("can press the dropDown to close", () => {
     const { getByTestId, getAllByTestId, queryAllByTestId } = render(
-      <DropDownSmall />,
+      <DropDownSmall />
     );
 
     const dropDownButton = getByTestId("dropDownPressed");
@@ -147,7 +147,7 @@ describe("Testing DropDownSmall", () => {
 
     const activitysInsideDropDown = getAllByTestId("insideDropDownPressed");
     expect(getAllByTestId("insideDropDownPressed").length).toBe(
-      activitysInsideDropDown.length,
+      activitysInsideDropDown.length
     );
 
     fireEvent.press(dropDownButton);

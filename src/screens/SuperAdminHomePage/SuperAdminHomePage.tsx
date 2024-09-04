@@ -1,38 +1,38 @@
+import auth from "@react-native-firebase/auth";
+import { useNavigation } from "@react-navigation/native";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Menu from "../../components/Menu";
+import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
 import BottomLogo from "../../components/BottomLogo";
-import { ScrollView, StyleSheet, Text, View } from "react-native";
 import { AdminAndUnapprovedTimeEntriesDropDown } from "../../components/DropDowns/AdminAndUnapprovedTimeEntriesDropDown";
+import { Spinner } from "../../components/Loading";
+import Menu from "../../components/Menu";
+import { SuperAdminLongButtons } from "../../components/SuperAdminLongButtons";
+import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
+import { getUnconfirmedTimeEntriesFromAllUsers } from "../../components/TitleAndOnCheckAll/utility";
 import {
   useSuperAdminHomePageContext,
   useSuperAdminHomePageFunction,
 } from "../../context/SuperAdminHomePageContext";
-
-import { useEffect, useState } from "react";
+import { useUserLevel } from "../../context/useUserLevel";
+import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
+import { SuperAdminStack } from "../../utility/routeEnums";
 import {
   TimeEntry,
   User,
   UserAndUnapprovedTimeEntriesType,
 } from "../../utility/types";
-
-import typography from "../../assets/theme/typography";
-import colors from "../../assets/theme/colors";
 import { prepareAdminArray, textIfEmptyList } from "./utility";
-import { SuperAdminLongButtons } from "../../components/SuperAdminLongButtons";
-import { TitleAndOnCheckAll } from "../../components/TitleAndOnCheckAll";
-import { getUnconfirmedTimeEntriesFromAllUsers } from "../../components/TitleAndOnCheckAll/utility";
-import { useGetAllUsersThatExistInTheSystem } from "../../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
-import { useNavigation } from "@react-navigation/native";
-import { SuperAdminStack } from "../../utility/routeEnums";
-import auth from "@react-native-firebase/auth";
-import { Spinner } from "../../components/Loading";
-import { useUserLevel } from "../../context/useUserLevel";
 
 type AdminWithUsersUnapprovedTimeEntriesType = {
   adminID: User["adminID"];
   usersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[];
 };
+
 const superAdminID = auth().currentUser?.uid;
+
 export const SuperAdminHomePage = () => {
   const [onCheck, setOnCheck] = useState<TimeEntry[]>([]);
   const { allUsersWithUnconfirmedTimeEntries } =
@@ -74,7 +74,7 @@ export const SuperAdminHomePage = () => {
       <TitleAndOnCheckAll
         onCheck={onCheck}
         allUnconfirmedTimeEntries={getUnconfirmedTimeEntriesFromAllUsers(
-          allUsersWithUnconfirmedTimeEntries,
+          allUsersWithUnconfirmedTimeEntries
         )}
         setOnCheck={setOnCheck}
       />

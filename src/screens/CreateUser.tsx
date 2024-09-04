@@ -1,24 +1,18 @@
-import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View } from "react-native";
-
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../components/Menu";
-
-import LoadingOverlay from "../components/LoadingOverlay";
-import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
-
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-
-import { useMultistepPage } from "../hooks/useMultistepPage";
-import { Role } from "../utility/enums";
 import typography from "../assets/theme/typography";
-
 import { createUserAndLinkSelectedActivity } from "../cloud_functions/createUserAndLinkSelectedActivity";
 import { createUserAndNewActivity } from "../cloud_functions/createUserAndNewActivity";
 import { CreateUserForm } from "../components";
-import { Activity } from "../utility/types";
+import LinkActivityToNewUser from "../components/LinkActivityToNewUser";
+import LoadingOverlay from "../components/LoadingOverlay";
+import Menu from "../components/Menu";
 import { useAdminContext } from "../context/AdminContext/useAdminContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import { useMultistepPage } from "../hooks/useMultistepPage";
+import { Role } from "../utility/enums";
+import { Activity } from "../utility/types";
 
 export type UserNewAccount = {
   name: string;
@@ -101,7 +95,7 @@ const CreateUser = ({ route, navigation }: Props) => {
         user,
         selectedActivity.id,
         setLoading,
-        navigation,
+        navigation
       );
       await onShowUnApprovedTimeEntriesAdminPage();
     }
@@ -131,7 +125,7 @@ const CreateUser = ({ route, navigation }: Props) => {
       newUser,
       activeActivities,
       setAllActiveActvivitiesFB,
-      navigation,
+      navigation
     );
     setLoading(false);
     await onShowUnApprovedTimeEntriesAdminPage();

@@ -1,5 +1,3 @@
-import { Role } from "./enums";
-
 import { ActivitiesAndAccumulatedTime, Activity, User } from "./types";
 
 // This represents the entire object that we receive from firebase.

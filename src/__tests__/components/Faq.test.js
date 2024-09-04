@@ -1,7 +1,6 @@
-import "react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-
+import "react-native";
 import Faq from "../../screens/Faq";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -33,7 +32,7 @@ jest.mock("@react-navigation/native", () => {
 
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
   );
   return {
     ...actualAsyncStorage,
@@ -69,7 +68,7 @@ var mockGet = jest.fn();
 
 jest.mock("@react-native-firebase/firestore", () => {
   const firebaseActualFireStore = jest.requireActual(
-    "@react-native-firebase/firestore",
+    "@react-native-firebase/firestore"
   );
   return () => ({
     ...firebaseActualFireStore,
@@ -159,7 +158,7 @@ describe("Testing Faq page", () => {
     const { queryByTestId } = render(<Faq />);
     await waitFor(() => {
       expect(queryByTestId("errorTextId").props.children).toEqual(
-        "Sorry, something went wrong",
+        "Sorry, something went wrong"
       );
     });
   });

@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import FloatingActionButton from "../../components/FloatingActionButton";
 
 const mockedNavigate = jest.fn();
@@ -60,7 +60,7 @@ describe("Testing FloatingActionButton", () => {
 
   it("can press to close the action button", () => {
     const { getByTestId, getAllByText, queryByText } = render(
-      <FloatingActionButton />,
+      <FloatingActionButton />
     );
     const fabButton = getByTestId("open.button");
     fireEvent.press(fabButton);

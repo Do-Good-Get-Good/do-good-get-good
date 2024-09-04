@@ -1,8 +1,8 @@
-import "react-native";
-import React from "react";
-import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
-import { MyUsers } from "../../components/MyUsers";
 import { expect } from "@jest/globals";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
+import React from "react";
+import "react-native";
+import { MyUsers } from "../../components/MyUsers";
 import { mockUsersWithFiveConfirmedTimeEntries } from "../../dataMock/adminContext";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -38,7 +38,7 @@ jest.mock("@react-navigation/native", () => ({
 describe("Testing MyUsers component", () => {
   it("can find the my users text", async () => {
     const { getAllByText } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
     await waitFor(() => {
       expect(getAllByText("Mina användare").length).toBe(1);
@@ -47,36 +47,36 @@ describe("Testing MyUsers component", () => {
 
   it("can find the default text inside the small dropdown", async () => {
     const { getByTestId } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
     await waitFor(() => {
       expect(getByTestId("dropdown-title-sort-by").props.children).toEqual(
-        "A - Ö",
+        "A - Ö"
       );
     });
   });
 
   it("can press the small dropdown to open", async () => {
     const { getByTestId } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
 
     await waitFor(async () => {
       const button = getByTestId("dropdown-sort-by");
       fireEvent.press(button);
       expect(
-        getByTestId("inside-sort-by-dropdown-Alphabetically").props.children,
+        getByTestId("inside-sort-by-dropdown-Alphabetically").props.children
       ).toEqual("A - Ö");
 
       expect(
-        getByTestId("inside-sort-by-dropdown-Inactive").props.children,
+        getByTestId("inside-sort-by-dropdown-Inactive").props.children
       ).toEqual("Inaktiva");
     });
   });
 
   it("can press on Inaktiva and then back to active inside the small dropdown and see inactive users and then active", async () => {
     const { getByText, queryByText, getByTestId } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
 
     expect(getByText("Admin4 Adminsson4")).toBeTruthy();
@@ -93,7 +93,7 @@ describe("Testing MyUsers component", () => {
 
   it("Can view active user timeentries", async () => {
     const { getAllByTestId, getByText } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
 
     fireEvent.press(getByText("Admin4 Adminsson4"));
@@ -126,7 +126,7 @@ describe("Testing MyUsers component", () => {
 
   it("Can view unactive user timeentries", async () => {
     const { getByTestId, getByText } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
     fireEvent.press(getByTestId("dropdown-sort-by"));
     fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));
@@ -144,7 +144,7 @@ describe("Testing MyUsers component", () => {
 
   it("Can press edit icon on active users", async () => {
     const { getByTestId, getByText } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
     fireEvent.press(getByText("Admin4 Adminsson4"));
 
@@ -156,7 +156,7 @@ describe("Testing MyUsers component", () => {
 
   it("Can press edit icon on active users", async () => {
     const { getByTestId, getByText } = render(
-      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />,
+      <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
     fireEvent.press(getByTestId("dropdown-sort-by"));
     fireEvent.press(getByTestId("inside-sort-by-dropdown-Inactive"));

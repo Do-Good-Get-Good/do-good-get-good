@@ -41,7 +41,7 @@ const DownloadUserData = ({ navigation }) => {
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
   const downloadData = functions().httpsCallableFromUrl(
-    `https://europe-north1-${project}.cloudfunctions.net/downloadDataSecondGen`,
+    `https://europe-north1-${project}.cloudfunctions.net/downloadDataSecondGen`
   );
 
   const IsDatePeriodValid = () => {
@@ -100,7 +100,7 @@ const DownloadUserData = ({ navigation }) => {
         setDownloadingData(false);
         Alert.alert(
           "Ett fel har inträffat!",
-          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`,
+          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
         );
       });
   }

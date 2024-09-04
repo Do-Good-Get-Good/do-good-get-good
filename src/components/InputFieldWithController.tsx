@@ -1,3 +1,4 @@
+import { Controller, FieldError } from "react-hook-form";
 import {
   KeyboardTypeOptions,
   ReturnKeyTypeOptions,
@@ -8,10 +9,9 @@ import {
   TextInputProps,
   View,
 } from "react-native";
-import { errorTextStyle } from "../styles/errorTextStyle";
-import { Controller, FieldError } from "react-hook-form";
 import colors from "../assets/theme/colors";
 import { borderStyle } from "../styles/borderStyle";
+import { errorTextStyle } from "../styles/errorTextStyle";
 import { placeholderTextStyle } from "../styles/placeholderTextStyle";
 
 type Props = {

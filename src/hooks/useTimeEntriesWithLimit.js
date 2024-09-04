@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import firestore from "@react-native-firebase/firestore";
 import auth from "@react-native-firebase/auth";
+import firestore from "@react-native-firebase/firestore";
+import { useEffect, useState } from "react";
 
 const useTimeEntriesWithLimit = (limit) => {
   const [timeEntries, setTimeEntries] = useState([]);

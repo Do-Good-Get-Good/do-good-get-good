@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import NewestTimeEntries from "../../components/NewestTimeEntries";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -38,7 +38,7 @@ describe("Testing NewestTimeEntries", () => {
     const navigate = jest.fn();
 
     const { getAllByText, getByTestId } = render(
-      <NewestTimeEntries navigation={{ navigate }} />,
+      <NewestTimeEntries navigation={{ navigate }} />
     );
     expect(getAllByText("Visa allt").length).toBe(1);
     const button = getByTestId("showAllButton");

@@ -1,15 +1,8 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  PermissionsAndroid,
-} from "react-native";
-import typography from "../../assets/theme/typography";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../assets/theme/colors";
-import { UserPost } from "../../utility/types";
+import typography from "../../assets/theme/typography";
 import { ChatCardImage } from "../../components/ChartCard/ChatCardImage";
+import { UserPost } from "../../utility/types";
 import { checkPermissionAndOpenImage } from "./selectImage";
 
 type Props = {

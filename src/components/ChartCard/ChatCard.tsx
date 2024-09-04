@@ -1,19 +1,19 @@
-import React, { memo } from "react";
-import { StyleSheet, View, TouchableOpacity, Text } from "react-native";
-import { ChatCardHeader } from "./ChatCardHeader";
-import { shadows } from "../../styles/shadows";
-import colors from "../../assets/theme/colors";
-import { ChatCardImage } from "./ChatCardImage";
-import { ChatCardDescription } from "./ChatCardDescription";
-import { PostEmoji, User, UserPost } from "../../utility/types";
-import { ChatCardEditMenu } from "./ChatCardEditMenu";
-import { ChatCardDate } from "./ChatCardDate";
-import { ChatCardEmoji } from "./ChatCardEmoji";
 import { useNavigation } from "@react-navigation/native";
-import { UserStack } from "../../utility/routeEnums";
+import React, { memo } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { Role } from "../../utility/enums";
 import { useUserLevel } from "../../context/useUserLevel";
+import { shadows } from "../../styles/shadows";
+import { Role } from "../../utility/enums";
+import { UserStack } from "../../utility/routeEnums";
+import { PostEmoji, User, UserPost } from "../../utility/types";
+import { ChatCardDate } from "./ChatCardDate";
+import { ChatCardDescription } from "./ChatCardDescription";
+import { ChatCardEditMenu } from "./ChatCardEditMenu";
+import { ChatCardEmoji } from "./ChatCardEmoji";
+import { ChatCardHeader } from "./ChatCardHeader";
+import { ChatCardImage } from "./ChatCardImage";
 
 type Props = {
   post: UserPost;
@@ -38,14 +38,14 @@ const ChatCard = memo(
     const navigation = useNavigation<{
       navigate: (
         nav: UserStack,
-        Props: { postID: UserPost["id"]; loggedInUser: User },
+        Props: { postID: UserPost["id"]; loggedInUser: User }
       ) => void;
     }>();
 
     const navigationEdit = useNavigation<{
       navigate: (
         nav: UserStack,
-        Props: { post: UserPost; toEdit: boolean },
+        Props: { post: UserPost; toEdit: boolean }
       ) => void;
     }>();
 
@@ -98,7 +98,7 @@ const ChatCard = memo(
         </TouchableOpacity>
       </View>
     );
-  },
+  }
 );
 
 export default ChatCard;

@@ -1,7 +1,6 @@
 import { StyleProp, StyleSheet, Text, View, ViewStyle } from "react-native";
-import { Activity, TimeEntry, User } from "../../utility/types";
 import colors from "../../assets/theme/colors";
-import BouncyCheckbox from "react-native-bouncy-checkbox";
+import { TimeEntry } from "../../utility/types";
 import { Checkbox } from "../Checkbox";
 
 type Props = {

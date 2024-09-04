@@ -1,8 +1,9 @@
 import { StyleSheet, Text } from "react-native";
-import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
 import { Sort } from "../../lib/enums/sort";
 import { User } from "../../utility/types";
+
 const textNoInactiveUsers = "Du har inga inaktiva användare";
 const textNoUsersConnected = "Du har inga användare";
 

@@ -4,7 +4,7 @@ export const AlertQuestion = (
   title: string,
   question: string,
   onPressYes: () => void,
-  onPressNo?: () => void,
+  onPressNo?: () => void
 ) =>
   Alert.alert(title, question, [
     {

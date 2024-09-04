@@ -1,29 +1,28 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import React, { useState } from "react";
-import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import {
-  Text,
-  StyleSheet,
-  TouchableOpacity,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { yupResolver } from "@hookform/resolvers/yup";
+import * as yup from "yup";
 import Menu from "../../components/Menu";
 
-import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
 import BottomNavButtons from "../../components/BottomNavButtons";
-import { UserName } from "./updateUser";
-import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
-
-import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
-import { SuperAdminStack } from "../../utility/routeEnums";
-import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
-import { useAdminUpdateUserInfoAndActivities } from "../../context/AdminContext/useAdminUpdateUserInfoAndActivities";
-import { Spinner } from "../../components/Loading";
 import { InputFieldWithController } from "../../components/InputFieldWithController";
+import { Spinner } from "../../components/Loading";
+import { useAdminUpdateUserInfoAndActivities } from "../../context/AdminContext/useAdminUpdateUserInfoAndActivities";
+import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAdminContext";
+import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
+import { SuperAdminStack } from "../../utility/routeEnums";
+import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
+import { UserName } from "./updateUser";
 
 const schema: yup.ObjectSchema<UserName> = yup
   .object()

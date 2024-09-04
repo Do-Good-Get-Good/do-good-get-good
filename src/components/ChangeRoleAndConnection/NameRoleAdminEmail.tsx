@@ -1,9 +1,9 @@
 import { StyleSheet, Text, View } from "react-native";
-import { Role } from "../../utility/enums";
-import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
-import { roleTitles } from "../../utility/utils";
+import typography from "../../assets/theme/typography";
+import { Role } from "../../utility/enums";
 import { User } from "../../utility/types";
+import { roleTitles } from "../../utility/utils";
 
 type TitleAndValue = {
   title: string;

@@ -1,23 +1,19 @@
-import React, {useState, useEffect} from 'react';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Icon } from "@rneui/base";
+import React, { useEffect, useState } from "react";
 import {
+  ScrollView,
   StyleSheet,
   Text,
-  View,
-  ScrollView,
   TouchableOpacity,
-} from 'react-native';
-
-import {SafeAreaView} from 'react-native-safe-area-context';
-
-import {Icon} from '@rneui/base';
-import Menu from '../components/Menu';
-
-import AsyncStorage from '@react-native-async-storage/async-storage';
-
-import colors from '../assets/theme/colors';
-import typography from '../assets/theme/typography';
-import BottomLogo from '../components/BottomLogo';
-import {getFaq} from '../firebase-functions/get';
+  View,
+} from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import BottomLogo from "../components/BottomLogo";
+import Menu from "../components/Menu";
+import { getFaq } from "../firebase-functions/get";
 
 const Faq = () => {
   const [faqArray, setFaqArray] = useState([]);
@@ -31,14 +27,14 @@ const Faq = () => {
       const arrayWithDataAndCurentTime = [];
       const tempArray = [];
       await getFaq()
-        .then(querySnapshot => {
-          querySnapshot.forEach(doc => {
-            tempArray.push({id: doc.id, opened: false, ...doc.data()});
+        .then((querySnapshot) => {
+          querySnapshot.forEach((doc) => {
+            tempArray.push({ id: doc.id, opened: false, ...doc.data() });
           });
         })
-        .catch(error => {
-          if (error === 'no-data') {
-            setError('Sorry, something went wrong');
+        .catch((error) => {
+          if (error === "no-data") {
+            setError("Sorry, something went wrong");
           }
         });
 
@@ -48,7 +44,7 @@ const Faq = () => {
       storeData(arrayWithDataAndCurentTime);
     };
 
-    getData().then(res => {
+    getData().then((res) => {
       if (res != null && res[1] + minutesToCompare > curentTime) {
         setFaqArray(res[0]);
       } else {
@@ -57,8 +53,8 @@ const Faq = () => {
     });
   }, []);
 
-  const openAnswer = selectedQuestion => {
-    const newFaqArray = faqArray.map(question => {
+  const openAnswer = (selectedQuestion) => {
+    const newFaqArray = faqArray.map((question) => {
       return {
         ...question,
         opened:
@@ -67,7 +63,7 @@ const Faq = () => {
             : question.opened,
       };
     });
-    const secondNewFaqArray = newFaqArray.map(question => {
+    const secondNewFaqArray = newFaqArray.map((question) => {
       return {
         ...question,
         opened: question.id != selectedQuestion.id ? false : question.opened,
@@ -76,10 +72,10 @@ const Faq = () => {
     setFaqArray(secondNewFaqArray);
   };
 
-  const storeData = async faqs => {
+  const storeData = async (faqs) => {
     try {
       const jsonValue = JSON.stringify(faqs);
-      await AsyncStorage.setItem('@Faq_Key', jsonValue);
+      await AsyncStorage.setItem("@Faq_Key", jsonValue);
     } catch (e) {
       // saving error
       console.log(e);
@@ -88,7 +84,7 @@ const Faq = () => {
 
   const getData = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('@Faq_Key');
+      const jsonValue = await AsyncStorage.getItem("@Faq_Key");
       return jsonValue != null ? JSON.parse(jsonValue) : null;
     } catch (e) {
       // error reading value
@@ -101,7 +97,8 @@ const Faq = () => {
       <Menu />
       <ScrollView
         style={styles.containterForDropDown}
-        testID="faq.questionsArray">
+        testID="faq.questionsArray"
+      >
         <Text style={styles.headerText} testID="faq.headerText">
           FAQ
         </Text>
@@ -109,14 +106,15 @@ const Faq = () => {
           Här kan du hitta svar på de vanligaste frågorna. Hittar du inte svar
           på din fråga kan du också kontakta din konsultchef.
         </Text>
-        <View style={{paddingBottom: 24}}>
+        <View style={{ paddingBottom: 24 }}>
           {faqArray.length > 0 &&
             faqArray.map((item, index) => (
               <View
                 style={styles.faqContainer}
                 testID="faq.faqArrayItems"
                 index={index}
-                key={index}>
+                key={index}
+              >
                 <TouchableOpacity
                   onPress={() => {
                     openAnswer(item);
@@ -125,7 +123,8 @@ const Faq = () => {
                     styles.dropDown,
                     item.opened && styles.dropDownOpened,
                   ]}
-                  testID={`question ${index}`}>
+                  testID={`question ${index}`}
+                >
                   <Text style={styles.textQuestion} testID="textID">
                     {item.question}
                   </Text>
@@ -133,7 +132,7 @@ const Faq = () => {
                     style={styles.icon}
                     color={colors.secondary}
                     name={
-                      item.opened === true ? 'arrow-drop-up' : 'arrow-drop-down'
+                      item.opened === true ? "arrow-drop-up" : "arrow-drop-down"
                     }
                     size={30}
                   />
@@ -165,7 +164,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     ...typography.h2,
-    fontWeight: '500',
+    fontWeight: "500",
     marginTop: 30,
   },
   errorText: {
@@ -180,14 +179,14 @@ const styles = StyleSheet.create({
     paddingHorizontal: 18,
   },
   faqContainer: {
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   dropDown: {
-    flexDirection: 'row',
+    flexDirection: "row",
     height: 50,
     borderRadius: 2,
-    alignItems: 'center',
-    justifyContent: 'space-between',
+    alignItems: "center",
+    justifyContent: "space-between",
     backgroundColor: colors.background,
     marginTop: 10,
   },

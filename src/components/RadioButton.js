@@ -1,17 +1,15 @@
-import React, { useState, useEffect } from "react";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-
+import React, { useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
   Keyboard,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 export function RadioButton(props) {
   const [jaButton, setJaButton] = useState(true);

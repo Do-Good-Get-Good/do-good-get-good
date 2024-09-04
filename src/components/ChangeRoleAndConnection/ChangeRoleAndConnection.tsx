@@ -1,14 +1,12 @@
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-import React, { useEffect, useState } from "react";
-
-import { useChangeRoleAndConnectionButtons } from "./hooks/useChangeRoleAndConnectionButtons";
-import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
-import { NameRoleAdminEmail } from "./NameRoleAdminEmail";
-
-import { ChagesType, ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
+import React from "react";
 import { Controller, UseFormGetValues } from "react-hook-form";
-import { UserInfo } from "../../screens/RolesAndConnection";
+import { StyleSheet, View } from "react-native";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+import { UserInfo } from "../../screens/RolesAndConnection";
+import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
+import { ChagesType, ChangeRoleOrAdminPopup } from "./ChangeRoleOrAdminPopup";
+import { useChangeRoleAndConnectionButtons } from "./hooks/useChangeRoleAndConnectionButtons";
+import { NameRoleAdminEmail } from "./NameRoleAdminEmail";
 
 type Props = {
   getValues: UseFormGetValues<UserInfo>;
@@ -49,7 +47,7 @@ export function ChangeRolesAndConnection({ getValues, control }: Props) {
                   role: getValues("role"),
                   adminID: getValues("admin.id"),
                   statusActive: getValues("isActive"),
-                },
+                }
               )
             }
           />

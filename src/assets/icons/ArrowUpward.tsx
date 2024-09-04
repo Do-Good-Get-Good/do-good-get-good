@@ -6,15 +6,16 @@ type Props = {
   style?: ViewStyle | TextStyle | undefined;
 };
 
-export const ArrowUpward = ({ onPress,  style }: Props) => {
+export const ArrowUpward = ({ onPress, style }: Props) => {
   return (
-    <TouchableOpacity  onPress={() => onPress && onPress()}>
-    <Icon
-      style={style}
-      testID={'arrow-upward'}
-      color="#5B6770"
-      name="arrow-upward" size={20}  
-    />
+    <TouchableOpacity onPress={() => onPress && onPress()}>
+      <Icon
+        style={style}
+        testID={"arrow-upward"}
+        color="#5B6770"
+        name="arrow-upward"
+        size={20}
+      />
     </TouchableOpacity>
   );
 };

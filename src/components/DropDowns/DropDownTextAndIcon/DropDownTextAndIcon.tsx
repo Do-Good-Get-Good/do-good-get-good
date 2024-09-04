@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FlexStyle,
   StyleProp,
@@ -5,13 +6,11 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
-  View,
   ViewStyle,
 } from "react-native";
-import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
-import { useState } from "react";
-import colors from "../../../assets/theme/colors";
 import OutsidePressHandler from "react-native-outside-press";
+import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
+import colors from "../../../assets/theme/colors";
 
 type Props = {
   title: string;
@@ -19,9 +18,7 @@ type Props = {
   isUnderlineOnPress?: boolean;
   componentInsideDropDown: React.JSX.Element;
   openAsOverView?: boolean;
-
   isOnOutsidePress?: boolean;
-
   containerstyle?: ViewStyle;
 };
 
@@ -36,7 +33,7 @@ export const DropDownTextAndIcon = ({
   const [isOpen, setIsOpen] = useState(false);
 
   const textWithUnderlineIfPressedStyle = (
-    onPress: boolean = false,
+    onPress: boolean = false
   ): StyleProp<FlexStyle | TextStyle> => ({
     fontSize: 18,
     textDecorationLine: isUnderlineOnPress && onPress ? "underline" : "none",
