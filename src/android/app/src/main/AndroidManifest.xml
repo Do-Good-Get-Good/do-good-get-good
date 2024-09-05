@@ -10,7 +10,8 @@
       android:icon="@mipmap/icon_dggg"
       android:roundIcon="@mipmap/icon_dggg_round"
       android:allowBackup="false"
-      android:theme="@style/AppTheme">
+      android:theme="@style/AppTheme"
+      android:supportsRtl="true">
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"
