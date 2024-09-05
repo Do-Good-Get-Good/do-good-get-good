@@ -1,7 +1,6 @@
-
 import { Icon } from "@rneui/base";
-import colors from "../theme/colors";
 import { TextStyle, ViewStyle } from "react-native";
+import colors from "../theme/colors";
 
 type Props = {
   testID?: string;

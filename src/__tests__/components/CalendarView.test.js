@@ -1,15 +1,13 @@
-import "react-native";
-import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
 import each from "jest-each";
-
+import React from "react";
+import "react-native";
 import CalendarView, {
   calculateNewHours,
   checkIfSameMonth,
 } from "../../components/CalendarView";
-
 import { Arithmetic } from "../../lib/enums/arithmetic.js";
 
 jest.mock("../../firebase-functions/delete", () => ({
@@ -76,7 +74,7 @@ describe("Testing CalendarView", () => {
       const dateAndHourInput =
         format(new Date(), "eee d LLLL", { locale: sv }) + ", 0.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
     });
 
@@ -99,7 +97,7 @@ describe("Testing CalendarView", () => {
       var dateAndHourInput =
         format(new Date(), "eee d LLLL", { locale: sv }) + ", 0.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
 
       const decreaseTimeButton = getByText("-");
@@ -108,7 +106,7 @@ describe("Testing CalendarView", () => {
       dateAndHourInput =
         format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
     });
 
@@ -131,7 +129,7 @@ describe("Testing CalendarView", () => {
       var dateAndHourInput =
         format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
     });
   });
@@ -150,7 +148,7 @@ describe("Testing CalendarView", () => {
         render(componentToRender);
 
       expect(getByTestId("calendarView.headerText").children[0]).toEqual(
-        "Katthem - Göteborg",
+        "Katthem - Göteborg"
       );
       expect(getAllByText("Välj datum").length).toBe(1);
       expect(getAllByText("Hur lång aktivitet?").length).toBe(1);
@@ -160,7 +158,7 @@ describe("Testing CalendarView", () => {
       const dateAndHourInput =
         format(new Date(), "eee d LLLL", { locale: sv }) + ", 0h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
       expect(getAllByText("Logga tid").length).toBe(1);
 
@@ -203,7 +201,7 @@ describe("Testing CalendarView", () => {
         render(componentToRender);
 
       expect(getByTestId("calendarView.headerText").children[0]).toEqual(
-        "Katthem",
+        "Katthem"
       );
       expect(getAllByText("Välj datum").length).toBe(1);
       expect(getAllByText("Hur lång aktivitet?").length).toBe(1);
@@ -214,7 +212,7 @@ describe("Testing CalendarView", () => {
         format(new Date(fakeActivity.date), "eee d LLLL", { locale: sv }) +
         ", 1.5h";
       expect(getByTestId("calendarView.dateAndHourInput").children[0]).toEqual(
-        dateAndHourInput,
+        dateAndHourInput
       );
       expect(getAllByText("Ändra tid").length).toBe(1);
       expect(getAllByText("Ta bort tid").length).toBe(1);
@@ -266,9 +264,9 @@ describe("Testing CalendarView", () => {
     "returns %s when adding %s and %s",
     (expected, registeredTime, hours) => {
       expect(calculateNewHours(hours, registeredTime, Arithmetic.Add)).toBe(
-        expected,
+        expected
       );
-    },
+    }
   );
 
   each([
@@ -280,9 +278,9 @@ describe("Testing CalendarView", () => {
     "returns %s when subtracting %s with %s",
     (expected, registeredTime, hours) => {
       expect(calculateNewHours(hours, registeredTime, Arithmetic.Sub)).toBe(
-        expected,
+        expected
       );
-    },
+    }
   );
 
   it("Verify that 1987-06-05 do not have the same month as ex. 2023-02-24", () => {

@@ -1,11 +1,11 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Pencil } from "../../assets/icons/Pencil";
-import { TimeEntry, User } from "../../utility/types";
 import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, View } from "react-native";
+import { Pencil } from "../../assets/icons/Pencil";
 import { AdminStack } from "../../utility/routeEnums";
+import { User } from "../../utility/types";
 import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
-import { InfoRow } from "./InfoRow";
 import TimeStatistics from "../TimeStatistics";
+import { InfoRow } from "./InfoRow";
 
 type Props = {
   testID?: string;

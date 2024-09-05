@@ -1,23 +1,20 @@
 import React from "react";
 import {
-  View,
+  Linking,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Linking,
+  View,
 } from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
-import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
-
-import BottomLogo from "./components/BottomLogo";
-
-import typography from "./assets/theme/typography";
-import colors from "./assets/theme/colors";
-import { useAuthStateListener } from "./hooks/useAuthStateListener";
-import { Login } from "./components/Login";
 import { EventProvider } from "react-native-outside-press";
+import { SafeAreaView } from "react-native-safe-area-context";
+import colors from "./assets/theme/colors";
+import typography from "./assets/theme/typography";
+import BottomLogo from "./components/BottomLogo";
+import { Login } from "./components/Login";
+import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { useCheckIfUserStatusActive } from "./hooks/useCheckIfUserStatusActive";
+import { AdminStack, SuperAdminStack, UserStack } from "./navigate";
 
 const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();

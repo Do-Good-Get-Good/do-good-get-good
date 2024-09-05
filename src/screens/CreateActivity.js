@@ -1,28 +1,26 @@
-import React, { useState, useEffect, useMemo } from "react";
-import LinearGradient from "react-native-linear-gradient";
+import { Icon } from "@rneui/base";
+import React, { useEffect, useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
+  Alert,
   Image,
-  TouchableOpacity,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
-  Alert,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
+import LinearGradient from "react-native-linear-gradient";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../components/Menu";
-import { Icon } from "@rneui/base";
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 import BottomNavButtons from "../components/BottomNavButtons";
-import { addActivity } from "../firebase-functions/add";
 import LoadingOverlay from "../components/LoadingOverlay";
+import Menu from "../components/Menu";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import { addActivity } from "../firebase-functions/add";
 import useSelectedImage from "../hooks/useSelectedImage";
 
 export function CreateActivity({ route, navigation }) {
@@ -113,7 +111,7 @@ export function CreateActivity({ route, navigation }) {
       setLoading(false);
       Alert.alert(
         "Ett fel uppstod! Det gick inte att skapa aktiviteten",
-        error.message,
+        error.message
       );
     }
   }

@@ -1,6 +1,6 @@
+import { Platform } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Platform } from "react-native";
 
 import { StyleProp } from "react-native/Libraries/StyleSheet/StyleSheet";
 import {

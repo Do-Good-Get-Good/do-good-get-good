@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import OutsidePressHandler from "react-native-outside-press";
 import colors from "../../assets/theme/colors";
 import { shadow } from "../../styles/shadows";
-import OutsidePressHandler from "react-native-outside-press";
 
 export type Option = {
   label: string;

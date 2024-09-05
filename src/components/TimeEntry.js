@@ -1,10 +1,7 @@
-import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
-
 import { Icon } from "@rneui/base";
-
 import { format } from "date-fns";
-
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 

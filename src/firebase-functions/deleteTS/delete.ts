@@ -1,4 +1,6 @@
+import crashlytics from "@react-native-firebase/crashlytics";
 import firestore from "@react-native-firebase/firestore";
+import storage from "@react-native-firebase/storage";
 import {
   Activity,
   Comment,
@@ -6,8 +8,6 @@ import {
   User,
   UserPost,
 } from "../../utility/types";
-import storage from "@react-native-firebase/storage";
-import crashlytics from "@react-native-firebase/crashlytics";
 import { connectTestActivityIfUserHasNoActivity } from "../addTS/add";
 import { getUserData } from "../getTS/get";
 
@@ -56,7 +56,7 @@ export const deleteEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
 
 export const deleteComment = async (
   comment: Comment,
-  postID: UserPost["id"],
+  postID: UserPost["id"]
 ) => {
   try {
     await firestore()
@@ -74,7 +74,7 @@ export const deleteComment = async (
 
 export const deleteActivityConnectionFromUser = async (
   activityID: Activity["id"],
-  userID: User["id"],
+  userID: User["id"]
 ) => {
   try {
     await firestore()

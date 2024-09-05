@@ -1,7 +1,6 @@
-import { createContext, useContext, PropsWithChildren } from "react";
-
-import { getImageForActivity } from "../../lib/images";
+import { createContext, PropsWithChildren, useContext } from "react";
 import useCloudImages from "../../hooks/useCloudImages";
+import { getImageForActivity } from "../../lib/images";
 import { IActivityImagesContext } from "./ActivityImagesContext.config";
 
 const ActivityImageContext = createContext<IActivityImagesContext>({

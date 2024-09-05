@@ -17,7 +17,7 @@ test("updateTotalHoursMonthForUser can throw error", async () => {
     updateTotalHoursMonthForUser(uid, 3);
   } catch (error) {
     expect(error.message).toEqual(
-      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`,
+      `There was an error updating 'total_hours_month' for user '${uid}' in Firebase`
     );
   }
 });

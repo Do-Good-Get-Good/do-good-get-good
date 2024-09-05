@@ -1,17 +1,14 @@
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-
-import { User } from "../../utility/types";
+import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
+import { Pencil } from "../../assets/icons/Pencil";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { ArrowUpDown } from "../../assets/icons/ArrowUpDown";
-import { useEffect, useState } from "react";
-
-import { Pencil } from "../../assets/icons/Pencil";
-
-import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
-import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
-import { showAdminName } from "../../hooks/superAdmin/utils";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+import { showAdminName } from "../../hooks/superAdmin/utils";
+import { User } from "../../utility/types";
+import { makePopupObjectOfAdminNameAndID } from "../ChangeRoleAndConnection/utils";
+import { PopupWithRadioButtons } from "../Popup/PopupWithRadioButtons";
 
 type DropDownInfoProps = {
   onSelect: (user: User) => void;
@@ -24,7 +21,7 @@ const DropDownInfo = ({ user, onSelect }: DropDownInfoProps) => {
   const context = useSuperAdminFunction();
   const allAdminsAndSuperAdmin = context?.allAdminsAndSuperAdmins;
   const allAdminsPopupObj = makePopupObjectOfAdminNameAndID(
-    allAdminsAndSuperAdmin,
+    allAdminsAndSuperAdmin
   );
 
   return (
@@ -83,7 +80,7 @@ export const ConnectedUsersDropDown = ({
   const contextArrayOfUsersIfAdmin =
     superAdminContext?.makeChangesForSelectedUser?.arrayOfUsersIfAdmin;
   const [connectedUsers, setConnectedUsers] = useState<User[] | undefined>(
-    contextArrayOfUsersIfAdmin,
+    contextArrayOfUsersIfAdmin
   );
 
   useEffect(() => {

@@ -1,7 +1,6 @@
-import "react-native";
+import { act, fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, act, waitFor } from "@testing-library/react-native";
-
+import "react-native";
 import ResetPassModal from "../../components/ResetPassModal";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");

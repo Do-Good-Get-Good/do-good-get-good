@@ -1,8 +1,6 @@
-import React from "react";
-import { StyleSheet, View, Dimensions } from "react-native";
-
 import { Dialog } from "@rneui/base";
-
+import React from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import colors from "../assets/theme/colors";
 
 const LoadingOverlay = () => {

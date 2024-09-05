@@ -1,9 +1,9 @@
-import { Control, FieldError, FieldErrors } from "react-hook-form";
+import { useState } from "react";
+import { Control, FieldErrors } from "react-hook-form";
+import { View } from "react-native";
+import { VisibilityIcon } from "../../assets/icons/VisibilityIcon";
 import { InputFieldWithController } from "../InputFieldWithController";
 import { LoginInput } from "./Login";
-import { useState } from "react";
-import { VisibilityIcon } from "../../assets/icons/VisibilityIcon";
-import { View } from "react-native";
 
 type Props = {
   control: Control<LoginInput, any>;

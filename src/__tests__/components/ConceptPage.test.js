@@ -1,13 +1,13 @@
-import "react-native";
-import React from "react";
 import { render, waitFor } from "@testing-library/react-native";
+import React from "react";
+import "react-native";
 import ConceptPage from "../../screens/ConceptPage";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
   );
   return {
     ...actualAsyncStorage,

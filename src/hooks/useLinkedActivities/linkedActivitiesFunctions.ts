@@ -1,20 +1,18 @@
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
-import { ActivityInfo, TimeObject } from "../../screens/HomePage/type";
-import {
-  FirebaseUserType,
-  FirebaseActivitiesAndAccumulatedTime,
-} from "../../utility/firebaseTypes";
-import { connectTestActivityIfUserHasNoActivity } from "../../firebase-functions/addTS/add";
 import auth from "@react-native-firebase/auth";
+import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
+import { connectTestActivityIfUserHasNoActivity } from "../../firebase-functions/addTS/add";
 import { deleteActivityConnectionFromUser } from "../../firebase-functions/deleteTS/delete";
 import { getActivityInformation } from "../../firebase-functions/getTS/get";
+import { ActivityInfo, TimeObject } from "../../screens/HomePage/type";
+import {
+  FirebaseActivitiesAndAccumulatedTime,
+  FirebaseUserType,
+} from "../../utility/firebaseTypes";
 const userID = auth()?.currentUser?.uid;
 
 export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
   snapshotData: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
-  setActivityIdAndAccumTime: (ActivityIdAndAccumTime: TimeObject[]) => void,
+  setActivityIdAndAccumTime: (ActivityIdAndAccumTime: TimeObject[]) => void
 ) => {
   let tempArr: TimeObject[] = [];
   const activityIdAndTime: FirebaseUserType["activities_and_accumulated_time"] =
@@ -23,7 +21,7 @@ export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
     snapshotData?.data()?.connected_activities;
 
   await connectTestActivityIfActivityConnectedArrIsEmpty(
-    userConnectedActivities,
+    userConnectedActivities
   );
 
   if (activityIdAndTime) {
@@ -31,7 +29,7 @@ export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
       let idAndTime = await makeTimeObject(
         snapshotData,
         data,
-        userConnectedActivities,
+        userConnectedActivities
       );
       idAndTime && tempArr.push(idAndTime);
     });
@@ -42,10 +40,10 @@ export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
 const makeTimeObject = async (
   snapshotData: FirebaseFirestoreTypes.DocumentSnapshot<FirebaseFirestoreTypes.DocumentData>,
   data: FirebaseActivitiesAndAccumulatedTime,
-  userConnectedActivities: FirebaseUserType["connected_activities"],
+  userConnectedActivities: FirebaseUserType["connected_activities"]
 ) => {
   const isActivityConnected = userConnectedActivities.findIndex(
-    (x) => x === data.activity_id,
+    (x) => x === data.activity_id
   );
 
   if (isActivityConnected !== -1) {
@@ -67,7 +65,7 @@ const makeTimeObject = async (
 };
 
 const connectTestActivityIfActivityConnectedArrIsEmpty = async (
-  userConnectedActivities: FirebaseUserType["connected_activities"],
+  userConnectedActivities: FirebaseUserType["connected_activities"]
 ) => {
   if (userConnectedActivities.length < 1 && userID) {
     await connectTestActivityIfUserHasNoActivity(userID);
@@ -77,7 +75,7 @@ const connectTestActivityIfActivityConnectedArrIsEmpty = async (
 export const makeActivityInfoObjectArr = async (
   activityIdAndAccumTime: TimeObject[],
   setActivityInfo: (info: ActivityInfo[]) => void,
-  setLoading: (l: boolean) => void,
+  setLoading: (l: boolean) => void
 ) => {
   let activityArr: ActivityInfo[] = [];
 

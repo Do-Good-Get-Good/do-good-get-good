@@ -1,11 +1,11 @@
 import { useEffect } from "react";
-import { Role } from "../../utility/enums";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
 import { getUserByStatus } from "../../firebase-functions/getTS/get";
+import { Role } from "../../utility/enums";
 import { User } from "../../utility/types";
 
 export const useGetAllUsersThatExistInTheSystem = (
-  userLevel: Role | undefined,
+  userLevel: Role | undefined
 ) => {
   const context = useSuperAdminFunction();
 

@@ -1,10 +1,10 @@
 import firestore from "@react-native-firebase/firestore";
-import { userPostObject } from "./adaptedObject";
 import { UserPost } from "../utility/types";
+import { userPostObject } from "./adaptedObject";
 
 export const onSnapshotUserPosts = (
   setUserPost: (posts: UserPost[]) => void,
-  limit: number,
+  limit: number
 ) => {
   let arr: UserPost[] = [];
   try {
@@ -27,14 +27,14 @@ export const onSnapshotUserPosts = (
 
 export const onSnapshotSelectedPost = (
   postId: UserPost["id"],
-  setUserPost: (posts: UserPost | undefined) => void,
+  setUserPost: (posts: UserPost | undefined) => void
 ) => {
   try {
     return firestore()
       .collection("UserPosts")
       .doc(postId)
       .onSnapshot((doc) => {
-        return setUserPost(doc?.data()? userPostObject(doc) : undefined);
+        return setUserPost(doc?.data() ? userPostObject(doc) : undefined);
       });
   } catch (error) {
     setUserPost(undefined);

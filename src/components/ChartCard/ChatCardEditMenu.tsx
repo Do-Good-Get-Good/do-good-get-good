@@ -1,16 +1,9 @@
 import React, { useState } from "react";
-import {
-  StyleSheet,
-  Text,
-  TextStyle,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { DropDownOverlay, Option } from "../DropDowns/DropDownOverlay";
 import { AlertQuestion } from "../Alerts/AlertQuestion ";
+import { DropDownOverlay, Option } from "../DropDowns/DropDownOverlay";
 
 type Props = {
   onDeletePress: () => void;
@@ -45,7 +38,7 @@ export const ChatCardEditMenu = ({
       AlertQuestion(
         "",
         `Vill du ta bort den här ${textWhatItemToDelete}?`,
-        onDeletePress,
+        onDeletePress
       );
     },
   };

@@ -1,7 +1,7 @@
 import { StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/theme/colors";
-import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
 import typography from "../../assets/theme/typography";
+import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
 
 type Props = {
   onPress: () => void;

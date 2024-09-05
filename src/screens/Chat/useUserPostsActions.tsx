@@ -1,5 +1,5 @@
-import { Comment, PostEmoji, UserPost } from "../../utility/types";
 import { useState } from "react";
+import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import {
   addComment,
   addEmoji,
@@ -10,8 +10,8 @@ import {
   deleteEmoji,
   deleteUserPostAndImageInStorage,
 } from "../../firebase-functions/deleteTS/delete";
-import { AlertQuestion } from "../../components/Alerts/AlertQuestion ";
 import { updatePostInFirestore } from "../../firebase-functions/updateTS/update";
+import { Comment, PostEmoji, UserPost } from "../../utility/types";
 
 const alertMessage =
   "Vill du publicera det här inlägget i chatten? Alla DGGG-användare kommer att se detta inlägg. Inlägget raderas automatiskt efter ett år.";
@@ -28,10 +28,11 @@ export const useUserPostsActions = () => {
     });
     setLoading(false);
   };
+
   const onUpdateRequest = async (
     post: UserPost,
     updatedImage: UserPost["imageURL"],
-    afterPostUpdated?: () => void,
+    afterPostUpdated?: () => void
   ) => {
     setLoading(true);
 
@@ -40,13 +41,14 @@ export const useUserPostsActions = () => {
     });
     setLoading(false);
   };
+
   const updatePost = async (
     post: UserPost,
     updatedImage: UserPost["imageURL"],
-    afterPostUpdated?: () => void,
+    afterPostUpdated?: () => void
   ) => {
     AlertQuestion("", alertUpdateMessage, () =>
-      onUpdateRequest(post, updatedImage, afterPostUpdated),
+      onUpdateRequest(post, updatedImage, afterPostUpdated)
     );
   };
 
@@ -68,20 +70,22 @@ export const useUserPostsActions = () => {
 
   const deleteEmojiFromPost = async (
     emoji: PostEmoji,
-    postID: UserPost["id"],
+    postID: UserPost["id"]
   ) => {
     setLoading(true);
     await deleteEmoji(emoji, postID);
     setLoading(false);
   };
+
   const addCommentToPost = async (comment: Comment, postID: UserPost["id"]) => {
     setLoading(true);
     await addComment(comment, postID);
     setLoading(false);
   };
+
   const deleteCommentFromPost = async (
     comment: Comment,
-    postID: UserPost["id"],
+    postID: UserPost["id"]
   ) => {
     setLoading(true);
     await deleteComment(comment, postID);

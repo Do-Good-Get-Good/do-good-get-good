@@ -1,9 +1,7 @@
+import { StyleSheet } from "react-native";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import colors from "../assets/theme/colors";
-import { Platform, StyleSheet, View } from "react-native";
 import { shadow } from "../styles/shadows";
-import { useEffect, useState } from "react";
-import { Text } from "@rneui/base";
 
 type Props = {
   checked: boolean;

@@ -1,17 +1,17 @@
-import React, { useState, useEffect } from "react";
+import { Icon } from "@rneui/base";
+import React, { useEffect, useState } from "react";
 import {
+  Keyboard,
+  Platform,
   StyleSheet,
-  View,
   TextInput,
   TouchableOpacity,
-  Platform,
-  Keyboard,
+  View,
 } from "react-native";
-import { Icon } from "@rneui/base";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 export function SearchBarComponentOld() {
   const adminGalleryContext = useAdminGalleryFunction();

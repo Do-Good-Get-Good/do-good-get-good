@@ -4,10 +4,10 @@ import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import crashlytics from "@react-native-firebase/crashlytics";
 import { UserClaims } from "../utility/firebaseTypes";
 
-import { Role } from "../utility/enums";
-import intersection from "lodash/intersection";
 import head from "lodash/head";
+import intersection from "lodash/intersection";
 import { useUserLevel } from "../context/useUserLevel";
+import { Role } from "../utility/enums";
 
 export const useAuthStateListener = () => {
   const { setUserLevel } = useUserLevel();
@@ -15,7 +15,7 @@ export const useAuthStateListener = () => {
   const [initializing, setInitializing] = useState(true);
   const [user, setUser] = useState<FirebaseAuthTypes.User | null>(null);
   const [userClaims, setUserClaims] = useState<UserClaims | undefined>(
-    undefined,
+    undefined
   );
 
   async function onAuthStateChanged(userState: FirebaseAuthTypes.User | null) {
@@ -28,7 +28,7 @@ export const useAuthStateListener = () => {
 
         const searchUserRoleInClaims = intersection(
           Object.keys(userIdToken?.claims),
-          Object.keys(Role),
+          Object.keys(Role)
         );
         const role = Role[head(searchUserRoleInClaims) as keyof typeof Role];
         setUserLevel(role);

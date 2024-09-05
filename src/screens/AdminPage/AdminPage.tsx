@@ -1,18 +1,15 @@
-import { StyleSheet, ScrollView, Text } from "react-native";
-import React, { useState } from "react";
+import React from "react";
+import { ScrollView, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../../components/Menu";
-import FloatingActionButton from "../../components/FloatingActionButton";
-
-import { MyUsers } from "../../components/MyUsers";
-import BottomLogo from "../../components/BottomLogo";
 import colors from "../../assets/theme/colors";
+import BottomLogo from "../../components/BottomLogo";
 import { UserAndUnapprovedTimeEntries } from "../../components/DropDowns/UserAndUpapprovedTimeEntries";
+import FloatingActionButton from "../../components/FloatingActionButton";
+import { Spinner } from "../../components/Loading";
+import Menu from "../../components/Menu";
+import { MyUsers } from "../../components/MyUsers";
 import { useAdminFunction } from "../../context/AdminContext";
 import { useAdminContext } from "../../context/AdminContext/useAdminContext";
-
-import { Spinner } from "../../components/Loading";
 
 type Props = {
   navigation: any;

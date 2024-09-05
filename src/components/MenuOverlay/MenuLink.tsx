@@ -1,12 +1,12 @@
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import typography from "../../assets/theme/typography";
-import { useNavigation } from "@react-navigation/native";
-import { NavigationObject } from "./useMenuNavigation";
 import {
   AdminStack,
   SuperAdminStack,
   UserStack,
 } from "../../utility/routeEnums";
+import { NavigationObject } from "./useMenuNavigation";
 
 type Props = {
   navigationObj: NavigationObject;
@@ -17,7 +17,7 @@ export const MenuLink = ({ navigationObj, openOverlay }: Props) => {
   const navigation = useNavigation<{
     navigate: (
       nav: SuperAdminStack | AdminStack | UserStack,
-      params: any,
+      params: any
     ) => void;
   }>();
 

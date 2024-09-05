@@ -1,10 +1,8 @@
 import React from "react";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import MyTimeEntries from "../components/MyTimeEntries";
-
 import BottomLogo from "../components/BottomLogo";
 import Menu from "../components/Menu";
+import MyTimeEntries from "../components/MyTimeEntries";
 
 export const MyTimePage = () => {
   return (

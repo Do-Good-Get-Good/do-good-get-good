@@ -1,19 +1,12 @@
-import {
-  getAllUnconfirmedTimeEntries,
-  getUserData,
-} from "../../firebase-functions/getTS/get";
-import {
-  TimeEntry,
-  User,
-  UserAndUnapprovedTimeEntriesType,
-} from "../../utility/types";
-import { useSuperAdminFunction } from "../SuperAdminContext";
-import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
+import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 import { useApproveTimeEntry } from "../../hooks/useApproveTimeEntry/useApproveTimeEntry";
+import { TimeEntry, User } from "../../utility/types";
+import { useSuperAdminFunction } from "../SuperAdminContext";
 import {
   filterAfterApprovedTimeEntrirs,
   makeListOfUserAndUnapprovedTimeEntries,
 } from "../utility/functions";
+import { useSuperAdminHomePageFunction } from "./SuperAdminHomePageContext";
 
 export const useSuperAdminHomePageContext = () => {
   const { onApproveTimeEntries } = useApproveTimeEntry();
@@ -26,7 +19,7 @@ export const useSuperAdminHomePageContext = () => {
 
   const onApproveTimeEntriesSuperadmin = async (
     timeEntries: Array<TimeEntry>,
-    approvedBy: User["id"],
+    approvedBy: User["id"]
   ) => {
     let temArr = allUsersWithUnconfirmedTimeEntries ?? [];
     const afterApprove = await onApproveTimeEntries(timeEntries, approvedBy);
@@ -40,7 +33,7 @@ export const useSuperAdminHomePageContext = () => {
     const unconfirmedTimeEntries = await getAllUnconfirmedTimeEntries();
 
     let usersAndUnconfirmedTimeEntries = await usersWithUnconfirmedTimeEntries(
-      unconfirmedTimeEntries,
+      unconfirmedTimeEntries
     );
     usersAndUnconfirmedTimeEntries &&
       setAllUsersWithUnconfirmedTimeEntries(usersAndUnconfirmedTimeEntries);

@@ -1,14 +1,13 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import CreateActivity from "../../screens/CreateActivity";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
   );
   return {
     ...actualAsyncStorage,
@@ -86,7 +85,7 @@ describe("Testing CreateActivity ", () => {
   });
   it("Can navigate to ImagesGallery", () => {
     const { getByTestId } = render(
-      <CreateActivity route={route} navigation={navigation} />,
+      <CreateActivity route={route} navigation={navigation} />
     );
 
     const imagesGalleryButton = getByTestId("navigateToImagesGallery");
@@ -99,20 +98,20 @@ describe("Testing CreateActivity ", () => {
 
   it("Button with text 'Infoga' exist", () => {
     const { getAllByText } = render(
-      <CreateActivity route={route} navigation={navigation} />,
+      <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("Infoga").length).toBe(1);
   });
   it("Text 'Lägg till som TG-favorit' exist", () => {
     const { getAllByText } = render(
-      <CreateActivity route={route} navigation={navigation} />,
+      <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("Lägg till som TG-favorit").length).toBe(1);
   });
 
   it("Can press TG-favorite button", () => {
     const { getByTestId } = render(
-      <CreateActivity route={route} navigation={navigation} />,
+      <CreateActivity route={route} navigation={navigation} />
     );
 
     const buttonSomTGFavorit = getByTestId("buttonSomTGFavorit");
@@ -121,10 +120,10 @@ describe("Testing CreateActivity ", () => {
 
   it("Text 'TG-favoriter visas för alla användare' exist", () => {
     const { getAllByText } = render(
-      <CreateActivity route={route} navigation={navigation} />,
+      <CreateActivity route={route} navigation={navigation} />
     );
     expect(getAllByText("TG-favoriter visas för alla användare").length).toBe(
-      1,
+      1
     );
   });
 });

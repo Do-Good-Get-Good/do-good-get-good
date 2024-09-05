@@ -1,23 +1,20 @@
+import { useNetInfo } from "@react-native-community/netinfo";
+import { useNavigation } from "@react-navigation/native";
+import { Icon } from "@rneui/base";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  Text,
-  View,
   Image,
   Pressable,
   StatusBar,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
-import { Icon } from "@rneui/base";
-import { useNetInfo } from "@react-native-community/netinfo";
-import { useNavigation } from "@react-navigation/native";
-
+import Config from "react-native-config";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-
-import Config from "react-native-config";
-
-import { MenuOverlay } from "./MenuOverlay";
 import DevRelease from "./DevRelease";
+import { MenuOverlay } from "./MenuOverlay";
 
 const Menu = () => {
   const navigation = useNavigation();

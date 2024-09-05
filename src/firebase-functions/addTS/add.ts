@@ -1,7 +1,7 @@
-import { Platform } from "react-native";
-import { Comment, Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import { Platform } from "react-native";
+import { Comment, PostEmoji, User, UserPost } from "../../utility/types";
 import { getUserData } from "../getTS/get";
 
 export const addImageToStorage = async (imageURL: string): Promise<string> => {
@@ -22,7 +22,7 @@ export const addImageToStorage = async (imageURL: string): Promise<string> => {
   return fullPath;
 };
 export const saveImageToChatImageStoreAndCreateUserPost = async (
-  post: UserPost,
+  post: UserPost
 ) => {
   try {
     const timestamp = firestore.Timestamp.now().toMillis();
@@ -94,7 +94,7 @@ export const addComment = async (comment: Comment, postID: UserPost["id"]) => {
 };
 
 export const connectTestActivityIfUserHasNoActivity = async (
-  userID: User["id"],
+  userID: User["id"]
 ) => {
   try {
     const getUser = await getUserData(userID);
@@ -104,7 +104,7 @@ export const connectTestActivityIfUserHasNoActivity = async (
         .doc(userID)
         .update({
           connected_activities: firestore.FieldValue.arrayUnion(
-            "cVkZbjsrXs6YKk3Qli0b",
+            "cVkZbjsrXs6YKk3Qli0b"
           ),
 
           activities_and_accumulated_time: firestore.FieldValue.arrayUnion({

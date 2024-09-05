@@ -1,19 +1,17 @@
-import React, { useState, useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
   FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../components/Menu";
 import typography from "../assets/theme/typography";
-import InfoModal from "../components/InfoModal";
 import BottomNavButtons from "../components/BottomNavButtons";
+import InfoModal from "../components/InfoModal";
+import Menu from "../components/Menu";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import { ActivityImage } from "../hooks/useCloudImages";
 import { selectedImageStyle } from "../styles/selectedImageStyle";
@@ -30,7 +28,7 @@ export function ImagesGallery({
   const { images } = useActivityImages();
 
   const [selected, setSelected] = useState<ActivityImage>(
-    selectedImage ?? { photo: "" },
+    selectedImage ?? { photo: "" }
   );
 
   const imagesArray = useMemo(() => {

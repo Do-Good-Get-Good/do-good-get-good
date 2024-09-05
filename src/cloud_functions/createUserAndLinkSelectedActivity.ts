@@ -1,11 +1,11 @@
-import functions from "@react-native-firebase/functions";
 import craschlytics from "@react-native-firebase/crashlytics";
+import functions from "@react-native-firebase/functions";
 import { Alert } from "react-native";
 import { resetPass } from "../firebase-functions/updateTS/resetPasswordFunction";
 
-import { Activity } from "../utility/types";
-import { UserNewAccount } from "../screens/CreateUser";
 import Config from "react-native-config";
+import { UserNewAccount } from "../screens/CreateUser";
+import { Activity } from "../utility/types";
 const project =
   Config.NODE_ENV === "prod"
     ? "do-good-get-good-2f6cc"
@@ -15,12 +15,12 @@ export const createUserAndLinkSelectedActivity = async (
   user: UserNewAccount,
   activityId: Activity["id"],
   setLoading: (loading: boolean) => void,
-  navigation: any,
+  navigation: any
 ) => {
   try {
     setLoading(true);
     const createUser = functions().httpsCallableFromUrl(
-      `https://europe-north1-${project}.cloudfunctions.net/createUserSecondGen`,
+      `https://europe-north1-${project}.cloudfunctions.net/createUserSecondGen`
     );
     const res = await createUser({
       firstName: user.name,
@@ -36,7 +36,7 @@ export const createUserAndLinkSelectedActivity = async (
       newUser,
       user.email,
       setLoading,
-      navigation,
+      navigation
     );
   } catch (error: any) {
     let message;
@@ -56,7 +56,7 @@ const sendResetPasswordOrShowError = async (
   newUser: any,
   email: UserNewAccount["email"],
   setLoading: (loading: boolean) => void,
-  navigation: any,
+  navigation: any
 ) => {
   if (newUser) {
     const sendLinkToResetPasswordToUser = await resetPass(email);
@@ -65,7 +65,7 @@ const sendResetPasswordOrShowError = async (
       `Användaren '${newUser.first_name} ${newUser.last_name}' har skapats!\n${sendLinkToResetPasswordToUser}`,
 
       false,
-      navigation,
+      navigation
     );
   } else {
     alertUser("Kunde inte skapa användare", true, navigation);

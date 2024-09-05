@@ -6,14 +6,15 @@ import {
   Text,
   View,
 } from "react-native";
-import Menu from "../../components/Menu";
 import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
 import BottomLogo from "../../components/BottomLogo";
 import { GoBackButton } from "../../components/Buttons/GoBackButton";
-import typography from "../../assets/theme/typography";
+import Menu from "../../components/Menu";
 import { getImageForActivity } from "../../lib/images";
-import { iconsAndText } from "./iconsAndText";
 import { Activity } from "../../utility/types";
+import { iconsAndText } from "./iconsAndText";
+
 type Params = {
   activityInfo: Activity;
 };
@@ -41,7 +42,7 @@ export const ActivityCardDetails = ({ route }: Props) => {
           style={styles.image}
           source={getImageForActivity(
             activityInfo.photo,
-            activityInfo.imageUrl,
+            activityInfo.imageUrl
           )}
         />
         {iconsAndText(activityInfo).map((iconAntext, i) => (

@@ -1,29 +1,24 @@
 import React, { useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Platform,
-  ScrollView,
-  TextInput,
   Image,
   KeyboardAvoidingView,
+  Platform,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import LinearGradient from "react-native-linear-gradient";
-
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../components/Menu";
-import BottomNavButtons from "../components/BottomNavButtons";
-
-import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
-
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import BottomNavButtons from "../components/BottomNavButtons";
+import Menu from "../components/Menu";
+import { useActivityCardContext } from "../context/ActivityCardContext";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 import useSelectedImage from "../hooks/useSelectedImage";
 
 export function ChangeActivity({ route, navigation }) {

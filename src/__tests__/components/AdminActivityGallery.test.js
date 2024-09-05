@@ -1,11 +1,10 @@
-import "react-native";
-import React, { useState as useStateMock } from "react";
 import { render } from "@testing-library/react-native";
-
-import AdminActivityGallery from "../../screens/AdminActivityGallery";
+import React, { useState as useStateMock } from "react";
+import "react-native";
+import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
-import { useActivityCardContext } from "../../context/ActivityCardContext";
+import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -87,17 +86,17 @@ describe("Testing AdminActivityGallery ", () => {
     useCreateActivityFunction().activityHasChanged.mockReturnValue(true);
 
     useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
-      false,
+      false
     );
     useActivityCardContext().changeActiveStatusInAdminGallery.mockReturnValue(
-      false,
+      false
     );
   });
 
   it("AdminActivityGallery fill up arrayOfActiveActivities and inactiveActivities ", () => {
     const {} = render(<AdminActivityGallery />);
     setArrayOfActiveActivities(
-      useCreateActivityFunction().activeActivities.mock,
+      useCreateActivityFunction().activeActivities.mock
     );
     setInactiveActivities(useAdminGalleryFunction().inactiveActivities.mock);
   });

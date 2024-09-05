@@ -1,14 +1,9 @@
 import { Text } from "@rneui/base";
+import { useCallback } from "react";
 import { StyleSheet, View } from "react-native";
 import typography from "../../assets/theme/typography";
-
+import { TimeEntry } from "../../utility/types";
 import { Checkbox } from "../Checkbox";
-import {
-  TimeEntry,
-  UserAndUnapprovedTimeEntriesType,
-} from "../../utility/types";
-
-import { useCallback } from "react";
 
 const title = "Icke godkänd";
 const checkBoxText = "Markera alla";

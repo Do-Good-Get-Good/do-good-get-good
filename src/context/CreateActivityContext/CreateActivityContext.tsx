@@ -1,8 +1,8 @@
 import React, {
-  useContext,
-  useState,
-  useEffect,
   PropsWithChildren,
+  useContext,
+  useEffect,
+  useState,
 } from "react";
 import { getAllActivitiesWithStatus } from "../../firebase-functions/get";
 import { Activity } from "../../utility/types";
@@ -99,7 +99,7 @@ export const CreateActivityProvider = ({ children }: PropsWithChildren) => {
 
         if (searchAtTitle || searchAtCity) {
           const isObjectAlreadyExist = arrayWithFoundObjects.some(
-            (x) => x.id === id,
+            (x) => x.id === id
           );
 
           if (!isObjectAlreadyExist) {

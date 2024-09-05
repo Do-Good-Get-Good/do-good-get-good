@@ -1,24 +1,22 @@
-import { StyleSheet, ScrollView, View } from "react-native";
-import React, { useCallback, useState } from "react";
-import { SafeAreaView } from "react-native-safe-area-context";
-
-import BottomLogo from "../components/BottomLogo";
-
-import Menu from "../components/Menu";
-import * as yup from "yup";
-import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
-
-import { Role } from "../utility/enums";
-import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { LongButton } from "../components/Buttons/LongButton";
-import { GoBackButton } from "../components/Buttons/GoBackButton";
-import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
-import { User } from "../utility/types";
 import reject from "lodash/reject";
-import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
-import { useSuperAdminFunction } from "../context/SuperAdminContext";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import * as yup from "yup";
+import BottomLogo from "../components/BottomLogo";
+import { GoBackButton } from "../components/Buttons/GoBackButton";
+import { LongButton } from "../components/Buttons/LongButton";
+import { ChangeRolesAndConnection } from "../components/ChangeRoleAndConnection";
+import { ConnectedUsersDropDown } from "../components/DropDowns/ConnectedUsersDropDown";
 import { Spinner } from "../components/Loading";
+import Menu from "../components/Menu";
+import { useSuperAdminFunction } from "../context/SuperAdminContext";
+import { useSuperAdminContext } from "../context/SuperAdminContext/useSuperAdminContext";
+import { Role } from "../utility/enums";
+import { User } from "../utility/types";
+
 type UserIdAndFullName = { id: string; fullName: string };
 
 export type UserInfo = {
@@ -43,14 +41,12 @@ const schema: yup.ObjectSchema<UserInfo> = yup
 
   .defined();
 
-
-
-export const RolesAndConnection = ({  }) => {
+export const RolesAndConnection = ({}) => {
   const superAdminContext = useSuperAdminFunction();
   const { onSaveChangedUser, loading } = useSuperAdminContext();
   const user = superAdminContext?.makeChangesForSelectedUser;
   const [usersWithChangedAdmin, setUsersWithChangedAdmin] = useState<User[]>(
-    [],
+    []
   );
 
   const { handleSubmit, control, getValues } = useForm<UserInfo>({
@@ -76,7 +72,7 @@ export const RolesAndConnection = ({  }) => {
   return (
     <SafeAreaView style={{ flex: 1 }}>
       <Menu />
-      <GoBackButton  />
+      <GoBackButton />
       <ScrollView>
         <View style={styles.container}>
           <ChangeRolesAndConnection control={control} getValues={getValues} />

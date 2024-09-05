@@ -1,6 +1,6 @@
-import "react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import { render, waitFor, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import { HomePage } from "../../screens/HomePage";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
@@ -73,7 +73,7 @@ let mockPrivacyPolicyKey = "false";
 const mockSetItemAsyncStorage = jest.fn();
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
+    "@react-native-async-storage/async-storage/jest/async-storage-mock"
   );
 
   return {
@@ -127,7 +127,7 @@ describe("Testing HomePage", () => {
     fireEvent.press(getByText("Fortsätt"));
     expect(mockSetItemAsyncStorage).toHaveBeenCalledWith(
       "@Is_Approved_Privacy_Policy_Key",
-      "true",
+      "true"
     );
 
     await waitFor(() => {
@@ -147,7 +147,7 @@ describe("Testing HomePage", () => {
     fireEvent.press(getByText("Avbryt"));
     expect(mockSetItemAsyncStorage).toHaveBeenCalledWith(
       "@Is_Approved_Privacy_Policy_Key",
-      "false",
+      "false"
     );
 
     await waitFor(() => {

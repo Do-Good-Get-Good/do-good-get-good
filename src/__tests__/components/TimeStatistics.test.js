@@ -1,11 +1,9 @@
-import "react-native";
-import React from "react";
 import { render } from "@testing-library/react-native";
-
-import TimeStatistics from "../../components/TimeStatistics";
-
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
+import React from "react";
+import "react-native";
+import TimeStatistics from "../../components/TimeStatistics";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
@@ -36,17 +34,17 @@ describe("Testing TimeStatistics", () => {
 
   it("timeForYear text exist", () => {
     const { getByTestId } = render(
-      <TimeStatistics timeObject={mockTimeObject} />,
+      <TimeStatistics timeObject={mockTimeObject} />
     );
     const currentForYear = getByTestId("timeForYear");
     expect(currentForYear.children[0]).toBe(
-      `Timmar godkända ${new Date().getFullYear()}: 10`,
+      `Timmar godkända ${new Date().getFullYear()}: 10`
     );
   });
 
   it("Header text exist on screen", () => {
     const { getAllByText } = render(
-      <TimeStatistics timeObject={mockTimeObject} />,
+      <TimeStatistics timeObject={mockTimeObject} />
     );
     const month = format(new Date(), "MMMM", {
       locale: sv,
@@ -57,7 +55,7 @@ describe("Testing TimeStatistics", () => {
 
   it("Text 'Registrerade' exist", () => {
     const { getAllByText, getByTestId } = render(
-      <TimeStatistics timeObject={mockTimeObject} />,
+      <TimeStatistics timeObject={mockTimeObject} />
     );
 
     expect(getByTestId("currentForMonth").children[0]).toBe("5");
@@ -66,7 +64,7 @@ describe("Testing TimeStatistics", () => {
 
   it("Text 'Godkända' exist", () => {
     const { getAllByText, getByTestId } = render(
-      <TimeStatistics timeObject={mockTimeObject} />,
+      <TimeStatistics timeObject={mockTimeObject} />
     );
     expect(getByTestId("confirmedTime").children[0]).toEqual("10");
     expect(getAllByText("Godkända").length).toBe(1);
@@ -74,7 +72,7 @@ describe("Testing TimeStatistics", () => {
 
   it("Text 'Ersatta' exist", () => {
     const { getAllByText, getByTestId } = render(
-      <TimeStatistics timeObject={mockTimeObject} />,
+      <TimeStatistics timeObject={mockTimeObject} />
     );
     const year = new Date().getFullYear();
     expect(getByTestId("paidTime").children[0]).toEqual("5 / 8");
