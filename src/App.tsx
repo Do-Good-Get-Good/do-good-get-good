@@ -17,10 +17,11 @@ import colors from "./assets/theme/colors";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
 import { Login } from "./components/Login";
 import { EventProvider } from "react-native-outside-press";
+import { useCheckIfUserStatusActive } from "./hooks/useCheckIfUserStatusActive";
 
 const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
-
+  useCheckIfUserStatusActive(user);
   if (initializing) return null;
 
   if (!user) {
