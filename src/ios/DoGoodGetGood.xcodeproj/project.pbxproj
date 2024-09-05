@@ -15,7 +15,6 @@
 		21F79C4FF3F4E7EC78BB7B1D /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = 4ACCD7D7BF8635B81E32E475 /* PrivacyInfo.xcprivacy */; };
 		2512AE9A86A247598720C9F6 /* DIN-Bold.otf in Resources */ = {isa = PBXBuildFile; fileRef = F1D10C6ECC7345CB866AEB4D /* DIN-Bold.otf */; };
 		396EB4F101EE3E2F9FA2EDBD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5C73748D16E7AF312C8FECA1 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood.framework */; };
-		53566BF56B24AC1A10AC742B /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = A737956BC0A1925284776CD9 /* PrivacyInfo.xcprivacy */; };
 		64CEDA5729AFB8D500D996F1 /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
 		64CEDA5829AFB8D500D996F1 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		64CEDA5C29AFB8D500D996F1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
@@ -29,7 +28,6 @@
 		C05E17F92BD009B80046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */; };
 		C05E17FB2BD009C90046F1E1 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */; };
 		D8F8C511B2EC435698726593 /* DIN-Light.otf in Resources */ = {isa = PBXBuildFile; fileRef = 70563D5B07364418ABFAD8F7 /* DIN-Light.otf */; };
-		E70C096A51F778D3A376C774 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = C699F3FC4313A9E56FF313C4 /* PrivacyInfo.xcprivacy */; };
 		E8101F8DC55342D7A663B3C6 /* DIN-Regular.otf in Resources */ = {isa = PBXBuildFile; fileRef = 8E44F55844C541FB8CA47488 /* DIN-Regular.otf */; };
 		F2262AD8F3AB16DE91E33283 /* PrivacyInfo.xcprivacy in Resources */ = {isa = PBXBuildFile; fileRef = D3025B6273893783B1048512 /* PrivacyInfo.xcprivacy */; };
 		FE6EBD44F1839F1C9C9E7B96 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */; };
@@ -68,12 +66,10 @@
 		855D82545C8956BF2B98A181 /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood/Pods-DoGoodGetGoodCommonPods-DoGoodGetGood.release.xcconfig"; sourceTree = "<group>"; };
 		8E44F55844C541FB8CA47488 /* DIN-Regular.otf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Regular.otf"; path = "../assets/fonts/DIN-Regular.otf"; sourceTree = "<group>"; };
 		97083EC57598069DE8C7ED2F /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.debug.xcconfig"; sourceTree = "<group>"; };
-		A737956BC0A1925284776CD9 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		AE108FECF935428586ECE21F /* DIN-Medium.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = "DIN-Medium.ttf"; path = "../assets/fonts/DIN-Medium.ttf"; sourceTree = "<group>"; };
 		BD16FB39DD8E27E466B43E8B /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Prod.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		C05E17F82BD009B80046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		C05E17FA2BD009C90046F1E1 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
-		C699F3FC4313A9E56FF313C4 /* PrivacyInfo.xcprivacy */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xml; name = PrivacyInfo.xcprivacy; path = ../DoGoodGetGood/PrivacyInfo.xcprivacy; sourceTree = "<group>"; };
 		C6ADFB1CDDD0AA21E254A0AD /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGood_Dev.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE560A69BB99D6218FB19ABC /* Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; path = "Target Support Files/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev/Pods-DoGoodGetGoodCommonPods-DoGoodGetGoodDev.release.xcconfig"; sourceTree = "<group>"; };
 		CF3200957C562065FA73DDB8 /* Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_DoGoodGetGoodCommonPods_DoGoodGetGoodTests.framework; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -882,6 +878,7 @@
 			baseConfigurationReference = 64D239C829B0F43A00A948ED /* Config.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -909,6 +906,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = NO;
+				CXX = "";
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				ENABLE_TESTABILITY = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -940,6 +938,8 @@
 					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
@@ -970,6 +970,7 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
+				CC = "";
 				CLANG_ANALYZER_LOCALIZABILITY_NONLOCALIZED = YES;
 				CLANG_CXX_LANGUAGE_STANDARD = "c++20";
 				CLANG_CXX_LIBRARY = "libc++";
@@ -997,6 +998,7 @@
 				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				COPY_PHASE_STRIP = YES;
+				CXX = "";
 				ENABLE_NS_ASSERTIONS = NO;
 				ENABLE_STRICT_OBJC_MSGSEND = YES;
 				"EXCLUDED_ARCHS[sdk=iphonesimulator*]" = i386;
@@ -1024,6 +1026,8 @@
 					"${PODS_CONFIGURATION_BUILD_DIR}/React-graphics/React_graphics.framework/Headers",
 				);
 				IPHONEOS_DEPLOYMENT_TARGET = 17.2;
+				LD = "";
+				LDPLUSPLUS = "";
 				LD_RUNPATH_SEARCH_PATHS = (
 					/usr/lib/swift,
 					"$(inherited)",
