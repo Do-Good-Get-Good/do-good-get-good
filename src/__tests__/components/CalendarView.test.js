@@ -31,10 +31,6 @@ jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("@react-native-firebase/auth", () => () => ({
   currentUser: {
     uid: "uid",

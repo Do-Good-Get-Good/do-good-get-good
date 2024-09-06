@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import HomeSuggestions from "../../components/HomeSuggestions";
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-native-async-storage/async-storage", () => {

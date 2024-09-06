@@ -5,10 +5,6 @@ import Faq from "../../screens/Faq";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/Menu", () => () => {
   return <fakeMenu />;
 });

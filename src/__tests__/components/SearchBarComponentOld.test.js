@@ -7,10 +7,6 @@ import { useCreateActivityFunction } from "../../context/CreateActivityContext/C
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: false,

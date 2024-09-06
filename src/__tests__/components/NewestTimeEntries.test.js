@@ -7,10 +7,6 @@ jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
 jest.mock("@react-navigation/native");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/CalendarView", () => () => {
   return <></>;
 });

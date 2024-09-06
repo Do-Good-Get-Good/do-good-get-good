@@ -8,10 +8,6 @@ import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/Suggestions", () => () => {
   return <mockSuggestions />;
 });

@@ -10,10 +10,6 @@ jest.mock("../../components/MenuOverlay", () => {
   };
 });
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {

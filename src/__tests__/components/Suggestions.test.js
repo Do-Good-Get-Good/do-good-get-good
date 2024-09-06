@@ -25,10 +25,6 @@ jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   })),
 }));
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,

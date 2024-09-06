@@ -7,10 +7,6 @@ import TimeStatistics from "../../components/TimeStatistics";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 const mockTimeObject = [
   {
     paidTime: 10,

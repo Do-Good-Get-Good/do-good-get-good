@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import InfoModal from "../../components/InfoModal";
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 const homepageInfoText =
   "Du får betalt för halva dina utförda timmar och du kan max få betalt för 8 timmar per år";
 const imageGalleryInfoText =

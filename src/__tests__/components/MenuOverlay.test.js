@@ -13,10 +13,6 @@ import { Role } from "../../utility/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {

@@ -9,10 +9,6 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: false,

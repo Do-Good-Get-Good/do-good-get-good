@@ -5,10 +5,6 @@ import ImagesGallery from "../../screens/ImagesGallery";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });

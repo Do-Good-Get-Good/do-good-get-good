@@ -23,10 +23,6 @@ jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   })),
 }));
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/Menu", () => () => {
   return <fakeMenu />;
 });

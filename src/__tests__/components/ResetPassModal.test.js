@@ -5,10 +5,6 @@ import ResetPassModal from "../../components/ResetPassModal";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 var mockedSendPasswordResetEmail = jest.fn();
 
 jest.mock("@react-native-firebase/auth", () => {
