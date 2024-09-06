@@ -1,22 +1,20 @@
+import { isToday, isYesterday } from "date-fns";
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import typography from "../../assets/theme/typography";
 
-const today = new Date();
-
 const formattedDate = (date: Date | string): string => {
-  const formattedDate = typeof date === "string" ? new Date(date) : date;
+  const inputDate = typeof date === "string" ? new Date(date) : date;
 
-  if (formattedDate instanceof Date && !isNaN(formattedDate.getTime())) {
-    const diff = formattedDate.getDate() - today.getDate();
-    switch (diff) {
-      case -1:
-        return "Igår";
-      case 0:
-        return "Idag";
-      default:
-        return `${formattedDate.getDate().toString().padStart(2, "0")}.${(formattedDate.getMonth() + 1).toString().padStart(2, "0")}.${formattedDate.getFullYear()}`;
+  if (inputDate instanceof Date && !isNaN(inputDate.getTime())) {
+    if (isYesterday(inputDate)) {
+      return "Igår";
     }
+    if (isToday(inputDate)) {
+      return "Idag";
+    }
+
+    return Intl.DateTimeFormat("sv-SE").format(inputDate);
   } else {
     return "";
   }

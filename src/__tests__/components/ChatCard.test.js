@@ -132,7 +132,7 @@ describe("Testing ChatCardComponent", () => {
 
     const chatCardDate = getByTestId("chat-card-date");
     expect(chatCardDate).toBeTruthy();
-    expect(chatCardDate.props.children).toEqual("06.07.2024");
+    expect(chatCardDate.props.children).toEqual("2024-07-06");
   });
 
   it("Testing ChatCardHeadercomponent to ensure it renders with correct data", () => {
