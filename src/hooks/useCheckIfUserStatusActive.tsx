@@ -1,31 +1,23 @@
-import auth, { FirebaseAuthTypes } from "@react-native-firebase/auth";
-import { getUserData } from "../firebase-functions/getTS/get";
-import { useEffect } from "react";
+import { FirebaseAuthTypes } from "@react-native-firebase/auth";
 import { AlertInfo } from "../components/Alerts/AlertInfo";
-
-const signOut = () => auth().signOut();
+import { getUserData } from "../firebase-functions/getTS/get";
 
 const textInfoForInactiveUser =
   "Ditt konto är inaktivt. Be din konsultchef att aktivera ditt konto.";
 
-export const useCheckIfUserStatusActive = (
-  user: FirebaseAuthTypes.User | null,
-) => {
-  const userID = user?.uid;
+export const useCheckIfUserStatusActive = () => {
+  const checkIfUserStatusActive = async (
+    user: FirebaseAuthTypes.User | null | undefined
+  ): Promise<boolean> => {
+    if (user === undefined || user === null) return false;
 
-  useEffect(() => {
-    checkIfUserStatusActive();
-  }, [user]);
+    const userID = user.uid;
+    const userCollectionData = await getUserData(userID);
+    const isUserActive = userCollectionData?.statusActive ?? false;
 
-  const checkIfUserStatusActive = async () => {
-    const userCollectionData = userID ? await getUserData(userID) : undefined;
-
-    if (user !== null && userCollectionData?.statusActive === false) {
-      showAlertForInactiveUserAndSignOut();
-    }
+    !isUserActive && AlertInfo(textInfoForInactiveUser);
+    return isUserActive;
   };
 
-  const showAlertForInactiveUserAndSignOut = async () => {
-    AlertInfo(textInfoForInactiveUser, signOut);
-  };
+  return { checkIfUserStatusActive };
 };

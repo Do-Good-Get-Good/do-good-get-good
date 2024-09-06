@@ -13,12 +13,10 @@ import typography from "./assets/theme/typography";
 import BottomLogo from "./components/BottomLogo";
 import { Login } from "./components/Login";
 import { useAuthStateListener } from "./hooks/useAuthStateListener";
-import { useCheckIfUserStatusActive } from "./hooks/useCheckIfUserStatusActive";
 import { AdminStack, SuperAdminStack, UserStack } from "./navigate";
 
 const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
-  useCheckIfUserStatusActive(user);
   if (initializing) return null;
 
   if (!user) {
