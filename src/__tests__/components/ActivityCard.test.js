@@ -5,14 +5,6 @@ import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { ActivityCard } from "../../screens/ActivityCard";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });

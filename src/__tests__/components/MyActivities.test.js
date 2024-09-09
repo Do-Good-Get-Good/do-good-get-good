@@ -3,14 +3,6 @@ import React from "react";
 import "react-native";
 import { MyActivities } from "../../components/MyActivities";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 jest.mock("../../components/CalendarView", () => () => {
   return <fakeCalenderView />;
 });

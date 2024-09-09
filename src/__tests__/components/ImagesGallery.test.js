@@ -7,17 +7,6 @@ jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    images: [
-      {
-        photo: "blodgivning",
-        imageUrl: "image-url",
-      },
-    ],
-  })),
-}));
-
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),

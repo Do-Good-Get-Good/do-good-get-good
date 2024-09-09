@@ -5,14 +5,6 @@ import Suggestions from "../../components/Suggestions";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,

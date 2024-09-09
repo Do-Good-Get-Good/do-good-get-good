@@ -3,14 +3,6 @@ import React from "react";
 import "react-native";
 import HomeSuggestions from "../../components/HomeSuggestions";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 const mockNavigate = jest.fn();
 jest.mock("@react-navigation/native", () => ({
   useNavigation: () => ({

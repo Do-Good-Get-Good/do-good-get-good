@@ -3,14 +3,6 @@ import React from "react";
 import "react-native";
 import ConceptPage from "../../screens/ConceptPage";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: false,

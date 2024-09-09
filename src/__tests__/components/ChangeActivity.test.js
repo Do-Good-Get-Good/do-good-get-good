@@ -3,14 +3,6 @@ import React from "react";
 import "react-native";
 import ChangeActivity from "../../screens/ChangeActivity";
 
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });
