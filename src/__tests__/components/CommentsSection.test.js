@@ -17,10 +17,6 @@ jest.mock("@react-native-firebase/storage", () => {
   };
 });
 
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
-
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     setGetAllUsers: jest.fn(),

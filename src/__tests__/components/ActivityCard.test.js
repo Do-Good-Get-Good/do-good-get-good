@@ -18,9 +18,6 @@ jest.mock("@react-native-async-storage/async-storage", () => {
     getItem: () => null,
   };
 });
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
 
 jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
