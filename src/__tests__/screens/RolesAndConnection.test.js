@@ -25,10 +25,6 @@ jest.mock("../../context/SuperAdminContext", () => ({
   }),
 }));
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 const mockedNavigate = jest.fn();
 const mockGoBack = jest.fn();
 jest.mock("@react-navigation/native", () => ({

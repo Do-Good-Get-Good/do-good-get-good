@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import { HomePage } from "../../screens/HomePage";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: false,

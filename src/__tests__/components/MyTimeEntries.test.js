@@ -4,10 +4,6 @@ import "react-native";
 import MyTimeEntries from "../../components/MyTimeEntries";
 import useTimeEntriesWithLimit from "../../hooks/useTimeEntriesWithLimit";
 
-jest.mock("../../components/Menu", () => () => {
-  return <></>;
-});
-
 jest.mock("../../components/CalendarView", () => () => {
   return <></>;
 });

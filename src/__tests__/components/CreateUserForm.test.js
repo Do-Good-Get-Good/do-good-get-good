@@ -5,10 +5,6 @@ import { CreateUserForm } from "../../components";
 import { UserLevelProvider } from "../../context/useUserLevel";
 import { Role } from "../../utility/enums";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 const mockGoBack = jest.fn();
 jest.mock("@react-navigation/native", () => ({
   useNavigation: () => ({

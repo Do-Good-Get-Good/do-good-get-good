@@ -5,10 +5,6 @@ import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { ActivityCard } from "../../screens/ActivityCard";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     setCleanUpSearchBarComponent: jest.fn(),

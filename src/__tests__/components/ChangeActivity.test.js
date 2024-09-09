@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import ChangeActivity from "../../screens/ChangeActivity";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 jest.mock("../../context/ActivityCardContext", () => ({
   useActivityCardContext: () => ({
     changeActivityCard: jest.fn(),

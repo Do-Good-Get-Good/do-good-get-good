@@ -3,6 +3,8 @@ import React from "react";
 import "react-native";
 import Menu from "../../components/Menu";
 
+jest.unmock("../../components/Menu");
+
 jest.mock("../../components/MenuOverlay", () => {
   return {
     __esModule: true,
@@ -10,14 +12,12 @@ jest.mock("../../components/MenuOverlay", () => {
   };
 });
 
-const mockedNavigate = jest.fn();
-
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
     useNavigation: () => ({
-      navigate: mockedNavigate,
+      navigate: jest.fn(),
     }),
   };
 });

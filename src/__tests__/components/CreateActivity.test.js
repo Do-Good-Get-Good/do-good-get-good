@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import CreateActivity from "../../screens/CreateActivity";
 
-jest.mock("../../components/Menu", () => () => {
-  return <fakeMenu />;
-});
-
 jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     setAllActiveActvivitiesFB: jest.fn(),

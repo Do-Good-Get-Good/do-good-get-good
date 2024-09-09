@@ -3,10 +3,6 @@ import React from "react";
 import "react-native";
 import ImagesGallery from "../../screens/ImagesGallery";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),

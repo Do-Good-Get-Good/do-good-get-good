@@ -16,10 +16,6 @@ jest.mock("../../components/DropDownForSorting", () => () => {
   return <mockDropDownForSorting />;
 });
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
 jest.mock("../../components/SearchBarComponentOld", () => () => {
   return <mockSearchBar />;
 });

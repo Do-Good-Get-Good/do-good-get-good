@@ -9,10 +9,6 @@ jest.mock("@react-native-community/netinfo", () => ({
   }),
 }));
 
-jest.mock("../../components/Menu", () => () => {
-  return <></>;
-});
-
 jest.mock("../../firebase-functions/get", () => ({
   getUserData: () => ({
     id: "123",

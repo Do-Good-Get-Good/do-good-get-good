@@ -2,6 +2,10 @@ jest.mock("@react-navigation/native");
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("./components/Menu", () => () => {
+  return <></>;
+});
+
 jest.mock("react-native-outside-press", () => {
   return ({ children }) => children;
 });
@@ -29,5 +33,11 @@ jest.mock("./context/ActivityImagesContext/ActivityImagesContext", () => ({
     getImageForActivity: jest.fn(() => ({
       photo: "symbol_blood",
     })),
+    images: [
+      {
+        photo: "blodgivning",
+        imageUrl: "image-url",
+      },
+    ],
   })),
 }));
