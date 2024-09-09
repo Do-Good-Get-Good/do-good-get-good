@@ -3,8 +3,6 @@ import React from "react";
 import "react-native";
 import ChangeActivity from "../../screens/ChangeActivity";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
     "@react-native-async-storage/async-storage/jest/async-storage-mock"

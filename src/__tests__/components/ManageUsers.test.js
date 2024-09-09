@@ -18,8 +18,6 @@ import {
 
 jest.useFakeTimers();
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: jest.fn(),
 }));

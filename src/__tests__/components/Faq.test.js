@@ -3,8 +3,6 @@ import React from "react";
 import "react-native";
 import Faq from "../../screens/Faq";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../components/Menu", () => () => {
   return <fakeMenu />;
 });

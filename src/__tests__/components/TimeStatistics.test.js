@@ -5,8 +5,6 @@ import React from "react";
 import "react-native";
 import TimeStatistics from "../../components/TimeStatistics";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 const mockTimeObject = [
   {
     paidTime: 10,

@@ -5,8 +5,6 @@ import { CreateUserForm } from "../../components";
 import { UserLevelProvider } from "../../context/useUserLevel";
 import { Role } from "../../utility/enums";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });

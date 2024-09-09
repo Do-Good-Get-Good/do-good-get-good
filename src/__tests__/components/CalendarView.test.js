@@ -27,8 +27,6 @@ jest.mock("../../firebase-functions/update", () => ({
   }),
 }));
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
 
 jest.mock("@react-native-firebase/auth", () => () => ({

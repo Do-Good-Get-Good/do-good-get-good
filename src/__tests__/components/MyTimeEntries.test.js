@@ -4,8 +4,6 @@ import "react-native";
 import MyTimeEntries from "../../components/MyTimeEntries";
 import useTimeEntriesWithLimit from "../../hooks/useTimeEntriesWithLimit";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../components/Menu", () => () => {
   return <></>;
 });

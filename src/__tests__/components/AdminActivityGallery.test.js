@@ -6,8 +6,6 @@ import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../components/Suggestions", () => () => {
   return <mockSuggestions />;
 });

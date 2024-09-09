@@ -3,8 +3,6 @@ import React from "react";
 import "react-native";
 import { DropDownSmall } from "../../components/DropDownSmall";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),

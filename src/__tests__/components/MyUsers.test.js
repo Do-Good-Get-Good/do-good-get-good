@@ -5,8 +5,6 @@ import "react-native";
 import { MyUsers } from "../../components/MyUsers";
 import { mockUsersWithFiveConfirmedTimeEntries } from "../../dataMock/adminContext";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("@react-native-firebase/auth", () => {
   const auth = jest.requireActual("@react-native-firebase/auth");
   return () => ({

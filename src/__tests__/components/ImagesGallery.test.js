@@ -3,8 +3,6 @@ import React from "react";
 import "react-native";
 import ImagesGallery from "../../screens/ImagesGallery";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });

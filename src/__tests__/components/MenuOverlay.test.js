@@ -11,8 +11,6 @@ import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigatio
 import { UserLevelProvider } from "../../context/useUserLevel";
 import { Role } from "../../utility/enums";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {
