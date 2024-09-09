@@ -12,8 +12,6 @@ jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   }),
 }));
 
-jest.mock("@react-navigation/native");
-
 console.log = jest.fn();
 
 afterEach(() => {

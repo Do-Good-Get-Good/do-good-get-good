@@ -7,8 +7,6 @@ import { Role } from "../../utility/enums";
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
-jest.mock("@react-navigation/native");
-
 jest.mock("../../components/Menu", () => () => {
   return <mockMenu />;
 });

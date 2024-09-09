@@ -18,8 +18,6 @@ jest.mock("../../components/DropDownForSorting", () => () => {
   return <></>;
 });
 
-jest.mock("@react-navigation/native");
-
 jest.mock("../../hooks/useTimeEntriesWithLimit");
 
 const timeEntryMock = {

@@ -80,8 +80,6 @@ const navigation = {
   navigate: jest.fn(),
 };
 
-jest.mock("@react-navigation/native");
-
 describe("Testing Suggestions", () => {
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({

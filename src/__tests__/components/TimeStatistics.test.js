@@ -21,8 +21,6 @@ jest.mock("../../context/TimeStatisticsContext", () => ({
   }),
 }));
 
-jest.mock("@react-navigation/native");
-
 describe("Testing TimeStatistics", () => {
   require("@react-navigation/native").useRoute.mockReturnValue({
     name: "HomePage",
