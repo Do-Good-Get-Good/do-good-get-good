@@ -7,17 +7,18 @@ import { useCreateActivityFunction } from "../../context/CreateActivityContext/C
 import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
 jest.mock("../../components/Suggestions", () => () => {
-  return <mockSuggestions />;
+  return <></>;
 });
 jest.mock("../../components/RadioButton", () => () => {
-  return <mockRadioButton />;
+  return <></>;
 });
+
 jest.mock("../../components/DropDownForSorting", () => () => {
-  return <mockDropDownForSorting />;
+  return <></>;
 });
 
 jest.mock("../../components/SearchBarComponentOld", () => () => {
-  return <mockSearchBar />;
+  return <></>;
 });
 
 jest.mock("../../context/AdminGalleryContext", () => ({

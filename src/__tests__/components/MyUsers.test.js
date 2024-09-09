@@ -24,7 +24,7 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
 }));
 
 jest.mock("../../components/TimeStatistics", () => () => {
-  return <mockTimeStatistics />;
+  return <></>;
 });
 
 const mockedNavigate = jest.fn();
@@ -33,6 +33,7 @@ jest.mock("@react-navigation/native", () => ({
     navigate: mockedNavigate,
   }),
 }));
+
 describe("Testing MyUsers component", () => {
   it("can find the my users text", async () => {
     const { getAllByText } = render(

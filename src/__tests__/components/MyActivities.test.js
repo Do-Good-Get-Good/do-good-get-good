@@ -4,7 +4,7 @@ import "react-native";
 import { MyActivities } from "../../components/MyActivities";
 
 jest.mock("../../components/CalendarView", () => () => {
-  return <fakeCalenderView />;
+  return <></>;
 });
 
 const activities = [

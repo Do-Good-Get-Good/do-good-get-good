@@ -16,10 +16,6 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
   }),
 }));
 
-jest.mock("@react-native-firebase/functions", () => {
-  return jest.fn();
-});
-
 const mockedNavigate = jest.fn();
 
 jest.mock("@react-navigation/native", () => {

@@ -12,6 +12,18 @@ jest.mock("react-native-outside-press", () => {
   return ({ children }) => children;
 });
 
+jest.mock("@react-native-firebase/firestore", () => {
+  return jest.fn();
+});
+
+jest.mock("@react-native-firebase/auth", () => {
+  return jest.fn();
+});
+
+jest.mock("@react-native-firebase/functions", () => {
+  return jest.fn();
+});
+
 jest.mock("@react-native-firebase/crashlytics", () => () => ({
   crashlytics: jest.fn(),
 }));
