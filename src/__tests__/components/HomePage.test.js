@@ -63,8 +63,10 @@ jest.mock("@react-native-firebase/auth", () => {
     signOut: mockAuthSignOut,
   });
 });
+
 let mockPrivacyPolicyKey = "false";
 const mockSetItemAsyncStorage = jest.fn();
+
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
     "@react-native-async-storage/async-storage/jest/async-storage-mock"

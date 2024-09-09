@@ -9,16 +9,6 @@ jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: jest.fn(),
 }));
 
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock"
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
 jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
     getImageForActivity: jest.fn(() => ({

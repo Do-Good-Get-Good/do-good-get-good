@@ -5,16 +5,6 @@ import Suggestions from "../../components/Suggestions";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock"
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
 jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
     getImageForActivity: jest.fn(() => ({

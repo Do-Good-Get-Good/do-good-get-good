@@ -24,16 +24,6 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock"
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
 const testDataArray = [
   {
     id: "id1",
