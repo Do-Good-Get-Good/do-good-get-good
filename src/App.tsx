@@ -17,7 +17,6 @@ import { AdminStack, SuperAdminStack, UserStack } from "./navigate";
 
 const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
-
   if (initializing) return null;
 
   if (!user) {

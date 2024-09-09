@@ -8,6 +8,7 @@ import head from "lodash/head";
 import intersection from "lodash/intersection";
 import { useUserLevel } from "../context/useUserLevel";
 import { Role } from "../utility/enums";
+import { useCheckIfUserStatusActive } from "./useCheckIfUserStatusActive";
 
 export const useAuthStateListener = () => {
   const { setUserLevel } = useUserLevel();
@@ -17,10 +18,14 @@ export const useAuthStateListener = () => {
   const [userClaims, setUserClaims] = useState<UserClaims | undefined>(
     undefined
   );
+  const { checkIfUserStatusActive } = useCheckIfUserStatusActive();
 
   async function onAuthStateChanged(userState: FirebaseAuthTypes.User | null) {
     setUser(userState);
-    if (userState) {
+
+    const isUserActive = await checkIfUserStatusActive(userState);
+
+    if (userState && isUserActive) {
       try {
         let userIdToken: FirebaseAuthTypes.IdTokenResult =
           await userState.getIdTokenResult();
