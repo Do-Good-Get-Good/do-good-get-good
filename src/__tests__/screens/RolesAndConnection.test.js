@@ -10,9 +10,6 @@ jest.mock("@react-native-firebase/firestore", () => {
   return jest.fn();
 });
 
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: jest.fn(),
-}));
 jest.mock("@react-native-firebase/auth", () => {
   return jest.fn();
 });

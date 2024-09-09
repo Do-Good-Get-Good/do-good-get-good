@@ -5,10 +5,6 @@ import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { ActivityCard } from "../../screens/ActivityCard";
 
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: jest.fn(),
-}));
-
 jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
   useActivityImages: jest.fn(() => ({
     getImageForActivity: jest.fn(() => ({
