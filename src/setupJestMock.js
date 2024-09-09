@@ -2,6 +2,8 @@ jest.mock("@react-navigation/native");
 
 jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
 
+jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
+
 jest.mock("./components/Menu", () => () => {
   return <></>;
 });
