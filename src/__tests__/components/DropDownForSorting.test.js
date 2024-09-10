@@ -4,12 +4,6 @@ import React from "react";
 import "react-native";
 import DropDownForSorting from "../../components/DropDownForSorting";
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("@react-navigation/native");
-
 describe("Testing DropDownForSorting", () => {
   let mockChoice = undefined;
 

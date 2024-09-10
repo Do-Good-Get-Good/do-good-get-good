@@ -5,12 +5,6 @@ import SearchBarComponentOld from "../../components/SearchBarComponentOld";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: false,

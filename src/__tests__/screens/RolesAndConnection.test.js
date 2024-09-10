@@ -6,31 +6,12 @@ import {
 } from "../../dataMock/superAdminMock";
 import { RolesAndConnection } from "../../screens/RolesAndConnection";
 
-jest.mock("@react-native-firebase/firestore", () => {
-  return jest.fn();
-});
-
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: jest.fn(),
-}));
-jest.mock("@react-native-firebase/auth", () => {
-  return jest.fn();
-});
-
-jest.mock("@react-native-firebase/functions", () => {
-  return jest.fn();
-});
-
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
     allAdminsAndSuperAdmins: mockAllAdminsAndSuperAdmins,
     makeChangesForSelectedUser: mockSelectedUser,
   }),
 }));
-
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
 
 const mockedNavigate = jest.fn();
 const mockGoBack = jest.fn();

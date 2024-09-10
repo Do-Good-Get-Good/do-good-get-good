@@ -5,30 +5,6 @@ import Suggestions from "../../components/Suggestions";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock"
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
     activeOrInactiveActivity: true,
@@ -83,8 +59,6 @@ const inactiveActivities = [
 const navigation = {
   navigate: jest.fn(),
 };
-
-jest.mock("@react-navigation/native");
 
 describe("Testing Suggestions", () => {
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {

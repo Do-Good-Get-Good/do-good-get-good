@@ -4,10 +4,6 @@ import React from "react";
 import "react-native";
 import DatePicker from "../../components/DatePicker";
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 describe("Testing DatePicker", () => {
   it("Can open calendar overlay and select a date", () => {
     let date = format(new Date(), "yyyy-MM-dd");

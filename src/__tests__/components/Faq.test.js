@@ -3,16 +3,6 @@ import React from "react";
 import "react-native";
 import Faq from "../../screens/Faq";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("../../components/Menu", () => () => {
-  return <fakeMenu />;
-});
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: true,
@@ -27,16 +17,6 @@ jest.mock("@react-navigation/native", () => {
     useNavigation: () => ({
       navigate: mockedNavigate,
     }),
-  };
-});
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock"
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
   };
 });
 

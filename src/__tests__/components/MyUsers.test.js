@@ -5,8 +5,6 @@ import "react-native";
 import { MyUsers } from "../../components/MyUsers";
 import { mockUsersWithFiveConfirmedTimeEntries } from "../../dataMock/adminContext";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
 jest.mock("@react-native-firebase/auth", () => {
   const auth = jest.requireActual("@react-native-firebase/auth");
   return () => ({
@@ -26,7 +24,7 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
 }));
 
 jest.mock("../../components/TimeStatistics", () => () => {
-  return <mockTimeStatistics />;
+  return <></>;
 });
 
 const mockedNavigate = jest.fn();
@@ -35,6 +33,7 @@ jest.mock("@react-navigation/native", () => ({
     navigate: mockedNavigate,
   }),
 }));
+
 describe("Testing MyUsers component", () => {
   it("can find the my users text", async () => {
     const { getAllByText } = render(

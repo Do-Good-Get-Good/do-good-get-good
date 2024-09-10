@@ -20,6 +20,7 @@ describe("Testing SearchBarComponent", () => {
     expect(input.props.value).toEqual(textToSearch);
   });
 });
+
 describe("Testing SearchBarComponent should work for different types. Filter function should work and return filtered arrayToSearch depend on Textinput. Try different types and keys", () => {
   it("User type. Filer by first name ", () => {
     const mockOnSearch = jest.fn();
@@ -39,6 +40,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
     fireEvent.changeText(input, "Hanna");
     expect(mockOnSearch).toHaveBeenCalledWith([]);
   });
+
   it("User type.Filter by by KEYS: firstname and lastname. If lastname is the same should return both objects", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(
@@ -52,6 +54,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
     fireEvent.changeText(input, "Andersson");
     expect(mockOnSearch).toHaveBeenCalledWith(userArray);
   });
+
   it("User type.Filter by KEYS: firstname and lastname. if lastname is the same but firts name is dfferent it should rerurn one object. Should react even if we typed only beggining on the name", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(
@@ -65,6 +68,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
     fireEvent.changeText(input, "Er Andersson");
     expect(mockOnSearch).toHaveBeenCalledWith([user2]);
   });
+
   it("User type.Filter by KEYS: firstname and lastname. if lastname and firtstname are dfferent it should rerurn an empty array", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(
@@ -95,6 +99,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
       activityArray[2],
     ]);
   });
+
   it("Activity type.Filter by KEYS: city, place and title. it should rerurn all the  objects which includes that word help or pet", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(
@@ -108,6 +113,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
     fireEvent.changeText(input, " help pet");
     expect(mockOnSearch).toHaveBeenCalledWith(activityArray);
   });
+
   it("It should be case-insensitivce", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(
@@ -124,6 +130,7 @@ describe("Testing SearchBarComponent should work for different types. Filter fun
       activityArray[2],
     ]);
   });
+
   it("It should be a space-insensitivce", () => {
     const mockOnSearch = jest.fn();
     const { getByTestId } = render(

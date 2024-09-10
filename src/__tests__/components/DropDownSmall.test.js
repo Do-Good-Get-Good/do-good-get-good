@@ -3,20 +3,12 @@ import React from "react";
 import "react-native";
 import { DropDownSmall } from "../../components/DropDownSmall";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../context/CreateActivityContext/CreateActivityContext", () => ({
   useCreateActivityFunction: () => ({
     activeActivities: jest.fn(),
     chooseInDropDown: jest.fn(),
   }),
 }));
-
-jest.mock("@react-navigation/native");
 
 console.log = jest.fn();
 

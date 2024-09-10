@@ -3,14 +3,6 @@ import React from "react";
 import "react-native";
 import NewestTimeEntries from "../../components/NewestTimeEntries";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-navigation/native");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/CalendarView", () => () => {
   return <></>;
 });

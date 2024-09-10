@@ -8,10 +8,6 @@ jest.mock("@react-native-firebase/auth", () => () => ({
   signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true)),
 }));
 
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
-
 describe("Testing Login", () => {
   it("Renders the login page correctly", () => {
     const { getAllByText, getByPlaceholderText, getByTestId } = render(

@@ -2,9 +2,6 @@ import { fireEvent, render } from "@testing-library/react-native";
 import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: true,
@@ -18,10 +15,6 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
     }),
   }),
 }));
-
-jest.mock("@react-native-firebase/functions", () => {
-  return jest.fn();
-});
 
 const mockedNavigate = jest.fn();
 

@@ -15,12 +15,6 @@ jest.mock("@react-navigation/native", () => {
   };
 });
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("react-native/Libraries/Animated/NativeAnimatedHelper");
-
 describe("Testing FloatingActionButton", () => {
   it("can press the action button", () => {
     const { getByTestId } = render(<FloatingActionButton />);

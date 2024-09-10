@@ -3,16 +3,6 @@ import React from "react";
 import "react-native";
 import { HomePage } from "../../screens/HomePage";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: false,
@@ -69,8 +59,10 @@ jest.mock("@react-native-firebase/auth", () => {
     signOut: mockAuthSignOut,
   });
 });
+
 let mockPrivacyPolicyKey = "false";
 const mockSetItemAsyncStorage = jest.fn();
+
 jest.mock("@react-native-async-storage/async-storage", () => {
   const actualAsyncStorage = jest.requireActual(
     "@react-native-async-storage/async-storage/jest/async-storage-mock"

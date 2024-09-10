@@ -3,27 +3,6 @@ import React from "react";
 import "react-native";
 import ImagesGallery from "../../screens/ImagesGallery";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    images: [
-      {
-        photo: "blodgivning",
-        imageUrl: "image-url",
-      },
-    ],
-  })),
-}));
-
 const navigation = {
   navigate: jest.fn(),
   goBack: jest.fn(),

@@ -4,10 +4,6 @@ import { CommentsSection } from "../../components/ChartCard/ChatComments/Comment
 import { UserLevelProvider } from "../../context/useUserLevel";
 import { Role } from "../../utility/enums";
 
-jest.mock("@react-native-firebase/firestore", () => {
-  return jest.fn();
-});
-
 jest.mock("@react-native-firebase/storage", () => {
   return {
     ref: jest.fn(() => ({
@@ -16,10 +12,6 @@ jest.mock("@react-native-firebase/storage", () => {
     })),
   };
 });
-
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({

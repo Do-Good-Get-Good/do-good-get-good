@@ -6,28 +6,19 @@ import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 jest.mock("../../components/Suggestions", () => () => {
-  return <mockSuggestions />;
+  return <></>;
 });
 jest.mock("../../components/RadioButton", () => () => {
-  return <mockRadioButton />;
-});
-jest.mock("../../components/DropDownForSorting", () => () => {
-  return <mockDropDownForSorting />;
+  return <></>;
 });
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
+jest.mock("../../components/DropDownForSorting", () => () => {
+  return <></>;
 });
 
 jest.mock("../../components/SearchBarComponentOld", () => () => {
-  return <mockSearchBar />;
+  return <></>;
 });
 
 jest.mock("../../context/AdminGalleryContext", () => ({

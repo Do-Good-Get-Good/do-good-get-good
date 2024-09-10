@@ -5,12 +5,6 @@ import React from "react";
 import "react-native";
 import TimeStatistics from "../../components/TimeStatistics";
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
 const mockTimeObject = [
   {
     paidTime: 10,
@@ -24,8 +18,6 @@ jest.mock("../../context/TimeStatisticsContext", () => ({
     maxConfirmedHours: 8,
   }),
 }));
-
-jest.mock("@react-navigation/native");
 
 describe("Testing TimeStatistics", () => {
   require("@react-navigation/native").useRoute.mockReturnValue({
