@@ -39,7 +39,12 @@ export const userNavigations: Array<NavigationObject> = [
   },
 ];
 
-export const useMenuNavigation = (role: Role | undefined) => {
+const AboutPage: NavigationObject = {
+  title: "About",
+  screenName: UserStack.About,
+};
+
+export const useMenuNavigation = (role: Role) => {
   const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
   const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
@@ -76,16 +81,17 @@ export const useMenuNavigation = (role: Role | undefined) => {
 
   switch (role) {
     case Role.user:
-      return userNavigations;
+      return [...userNavigations, AboutPage];
 
     case Role.admin:
-      return [...userNavigations, ...adminNavigations];
+      return [...userNavigations, ...adminNavigations, AboutPage];
 
     case Role.superadmin:
       return [
         ...userNavigations,
         ...adminNavigations,
         ...superAdminNavigations,
+        AboutPage,
       ];
 
     default:
