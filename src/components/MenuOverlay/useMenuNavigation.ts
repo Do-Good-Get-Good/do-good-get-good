@@ -44,7 +44,7 @@ const AboutPage: NavigationObject = {
   screenName: UserStack.About,
 };
 
-export const useMenuNavigation = (role: Role) => {
+export const useMenuNavigation = (role: Role | undefined) => {
   const { getAllUserAndUnapprovedTimeEntries } = useSuperAdminHomePageContext();
   const { onShowUnApprovedTimeEntriesAdminPage } = useAdminContext();
   const adminGalleryContext = useAdminGalleryFunction();
