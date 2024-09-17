@@ -19,7 +19,7 @@ import { useActivityImages } from "../../context/ActivityImagesContext/ActivityI
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { useUserLevel } from "../../context/useUserLevel";
-import { UserLevels } from "../../lib/enums/userlevels";
+import { Role } from "../../utility/enums";
 
 type Props = {
   route: any;
@@ -467,7 +467,7 @@ export function ActivityCard({ route, navigation }: Props) {
         </View>
         <BottomLogo />
       </ScrollView>
-      {[UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel) && (
+      {[Role.superadmin, Role.admin].includes(userLevel) && (
         <ManageUsers
           visible={isManageUsersOpen}
           closeModal={closeManageUsers}
