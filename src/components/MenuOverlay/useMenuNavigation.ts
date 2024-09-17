@@ -40,7 +40,7 @@ export const userNavigations: Array<NavigationObject> = [
 ];
 
 const AboutPage: NavigationObject = {
-  title: "About",
+  title: "Om appen",
   screenName: UserStack.About,
 };
 
