@@ -5,7 +5,7 @@ export const placeholderImage = require("../assets/images/placeholder.png");
 
 export function getImageForActivity(
   photo: string,
-  imageUrl?: string,
+  imageUrl?: string
 ): ImageSourcePropType | undefined {
   if (!imageUrl) {
     let found = Images.find((image) => image.name === photo);

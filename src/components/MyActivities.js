@@ -1,19 +1,18 @@
 import React, { useState } from "react";
 
-import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
-
 import { Icon } from "@rneui/base";
-import CalendarView from "./CalendarView";
-import typography from "../assets/theme/typography";
+import {
+  Image,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import CalendarView from "./CalendarView";
 
 export const MyActivities = ({ activities, registeredTime }) => {
   const { getImageForActivity } = useActivityImages();
@@ -62,7 +61,7 @@ export const MyActivities = ({ activities, registeredTime }) => {
               style={styles.image}
               source={getImageForActivity(
                 myActivity.photo,
-                myActivity.imageUrl,
+                myActivity.imageUrl
               )}
             />
           </View>

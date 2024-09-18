@@ -1,10 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
-
-import {
-  User,
-  UserAndUnapprovedTimeEntriesType,
-  UserObjectForSuperAdmin,
-} from "../../utility/types";
+import React, { useContext, useState } from "react";
+import { User } from "../../utility/types";
 
 type AdminContextType = {
   usersWithFiveConfirmedTimeEntries: User[];

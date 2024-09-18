@@ -1,34 +1,24 @@
-import "react-native";
-import React, { useState as useStateMock } from "react";
 import { render } from "@testing-library/react-native";
-
-import AdminActivityGallery from "../../screens/AdminActivityGallery";
+import React, { useState as useStateMock } from "react";
+import "react-native";
+import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
-import { useActivityCardContext } from "../../context/ActivityCardContext";
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
+import AdminActivityGallery from "../../screens/AdminActivityGallery";
 
 jest.mock("../../components/Suggestions", () => () => {
-  return <mockSuggestions />;
+  return <></>;
 });
 jest.mock("../../components/RadioButton", () => () => {
-  return <mockRadioButton />;
-});
-jest.mock("../../components/DropDownForSorting", () => () => {
-  return <mockDropDownForSorting />;
+  return <></>;
 });
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
+jest.mock("../../components/DropDownForSorting", () => () => {
+  return <></>;
 });
 
 jest.mock("../../components/SearchBarComponentOld", () => () => {
-  return <mockSearchBar />;
+  return <></>;
 });
 
 jest.mock("../../context/AdminGalleryContext", () => ({
@@ -87,17 +77,17 @@ describe("Testing AdminActivityGallery ", () => {
     useCreateActivityFunction().activityHasChanged.mockReturnValue(true);
 
     useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
-      false,
+      false
     );
     useActivityCardContext().changeActiveStatusInAdminGallery.mockReturnValue(
-      false,
+      false
     );
   });
 
   it("AdminActivityGallery fill up arrayOfActiveActivities and inactiveActivities ", () => {
     const {} = render(<AdminActivityGallery />);
     setArrayOfActiveActivities(
-      useCreateActivityFunction().activeActivities.mock,
+      useCreateActivityFunction().activeActivities.mock
     );
     setInactiveActivities(useAdminGalleryFunction().inactiveActivities.mock);
   });

@@ -1,29 +1,22 @@
+import { useNavigation } from "@react-navigation/native";
+import { Icon } from "@rneui/base";
 import React, { useEffect, useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
   Image,
-  TouchableOpacity,
   Platform,
   ScrollView,
+  StyleSheet,
+  Text,
   TextInput,
+  TouchableOpacity,
+  View,
 } from "react-native";
-
 import LinearGradient from "react-native-linear-gradient";
-
-import { useNavigation } from "@react-navigation/native";
-
-import { Icon } from "@rneui/base";
-
-import BottomNavButtons from "./BottomNavButtons";
-
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
-
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
-
+import typography from "../assets/theme/typography";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import BottomNavButtons from "./BottomNavButtons";
 
 export function LinkActivityToNewUser({
   activity,
@@ -245,7 +238,7 @@ export function LinkActivityToNewUser({
             style={styles.imageExistingActivity}
             source={getImageForActivity(
               selectedActivity.photo,
-              selectedActivity.imageUrl,
+              selectedActivity.imageUrl
             )}
           ></Image>
 

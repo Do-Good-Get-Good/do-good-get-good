@@ -1,9 +1,5 @@
-import firestore, {
-  FirebaseFirestoreTypes,
-} from "@react-native-firebase/firestore";
+import firestore from "@react-native-firebase/firestore";
 import { Activity, TimeEntry, User } from "../../utility/types";
-
-import { FirebaseuserActivityAndAccumulatedTime } from "../typeFirebase";
 import { activityObject, timeEntryObject, userObject } from "../adaptedObject";
 
 export const getAllUsersData = async () => {
@@ -12,7 +8,7 @@ export const getAllUsersData = async () => {
 
     if (querySnapshot.empty)
       throw new Error(
-        "No users were found. Please create users before trying again!",
+        "No users were found. Please create users before trying again!"
       );
 
     let allUsers: Array<User> = [];
@@ -56,7 +52,7 @@ export const getAllUnconfirmedTimeEntries = async () => {
 };
 
 export const getUserUnconfirmedTimeEntries = async (
-  uid: User["id"],
+  uid: User["id"]
 ): Promise<TimeEntry[]> => {
   try {
     let querySnapshot = await firestore()
@@ -75,7 +71,7 @@ export const getUserUnconfirmedTimeEntries = async (
 };
 
 export const getUsersFiveNewestTimeEntries = async (
-  userId: User["id"],
+  userId: User["id"]
 ): Promise<TimeEntry[]> => {
   try {
     let querySnapshot = await firestore()
@@ -95,7 +91,7 @@ export const getUsersFiveNewestTimeEntries = async (
   }
 };
 export const getAllUsersConnectedToAdmin = async (
-  adminId: User["id"],
+  adminId: User["id"]
 ): Promise<User[]> => {
   try {
     let userData = await firestore()
@@ -134,12 +130,38 @@ export const getUserByStatus = async (isActive: boolean = true) => {
 };
 
 export const getActivityByID = async (
-  activityID: Activity["id"],
-): Promise<Activity> => {
+  activityID: Activity["id"]
+): Promise<Activity | null> => {
   try {
     let data = await firestore().collection("Activities").doc(activityID).get();
     return Promise.resolve(activityObject(data));
   } catch (error) {
-    return Promise.reject(error);
+    console.log("getActivityByID: ", error);
+    return null;
+  }
+};
+
+export const getActivityInformation = async (activityId: Activity["id"]) => {
+  try {
+    let querySnapshot = await firestore()
+      .collection("Activities")
+      .doc(activityId)
+      .get();
+
+    let activity = null;
+    if (querySnapshot?.data()) {
+      activity = {
+        id: activityId,
+        title: querySnapshot?.data()?.activity_title,
+        city: querySnapshot?.data()?.activity_city,
+        photo: querySnapshot?.data()?.activity_photo,
+        imageUrl: querySnapshot?.data()?.imageUrl,
+      };
+    }
+
+    return Promise.resolve(activity);
+  } catch (error) {
+    console.log(Promise.reject(error));
+    return null;
   }
 };

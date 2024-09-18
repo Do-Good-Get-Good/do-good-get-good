@@ -1,33 +1,23 @@
-import "react-native";
-import React from "react";
 import {
-  render,
-  fireEvent,
   act,
+  fireEvent,
+  render,
   waitFor,
   waitForElementToBeRemoved,
 } from "@testing-library/react-native";
+import React from "react";
+import "react-native";
 import ManageUsers from "../../components/ManageUsers";
 import { mockAllUsersConnectedToadmin } from "../../dataMock/adminContext";
-
+import { getAllUsersNotConnectedToAdmin } from "../../firebase-functions/get";
 import {
   connectNewActivityToUser,
   removeActivityFromUser,
   updateConnectedUsersOnActivity,
 } from "../../firebase-functions/update";
-import { getAllUsersNotConnectedToAdmin } from "../../firebase-functions/get";
 
 jest.useFakeTimers();
 
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: jest.fn(),
-}));
 jest.mock("@rneui/base/dist/CheckBox/CheckBox", () => ({
   CheckBox: jest.fn(),
 }));
@@ -80,47 +70,51 @@ afterEach(() => {
 });
 
 describe("Testing ManageUsers component", () => {
-  it("Can render users connected and correct other users", async () => {
-    await act(async () => {
-      mockGetAdminUsers.mockReturnValue(mockAllUsersConnectedToadmin);
-      getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
-    });
-    const { getByTestId, getAllByTestId } = render(
-      <ManageUsers
-        visible={true}
-        closeModal={jest.fn()}
-        currentActivityId={"activityID1"}
-      />,
-    );
-
-    await waitFor(() => {
-      expect(getByTestId("test.modalHeader").children[0]).toEqual(
-        "Lägg till eller ta bort:",
-      );
-      expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
-        "Mina användare",
+  it(
+    "Can render users connected and correct other users",
+    async () => {
+      await act(async () => {
+        mockGetAdminUsers.mockReturnValue(mockAllUsersConnectedToadmin);
+        getAllUsersNotConnectedToAdmin.mockReturnValue(mockOtherUserData);
+      });
+      const { getByTestId, getAllByTestId } = render(
+        <ManageUsers
+          visible={true}
+          closeModal={jest.fn()}
+          currentActivityId={"activityID1"}
+        />
       );
 
-      expect(getAllByTestId("test.userView").length).toBe(2);
-      expect(getByTestId("test.userFullName0").children[0]).toEqual(
-        "Admin4 Adminsson4",
-      );
+      await waitFor(() => {
+        expect(getByTestId("test.modalHeader").children[0]).toEqual(
+          "Lägg till eller ta bort:"
+        );
+        expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
+          "Mina användare"
+        );
 
-      expect(getByTestId("test.userFullName1").children[0]).toEqual(
-        "Johan2 Johansson2",
-      );
-      expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
-        "Andra användare",
-      );
-      expect(getAllByTestId("test.otherUsersView").length).toBe(2);
-      expect(getByTestId("test.otherUserFullName0").children[0]).toEqual(
-        mockOtherUserData[0].fullName,
-      );
-      expect(getByTestId("test.otherUserFullName1").children[0]).toEqual(
-        mockOtherUserData[1].fullName,
-      );
-    });
-  }, timeout=10000);
+        expect(getAllByTestId("test.userView").length).toBe(2);
+        expect(getByTestId("test.userFullName0").children[0]).toEqual(
+          "Admin4 Adminsson4"
+        );
+
+        expect(getByTestId("test.userFullName1").children[0]).toEqual(
+          "Johan2 Johansson2"
+        );
+        expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
+          "Andra användare"
+        );
+        expect(getAllByTestId("test.otherUsersView").length).toBe(2);
+        expect(getByTestId("test.otherUserFullName0").children[0]).toEqual(
+          mockOtherUserData[0].fullName
+        );
+        expect(getByTestId("test.otherUserFullName1").children[0]).toEqual(
+          mockOtherUserData[1].fullName
+        );
+      });
+    },
+    (timeout = 10000)
+  );
 
   it("Renders info text when no users are connected to an admin and no other users are found", async () => {
     getAllUsersNotConnectedToAdmin.mockReturnValue([]);
@@ -129,20 +123,20 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={"activityID1"}
-      />,
+      />
     );
 
     expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
-      "Mina användare",
+      "Mina användare"
     );
     expect(getByTestId("test.userView").children[0]).toEqual(
-      "Du har inga användare kopplade till dig",
+      "Du har inga användare kopplade till dig"
     );
     expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
-      "Andra användare",
+      "Andra användare"
     );
     expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
-      "Inga andra användare är kopplade till den här aktiviteten!",
+      "Inga andra användare är kopplade till den här aktiviteten!"
     );
   });
 
@@ -157,20 +151,20 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={"activityID1"}
-      />,
+      />
     );
     await waitFor(() => {
       expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
-        "Mina användare",
+        "Mina användare"
       );
       expect(getByTestId("test.userFullName1").children[0]).toEqual(
-        "Johan2 Johansson2",
+        "Johan2 Johansson2"
       );
       expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
-        "Andra användare",
+        "Andra användare"
       );
       expect(getByTestId("test.noOtherUsers").children[0]).toEqual(
-        "Inga andra användare är kopplade till den här aktiviteten!",
+        "Inga andra användare är kopplade till den här aktiviteten!"
       );
     });
   });
@@ -184,26 +178,26 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={"activityID1"}
-      />,
+      />
     );
 
     await waitForElementToBeRemoved(() => getByTestId("test.noOtherUsers"));
 
     expect(getByTestId("test.myUsersHeader").children[0]).toEqual(
-      "Mina användare",
+      "Mina användare"
     );
     expect(getByTestId("test.userView").children[0]).toEqual(
-      "Du har inga användare kopplade till dig",
+      "Du har inga användare kopplade till dig"
     );
     expect(getByTestId("test.otherUsersHeader").children[0]).toEqual(
-      "Andra användare",
+      "Andra användare"
     );
 
     expect(getByTestId("test.otherUserFullName0").children[0]).toEqual(
-      mockOtherUserData[0].fullName,
+      mockOtherUserData[0].fullName
     );
     expect(getByTestId("test.otherUserFullName1").children[0]).toEqual(
-      mockOtherUserData[1].fullName,
+      mockOtherUserData[1].fullName
     );
   });
 
@@ -217,7 +211,7 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={"activityID1"}
-      />,
+      />
     );
 
     const user = getByTestId("test.userView");
@@ -242,7 +236,7 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={activityId}
-      />,
+      />
     );
 
     await waitFor(() => {
@@ -250,7 +244,7 @@ describe("Testing ManageUsers component", () => {
       const checkBoxwithNotConnectedUserToActivity = getByTestId("checkbox-0");
       expect(checkBoxwithConnectedUserToActivity.props.isChecked).toBe(true);
       expect(checkBoxwithNotConnectedUserToActivity.props.isChecked).toBe(
-        false,
+        false
       );
 
       fireEvent.press(checkBoxwithNotConnectedUserToActivity);
@@ -288,7 +282,7 @@ describe("Testing ManageUsers component", () => {
         visible={true}
         closeModal={jest.fn()}
         currentActivityId={activityId}
-      />,
+      />
     );
 
     await waitFor(() => {
@@ -297,7 +291,7 @@ describe("Testing ManageUsers component", () => {
 
       expect(checkBoxwithConnectedUserToActivity.props.isChecked).toBe(true);
       expect(checkBoxwithNotConnectedUserToActivity.props.isChecked).toBe(
-        false,
+        false
       );
 
       fireEvent.press(checkBoxwithConnectedUserToActivity);

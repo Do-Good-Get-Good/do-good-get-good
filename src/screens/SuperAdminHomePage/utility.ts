@@ -1,5 +1,4 @@
 import groupBy from "lodash/groupBy";
-
 import { UserAndUnapprovedTimeEntriesType } from "../../utility/types";
 
 export const prepareAdminArray = (arr: UserAndUnapprovedTimeEntriesType[]) => {

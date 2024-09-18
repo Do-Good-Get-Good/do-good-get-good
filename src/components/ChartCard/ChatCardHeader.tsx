@@ -1,10 +1,10 @@
 import React from "react";
-import { StyleSheet, Text, Image, View } from "react-native";
-import { UserPost } from "../../utility/types";
-import { getImageForActivity } from "../../lib/images";
+import { Image, StyleSheet, Text, View } from "react-native";
 import { LocationIcon } from "../../assets/icons/LocationIcon";
-import typography from "../../assets/theme/typography";
 import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
+import { getImageForActivity } from "../../lib/images";
+import { UserPost } from "../../utility/types";
 
 type Props = {
   post: UserPost;

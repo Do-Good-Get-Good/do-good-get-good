@@ -106,6 +106,7 @@ Try
 
 - `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler`/ or `sudo gem update bundler` to ensure that your Bundler is up to date.
 - sometimes help with `gem update --system`
+- sometimes you need to Reinstall Bundler, run  `gem uninstall bundler`and then `gem install bundler`
 - if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
 - sometimes it helps to open Xcode and build by pressing Command+B
 - often it helps to clean pod `rm -rf Pods   rm -rf Podfile.lock    pod install`

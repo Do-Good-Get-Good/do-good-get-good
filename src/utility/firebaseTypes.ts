@@ -30,7 +30,7 @@ export type FirebaseActivityType = {
   tg_favorite: Activity["popular"];
 };
 
-type FirebaseActivitiesAndAccumulatedTime = {
+export type FirebaseActivitiesAndAccumulatedTime = {
   accumulated_time: ActivitiesAndAccumulatedTime["accumulatedTime"];
   activity_id: ActivitiesAndAccumulatedTime["activityID"];
 };

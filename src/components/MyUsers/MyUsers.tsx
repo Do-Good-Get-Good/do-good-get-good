@@ -1,12 +1,12 @@
-import React, { useCallback, useEffect, useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import React, { useCallback, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { Sort } from "../../lib/enums/sort";
 import { User } from "../../utility/types";
-import { filterByStatusAndSortAlphabetically } from "./utility";
 import { DropDownTextAndIcon } from "../DropDowns/DropDownTextAndIcon/DropDownTextAndIcon";
+import { MyUserAndFiveAprovedTimeEntries } from "../DropDowns/MyUserAndFiveAprovedTimeEntries";
 import { SortBy } from "../DropDowns/SortBy";
 import { NoUsersText } from "./NoUsersText";
-import { MyUserAndFiveAprovedTimeEntries } from "../DropDowns/MyUserAndFiveAprovedTimeEntries";
+import { filterByStatusAndSortAlphabetically } from "./utility";
 
 type Props = {
   users: User[];
@@ -29,6 +29,7 @@ export const MyUsers = ({ users }: Props) => {
           containerstyle={{ zIndex: 2 }}
           testID={"sort-by"}
           title={sortBy}
+          isOnOutsidePress={true}
           componentInsideDropDown={<SortBy setSortBy={setSortBy} />}
         />
       </View>

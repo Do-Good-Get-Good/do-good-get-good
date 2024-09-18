@@ -1,9 +1,7 @@
+import { act, renderHook } from "@testing-library/react-native";
 import "react-native";
-import React from "react";
-import { renderHook, act } from "@testing-library/react-native";
-
-import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
 import { getAllActivities } from "../../firebase-functions/get";
+import { useActivitySuggestions } from "../../hooks/useActivitySuggestions";
 
 jest.mock("../../firebase-functions/get", () => ({
   getAllActivities: jest.fn(),

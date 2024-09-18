@@ -1,16 +1,16 @@
-import React, { useState, useEffect } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Platform,
-} from "react-native";
+import { useIsFocused, useRoute } from "@react-navigation/native";
 import { Icon } from "@rneui/base";
-import { useRoute } from "@react-navigation/native";
-import typography from "../assets/theme/typography";
+import React, { useEffect, useState } from "react";
+import {
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
+import OutsidePressHandler from "react-native-outside-press";
 import colors from "../assets/theme/colors";
-import { useIsFocused } from "@react-navigation/native";
+import typography from "../assets/theme/typography";
 
 export function DropDownForSorting({ choice }) {
   const rout = useRoute();
@@ -92,7 +92,10 @@ export function DropDownForSorting({ choice }) {
         </View>
       </TouchableOpacity>
       {openDropDown === true && (
-        <View style={styles.sortBox}>
+        <OutsidePressHandler
+          onOutsidePress={() => setOpenDropDown(false)}
+          style={styles.sortBox}
+        >
           {showSelection.map((sort, index) => (
             <TouchableOpacity
               index={index}
@@ -106,7 +109,7 @@ export function DropDownForSorting({ choice }) {
               <Text>{sort.title}</Text>
             </TouchableOpacity>
           ))}
-        </View>
+        </OutsidePressHandler>
       )}
     </View>
   );

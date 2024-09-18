@@ -1,46 +1,9 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
-
 import { ActivityCard } from "../../screens/ActivityCard";
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-jest.mock("@react-native-community/netinfo", () => ({
-  useNetInfo: jest.fn(),
-}));
-jest.mock("@react-navigation/native");
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
-
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
 
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
@@ -108,7 +71,7 @@ describe("Testing ActivityCard ", () => {
   it("For admin in ActivityCard. Delet button exist for both active and inactive activities", () => {
     route.params.admin = true;
     const { getAllByText, getByTestId } = render(
-      <ActivityCard route={route} />,
+      <ActivityCard route={route} />
     );
     const alertToDeleteActivity = getByTestId("alertToDeleteActivity");
     fireEvent.press(alertToDeleteActivity);
@@ -119,7 +82,7 @@ describe("Testing ActivityCard ", () => {
     route.params.admin = true;
 
     const { getAllByText, getByTestId } = render(
-      <ActivityCard route={route} />,
+      <ActivityCard route={route} />
     );
     const alertToArchiveActivity = getByTestId("alertToArchiveActivity");
     fireEvent.press(alertToArchiveActivity);
@@ -127,7 +90,7 @@ describe("Testing ActivityCard ", () => {
     useActivityCardContext().changeActive(false);
     useActivityCardContext().idActivity(route.params.activityInfo.id);
     useCreateActivityFunction().activityHasChangedID(
-      route.params.activityInfo.id,
+      route.params.activityInfo.id
     );
   });
 
@@ -137,17 +100,17 @@ describe("Testing ActivityCard ", () => {
     route.params.active = false;
 
     const { getAllByText, getByTestId } = render(
-      <ActivityCard route={route} />,
+      <ActivityCard route={route} />
     );
     const alertToTakeAwayFromArchiveActivity = getByTestId(
-      "alertToTakeAwayFromArchiveActivity",
+      "alertToTakeAwayFromArchiveActivity"
     );
     fireEvent.press(alertToTakeAwayFromArchiveActivity);
     expect(getAllByText("Flytta från arkiv").length).toBe(1);
     useActivityCardContext().changeActive(true);
     useActivityCardContext().idActivity(route.params.activityInfo.id);
     useCreateActivityFunction().activityHasChangedID(
-      route.params.activityInfo.id,
+      route.params.activityInfo.id
     );
   });
 
@@ -157,7 +120,7 @@ describe("Testing ActivityCard ", () => {
     route.params.active = true;
 
     const { getAllByText, getByTestId } = render(
-      <ActivityCard route={route} />,
+      <ActivityCard route={route} />
     );
     expect(getAllByText("Lägg till som TG-favorit").length).toBe(1);
     const toFavorite = getByTestId("toFavorite");
@@ -166,7 +129,7 @@ describe("Testing ActivityCard ", () => {
     useActivityCardContext().changePopular.mockReturnValue(true);
     useActivityCardContext().idActivity(route.params.activityInfo.id);
     useCreateActivityFunction().activityHasChangedID(
-      route.params.activityInfo.id,
+      route.params.activityInfo.id
     );
   });
   it("ActivityCard for admin for active activities. TG_status button turn to NOT favotite ", () => {
@@ -174,7 +137,7 @@ describe("Testing ActivityCard ", () => {
     route.params.tgPopular = true;
     route.params.active = true;
     const { getAllByText, getByTestId } = render(
-      <ActivityCard route={route} />,
+      <ActivityCard route={route} />
     );
     expect(getAllByText("Ta bort från TG-favoriter").length).toBe(1);
     const toNotFavorite = getByTestId("toNotFavorite");
@@ -183,7 +146,7 @@ describe("Testing ActivityCard ", () => {
     useActivityCardContext().changePopular.mockReturnValue(false);
     useActivityCardContext().idActivity(route.params.activityInfo.id);
     useCreateActivityFunction().activityHasChangedID(
-      route.params.activityInfo.id,
+      route.params.activityInfo.id
     );
   });
 });

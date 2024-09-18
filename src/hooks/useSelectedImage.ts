@@ -1,6 +1,6 @@
 import { useMemo } from "react";
-import { ActivityImage } from "./useCloudImages";
 import { Activity } from "../utility/types";
+import { ActivityImage } from "./useCloudImages";
 
 const useSelectedImage = (imageObject: ActivityImage, activity?: Activity) => {
   const photo = useMemo(() => {

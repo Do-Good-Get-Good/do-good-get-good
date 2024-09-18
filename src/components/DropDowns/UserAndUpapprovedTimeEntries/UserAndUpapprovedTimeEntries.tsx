@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
-import { TimeEntry, User } from "../../../utility/types";
-import { UserAndUnapprovedTimeEntriesRow } from "./UserAndUnapprovedTimeEntriesRow";
 import { StyleSheet, Text } from "react-native";
-import { textAllTimeEntriesApproved } from "./utility";
-import typography from "../../../assets/theme/typography";
 import colors from "../../../assets/theme/colors";
-import { TitleAndOnCheckAll } from "../../TitleAndOnCheckAll";
-import { LongButton } from "../../Buttons/LongButton";
+import typography from "../../../assets/theme/typography";
+import { TimeEntry, User } from "../../../utility/types";
 import { AlertToApproveTimeEntries } from "../../Alerts/AlertToApproveTimeEntries";
+import { LongButton } from "../../Buttons/LongButton";
+import { TitleAndOnCheckAll } from "../../TitleAndOnCheckAll";
 import { getUnconfirmedTimeEntriesFromAllUsersAdminPage } from "../../TitleAndOnCheckAll/utility";
+import { UserAndUnapprovedTimeEntriesRow } from "./UserAndUnapprovedTimeEntriesRow";
+import { textAllTimeEntriesApproved } from "./utility";
 
 type Props = {
   loading: boolean;
@@ -29,7 +29,7 @@ export const UserAndUnapprovedTimeEntries = ({
 
   const onApprove = () =>
     AlertToApproveTimeEntries(() =>
-      onApproveTimeEntriesAdmin(onCheck).then(() => setOnCheck([])),
+      onApproveTimeEntriesAdmin(onCheck).then(() => setOnCheck([]))
     );
 
   return (
@@ -37,7 +37,7 @@ export const UserAndUnapprovedTimeEntries = ({
       <TitleAndOnCheckAll
         onCheck={onCheck}
         allUnconfirmedTimeEntries={getUnconfirmedTimeEntriesFromAllUsersAdminPage(
-          users,
+          users
         )}
         setOnCheck={setOnCheck}
       />

@@ -7,17 +7,17 @@ import {
   TextInput,
   View,
 } from "react-native";
-import BottomLogo from "../../components/BottomLogo";
-import Menu from "../../components/Menu";
 import typography from "../../assets/theme/typography";
-import { UserPost } from "../../utility/types";
-import { LongButton } from "../../components/Buttons/LongButton";
+import BottomLogo from "../../components/BottomLogo";
 import { GoBackButton } from "../../components/Buttons/GoBackButton";
+import { LongButton } from "../../components/Buttons/LongButton";
 import { ChatCardHeader } from "../../components/ChartCard/ChatCardHeader";
-import { useUserPostsActions } from "../Chat/useUserPostsActions";
 import { Spinner } from "../../components/Loading";
-import { AddImage } from "./AddImage";
+import Menu from "../../components/Menu";
 import { UserStack } from "../../utility/routeEnums";
+import { UserPost } from "../../utility/types";
+import { useUserPostsActions } from "../Chat/useUserPostsActions";
+import { AddImage } from "./AddImage";
 
 type Props = {
   route: any;
@@ -30,7 +30,7 @@ type Params = {
 
 export const AddOrEditPost = ({ route, navigation }: Props) => {
   const { post, toEdit }: Params = route.params;
-  const { addPost, loading,updatePost } = useUserPostsActions();
+  const { addPost, loading, updatePost } = useUserPostsActions();
   const [description, setDescription] = useState(post.description);
   const [imageURL, setImageURL] = useState(post.imageURL);
 
@@ -42,12 +42,11 @@ export const AddOrEditPost = ({ route, navigation }: Props) => {
   };
   const onSaveButtonPressed = async () => {
     if (toEdit) {
-      await updatePost({ ...post, description},imageURL , navigation.goBack);
-   
+      await updatePost({ ...post, description }, imageURL, navigation.goBack);
     } else {
       await addPost(
         { ...post, description, imageURL },
-        navigateBackAndShowBottom,
+        navigateBackAndShowBottom
       );
     }
   };

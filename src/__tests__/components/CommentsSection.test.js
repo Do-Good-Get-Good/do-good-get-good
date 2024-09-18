@@ -1,12 +1,8 @@
-import React, { PropsWithChildren } from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
 import { CommentsSection } from "../../components/ChartCard/ChatComments/CommentsSection";
-import { Role } from "../../utility/enums";
 import { UserLevelProvider } from "../../context/useUserLevel";
-
-jest.mock("@react-native-firebase/firestore", () => {
-  return jest.fn();
-});
+import { Role } from "../../utility/enums";
 
 jest.mock("@react-native-firebase/storage", () => {
   return {
@@ -16,10 +12,6 @@ jest.mock("@react-native-firebase/storage", () => {
     })),
   };
 });
-
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
 
 jest.mock("../../context/SuperAdminContext", () => ({
   useSuperAdminFunction: () => ({
@@ -88,7 +80,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
 
     expect(getByText("John Doe")).toBeTruthy();
@@ -107,7 +99,7 @@ describe("Testing CommentsSection Component", () => {
         deleteComment={mockDeleteComment}
         loggedInUser={loggedInUser}
         postID="post1"
-      />,
+      />
     );
 
     const input = getByPlaceholderText("Skriv en kommentar");
@@ -133,7 +125,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
     const editMenu = getByTestId("chat-card-edit-menu");
     expect(editMenu).toBeTruthy();
@@ -149,7 +141,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
     const editMenu = getAllByTestId("chat-card-edit-menu");
     expect(editMenu).toHaveLength(3);
@@ -164,7 +156,7 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={anotherUser}
         postID="post1"
       />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
 
     const editMenu = queryByTestId("chat-card-edit-menu");
@@ -180,11 +172,12 @@ describe("Testing CommentsSection Component", () => {
         loggedInUser={loggedInUser}
         postID="post1"
       />,
-      { wrapper: UserLevelProvider },
+      { wrapper: UserLevelProvider }
     );
 
     const deleteMenu = getByTestId("chat-card-edit-menu");
     fireEvent.press(deleteMenu);
+
     const deleteButton = getByTestId("dropdown-overlay-ta bort");
     fireEvent.press(deleteButton);
 

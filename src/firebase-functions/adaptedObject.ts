@@ -1,17 +1,18 @@
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { format } from "date-fns";
-import { FirebaseuserActivityAndAccumulatedTime } from "./typeFirebase";
+
+import { FirebaseActivitiesAndAccumulatedTime } from "../utility/firebaseTypes";
 import { User } from "../utility/types";
 
 const userActivitiesAndAccumulatedTime = (
-  arr: FirebaseuserActivityAndAccumulatedTime[],
+  arr: FirebaseActivitiesAndAccumulatedTime[]
 ): User["activitiesAndAccumulatedTime"] => {
   let temArr: User["activitiesAndAccumulatedTime"] = [];
   arr.forEach((item) =>
     temArr.push({
       accumulatedTime: item.accumulated_time,
       activityID: item.activity_id,
-    }),
+    })
   );
   return temArr;
 };
@@ -19,12 +20,12 @@ const userActivitiesAndAccumulatedTime = (
 export const userObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
+    | FirebaseFirestoreTypes.DocumentData
 ): User => {
   let user: User = {
     id: doc.id,
     activitiesAndAccumulatedTime: userActivitiesAndAccumulatedTime(
-      doc.data().activities_and_accumulated_time,
+      doc.data().activities_and_accumulated_time
     ),
     adminID: doc.data().admin_id,
     connectedActivities: doc.data().connected_activities,
@@ -43,7 +44,7 @@ export const userObject = (
 export const timeEntryObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
+    | FirebaseFirestoreTypes.DocumentData
 ) => {
   return {
     id: doc.id,
@@ -60,7 +61,7 @@ export const timeEntryObject = (
 export const activityObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
+    | FirebaseFirestoreTypes.DocumentData
 ) => {
   return {
     id: doc.id,
@@ -79,7 +80,7 @@ export const activityObject = (
 export const userPostObject = (
   doc:
     | FirebaseFirestoreTypes.QueryDocumentSnapshot<FirebaseFirestoreTypes.DocumentData>
-    | FirebaseFirestoreTypes.DocumentData,
+    | FirebaseFirestoreTypes.DocumentData
 ) => {
   return {
     id: doc.id,

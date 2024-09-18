@@ -1,8 +1,9 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-
+import "react-native";
 import Menu from "../../components/Menu";
+
+jest.unmock("../../components/Menu");
 
 jest.mock("../../components/MenuOverlay", () => {
   return {
@@ -11,18 +12,12 @@ jest.mock("../../components/MenuOverlay", () => {
   };
 });
 
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-const mockedNavigate = jest.fn();
-
 jest.mock("@react-navigation/native", () => {
   const actualNav = jest.requireActual("@react-navigation/native");
   return {
     ...actualNav,
     useNavigation: () => ({
-      navigate: mockedNavigate,
+      navigate: jest.fn(),
     }),
   };
 });
@@ -43,7 +38,7 @@ describe("Testing Menu for User and Admin", () => {
     const { getByTestId } = render(<Menu />);
     const logo = getByTestId("dgggLogo");
     expect(logo.props["source"].testUri).toBe(
-      "../../../assets/images/Logotyp_DGGG.png",
+      "../../../assets/images/Logotyp_DGGG.png"
     );
   });
   it("can press the button", () => {
@@ -57,8 +52,8 @@ describe("Testing Menu for User and Admin", () => {
 
     expect(
       getAllByText(
-        "Ingen internetanslutning, dina ändringar kanske inte sparas",
-      ).length,
+        "Ingen internetanslutning, dina ändringar kanske inte sparas"
+      ).length
     ).toBe(1);
   });
 });

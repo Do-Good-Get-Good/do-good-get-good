@@ -1,18 +1,15 @@
-import React, { useState, useEffect } from "react";
+import { Icon, Overlay } from "@rneui/base";
+import { format } from "date-fns";
+import React, { useEffect, useState } from "react";
 import {
+  Platform,
+  Pressable,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Platform,
-  Pressable,
 } from "react-native";
-
-import { Overlay, Icon } from "@rneui/base";
 import { Calendar } from "react-native-calendars";
-
-import { format } from "date-fns";
-
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 

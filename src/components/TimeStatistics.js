@@ -1,12 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Text, StyleSheet, View } from "react-native";
-import typography from "../assets/theme/typography";
-import colors from "../assets/theme/colors";
-import InfoModal from "../components/InfoModal";
-import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
+import { useRoute } from "@react-navigation/native";
 import { format } from "date-fns";
 import { sv } from "date-fns/locale";
-import { useRoute } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import InfoModal from "../components/InfoModal";
+import { useTimeStatisticSettings } from "../context/TimeStatisticsContext";
 import { Routes } from "../lib/enums/routes";
 
 function TimeStatistics({ timeObject }) {

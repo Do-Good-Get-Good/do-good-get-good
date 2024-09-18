@@ -1,19 +1,19 @@
+import auth from "@react-native-firebase/auth";
+import { Icon, Overlay } from "@rneui/base";
 import React from "react";
 import {
+  Platform,
   StyleSheet,
   Text,
-  View,
   TouchableOpacity,
-  Platform,
+  View,
 } from "react-native";
-import { Icon, Overlay } from "@rneui/base";
-import auth from "@react-native-firebase/auth";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { MenuFooter } from "./MenuFooter";
-import { useMenuNavigation } from "./useMenuNavigation";
-import { MenuLink } from "./MenuLink";
 import { useUserLevel } from "../../context/useUserLevel";
+import { MenuFooter } from "./MenuFooter";
+import { MenuLink } from "./MenuLink";
+import { useMenuNavigation } from "./useMenuNavigation";
 
 type Props = {
   openOverlay: () => void;

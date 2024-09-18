@@ -1,11 +1,11 @@
-import { useCallback, useEffect, useState } from "react";
+import auth from "@react-native-firebase/auth";
+import { useEffect, useState } from "react";
 import {
   getActivityByID,
   getUserData,
 } from "../../firebase-functions/getTS/get";
-import { Activity, User, UserPost } from "../../utility/types";
-import auth from "@react-native-firebase/auth";
 import { onSnapshotUserPosts } from "../../firebase-functions/onSnapshotsFunctions";
+import { Activity, User, UserPost } from "../../utility/types";
 
 const currentUser = auth().currentUser;
 
@@ -28,7 +28,7 @@ export const useChat = ({ getChatData }: Props) => {
   }, [currentUser]);
 
   const getAllActivitiesConnectedToUser = async (
-    connectedActivitiesID: User["connectedActivities"],
+    connectedActivitiesID: User["connectedActivities"]
   ) => {
     let arr: Activity[] = [];
     const promises = connectedActivitiesID.map(async (item) => {

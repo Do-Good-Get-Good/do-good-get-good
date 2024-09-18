@@ -1,6 +1,6 @@
-import { User } from "../../utility/types";
 import functions from "@react-native-firebase/functions";
 import Config from "react-native-config";
+import { User } from "../../utility/types";
 const project =
   Config.NODE_ENV === "prod"
     ? "do-good-get-good-2f6cc"
@@ -9,7 +9,7 @@ const project =
 export const superAdminUpdatesUserInfo = async (user: User) => {
   try {
     const updateUser = functions().httpsCallableFromUrl(
-      `https://europe-north1-${project}.cloudfunctions.net/updateUserSecondGen`,
+      `https://europe-north1-${project}.cloudfunctions.net/updateUserSecondGen`
     );
     const res = await updateUser(user);
     console.log("Super admin update user data ");

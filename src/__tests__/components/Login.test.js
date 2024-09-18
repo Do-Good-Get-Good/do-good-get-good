@@ -1,7 +1,6 @@
-import "react-native";
+import { fireEvent, render, waitFor } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-
+import "react-native";
 import { Login } from "../../components/Login";
 
 jest.mock("@react-native-firebase/auth", () => () => ({
@@ -9,21 +8,17 @@ jest.mock("@react-native-firebase/auth", () => () => ({
   signInWithEmailAndPassword: jest.fn(() => new Promise.resolve(true)),
 }));
 
-jest.mock("@react-native-firebase/crashlytics", () => () => ({
-  crashlytics: jest.fn(),
-}));
-
 describe("Testing Login", () => {
   it("Renders the login page correctly", () => {
     const { getAllByText, getByPlaceholderText, getByTestId } = render(
-      <Login />,
+      <Login />
     );
 
     expect(getByTestId("login.backgroundImage").props.source.testUri).toBe(
-      "../../../assets/images/blueprint-white.png",
+      "../../../assets/images/blueprint-white.png"
     );
     expect(getByTestId("login.dgggLogo").props.source.testUri).toBe(
-      "../../../assets/images/Logotyp_DGGG.png",
+      "../../../assets/images/Logotyp_DGGG.png"
     );
     getByTestId("login.motivationalText");
     getByPlaceholderText("E-post");
@@ -32,7 +27,7 @@ describe("Testing Login", () => {
     expect(getAllByText("Glömt ditt lösenord?").length).toBe(1);
     expect(getAllByText("Tryck här").length).toBe(1);
     expect(getByTestId("login.bottomLogo").props.source.testUri).toBe(
-      "../../../assets/images/Technogarden-logotyp-Large.png",
+      "../../../assets/images/Technogarden-logotyp-Large.png"
     );
   });
 

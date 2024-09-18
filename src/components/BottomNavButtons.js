@@ -1,9 +1,8 @@
 import React from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
 
 const BottomNavButtons = ({
   primaryText,

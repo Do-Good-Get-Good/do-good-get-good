@@ -1,3 +1,5 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useForm } from "react-hook-form";
 import {
   Dimensions,
   ImageBackground,
@@ -7,28 +9,22 @@ import {
   SafeAreaView,
   Text,
   TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import * as yup from "yup";
 import { LogoAndMotivationText } from "./LogoAndMotivationText";
-import { InputFieldWithController } from "../InputFieldWithController";
-import { useForm } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { VisibilityIcon } from "../../assets/icons/VisibilityIcon";
 
-import { EmailAndPasswordInput } from "./EmailAndPasswordInput";
+import { useState } from "react";
 import { StyleSheet } from "react-native";
 import Config from "react-native-config";
+import colors from "../../assets/theme/colors";
+import typography from "../../assets/theme/typography";
+import BottomLogo from "../BottomLogo";
+import { LongButton } from "../Buttons/LongButton";
 import DevRelease from "../DevRelease";
 import ResetPassModal from "../ResetPassModal";
-import { useState } from "react";
-import BottomLogo from "../BottomLogo";
-import { TextUnderlineButton } from "../Buttons/TextUnderlineButton";
-import colors from "../../assets/theme/colors";
+import { EmailAndPasswordInput } from "./EmailAndPasswordInput";
 import { ForgotPasswordTextAndButton } from "./ForgotPasswordTextAndButton";
-import { LongButton } from "../Buttons/LongButton";
 import { useSignIn } from "./useSignIn";
-import typography from "../../assets/theme/typography";
 
 export type LoginInput = {
   email: string;

@@ -1,15 +1,8 @@
-import {
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  PermissionsAndroid,
-} from "react-native";
-import typography from "../../assets/theme/typography";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../../assets/theme/colors";
-import { UserPost } from "../../utility/types";
+import typography from "../../assets/theme/typography";
 import { ChatCardImage } from "../../components/ChartCard/ChatCardImage";
+import { UserPost } from "../../utility/types";
 import { checkPermissionAndOpenImage } from "./selectImage";
 
 type Props = {
@@ -24,7 +17,7 @@ export const AddImage = ({ imageURL, setImageURL }: Props) => {
         <ChatCardImage size={1.6} imageUrl={imageURL} />
       ) : (
         <View style={styles.image}>
-          <Text style={styles.imageText}>Lägga till bild</Text>
+          <Text style={styles.imageText}>Lägg till bild</Text>
           <Text style={styles.buttonText}>+</Text>
         </View>
       )}

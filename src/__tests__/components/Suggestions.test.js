@@ -1,34 +1,9 @@
-import "react-native";
+import { act, fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent, act } from "@testing-library/react-native";
-
+import "react-native";
 import Suggestions from "../../components/Suggestions";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 import { useActivityCardContext } from "../../context/ActivityCardContext";
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
 
 jest.mock("../../context/AdminGalleryContext", () => ({
   useAdminGalleryFunction: () => ({
@@ -85,8 +60,6 @@ const navigation = {
   navigate: jest.fn(),
 };
 
-jest.mock("@react-navigation/native");
-
 describe("Testing Suggestions", () => {
   it("Suggestions function lookDetails and lookDetails2 for AdminActivityGallery", () => {
     require("@react-navigation/native").useRoute.mockReturnValue({
@@ -98,7 +71,7 @@ describe("Testing Suggestions", () => {
         navigation={navigation}
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
-      />,
+      />
     );
 
     const buttonLookDetails = getByTestId("lookDetails");
@@ -115,7 +88,7 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
 
     expect(getAllByText("title").length).toBe(1);
@@ -128,7 +101,7 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
 
     expect(getAllByText("city").length).toBe(1);
@@ -141,7 +114,7 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
 
     expect(getAllByText("description").length).toBe(1);
@@ -154,7 +127,7 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
 
     const image = getByTestId("photo");
@@ -170,11 +143,11 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
 
     useActivityCardContext().changePopularStatusInAdminGallery.mockReturnValue(
-      false,
+      false
     );
     useCreateActivityFunction().setUpdateGallery.mockReturnValue(false);
   });
@@ -186,7 +159,7 @@ describe("Testing Suggestions", () => {
         adminGallery={adminGallery}
         inactiveActivities={inactiveActivities}
         choiceFromDropDown={"Namn"}
-      />,
+      />
     );
     expect(getAllByText("Din sökning gav inga resultat.").length).toBe(1);
   });

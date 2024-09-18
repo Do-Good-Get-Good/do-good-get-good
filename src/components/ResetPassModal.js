@@ -1,21 +1,17 @@
+import auth from "@react-native-firebase/auth";
+import { Icon, Overlay } from "@rneui/base";
 import React from "react";
 import {
+  Alert,
   StyleSheet,
   Text,
-  View,
   TextInput,
-  Alert,
   TouchableOpacity,
+  View,
 } from "react-native";
-
-import inputStyles from "../styles/inputStyle";
-
-import { Icon, Overlay } from "@rneui/base";
-
-import auth from "@react-native-firebase/auth";
-
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
+import inputStyles from "../styles/inputStyle";
 
 const ResetPassModal = ({ isModalOpen, openModal }) => {
   const [email, setEmail] = React.useState("");
@@ -48,7 +44,7 @@ const ResetPassModal = ({ isModalOpen, openModal }) => {
   const alertMessage = () => {
     Alert.alert(
       "Återställ lösenord",
-      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!",
+      "Om din e-post existerar kommer du få ett mail med en länk för att återställa ditt lösenord!"
     );
   };
 

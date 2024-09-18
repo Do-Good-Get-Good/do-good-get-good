@@ -1,1 +1,1 @@
-export {ChatCardScreen} from './ChatCardScreen'
+export { ChatCardScreen } from "./ChatCardScreen";

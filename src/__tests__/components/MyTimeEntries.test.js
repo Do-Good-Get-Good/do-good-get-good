@@ -1,18 +1,8 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
+import "react-native";
 import MyTimeEntries from "../../components/MyTimeEntries";
 import useTimeEntriesWithLimit from "../../hooks/useTimeEntriesWithLimit";
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("../../components/Menu", () => () => {
-  return <></>;
-});
 
 jest.mock("../../components/CalendarView", () => () => {
   return <></>;
@@ -21,8 +11,6 @@ jest.mock("../../components/CalendarView", () => () => {
 jest.mock("../../components/DropDownForSorting", () => () => {
   return <></>;
 });
-
-jest.mock("@react-navigation/native");
 
 jest.mock("../../hooks/useTimeEntriesWithLimit");
 
