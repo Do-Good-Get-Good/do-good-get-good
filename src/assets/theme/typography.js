@@ -12,6 +12,21 @@ const typography = {
     fontFamily: "DIN-Medium",
   },
   title: {
+    sm: {
+      fontSize: 16,
+      paddingVertical: 8,
+      fontFamily: "DIN-Medium",
+    },
+    md: {
+      fontSize: 20,
+      paddingVertical: 8,
+      fontFamily: "DIN-Medium",
+    },
+    lg: {
+      fontSize: 24,
+      paddingVertical: 8,
+      fontFamily: "DIN-Medium",
+    },
     fontSize: 24,
     paddingVertical: 8,
     fontFamily: "DIN-Medium",

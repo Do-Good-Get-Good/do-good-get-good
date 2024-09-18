@@ -10,6 +10,7 @@ import { CreateActivityProvider } from "./context/CreateActivityContext/CreateAc
 import { SuperAdminProvider } from "./context/SuperAdminContext";
 import { SuperAdminHomePageContextProvider } from "./context/SuperAdminHomePageContext";
 import { TimeStatisticsProvider } from "./context/TimeStatisticsContext";
+import About from "./screens/About/About";
 import { ActivityCard } from "./screens/ActivityCard";
 import { ActivityCardDetails } from "./screens/ActivityCard/ActivityCardDetails";
 import { AddOrEditPost } from "./screens/AddOrEditPost";
@@ -120,6 +121,7 @@ export const SuperAdminStack = () => {
                             name="ActivityCardDetails"
                             component={ActivityCardDetails}
                           />
+                          <Stack.Screen name="About" component={About} />
                         </Stack.Navigator>
                       </NavigationContainer>
                     </SuperAdminHomePageContextProvider>
