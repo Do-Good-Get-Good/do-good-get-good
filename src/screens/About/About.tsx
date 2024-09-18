@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Linking, Platform, StyleSheet, Text, View } from "react-native";
+import { Image, Linking, StyleSheet, Text, View } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import typography from "../../assets/theme/typography";
 import BottomLogo from "../../components/BottomLogo";
@@ -10,23 +10,10 @@ const AppIcon = require("../../assets/images/icon_dggg.png");
 const About = () => {
   const { getVersion, getBuildNumber } = DeviceInfo;
 
-  const contact = {
-    phone: "070-123-12-12",
-    email: "dggg@technogarden.se",
-  };
+  const email = "dggg@technogarden.se";
 
   const openMailClient = () => {
-    Linking.openURL(`mailto:${contact.email}`);
-  };
-
-  const openDialScreen = () => {
-    let number = "";
-    if (Platform.OS === "ios") {
-      number = `telprompt:${contact.phone}`;
-    } else {
-      number = `tel:${contact.phone}`;
-    }
-    Linking.openURL(number);
+    Linking.openURL(`mailto:${email}`);
   };
 
   return (
@@ -42,25 +29,15 @@ const About = () => {
           Version: {getVersion()} ({getBuildNumber()})
         </Text>
 
-        <View style={styles.container}>
-          <Text style={styles.contactInfo}>Kontakt info</Text>
+        <View style={styles.contactInfo}>
+          <Text style={typography.title.md}>Kontakt info</Text>
 
           <Text style={styles.text}>Mail:</Text>
           <Text
             style={[styles.text, { textDecorationLine: "underline" }]}
             onPress={openMailClient}
           >
-            {contact.email}
-          </Text>
-
-          <Text></Text>
-
-          <Text style={styles.text}>telefon:</Text>
-          <Text
-            style={[styles.text, { textDecorationLine: "underline" }]}
-            onPress={openDialScreen}
-          >
-            {contact.phone}
+            {email}
           </Text>
         </View>
         <BottomLogo />
@@ -92,7 +69,8 @@ const styles = StyleSheet.create({
     resizeMode: "contain",
   },
   contactInfo: {
-    ...typography.title.md,
+    marginTop: 32,
+    alignItems: "center",
   },
   text: {
     ...typography.b2,
