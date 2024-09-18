@@ -23,17 +23,24 @@ const About = () => {
         <View style={styles.imageWrapper}>
           <Image testID="app-icon" style={styles.image} source={AppIcon} />
         </View>
-        <Text style={styles.appName}>Do Good Get Good</Text>
+        <Text testID="app-name" style={styles.appName}>
+          Do Good Get Good
+        </Text>
 
-        <Text style={styles.text}>
+        <Text testID="app-version-info" style={styles.text}>
           Version: {getVersion()} ({getBuildNumber()})
         </Text>
 
         <View style={styles.contactInfo}>
-          <Text style={typography.title.md}>Kontakt info</Text>
+          <Text testID="contact-info" style={typography.title.md}>
+            Kontakt info
+          </Text>
 
-          <Text style={styles.text}>Mail:</Text>
+          <Text testID="mail" style={styles.text}>
+            Mail:
+          </Text>
           <Text
+            testID="actual-mail"
             style={[styles.text, { textDecorationLine: "underline" }]}
             onPress={openMailClient}
           >
