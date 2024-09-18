@@ -1,23 +1,15 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import { MenuOverlay } from "../../components/MenuOverlay";
-import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigation";
 import {
-  mockUserNav,
   adminNavigations,
+  mockUserNav,
   superAdminNavigations,
 } from "../../components/MenuOverlay/mock/mockUseMenuNavigation";
-
-import userLevelStore from "../../store/userLevel";
+import { useMenuNavigation } from "../../components/MenuOverlay/useMenuNavigation";
+import { UserLevelProvider } from "../../context/useUserLevel";
 import { Role } from "../../utility/enums";
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
 
 const mockedNavigate = jest.fn();
 
@@ -59,18 +51,26 @@ jest.mock("../../components/MenuOverlay/useMenuNavigation", () => ({
   useMenuNavigation: jest.fn(),
 }));
 
+let mockUserLevel = Role.user;
+
+jest.mock("../../context/useUserLevel", () => ({
+  useUserLevel: () => ({
+    userLevel: mockUserLevel,
+  }),
+}));
+
 const user = () => {
-  userLevelStore.setUserLevel(Role.user);
+  mockUserLevel = Role.user;
   useMenuNavigation.mockReturnValueOnce(mockUserNav);
 };
 
 const admin = () => {
-  userLevelStore.setUserLevel(Role.admin);
+  mockUserLevel = Role.admin;
   useMenuNavigation.mockReturnValueOnce([...mockUserNav, ...adminNavigations]);
 };
 
 const superAdmin = () => {
-  userLevelStore.setUserLevel(Role.superadmin);
+  mockUserLevel = Role.superadmin;
   useMenuNavigation.mockReturnValueOnce([
     ...mockUserNav,
     ...adminNavigations,
@@ -83,6 +83,7 @@ describe("Testing MenuOverlay", () => {
     user();
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />,
+      { wrapper: UserLevelProvider }
     );
 
     expect(getAllByText("Stäng").length).toBe(1);
@@ -104,6 +105,7 @@ describe("Testing MenuOverlay", () => {
     admin();
     const { getAllByText, queryByText } = render(
       <MenuOverlay isVisible={true} />,
+      { wrapper: UserLevelProvider }
     );
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
@@ -120,7 +122,9 @@ describe("Testing MenuOverlay", () => {
 
   it("Are the superadmin-menu buttons visible", () => {
     superAdmin();
-    const { getAllByText } = render(<MenuOverlay isVisible={true} />);
+    const { getAllByText } = render(<MenuOverlay isVisible={true} />, {
+      wrapper: UserLevelProvider,
+    });
     expect(getAllByText("Stäng").length).toBe(1);
     expect(getAllByText("Hem").length).toBe(1);
     expect(getAllByText("Min tid").length).toBe(1);
@@ -138,6 +142,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const closeButton = getByTestId("menuOverlay.closeButton");
@@ -149,6 +154,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const homeButton = getByTestId("menuLinkButton.HomePage");
@@ -161,6 +167,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const myTimeButton = getByTestId("menuLinkButton.MyTimePage");
@@ -173,6 +180,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const aboutButton = getByTestId("menuLinkButton.ConceptPage");
@@ -185,6 +193,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const faqButton = getByTestId("menuLinkButton.Faq");
@@ -196,6 +205,7 @@ describe("Testing MenuOverlay", () => {
       user();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const ChatButton = getByTestId("menuLinkButton.Chat");
@@ -208,6 +218,7 @@ describe("Testing MenuOverlay", () => {
       const onClickMock = jest.fn();
       const { getByTestId, debug } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
       debug();
       const adminButton = getByTestId("menuLinkButton.AdminPage");
@@ -221,10 +232,11 @@ describe("Testing MenuOverlay", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const activitiesButton = getByTestId(
-        "menuLinkButton.AdminActivityGallery",
+        "menuLinkButton.AdminActivityGallery"
       );
       fireEvent.press(activitiesButton);
       expect(mockedNavigate).toHaveBeenCalledWith("AdminActivityGallery", {});
@@ -234,10 +246,11 @@ describe("Testing MenuOverlay", () => {
       const onClickMock = jest.fn();
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const superAdminButton = getByTestId(
-        "menuLinkButton.AllUsersInTheSystem",
+        "menuLinkButton.AllUsersInTheSystem"
       );
       fireEvent.press(superAdminButton);
 
@@ -249,6 +262,7 @@ describe("Testing MenuOverlay", () => {
       let error = "ete";
       const { getByTestId } = render(
         <MenuOverlay openOverlay={onClickMock} isVisible={true} />,
+        { wrapper: UserLevelProvider }
       );
 
       const logoutButton = getByTestId("menuOverlay.logoutButton");

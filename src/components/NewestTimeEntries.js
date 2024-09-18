@@ -1,13 +1,11 @@
 import React, { useState } from "react";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
-import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
-
-import TimeEntry from "./TimeEntry";
-import CalendarView from "./CalendarView";
-
-import typography from "../assets/theme/typography";
 import colors from "../assets/theme/colors";
+import typography from "../assets/theme/typography";
+import useTimeEntriesWithLimit from "../hooks/useTimeEntriesWithLimit";
+import CalendarView from "./CalendarView";
+import TimeEntry from "./TimeEntry";
 
 const NewestTimeEntries = ({ navigation, registeredTime }) => {
   const { timeEntries, isLoading, error } = useTimeEntriesWithLimit(5);

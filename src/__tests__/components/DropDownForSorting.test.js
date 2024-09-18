@@ -1,15 +1,8 @@
-import "react-native";
-import React from "react";
-import { fireEvent, render } from "@testing-library/react-native";
-
-import DropDownForSorting from "../../components/DropDownForSorting";
 import { expect } from "@jest/globals";
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("@react-navigation/native");
+import { fireEvent, render } from "@testing-library/react-native";
+import React from "react";
+import "react-native";
+import DropDownForSorting from "../../components/DropDownForSorting";
 
 describe("Testing DropDownForSorting", () => {
   let mockChoice = undefined;
@@ -50,7 +43,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");
@@ -71,7 +64,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");
@@ -92,7 +85,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");
@@ -139,7 +132,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");
@@ -160,7 +153,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");
@@ -181,7 +174,7 @@ describe("Testing DropDownForSorting", () => {
     });
 
     const { getByTestId } = render(
-      <DropDownForSorting choice={updateMockChoice} />,
+      <DropDownForSorting choice={updateMockChoice} />
     );
 
     const dropdown = getByTestId("dropDownPressed");

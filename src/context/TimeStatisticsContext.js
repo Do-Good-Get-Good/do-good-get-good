@@ -1,5 +1,4 @@
-import React, { useState, useContext, useEffect } from "react";
-
+import React, { useContext, useEffect, useState } from "react";
 import { getMaxConfirmedHours } from "../firebase-functions/get";
 
 const TimeStatisticsContext = React.createContext();

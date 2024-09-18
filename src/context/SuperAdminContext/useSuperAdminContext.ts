@@ -1,14 +1,11 @@
-import { User } from "../../utility/types";
-
-import { updateUserArray } from "../../hooks/superAdmin/utils";
-import { Role } from "../../utility/enums";
-import { useSuperAdminFunction } from "./SuperAdminContext";
-import { UserInfo } from "../../screens/RolesAndConnection";
-import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/superAdminUpdatesUserInfo";
-import { UserName } from "../../screens/ChangeUser/updateUser";
-
-import { AlertInfo } from "../../components/Alerts/AlertInfo";
 import { useState } from "react";
+import { AlertInfo } from "../../components/Alerts/AlertInfo";
+import { superAdminUpdatesUserInfo } from "../../firebase-functions/updateTS/superAdminUpdatesUserInfo";
+import { updateUserArray } from "../../hooks/superAdmin/utils";
+import { UserInfo } from "../../screens/RolesAndConnection";
+import { Role } from "../../utility/enums";
+import { User } from "../../utility/types";
+import { useSuperAdminFunction } from "./SuperAdminContext";
 
 const isSavingUpdatesSucceed = (succed: boolean) =>
   succed ? "Dina ändringar har sparats" : "Något gick fel";
@@ -30,7 +27,7 @@ export const useSuperAdminContext = () => {
 
   const onSaveChangedUser = (
     changes: UserInfo,
-    connectedUsersChangedAdmin?: User[],
+    connectedUsersChangedAdmin?: User[]
   ) => {
     if (makeChangesForSelectedUser?.user && changes?.role) {
       const changedData = {
@@ -59,13 +56,13 @@ export const useSuperAdminContext = () => {
 
     allUsersInSystem &&
       context?.setAllUsersInSystem(
-        updateUserArray(allUsersInSystem, changedUser) ?? [],
+        updateUserArray(allUsersInSystem, changedUser) ?? []
       );
   };
 
   const findAdminsAndSuperAdmins = (userArray: Array<User>) =>
     userArray.filter(
-      (user) => user.role === Role.admin || user.role === Role.superadmin,
+      (user) => user.role === Role.admin || user.role === Role.superadmin
     );
 
   return {

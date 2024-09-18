@@ -3,5 +3,14 @@
     "default": "do-good-get-good-2f6cc",
     "dev": "dev-do-good-get-good"
   },
-  "targets": {}
+  "targets": {},
+  "etags": {
+    "dev-do-good-get-good": {
+      "extensionInstances": {}
+    },
+    "do-good-get-good-2f6cc": {
+      "extensionInstances": {}
+    }
+  },
+  "dataconnectEmulatorConfig": {}
 }

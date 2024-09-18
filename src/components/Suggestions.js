@@ -1,21 +1,20 @@
-import React, { useState, useEffect, useCallback } from "react";
-import {
-  Text,
-  StyleSheet,
-  View,
-  Image,
-  TouchableOpacity,
-  Platform,
-  Keyboard,
-} from "react-native";
 import { Icon } from "@rneui/base";
-import typography from "../assets/theme/typography";
+import React, { useCallback, useEffect, useState } from "react";
+import {
+  Image,
+  Keyboard,
+  Platform,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import colors from "../assets/theme/colors";
-
-import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
+import typography from "../assets/theme/typography";
 import { useActivityCardContext } from "../context/ActivityCardContext";
-import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
+import { useAdminGalleryFunction } from "../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../context/CreateActivityContext/CreateActivityContext";
 
 export function Suggestions({
   navigation,
@@ -61,8 +60,7 @@ export function Suggestions({
       ) {
         let newArray = showArray;
         var index = newArray.findIndex(
-          (x) =>
-            x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted,
+          (x) => x.id === activityCardContext.idOfTheActivityWhichHasBeenDeleted
         );
         newArray.splice(index, 1);
         setShowArray(sortingByTitle(newArray));
@@ -77,7 +75,7 @@ export function Suggestions({
       const replaceObjectIfpopularStatusChanged = () => {
         let newArray = showArray;
         var index = newArray.findIndex(
-          (x) => x.id === useCreateActivityContext.changedActivity.id,
+          (x) => x.id === useCreateActivityContext.changedActivity.id
         );
         newArray.splice(index, 1, useCreateActivityContext.changedActivity);
         setShowArray(sortingByTitle(newArray));
@@ -92,7 +90,7 @@ export function Suggestions({
     let sortArray = [];
     if (choiceFromDropDown === "Favoriter") {
       sortArray = showArray.sort(
-        (a, b) => Number(b.popular) - Number(a.popular),
+        (a, b) => Number(b.popular) - Number(a.popular)
       );
     } else if (choiceFromDropDown === "Namn") {
       sortArray = sortingByTitle(showArray);
@@ -149,7 +147,7 @@ export function Suggestions({
                 style={styles.image}
                 source={getImageForActivity(
                   suggestion.photo,
-                  suggestion.imageUrl,
+                  suggestion.imageUrl
                 )}
               />
             </View>
@@ -182,7 +180,7 @@ export function Suggestions({
     return (
       <View style={styles.activityContainer}>
         {viewArray.map((suggestion, index) =>
-          viewToShow(suggestion, index, suggestion.id + index),
+          viewToShow(suggestion, index, suggestion.id + index)
         )}
       </View>
     );

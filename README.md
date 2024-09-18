@@ -65,12 +65,22 @@ Production build: `npx react-native run-ios`
 Go to [GitHub Actions](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_apk_test.yml) and start the `Build Android AAB` workflow.
 When it's finished you'll be able to find the AAB on that workflow page under `Artifacts`.
 
+To see all tasks `./gradlew tasks`
+
 ### To get an APK file
 
 Go to `src/` and run `npm install`
 Go to `src/Android`
 Run `./gradlew assembleProd`
 Output will be in `src\android\app\build\outputs\apk\prod\release`
+
+### To get an Release file
+
+Go to .env, .env.dev, .env.prod and change there APP_VERSION and RELEASE_NUMBER (RELEASE_NUMBER have to be int)
+Go to `src/` and run `npm install`
+Go to `src/Android`
+To build file fore release `./gradlew bundleRelease`
+To get created file src/android/app/build/outputs/bundle/prodRelease
 
 ## Trouble shooting
 
@@ -96,6 +106,7 @@ Try
 
 - `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler`/ or `sudo gem update bundler` to ensure that your Bundler is up to date.
 - sometimes help with `gem update --system`
+- sometimes you need to Reinstall Bundler, run  `gem uninstall bundler`and then `gem install bundler`
 - if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
 - sometimes it helps to open Xcode and build by pressing Command+B
 - often it helps to clean pod `rm -rf Pods   rm -rf Podfile.lock    pod install`
@@ -111,7 +122,6 @@ Try
 - Jaya Badarawada (_Mobile application developer_)
 - Kristoffer Johnsson (_Software tester_)
 - Rebecka Eldén (_User eXperience_)
-
 
 ### Mentors
 

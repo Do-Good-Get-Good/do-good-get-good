@@ -1,3 +1,4 @@
+import { useState } from "react";
 import {
   FlexStyle,
   StyleProp,
@@ -5,11 +6,10 @@ import {
   Text,
   TextStyle,
   TouchableOpacity,
-  View,
   ViewStyle,
 } from "react-native";
+import OutsidePressHandler from "react-native-outside-press";
 import { ArrowUpDown } from "../../../assets/icons/ArrowUpDown";
-import { useState } from "react";
 import colors from "../../../assets/theme/colors";
 
 type Props = {
@@ -18,6 +18,7 @@ type Props = {
   isUnderlineOnPress?: boolean;
   componentInsideDropDown: React.JSX.Element;
   openAsOverView?: boolean;
+  isOnOutsidePress?: boolean;
   containerstyle?: ViewStyle;
 };
 
@@ -26,19 +27,23 @@ export const DropDownTextAndIcon = ({
   testID,
   isUnderlineOnPress = false,
   componentInsideDropDown,
+  isOnOutsidePress,
   containerstyle,
 }: Props) => {
   const [isOpen, setIsOpen] = useState(false);
 
   const textWithUnderlineIfPressedStyle = (
-    onPress: boolean = false,
+    onPress: boolean = false
   ): StyleProp<FlexStyle | TextStyle> => ({
     fontSize: 18,
     textDecorationLine: isUnderlineOnPress && onPress ? "underline" : "none",
   });
 
   return (
-    <View style={{ ...styles.mainContainer, ...containerstyle }}>
+    <OutsidePressHandler
+      onOutsidePress={() => isOnOutsidePress && setIsOpen(false)}
+      style={{ ...styles.mainContainer, ...containerstyle }}
+    >
       <TouchableOpacity
         testID={`dropdown-${testID}`}
         onPress={() => setIsOpen(!isOpen)}
@@ -58,7 +63,7 @@ export const DropDownTextAndIcon = ({
         />
       </TouchableOpacity>
       {isOpen && componentInsideDropDown}
-    </View>
+    </OutsidePressHandler>
   );
 };
 const styles = StyleSheet.create({

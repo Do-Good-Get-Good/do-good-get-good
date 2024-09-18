@@ -1,22 +1,19 @@
-import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
-
-import { SafeAreaView } from "react-native-safe-area-context";
-
+import { Dialog, Icon } from "@rneui/base";
+import { format } from "date-fns";
 import React, { useEffect, useState } from "react";
-import Menu from "../components/Menu";
+import { Image, ScrollView, StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon, Dialog } from "@rneui/base";
 import BottomLogo from "../components/BottomLogo";
-
-import { format } from "date-fns";
+import Menu from "../components/Menu";
+import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import {
-  getUserData,
   getActivitiesMatchTimeEntries,
   getConcept,
   getTenLastConfirmedTimeEntries,
+  getUserData,
 } from "../firebase-functions/get";
-import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 
 const ConceptPage = () => {
   const { getImageForActivity } = useActivityImages();
@@ -58,7 +55,7 @@ const ConceptPage = () => {
               imageUrl: activity.imageUrl,
               timeEntryDate: format(
                 timeEntry.data().date.toDate(),
-                "yyyy-MM-dd",
+                "yyyy-MM-dd"
               ),
             };
             setAllUsers((prev) => [...prev, userData]);
@@ -180,7 +177,7 @@ const ConceptPage = () => {
                     style={styles.image}
                     source={getImageForActivity(
                       activity.activityPhoto,
-                      activity.imageUrl,
+                      activity.imageUrl
                     )}
                   />
                 </View>

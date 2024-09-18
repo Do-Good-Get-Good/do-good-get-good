@@ -3,7 +3,7 @@ import { Alert } from "react-native";
 export const AlertInfo = (
   info: string,
   onPressYes?: () => void,
-  title?: string,
+  title?: string
 ) =>
   Alert.alert(title ?? "", info, [
     {

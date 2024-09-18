@@ -1,11 +1,11 @@
-import { Linking, StyleSheet, View } from "react-native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import auth from "@react-native-firebase/auth";
 import { Overlay, Text } from "@rneui/base";
+import { useEffect, useState } from "react";
+import { Linking, StyleSheet, View } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { LongButton } from "./Buttons/LongButton";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect, useState } from "react";
-import auth from "@react-native-firebase/auth";
 
 const privacyPolicyKey = "@Is_Approved_Privacy_Policy_Key";
 
@@ -21,7 +21,7 @@ const getData = async (onContinue: (c: boolean) => void) => {
 
 const storeData = async (
   isApproved: boolean,
-  onContinue: (c: boolean) => void,
+  onContinue: (c: boolean) => void
 ) => {
   try {
     const jsonValue = JSON.stringify(isApproved);
@@ -34,7 +34,7 @@ const storeData = async (
 
 const openLink = () => {
   Linking.openURL("https://www.technogarden.se/integritetspolicy/").catch(
-    (err) => console.error("Failed to open URL:", err),
+    (err) => console.error("Failed to open URL:", err)
   );
 };
 

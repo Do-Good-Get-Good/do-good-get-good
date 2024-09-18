@@ -1,25 +1,25 @@
 import React from "react";
 import {
-  View,
+  Linking,
+  StyleSheet,
   Text,
   TouchableOpacity,
-  StyleSheet,
-  Linking,
+  View,
 } from "react-native";
-
+import { EventProvider } from "react-native-outside-press";
 import { SafeAreaView } from "react-native-safe-area-context";
-import { SuperAdminStack, AdminStack, UserStack } from "./navigate";
-
-import BottomLogo from "./components/BottomLogo";
-
-import typography from "./assets/theme/typography";
 import colors from "./assets/theme/colors";
-import { useAuthStateListener } from "./hooks/useAuthStateListener";
+import typography from "./assets/theme/typography";
+import BottomLogo from "./components/BottomLogo";
 import { Login } from "./components/Login";
 import { useForegroundgNotifi } from "./hooks/useForegroundgNotifi";
 
-export default function App() {
+import { useAuthStateListener } from "./hooks/useAuthStateListener";
+import { AdminStack, SuperAdminStack, UserStack } from "./navigate";
+
+const App = () => {
   const { initializing, user, userClaims, signOut } = useAuthStateListener();
+
   useForegroundgNotifi();
 
   if (initializing) return null;
@@ -33,11 +33,23 @@ export default function App() {
   }
 
   if (userClaims?.superadmin) {
-    return <SuperAdminStack />;
+    return (
+      <EventProvider>
+        <SuperAdminStack />
+      </EventProvider>
+    );
   } else if (userClaims?.admin) {
-    return <AdminStack />;
+    return (
+      <EventProvider>
+        <AdminStack />
+      </EventProvider>
+    );
   } else if (userClaims?.user) {
-    return <UserStack />;
+    return (
+      <EventProvider>
+        <UserStack />
+      </EventProvider>
+    );
   } else {
     return (
       <SafeAreaView style={styles.wrapper}>
@@ -59,7 +71,9 @@ export default function App() {
       </SafeAreaView>
     );
   }
-}
+};
+
+export default App;
 
 const styles = StyleSheet.create({
   wrapper: {

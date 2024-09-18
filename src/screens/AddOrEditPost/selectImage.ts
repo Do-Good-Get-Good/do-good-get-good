@@ -1,6 +1,6 @@
+import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { Alert, Linking, Platform } from "react-native";
 import ImagePicker from "react-native-image-crop-picker";
-import ImageResizer from "@bam.tech/react-native-image-resizer";
 import { PERMISSIONS, RESULTS, check, request } from "react-native-permissions";
 import { AlertInfo } from "../../components/Alerts/AlertInfo";
 
@@ -14,12 +14,12 @@ const showPermissionDeniedAlert = () =>
     "Åtkomst nekad",
     "Vi behöver behörighet för att använda foton. För att kunna fortsätta, vänligen ge det i appinställningar.",
     [{ text: "Cancel" }, { text: "Open Settings", onPress: openAppSettings }],
-    { cancelable: false },
+    { cancelable: false }
   );
 
 const showAlertSomethingWentWrong = (err: string) =>
   AlertInfo(
-    `Något gick fel ${err}. Starta om appen och prova igen. Om det inte hjälper, skriva om det till feven.hall.selassie@technogarden.se`,
+    `Något gick fel ${err}. Starta om appen och prova igen. Om det inte hjälper, skriva om det till feven.hall.selassie@technogarden.se`
   );
 
 const resizeImage = (path: string, setImageURL: (url: string) => void) => {
@@ -56,7 +56,7 @@ const openImagePicker = async (setImageURL: (url: string) => void) => {
 };
 
 export const checkPermissionAndOpenImage = async (
-  setImageURL: (url: string) => void,
+  setImageURL: (url: string) => void
 ) => {
   try {
     const result = await check(permission);
@@ -67,7 +67,7 @@ export const checkPermissionAndOpenImage = async (
     }
   } catch (err) {
     showAlertSomethingWentWrong(
-      "vid kontrollera behörighet och öppna bildmappsfunktionen",
+      "vid kontrollera behörighet och öppna bildmappsfunktionen"
     );
     console.warn(err);
   }

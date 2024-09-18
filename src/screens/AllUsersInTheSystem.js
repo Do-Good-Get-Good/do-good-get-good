@@ -1,10 +1,10 @@
-import { ScrollView, StyleSheet, View } from "react-native";
 import React from "react";
+import { ScrollView, View } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../components/Menu";
-import ListOfAllUsers from "../components/ListOfAllUsers";
 import BottomLogo from "../components/BottomLogo";
+import ListOfAllUsers from "../components/ListOfAllUsers";
+import Menu from "../components/Menu";
+
 function AllUsersInTheSystem({ navigation }) {
   return (
     <SafeAreaView>

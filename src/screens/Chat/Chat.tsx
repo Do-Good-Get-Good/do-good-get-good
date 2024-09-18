@@ -1,15 +1,14 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 import { StyleSheet } from "react-native";
-
-import Menu from "../../components/Menu";
-import { LongButton } from "../../components/Buttons/LongButton";
-import { Activity, UserPost } from "../../utility/types";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { LongButton } from "../../components/Buttons/LongButton";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
+import Menu from "../../components/Menu";
 import { UserStack } from "../../utility/routeEnums";
+import { Activity, UserPost } from "../../utility/types";
+import { AllPosts } from "./AllPosts";
 import { useChat } from "./useChat";
 import { useUserPostsActions } from "./useUserPostsActions";
-import { AllPosts } from "./AllPosts";
 
 type Props = {
   navigation: any;
@@ -27,7 +26,7 @@ export const Chat = ({ navigation, route }: Props) => {
 
   const onCreatePostButtonPressed = async () => {
     const activities = await getAllActivitiesConnectedToUser(
-      loggedInUser?.connectedActivities ?? [],
+      loggedInUser?.connectedActivities ?? []
     );
     setActivities(activities);
     setShowOverlay(true);

@@ -9,13 +9,13 @@
       android:label="@string/app_name"
       android:icon="@mipmap/icon_dggg"
       android:roundIcon="@mipmap/icon_dggg_round"
-      android:allowBackup="false"
-      android:theme="@style/AppTheme">
-        <meta-data
+      android:allowBackup="false"  
+      android:theme="@style/AppTheme"
+      android:supportsRtl="true">
+         <meta-data
     android:name="com.google.firebase.messaging.default_notification_icon"
     android:resource="@mipmap/icon_dggg_round" 
     /> 
-    
       <activity
         android:name=".MainActivity"
         android:label="@string/app_name"

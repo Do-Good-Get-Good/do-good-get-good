@@ -1,32 +1,7 @@
-import "react-native";
-import React from "react";
 import { fireEvent, render } from "@testing-library/react-native";
-
+import React from "react";
+import "react-native";
 import HomeSuggestions from "../../components/HomeSuggestions";
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
 
 const mockNavigate = jest.fn();
 jest.mock("@react-navigation/native", () => ({
@@ -49,7 +24,7 @@ const mockSuggestions = [
 describe("Testing HomeSuggestions", () => {
   it("Renders the suggestion card correctl and can press on it", () => {
     const { getByText, getByTestId } = render(
-      <HomeSuggestions suggestions={mockSuggestions} />,
+      <HomeSuggestions suggestions={mockSuggestions} />
     );
 
     const title = getByText("title");

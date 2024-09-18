@@ -1,5 +1,5 @@
-import { Platform, Text, View } from "react-native";
 import React from "react";
+import { Text, View } from "react-native";
 
 const DevRelease = () => {
   return (
@@ -9,9 +9,6 @@ const DevRelease = () => {
         alignSelf: "center",
         position: "absolute",
         height: 65,
-        ...Platform.select({
-          ios: { top: 50 },
-        }),
       }}
     >
       <Text

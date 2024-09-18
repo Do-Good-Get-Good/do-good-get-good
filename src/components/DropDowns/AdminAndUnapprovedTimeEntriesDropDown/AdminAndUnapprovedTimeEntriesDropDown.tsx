@@ -1,21 +1,20 @@
+import { includes, pull } from "lodash";
+import { useState } from "react";
 import { StyleSheet, View } from "react-native";
-
+import colors from "../../../assets/theme/colors";
 import {
   TimeEntry,
   UserAndUnapprovedTimeEntriesType,
 } from "../../../utility/types";
-import { MainLabel } from "./MainLabel";
-import { useState } from "react";
 import { InfoRow } from "../InfoRow";
-import colors from "../../../assets/theme/colors";
-import { includes, pull } from "lodash";
+import { MainLabel } from "./MainLabel";
 
 const countAllEntries = (
-  usersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[],
+  usersWithUnconfirmedTimeEntries: UserAndUnapprovedTimeEntriesType[]
 ) =>
   usersWithUnconfirmedTimeEntries.reduce(
     (total, current) => total + current.unapprovedTimeEntries.length,
-    0,
+    0
   ) ?? 0;
 
 type Props = {
@@ -35,7 +34,7 @@ export const AdminAndUnapprovedTimeEntriesDropDown = ({
     setOnCheck(
       includes(onCheck, timeEntry)
         ? [...pull(onCheck, timeEntry)]
-        : [...onCheck, timeEntry],
+        : [...onCheck, timeEntry]
     );
   };
 

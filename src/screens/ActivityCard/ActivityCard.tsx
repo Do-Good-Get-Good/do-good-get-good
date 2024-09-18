@@ -1,28 +1,25 @@
-import React, { useState, useEffect } from "react";
+import { Icon, Overlay } from "@rneui/base";
+import React, { useEffect, useState } from "react";
 import {
-  Text,
-  StyleSheet,
-  View,
   Image,
-  TouchableOpacity,
   ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-
-import Menu from "../../components/Menu";
-import { Icon, Overlay } from "@rneui/base";
-
-import { useActivityCardContext } from "../../context/ActivityCardContext";
-import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
-import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
-
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
 import BottomLogo from "../../components/BottomLogo";
 import ManageUsers from "../../components/ManageUsers";
-import { UserLevels } from "../../lib/enums/userlevels";
+import Menu from "../../components/Menu";
+import { useActivityCardContext } from "../../context/ActivityCardContext";
 import { useActivityImages } from "../../context/ActivityImagesContext/ActivityImagesContext";
-import userLevelStore from "../../store/userLevel";
+import { useAdminGalleryFunction } from "../../context/AdminGalleryContext";
+import { useCreateActivityFunction } from "../../context/CreateActivityContext/CreateActivityContext";
+import { useUserLevel } from "../../context/useUserLevel";
+import { Role } from "../../utility/enums";
 
 type Props = {
   route: any;
@@ -39,7 +36,7 @@ export function ActivityCard({ route, navigation }: Props) {
   const { activityHasChangedID } = useCreateActivityFunction();
   const { setCleanUpSearchBarComponent } = useAdminGalleryFunction();
   const { getImageForActivity } = useActivityImages();
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
 
   const [activity, setActivity] = useState({
     id: "",
@@ -114,7 +111,7 @@ export function ActivityCard({ route, navigation }: Props) {
         setActiveActivities(false);
       } else {
         console.log(
-          "Something went wrong with YES button while trying to archive",
+          "Something went wrong with YES button while trying to archive"
         );
       }
       idActivity(activityInfo.id);
@@ -132,7 +129,7 @@ export function ActivityCard({ route, navigation }: Props) {
         setActiveActivities(true);
       } else {
         console.log(
-          "Something went wrong with YES button while trying to take activity away from archive",
+          "Something went wrong with YES button while trying to take activity away from archive"
         );
       }
       idActivity(activityInfo.id);
@@ -427,7 +424,7 @@ export function ActivityCard({ route, navigation }: Props) {
           style={styles.image}
           source={getImageForActivity(
             activityInfo.photo,
-            activityInfo.imageUrl,
+            activityInfo.imageUrl
           )}
         />
 
@@ -470,7 +467,7 @@ export function ActivityCard({ route, navigation }: Props) {
         </View>
         <BottomLogo />
       </ScrollView>
-      {[UserLevels.SuperAdmin, UserLevels.Admin].includes(userLevel) && (
+      {[Role.superadmin, Role.admin].includes(userLevel) && (
         <ManageUsers
           visible={isManageUsersOpen}
           closeModal={closeManageUsers}

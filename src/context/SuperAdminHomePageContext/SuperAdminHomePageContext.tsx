@@ -1,14 +1,12 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useState } from "react";
 
 import { UserAndUnapprovedTimeEntriesType } from "../../utility/types";
-import { useSuperAdminHomePageContext } from "./useSuperAdminHomePageContext";
-import { getAllUnconfirmedTimeEntries } from "../../firebase-functions/getTS/get";
 
 type SuperAdminHomePageContextType = {
   allUsersWithUnconfirmedTimeEntries: Array<UserAndUnapprovedTimeEntriesType>;
 
   setAllUsersWithUnconfirmedTimeEntries: (
-    users: UserAndUnapprovedTimeEntriesType[],
+    users: UserAndUnapprovedTimeEntriesType[]
   ) => void;
 };
 

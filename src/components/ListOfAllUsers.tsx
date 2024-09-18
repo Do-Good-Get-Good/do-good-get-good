@@ -1,20 +1,18 @@
+import { Icon } from "@rneui/base";
 import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
-import { Icon } from "@rneui/base";
-import { User } from "../utility/types";
-import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
 import { useSuperAdminFunction } from "../context/SuperAdminContext";
-
-import { SuperAdminStack } from "../utility/routeEnums";
-import { GoBackButton } from "./Buttons/GoBackButton";
-
-import { SearchBarComponent } from "./SearchBarComponent";
-import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
+import { useUserLevel } from "../context/useUserLevel";
 import { useGetAllUsersThatExistInTheSystem } from "../hooks/superAdmin/useGetAllUsersThatExistInTheSystem";
-import userLevelStore from "../store/userLevel";
+import { useOnSelectUser } from "../hooks/superAdmin/useOnSelectUser";
+import { SuperAdminStack } from "../utility/routeEnums";
+import { User } from "../utility/types";
+import { GoBackButton } from "./Buttons/GoBackButton";
+import { YesNoRadioButtons } from "./Buttons/YesNoRadioButtons";
 import { Spinner } from "./Loading";
+import { SearchBarComponent } from "./SearchBarComponent";
 
 type Props = {
   navigation: any;
@@ -22,7 +20,7 @@ type Props = {
 export function ListOfAllUsers({ navigation }: Props) {
   const superAdminContext = useSuperAdminFunction();
   const [selectedOption, setSelectedOption] = useState<boolean>(true);
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
   const { getAllUsersByStatus } = useGetAllUsersThatExistInTheSystem(userLevel);
   const allUsersInSystem = superAdminContext?.allUsersInSystem ?? [];
   const { onSelectUser, getUserEmail } = useOnSelectUser();
@@ -51,10 +49,7 @@ export function ListOfAllUsers({ navigation }: Props) {
 
   return (
     <View style={styles.screenContainer}>
-      <GoBackButton
-        style={{ marginVertical: 5 }}
-
-      />
+      <GoBackButton style={{ marginVertical: 5 }} />
       <SearchBarComponent
         arrayToSearch={allUsersInSystem ?? []}
         keys={["firstName", "lastName"]}
@@ -85,7 +80,7 @@ export function ListOfAllUsers({ navigation }: Props) {
                 size={25}
               />
             </TouchableOpacity>
-          ),
+          )
       )}
     </View>
   );

@@ -1,13 +1,8 @@
-import {
-  ScrollView,
-  StyleSheet,
-  Text,
-  View,
-} from "react-native";
+import { Overlay } from "@rneui/base";
+import { useEffect, useState } from "react";
+import { ScrollView, StyleSheet, Text, View } from "react-native";
 import colors from "../../assets/theme/colors";
 import typography from "../../assets/theme/typography";
-import { useEffect, useState } from "react";
-import { Overlay } from "@rneui/base";
 import { LongButton } from "../Buttons/LongButton";
 import { RadioButton } from "../Buttons/RadioButton";
 
@@ -61,13 +56,13 @@ export const PopupWithRadioButtons = ({
                   <View style={styles.containerTextAndRadioButtins} key={key}>
                     <Text testID={`popUpTextvalue.${key}`}>{value}</Text>
                     <RadioButton
-                        testID={`popUpRadioButton.${key}`}
+                      testID={`popUpRadioButton.${key}`}
                       label=""
                       selected={key === choice}
                       onPress={() => setChoice(key)}
                     />
                   </View>
-                ),
+                )
             )}
           </View>
         </ScrollView>

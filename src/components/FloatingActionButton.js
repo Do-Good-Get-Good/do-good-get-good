@@ -1,14 +1,14 @@
+import { useNavigation } from "@react-navigation/native";
+import { FAB, Icon } from "@rneui/base";
 import React, { useState } from "react";
 import {
-  StyleSheet,
-  View,
-  Text,
   Platform,
-  TouchableWithoutFeedback,
+  StyleSheet,
+  Text,
   TouchableOpacity,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import { FAB, Icon } from "@rneui/base";
-import { useNavigation } from "@react-navigation/native";
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 

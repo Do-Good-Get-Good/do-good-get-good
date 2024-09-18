@@ -1,10 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { deleteActivity } from "../firebase-functions/delete";
 import {
   updateActivityActiveStatus,
   updateActivityFavoriteStatus,
   updateActivityInfo,
 } from "../firebase-functions/update";
-import { deleteActivity } from "../firebase-functions/delete";
 
 const ActivityCardContext = React.createContext();
 

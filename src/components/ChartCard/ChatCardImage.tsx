@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, Dimensions, ImageStyle } from "react-native";
+import { Dimensions, Image, ImageStyle } from "react-native";
 import { UserPost } from "../../utility/types";
 
 type Props = {

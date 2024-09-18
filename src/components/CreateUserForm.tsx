@@ -1,17 +1,15 @@
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useNavigation } from "@react-navigation/native";
+import React, { useRef } from "react";
+import { useForm } from "react-hook-form";
 import { ScrollView } from "react-native";
 import * as yup from "yup";
-import { useForm } from "react-hook-form";
-import BottomNavButtons from "./BottomNavButtons";
-import { useNavigation } from "@react-navigation/native";
-import { Role } from "../utility/enums";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { InputFieldWithController } from "./InputFieldWithController";
-import { VisibilityIcon } from "../assets/icons/VisibilityIcon";
+import { useUserLevel } from "../context/useUserLevel";
 import { UserNewAccount } from "../screens/CreateUser";
-import { useState } from "react";
+import { Role } from "../utility/enums";
+import BottomNavButtons from "./BottomNavButtons";
 import { ChangeUserRole } from "./ChangeUserRole";
-import React, { useRef } from "react";
-import userLevelStore from "../store/userLevel";
+import { InputFieldWithController } from "./InputFieldWithController";
 
 const schema: yup.ObjectSchema<UserNewAccount> = yup
   .object()
@@ -59,7 +57,7 @@ type Props = {
 
 export const CreateUserForm = ({ user, setUser, nextPage }: Props) => {
   const navigation = useNavigation();
-  const { userLevel } = userLevelStore;
+  const { userLevel } = useUserLevel();
   const scrollViewRef = useRef<ScrollView>(null);
 
   const handleContentSizeChange = () => {

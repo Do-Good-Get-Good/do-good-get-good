@@ -1,13 +1,7 @@
-import { render, fireEvent, waitFor } from "@testing-library/react-native";
-import {
-  mockAllUsersWithUnconfirmedTimeEntries,
-  mockAllUsersWithUnconfirmedAfterApprove,
-} from "../../dataMock/superAdminHomePageContextMock";
+import { fireEvent, render } from "@testing-library/react-native";
+import { mockAllUsersWithUnconfirmedTimeEntries } from "../../dataMock/superAdminHomePageContextMock";
 import { SuperAdminHomePage } from "../../screens/SuperAdminHomePage";
 
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
 jest.mock("@react-native-community/netinfo", () => ({
   useNetInfo: () => ({
     isConnected: true,
@@ -21,10 +15,6 @@ jest.mock("@react-native-firebase/firestore", () => () => ({
     }),
   }),
 }));
-
-jest.mock("@react-native-firebase/functions", () => {
-  return jest.fn();
-});
 
 const mockedNavigate = jest.fn();
 
@@ -75,7 +65,7 @@ describe("Testing SuperAdminHomePage screen ", () => {
 
   it("DropDown should open when super admin click on user name or arow icon ", async () => {
     const { getAllByTestId, getByTestId, queryAllByTestId } = render(
-      <SuperAdminHomePage />,
+      <SuperAdminHomePage />
     );
     expect(getAllByTestId("arrow-drop-down-icon")).toHaveLength(2);
 
@@ -96,12 +86,12 @@ describe("Testing SuperAdminHomePage screen ", () => {
     fireEvent.press(adminName[1]);
 
     expect(getByTestId("info-row-title").props.children).toBe(
-      "User2\u00A0Usersson2",
+      "User2\u00A0Usersson2"
     );
     expect(getByTestId("info-row-date").props.children).toBe("2022-07-10");
     expect(getByTestId("info-row-time").props.children).toBe("1.5 h");
     expect(
-      getByTestId("checkbox-info-row-unapprovedTimeEntries2").props.isChecked,
+      getByTestId("checkbox-info-row-unapprovedTimeEntries2").props.isChecked
     ).toBe(false);
   });
 

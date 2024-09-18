@@ -1,21 +1,26 @@
-import { Alert } from "react-native";
-import functions from "@react-native-firebase/functions";
 import craschlytics from "@react-native-firebase/crashlytics";
+import functions from "@react-native-firebase/functions";
+import { Alert } from "react-native";
+import Config from "react-native-config";
 import { addActivity } from "../firebase-functions/add";
 import { resetPass } from "../firebase-functions/updateTS/resetPasswordFunction";
-import { Activity } from "../utility/types";
 import { UserNewAccount } from "../screens/CreateUser";
 import {
   FirebaseActivityType,
   FirebaseUserType,
 } from "../utility/firebaseTypes";
+import { Activity } from "../utility/types";
+const project =
+  Config.NODE_ENV === "prod"
+    ? "do-good-get-good-2f6cc"
+    : "dev-do-good-get-good";
 
 export const createUserAndNewActivity = async (
   newActivity: FirebaseActivityType,
   newUser: UserNewAccount,
   allActiveActvivitiesFB: Activity[],
   setAllActiveActvivitiesFB: (activity: Activity[]) => void,
-  navigation: () => void,
+  navigation: () => void
 ) => {
   try {
     let createdActivityId = await addActivity(newActivity);
@@ -37,14 +42,14 @@ export const createUserAndNewActivity = async (
       newUser,
       createdActivityId,
       newActivity.activity_title,
-      navigation,
+      navigation
     );
   } catch (error: any) {
     craschlytics().log("Error creating activity");
     craschlytics().recordError(error);
     Alert.alert(
       "Ett fel uppstod! Det gick inte att skapa aktiviteten",
-      error.message,
+      error.message
     );
   }
 };
@@ -53,11 +58,11 @@ const createNewUser = async (
   newUser: UserNewAccount,
   createdActivityId: Activity["id"],
   newActivityTitle: FirebaseActivityType["activity_title"],
-  navigation: () => void,
+  navigation: () => void
 ) => {
   try {
     const createUser = functions().httpsCallableFromUrl(
-      "https://europe-north1-dev-do-good-get-good.cloudfunctions.net/createUserSecondGen",
+      `https://europe-north1-${project}.cloudfunctions.net/createUserSecondGen`
     );
 
     const res = await createUser({
@@ -74,16 +79,16 @@ const createNewUser = async (
       newUser.email,
       newActivityTitle,
       createdUser,
-      navigation,
+      navigation
     );
   } catch (error: any) {
     craschlytics().log(
-      "Creating activity was successful, but creating user caused an error",
+      "Creating activity was successful, but creating user caused an error"
     );
     craschlytics().recordError(error);
     Alert.alert(
       "Ett fel uppstod! Det gick inte att skapa användaren",
-      error.message,
+      error.message
     );
   }
 };
@@ -92,7 +97,7 @@ const sendResetPasswordOrShowError = async (
   email: UserNewAccount["email"],
   newActivityTitle: FirebaseActivityType["activity_title"],
   createdUser: any,
-  navigation: () => void,
+  navigation: () => void
 ) => {
   if (createdUser) {
     const sendLinkToResetPasswordToUser = await resetPass(email);
@@ -100,7 +105,7 @@ const sendResetPasswordOrShowError = async (
       newActivityTitle,
       createdUser,
       navigation,
-      sendLinkToResetPasswordToUser,
+      sendLinkToResetPasswordToUser
     );
   } else {
     Alert.alert("Kunde inte skapa användare");
@@ -112,7 +117,7 @@ function alertPopUp(
   title: string,
   user: FirebaseUserType,
   navigation: any,
-  messageAboutLink: string,
+  messageAboutLink: string
 ) {
   let alertTitle = "Skapa aktivitet och användare";
   let alertMessage = `Aktiviteten '${title}' och användaren '${user.first_name} ${user.last_name}' har skapats!\n${messageAboutLink}`;

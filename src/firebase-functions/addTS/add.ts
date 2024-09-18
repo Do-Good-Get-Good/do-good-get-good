@@ -1,9 +1,10 @@
-import { Platform } from "react-native";
-import {  Comment, Post, PostEmoji, User, UserPost } from "../../utility/types";
 import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
+import { Platform } from "react-native";
+import { Comment, PostEmoji, User, UserPost } from "../../utility/types";
+import { getUserData } from "../getTS/get";
 
-export const addImageToStorage = async (imageURL: string): Promise<string>  => {
+export const addImageToStorage = async (imageURL: string): Promise<string> => {
   const uploadUri =
     Platform.OS === "ios" ? imageURL.replace("file://", "") : imageURL;
   let filename = imageURL.substring(imageURL.lastIndexOf("/") + 1);
@@ -21,7 +22,7 @@ export const addImageToStorage = async (imageURL: string): Promise<string>  => {
   return fullPath;
 };
 export const saveImageToChatImageStoreAndCreateUserPost = async (
-  post: UserPost,
+  post: UserPost
 ) => {
   try {
     const timestamp = firestore.Timestamp.now().toMillis();
@@ -66,7 +67,6 @@ const addChatPost = async (post: UserPost) => {
   }
 };
 
-
 export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
   try {
     await firestore()
@@ -76,17 +76,46 @@ export const addEmoji = async (emoji: PostEmoji, postID: UserPost["id"]) => {
         emoji: firestore.FieldValue.arrayUnion(emoji),
       });
   } catch (error) {
-    console.log(error)
-  } 
-}
+    console.log(error);
+  }
+};
 
-export const addComment = async(comment:Comment, postID : UserPost['id'])=>{
+export const addComment = async (comment: Comment, postID: UserPost["id"]) => {
   try {
-    await firestore().collection("UserPosts").doc(postID).update({
-      comments:  firestore.FieldValue.arrayUnion(comment)
-    })
-   
+    await firestore()
+      .collection("UserPosts")
+      .doc(postID)
+      .update({
+        comments: firestore.FieldValue.arrayUnion(comment),
+      });
   } catch (error) {
-    console.log(error)
-  } 
-}
+    console.log(error);
+  }
+};
+
+export const connectTestActivityIfUserHasNoActivity = async (
+  userID: User["id"]
+) => {
+  try {
+    const getUser = await getUserData(userID);
+    if (getUser.connectedActivities.length < 1) {
+      await firestore()
+        .collection("Users")
+        .doc(userID)
+        .update({
+          connected_activities: firestore.FieldValue.arrayUnion(
+            "cVkZbjsrXs6YKk3Qli0b"
+          ),
+
+          activities_and_accumulated_time: firestore.FieldValue.arrayUnion({
+            accumulated_time: 0,
+            activity_id: "cVkZbjsrXs6YKk3Qli0b",
+          }),
+        });
+    }
+    return true;
+  } catch (error) {
+    console.log(error);
+    return false;
+  }
+};

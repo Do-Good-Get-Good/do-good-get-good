@@ -1,36 +1,7 @@
-import "react-native";
+import { fireEvent, render } from "@testing-library/react-native";
 import React from "react";
-import { render, fireEvent } from "@testing-library/react-native";
-
+import "react-native";
 import ChangeActivity from "../../screens/ChangeActivity";
-
-jest.mock("react-native/Libraries/EventEmitter/NativeEventEmitter");
-
-jest.mock("@react-native-async-storage/async-storage", () => {
-  const actualAsyncStorage = jest.requireActual(
-    "@react-native-async-storage/async-storage/jest/async-storage-mock",
-  );
-  return {
-    ...actualAsyncStorage,
-    getItem: () => null,
-  };
-});
-
-jest.mock("../../context/ActivityImagesContext/ActivityImagesContext", () => ({
-  useActivityImages: jest.fn(() => ({
-    getImageForActivity: jest.fn(() => ({
-      photo: "symbol_blood",
-    })),
-  })),
-}));
-
-jest.mock("@rneui/base/dist/Icon/", () => ({
-  Icon: jest.fn(),
-}));
-
-jest.mock("../../components/Menu", () => () => {
-  return <mockMenu />;
-});
 
 jest.mock("../../context/ActivityCardContext", () => ({
   useActivityCardContext: () => ({
@@ -70,14 +41,14 @@ const route = {
 describe("Testing ChangeActivity screen", () => {
   it("Main title exist", () => {
     const { getAllByText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
     expect(getAllByText("Ändra aktivitet").length).toBe(1);
   });
 
   it("Title placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
     const input = getByPlaceholderText(route.params.activity.title);
     fireEvent.changeText(input, "activity name or title");
@@ -86,7 +57,7 @@ describe("Testing ChangeActivity screen", () => {
 
   it("City placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
     const input = getByPlaceholderText(route.params.activity.city);
     fireEvent.changeText(input, "activity name or city");
@@ -95,7 +66,7 @@ describe("Testing ChangeActivity screen", () => {
 
   it("Place placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
     const input = getByPlaceholderText(route.params.activity.place);
     fireEvent.changeText(input, "activity name or place");
@@ -103,7 +74,7 @@ describe("Testing ChangeActivity screen", () => {
   });
   it("Description placeholder exists and possible to change", () => {
     const { getByPlaceholderText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
     const input = getByPlaceholderText(route.params.activity.description);
     fireEvent.changeText(input, "activity name or description");
@@ -112,12 +83,12 @@ describe("Testing ChangeActivity screen", () => {
 
   it("Change image button exists and navigate to ImagesGallery when pressed", () => {
     const { getByTestId } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
 
     const changeImageButton = getByTestId("navigateToImagesGallery");
     expect(changeImageButton.children[0].props.children.props.children).toEqual(
-      "Ändra bild",
+      "Ändra bild"
     );
 
     fireEvent.press(changeImageButton);
@@ -131,7 +102,7 @@ describe("Testing ChangeActivity screen", () => {
 
   it("Button 'Save' exist and updates ActivityCard when pressed", () => {
     const { getByText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
 
     const saveButton = getByText("Spara");
@@ -160,7 +131,7 @@ describe("Testing ChangeActivity screen", () => {
 
   it("Button 'Back' exist and navigate back when pressed", () => {
     const { getByText } = render(
-      <ChangeActivity navigation={navigation} route={route} />,
+      <ChangeActivity navigation={navigation} route={route} />
     );
 
     const cancelButton = getByText("Avbryt");
