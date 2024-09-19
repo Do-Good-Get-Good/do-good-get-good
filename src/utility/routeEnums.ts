@@ -8,6 +8,7 @@ export enum UserStack {
   AddOrEditPost = "AddOrEditPost",
   ChatCardScreen = "ChatCardScreen",
   ActivityCardDetails = "ActivityCardDetails",
+  About = "About",
 }
 
 export enum AdminStack {
