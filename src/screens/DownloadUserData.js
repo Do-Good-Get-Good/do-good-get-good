@@ -98,10 +98,14 @@ const DownloadUserData = ({ navigation }) => {
       .catch((error) => {
         crashlytics().log(error);
         setDownloadingData(false);
-        Alert.alert(
-          "Ett fel har inträffat!",
-          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
-        );
+        if (error.message.includes("valda tidspannet")) {
+          Alert.alert("Ett fel har inträffat!", error.message);
+        } else {
+          Alert.alert(
+            "Ett fel har inträffat!",
+            `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
+          );
+        }
       });
   }
 
