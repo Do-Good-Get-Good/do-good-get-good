@@ -167,21 +167,22 @@ exports.downloadDataSecondGen = onCall(
 
       const excelData = await getAllDatabaseData(data);
 
-      const istimeEntriesFounded = excelData.timeEntries.length !== 0;
+      const timeEntriesFound = excelData.timeEntries.length !== 0;
+
+      if (!timeEntriesFound)
+        throw new NoTimeEntriesFound(
+          "Inga tidregistreringar hittades inom det valda tidspannet."
+        );
 
       let excelDownloadURL;
-      if (istimeEntriesFounded) {
-        await createAndSaveExcelFile(excelData).then((res) => {
-          excelDownloadURL = res[0];
-          sendEmail(excelDownloadURL, callerFullName, callerEmail);
-        });
-      }
+      await createAndSaveExcelFile(excelData).then((res) => {
+        excelDownloadURL = res[0];
+        sendEmail(excelDownloadURL, callerFullName, callerEmail);
+      });
 
       return {
-        downloadURL: istimeEntriesFounded ? excelDownloadURL : "",
-        message: istimeEntriesFounded
-          ? "All user data for the specified date period has been successfully downloaded."
-          : "Inga tidregistreringar hittades inom det valda tidspannet.",
+        downloadURL: excelDownloadURL,
+        message: "All användardata inom det valda tidsspannet har hämtats.",
       };
     } catch (error) {
       if (error.type === "UnauthenticatedError") {
@@ -201,11 +202,14 @@ function sendEmail(downloadURL, recipientName, recipientEmail) {
 
   const msg = {
     to: recipientEmail,
-    from: SENDGRID_FROM_EMAIL,
+    from: {
+      name: "Do Good Get Good",
+      email: SENDGRID_FROM_EMAIL,
+    },
     templateId: "d-5fa6f6655a4f43bd9847a630badb4e2f",
     dynamicTemplateData: {
-      recipientName,
-      downloadURL,
+      name: recipientName,
+      downloadUrl: downloadURL,
     },
   };
 
