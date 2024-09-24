@@ -202,7 +202,7 @@ function sendEmail(downloadURL, recipientName, recipientEmail) {
   const msg = {
     to: recipientEmail,
     from: SENDGRID_FROM_EMAIL,
-    templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
+    templateId: "d-5fa6f6655a4f43bd9847a630badb4e2f",
     dynamicTemplateData: {
       recipientName,
       downloadURL,
