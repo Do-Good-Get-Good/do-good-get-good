@@ -173,7 +173,7 @@ exports.downloadDataSecondGen = onCall(
       if (istimeEntriesFounded) {
         await createAndSaveExcelFile(excelData).then((res) => {
           excelDownloadURL = res[0];
-          sendEmail(excelDownloadURL, callerData, callerEmail);
+          sendEmail(excelDownloadURL, callerFullName, callerEmail);
         });
       }
 
