@@ -9,12 +9,9 @@ const {
   createActivityWorksheet,
 } = require("./worksheetFunctions");
 const Excel = require("exceljs");
-// TODO: Decide if we want to continue using SENDGRID.
-// Right now, it doesn't work to send emails, so I have commented out the code related to sending emails. Fix
-// the comented code after we deside what to do with SENDGRID
 
-// const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
-// const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
 
 const PRECONDITION_ERROR_TYPE = [
   "NotAnAdminError",
@@ -144,7 +141,10 @@ async function createAndSaveExcelFile(excelData) {
 }
 
 exports.downloadDataSecondGen = onCall(
-  { region: "europe-north1" },
+  {
+    region: "europe-north1",
+    secrets: ["SENDGRID_API_KEY", "SENDGRID_FROM_EMAIL"],
+  },
   async (request) => {
     try {
       //Checking that the user calling the Cloud Function is authenticated
@@ -161,9 +161,9 @@ exports.downloadDataSecondGen = onCall(
         );
       }
 
-      //   const callerUid = request.auth.uid;
-      //   const callerUserEmail = request.auth.token.email;
-      // await getUserNameAndEmail(callerUid, callerUserEmail);
+      const callerUid = request.auth.uid;
+      const callerEmail = request.auth.token.email;
+      const callerFullName = await getUserName(callerUid);
 
       const excelData = await getAllDatabaseData(data);
 
@@ -173,7 +173,7 @@ exports.downloadDataSecondGen = onCall(
       if (istimeEntriesFounded) {
         await createAndSaveExcelFile(excelData).then((res) => {
           excelDownloadURL = res[0];
-          //   sendEmail(excelDownloadURL, callerData);
+          sendEmail(excelDownloadURL, callerData, callerEmail);
         });
       }
 
@@ -195,47 +195,39 @@ exports.downloadDataSecondGen = onCall(
   }
 );
 
-// function sendEmail(downloadURL, callerData) {
-//   const sgMail = require("@sendgrid/mail");
-//   sgMail.setApiKey(SENDGRID_API_KEY);
+function sendEmail(downloadURL, recipientName, recipientEmail) {
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(SENDGRID_API_KEY);
 
-//   const msg = {
-//     to: callerData.email,
-//     from: SENDGRID_FROM_EMAIL,
-//     templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
-//     dynamicTemplateData: {
-//       username: callerData.name,
-//       downloadURL: downloadURL,
-//     },
-//   };
+  const msg = {
+    to: recipientEmail,
+    from: SENDGRID_FROM_EMAIL,
+    templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
+    dynamicTemplateData: {
+      recipientName,
+      downloadURL,
+    },
+  };
 
-//   sgMail
-//     .send(msg)
-//     .then(() => {
-//       console.log("Email sent successfully");
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
-// const getUserNameAndEmail = async (callerUid, callerUserEmail) => {
-//   try {
-//     const callerName = await getFirestore()
-//       .collection("Users")
-//       .doc(callerUid)
-//       .get()
-//       .then((res) => {
-//         return `${res.data().first_name} ${res.data().last_name}`;
-//       });
-
-//     const callerData = {
-//       name: callerName,
-//       email: callerUserEmail,
-//     };
-//     return { callerData };
-//   } catch (error) {
-//     console.log(error);
-//     return { error };
-//   }
-// };
+const getUserName = async (callerUid) =>
+  await getFirestore()
+    .collection("Users")
+    .doc(callerUid)
+    .get()
+    .then((res) => {
+      return `${res.data().first_name} ${res.data().last_name}`;
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
