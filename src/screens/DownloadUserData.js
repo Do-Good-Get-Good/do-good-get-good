@@ -1,26 +1,26 @@
 import React, { useState } from "react";
 import {
+  Alert,
+  Linking,
   Platform,
   StyleSheet,
   Text,
   TouchableOpacity,
   View,
-  Linking,
-  Alert,
 } from "react-native";
 
-import { SafeAreaView } from "react-native-safe-area-context";
-import { subYears, format, toDate, parseISO } from "date-fns";
-import { Icon, Dialog } from "@rneui/base";
-import functions from "@react-native-firebase/functions";
 import crashlytics from "@react-native-firebase/crashlytics";
+import functions from "@react-native-firebase/functions";
+import { Dialog, Icon } from "@rneui/base";
+import { format, parseISO, subYears, toDate } from "date-fns";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 
-import Menu from "../components/Menu";
-import DatePicker from "../components/DatePicker";
 import OutsidePressHandler from "react-native-outside-press";
+import DatePicker from "../components/DatePicker";
+import Menu from "../components/Menu";
 
 import Config from "react-native-config";
 const project =
@@ -85,7 +85,7 @@ const DownloadUserData = ({ navigation }) => {
     setDownloadingData(true);
   };
 
-  async function stayInAppAndExportData(datePeriod) {
+  async function startDataExport(datePeriod) {
     await downloadData(datePeriod)
       .then((res) => {
         if (res.data.downloadURL !== "") {
@@ -98,39 +98,39 @@ const DownloadUserData = ({ navigation }) => {
       .catch((error) => {
         crashlytics().log(error);
         setDownloadingData(false);
-        Alert.alert(
-          "Ett fel har inträffat!",
-          `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
-        );
+        if (error.message.includes("valda tidspannet")) {
+          Alert.alert("Ett fel har inträffat!", error.message);
+        } else {
+          Alert.alert(
+            "Ett fel har inträffat!",
+            `Vänligen försök igen eller kontakta supporten på dggg@technogarden.se\n${error.message}`
+          );
+        }
       });
   }
 
   function alertPopUp(datePeriod) {
-    stayInAppAndExportData(datePeriod);
+    let alertTitle = "Exportera data";
+    let alertMessage =
+      "Exportering av tidrapporteringsdata har påbörjats!\n" +
+      "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
+      "När allt är klart får du ett mail.";
 
-    // TODO: Right now it doesn't work to send data with email. Uncomment this part when the problem with email is solved
-
-    // let alertTitle = "Exportera data";
-    // let alertMessage =
-    //   "Exporteringen av tidrapporteringsdata har påbörjats!\n" +
-    //   "Du kan nu välja att vänta kvar eller fortsätta att använda appen.\n" +
-    //   "När allt är klart får du ett mail.";
-
-    // Alert.alert(alertTitle, alertMessage, [
-    //   {
-    //     text: "Vänta kvar",
-    //     onPress: () => {
-    //       stayInAppAndExportData(datePeriod);
-    //     },
-    //   },
-    //   {
-    //     text: "Gå till startsidan",
-    //     onPress: () => {
-    //       downloadData(datePeriod);
-    //       navigation.navigate("HomePage");
-    //     },
-    //   },
-    // ]);
+    Alert.alert(alertTitle, alertMessage, [
+      {
+        text: "Vänta kvar",
+        onPress: () => {
+          startDataExport(datePeriod);
+        },
+      },
+      {
+        text: "Gå till startsidan",
+        onPress: () => {
+          startDataExport(datePeriod);
+          navigation.navigate("HomePage");
+        },
+      },
+    ]);
   }
 
   function closeDropDown(value) {

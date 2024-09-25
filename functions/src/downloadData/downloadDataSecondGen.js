@@ -9,12 +9,9 @@ const {
   createActivityWorksheet,
 } = require("./worksheetFunctions");
 const Excel = require("exceljs");
-// TODO: Decide if we want to continue using SENDGRID.
-// Right now, it doesn't work to send emails, so I have commented out the code related to sending emails. Fix
-// the comented code after we deside what to do with SENDGRID
 
-// const SENDGRID_API_KEY = functions.config().sendgrid.apikey;
-// const SENDGRID_FROM_EMAIL = functions.config().sendgrid.from;
+const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
+const SENDGRID_FROM_EMAIL = process.env.SENDGRID_FROM_EMAIL;
 
 const PRECONDITION_ERROR_TYPE = [
   "NotAnAdminError",
@@ -161,27 +158,28 @@ exports.downloadDataSecondGen = onCall(
         );
       }
 
-      //   const callerUid = request.auth.uid;
-      //   const callerUserEmail = request.auth.token.email;
-      // await getUserNameAndEmail(callerUid, callerUserEmail);
+      const callerUid = request.auth.uid;
+      const callerEmail = request.auth.token.email;
+      const callerFullName = await getUserName(callerUid);
 
       const excelData = await getAllDatabaseData(data);
 
-      const istimeEntriesFounded = excelData.timeEntries.length !== 0;
+      const isTimeEntriesFound = excelData.timeEntries.length !== 0;
+
+      if (!isTimeEntriesFound)
+        throw new NoTimeEntriesFound(
+          "Inga tidregistreringar hittades inom det valda tidspannet."
+        );
 
       let excelDownloadURL;
-      if (istimeEntriesFounded) {
-        await createAndSaveExcelFile(excelData).then((res) => {
-          excelDownloadURL = res[0];
-          //   sendEmail(excelDownloadURL, callerData);
-        });
-      }
+      await createAndSaveExcelFile(excelData).then((res) => {
+        excelDownloadURL = res[0];
+        sendEmail(excelDownloadURL, callerFullName, callerEmail);
+      });
 
       return {
-        downloadURL: istimeEntriesFounded ? excelDownloadURL : "",
-        message: istimeEntriesFounded
-          ? "All user data for the specified date period has been successfully downloaded."
-          : "Inga tidregistreringar hittades inom det valda tidspannet.",
+        downloadURL: excelDownloadURL,
+        message: "All användardata inom det valda tidsspannet har hämtats.",
       };
     } catch (error) {
       if (error.type === "UnauthenticatedError") {
@@ -195,47 +193,42 @@ exports.downloadDataSecondGen = onCall(
   }
 );
 
-// function sendEmail(downloadURL, callerData) {
-//   const sgMail = require("@sendgrid/mail");
-//   sgMail.setApiKey(SENDGRID_API_KEY);
+function sendEmail(downloadURL, recipientName, recipientEmail) {
+  const sgMail = require("@sendgrid/mail");
+  sgMail.setApiKey(SENDGRID_API_KEY);
 
-//   const msg = {
-//     to: callerData.email,
-//     from: SENDGRID_FROM_EMAIL,
-//     templateId: "d-6148a93915934ca9a0c4ed67a8e81416",
-//     dynamicTemplateData: {
-//       username: callerData.name,
-//       downloadURL: downloadURL,
-//     },
-//   };
+  const msg = {
+    to: recipientEmail,
+    from: {
+      name: "Do Good Get Good",
+      email: SENDGRID_FROM_EMAIL,
+    },
+    templateId: "d-5fa6f6655a4f43bd9847a630badb4e2f",
+    dynamicTemplateData: {
+      name: recipientName,
+      downloadUrl: downloadURL,
+    },
+  };
 
-//   sgMail
-//     .send(msg)
-//     .then(() => {
-//       console.log("Email sent successfully");
-//     })
-//     .catch((error) => {
-//       console.error(error);
-//     });
-// }
+  sgMail
+    .send(msg)
+    .then(() => {
+      console.log("Email sent successfully");
+    })
+    .catch((error) => {
+      console.error(error);
+    });
+}
 
-// const getUserNameAndEmail = async (callerUid, callerUserEmail) => {
-//   try {
-//     const callerName = await getFirestore()
-//       .collection("Users")
-//       .doc(callerUid)
-//       .get()
-//       .then((res) => {
-//         return `${res.data().first_name} ${res.data().last_name}`;
-//       });
-
-//     const callerData = {
-//       name: callerName,
-//       email: callerUserEmail,
-//     };
-//     return { callerData };
-//   } catch (error) {
-//     console.log(error);
-//     return { error };
-//   }
-// };
+const getUserName = async (callerUid) =>
+  await getFirestore()
+    .collection("Users")
+    .doc(callerUid)
+    .get()
+    .then((res) => {
+      return `${res.data().first_name} ${res.data().last_name}`;
+    })
+    .catch((error) => {
+      console.log(error);
+      throw error;
+    });
