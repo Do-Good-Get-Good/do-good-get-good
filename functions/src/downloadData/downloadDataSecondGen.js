@@ -141,10 +141,7 @@ async function createAndSaveExcelFile(excelData) {
 }
 
 exports.downloadDataSecondGen = onCall(
-  {
-    region: "europe-north1",
-    secrets: ["SENDGRID_API_KEY", "SENDGRID_FROM_EMAIL"],
-  },
+  { region: "europe-north1" },
   async (request) => {
     try {
       //Checking that the user calling the Cloud Function is authenticated
