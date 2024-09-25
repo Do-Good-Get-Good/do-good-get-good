@@ -164,9 +164,9 @@ exports.downloadDataSecondGen = onCall(
 
       const excelData = await getAllDatabaseData(data);
 
-      const timeEntriesFound = excelData.timeEntries.length !== 0;
+      const isTimeEntriesFound = excelData.timeEntries.length !== 0;
 
-      if (!timeEntriesFound)
+      if (!isTimeEntriesFound)
         throw new NoTimeEntriesFound(
           "Inga tidregistreringar hittades inom det valda tidspannet."
         );
