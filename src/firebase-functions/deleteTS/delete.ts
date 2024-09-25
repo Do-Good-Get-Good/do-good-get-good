@@ -8,7 +8,7 @@ import {
   User,
   UserPost,
 } from "../../utility/types";
-import { userWaitingForActicityID } from "../../utility/utils";
+import { temporaryActivityID } from "../../utility/utils";
 import { connectTestActivityIfUserHasNoActivity } from "../addTS/add";
 import { getUserData } from "../getTS/get";
 
@@ -108,13 +108,12 @@ export const disconnectTestActivityIfUserHasRealActivity = async (
         .collection("Users")
         .doc(userID)
         .update({
-          connected_activities: firestore.FieldValue.arrayRemove(
-            userWaitingForActicityID
-          ),
+          connected_activities:
+            firestore.FieldValue.arrayRemove(temporaryActivityID),
 
           activities_and_accumulated_time: firestore.FieldValue.arrayRemove({
             accumulated_time: 0,
-            activity_id: userWaitingForActicityID,
+            activity_id: temporaryActivityID,
           }),
         });
     }

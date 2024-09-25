@@ -4,4 +4,4 @@ export const roleTitles = {
   superadmin: "Super admin",
 };
 
-export const userWaitingForActicityID = "cVkZbjsrXs6YKk3Qli0b";
+export const temporaryActivityID = "cVkZbjsrXs6YKk3Qli0b";

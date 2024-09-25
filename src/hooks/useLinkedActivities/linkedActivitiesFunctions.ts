@@ -11,7 +11,7 @@ import {
   FirebaseActivitiesAndAccumulatedTime,
   FirebaseUserType,
 } from "../../utility/firebaseTypes";
-import { userWaitingForActicityID } from "../../utility/utils";
+import { temporaryActivityID } from "../../utility/utils";
 const userID = auth()?.currentUser?.uid;
 
 export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
@@ -71,9 +71,7 @@ const makeTimeObject = async (
 const connectTestActivityIfActivityConnectedArrIsEmpty = async (
   userConnectedActivities: FirebaseUserType["connected_activities"]
 ) => {
-  const hasTestActivity = userConnectedActivities.includes(
-    userWaitingForActicityID
-  );
+  const hasTestActivity = userConnectedActivities.includes(temporaryActivityID);
 
   if (userConnectedActivities.length < 1 && userID) {
     await connectTestActivityIfUserHasNoActivity(userID);
