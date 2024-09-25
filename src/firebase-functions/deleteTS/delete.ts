@@ -8,6 +8,7 @@ import {
   User,
   UserPost,
 } from "../../utility/types";
+import { temporaryActivityID } from "../../utility/utils";
 import { connectTestActivityIfUserHasNoActivity } from "../addTS/add";
 import { getUserData } from "../getTS/get";
 
@@ -93,6 +94,32 @@ export const deleteActivityConnectionFromUser = async (
     return true;
   } catch (error) {
     console.log("deleteActivityConnectionFromUser: ", error);
+    return false;
+  }
+};
+
+export const disconnectTestActivityIfUserHasRealActivity = async (
+  userID: User["id"]
+) => {
+  try {
+    const getUser = await getUserData(userID);
+    if (getUser.connectedActivities.length > 1) {
+      await firestore()
+        .collection("Users")
+        .doc(userID)
+        .update({
+          connected_activities:
+            firestore.FieldValue.arrayRemove(temporaryActivityID),
+
+          activities_and_accumulated_time: firestore.FieldValue.arrayRemove({
+            accumulated_time: 0,
+            activity_id: temporaryActivityID,
+          }),
+        });
+    }
+    return true;
+  } catch (error) {
+    console.log(error);
     return false;
   }
 };

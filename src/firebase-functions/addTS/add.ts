@@ -2,6 +2,7 @@ import firestore from "@react-native-firebase/firestore";
 import storage from "@react-native-firebase/storage";
 import { Platform } from "react-native";
 import { Comment, PostEmoji, User, UserPost } from "../../utility/types";
+import { temporaryActivityID } from "../../utility/utils";
 import { getUserData } from "../getTS/get";
 
 export const addImageToStorage = async (imageURL: string): Promise<string> => {
@@ -103,13 +104,12 @@ export const connectTestActivityIfUserHasNoActivity = async (
         .collection("Users")
         .doc(userID)
         .update({
-          connected_activities: firestore.FieldValue.arrayUnion(
-            "cVkZbjsrXs6YKk3Qli0b"
-          ),
+          connected_activities:
+            firestore.FieldValue.arrayUnion(temporaryActivityID),
 
           activities_and_accumulated_time: firestore.FieldValue.arrayUnion({
             accumulated_time: 0,
-            activity_id: "cVkZbjsrXs6YKk3Qli0b",
+            activity_id: temporaryActivityID,
           }),
         });
     }

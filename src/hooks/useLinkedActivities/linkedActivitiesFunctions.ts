@@ -1,13 +1,17 @@
 import auth from "@react-native-firebase/auth";
 import { FirebaseFirestoreTypes } from "@react-native-firebase/firestore";
 import { connectTestActivityIfUserHasNoActivity } from "../../firebase-functions/addTS/add";
-import { deleteActivityConnectionFromUser } from "../../firebase-functions/deleteTS/delete";
+import {
+  deleteActivityConnectionFromUser,
+  disconnectTestActivityIfUserHasRealActivity,
+} from "../../firebase-functions/deleteTS/delete";
 import { getActivityInformation } from "../../firebase-functions/getTS/get";
 import { ActivityInfo, TimeObject } from "../../screens/HomePage/type";
 import {
   FirebaseActivitiesAndAccumulatedTime,
   FirebaseUserType,
 } from "../../utility/firebaseTypes";
+import { temporaryActivityID } from "../../utility/utils";
 const userID = auth()?.currentUser?.uid;
 
 export const checkConnectedActivitiesAndPrepareAccumTimeArr = async (
@@ -67,9 +71,12 @@ const makeTimeObject = async (
 const connectTestActivityIfActivityConnectedArrIsEmpty = async (
   userConnectedActivities: FirebaseUserType["connected_activities"]
 ) => {
+  const hasTestActivity = userConnectedActivities.includes(temporaryActivityID);
+
   if (userConnectedActivities.length < 1 && userID) {
     await connectTestActivityIfUserHasNoActivity(userID);
-  }
+  } else if (userConnectedActivities.length > 1 && userID && hasTestActivity)
+    disconnectTestActivityIfUserHasRealActivity(userID);
 };
 
 export const makeActivityInfoObjectArr = async (

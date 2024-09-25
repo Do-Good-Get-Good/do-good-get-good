@@ -13,6 +13,7 @@ import colors from "../assets/theme/colors";
 import typography from "../assets/theme/typography";
 import { useActivityImages } from "../context/ActivityImagesContext/ActivityImagesContext";
 import { ActivityInfo } from "../screens/HomePage/type";
+import { temporaryActivityID } from "../utility/utils";
 import CalendarView from "./CalendarView";
 
 export const MyActivities = ({
@@ -32,8 +33,7 @@ export const MyActivities = ({
   };
 
   const shouldButtonBeDisabled = (activity: ActivityInfo): boolean =>
-    activity.id === "cVkZbjsrXs6YKk3Qli0b" ||
-    activity.title === "#jagsomväntarpåaktivitet";
+    activity.id === temporaryActivityID;
 
   return (
     <>

@@ -3,3 +3,5 @@ export const roleTitles = {
   admin: "Admin",
   superadmin: "Super admin",
 };
+
+export const temporaryActivityID = "cVkZbjsrXs6YKk3Qli0b";
