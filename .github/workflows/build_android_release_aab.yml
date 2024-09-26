@@ -4,7 +4,7 @@ on:
   
 jobs: 
   tests: 
-    uses: ./.github/workflows/autotests.yml
+    uses: ./.github/workflows/autotest_pr.yml
     
   build:
     name: Build Android AAB
