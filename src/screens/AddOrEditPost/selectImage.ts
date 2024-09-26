@@ -7,7 +7,7 @@ import { AlertInfo } from "../../components/Alerts/AlertInfo";
 const permission =
   Platform.OS === "ios"
     ? PERMISSIONS.IOS.PHOTO_LIBRARY
-    : PERMISSIONS.ANDROID.READ_EXTERNAL_STORAGE;
+    : PERMISSIONS.ANDROID.READ_MEDIA_IMAGES;
 
 const showPermissionDeniedAlert = () =>
   Alert.alert(
