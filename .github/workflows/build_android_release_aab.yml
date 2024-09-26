@@ -41,7 +41,7 @@ jobs:
         working-directory: ./src/android
         
       - name: Upload Artifact
-        uses: actions/upload-artifact@v1
+        uses: actions/upload-artifact@v4
         with:
           name: Release bundle 
           path: ./src/android/app/build/outputs/bundle/prodRelease/app-prod-release.aab
