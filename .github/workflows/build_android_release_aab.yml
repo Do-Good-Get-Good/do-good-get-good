@@ -1,6 +1,7 @@
 name: Build Android Release AAB
 on: 
   workflow_dispatch:
+  workflow_call:
   
 jobs: 
   tests: 
