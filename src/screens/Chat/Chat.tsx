@@ -4,6 +4,8 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { LongButton } from "../../components/Buttons/LongButton";
 import { ActivityListOverLay } from "../../components/ChartCard/ActivityListOverLay";
 import Menu from "../../components/Menu";
+import { getAllActivities } from "../../firebase-functions/get";
+import { Role } from "../../utility/enums";
 import { UserStack } from "../../utility/routeEnums";
 import { Activity, UserPost } from "../../utility/types";
 import { AllPosts } from "./AllPosts";
@@ -17,7 +19,7 @@ type Props = {
 
 export const Chat = ({ navigation, route }: Props) => {
   const { getChatData, isScrollToEnd } = route.params;
-  const { onDeletePost, addEmojiToPost, loading, deleteEmojiFromPost } =
+  const { onDeletePost, addEmojiToPost, deleteEmojiFromPost } =
     useUserPostsActions();
   const { posts, loggedInUser, setlimit, getAllActivitiesConnectedToUser } =
     useChat(getChatData);
@@ -25,9 +27,14 @@ export const Chat = ({ navigation, route }: Props) => {
   const [activities, setActivities] = useState<Activity[]>([]);
 
   const onCreatePostButtonPressed = async () => {
-    const activities = await getAllActivitiesConnectedToUser(
-      loggedInUser?.connectedActivities ?? []
-    );
+    let activities;
+    if (loggedInUser?.role === Role.superadmin) {
+      activities = await getAllActivities();
+    } else {
+      activities = await getAllActivitiesConnectedToUser(
+        loggedInUser?.connectedActivities ?? []
+      );
+    }
     setActivities(activities);
     setShowOverlay(true);
   };
