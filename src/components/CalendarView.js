@@ -1,8 +1,7 @@
 import auth from "@react-native-firebase/auth";
 import { Icon, Overlay } from "@rneui/base";
-import { format } from "date-fns";
+import { format, toDate } from "date-fns";
 import { sv } from "date-fns/locale";
-import toDate from "date-fns/toDate";
 import React, { useEffect, useState } from "react";
 import {
   Platform,
