@@ -1,7 +1,10 @@
 import firestore from "@react-native-firebase/firestore";
+import functions from "@react-native-firebase/functions";
+
 import { TimeEntry, User, UserPost } from "../../utility/types";
 
 import { parse } from "date-fns";
+import { getProject } from "../../lib/project";
 import { FirebaseActivitiesAndAccumulatedTime } from "../../utility/firebaseTypes";
 import { addImageToStorage } from "../addTS/add";
 import { deleteImage } from "../deleteTS/delete";
@@ -54,6 +57,11 @@ export const updateUserAsAdmin = async (user: User) => {
       last_name: user.lastName,
       status_active: user.statusActive,
     });
+
+    const updateEmail = functions().httpsCallableFromUrl(
+      `https://europe-north1-${getProject()}.cloudfunctions.net/changeUserEmail`
+    );
+    await updateEmail({ userId: user.id, newEmail: user.email });
   } catch (error) {
     console.log(error);
   }

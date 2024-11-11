@@ -1,6 +1,7 @@
 const { getAuth } = require("firebase-admin/auth");
 const { getFirestore } = require("firebase-admin/firestore");
 const { onCall, HttpsError } = require("firebase-functions/v2/https");
+const { updateEmail } = require("./changeUserEmail");
 
 const {
   UnauthenticatedError,
@@ -31,6 +32,8 @@ exports.updateUserSecondGen = onCall(
     try {
       const claims = {};
       claims[changedUser.role] = true;
+
+      await updateEmail(changedUser.id, changedUser.email);
 
       await getAuth()
         .setCustomUserClaims(changedUser.id, claims)

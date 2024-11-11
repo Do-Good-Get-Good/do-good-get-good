@@ -1,6 +1,7 @@
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { Pencil } from "../../assets/icons/Pencil";
+import { useOnSelectUser } from "../../hooks/superAdmin/useOnSelectUser";
 import { AdminStack } from "../../utility/routeEnums";
 import { User } from "../../utility/types";
 import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
@@ -20,13 +21,16 @@ const adaptUserToTimeStatistics = (user: User) => [
 ];
 
 export const MyUserAndFiveAprovedTimeEntries = ({ testID, user }: Props) => {
+  const { getUserEmail } = useOnSelectUser();
+
   const navigation = useNavigation<{
     navigate: (nav: AdminStack, props: ChangeUserRouteProps) => void;
   }>();
 
-  const onChangeUser = () => {
+  const onChangeUser = async () => {
+    const userEmail = await getUserEmail(user.id);
     navigation.navigate(AdminStack.ChangeUser, {
-      user,
+      user: { ...user, email: userEmail as string },
     });
   };
 
