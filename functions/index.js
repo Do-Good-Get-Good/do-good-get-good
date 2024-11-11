@@ -21,6 +21,7 @@ const {
 } = require("./src/updateActivityUserCountSecondGen");
 const { updateMonthSecondGen } = require("./src/updateMonthSecondGen");
 const { updateUserSecondGen } = require("./src/updateUserSecondGen");
+const { changeUserEmail } = require("./src/changeUserEmail");
 
 exports.createUserSecondGen = createUserSecondGen;
 exports.deletePostAfterOneYearSecondGen = deletePostAfterOneYearSecondGen;
@@ -32,3 +33,4 @@ exports.updateMonthSecondGen = updateMonthSecondGen;
 exports.updateUserSecondGen = updateUserSecondGen;
 exports.updateYearSecondGen = updateYearSecondGen;
 exports.downloadDataSecondGen = downloadDataSecondGen;
+exports.changeUserEmail = changeUserEmail;
