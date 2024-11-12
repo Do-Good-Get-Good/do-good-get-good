@@ -55,7 +55,7 @@ export const MyUserAndFiveAprovedTimeEntries = ({ testID, user }: Props) => {
         <Pencil
           style={styles.iconStyle}
           testID={user.id}
-          onPress={() => onChangeUser()}
+          onPress={onChangeUser}
         />
       </View>
     </View>

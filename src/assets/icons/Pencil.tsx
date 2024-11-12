@@ -17,7 +17,7 @@ export const Pencil = ({ onPress, style, testID = "" }: Props) => {
       type="material-community"
       name="pencil-outline"
       size={25}
-      onPress={() => onPress && onPress()}
+      onPress={onPress}
     />
   );
 };
