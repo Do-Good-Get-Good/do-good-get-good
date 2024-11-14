@@ -3,13 +3,9 @@ import functions from "@react-native-firebase/functions";
 import { Alert } from "react-native";
 import { resetPass } from "../firebase-functions/updateTS/resetPasswordFunction";
 
-import Config from "react-native-config";
+import { getProject } from "../lib/project";
 import { UserNewAccount } from "../screens/CreateUser";
 import { Activity } from "../utility/types";
-const project =
-  Config.NODE_ENV === "prod"
-    ? "do-good-get-good-2f6cc"
-    : "dev-do-good-get-good";
 
 export const createUserAndLinkSelectedActivity = async (
   user: UserNewAccount,
@@ -20,7 +16,7 @@ export const createUserAndLinkSelectedActivity = async (
   try {
     setLoading(true);
     const createUser = functions().httpsCallableFromUrl(
-      `https://europe-north1-${project}.cloudfunctions.net/createUserSecondGen`
+      `https://europe-north1-${getProject()}.cloudfunctions.net/createUserSecondGen`
     );
     const res = await createUser({
       firstName: user.name,

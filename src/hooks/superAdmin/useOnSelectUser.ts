@@ -1,12 +1,8 @@
 import functions from "@react-native-firebase/functions";
-import Config from "react-native-config";
 import { useSuperAdminFunction } from "../../context/SuperAdminContext";
+import { getProject } from "../../lib/project";
 import { User } from "../../utility/types";
 import { superAdminMakeUserObject } from "./utils";
-const project =
-  Config.NODE_ENV === "prod"
-    ? "do-good-get-good-2f6cc"
-    : "dev-do-good-get-good";
 
 export const useOnSelectUser = () => {
   const context = useSuperAdminFunction();
@@ -16,7 +12,7 @@ export const useOnSelectUser = () => {
   const getUserEmail = async (userID: User["id"]) => {
     try {
       const userEmail = functions().httpsCallableFromUrl(
-        `https://europe-north1-${project}.cloudfunctions.net/adminGetUserEmailSecondGen`
+        `https://europe-north1-${getProject()}.cloudfunctions.net/adminGetUserEmailSecondGen`
       );
 
       const res = await userEmail({ userID: userID });

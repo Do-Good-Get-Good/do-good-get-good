@@ -22,11 +22,7 @@ import OutsidePressHandler from "react-native-outside-press";
 import DatePicker from "../components/DatePicker";
 import Menu from "../components/Menu";
 
-import Config from "react-native-config";
-const project =
-  Config.NODE_ENV === "prod"
-    ? "do-good-get-good-2f6cc"
-    : "dev-do-good-get-good";
+import { getProject } from "../lib/project";
 
 const DownloadUserData = ({ navigation }) => {
   const date = new Date();
@@ -41,7 +37,7 @@ const DownloadUserData = ({ navigation }) => {
   const today = format(date, "yyyy-MM-dd");
   const rollingYear = `${oneYearBack} - ${today}`;
   const downloadData = functions().httpsCallableFromUrl(
-    `https://europe-north1-${project}.cloudfunctions.net/downloadDataSecondGen`
+    `https://europe-north1-${getProject()}.cloudfunctions.net/downloadDataSecondGen`
   );
 
   const IsDatePeriodValid = () => {

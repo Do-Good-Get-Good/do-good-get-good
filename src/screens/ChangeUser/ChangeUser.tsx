@@ -22,9 +22,9 @@ import { useSuperAdminContext } from "../../context/SuperAdminContext/useSuperAd
 import { boldTextWithUnderline } from "../../styles/boldTextWithUnderline";
 import { SuperAdminStack } from "../../utility/routeEnums";
 import { ChangeUserRouteProps } from "../../utility/typesRouteProps";
-import { UserName } from "./updateUser";
+import { UserInfo } from "./updateUser";
 
-const schema: yup.ObjectSchema<UserName> = yup
+const schema: yup.ObjectSchema<UserInfo> = yup
   .object()
   .shape({
     name: yup
@@ -39,6 +39,10 @@ const schema: yup.ObjectSchema<UserName> = yup
       .max(20)
       .min(1, "* Efternamn måste innehålla minst 1 tecken")
       .required("Obligatorisk"),
+    email: yup
+      .string()
+      .email("Ange en giltig mailadress")
+      .required("Du måste ange en mailadress"),
   })
   .defined();
 
@@ -54,8 +58,12 @@ export const ChangeUser = ({ route, navigation }: Props) => {
     handleSubmit,
     control,
     formState: { errors, isDirty },
-  } = useForm<UserName>({
-    defaultValues: { name: user.firstName, surname: user.lastName },
+  } = useForm<UserInfo>({
+    defaultValues: {
+      name: user.firstName,
+      surname: user.lastName,
+      email: user.email ?? "",
+    },
     resolver: yupResolver(schema),
   });
   const [loading, setLoading] = useState(false);
@@ -63,13 +71,14 @@ export const ChangeUser = ({ route, navigation }: Props) => {
   const { updateUser } = useSuperAdminContext();
   const { updateUserAfterChanges } = useAdminUpdateUserInfoAndActivities();
 
-  const onSubmit = async (changed: UserName) => {
+  const onSubmit = async (changed: UserInfo) => {
     setLoading(true);
     if (prevRoute === SuperAdminStack.RolesAndConnection) {
       updateUser({
         ...user,
         firstName: changed.name,
         lastName: changed.surname,
+        email: changed.email,
         statusActive: changedStatus,
       });
     } else {
@@ -78,6 +87,7 @@ export const ChangeUser = ({ route, navigation }: Props) => {
           ...user,
           firstName: changed.name,
           lastName: changed.surname,
+          email: changed.email,
           statusActive: changedStatus,
         });
       }
@@ -103,6 +113,13 @@ export const ChangeUser = ({ route, navigation }: Props) => {
           control={control}
           error={errors.surname}
           name={"surname"}
+        />
+        <InputFieldWithController
+          placeholderText={"Email"}
+          control={control}
+          error={errors.email}
+          name={"email"}
+          keyboardType="email-address"
         />
 
         <TouchableOpacity

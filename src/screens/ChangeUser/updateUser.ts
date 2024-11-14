@@ -1,4 +1,5 @@
-export type UserName = {
+export type UserInfo = {
   name: string;
   surname: string;
+  email?: string;
 };

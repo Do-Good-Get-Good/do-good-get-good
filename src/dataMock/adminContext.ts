@@ -12,6 +12,7 @@ const userWithUnconfirmedTE_2: User = {
   adminID: "1",
   firstName: "Admin4",
   lastName: "Adminsson4",
+  email: "email@email.com",
   connectedActivities: ["activityID1"],
   activitiesAndAccumulatedTime: [
     {
@@ -29,6 +30,7 @@ const userWithUnconfirmedTE_3: User = {
   adminID: "1",
   firstName: "Johan2",
   lastName: "Johansson2",
+  email: "email@email.com",
   connectedActivities: ["activityID1", "activityID2"],
   activitiesAndAccumulatedTime: [
     {
@@ -50,6 +52,7 @@ const userWithConfirmedTE_2: User = {
   adminID: "1",
   firstName: "Admin4",
   lastName: "Adminsson4",
+  email: "email@email.com",
   connectedActivities: ["activityID1"],
   activitiesAndAccumulatedTime: [
     {
@@ -67,6 +70,7 @@ const userWithConfirmedTE_3: User = {
   adminID: "1",
   firstName: "Johan2",
   lastName: "Johansson2",
+  email: "email@email.com",
   connectedActivities: ["activityID1", "activityID2"],
   activitiesAndAccumulatedTime: [
     {
@@ -83,11 +87,12 @@ const userWithConfirmedTE_3: User = {
   statusActive: true,
 };
 
-const userAnactive_4: User = {
+const userInactive_4: User = {
   id: "04",
   adminID: "1",
   firstName: "Johan22",
   lastName: "Johansson22",
+  email: "email@email.com",
   connectedActivities: ["activityID1", "activityID2"],
   activitiesAndAccumulatedTime: [
     {
@@ -118,7 +123,7 @@ const userAnactive_4: User = {
 export const mockUsersWithFiveConfirmedTimeEntries: User[] = [
   userWithConfirmedTE_2,
   userWithConfirmedTE_3,
-  userAnactive_4,
+  userInactive_4,
 ];
 
 export const mockUsersWithUnconfirmedTimeEntries: User[] = [
@@ -131,6 +136,7 @@ export const mockAllUsersConnectedToadmin: User[] = [
     adminID: "admin_id",
     firstName: "Admin4",
     lastName: "Adminsson4",
+    email: "email@email.com",
     connectedActivities: ["activityID1"],
     activitiesAndAccumulatedTime: [
       {

@@ -34,6 +34,12 @@ jest.mock("@react-navigation/native", () => ({
   }),
 }));
 
+jest.mock("../../hooks/superAdmin/useOnSelectUser", () => ({
+  useOnSelectUser: () => ({
+    getUserEmail: () => "email@email.com",
+  }),
+}));
+
 describe("Testing MyUsers component", () => {
   it("can find the my users text", async () => {
     const { getAllByText } = render(
@@ -148,12 +154,16 @@ describe("Testing MyUsers component", () => {
     fireEvent.press(getByText("Admin4 Adminsson4"));
 
     fireEvent.press(getByTestId("pencil-icon2"));
+    await waitFor(() => {
+      expect(mockedNavigate).toHaveBeenCalledTimes(1);
+    });
+
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
       user: mockUsersWithFiveConfirmedTimeEntries[0],
     });
   });
 
-  it("Can press edit icon on active users", async () => {
+  it("Can press edit icon on inactive users", async () => {
     const { getByTestId, getByText } = render(
       <MyUsers users={mockUsersWithFiveConfirmedTimeEntries} />
     );
@@ -163,8 +173,13 @@ describe("Testing MyUsers component", () => {
     fireEvent.press(getByText("Johan22 Johansson22"));
 
     fireEvent.press(getByTestId("pencil-icon04"));
+
+    await waitFor(() => {
+      expect(mockedNavigate).toHaveBeenCalledTimes(1);
+    });
+
     expect(mockedNavigate).toHaveBeenCalledWith("ChangeUser", {
-      user: mockUsersWithFiveConfirmedTimeEntries[0],
+      user: mockUsersWithFiveConfirmedTimeEntries[2],
     });
   });
 });
