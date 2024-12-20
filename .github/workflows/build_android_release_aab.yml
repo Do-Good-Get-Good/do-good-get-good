@@ -1,47 +1,47 @@
 name: Build Android Release AAB
-on: 
+on:
   workflow_dispatch:
   workflow_call:
-  
-jobs: 
-  tests: 
+
+jobs:
+  tests:
     uses: ./.github/workflows/autotest_pr.yml
-    
+
   build:
     name: Build Android AAB
     needs: [tests]
-    
+
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      
+
       - name: set up JDK 17
         uses: actions/setup-java@v1
         with:
           java-version: 17
-      
+
       - name: Set Secret Properties
         env:
           LOCAL_PROPERTIES: ${{ secrets.LOCAL_PROPERTIES }}
         run: echo "$LOCAL_PROPERTIES" > gradle.properties
         working-directory: ./src/android/app
-    
+
       - name: Prepare release keystore
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > dggg_key.keystore.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch dggg_key.keystore.asc > dggg_key.keystore
+          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch --yes dggg_key.keystore.asc > dggg_key.keystore
         working-directory: ./src/android/app
-      
+
       - name: Install dependencies
         run: npm install
         working-directory: ./src
-      
+
       - name: Build Android AAB
         run: ./gradlew bundleRelease
         working-directory: ./src/android
-        
+
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: Release bundle 
+          name: Release bundle
           path: ./src/android/app/build/outputs/bundle/prodRelease/app-prod-release.aab
