@@ -29,7 +29,7 @@ jobs:
       - name: Prepare release keystore
         run: |
           echo "${{ secrets.RELEASE_KEYSTORE }}" > keystore_base64.txt
-          base64 -d -i keystore_base64.txt -o dggg.keystore
+          base64 -d keystore_base64.txt > dggg.keystore
         working-directory: ./src/android/app
 
       - name: Install dependencies
