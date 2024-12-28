@@ -28,8 +28,8 @@ jobs:
 
       - name: Prepare release keystore
         run: |
-          echo "${{ secrets.RELEASE_KEYSTORE }}" > key_dggg.keystore.asc
-          gpg -d --passphrase "${{ secrets.RELEASE_KEYSTORE_PASSPHRASE }}" --batch --yes key_dggg.keystore.asc > key_dggg.keystore
+          echo "${{ secrets.RELEASE_KEYSTORE }}" > keystore_base64.txt
+          base64 -d -i keystore_base64.txt -o dggg.keystore
         working-directory: ./src/android/app
 
       - name: Install dependencies
