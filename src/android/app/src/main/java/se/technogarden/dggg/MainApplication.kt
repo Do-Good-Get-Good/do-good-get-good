@@ -1,4 +1,4 @@
-package se.technogarden.dogoodgetgood
+package se.technogarden.dggg
 
 import android.app.Application
 import com.facebook.react.PackageList

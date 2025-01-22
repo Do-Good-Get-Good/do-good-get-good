@@ -1,4 +1,4 @@
-package se.technogarden.dogoodgetgood
+package se.technogarden.dggg
 
 import com.facebook.react.ReactActivity
 import com.facebook.react.ReactActivityDelegate
