@@ -87,9 +87,9 @@ android {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdkVersion rootProject.ext.compileSdkVersion
 
-    namespace "se.technogarden.dogoodgetgood"
+    namespace "se.technogarden.dggg"
     defaultConfig {
-        applicationId "se.technogarden.dogoodgetgood"
+        applicationId "se.technogarden.dggg"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode project.env.get("RELEASE_NUMBER").toInteger();
@@ -101,15 +101,15 @@ android {
     productFlavors {
         dev {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "se.technogarden.dogoodgetgood.dev"
+            applicationId "se.technogarden.dggg.dev"
             targetSdkVersion rootProject.ext.targetSdkVersion
-            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
+            resValue "string", "build_config_package", "se.technogarden.dggg"
         }
         prod {
             minSdkVersion rootProject.ext.minSdkVersion
-            applicationId "se.technogarden.dogoodgetgood"
+            applicationId "se.technogarden.dggg"
             targetSdkVersion rootProject.ext.targetSdkVersion
-            resValue "string", "build_config_package", "se.technogarden.dogoodgetgood"
+            resValue "string", "build_config_package", "se.technogarden.dggg"
         }
     }
 
