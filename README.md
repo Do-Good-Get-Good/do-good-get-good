@@ -6,6 +6,14 @@
 
 This app is a cross platform application built in React Native. Development focus on using as many built in components and existing libraries as possible. The instructions assumes you have some knowledge on how operating systems works with environment variables and such.
 
+## Important folders
+
+**/functions**
+Firebase Cloud Functions
+
+**/src**
+Frontend code
+
 ## Setting up the project
 
 1. The source code is located in `./src`
@@ -37,11 +45,14 @@ Now open a new terminal or tab and run one of the following commands:
 
 **Android:**
 
-to run Dev
-`react-native run-android --mode=devDebug --appIdSuffix=dev`or try this`npx react-native run-android --mode=devDebug --appIdSuffix=dev`
-to run Prod `react-native run-android --mode=prodDebug` or try this`npx react-native run-android --mode=prodDebug`
+To run Dev
+`npx react-native run-android --mode=devDebug --appIdSuffix=dev`
 
-Production build: `npx react-native run-android --variant=prodDebug`
+To run prod:
+`npx react-native run-android --mode=prodDebug`
+or try this:
+`npx react-native run-android --variant=prodDebug`
+
 
 **iOS:**
 
@@ -56,31 +67,25 @@ Production build: `npx react-native run-ios`
 
 #### **Note that you need to have an Android emulator running before you run the _Android_ start command**
 
-# Bundling / Compiling the app for Release
+## Bundling / Compiling the app for Release
 
-## Android
+### Android
 
-### To get an AAB file
+1. Go to .env, .env.dev, .env.prod and change the **APP_VERSION** and **RELEASE_NUMBER**.
+(**RELEASE_NUMBER** have to be **int**)
 
-Go to [GitHub Actions](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_apk_test.yml) and start the `Build Android AAB` workflow.
+2. Create a PR and merge your changes main.
+3. Run one of the following pipelines bellow.
+
+#### To get an AAB file
+
+Run this [GitHub Action pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_aab.yml).
 When it's finished you'll be able to find the AAB on that workflow page under `Artifacts`.
 
-To see all tasks `./gradlew tasks`
+#### To get an APK file
 
-### To get an APK file
-
-Go to `src/` and run `npm install`
-Go to `src/Android`
-Run `./gradlew assembleProd`
-Output will be in `src\android\app\build\outputs\apk\prod\release`
-
-### To get an Release file
-
-Go to .env, .env.dev, .env.prod and change there APP_VERSION and RELEASE_NUMBER (RELEASE_NUMBER have to be int)
-Go to `src/` and run `npm install`
-Go to `src/Android`
-To build file fore release `./gradlew bundleRelease`
-To get created file src/android/app/build/outputs/bundle/prodRelease
+Run this [GitHub Actions pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_apk.yml).
+When it's finished you'll be able to find the APK on that workflow page under `Artifacts`.
 
 ## Trouble shooting
 
@@ -95,22 +100,25 @@ cd android
 ./gradlew clean
 ./gradlew build
 cd ..
-to run Dev
-`react-native run-android --mode=devDebug --appIdSuffix=dev` or try `npx react-native run-android --mode=devDebug --appIdSuffix=dev`to run Prod`react-native run-android --mode=prodDebug`
-or try `npx react-native run-android --mode=prodDebug`
 ```
 
 ### iOS trouble
 
 Try
-
-- `bundle install` This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler`/ or `sudo gem update bundler` to ensure that your Bundler is up to date.
-- sometimes help with `gem update --system`
-- sometimes you need to Reinstall Bundler, run  `gem uninstall bundler`and then `gem install bundler`
-- if it stay "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
-- sometimes it helps to open Xcode and build by pressing Command+B
-- often it helps to clean pod `rm -rf Pods   rm -rf Podfile.lock    pod install`
-- can help to clean cach `pod cache clean --all`
+- `bundle install` 
+  This command installs all the required Ruby gems specified in the project's Gemfile. It ensures that your development environment has the necessary dependencies to run the project successfully. BUT first is good to run `gem update bundler`/ or `sudo gem update bundler` to ensure that your Bundler is up to date.
+- sometimes it helps to run `gem update --system`.
+- sometimes you need to reinstall Bundler, run  `gem uninstall bundler`and then `gem install bundler`.
+- if it says "Successfully launched the app on the simulator" but after that it's like it don't have connection to the simulator anymore, then probably it run Release mode. 
+You can open Xcode Check in `Product -> Scheme -> Edit Scheme -> change to Debug mode`.
+- sometimes it helps to open Xcode and build by pressing `Command+B`.
+- often it helps to clean pods 
+  ```
+  rm -rf Pods 
+  rm -rf Podfile.lock
+  pod install
+  ```
+- can help to clean cache `pod cache clean --all`
 
 # We who have worked with the project
 
