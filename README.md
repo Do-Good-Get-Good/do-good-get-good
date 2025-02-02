@@ -69,10 +69,9 @@ Production build:
 
 ### Android
 
-1. Go to .env, .env.dev, .env.prod and change the **APP_VERSION** and **RELEASE_NUMBER**.
-(**RELEASE_NUMBER** have to be **int**)
-2. Create a PR and merge your changes main.
-3. Run one of the following pipelines bellow.
+1. Go to .env, .env.dev, .env.prod and change the **APP_VERSION** and **RELEASE_NUMBER**.  (**RELEASE_NUMBER** have to be **int**)
+2. Create a PR and merge your changes to main.
+3. Run one of the following pipelines below.
 
 #### To get an AAB file
 
