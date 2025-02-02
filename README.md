@@ -8,10 +8,10 @@ This app is a cross platform application built in React Native. Development focu
 
 ## Important folders
 
-**/functions**
+**/functions**  
 Firebase Cloud Functions
 
-**/src**
+**/src**  
 Frontend code
 
 ## Setting up the project
@@ -33,37 +33,35 @@ Frontend code
    1. `cd ios`
    2. `bundle install`
    3. `bundle exec pod install`
+8. Go to your user folder, here you should find a folder called `.gradle`, go into it.  
+   Create a `gradle.properties` file and add the following:
+   ```
+   DO_GOOD_GET_GOOD_STORE_FILE=''
+   DO_GOOD_GET_GOOD_KEY_ALIAS=''
+   DO_GOOD_GET_GOOD_STORE_PASSWORD=''
+   DO_GOOD_GET_GOOD_KEY_PASSWORD=''
+   ```
 
 ### How to run the app
 
-Stand in the root of the source code (`/src`).
-
-First start the bundle server:
-`npm run start`
-
-Now open a new terminal or tab and run one of the following commands:
+Open a terminal and stand in the root of the source code (`/src`).  
+Now run one of the following commands:
 
 **Android:**
 
-To run Dev
-`npx react-native run-android --mode=devDebug --appIdSuffix=dev`
+Development build:  
+`npm run android`
 
-To run prod:
-`npx react-native run-android --mode=prodDebug`
-or try this:
-`npx react-native run-android --variant=prodDebug`
-
+Production build:  
+`npm run android-prod`
 
 **iOS:**
 
-Development build:
+Development build:  
+`npm run ios`
 
-- `cd src`
-- run `npx react-native start`
-- select ios by pressing "i"
-- open a new terminal and run `npx react-native run-ios --scheme DoGoodGetGoodDev`
-
-Production build: `npx react-native run-ios`
+Production build:  
+`npm run ios-prod`
 
 #### **Note that you need to have an Android emulator running before you run the _Android_ start command**
 
@@ -73,19 +71,18 @@ Production build: `npx react-native run-ios`
 
 1. Go to .env, .env.dev, .env.prod and change the **APP_VERSION** and **RELEASE_NUMBER**.
 (**RELEASE_NUMBER** have to be **int**)
-
 2. Create a PR and merge your changes main.
 3. Run one of the following pipelines bellow.
 
 #### To get an AAB file
 
-Run this [GitHub Action pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_aab.yml).
-When it's finished you'll be able to find the AAB on that workflow page under `Artifacts`.
+Run this [build android release AAB pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_aab.yml).  
+When it's finished you'll find the AAB on that workflow page under `Artifacts`.
 
 #### To get an APK file
 
-Run this [GitHub Actions pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_apk.yml).
-When it's finished you'll be able to find the APK on that workflow page under `Artifacts`.
+Run this [build android release APK pipeline](https://github.com/Do-Good-Get-Good/do-good-get-good/actions/workflows/build_android_release_apk.yml).  
+When it's finished you'll find the APK on that workflow page under `Artifacts`.
 
 ## Trouble shooting
 
