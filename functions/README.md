@@ -2,8 +2,8 @@
 
 ## How to set up
 
-1. Go to the Firebase console for the environment you want to work.
-   [Dev environment](https://console.firebase.google.com/u/0/project/dev-do-good-get-good/overview)
+1. Go to the Firebase console for the environment you want to work on.  
+   [Dev environment](https://console.firebase.google.com/u/0/project/dev-do-good-get-good/overview)  
    [Prod environment](https://console.firebase.google.com/u/0/project/do-good-get-good-2f6cc/overview)
 2. Navigate to **service accounts**  
    (Project settings --> Service accounts)
